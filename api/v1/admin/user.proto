@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package v1.admin;
+
+option go_package = "codeberg.org/megakuul/cloudjam/pkg/api/v1/admin";
+
+message User {
+  string id = 1;
+  string username = 2;
+  string description = 3;
+  string email = 4;
+  bool leaderboard = 5;
+  int64 created_at = 6;
+  int64 streak = 7;
+  double score = 8;
+  int64 max_streak = 9;
+}

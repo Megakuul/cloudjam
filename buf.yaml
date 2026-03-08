@@ -1,0 +1,6 @@
+version: v2
+modules:
+  - path: api
+    name: buf.build/megakuul/zen
+deps:
+  - buf.build/bufbuild/protovalidate
