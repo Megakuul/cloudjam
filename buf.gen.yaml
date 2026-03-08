@@ -10,5 +10,6 @@ plugins:
   - remote: buf.build/bufbuild/es:v2.7.0
     out: web/src/lib/sdk
     opt: target=ts
+    include_imports: true
 inputs:
   - directory: api

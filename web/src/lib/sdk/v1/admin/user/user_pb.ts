@@ -13,12 +13,12 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/admin/user/user.proto.
  */
 export const file_v1_admin_user_user: GenFile = /*@__PURE__*/
-  fileDesc("Chh2MS9hZG1pbi91c2VyL3VzZXIucHJvdG8SDXYxLmFkbWluLnVzZXIiYwoRQ3JlYXRlVXNlclJlcXVlc3QSGwoIdXNlcm5hbWUYASABKAlCCbpIBnIEEAMYFBIWCgVlbWFpbBgCIAEoCUIHukgEcgJgARIZCghwYXNzd29yZBgDIAEoCUIHukgEcgIQCCIyChJDcmVhdGVVc2VyUmVzcG9uc2USHAoEdXNlchgBIAEoCzIOLnYxLmFkbWluLlVzZXIiJgoOR2V0VXNlclJlcXVlc3QSFAoCaWQYASABKAlCCLpIBXIDsAEBIi8KD0dldFVzZXJSZXNwb25zZRIcCgR1c2VyGAEgASgLMg4udjEuYWRtaW4uVXNlciJ/ChFVcGRhdGVVc2VyUmVxdWVzdBIUCgJpZBgBIAEoCUIIukgFcgOwAQESIAoIdXNlcm5hbWUYAiABKAlCCbpIBnIEEAMYFEgAiAEBEhsKBWVtYWlsGAMgASgJQge6SARyAmABSAGIAQFCCwoJX3VzZXJuYW1lQggKBl9lbWFpbCIyChJVcGRhdGVVc2VyUmVzcG9uc2USHAoEdXNlchgBIAEoCzIOLnYxLmFkbWluLlVzZXIiKQoRRGVsZXRlVXNlclJlcXVlc3QSFAoCaWQYASABKAlCCLpIBXIDsAEBIhQKEkRlbGV0ZVVzZXJSZXNwb25zZSJEChBMaXN0VXNlcnNSZXF1ZXN0EhwKCXBhZ2Vfc2l6ZRgBIAEoBUIJukgGGgQYZCAAEhIKCnBhZ2VfdG9rZW4YAiABKAkiSwoRTGlzdFVzZXJzUmVzcG9uc2USHQoFdXNlcnMYASADKAsyDi52MS5hZG1pbi5Vc2VyEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCTKgAwoLVXNlclNlcnZpY2USUQoKQ3JlYXRlVXNlchIgLnYxLmFkbWluLnVzZXIuQ3JlYXRlVXNlclJlcXVlc3QaIS52MS5hZG1pbi51c2VyLkNyZWF0ZVVzZXJSZXNwb25zZRJICgdHZXRVc2VyEh0udjEuYWRtaW4udXNlci5HZXRVc2VyUmVxdWVzdBoeLnYxLmFkbWluLnVzZXIuR2V0VXNlclJlc3BvbnNlElEKClVwZGF0ZVVzZXISIC52MS5hZG1pbi51c2VyLlVwZGF0ZVVzZXJSZXF1ZXN0GiEudjEuYWRtaW4udXNlci5VcGRhdGVVc2VyUmVzcG9uc2USUQoKRGVsZXRlVXNlchIgLnYxLmFkbWluLnVzZXIuRGVsZXRlVXNlclJlcXVlc3QaIS52MS5hZG1pbi51c2VyLkRlbGV0ZVVzZXJSZXNwb25zZRJOCglMaXN0VXNlcnMSHy52MS5hZG1pbi51c2VyLkxpc3RVc2Vyc1JlcXVlc3QaIC52MS5hZG1pbi51c2VyLkxpc3RVc2Vyc1Jlc3BvbnNlQjZaNGNvZGViZXJnLm9yZy9tZWdha3V1bC9jbG91ZGphbS9wa2cvYXBpL3YxL2FkbWluL3VzZXJiBnByb3RvMw", [file_buf_validate_validate, file_v1_admin_user]);
+  fileDesc("Chh2MS9hZG1pbi91c2VyL3VzZXIucHJvdG8SDXYxLmFkbWluLnVzZXIijgEKDUNyZWF0ZVJlcXVlc3QSGwoIdXNlcm5hbWUYASABKAlCCbpIBnIEEAMYFBIWCgVlbWFpbBgCIAEoCUIHukgEcgJgARIZCghwYXNzd29yZBgDIAEoCUIHukgEcgIQCBItCgZhbmFuYXMYBCABKAsyFS52MS5hZG1pbi51c2VyLkFuYW5hc0IGukgDyAEBIq4BCgZBbmFuYXMSSwoHc29tZW1hcBgBIAMoCzIiLnYxLmFkbWluLnVzZXIuQW5hbmFzLlNvbWVtYXBFbnRyeUIWukgTmgEQCAEiBCICKAAqBnIEEAMYBBInCglzb21lYXJyYXkYAiADKAlCFLpIEZIBDggBEAMYASIGcgQQAxgKGi4KDFNvbWVtYXBFbnRyeRILCgNrZXkYASABKAMSDQoFdmFsdWUYAiABKAk6AjgBIi4KDkNyZWF0ZVJlc3BvbnNlEhwKBHVzZXIYASABKAsyDi52MS5hZG1pbi5Vc2VyIiIKCkdldFJlcXVlc3QSFAoCaWQYASABKAlCCLpIBXIDsAEBIisKC0dldFJlc3BvbnNlEhwKBHVzZXIYASABKAsyDi52MS5hZG1pbi5Vc2VyInsKDVVwZGF0ZVJlcXVlc3QSFAoCaWQYASABKAlCCLpIBXIDsAEBEiAKCHVzZXJuYW1lGAIgASgJQgm6SAZyBBADGBRIAIgBARIbCgVlbWFpbBgDIAEoCUIHukgEcgJgAUgBiAEBQgsKCV91c2VybmFtZUIICgZfZW1haWwiLgoOVXBkYXRlUmVzcG9uc2USHAoEdXNlchgBIAEoCzIOLnYxLmFkbWluLlVzZXIiJQoNRGVsZXRlUmVxdWVzdBIUCgJpZBgBIAEoCUIIukgFcgOwAQEiEAoORGVsZXRlUmVzcG9uc2UiQAoMTGlzdHNSZXF1ZXN0EhwKCXBhZ2Vfc2l6ZRgBIAEoBUIJukgGGgQYZCAAEhIKCnBhZ2VfdG9rZW4YAiABKAkiRwoNTGlzdHNSZXNwb25zZRIdCgV1c2VycxgBIAMoCzIOLnYxLmFkbWluLlVzZXISFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJMuQCCgtVc2VyU2VydmljZRJFCgZDcmVhdGUSHC52MS5hZG1pbi51c2VyLkNyZWF0ZVJlcXVlc3QaHS52MS5hZG1pbi51c2VyLkNyZWF0ZVJlc3BvbnNlEjwKA0dldBIZLnYxLmFkbWluLnVzZXIuR2V0UmVxdWVzdBoaLnYxLmFkbWluLnVzZXIuR2V0UmVzcG9uc2USRQoGVXBkYXRlEhwudjEuYWRtaW4udXNlci5VcGRhdGVSZXF1ZXN0Gh0udjEuYWRtaW4udXNlci5VcGRhdGVSZXNwb25zZRJFCgZEZWxldGUSHC52MS5hZG1pbi51c2VyLkRlbGV0ZVJlcXVlc3QaHS52MS5hZG1pbi51c2VyLkRlbGV0ZVJlc3BvbnNlEkIKBUxpc3RzEhsudjEuYWRtaW4udXNlci5MaXN0c1JlcXVlc3QaHC52MS5hZG1pbi51c2VyLkxpc3RzUmVzcG9uc2VCNlo0Y29kZWJlcmcub3JnL21lZ2FrdXVsL2Nsb3VkamFtL3BrZy9hcGkvdjEvYWRtaW4vdXNlcmIGcHJvdG8z", [file_buf_validate_validate, file_v1_admin_user]);
 
 /**
- * @generated from message v1.admin.user.CreateUserRequest
+ * @generated from message v1.admin.user.CreateRequest
  */
-export type CreateUserRequest = Message<"v1.admin.user.CreateUserRequest"> & {
+export type CreateRequest = Message<"v1.admin.user.CreateRequest"> & {
   /**
    * @generated from field: string username = 1;
    */
@@ -33,19 +33,46 @@ export type CreateUserRequest = Message<"v1.admin.user.CreateUserRequest"> & {
    * @generated from field: string password = 3;
    */
   password: string;
+
+  /**
+   * @generated from field: v1.admin.user.Ananas ananas = 4;
+   */
+  ananas?: Ananas;
 };
 
 /**
- * Describes the message v1.admin.user.CreateUserRequest.
- * Use `create(CreateUserRequestSchema)` to create a new message.
+ * Describes the message v1.admin.user.CreateRequest.
+ * Use `create(CreateRequestSchema)` to create a new message.
  */
-export const CreateUserRequestSchema: GenMessage<CreateUserRequest> = /*@__PURE__*/
+export const CreateRequestSchema: GenMessage<CreateRequest> = /*@__PURE__*/
   messageDesc(file_v1_admin_user_user, 0);
 
 /**
- * @generated from message v1.admin.user.CreateUserResponse
+ * @generated from message v1.admin.user.Ananas
  */
-export type CreateUserResponse = Message<"v1.admin.user.CreateUserResponse"> & {
+export type Ananas = Message<"v1.admin.user.Ananas"> & {
+  /**
+   * @generated from field: map<int64, string> somemap = 1;
+   */
+  somemap: { [key: string]: string };
+
+  /**
+   * @generated from field: repeated string somearray = 2;
+   */
+  somearray: string[];
+};
+
+/**
+ * Describes the message v1.admin.user.Ananas.
+ * Use `create(AnanasSchema)` to create a new message.
+ */
+export const AnanasSchema: GenMessage<Ananas> = /*@__PURE__*/
+  messageDesc(file_v1_admin_user_user, 1);
+
+/**
+ * @generated from message v1.admin.user.CreateResponse
+ */
+export type CreateResponse = Message<"v1.admin.user.CreateResponse"> & {
   /**
    * @generated from field: v1.admin.User user = 1;
    */
@@ -53,16 +80,16 @@ export type CreateUserResponse = Message<"v1.admin.user.CreateUserResponse"> & {
 };
 
 /**
- * Describes the message v1.admin.user.CreateUserResponse.
- * Use `create(CreateUserResponseSchema)` to create a new message.
+ * Describes the message v1.admin.user.CreateResponse.
+ * Use `create(CreateResponseSchema)` to create a new message.
  */
-export const CreateUserResponseSchema: GenMessage<CreateUserResponse> = /*@__PURE__*/
-  messageDesc(file_v1_admin_user_user, 1);
+export const CreateResponseSchema: GenMessage<CreateResponse> = /*@__PURE__*/
+  messageDesc(file_v1_admin_user_user, 2);
 
 /**
- * @generated from message v1.admin.user.GetUserRequest
+ * @generated from message v1.admin.user.GetRequest
  */
-export type GetUserRequest = Message<"v1.admin.user.GetUserRequest"> & {
+export type GetRequest = Message<"v1.admin.user.GetRequest"> & {
   /**
    * @generated from field: string id = 1;
    */
@@ -70,16 +97,16 @@ export type GetUserRequest = Message<"v1.admin.user.GetUserRequest"> & {
 };
 
 /**
- * Describes the message v1.admin.user.GetUserRequest.
- * Use `create(GetUserRequestSchema)` to create a new message.
+ * Describes the message v1.admin.user.GetRequest.
+ * Use `create(GetRequestSchema)` to create a new message.
  */
-export const GetUserRequestSchema: GenMessage<GetUserRequest> = /*@__PURE__*/
-  messageDesc(file_v1_admin_user_user, 2);
+export const GetRequestSchema: GenMessage<GetRequest> = /*@__PURE__*/
+  messageDesc(file_v1_admin_user_user, 3);
 
 /**
- * @generated from message v1.admin.user.GetUserResponse
+ * @generated from message v1.admin.user.GetResponse
  */
-export type GetUserResponse = Message<"v1.admin.user.GetUserResponse"> & {
+export type GetResponse = Message<"v1.admin.user.GetResponse"> & {
   /**
    * @generated from field: v1.admin.User user = 1;
    */
@@ -87,16 +114,16 @@ export type GetUserResponse = Message<"v1.admin.user.GetUserResponse"> & {
 };
 
 /**
- * Describes the message v1.admin.user.GetUserResponse.
- * Use `create(GetUserResponseSchema)` to create a new message.
+ * Describes the message v1.admin.user.GetResponse.
+ * Use `create(GetResponseSchema)` to create a new message.
  */
-export const GetUserResponseSchema: GenMessage<GetUserResponse> = /*@__PURE__*/
-  messageDesc(file_v1_admin_user_user, 3);
+export const GetResponseSchema: GenMessage<GetResponse> = /*@__PURE__*/
+  messageDesc(file_v1_admin_user_user, 4);
 
 /**
- * @generated from message v1.admin.user.UpdateUserRequest
+ * @generated from message v1.admin.user.UpdateRequest
  */
-export type UpdateUserRequest = Message<"v1.admin.user.UpdateUserRequest"> & {
+export type UpdateRequest = Message<"v1.admin.user.UpdateRequest"> & {
   /**
    * @generated from field: string id = 1;
    */
@@ -114,16 +141,16 @@ export type UpdateUserRequest = Message<"v1.admin.user.UpdateUserRequest"> & {
 };
 
 /**
- * Describes the message v1.admin.user.UpdateUserRequest.
- * Use `create(UpdateUserRequestSchema)` to create a new message.
+ * Describes the message v1.admin.user.UpdateRequest.
+ * Use `create(UpdateRequestSchema)` to create a new message.
  */
-export const UpdateUserRequestSchema: GenMessage<UpdateUserRequest> = /*@__PURE__*/
-  messageDesc(file_v1_admin_user_user, 4);
+export const UpdateRequestSchema: GenMessage<UpdateRequest> = /*@__PURE__*/
+  messageDesc(file_v1_admin_user_user, 5);
 
 /**
- * @generated from message v1.admin.user.UpdateUserResponse
+ * @generated from message v1.admin.user.UpdateResponse
  */
-export type UpdateUserResponse = Message<"v1.admin.user.UpdateUserResponse"> & {
+export type UpdateResponse = Message<"v1.admin.user.UpdateResponse"> & {
   /**
    * @generated from field: v1.admin.User user = 1;
    */
@@ -131,16 +158,16 @@ export type UpdateUserResponse = Message<"v1.admin.user.UpdateUserResponse"> & {
 };
 
 /**
- * Describes the message v1.admin.user.UpdateUserResponse.
- * Use `create(UpdateUserResponseSchema)` to create a new message.
+ * Describes the message v1.admin.user.UpdateResponse.
+ * Use `create(UpdateResponseSchema)` to create a new message.
  */
-export const UpdateUserResponseSchema: GenMessage<UpdateUserResponse> = /*@__PURE__*/
-  messageDesc(file_v1_admin_user_user, 5);
+export const UpdateResponseSchema: GenMessage<UpdateResponse> = /*@__PURE__*/
+  messageDesc(file_v1_admin_user_user, 6);
 
 /**
- * @generated from message v1.admin.user.DeleteUserRequest
+ * @generated from message v1.admin.user.DeleteRequest
  */
-export type DeleteUserRequest = Message<"v1.admin.user.DeleteUserRequest"> & {
+export type DeleteRequest = Message<"v1.admin.user.DeleteRequest"> & {
   /**
    * @generated from field: string id = 1;
    */
@@ -148,29 +175,29 @@ export type DeleteUserRequest = Message<"v1.admin.user.DeleteUserRequest"> & {
 };
 
 /**
- * Describes the message v1.admin.user.DeleteUserRequest.
- * Use `create(DeleteUserRequestSchema)` to create a new message.
+ * Describes the message v1.admin.user.DeleteRequest.
+ * Use `create(DeleteRequestSchema)` to create a new message.
  */
-export const DeleteUserRequestSchema: GenMessage<DeleteUserRequest> = /*@__PURE__*/
-  messageDesc(file_v1_admin_user_user, 6);
-
-/**
- * @generated from message v1.admin.user.DeleteUserResponse
- */
-export type DeleteUserResponse = Message<"v1.admin.user.DeleteUserResponse"> & {
-};
-
-/**
- * Describes the message v1.admin.user.DeleteUserResponse.
- * Use `create(DeleteUserResponseSchema)` to create a new message.
- */
-export const DeleteUserResponseSchema: GenMessage<DeleteUserResponse> = /*@__PURE__*/
+export const DeleteRequestSchema: GenMessage<DeleteRequest> = /*@__PURE__*/
   messageDesc(file_v1_admin_user_user, 7);
 
 /**
- * @generated from message v1.admin.user.ListUsersRequest
+ * @generated from message v1.admin.user.DeleteResponse
  */
-export type ListUsersRequest = Message<"v1.admin.user.ListUsersRequest"> & {
+export type DeleteResponse = Message<"v1.admin.user.DeleteResponse"> & {
+};
+
+/**
+ * Describes the message v1.admin.user.DeleteResponse.
+ * Use `create(DeleteResponseSchema)` to create a new message.
+ */
+export const DeleteResponseSchema: GenMessage<DeleteResponse> = /*@__PURE__*/
+  messageDesc(file_v1_admin_user_user, 8);
+
+/**
+ * @generated from message v1.admin.user.ListsRequest
+ */
+export type ListsRequest = Message<"v1.admin.user.ListsRequest"> & {
   /**
    * @generated from field: int32 page_size = 1;
    */
@@ -183,16 +210,16 @@ export type ListUsersRequest = Message<"v1.admin.user.ListUsersRequest"> & {
 };
 
 /**
- * Describes the message v1.admin.user.ListUsersRequest.
- * Use `create(ListUsersRequestSchema)` to create a new message.
+ * Describes the message v1.admin.user.ListsRequest.
+ * Use `create(ListsRequestSchema)` to create a new message.
  */
-export const ListUsersRequestSchema: GenMessage<ListUsersRequest> = /*@__PURE__*/
-  messageDesc(file_v1_admin_user_user, 8);
+export const ListsRequestSchema: GenMessage<ListsRequest> = /*@__PURE__*/
+  messageDesc(file_v1_admin_user_user, 9);
 
 /**
- * @generated from message v1.admin.user.ListUsersResponse
+ * @generated from message v1.admin.user.ListsResponse
  */
-export type ListUsersResponse = Message<"v1.admin.user.ListUsersResponse"> & {
+export type ListsResponse = Message<"v1.admin.user.ListsResponse"> & {
   /**
    * @generated from field: repeated v1.admin.User users = 1;
    */
@@ -205,55 +232,55 @@ export type ListUsersResponse = Message<"v1.admin.user.ListUsersResponse"> & {
 };
 
 /**
- * Describes the message v1.admin.user.ListUsersResponse.
- * Use `create(ListUsersResponseSchema)` to create a new message.
+ * Describes the message v1.admin.user.ListsResponse.
+ * Use `create(ListsResponseSchema)` to create a new message.
  */
-export const ListUsersResponseSchema: GenMessage<ListUsersResponse> = /*@__PURE__*/
-  messageDesc(file_v1_admin_user_user, 9);
+export const ListsResponseSchema: GenMessage<ListsResponse> = /*@__PURE__*/
+  messageDesc(file_v1_admin_user_user, 10);
 
 /**
  * @generated from service v1.admin.user.UserService
  */
 export const UserService: GenService<{
   /**
-   * @generated from rpc v1.admin.user.UserService.CreateUser
+   * @generated from rpc v1.admin.user.UserService.Create
    */
-  createUser: {
+  create: {
     methodKind: "unary";
-    input: typeof CreateUserRequestSchema;
-    output: typeof CreateUserResponseSchema;
+    input: typeof CreateRequestSchema;
+    output: typeof CreateResponseSchema;
   },
   /**
-   * @generated from rpc v1.admin.user.UserService.GetUser
+   * @generated from rpc v1.admin.user.UserService.Get
    */
-  getUser: {
+  get: {
     methodKind: "unary";
-    input: typeof GetUserRequestSchema;
-    output: typeof GetUserResponseSchema;
+    input: typeof GetRequestSchema;
+    output: typeof GetResponseSchema;
   },
   /**
-   * @generated from rpc v1.admin.user.UserService.UpdateUser
+   * @generated from rpc v1.admin.user.UserService.Update
    */
-  updateUser: {
+  update: {
     methodKind: "unary";
-    input: typeof UpdateUserRequestSchema;
-    output: typeof UpdateUserResponseSchema;
+    input: typeof UpdateRequestSchema;
+    output: typeof UpdateResponseSchema;
   },
   /**
-   * @generated from rpc v1.admin.user.UserService.DeleteUser
+   * @generated from rpc v1.admin.user.UserService.Delete
    */
-  deleteUser: {
+  delete: {
     methodKind: "unary";
-    input: typeof DeleteUserRequestSchema;
-    output: typeof DeleteUserResponseSchema;
+    input: typeof DeleteRequestSchema;
+    output: typeof DeleteResponseSchema;
   },
   /**
-   * @generated from rpc v1.admin.user.UserService.ListUsers
+   * @generated from rpc v1.admin.user.UserService.Lists
    */
-  listUsers: {
+  lists: {
     methodKind: "unary";
-    input: typeof ListUsersRequestSchema;
-    output: typeof ListUsersResponseSchema;
+    input: typeof ListsRequestSchema;
+    output: typeof ListsResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_v1_admin_user_user, 0);
