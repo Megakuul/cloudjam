@@ -8,6 +8,8 @@ import (
 	"net/http/httputil"
 	"net/url"
 
+	authmiddleware "codeberg.org/megakuul/cloudjam/internal/auth"
+	"codeberg.org/megakuul/cloudjam/internal/rbac"
 	"codeberg.org/megakuul/cloudjam/internal/server/v1/admin/user"
 	"codeberg.org/megakuul/cloudjam/internal/server/v1/auth"
 	"codeberg.org/megakuul/cloudjam/internal/token"
@@ -17,7 +19,9 @@ import (
 	"connectrpc.com/connect"
 	"connectrpc.com/validate"
 	"github.com/golang-jwt/jwt/v5"
-	"gocloud.dev/docstore"
+
+	"gocloud.dev/docstore/mongodocstore"
+	_ "gocloud.dev/docstore/mongodocstore"
 )
 
 func Start(ctx context.Context, opts *Options) error {
@@ -28,25 +32,46 @@ func Start(ctx context.Context, opts *Options) error {
 		if err != nil {
 			return err
 		}
-		mux.Handle("/", httputil.NewSingleHostReverseProxy(url))
+		proxy := httputil.NewSingleHostReverseProxy(url)
+		proxy.ErrorLog = slog.NewLogLogger(slog.With("system", "dev.proxy").Handler(), slog.LevelWarn)
+		mux.Handle("/", proxy)
 	} else {
 		mux.Handle("GET /", http.FileServerFS(web.Files))
 	}
 	issuer := token.New(opts.TokenIssuer, jwt.SigningMethodHS256, []byte(opts.TokenSecret), func(ctx context.Context) any {
 		return []byte(opts.TokenSecret)
 	})
-	coll, err := docstore.OpenCollection(ctx, opts.Database)
+	client, err := mongodocstore.Dial(ctx, opts.DatabaseSource)
 	if err != nil {
 		return err
 	}
+	coll, err := mongodocstore.OpenCollection(client.Database(opts.DatabaseName).Collection(opts.DatabaseCollection), "pk", nil)
+	if err != nil {
+		return err
+	}
+	defer coll.Close()
+	authorizer := rbac.New(coll, opts.PolicyCacheTimeout)
 	mux.Handle(authconnect.NewAuthServiceHandler(auth.New(coll, issuer),
 		connect.WithInterceptors(validate.NewInterceptor()),
 	))
 	mux.Handle(userconnect.NewUserServiceHandler(user.New(coll),
 		connect.WithInterceptors(
+			authmiddleware.New(issuer, authorizer),
 			validate.NewInterceptor(),
 		),
 	))
 
-	return nil
+	server := http.Server{
+		Addr:     opts.Addr,
+		Handler:  mux,
+		ErrorLog: slog.NewLogLogger(slog.With("system", "http.server").Handler(), slog.LevelWarn),
+	}
+
+	go func() {
+		<-ctx.Done()
+		server.Close()
+	}()
+
+	slog.Info(fmt.Sprintf("starting hornet server at http://%s", opts.Addr))
+	return server.ListenAndServe()
 }
