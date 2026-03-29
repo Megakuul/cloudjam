@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"log/slog"
 	"net/http"
@@ -18,7 +19,10 @@ import (
 	"codeberg.org/megakuul/cloudjam/web"
 	"connectrpc.com/connect"
 	"connectrpc.com/validate"
+	"github.com/FerretDB/FerretDB/ferretdb"
 	"github.com/golang-jwt/jwt/v5"
+	"go.mongodb.org/mongo-driver/mongo/readpref"
+	"golang.org/x/sync/errgroup"
 
 	"gocloud.dev/docstore/mongodocstore"
 	_ "gocloud.dev/docstore/mongodocstore"
@@ -36,16 +40,27 @@ func Start(ctx context.Context, opts *Options) error {
 		proxy.ErrorLog = slog.NewLogLogger(slog.With("system", "dev.proxy").Handler(), slog.LevelWarn)
 		mux.Handle("/", proxy)
 	} else {
-		mux.Handle("GET /", http.FileServerFS(web.Files))
+		mux.Handle("/", http.FileServerFS(web.Files))
 	}
 	issuer := token.New(opts.TokenIssuer, jwt.SigningMethodHS256, []byte(opts.TokenSecret), func(ctx context.Context) any {
 		return []byte(opts.TokenSecret)
 	})
-	client, err := mongodocstore.Dial(ctx, opts.DatabaseSource)
+	fclient, err := ferretdb.New(&ferretdb.Config{
+		Listener: ferretdb.ListenerConfig{
+			Unix: opts.DatabaseMongoSocket,
+		},
+		Logger:        slog.With("system", "ferretdb"),
+		Handler:       "postgresql",
+		PostgreSQLURL: opts.DatabaseSource,
+	})
 	if err != nil {
 		return err
 	}
-	coll, err := mongodocstore.OpenCollection(client.Database(opts.DatabaseName).Collection(opts.DatabaseCollection), "pk", nil)
+	mclient, err := mongodocstore.Dial(ctx, fclient.MongoDBURI())
+	if err != nil {
+		return err
+	}
+	coll, err := mongodocstore.OpenCollection(mclient.Database(opts.DatabaseMongoName).Collection(opts.DatabaseMongoCollection), "pk", nil)
 	if err != nil {
 		return err
 	}
@@ -67,11 +82,24 @@ func Start(ctx context.Context, opts *Options) error {
 		ErrorLog: slog.NewLogLogger(slog.With("system", "http.server").Handler(), slog.LevelWarn),
 	}
 
-	go func() {
-		<-ctx.Done()
-		server.Close()
-	}()
-
+	errGroup, errCtx := errgroup.WithContext(ctx)
+	errGroup.Go(func() error {
+		return fclient.Run(errCtx)
+	})
+	errGroup.Go(func() error {
+		defer slog.Info("test")
+		return mclient.Ping(errCtx, readpref.Nearest())
+	})
+	errGroup.Go(func() error {
+		go func() {
+			<-errCtx.Done()
+			server.Close()
+		}()
+		if err := server.ListenAndServe(); err != nil && !errors.Is(http.ErrServerClosed, err) {
+			return err
+		}
+		return nil
+	})
 	slog.Info(fmt.Sprintf("starting hornet server at http://%s", opts.Addr))
-	return server.ListenAndServe()
+	return errGroup.Wait()
 }
