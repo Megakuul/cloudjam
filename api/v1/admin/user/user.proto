@@ -8,29 +8,14 @@ import "v1/admin/user.proto";
 option go_package = "codeberg.org/megakuul/cloudjam/pkg/api/v1/admin/user";
 
 message CreateRequest {
-  string username = 1 [(buf.validate.field).string = {min_len: 3, max_len: 20}];
-  string email = 2 [(buf.validate.field).string = {email: true}];
-  string password = 3 [(buf.validate.field).string = {min_len: 8}];
-  Ananas ananas = 4 [(buf.validate.field).required = true];
-}
-
-message Ananas {
-  map<int64, string> somemap = 1 [(buf.validate.field).map = {
-    min_pairs: 1,
-    keys: {
-      int64: {gte: 0 },
-    },
-    values: {
-      string: {min_len: 3, max_len: 4}
-    }
+  string username = 1 [(buf.validate.field).string = {
+    min_len: 3
+    max_len: 20
   }];
-  repeated string somearray = 2 [(buf.validate.field).repeated = {
-    min_items: 1,
-    max_items: 3,
-    unique: true,
-    items: {
-      string: {min_len: 3, max_len: 10}
-    }
+  string email = 2 [(buf.validate.field).string.email = true];
+  string password = 3 [(buf.validate.field).string = {
+    min_len: 8
+    max_len: 100
   }];
 }
 
@@ -48,7 +33,10 @@ message GetResponse {
 
 message UpdateRequest {
   string id = 1 [(buf.validate.field).string = {uuid: true}];
-  optional string username = 2 [(buf.validate.field).string = {min_len: 3, max_len: 20}];
+  optional string username = 2 [(buf.validate.field).string = {
+    min_len: 3
+    max_len: 20
+  }];
   optional string email = 3 [(buf.validate.field).string = {email: true}];
 }
 
@@ -62,12 +50,15 @@ message DeleteRequest {
 
 message DeleteResponse {}
 
-message ListsRequest {
-  int32 page_size = 1 [(buf.validate.field).int32 = {gt: 0, lte: 100}];
+message ListRequest {
+  int32 page_size = 1 [(buf.validate.field).int32 = {
+    gt: 0
+    lte: 100
+  }];
   string page_token = 2;
 }
 
-message ListsResponse {
+message ListResponse {
   repeated User users = 1;
   string next_page_token = 2;
 }
@@ -77,5 +68,5 @@ service UserService {
   rpc Get(GetRequest) returns (GetResponse);
   rpc Update(UpdateRequest) returns (UpdateResponse);
   rpc Delete(DeleteRequest) returns (DeleteResponse);
-  rpc Lists(ListsRequest) returns (ListsResponse);
+  rpc List(ListRequest) returns (ListResponse);
 }

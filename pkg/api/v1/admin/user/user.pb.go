@@ -28,7 +28,6 @@ type CreateRequest struct {
 	Username      string                 `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
 	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
 	Password      string                 `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
-	Ananas        *Ananas                `protobuf:"bytes,4,opt,name=ananas,proto3" json:"ananas,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -84,65 +83,6 @@ func (x *CreateRequest) GetPassword() string {
 	return ""
 }
 
-func (x *CreateRequest) GetAnanas() *Ananas {
-	if x != nil {
-		return x.Ananas
-	}
-	return nil
-}
-
-type Ananas struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Somemap       map[int64]string       `protobuf:"bytes,1,rep,name=somemap,proto3" json:"somemap,omitempty" protobuf_key:"varint,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	Somearray     []string               `protobuf:"bytes,2,rep,name=somearray,proto3" json:"somearray,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *Ananas) Reset() {
-	*x = Ananas{}
-	mi := &file_v1_admin_user_user_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Ananas) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Ananas) ProtoMessage() {}
-
-func (x *Ananas) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_admin_user_user_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Ananas.ProtoReflect.Descriptor instead.
-func (*Ananas) Descriptor() ([]byte, []int) {
-	return file_v1_admin_user_user_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *Ananas) GetSomemap() map[int64]string {
-	if x != nil {
-		return x.Somemap
-	}
-	return nil
-}
-
-func (x *Ananas) GetSomearray() []string {
-	if x != nil {
-		return x.Somearray
-	}
-	return nil
-}
-
 type CreateResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	User          *admin.User            `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
@@ -152,7 +92,7 @@ type CreateResponse struct {
 
 func (x *CreateResponse) Reset() {
 	*x = CreateResponse{}
-	mi := &file_v1_admin_user_user_proto_msgTypes[2]
+	mi := &file_v1_admin_user_user_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -164,7 +104,7 @@ func (x *CreateResponse) String() string {
 func (*CreateResponse) ProtoMessage() {}
 
 func (x *CreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_admin_user_user_proto_msgTypes[2]
+	mi := &file_v1_admin_user_user_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -177,7 +117,7 @@ func (x *CreateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateResponse.ProtoReflect.Descriptor instead.
 func (*CreateResponse) Descriptor() ([]byte, []int) {
-	return file_v1_admin_user_user_proto_rawDescGZIP(), []int{2}
+	return file_v1_admin_user_user_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *CreateResponse) GetUser() *admin.User {
@@ -196,7 +136,7 @@ type GetRequest struct {
 
 func (x *GetRequest) Reset() {
 	*x = GetRequest{}
-	mi := &file_v1_admin_user_user_proto_msgTypes[3]
+	mi := &file_v1_admin_user_user_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -208,7 +148,7 @@ func (x *GetRequest) String() string {
 func (*GetRequest) ProtoMessage() {}
 
 func (x *GetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_admin_user_user_proto_msgTypes[3]
+	mi := &file_v1_admin_user_user_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -221,7 +161,7 @@ func (x *GetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetRequest.ProtoReflect.Descriptor instead.
 func (*GetRequest) Descriptor() ([]byte, []int) {
-	return file_v1_admin_user_user_proto_rawDescGZIP(), []int{3}
+	return file_v1_admin_user_user_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *GetRequest) GetId() string {
@@ -240,7 +180,7 @@ type GetResponse struct {
 
 func (x *GetResponse) Reset() {
 	*x = GetResponse{}
-	mi := &file_v1_admin_user_user_proto_msgTypes[4]
+	mi := &file_v1_admin_user_user_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -252,7 +192,7 @@ func (x *GetResponse) String() string {
 func (*GetResponse) ProtoMessage() {}
 
 func (x *GetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_admin_user_user_proto_msgTypes[4]
+	mi := &file_v1_admin_user_user_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -265,7 +205,7 @@ func (x *GetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetResponse.ProtoReflect.Descriptor instead.
 func (*GetResponse) Descriptor() ([]byte, []int) {
-	return file_v1_admin_user_user_proto_rawDescGZIP(), []int{4}
+	return file_v1_admin_user_user_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *GetResponse) GetUser() *admin.User {
@@ -286,7 +226,7 @@ type UpdateRequest struct {
 
 func (x *UpdateRequest) Reset() {
 	*x = UpdateRequest{}
-	mi := &file_v1_admin_user_user_proto_msgTypes[5]
+	mi := &file_v1_admin_user_user_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -298,7 +238,7 @@ func (x *UpdateRequest) String() string {
 func (*UpdateRequest) ProtoMessage() {}
 
 func (x *UpdateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_admin_user_user_proto_msgTypes[5]
+	mi := &file_v1_admin_user_user_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -311,7 +251,7 @@ func (x *UpdateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateRequest.ProtoReflect.Descriptor instead.
 func (*UpdateRequest) Descriptor() ([]byte, []int) {
-	return file_v1_admin_user_user_proto_rawDescGZIP(), []int{5}
+	return file_v1_admin_user_user_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *UpdateRequest) GetId() string {
@@ -344,7 +284,7 @@ type UpdateResponse struct {
 
 func (x *UpdateResponse) Reset() {
 	*x = UpdateResponse{}
-	mi := &file_v1_admin_user_user_proto_msgTypes[6]
+	mi := &file_v1_admin_user_user_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -356,7 +296,7 @@ func (x *UpdateResponse) String() string {
 func (*UpdateResponse) ProtoMessage() {}
 
 func (x *UpdateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_admin_user_user_proto_msgTypes[6]
+	mi := &file_v1_admin_user_user_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -369,7 +309,7 @@ func (x *UpdateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateResponse.ProtoReflect.Descriptor instead.
 func (*UpdateResponse) Descriptor() ([]byte, []int) {
-	return file_v1_admin_user_user_proto_rawDescGZIP(), []int{6}
+	return file_v1_admin_user_user_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *UpdateResponse) GetUser() *admin.User {
@@ -388,7 +328,7 @@ type DeleteRequest struct {
 
 func (x *DeleteRequest) Reset() {
 	*x = DeleteRequest{}
-	mi := &file_v1_admin_user_user_proto_msgTypes[7]
+	mi := &file_v1_admin_user_user_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -400,7 +340,7 @@ func (x *DeleteRequest) String() string {
 func (*DeleteRequest) ProtoMessage() {}
 
 func (x *DeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_admin_user_user_proto_msgTypes[7]
+	mi := &file_v1_admin_user_user_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -413,7 +353,7 @@ func (x *DeleteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteRequest.ProtoReflect.Descriptor instead.
 func (*DeleteRequest) Descriptor() ([]byte, []int) {
-	return file_v1_admin_user_user_proto_rawDescGZIP(), []int{7}
+	return file_v1_admin_user_user_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *DeleteRequest) GetId() string {
@@ -431,7 +371,7 @@ type DeleteResponse struct {
 
 func (x *DeleteResponse) Reset() {
 	*x = DeleteResponse{}
-	mi := &file_v1_admin_user_user_proto_msgTypes[8]
+	mi := &file_v1_admin_user_user_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -443,7 +383,7 @@ func (x *DeleteResponse) String() string {
 func (*DeleteResponse) ProtoMessage() {}
 
 func (x *DeleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_admin_user_user_proto_msgTypes[8]
+	mi := &file_v1_admin_user_user_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -456,10 +396,10 @@ func (x *DeleteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteResponse.ProtoReflect.Descriptor instead.
 func (*DeleteResponse) Descriptor() ([]byte, []int) {
-	return file_v1_admin_user_user_proto_rawDescGZIP(), []int{8}
+	return file_v1_admin_user_user_proto_rawDescGZIP(), []int{7}
 }
 
-type ListsRequest struct {
+type ListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	PageSize      int32                  `protobuf:"varint,1,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	PageToken     string                 `protobuf:"bytes,2,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
@@ -467,21 +407,21 @@ type ListsRequest struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListsRequest) Reset() {
-	*x = ListsRequest{}
-	mi := &file_v1_admin_user_user_proto_msgTypes[9]
+func (x *ListRequest) Reset() {
+	*x = ListRequest{}
+	mi := &file_v1_admin_user_user_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListsRequest) String() string {
+func (x *ListRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListsRequest) ProtoMessage() {}
+func (*ListRequest) ProtoMessage() {}
 
-func (x *ListsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_admin_user_user_proto_msgTypes[9]
+func (x *ListRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_v1_admin_user_user_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -492,26 +432,26 @@ func (x *ListsRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListsRequest.ProtoReflect.Descriptor instead.
-func (*ListsRequest) Descriptor() ([]byte, []int) {
-	return file_v1_admin_user_user_proto_rawDescGZIP(), []int{9}
+// Deprecated: Use ListRequest.ProtoReflect.Descriptor instead.
+func (*ListRequest) Descriptor() ([]byte, []int) {
+	return file_v1_admin_user_user_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *ListsRequest) GetPageSize() int32 {
+func (x *ListRequest) GetPageSize() int32 {
 	if x != nil {
 		return x.PageSize
 	}
 	return 0
 }
 
-func (x *ListsRequest) GetPageToken() string {
+func (x *ListRequest) GetPageToken() string {
 	if x != nil {
 		return x.PageToken
 	}
 	return ""
 }
 
-type ListsResponse struct {
+type ListResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Users         []*admin.User          `protobuf:"bytes,1,rep,name=users,proto3" json:"users,omitempty"`
 	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
@@ -519,21 +459,21 @@ type ListsResponse struct {
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ListsResponse) Reset() {
-	*x = ListsResponse{}
-	mi := &file_v1_admin_user_user_proto_msgTypes[10]
+func (x *ListResponse) Reset() {
+	*x = ListResponse{}
+	mi := &file_v1_admin_user_user_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ListsResponse) String() string {
+func (x *ListResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ListsResponse) ProtoMessage() {}
+func (*ListResponse) ProtoMessage() {}
 
-func (x *ListsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_admin_user_user_proto_msgTypes[10]
+func (x *ListResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_v1_admin_user_user_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -544,19 +484,19 @@ func (x *ListsResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ListsResponse.ProtoReflect.Descriptor instead.
-func (*ListsResponse) Descriptor() ([]byte, []int) {
-	return file_v1_admin_user_user_proto_rawDescGZIP(), []int{10}
+// Deprecated: Use ListResponse.ProtoReflect.Descriptor instead.
+func (*ListResponse) Descriptor() ([]byte, []int) {
+	return file_v1_admin_user_user_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *ListsResponse) GetUsers() []*admin.User {
+func (x *ListResponse) GetUsers() []*admin.User {
 	if x != nil {
 		return x.Users
 	}
 	return nil
 }
 
-func (x *ListsResponse) GetNextPageToken() string {
+func (x *ListResponse) GetNextPageToken() string {
 	if x != nil {
 		return x.NextPageToken
 	}
@@ -567,19 +507,11 @@ var File_v1_admin_user_user_proto protoreflect.FileDescriptor
 
 const file_v1_admin_user_user_proto_rawDesc = "" +
 	"\n" +
-	"\x18v1/admin/user/user.proto\x12\rv1.admin.user\x1a\x1bbuf/validate/validate.proto\x1a\x13v1/admin/user.proto\"\xb1\x01\n" +
+	"\x18v1/admin/user/user.proto\x12\rv1.admin.user\x1a\x1bbuf/validate/validate.proto\x1a\x13v1/admin/user.proto\"|\n" +
 	"\rCreateRequest\x12%\n" +
 	"\busername\x18\x01 \x01(\tB\t\xbaH\x06r\x04\x10\x03\x18\x14R\busername\x12\x1d\n" +
-	"\x05email\x18\x02 \x01(\tB\a\xbaH\x04r\x02`\x01R\x05email\x12#\n" +
-	"\bpassword\x18\x03 \x01(\tB\a\xbaH\x04r\x02\x10\bR\bpassword\x125\n" +
-	"\x06ananas\x18\x04 \x01(\v2\x15.v1.admin.user.AnanasB\x06\xbaH\x03\xc8\x01\x01R\x06ananas\"\xce\x01\n" +
-	"\x06Ananas\x12T\n" +
-	"\asomemap\x18\x01 \x03(\v2\".v1.admin.user.Ananas.SomemapEntryB\x16\xbaH\x13\x9a\x01\x10\b\x01\"\x04\"\x02(\x00*\x06r\x04\x10\x03\x18\x04R\asomemap\x122\n" +
-	"\tsomearray\x18\x02 \x03(\tB\x14\xbaH\x11\x92\x01\x0e\b\x01\x10\x03\x18\x01\"\x06r\x04\x10\x03\x18\n" +
-	"R\tsomearray\x1a:\n" +
-	"\fSomemapEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\x03R\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"4\n" +
+	"\x05email\x18\x02 \x01(\tB\a\xbaH\x04r\x02`\x01R\x05email\x12%\n" +
+	"\bpassword\x18\x03 \x01(\tB\t\xbaH\x06r\x04\x10\b\x18dR\bpassword\"4\n" +
 	"\x0eCreateResponse\x12\"\n" +
 	"\x04user\x18\x01 \x01(\v2\x0e.v1.admin.UserR\x04user\"&\n" +
 	"\n" +
@@ -597,20 +529,20 @@ const file_v1_admin_user_user_proto_rawDesc = "" +
 	"\x04user\x18\x01 \x01(\v2\x0e.v1.admin.UserR\x04user\")\n" +
 	"\rDeleteRequest\x12\x18\n" +
 	"\x02id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\"\x10\n" +
-	"\x0eDeleteResponse\"U\n" +
-	"\fListsRequest\x12&\n" +
+	"\x0eDeleteResponse\"T\n" +
+	"\vListRequest\x12&\n" +
 	"\tpage_size\x18\x01 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d \x00R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x02 \x01(\tR\tpageToken\"]\n" +
-	"\rListsResponse\x12$\n" +
+	"page_token\x18\x02 \x01(\tR\tpageToken\"\\\n" +
+	"\fListResponse\x12$\n" +
 	"\x05users\x18\x01 \x03(\v2\x0e.v1.admin.UserR\x05users\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xe4\x02\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xe1\x02\n" +
 	"\vUserService\x12E\n" +
 	"\x06Create\x12\x1c.v1.admin.user.CreateRequest\x1a\x1d.v1.admin.user.CreateResponse\x12<\n" +
 	"\x03Get\x12\x19.v1.admin.user.GetRequest\x1a\x1a.v1.admin.user.GetResponse\x12E\n" +
 	"\x06Update\x12\x1c.v1.admin.user.UpdateRequest\x1a\x1d.v1.admin.user.UpdateResponse\x12E\n" +
-	"\x06Delete\x12\x1c.v1.admin.user.DeleteRequest\x1a\x1d.v1.admin.user.DeleteResponse\x12B\n" +
-	"\x05Lists\x12\x1b.v1.admin.user.ListsRequest\x1a\x1c.v1.admin.user.ListsResponseB6Z4codeberg.org/megakuul/cloudjam/pkg/api/v1/admin/userb\x06proto3"
+	"\x06Delete\x12\x1c.v1.admin.user.DeleteRequest\x1a\x1d.v1.admin.user.DeleteResponse\x12?\n" +
+	"\x04List\x12\x1a.v1.admin.user.ListRequest\x1a\x1b.v1.admin.user.ListResponseB6Z4codeberg.org/megakuul/cloudjam/pkg/api/v1/admin/userb\x06proto3"
 
 var (
 	file_v1_admin_user_user_proto_rawDescOnce sync.Once
@@ -624,44 +556,40 @@ func file_v1_admin_user_user_proto_rawDescGZIP() []byte {
 	return file_v1_admin_user_user_proto_rawDescData
 }
 
-var file_v1_admin_user_user_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
+var file_v1_admin_user_user_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_v1_admin_user_user_proto_goTypes = []any{
 	(*CreateRequest)(nil),  // 0: v1.admin.user.CreateRequest
-	(*Ananas)(nil),         // 1: v1.admin.user.Ananas
-	(*CreateResponse)(nil), // 2: v1.admin.user.CreateResponse
-	(*GetRequest)(nil),     // 3: v1.admin.user.GetRequest
-	(*GetResponse)(nil),    // 4: v1.admin.user.GetResponse
-	(*UpdateRequest)(nil),  // 5: v1.admin.user.UpdateRequest
-	(*UpdateResponse)(nil), // 6: v1.admin.user.UpdateResponse
-	(*DeleteRequest)(nil),  // 7: v1.admin.user.DeleteRequest
-	(*DeleteResponse)(nil), // 8: v1.admin.user.DeleteResponse
-	(*ListsRequest)(nil),   // 9: v1.admin.user.ListsRequest
-	(*ListsResponse)(nil),  // 10: v1.admin.user.ListsResponse
-	nil,                    // 11: v1.admin.user.Ananas.SomemapEntry
-	(*admin.User)(nil),     // 12: v1.admin.User
+	(*CreateResponse)(nil), // 1: v1.admin.user.CreateResponse
+	(*GetRequest)(nil),     // 2: v1.admin.user.GetRequest
+	(*GetResponse)(nil),    // 3: v1.admin.user.GetResponse
+	(*UpdateRequest)(nil),  // 4: v1.admin.user.UpdateRequest
+	(*UpdateResponse)(nil), // 5: v1.admin.user.UpdateResponse
+	(*DeleteRequest)(nil),  // 6: v1.admin.user.DeleteRequest
+	(*DeleteResponse)(nil), // 7: v1.admin.user.DeleteResponse
+	(*ListRequest)(nil),    // 8: v1.admin.user.ListRequest
+	(*ListResponse)(nil),   // 9: v1.admin.user.ListResponse
+	(*admin.User)(nil),     // 10: v1.admin.User
 }
 var file_v1_admin_user_user_proto_depIdxs = []int32{
-	1,  // 0: v1.admin.user.CreateRequest.ananas:type_name -> v1.admin.user.Ananas
-	11, // 1: v1.admin.user.Ananas.somemap:type_name -> v1.admin.user.Ananas.SomemapEntry
-	12, // 2: v1.admin.user.CreateResponse.user:type_name -> v1.admin.User
-	12, // 3: v1.admin.user.GetResponse.user:type_name -> v1.admin.User
-	12, // 4: v1.admin.user.UpdateResponse.user:type_name -> v1.admin.User
-	12, // 5: v1.admin.user.ListsResponse.users:type_name -> v1.admin.User
-	0,  // 6: v1.admin.user.UserService.Create:input_type -> v1.admin.user.CreateRequest
-	3,  // 7: v1.admin.user.UserService.Get:input_type -> v1.admin.user.GetRequest
-	5,  // 8: v1.admin.user.UserService.Update:input_type -> v1.admin.user.UpdateRequest
-	7,  // 9: v1.admin.user.UserService.Delete:input_type -> v1.admin.user.DeleteRequest
-	9,  // 10: v1.admin.user.UserService.Lists:input_type -> v1.admin.user.ListsRequest
-	2,  // 11: v1.admin.user.UserService.Create:output_type -> v1.admin.user.CreateResponse
-	4,  // 12: v1.admin.user.UserService.Get:output_type -> v1.admin.user.GetResponse
-	6,  // 13: v1.admin.user.UserService.Update:output_type -> v1.admin.user.UpdateResponse
-	8,  // 14: v1.admin.user.UserService.Delete:output_type -> v1.admin.user.DeleteResponse
-	10, // 15: v1.admin.user.UserService.Lists:output_type -> v1.admin.user.ListsResponse
-	11, // [11:16] is the sub-list for method output_type
-	6,  // [6:11] is the sub-list for method input_type
-	6,  // [6:6] is the sub-list for extension type_name
-	6,  // [6:6] is the sub-list for extension extendee
-	0,  // [0:6] is the sub-list for field type_name
+	10, // 0: v1.admin.user.CreateResponse.user:type_name -> v1.admin.User
+	10, // 1: v1.admin.user.GetResponse.user:type_name -> v1.admin.User
+	10, // 2: v1.admin.user.UpdateResponse.user:type_name -> v1.admin.User
+	10, // 3: v1.admin.user.ListResponse.users:type_name -> v1.admin.User
+	0,  // 4: v1.admin.user.UserService.Create:input_type -> v1.admin.user.CreateRequest
+	2,  // 5: v1.admin.user.UserService.Get:input_type -> v1.admin.user.GetRequest
+	4,  // 6: v1.admin.user.UserService.Update:input_type -> v1.admin.user.UpdateRequest
+	6,  // 7: v1.admin.user.UserService.Delete:input_type -> v1.admin.user.DeleteRequest
+	8,  // 8: v1.admin.user.UserService.List:input_type -> v1.admin.user.ListRequest
+	1,  // 9: v1.admin.user.UserService.Create:output_type -> v1.admin.user.CreateResponse
+	3,  // 10: v1.admin.user.UserService.Get:output_type -> v1.admin.user.GetResponse
+	5,  // 11: v1.admin.user.UserService.Update:output_type -> v1.admin.user.UpdateResponse
+	7,  // 12: v1.admin.user.UserService.Delete:output_type -> v1.admin.user.DeleteResponse
+	9,  // 13: v1.admin.user.UserService.List:output_type -> v1.admin.user.ListResponse
+	9,  // [9:14] is the sub-list for method output_type
+	4,  // [4:9] is the sub-list for method input_type
+	4,  // [4:4] is the sub-list for extension type_name
+	4,  // [4:4] is the sub-list for extension extendee
+	0,  // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_v1_admin_user_user_proto_init() }
@@ -669,14 +597,14 @@ func file_v1_admin_user_user_proto_init() {
 	if File_v1_admin_user_user_proto != nil {
 		return
 	}
-	file_v1_admin_user_user_proto_msgTypes[5].OneofWrappers = []any{}
+	file_v1_admin_user_user_proto_msgTypes[4].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_v1_admin_user_user_proto_rawDesc), len(file_v1_admin_user_user_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   12,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

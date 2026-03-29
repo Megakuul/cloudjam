@@ -1,29 +1,16 @@
 <script lang="ts">
-	import { Button, TextInput } from 'carbon-components-svelte';
 	import { create, type Message } from '@bufbuild/protobuf';
-	import { createValidator, type Violation } from '@bufbuild/protovalidate';
 	import { CreateRequestSchema, type CreateRequest } from '$lib/sdk/v1/admin/user/user_pb';
-	import type { GenMessage } from '@bufbuild/protobuf/codegenv2';
+	import { TextField, ToggleButton } from 'svelte-ux';
+	import { Input } from 'svelte-ux';
+	import { Glue } from '$lib';
 	import { UserSchema } from '$lib/sdk/v1/admin/user_pb';
 
 	let user = $state(
-		create(CreateRequestSchema, {
-			ananas: {
-				somearray: ['aas']
-			}
+		create(UserSchema, {
+			username: ''
 		})
 	);
-	let violations: Violation[] = $derived.by(() => {
-		console.log(protoValidator.validate(CreateRequestSchema, user).violations);
-		return protoValidator.validate(CreateRequestSchema, user).violations ?? [];
-	});
-
-	function getViolation(violations: Violation[], fieldName: string): string {
-		return (
-			violations.find((v) => v.field[0].kind === 'field' && v.field[0].name === fieldName)
-				?.message ?? ''
-		);
-	}
 </script>
 
 <h1>Create User</h1>
@@ -33,20 +20,15 @@
 		user = user;
 		console.log(user);
 	}}
->
-	<TextInput
-		labelText="Username"
-		bind:value={user.username}
-		invalid={Boolean(validate(CreateRequestSchema, user).v.ananas?.v?.somemap)}
-		invalidText={validate(CreateRequestSchema, user).v.username.v}
-	/>
+></form>
 
-	<TextInput
-		labelText="Username"
-		bind:value={user.username}
-		invalid={Boolean(getViolation(violations, 'username'))}
-		invalidText={getViolation(violations, 'username')}
-	/>
+<ToggleButton buttonPlacement="after">Bodenlos</ToggleButton>
 
-	<Button type="submit">Submit</Button>
-</form>
+<Input placeholder="" />
+
+<TextField
+	bind:value={user.username}
+	label="Bombaclad"
+	placeholder="Enter your bombaclad"
+	error={Glue.Validate(UserSchema, user).violation.username}
+/>

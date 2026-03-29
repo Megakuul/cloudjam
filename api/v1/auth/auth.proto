@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package v1.auth;
+
+import "buf/validate/validate.proto";
+
+option go_package = "codeberg.org/megakuul/cloudjam/pkg/api/v1/auth";
+
+message LoginRequest {
+  string email = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.email = true
+  ];
+  string password = 2 [(buf.validate.field).required = true];
+  bool auto_refresh = 3;
+}
+
+message LoginResponse {
+  string token = 1;
+}
+
+message LogoutRequest {}
+
+message LogoutResponse {}
+
+service AuthService {
+  rpc Login(LoginRequest) returns (LoginResponse) {}
+  rpc Logout(LogoutRequest) returns (LogoutResponse) {}
+}

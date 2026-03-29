@@ -1,1 +1,23 @@
 @import 'tailwindcss';
+
+@import '@layerstack/tailwind/core.css';
+@import '@layerstack/tailwind/utils.css';
+@import '@layerstack/tailwind/themes/basic.css';
+
+@source '../../node_modules/svelte-ux/dist';
+@source '../../node_modules/layerchart/dist';
+
+:root {
+  font-size: clamp(80%, 1vw + 0.5rem, 120%);
+  --color-primary: var(--color-emerald-600);
+  --color-secondary: var(--color-blue-500);
+
+  &.dark {
+    --color-primary: var(--color-purple-400);
+    --color-surface-100: var(--color-zinc-900);
+    --color-surface-200: var(--color-zinc-950);
+    --color-surface-300: var(--color-black);
+  }
+}
+
+

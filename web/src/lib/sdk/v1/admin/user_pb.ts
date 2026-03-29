@@ -4,13 +4,14 @@
 
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
+import { file_buf_validate_validate } from "../../buf/validate/validate_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file v1/admin/user.proto.
  */
 export const file_v1_admin_user: GenFile = /*@__PURE__*/
-  fileDesc("ChN2MS9hZG1pbi91c2VyLnByb3RvEgh2MS5hZG1pbiKkAQoEVXNlchIKCgJpZBgBIAEoCRIQCgh1c2VybmFtZRgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEoCRINCgVlbWFpbBgEIAEoCRITCgtsZWFkZXJib2FyZBgFIAEoCBISCgpjcmVhdGVkX2F0GAYgASgDEg4KBnN0cmVhaxgHIAEoAxINCgVzY29yZRgIIAEoARISCgptYXhfc3RyZWFrGAkgASgDQjFaL2NvZGViZXJnLm9yZy9tZWdha3V1bC9jbG91ZGphbS9wa2cvYXBpL3YxL2FkbWluYgZwcm90bzM");
+  fileDesc("ChN2MS9hZG1pbi91c2VyLnByb3RvEgh2MS5hZG1pbiK4AQoEVXNlchIUCgJpZBgBIAEoCUIIukgFcgOwAQESGwoIdXNlcm5hbWUYAiABKAlCCbpIBnIEEAQYFBIeCgtkZXNjcmlwdGlvbhgDIAEoCUIJukgGcgQQABgyEhYKBWVtYWlsGAQgASgJQge6SARyAmABEhIKCmNyZWF0ZWRfYXQYBSABKAMSDQoFc2NvcmUYBiABKAESDgoGc3RyZWFrGAcgASgDEhIKCm1heF9zdHJlYWsYCCABKANCMVovY29kZWJlcmcub3JnL21lZ2FrdXVsL2Nsb3VkamFtL3BrZy9hcGkvdjEvYWRtaW5iBnByb3RvMw", [file_buf_validate_validate]);
 
 /**
  * @generated from message v1.admin.User
@@ -37,14 +38,14 @@ export type User = Message<"v1.admin.User"> & {
   email: string;
 
   /**
-   * @generated from field: bool leaderboard = 5;
-   */
-  leaderboard: boolean;
-
-  /**
-   * @generated from field: int64 created_at = 6;
+   * @generated from field: int64 created_at = 5;
    */
   createdAt: bigint;
+
+  /**
+   * @generated from field: double score = 6;
+   */
+  score: number;
 
   /**
    * @generated from field: int64 streak = 7;
@@ -52,12 +53,7 @@ export type User = Message<"v1.admin.User"> & {
   streak: bigint;
 
   /**
-   * @generated from field: double score = 8;
-   */
-  score: number;
-
-  /**
-   * @generated from field: int64 max_streak = 9;
+   * @generated from field: int64 max_streak = 8;
    */
   maxStreak: bigint;
 };
