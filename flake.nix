@@ -12,21 +12,23 @@
       ];
     in
     {
-      devShells.default = inputs.nixpkgs.lib.genAttrs systems (
+      devShells = inputs.nixpkgs.lib.genAttrs systems (
         system:
         let
           pkgs = import inputs.nixpkgs { inherit system; };
         in
         {
-          packages = with pkgs; [
-            nodejs_24-slim
-            corepack
-            go
-            awscli2
-            localstack
-            docker
-            docker-compose
-          ];
+          default = pkgs.mkShell {
+            packages = with pkgs; [
+              nodejs-slim_24
+              corepack
+              go
+              awscli2
+              localstack
+              podman
+              podman-compose
+            ];
+          };
         }
       );
       nixosModules.hornet =

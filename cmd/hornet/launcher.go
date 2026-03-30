@@ -19,10 +19,7 @@ import (
 	"codeberg.org/megakuul/cloudjam/web"
 	"connectrpc.com/connect"
 	"connectrpc.com/validate"
-	"github.com/FerretDB/FerretDB/ferretdb"
 	"github.com/golang-jwt/jwt/v5"
-	"go.mongodb.org/mongo-driver/mongo/readpref"
-	"golang.org/x/sync/errgroup"
 
 	"gocloud.dev/docstore/mongodocstore"
 	_ "gocloud.dev/docstore/mongodocstore"
@@ -45,22 +42,11 @@ func Start(ctx context.Context, opts *Options) error {
 	issuer := token.New(opts.TokenIssuer, jwt.SigningMethodHS256, []byte(opts.TokenSecret), func(ctx context.Context) any {
 		return []byte(opts.TokenSecret)
 	})
-	fclient, err := ferretdb.New(&ferretdb.Config{
-		Listener: ferretdb.ListenerConfig{
-			Unix: opts.DatabaseMongoSocket,
-		},
-		Logger:        slog.With("system", "ferretdb"),
-		Handler:       "postgresql",
-		PostgreSQLURL: opts.DatabaseSource,
-	})
+	client, err := mongodocstore.Dial(ctx, opts.DatabaseSource)
 	if err != nil {
 		return err
 	}
-	mclient, err := mongodocstore.Dial(ctx, fclient.MongoDBURI())
-	if err != nil {
-		return err
-	}
-	coll, err := mongodocstore.OpenCollection(mclient.Database(opts.DatabaseMongoName).Collection(opts.DatabaseMongoCollection), "pk", nil)
+	coll, err := mongodocstore.OpenCollection(client.Database(opts.DatabaseName).Collection(opts.DatabaseCollection), "pk", nil)
 	if err != nil {
 		return err
 	}
@@ -82,24 +68,13 @@ func Start(ctx context.Context, opts *Options) error {
 		ErrorLog: slog.NewLogLogger(slog.With("system", "http.server").Handler(), slog.LevelWarn),
 	}
 
-	errGroup, errCtx := errgroup.WithContext(ctx)
-	errGroup.Go(func() error {
-		return fclient.Run(errCtx)
-	})
-	errGroup.Go(func() error {
-		defer slog.Info("test")
-		return mclient.Ping(errCtx, readpref.Nearest())
-	})
-	errGroup.Go(func() error {
-		go func() {
-			<-errCtx.Done()
-			server.Close()
-		}()
-		if err := server.ListenAndServe(); err != nil && !errors.Is(http.ErrServerClosed, err) {
-			return err
-		}
-		return nil
-	})
+	go func() {
+		<-ctx.Done()
+		server.Close()
+	}()
 	slog.Info(fmt.Sprintf("starting hornet server at http://%s", opts.Addr))
-	return errGroup.Wait()
+	if err := server.ListenAndServe(); err != nil && !errors.Is(http.ErrServerClosed, err) {
+		return err
+	}
+	return nil
 }
