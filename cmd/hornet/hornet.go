@@ -23,6 +23,7 @@ type Options struct {
 	DatabaseName       string        `mapstructure:"database-name"`
 	DatabaseCollection string        `mapstructure:"database-collection"`
 	TokenIssuer        string        `mapstructure:"token-issuer"`
+	TokenLifetime      time.Duration `mapstructure:"token-lifetime"`
 	TokenSecret        string        `mapstructure:"token-secret"`
 	PolicyCacheTimeout time.Duration `mapstructure:"policy-cache-timeout"`
 
@@ -69,6 +70,7 @@ func main() {
 	cmd.Flags().StringP("database-name", "", "cloudjam", "name of the mongo database")
 	cmd.Flags().StringP("database-collection", "", "table", "name of the mongo collection (single table dynamodb type shiii)")
 	cmd.Flags().StringP("token-issuer", "", "cloudjam", "issuer used inside issued jwt tokens (iss)")
+	cmd.Flags().DurationP("token-lifetime", "", 24*time.Hour, "lifetime of issued jwt tokens")
 	cmd.Flags().StringP("token-secret", "", rand.Text(), "secret used to HMAC sign jwt tokens")
 	cmd.Flags().DurationP("policy-cache-timeout", "", time.Minute*15, "duration for policy cache (also dictates the max request duration)")
 	cmd.Flags().BoolP("dev", "D", false, "enable dev mode (proxies web requests to live watcher)")

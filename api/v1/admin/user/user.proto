@@ -3,24 +3,18 @@ syntax = "proto3";
 package v1.admin.user;
 
 import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
 import "v1/admin/user.proto";
 
 option go_package = "codeberg.org/megakuul/cloudjam/pkg/api/v1/admin/user";
 
 message CreateRequest {
-  string username = 1 [(buf.validate.field).string = {
-    min_len: 3
-    max_len: 20
-  }];
-  string email = 2 [(buf.validate.field).string.email = true];
-  string password = 3 [(buf.validate.field).string = {
-    min_len: 8
-    max_len: 100
-  }];
+  string email = 1 [(buf.validate.field).string.email = true];
+  google.protobuf.Timestamp expires = 2 [(buf.validate.field).timestamp.gt_now = true];
 }
 
 message CreateResponse {
-  User user = 1;
+  string code = 1;
 }
 
 message GetRequest {
@@ -38,6 +32,7 @@ message UpdateRequest {
     max_len: 20
   }];
   optional string email = 3 [(buf.validate.field).string = {email: true}];
+  optional string role = 4 [(buf.validate.field).string.uuid = true];
 }
 
 message UpdateResponse {

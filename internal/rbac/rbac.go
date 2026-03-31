@@ -45,11 +45,11 @@ func (v *Authorizer) Check(ctx context.Context, subject, procedure string) (time
 	}
 	v.cacheLock.RUnlock()
 
-	user := &user.Data{PK: user.Key.New(subject), SK: user.SortData}
+	user := &user.Data{PK: user.Key.New(subject), SK: user.SortData.New("")}
 	if err := v.coll.Get(ctx, user); err != nil {
 		return time.Time{}, connect.NewError(connect.CodeNotFound, fmt.Errorf("user not found: %w", err))
 	}
-	role := &role.Data{PK: role.Key.New(user.Role), SK: role.SortData}
+	role := &role.Data{PK: role.Key.New(user.Role), SK: role.SortData.New("")}
 	if err := v.coll.Get(ctx, role); err != nil {
 		return time.Time{}, connect.NewError(connect.CodeNotFound, fmt.Errorf("role not found: %w", err))
 	}

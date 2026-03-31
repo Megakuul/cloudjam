@@ -39,7 +39,7 @@ func Start(ctx context.Context, opts *Options) error {
 	} else {
 		mux.Handle("/", http.FileServerFS(web.Files))
 	}
-	issuer := token.New(opts.TokenIssuer, jwt.SigningMethodHS256, []byte(opts.TokenSecret), func(ctx context.Context) any {
+	issuer := token.New(opts.TokenIssuer, opts.TokenLifetime, jwt.SigningMethodHS256, []byte(opts.TokenSecret), func(ctx context.Context) any {
 		return []byte(opts.TokenSecret)
 	})
 	client, err := mongodocstore.Dial(ctx, opts.DatabaseSource)
@@ -52,10 +52,10 @@ func Start(ctx context.Context, opts *Options) error {
 	}
 	defer coll.Close()
 	authorizer := rbac.New(coll, opts.PolicyCacheTimeout)
-	mux.Handle(authconnect.NewAuthServiceHandler(auth.New(coll, issuer),
+	mux.Handle(authconnect.NewAuthServiceHandler(auth.New(slog.With("system", "svc.auth"), coll, issuer),
 		connect.WithInterceptors(validate.NewInterceptor()),
 	))
-	mux.Handle(userconnect.NewUserServiceHandler(user.New(coll),
+	mux.Handle(userconnect.NewUserServiceHandler(user.New(slog.With("system", "svc.admin.user"), coll),
 		connect.WithInterceptors(
 			authmiddleware.New(issuer, authorizer),
 			validate.NewInterceptor(),

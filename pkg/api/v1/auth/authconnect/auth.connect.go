@@ -35,14 +35,14 @@ const (
 const (
 	// AuthServiceLoginProcedure is the fully-qualified name of the AuthService's Login RPC.
 	AuthServiceLoginProcedure = "/v1.auth.AuthService/Login"
-	// AuthServiceLogoutProcedure is the fully-qualified name of the AuthService's Logout RPC.
-	AuthServiceLogoutProcedure = "/v1.auth.AuthService/Logout"
+	// AuthServiceRegisterProcedure is the fully-qualified name of the AuthService's Register RPC.
+	AuthServiceRegisterProcedure = "/v1.auth.AuthService/Register"
 )
 
 // AuthServiceClient is a client for the v1.auth.AuthService service.
 type AuthServiceClient interface {
 	Login(context.Context, *connect.Request[auth.LoginRequest]) (*connect.Response[auth.LoginResponse], error)
-	Logout(context.Context, *connect.Request[auth.LogoutRequest]) (*connect.Response[auth.LogoutResponse], error)
+	Register(context.Context, *connect.Request[auth.RegisterRequest]) (*connect.Response[auth.RegisterResponse], error)
 }
 
 // NewAuthServiceClient constructs a client for the v1.auth.AuthService service. By default, it uses
@@ -62,10 +62,10 @@ func NewAuthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(authServiceMethods.ByName("Login")),
 			connect.WithClientOptions(opts...),
 		),
-		logout: connect.NewClient[auth.LogoutRequest, auth.LogoutResponse](
+		register: connect.NewClient[auth.RegisterRequest, auth.RegisterResponse](
 			httpClient,
-			baseURL+AuthServiceLogoutProcedure,
-			connect.WithSchema(authServiceMethods.ByName("Logout")),
+			baseURL+AuthServiceRegisterProcedure,
+			connect.WithSchema(authServiceMethods.ByName("Register")),
 			connect.WithClientOptions(opts...),
 		),
 	}
@@ -73,8 +73,8 @@ func NewAuthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 
 // authServiceClient implements AuthServiceClient.
 type authServiceClient struct {
-	login  *connect.Client[auth.LoginRequest, auth.LoginResponse]
-	logout *connect.Client[auth.LogoutRequest, auth.LogoutResponse]
+	login    *connect.Client[auth.LoginRequest, auth.LoginResponse]
+	register *connect.Client[auth.RegisterRequest, auth.RegisterResponse]
 }
 
 // Login calls v1.auth.AuthService.Login.
@@ -82,15 +82,15 @@ func (c *authServiceClient) Login(ctx context.Context, req *connect.Request[auth
 	return c.login.CallUnary(ctx, req)
 }
 
-// Logout calls v1.auth.AuthService.Logout.
-func (c *authServiceClient) Logout(ctx context.Context, req *connect.Request[auth.LogoutRequest]) (*connect.Response[auth.LogoutResponse], error) {
-	return c.logout.CallUnary(ctx, req)
+// Register calls v1.auth.AuthService.Register.
+func (c *authServiceClient) Register(ctx context.Context, req *connect.Request[auth.RegisterRequest]) (*connect.Response[auth.RegisterResponse], error) {
+	return c.register.CallUnary(ctx, req)
 }
 
 // AuthServiceHandler is an implementation of the v1.auth.AuthService service.
 type AuthServiceHandler interface {
 	Login(context.Context, *connect.Request[auth.LoginRequest]) (*connect.Response[auth.LoginResponse], error)
-	Logout(context.Context, *connect.Request[auth.LogoutRequest]) (*connect.Response[auth.LogoutResponse], error)
+	Register(context.Context, *connect.Request[auth.RegisterRequest]) (*connect.Response[auth.RegisterResponse], error)
 }
 
 // NewAuthServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -106,18 +106,18 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(authServiceMethods.ByName("Login")),
 		connect.WithHandlerOptions(opts...),
 	)
-	authServiceLogoutHandler := connect.NewUnaryHandler(
-		AuthServiceLogoutProcedure,
-		svc.Logout,
-		connect.WithSchema(authServiceMethods.ByName("Logout")),
+	authServiceRegisterHandler := connect.NewUnaryHandler(
+		AuthServiceRegisterProcedure,
+		svc.Register,
+		connect.WithSchema(authServiceMethods.ByName("Register")),
 		connect.WithHandlerOptions(opts...),
 	)
 	return "/v1.auth.AuthService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case AuthServiceLoginProcedure:
 			authServiceLoginHandler.ServeHTTP(w, r)
-		case AuthServiceLogoutProcedure:
-			authServiceLogoutHandler.ServeHTTP(w, r)
+		case AuthServiceRegisterProcedure:
+			authServiceRegisterHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -131,6 +131,6 @@ func (UnimplementedAuthServiceHandler) Login(context.Context, *connect.Request[a
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.auth.AuthService.Login is not implemented"))
 }
 
-func (UnimplementedAuthServiceHandler) Logout(context.Context, *connect.Request[auth.LogoutRequest]) (*connect.Response[auth.LogoutResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.auth.AuthService.Logout is not implemented"))
+func (UnimplementedAuthServiceHandler) Register(context.Context, *connect.Request[auth.RegisterRequest]) (*connect.Response[auth.RegisterResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.auth.AuthService.Register is not implemented"))
 }

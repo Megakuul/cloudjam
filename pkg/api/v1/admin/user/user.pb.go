@@ -11,6 +11,7 @@ import (
 	admin "codeberg.org/megakuul/cloudjam/pkg/api/v1/admin"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -25,9 +26,8 @@ const (
 
 type CreateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Username      string                 `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
-	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
-	Password      string                 `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
+	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	Expires       *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=expires,proto3" json:"expires,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -62,13 +62,6 @@ func (*CreateRequest) Descriptor() ([]byte, []int) {
 	return file_v1_admin_user_user_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *CreateRequest) GetUsername() string {
-	if x != nil {
-		return x.Username
-	}
-	return ""
-}
-
 func (x *CreateRequest) GetEmail() string {
 	if x != nil {
 		return x.Email
@@ -76,16 +69,16 @@ func (x *CreateRequest) GetEmail() string {
 	return ""
 }
 
-func (x *CreateRequest) GetPassword() string {
+func (x *CreateRequest) GetExpires() *timestamppb.Timestamp {
 	if x != nil {
-		return x.Password
+		return x.Expires
 	}
-	return ""
+	return nil
 }
 
 type CreateResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	User          *admin.User            `protobuf:"bytes,1,opt,name=user,proto3" json:"user,omitempty"`
+	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -120,11 +113,11 @@ func (*CreateResponse) Descriptor() ([]byte, []int) {
 	return file_v1_admin_user_user_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CreateResponse) GetUser() *admin.User {
+func (x *CreateResponse) GetCode() string {
 	if x != nil {
-		return x.User
+		return x.Code
 	}
-	return nil
+	return ""
 }
 
 type GetRequest struct {
@@ -220,6 +213,7 @@ type UpdateRequest struct {
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Username      *string                `protobuf:"bytes,2,opt,name=username,proto3,oneof" json:"username,omitempty"`
 	Email         *string                `protobuf:"bytes,3,opt,name=email,proto3,oneof" json:"email,omitempty"`
+	Role          *string                `protobuf:"bytes,4,opt,name=role,proto3,oneof" json:"role,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -271,6 +265,13 @@ func (x *UpdateRequest) GetUsername() string {
 func (x *UpdateRequest) GetEmail() string {
 	if x != nil && x.Email != nil {
 		return *x.Email
+	}
+	return ""
+}
+
+func (x *UpdateRequest) GetRole() string {
+	if x != nil && x.Role != nil {
+		return *x.Role
 	}
 	return ""
 }
@@ -507,24 +508,25 @@ var File_v1_admin_user_user_proto protoreflect.FileDescriptor
 
 const file_v1_admin_user_user_proto_rawDesc = "" +
 	"\n" +
-	"\x18v1/admin/user/user.proto\x12\rv1.admin.user\x1a\x1bbuf/validate/validate.proto\x1a\x13v1/admin/user.proto\"|\n" +
-	"\rCreateRequest\x12%\n" +
-	"\busername\x18\x01 \x01(\tB\t\xbaH\x06r\x04\x10\x03\x18\x14R\busername\x12\x1d\n" +
-	"\x05email\x18\x02 \x01(\tB\a\xbaH\x04r\x02`\x01R\x05email\x12%\n" +
-	"\bpassword\x18\x03 \x01(\tB\t\xbaH\x06r\x04\x10\b\x18dR\bpassword\"4\n" +
-	"\x0eCreateResponse\x12\"\n" +
-	"\x04user\x18\x01 \x01(\v2\x0e.v1.admin.UserR\x04user\"&\n" +
+	"\x18v1/admin/user/user.proto\x12\rv1.admin.user\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x13v1/admin/user.proto\"n\n" +
+	"\rCreateRequest\x12\x1d\n" +
+	"\x05email\x18\x01 \x01(\tB\a\xbaH\x04r\x02`\x01R\x05email\x12>\n" +
+	"\aexpires\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampB\b\xbaH\x05\xb2\x01\x02@\x01R\aexpires\"$\n" +
+	"\x0eCreateResponse\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\tR\x04code\"&\n" +
 	"\n" +
 	"GetRequest\x12\x18\n" +
 	"\x02id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\"1\n" +
 	"\vGetResponse\x12\"\n" +
-	"\x04user\x18\x01 \x01(\v2\x0e.v1.admin.UserR\x04user\"\x90\x01\n" +
+	"\x04user\x18\x01 \x01(\v2\x0e.v1.admin.UserR\x04user\"\xbc\x01\n" +
 	"\rUpdateRequest\x12\x18\n" +
 	"\x02id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\x12*\n" +
 	"\busername\x18\x02 \x01(\tB\t\xbaH\x06r\x04\x10\x03\x18\x14H\x00R\busername\x88\x01\x01\x12\"\n" +
-	"\x05email\x18\x03 \x01(\tB\a\xbaH\x04r\x02`\x01H\x01R\x05email\x88\x01\x01B\v\n" +
+	"\x05email\x18\x03 \x01(\tB\a\xbaH\x04r\x02`\x01H\x01R\x05email\x88\x01\x01\x12!\n" +
+	"\x04role\x18\x04 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01H\x02R\x04role\x88\x01\x01B\v\n" +
 	"\t_usernameB\b\n" +
-	"\x06_email\"4\n" +
+	"\x06_emailB\a\n" +
+	"\x05_role\"4\n" +
 	"\x0eUpdateResponse\x12\"\n" +
 	"\x04user\x18\x01 \x01(\v2\x0e.v1.admin.UserR\x04user\")\n" +
 	"\rDeleteRequest\x12\x18\n" +
@@ -558,23 +560,24 @@ func file_v1_admin_user_user_proto_rawDescGZIP() []byte {
 
 var file_v1_admin_user_user_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_v1_admin_user_user_proto_goTypes = []any{
-	(*CreateRequest)(nil),  // 0: v1.admin.user.CreateRequest
-	(*CreateResponse)(nil), // 1: v1.admin.user.CreateResponse
-	(*GetRequest)(nil),     // 2: v1.admin.user.GetRequest
-	(*GetResponse)(nil),    // 3: v1.admin.user.GetResponse
-	(*UpdateRequest)(nil),  // 4: v1.admin.user.UpdateRequest
-	(*UpdateResponse)(nil), // 5: v1.admin.user.UpdateResponse
-	(*DeleteRequest)(nil),  // 6: v1.admin.user.DeleteRequest
-	(*DeleteResponse)(nil), // 7: v1.admin.user.DeleteResponse
-	(*ListRequest)(nil),    // 8: v1.admin.user.ListRequest
-	(*ListResponse)(nil),   // 9: v1.admin.user.ListResponse
-	(*admin.User)(nil),     // 10: v1.admin.User
+	(*CreateRequest)(nil),         // 0: v1.admin.user.CreateRequest
+	(*CreateResponse)(nil),        // 1: v1.admin.user.CreateResponse
+	(*GetRequest)(nil),            // 2: v1.admin.user.GetRequest
+	(*GetResponse)(nil),           // 3: v1.admin.user.GetResponse
+	(*UpdateRequest)(nil),         // 4: v1.admin.user.UpdateRequest
+	(*UpdateResponse)(nil),        // 5: v1.admin.user.UpdateResponse
+	(*DeleteRequest)(nil),         // 6: v1.admin.user.DeleteRequest
+	(*DeleteResponse)(nil),        // 7: v1.admin.user.DeleteResponse
+	(*ListRequest)(nil),           // 8: v1.admin.user.ListRequest
+	(*ListResponse)(nil),          // 9: v1.admin.user.ListResponse
+	(*timestamppb.Timestamp)(nil), // 10: google.protobuf.Timestamp
+	(*admin.User)(nil),            // 11: v1.admin.User
 }
 var file_v1_admin_user_user_proto_depIdxs = []int32{
-	10, // 0: v1.admin.user.CreateResponse.user:type_name -> v1.admin.User
-	10, // 1: v1.admin.user.GetResponse.user:type_name -> v1.admin.User
-	10, // 2: v1.admin.user.UpdateResponse.user:type_name -> v1.admin.User
-	10, // 3: v1.admin.user.ListResponse.users:type_name -> v1.admin.User
+	10, // 0: v1.admin.user.CreateRequest.expires:type_name -> google.protobuf.Timestamp
+	11, // 1: v1.admin.user.GetResponse.user:type_name -> v1.admin.User
+	11, // 2: v1.admin.user.UpdateResponse.user:type_name -> v1.admin.User
+	11, // 3: v1.admin.user.ListResponse.users:type_name -> v1.admin.User
 	0,  // 4: v1.admin.user.UserService.Create:input_type -> v1.admin.user.CreateRequest
 	2,  // 5: v1.admin.user.UserService.Get:input_type -> v1.admin.user.GetRequest
 	4,  // 6: v1.admin.user.UserService.Update:input_type -> v1.admin.user.UpdateRequest

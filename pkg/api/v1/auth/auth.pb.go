@@ -126,26 +126,30 @@ func (x *LoginResponse) GetToken() string {
 	return ""
 }
 
-type LogoutRequest struct {
+type RegisterRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
+	Username      string                 `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`
+	Password      string                 `protobuf:"bytes,4,opt,name=password,proto3" json:"password,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *LogoutRequest) Reset() {
-	*x = LogoutRequest{}
+func (x *RegisterRequest) Reset() {
+	*x = RegisterRequest{}
 	mi := &file_v1_auth_auth_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *LogoutRequest) String() string {
+func (x *RegisterRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*LogoutRequest) ProtoMessage() {}
+func (*RegisterRequest) ProtoMessage() {}
 
-func (x *LogoutRequest) ProtoReflect() protoreflect.Message {
+func (x *RegisterRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_v1_auth_auth_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -157,31 +161,59 @@ func (x *LogoutRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use LogoutRequest.ProtoReflect.Descriptor instead.
-func (*LogoutRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use RegisterRequest.ProtoReflect.Descriptor instead.
+func (*RegisterRequest) Descriptor() ([]byte, []int) {
 	return file_v1_auth_auth_proto_rawDescGZIP(), []int{2}
 }
 
-type LogoutResponse struct {
+func (x *RegisterRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *RegisterRequest) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *RegisterRequest) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *RegisterRequest) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
+}
+
+type RegisterResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *LogoutResponse) Reset() {
-	*x = LogoutResponse{}
+func (x *RegisterResponse) Reset() {
+	*x = RegisterResponse{}
 	mi := &file_v1_auth_auth_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *LogoutResponse) String() string {
+func (x *RegisterResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*LogoutResponse) ProtoMessage() {}
+func (*RegisterResponse) ProtoMessage() {}
 
-func (x *LogoutResponse) ProtoReflect() protoreflect.Message {
+func (x *RegisterResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_v1_auth_auth_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -193,8 +225,8 @@ func (x *LogoutResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use LogoutResponse.ProtoReflect.Descriptor instead.
-func (*LogoutResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use RegisterResponse.ProtoReflect.Descriptor instead.
+func (*RegisterResponse) Descriptor() ([]byte, []int) {
 	return file_v1_auth_auth_proto_rawDescGZIP(), []int{3}
 }
 
@@ -209,12 +241,18 @@ const file_v1_auth_auth_proto_rawDesc = "" +
 	"\bpassword\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bpassword\x12!\n" +
 	"\fauto_refresh\x18\x03 \x01(\bR\vautoRefresh\"%\n" +
 	"\rLoginResponse\x12\x14\n" +
-	"\x05token\x18\x01 \x01(\tR\x05token\"\x0f\n" +
-	"\rLogoutRequest\"\x10\n" +
-	"\x0eLogoutResponse2\x84\x01\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\"\x9d\x01\n" +
+	"\x0fRegisterRequest\x12 \n" +
+	"\x05email\x18\x01 \x01(\tB\n" +
+	"\xbaH\a\xc8\x01\x01r\x02`\x01R\x05email\x12\x1a\n" +
+	"\x04code\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04code\x12%\n" +
+	"\busername\x18\x03 \x01(\tB\t\xbaH\x06r\x04\x10\x03\x18\x14R\busername\x12%\n" +
+	"\bpassword\x18\x04 \x01(\tB\t\xbaH\x06r\x04\x10\n" +
+	"\x18dR\bpassword\"\x12\n" +
+	"\x10RegisterResponse2\x8a\x01\n" +
 	"\vAuthService\x128\n" +
-	"\x05Login\x12\x15.v1.auth.LoginRequest\x1a\x16.v1.auth.LoginResponse\"\x00\x12;\n" +
-	"\x06Logout\x12\x16.v1.auth.LogoutRequest\x1a\x17.v1.auth.LogoutResponse\"\x00B0Z.codeberg.org/megakuul/cloudjam/pkg/api/v1/authb\x06proto3"
+	"\x05Login\x12\x15.v1.auth.LoginRequest\x1a\x16.v1.auth.LoginResponse\"\x00\x12A\n" +
+	"\bRegister\x12\x18.v1.auth.RegisterRequest\x1a\x19.v1.auth.RegisterResponse\"\x00B0Z.codeberg.org/megakuul/cloudjam/pkg/api/v1/authb\x06proto3"
 
 var (
 	file_v1_auth_auth_proto_rawDescOnce sync.Once
@@ -230,16 +268,16 @@ func file_v1_auth_auth_proto_rawDescGZIP() []byte {
 
 var file_v1_auth_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_v1_auth_auth_proto_goTypes = []any{
-	(*LoginRequest)(nil),   // 0: v1.auth.LoginRequest
-	(*LoginResponse)(nil),  // 1: v1.auth.LoginResponse
-	(*LogoutRequest)(nil),  // 2: v1.auth.LogoutRequest
-	(*LogoutResponse)(nil), // 3: v1.auth.LogoutResponse
+	(*LoginRequest)(nil),     // 0: v1.auth.LoginRequest
+	(*LoginResponse)(nil),    // 1: v1.auth.LoginResponse
+	(*RegisterRequest)(nil),  // 2: v1.auth.RegisterRequest
+	(*RegisterResponse)(nil), // 3: v1.auth.RegisterResponse
 }
 var file_v1_auth_auth_proto_depIdxs = []int32{
 	0, // 0: v1.auth.AuthService.Login:input_type -> v1.auth.LoginRequest
-	2, // 1: v1.auth.AuthService.Logout:input_type -> v1.auth.LogoutRequest
+	2, // 1: v1.auth.AuthService.Register:input_type -> v1.auth.RegisterRequest
 	1, // 2: v1.auth.AuthService.Login:output_type -> v1.auth.LoginResponse
-	3, // 3: v1.auth.AuthService.Logout:output_type -> v1.auth.LogoutResponse
+	3, // 3: v1.auth.AuthService.Register:output_type -> v1.auth.RegisterResponse
 	2, // [2:4] is the sub-list for method output_type
 	0, // [0:2] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name

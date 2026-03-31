@@ -5,6 +5,8 @@
 import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import { file_buf_validate_validate } from "../../../buf/validate/validate_pb";
+import type { Timestamp } from "@bufbuild/protobuf/wkt";
+import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import type { User } from "../user_pb";
 import { file_v1_admin_user } from "../user_pb";
 import type { Message } from "@bufbuild/protobuf";
@@ -13,26 +15,21 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/admin/user/user.proto.
  */
 export const file_v1_admin_user_user: GenFile = /*@__PURE__*/
-  fileDesc("Chh2MS9hZG1pbi91c2VyL3VzZXIucHJvdG8SDXYxLmFkbWluLnVzZXIiYQoNQ3JlYXRlUmVxdWVzdBIbCgh1c2VybmFtZRgBIAEoCUIJukgGcgQQAxgUEhYKBWVtYWlsGAIgASgJQge6SARyAmABEhsKCHBhc3N3b3JkGAMgASgJQgm6SAZyBBAIGGQiLgoOQ3JlYXRlUmVzcG9uc2USHAoEdXNlchgBIAEoCzIOLnYxLmFkbWluLlVzZXIiIgoKR2V0UmVxdWVzdBIUCgJpZBgBIAEoCUIIukgFcgOwAQEiKwoLR2V0UmVzcG9uc2USHAoEdXNlchgBIAEoCzIOLnYxLmFkbWluLlVzZXIiewoNVXBkYXRlUmVxdWVzdBIUCgJpZBgBIAEoCUIIukgFcgOwAQESIAoIdXNlcm5hbWUYAiABKAlCCbpIBnIEEAMYFEgAiAEBEhsKBWVtYWlsGAMgASgJQge6SARyAmABSAGIAQFCCwoJX3VzZXJuYW1lQggKBl9lbWFpbCIuCg5VcGRhdGVSZXNwb25zZRIcCgR1c2VyGAEgASgLMg4udjEuYWRtaW4uVXNlciIlCg1EZWxldGVSZXF1ZXN0EhQKAmlkGAEgASgJQgi6SAVyA7ABASIQCg5EZWxldGVSZXNwb25zZSI/CgtMaXN0UmVxdWVzdBIcCglwYWdlX3NpemUYASABKAVCCbpIBhoEGGQgABISCgpwYWdlX3Rva2VuGAIgASgJIkYKDExpc3RSZXNwb25zZRIdCgV1c2VycxgBIAMoCzIOLnYxLmFkbWluLlVzZXISFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJMuECCgtVc2VyU2VydmljZRJFCgZDcmVhdGUSHC52MS5hZG1pbi51c2VyLkNyZWF0ZVJlcXVlc3QaHS52MS5hZG1pbi51c2VyLkNyZWF0ZVJlc3BvbnNlEjwKA0dldBIZLnYxLmFkbWluLnVzZXIuR2V0UmVxdWVzdBoaLnYxLmFkbWluLnVzZXIuR2V0UmVzcG9uc2USRQoGVXBkYXRlEhwudjEuYWRtaW4udXNlci5VcGRhdGVSZXF1ZXN0Gh0udjEuYWRtaW4udXNlci5VcGRhdGVSZXNwb25zZRJFCgZEZWxldGUSHC52MS5hZG1pbi51c2VyLkRlbGV0ZVJlcXVlc3QaHS52MS5hZG1pbi51c2VyLkRlbGV0ZVJlc3BvbnNlEj8KBExpc3QSGi52MS5hZG1pbi51c2VyLkxpc3RSZXF1ZXN0GhsudjEuYWRtaW4udXNlci5MaXN0UmVzcG9uc2VCNlo0Y29kZWJlcmcub3JnL21lZ2FrdXVsL2Nsb3VkamFtL3BrZy9hcGkvdjEvYWRtaW4vdXNlcmIGcHJvdG8z", [file_buf_validate_validate, file_v1_admin_user]);
+  fileDesc("Chh2MS9hZG1pbi91c2VyL3VzZXIucHJvdG8SDXYxLmFkbWluLnVzZXIiXgoNQ3JlYXRlUmVxdWVzdBIWCgVlbWFpbBgBIAEoCUIHukgEcgJgARI1CgdleHBpcmVzGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIIukgFsgECQAEiHgoOQ3JlYXRlUmVzcG9uc2USDAoEY29kZRgBIAEoCSIiCgpHZXRSZXF1ZXN0EhQKAmlkGAEgASgJQgi6SAVyA7ABASIrCgtHZXRSZXNwb25zZRIcCgR1c2VyGAEgASgLMg4udjEuYWRtaW4uVXNlciKhAQoNVXBkYXRlUmVxdWVzdBIUCgJpZBgBIAEoCUIIukgFcgOwAQESIAoIdXNlcm5hbWUYAiABKAlCCbpIBnIEEAMYFEgAiAEBEhsKBWVtYWlsGAMgASgJQge6SARyAmABSAGIAQESGwoEcm9sZRgEIAEoCUIIukgFcgOwAQFIAogBAUILCglfdXNlcm5hbWVCCAoGX2VtYWlsQgcKBV9yb2xlIi4KDlVwZGF0ZVJlc3BvbnNlEhwKBHVzZXIYASABKAsyDi52MS5hZG1pbi5Vc2VyIiUKDURlbGV0ZVJlcXVlc3QSFAoCaWQYASABKAlCCLpIBXIDsAEBIhAKDkRlbGV0ZVJlc3BvbnNlIj8KC0xpc3RSZXF1ZXN0EhwKCXBhZ2Vfc2l6ZRgBIAEoBUIJukgGGgQYZCAAEhIKCnBhZ2VfdG9rZW4YAiABKAkiRgoMTGlzdFJlc3BvbnNlEh0KBXVzZXJzGAEgAygLMg4udjEuYWRtaW4uVXNlchIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAky4QIKC1VzZXJTZXJ2aWNlEkUKBkNyZWF0ZRIcLnYxLmFkbWluLnVzZXIuQ3JlYXRlUmVxdWVzdBodLnYxLmFkbWluLnVzZXIuQ3JlYXRlUmVzcG9uc2USPAoDR2V0EhkudjEuYWRtaW4udXNlci5HZXRSZXF1ZXN0GhoudjEuYWRtaW4udXNlci5HZXRSZXNwb25zZRJFCgZVcGRhdGUSHC52MS5hZG1pbi51c2VyLlVwZGF0ZVJlcXVlc3QaHS52MS5hZG1pbi51c2VyLlVwZGF0ZVJlc3BvbnNlEkUKBkRlbGV0ZRIcLnYxLmFkbWluLnVzZXIuRGVsZXRlUmVxdWVzdBodLnYxLmFkbWluLnVzZXIuRGVsZXRlUmVzcG9uc2USPwoETGlzdBIaLnYxLmFkbWluLnVzZXIuTGlzdFJlcXVlc3QaGy52MS5hZG1pbi51c2VyLkxpc3RSZXNwb25zZUI2WjRjb2RlYmVyZy5vcmcvbWVnYWt1dWwvY2xvdWRqYW0vcGtnL2FwaS92MS9hZG1pbi91c2VyYgZwcm90bzM", [file_buf_validate_validate, file_google_protobuf_timestamp, file_v1_admin_user]);
 
 /**
  * @generated from message v1.admin.user.CreateRequest
  */
 export type CreateRequest = Message<"v1.admin.user.CreateRequest"> & {
   /**
-   * @generated from field: string username = 1;
-   */
-  username: string;
-
-  /**
-   * @generated from field: string email = 2;
+   * @generated from field: string email = 1;
    */
   email: string;
 
   /**
-   * @generated from field: string password = 3;
+   * @generated from field: google.protobuf.Timestamp expires = 2;
    */
-  password: string;
+  expires?: Timestamp;
 };
 
 /**
@@ -47,9 +44,9 @@ export const CreateRequestSchema: GenMessage<CreateRequest> = /*@__PURE__*/
  */
 export type CreateResponse = Message<"v1.admin.user.CreateResponse"> & {
   /**
-   * @generated from field: v1.admin.User user = 1;
+   * @generated from field: string code = 1;
    */
-  user?: User;
+  code: string;
 };
 
 /**
@@ -111,6 +108,11 @@ export type UpdateRequest = Message<"v1.admin.user.UpdateRequest"> & {
    * @generated from field: optional string email = 3;
    */
   email?: string;
+
+  /**
+   * @generated from field: optional string role = 4;
+   */
+  role?: string;
 };
 
 /**

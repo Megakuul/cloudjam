@@ -19,11 +19,25 @@ message LoginResponse {
   string token = 1;
 }
 
-message LogoutRequest {}
+message RegisterRequest {
+  string email = 1 [
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.email = true
+  ];
+  string code = 2 [(buf.validate.field).required = true];
+  string username = 3 [(buf.validate.field).string = {
+    min_len: 3
+    max_len: 20
+  }];
+  string password = 4 [(buf.validate.field).string = {
+    min_len: 10
+    max_len: 100
+  }];
+}
 
-message LogoutResponse {}
+message RegisterResponse {}
 
 service AuthService {
   rpc Login(LoginRequest) returns (LoginResponse) {}
-  rpc Logout(LogoutRequest) returns (LogoutResponse) {}
+  rpc Register(RegisterRequest) returns (RegisterResponse) {}
 }

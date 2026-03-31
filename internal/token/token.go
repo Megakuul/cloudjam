@@ -14,14 +14,16 @@ import (
 
 type Issuer struct {
 	name           string
+	lifetime       time.Duration
 	method         jwt.SigningMethod
 	public         any
 	privateFactory func(context.Context) any
 }
 
-func New(name string, method jwt.SigningMethod, public any, privateFactory func(context.Context) any) *Issuer {
+func New(name string, lifetime time.Duration, method jwt.SigningMethod, public any, privateFactory func(context.Context) any) *Issuer {
 	return &Issuer{
 		name:           name,
+		lifetime:       lifetime,
 		method:         method,
 		public:         public,
 		privateFactory: privateFactory,
@@ -34,7 +36,7 @@ type TokenClaims struct {
 	Refresh bool   `json:"refresh,omitempty"`
 }
 
-func (i *Issuer) Issue(ctx context.Context, subject, email string, refresh bool, expiresAt time.Time) (string, error) {
+func (i *Issuer) Issue(ctx context.Context, subject, email string) (string, error) {
 	token := jwt.NewWithClaims(i.method, &TokenClaims{
 		RegisteredClaims: jwt.RegisteredClaims{
 			ID:        uuid.New().String(),
@@ -42,11 +44,11 @@ func (i *Issuer) Issue(ctx context.Context, subject, email string, refresh bool,
 			Issuer:    i.name,
 			IssuedAt:  jwt.NewNumericDate(time.Now()),
 			NotBefore: jwt.NewNumericDate(time.Now()),
-			ExpiresAt: jwt.NewNumericDate(expiresAt),
+			ExpiresAt: jwt.NewNumericDate(time.Now().Add(i.lifetime)),
 			Subject:   subject,
 		},
 		Email:   email,
-		Refresh: refresh,
+		Refresh: false,
 	})
 	signedToken, err := token.SignedString(i.privateFactory(ctx))
 	if err != nil {
