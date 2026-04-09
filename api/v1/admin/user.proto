@@ -21,4 +21,6 @@ message User {
   double score = 6;
   int64 streak = 7;
   int64 max_streak = 8;
+  bool privileged = 9;
+  string role = 10 [(buf.validate.field).string.uuid = true];
 }

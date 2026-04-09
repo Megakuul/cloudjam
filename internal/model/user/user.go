@@ -20,5 +20,6 @@ type Data struct {
 	Score       float64              `docstore:"score"`
 	Streak      int                  `docstore:"streak"`
 	MaxStreak   int                  `docstore:"max_streak"`
+	Privileged  bool                 `docstore:"privileged"`
 	Role        string               `docstore:"role"`
 }

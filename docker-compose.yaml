@@ -1,23 +1,22 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/compose-spec/compose-go/master/schema/compose-spec.json
 services:
   postgres:
-    image: ghcr.io/ferretdb/postgres-documentdb:17
+    image: ghcr.io/ferretdb/postgres-documentdb:17-0.107.0-ferretdb-2.7.0
     restart: always
     environment:
-      POSTGRES_DB: postgres
-      POSTGRES_USER: ferret
-      POSTGRES_PASSWORD: ferret
+      - POSTGRES_USER=username
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=postgres
     volumes:
-      - ./.database:/var/lib/postgresql:U,Z
+      - ./.database:/var/lib/postgresql/data
 
   ferretdb:
-    image: ghcr.io/ferretdb/ferretdb:2
+    image: ghcr.io/ferretdb/ferretdb:2.7.0
     restart: always
+    ports:
+      - 27017:27017
     environment:
-      FERRETDB_POSTGRESQL_URL: postgres://ferret:ferret@postgres:5432/postgres
-      FERRETDB_LISTEN_ADDR: "-"
-      FERRETDB_LISTEN_UNIX: "/run/ferret/ferret.sock"
-    volumes:
-      - ./.sockets:/run/ferret:U,Z
+      - FERRETDB_POSTGRESQL_URL=postgres://username:password@postgres:5432/postgres
 
 networks:
   default:

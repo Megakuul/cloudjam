@@ -13,5 +13,6 @@ type Data struct {
 	SK             model.SortValue      `docstore:"sk"`
 	Name           string               `docstore:"name"`
 	Description    string               `docstore:"description"`
+	Builtin        bool                 `docstore:"builtin"`
 	ProcedureExprs []string             `docstore:"procedure_exprs"`
 }

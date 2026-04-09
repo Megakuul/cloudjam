@@ -10,6 +10,7 @@ import (
 	"net/url"
 
 	authmiddleware "codeberg.org/megakuul/cloudjam/internal/auth"
+	"codeberg.org/megakuul/cloudjam/internal/bootstrap"
 	"codeberg.org/megakuul/cloudjam/internal/rbac"
 	"codeberg.org/megakuul/cloudjam/internal/server/v1/admin/user"
 	"codeberg.org/megakuul/cloudjam/internal/server/v1/auth"
@@ -51,6 +52,14 @@ func Start(ctx context.Context, opts *Options) error {
 		return err
 	}
 	defer coll.Close()
+
+	code, err := bootstrap.CreateAdministrator(ctx, opts.AdminEmail, coll)
+	if err != nil {
+		return fmt.Errorf("failed to initialize administrator: %v", err)
+	} else if code != "" {
+		slog.Info(fmt.Sprintf("admin user registration code: '%s'", code))
+	}
+
 	authorizer := rbac.New(coll, opts.PolicyCacheTimeout)
 	mux.Handle(authconnect.NewAuthServiceHandler(auth.New(slog.With("system", "svc.auth"), coll, issuer),
 		connect.WithInterceptors(validate.NewInterceptor()),
