@@ -1,23 +1,19 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/compose-spec/compose-go/master/schema/compose-spec.json
 services:
   postgres:
-    image: ghcr.io/ferretdb/postgres-documentdb:17-0.107.0-ferretdb-2.7.0
+    image: ghcr.io/documentdb/documentdb/documentdb-local:latest
     restart: always
     environment:
-      - POSTGRES_USER=username
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=postgres
+      - USERNAME=username
+      - PASSWORD=password
+      - PORT=10260
+      - SKIP_INIT_DATA=true
+      - DATA_PATH=/usr/documentdb/data
     volumes:
-      - ./.database:/var/lib/postgresql/data
-
-  ferretdb:
-    image: ghcr.io/ferretdb/ferretdb:2.7.0
-    restart: always
+      - ./.database:/usr/documentdb/data:U
     ports:
-      - 27017:27017
-    environment:
-      - FERRETDB_POSTGRESQL_URL=postgres://username:password@postgres:5432/postgres
+      - 10260:10260
 
 networks:
   default:
-    name: ferretdb
+    name: cloudjam
