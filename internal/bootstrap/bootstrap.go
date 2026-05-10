@@ -3,6 +3,7 @@ package bootstrap
 import (
 	"context"
 	"crypto/rand"
+	"errors"
 	"fmt"
 	"time"
 
@@ -11,6 +12,7 @@ import (
 	"codeberg.org/megakuul/cloudjam/internal/model/user"
 	"github.com/alexedwards/argon2id"
 	"gocloud.dev/docstore"
+	"gocloud.dev/gcerrors"
 )
 
 // CreateAdministrator creates an administrator account 'admin' with credentials and admin role if not existing already.
@@ -18,12 +20,12 @@ import (
 func CreateAdministrator(ctx context.Context, email string, coll *docstore.Collection) (string, error) {
 	// perform a "peek" to the credentials for graceful handling of the happy path.
 	// problem is that the mongodb driver does not always yield understandable "AlreadyExist" errors on atomic transactions.
-	if err := coll.Get(ctx, &creds.Data{
-		PK: creds.Key.New(email),
-		SK: creds.SortData.New(""),
-	}); err == nil {
-		return "", nil
-	}
+	// if err := coll.Get(ctx, &creds.Data{
+	// 	PK: creds.Key.New(email),
+	// 	SK: creds.SortData.New(""),
+	// }); err == nil {
+	// 	return "", nil
+	// }
 
 	admin := &user.Data{
 		PK:          user.Key.New("0"),
@@ -57,8 +59,11 @@ func CreateAdministrator(ctx context.Context, email string, coll *docstore.Colle
 		ProcedureExprs: []string{"**/*"},
 	}
 
-	return password, coll.Actions().AtomicWrites().
-		Create(admin).
-		Create(adminCreds).
-		Create(adminRole).Do(ctx)
+	if err = coll.Actions().Create(admin).Create(adminCreds).Create(adminRole).Do(ctx); err != nil {
+		if errors.Is(err, gcerrors.ErrAlreadyExists) {
+			return "", nil
+		}
+		return "", err
+	}
+	return password, nil
 }

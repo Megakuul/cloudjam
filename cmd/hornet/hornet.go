@@ -54,8 +54,9 @@ func main() {
 				})))
 			} else {
 				slog.SetDefault(slog.New(tint.NewHandler(os.Stdout, &tint.Options{
-					AddSource: true,
-					Level:     level,
+					AddSource:  true,
+					Level:      level,
+					TimeFormat: time.Kitchen,
 				})))
 			}
 			return nil
@@ -68,7 +69,7 @@ func main() {
 	cmd.Flags().BoolP("verbose", "", false, "enable verbose logs")
 	cmd.Flags().StringP("addr", "", "0.0.0.0:9000", "location of the hornet server entrypoint")
 	cmd.Flags().StringP("admin-email", "", "admin@local", "initial administrator account email")
-	cmd.Flags().StringP("database-source", "", "mongodb://username:password@127.0.0.1:10260/?directConnection=true&tls=true&tlsInsecure=true", "mongo source connection string")
+	cmd.Flags().StringP("database-source", "", "mongodb://username:password@127.0.0.1:10260/?tls=true&tlsInsecure=true", "mongo source connection string")
 	cmd.Flags().StringP("database-name", "", "cloudjam", "name of the mongo database")
 	cmd.Flags().StringP("database-collection", "", "table", "name of the mongo collection (single table dynamodb type shiii)")
 	cmd.Flags().StringP("token-issuer", "", "cloudjam", "issuer used inside issued jwt tokens (iss)")
