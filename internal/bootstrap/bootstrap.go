@@ -18,15 +18,6 @@ import (
 // CreateAdministrator creates an administrator account 'admin' with credentials and admin role if not existing already.
 // Returns the temporary authentication code if the user was generated.
 func CreateAdministrator(ctx context.Context, email string, coll *docstore.Collection) (string, error) {
-	// perform a "peek" to the credentials for graceful handling of the happy path.
-	// problem is that the mongodb driver does not always yield understandable "AlreadyExist" errors on atomic transactions.
-	// if err := coll.Get(ctx, &creds.Data{
-	// 	PK: creds.Key.New(email),
-	// 	SK: creds.SortData.New(""),
-	// }); err == nil {
-	// 	return "", nil
-	// }
-
 	admin := &user.Data{
 		PK:          user.Key.New("0"),
 		SK:          user.SortData.New(""),

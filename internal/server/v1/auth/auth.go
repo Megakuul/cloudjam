@@ -24,6 +24,7 @@ type Server struct {
 
 func New(logger *slog.Logger, coll *docstore.Collection, issuer *token.Issuer) *Server {
 	return &Server{
+		logger: logger,
 		coll:   coll,
 		issuer: issuer,
 	}

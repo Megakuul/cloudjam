@@ -59,19 +59,21 @@ func Start(ctx context.Context, opts *Options) error {
 	if err != nil {
 		return fmt.Errorf("failed to initialize administrator: %v", err)
 	} else if code != "" {
-		slog.Info(fmt.Sprintf("admin user registration code: '%s'", code))
+		slog.Info(fmt.Sprintf("admin user (%s) registration code: '%s'", opts.AdminEmail, code))
 	}
 
+	apiMux := http.NewServeMux()
 	authorizer := rbac.New(coll, opts.PolicyCacheTimeout)
-	mux.Handle(authconnect.NewAuthServiceHandler(auth.New(slog.With("system", "svc.auth"), coll, issuer),
+	apiMux.Handle(authconnect.NewAuthServiceHandler(auth.New(slog.With("system", "svc.auth"), coll, issuer),
 		connect.WithInterceptors(validate.NewInterceptor()),
 	))
-	mux.Handle(userconnect.NewUserServiceHandler(user.New(slog.With("system", "svc.admin.user"), coll),
+	apiMux.Handle(userconnect.NewUserServiceHandler(user.New(slog.With("system", "svc.admin.user"), coll),
 		connect.WithInterceptors(
 			authmiddleware.New(issuer, authorizer),
 			validate.NewInterceptor(),
 		),
 	))
+	mux.Handle("/api/", http.StripPrefix("/api", apiMux))
 
 	server := http.Server{
 		Addr:     opts.Addr,

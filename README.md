@@ -37,12 +37,12 @@ TBD
 # starts documentdb (data is in './.database/data' certs in './.database/cert')
 docker-compose up -d
 
-# launches hornet in dev mode
+# start the local sveltekit vite server
+cd web && pnpm i && pnpm run dev
+
+# in another terminal start hornet in dev mode
 export DATABASE_SOURCE="mongodb://username:password@127.0.0.1:10260/?tls=true&tlsCAFile=.database/cert/cert.crt"
 go run ./cmd/hornet -D 
-
-# in another terminal start vite for ui Development
-cd web && pnpm i && pnpm run dev
 
 # use the default addr for development; hornet proxies the ui to vite so don't worry about that. 
 xdg-open http://127.0.0.1:9000
