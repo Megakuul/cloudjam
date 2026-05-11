@@ -2,18 +2,21 @@ package auth
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"io"
 	"log/slog"
 	"time"
+
+	"connectrpc.com/connect"
+	"github.com/alexedwards/argon2id"
+	"gocloud.dev/docstore"
+	"gocloud.dev/gcerrors"
 
 	"codeberg.org/megakuul/cloudjam/internal/model/creds"
 	"codeberg.org/megakuul/cloudjam/internal/model/user"
 	"codeberg.org/megakuul/cloudjam/internal/token"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/auth"
-	"connectrpc.com/connect"
-	"github.com/alexedwards/argon2id"
-	"gocloud.dev/docstore"
-	"gocloud.dev/gcerrors"
 )
 
 type Server struct {
@@ -32,23 +35,24 @@ func New(logger *slog.Logger, coll *docstore.Collection, issuer *token.Issuer) *
 
 func (s *Server) Register(ctx context.Context, req *connect.Request[auth.RegisterRequest]) (*connect.Response[auth.RegisterResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
-	codeHash, err := argon2id.CreateHash(req.Msg.Code, argon2id.DefaultParams)
-	if err != nil {
-		l.Error(fmt.Sprintf("failed to construct argon2id hash: %v", err))
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to construct argon2id hash"))
-	}
-	authCreds := &creds.Data{
-		PK: creds.Key.New(req.Msg.Email), SK: creds.SortData.New(""),
-		Code:   codeHash,
-		Active: false,
-	}
-	if err = s.coll.Get(ctx, authCreds); err != nil {
-		if gcerrors.Code(err) == gcerrors.NotFound {
-			l.Info("invalid registration attempt detected", "ip", req.Peer().Addr)
+	authCredsIter := s.coll.Query().
+		Where("pk", "=", creds.Key.New(req.Msg.Email)).
+		Where("sk", "=", creds.SortData.New("")).
+		Where("active", "=", false).
+		Get(ctx)
+	defer authCredsIter.Stop()
+	authCreds := &creds.Data{}
+	if err := authCredsIter.Next(ctx, authCreds); err != nil {
+		if errors.Is(err, gcerrors.ErrNotFound) || errors.Is(err, io.EOF) {
+			l.Info("invalid registration attempt detected (invalid user)", "ip", req.Peer().Addr, "email", req.Msg.Email)
 			return nil, connect.NewError(connect.CodeUnauthenticated, fmt.Errorf("incorrect email or invitation code"))
 		}
 		l.Error(fmt.Sprintf("failed to fetch user invitation: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch user invitation"))
+	}
+	if match, err := argon2id.ComparePasswordAndHash(req.Msg.Code, authCreds.Code); err != nil || !match {
+		l.Info("invalid registration attempt detected (incorrect password)", "ip", req.Peer().Addr, "email", req.Msg.Email)
+		return nil, connect.NewError(connect.CodeUnauthenticated, fmt.Errorf("incorrect email or invitation code"))
 	}
 	if authCreds.CodeExpiration.Before(time.Now()) {
 		return nil, connect.NewError(connect.CodeOutOfRange, fmt.Errorf("invitation already expired"))
@@ -64,7 +68,8 @@ func (s *Server) Register(ctx context.Context, req *connect.Request[auth.Registe
 	authCreds.CodeExpiration = time.Time{}
 	authCreds.Password = passwordHash
 
-	err = s.coll.Actions().AtomicWrites().Create(user.Data{
+	// TODO use update to avoid state loss
+	err = s.coll.Actions().AtomicWrites().Update(&user.Data{
 		PK:        user.Key.New(authCreds.UserId),
 		SK:        user.SortData.New(""),
 		Username:  req.Msg.Username,
@@ -83,26 +88,28 @@ func (s *Server) Register(ctx context.Context, req *connect.Request[auth.Registe
 
 func (s *Server) Login(ctx context.Context, req *connect.Request[auth.LoginRequest]) (*connect.Response[auth.LoginResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
-	hash, err := argon2id.CreateHash(req.Msg.Password, argon2id.DefaultParams)
-	if err != nil {
-		l.Error(fmt.Sprintf("failed to construct argon2id hash: %v", err))
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to construct argon2id hash"))
-	}
-	authCreds := &creds.Data{
-		PK: creds.Key.New(req.Msg.Email), SK: creds.SortData.New(""),
-		Password: hash,
-		Active:   true,
-	}
-	if err = s.coll.Get(ctx, authCreds); err != nil {
-		if gcerrors.Code(err) == gcerrors.NotFound {
-			l.Info("invalid login attempt detected", "ip", req.Peer().Addr)
+	authCredsIter := s.coll.Query().
+		Where("pk", "=", creds.Key.New(req.Msg.Email)).
+		Where("sk", "=", creds.SortData.New("")).
+		Where("active", "=", true).
+		Get(ctx)
+	defer authCredsIter.Stop()
+	authCreds := &creds.Data{}
+	if err := authCredsIter.Next(ctx, authCreds); err != nil {
+		if errors.Is(err, gcerrors.ErrNotFound) || errors.Is(err, io.EOF) {
+			l.Info("invalid login attempt detected (invalid user)", "ip", req.Peer().Addr, "email", req.Msg.Email)
 			return nil, connect.NewError(connect.CodeUnauthenticated, fmt.Errorf("incorrect email or password"))
 		}
 		l.Error(fmt.Sprintf("failed to fetch user credentials: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch user credentials"))
 	}
-	linkedUser := &user.Data{PK: user.Key.New(authCreds.UserId), SK: user.SortData.New("")}
-	if err = s.coll.Get(ctx, linkedUser); err != nil {
+	if match, err := argon2id.ComparePasswordAndHash(req.Msg.Password, authCreds.Password); err != nil || !match {
+		l.Info("invalid login attempt detected (incorrect password)", "ip", req.Peer().Addr, "email", req.Msg.Email)
+		return nil, connect.NewError(connect.CodeUnauthenticated, fmt.Errorf("incorrect email or password"))
+	}
+	// TODO: use iter this is not safe
+	linkedUser := &user.Data{PK: user.Key.New(authCreds.UserId)}
+	if err := s.coll.Get(ctx, linkedUser); err != nil {
 		l.Error(fmt.Sprintf("failed to retrieve user linked by credentials: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch user"))
 	}

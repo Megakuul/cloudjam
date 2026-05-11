@@ -33,6 +33,16 @@ message RegisterRequest {
     min_len: 10
     max_len: 100
   }];
+  string confirm_password = 5 [(buf.validate.field).string = {
+    min_len: 10
+    max_len: 100
+  }];
+
+  option (buf.validate.message).cel = {
+    id: "password_match"
+    message: "passwords must match"
+    expression: "this.password == this.confirm_password"
+  };
 }
 
 message RegisterResponse {}

@@ -11,7 +11,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/auth/auth.proto.
  */
 export const file_v1_auth_auth: GenFile = /*@__PURE__*/
-  fileDesc("ChJ2MS9hdXRoL2F1dGgucHJvdG8SB3YxLmF1dGgiWQoMTG9naW5SZXF1ZXN0EhkKBWVtYWlsGAEgASgJQgq6SAfIAQFyAmABEhgKCHBhc3N3b3JkGAIgASgJQga6SAPIAQESFAoMYXV0b19yZWZyZXNoGAMgASgIIh4KDUxvZ2luUmVzcG9uc2USDQoFdG9rZW4YASABKAkifAoPUmVnaXN0ZXJSZXF1ZXN0EhkKBWVtYWlsGAEgASgJQgq6SAfIAQFyAmABEhQKBGNvZGUYAiABKAlCBrpIA8gBARIbCgh1c2VybmFtZRgDIAEoCUIJukgGcgQQAxgUEhsKCHBhc3N3b3JkGAQgASgJQgm6SAZyBBAKGGQiEgoQUmVnaXN0ZXJSZXNwb25zZTKKAQoLQXV0aFNlcnZpY2USOAoFTG9naW4SFS52MS5hdXRoLkxvZ2luUmVxdWVzdBoWLnYxLmF1dGguTG9naW5SZXNwb25zZSIAEkEKCFJlZ2lzdGVyEhgudjEuYXV0aC5SZWdpc3RlclJlcXVlc3QaGS52MS5hdXRoLlJlZ2lzdGVyUmVzcG9uc2UiAEIwWi5jb2RlYmVyZy5vcmcvbWVnYWt1dWwvY2xvdWRqYW0vcGtnL2FwaS92MS9hdXRoYgZwcm90bzM", [file_buf_validate_validate]);
+  fileDesc("ChJ2MS9hdXRoL2F1dGgucHJvdG8SB3YxLmF1dGgiWQoMTG9naW5SZXF1ZXN0EhkKBWVtYWlsGAEgASgJQgq6SAfIAQFyAmABEhgKCHBhc3N3b3JkGAIgASgJQga6SAPIAQESFAoMYXV0b19yZWZyZXNoGAMgASgIIh4KDUxvZ2luUmVzcG9uc2USDQoFdG9rZW4YASABKAki9gEKD1JlZ2lzdGVyUmVxdWVzdBIZCgVlbWFpbBgBIAEoCUIKukgHyAEBcgJgARIUCgRjb2RlGAIgASgJQga6SAPIAQESGwoIdXNlcm5hbWUYAyABKAlCCbpIBnIEEAMYFBIbCghwYXNzd29yZBgEIAEoCUIJukgGcgQQChhkEiMKEGNvbmZpcm1fcGFzc3dvcmQYBSABKAlCCbpIBnIEEAoYZDpTukhQGk4KDnBhc3N3b3JkX21hdGNoEhRwYXNzd29yZHMgbXVzdCBtYXRjaBomdGhpcy5wYXNzd29yZCA9PSB0aGlzLmNvbmZpcm1fcGFzc3dvcmQiEgoQUmVnaXN0ZXJSZXNwb25zZTKKAQoLQXV0aFNlcnZpY2USOAoFTG9naW4SFS52MS5hdXRoLkxvZ2luUmVxdWVzdBoWLnYxLmF1dGguTG9naW5SZXNwb25zZSIAEkEKCFJlZ2lzdGVyEhgudjEuYXV0aC5SZWdpc3RlclJlcXVlc3QaGS52MS5hdXRoLlJlZ2lzdGVyUmVzcG9uc2UiAEIwWi5jb2RlYmVyZy5vcmcvbWVnYWt1dWwvY2xvdWRqYW0vcGtnL2FwaS92MS9hdXRoYgZwcm90bzM", [file_buf_validate_validate]);
 
 /**
  * @generated from message v1.auth.LoginRequest
@@ -80,6 +80,11 @@ export type RegisterRequest = Message<"v1.auth.RegisterRequest"> & {
    * @generated from field: string password = 4;
    */
   password: string;
+
+  /**
+   * @generated from field: string confirm_password = 5;
+   */
+  confirmPassword: string;
 };
 
 /**

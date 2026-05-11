@@ -127,13 +127,14 @@ func (x *LoginResponse) GetToken() string {
 }
 
 type RegisterRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
-	Code          string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
-	Username      string                 `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`
-	Password      string                 `protobuf:"bytes,4,opt,name=password,proto3" json:"password,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Email           string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	Code            string                 `protobuf:"bytes,2,opt,name=code,proto3" json:"code,omitempty"`
+	Username        string                 `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`
+	Password        string                 `protobuf:"bytes,4,opt,name=password,proto3" json:"password,omitempty"`
+	ConfirmPassword string                 `protobuf:"bytes,5,opt,name=confirm_password,json=confirmPassword,proto3" json:"confirm_password,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *RegisterRequest) Reset() {
@@ -194,6 +195,13 @@ func (x *RegisterRequest) GetPassword() string {
 	return ""
 }
 
+func (x *RegisterRequest) GetConfirmPassword() string {
+	if x != nil {
+		return x.ConfirmPassword
+	}
+	return ""
+}
+
 type RegisterResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -241,14 +249,17 @@ const file_v1_auth_auth_proto_rawDesc = "" +
 	"\bpassword\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\bpassword\x12!\n" +
 	"\fauto_refresh\x18\x03 \x01(\bR\vautoRefresh\"%\n" +
 	"\rLoginResponse\x12\x14\n" +
-	"\x05token\x18\x01 \x01(\tR\x05token\"\x9d\x01\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\"\xa8\x02\n" +
 	"\x0fRegisterRequest\x12 \n" +
 	"\x05email\x18\x01 \x01(\tB\n" +
 	"\xbaH\a\xc8\x01\x01r\x02`\x01R\x05email\x12\x1a\n" +
 	"\x04code\x18\x02 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x04code\x12%\n" +
 	"\busername\x18\x03 \x01(\tB\t\xbaH\x06r\x04\x10\x03\x18\x14R\busername\x12%\n" +
 	"\bpassword\x18\x04 \x01(\tB\t\xbaH\x06r\x04\x10\n" +
-	"\x18dR\bpassword\"\x12\n" +
+	"\x18dR\bpassword\x124\n" +
+	"\x10confirm_password\x18\x05 \x01(\tB\t\xbaH\x06r\x04\x10\n" +
+	"\x18dR\x0fconfirmPassword:S\xbaHP\x1aN\n" +
+	"\x0epassword_match\x12\x14passwords must match\x1a&this.password == this.confirm_password\"\x12\n" +
 	"\x10RegisterResponse2\x8a\x01\n" +
 	"\vAuthService\x128\n" +
 	"\x05Login\x12\x15.v1.auth.LoginRequest\x1a\x16.v1.auth.LoginResponse\"\x00\x12A\n" +

@@ -32,6 +32,8 @@ type User struct {
 	Score         float64                `protobuf:"fixed64,6,opt,name=score,proto3" json:"score,omitempty"`
 	Streak        int64                  `protobuf:"varint,7,opt,name=streak,proto3" json:"streak,omitempty"`
 	MaxStreak     int64                  `protobuf:"varint,8,opt,name=max_streak,json=maxStreak,proto3" json:"max_streak,omitempty"`
+	Privileged    bool                   `protobuf:"varint,9,opt,name=privileged,proto3" json:"privileged,omitempty"`
+	Role          string                 `protobuf:"bytes,10,opt,name=role,proto3" json:"role,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -122,11 +124,25 @@ func (x *User) GetMaxStreak() int64 {
 	return 0
 }
 
+func (x *User) GetPrivileged() bool {
+	if x != nil {
+		return x.Privileged
+	}
+	return false
+}
+
+func (x *User) GetRole() string {
+	if x != nil {
+		return x.Role
+	}
+	return ""
+}
+
 var File_v1_admin_user_proto protoreflect.FileDescriptor
 
 const file_v1_admin_user_proto_rawDesc = "" +
 	"\n" +
-	"\x13v1/admin/user.proto\x12\bv1.admin\x1a\x1bbuf/validate/validate.proto\"\xff\x01\n" +
+	"\x13v1/admin/user.proto\x12\bv1.admin\x1a\x1bbuf/validate/validate.proto\"\xbd\x02\n" +
 	"\x04User\x12\x18\n" +
 	"\x02id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\x12%\n" +
 	"\busername\x18\x02 \x01(\tB\t\xbaH\x06r\x04\x10\x04\x18\x14R\busername\x12+\n" +
@@ -137,7 +153,12 @@ const file_v1_admin_user_proto_rawDesc = "" +
 	"\x05score\x18\x06 \x01(\x01R\x05score\x12\x16\n" +
 	"\x06streak\x18\a \x01(\x03R\x06streak\x12\x1d\n" +
 	"\n" +
-	"max_streak\x18\b \x01(\x03R\tmaxStreakB1Z/codeberg.org/megakuul/cloudjam/pkg/api/v1/adminb\x06proto3"
+	"max_streak\x18\b \x01(\x03R\tmaxStreak\x12\x1e\n" +
+	"\n" +
+	"privileged\x18\t \x01(\bR\n" +
+	"privileged\x12\x1c\n" +
+	"\x04role\x18\n" +
+	" \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x04roleB1Z/codeberg.org/megakuul/cloudjam/pkg/api/v1/adminb\x06proto3"
 
 var (
 	file_v1_admin_user_proto_rawDescOnce sync.Once
