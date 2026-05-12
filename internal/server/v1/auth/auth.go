@@ -68,13 +68,21 @@ func (s *Server) Register(ctx context.Context, req *connect.Request[auth.Registe
 	authCreds.CodeExpiration = time.Time{}
 	authCreds.Password = passwordHash
 
-	// TODO use update to avoid state loss
-	err = s.coll.Actions().AtomicWrites().Update(&user.Data{
-		PK:        user.Key.New(authCreds.UserId),
-		SK:        user.SortData.New(""),
-		Username:  req.Msg.Username,
-		Email:     req.Msg.Email,
-		CreatedAt: time.Now(),
+	linkedUserIter := s.coll.Query().
+		Where("pk", "=", user.Key.New(authCreds.UserId)).
+		Where("sk", "=", user.SortData.New("")).
+		Get(ctx)
+	defer linkedUserIter.Stop()
+	linkedUser := &user.Data{}
+	if err := linkedUserIter.Next(ctx, linkedUser); err != nil {
+		l.Error(fmt.Sprintf("failed to retrieve user linked by credentials: %v", err))
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch user"))
+	}
+
+	err = s.coll.Actions().AtomicWrites().Update(linkedUser, docstore.Mods{
+		"username":   req.Msg.Username,
+		"email":      req.Msg.Email,
+		"created_at": time.Now(),
 	}).Put(authCreds).Do(ctx)
 	if err != nil {
 		l.Error(fmt.Sprintf("failed to create user and disable invitation: %v", err))
@@ -107,9 +115,13 @@ func (s *Server) Login(ctx context.Context, req *connect.Request[auth.LoginReque
 		l.Info("invalid login attempt detected (incorrect password)", "ip", req.Peer().Addr, "email", req.Msg.Email)
 		return nil, connect.NewError(connect.CodeUnauthenticated, fmt.Errorf("incorrect email or password"))
 	}
-	// TODO: use iter this is not safe
-	linkedUser := &user.Data{PK: user.Key.New(authCreds.UserId)}
-	if err := s.coll.Get(ctx, linkedUser); err != nil {
+	linkedUserIter := s.coll.Query().
+		Where("pk", "=", user.Key.New(authCreds.UserId)).
+		Where("sk", "=", user.SortData.New("")).
+		Get(ctx)
+	defer linkedUserIter.Stop()
+	linkedUser := &user.Data{}
+	if err := linkedUserIter.Next(ctx, linkedUser); err != nil {
 		l.Error(fmt.Sprintf("failed to retrieve user linked by credentials: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch user"))
 	}

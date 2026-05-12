@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"codeberg.org/megakuul/cloudjam/internal/model"
+	"codeberg.org/megakuul/cloudjam/internal/model/role"
 )
 
 const Key model.Partition = "USER#"
@@ -22,4 +23,8 @@ type Data struct {
 	MaxStreak   int                  `docstore:"max_streak"`
 	Privileged  bool                 `docstore:"privileged"`
 	Role        string               `docstore:"role"`
+
+	// defines WHO has access to this datablock
+	Scopes           []role.Scope `docstore:"scopes"`
+	DocstoreRevision any
 }

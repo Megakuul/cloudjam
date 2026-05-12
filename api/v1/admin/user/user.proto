@@ -18,7 +18,10 @@ message CreateResponse {
 }
 
 message GetRequest {
-  string id = 1 [(buf.validate.field).string = {uuid: true}];
+  string id = 1 [
+    (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
+    (buf.validate.field).string = {uuid: true}
+  ];
 }
 
 message GetResponse {

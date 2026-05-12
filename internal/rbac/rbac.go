@@ -35,23 +35,33 @@ func New(coll *docstore.Collection, cacheTimeout time.Duration) *Authorizer {
 // Check verifies that the provided subject has access to the procedure (gRPC procedure name).
 // The function performs in memory caching for the happy path in a defined timeout (thread safe).
 // Returns the cache expiration time of the applied policy; it's advisable to reconnect streams at this time.
-func (v *Authorizer) Check(ctx context.Context, subject, procedure string) (time.Time, error) {
+func (v *Authorizer) Check(ctx context.Context, subject, procedure string) (time.Time, role.Scope, error) {
 	v.cacheLock.RLock()
 	cachedPolicy, ok := v.cache[subject]
 	if ok {
 		if cachedPolicy.check(procedure) {
-			return cachedPolicy.expires, nil
+			return cachedPolicy.expires, "", nil
 		}
 	}
 	v.cacheLock.RUnlock()
 
-	user := &user.Data{PK: user.Key.New(subject), SK: user.SortData.New("")}
-	if err := v.coll.Get(ctx, user); err != nil {
-		return time.Time{}, connect.NewError(connect.CodeNotFound, fmt.Errorf("user not found: %w", err))
+	userIter := v.coll.Query().
+		Where("pk", "=", user.Key.New(subject)).
+		Where("sk", "=", user.SortData.New("")).
+		Get(ctx)
+	defer userIter.Stop()
+	user := &user.Data{}
+	if err := userIter.Next(ctx, user); err != nil {
+		return time.Time{}, "", connect.NewError(connect.CodeNotFound, fmt.Errorf("user not found: %w", err))
 	}
-	role := &role.Data{PK: role.Key.New(user.Role), SK: role.SortData.New("")}
-	if err := v.coll.Get(ctx, role); err != nil {
-		return time.Time{}, connect.NewError(connect.CodeNotFound, fmt.Errorf("role not found: %w", err))
+	roleIter := v.coll.Query().
+		Where("pk", "=", role.Key.New(user.Role)).
+		Where("sk", "=", role.SortData.New("")).
+		Get(ctx)
+	defer roleIter.Stop()
+	role := &role.Data{}
+	if err := roleIter.Next(ctx, role); err != nil {
+		return time.Time{}, "", connect.NewError(connect.CodeNotFound, fmt.Errorf("role not found: %w", err))
 	}
 	policy := policy{
 		expires: time.Now().Add(v.cacheTimeout),
@@ -60,7 +70,7 @@ func (v *Authorizer) Check(ctx context.Context, subject, procedure string) (time
 	for _, rawExpr := range role.ProcedureExprs {
 		expr, err := glob.Compile(rawExpr, '/')
 		if err != nil {
-			return time.Time{}, connect.NewError(connect.CodeInternal, fmt.Errorf("role policy contains invalid matcher: %v", err))
+			return time.Time{}, "", connect.NewError(connect.CodeInternal, fmt.Errorf("role policy contains invalid matcher: %v", err))
 		}
 		policy.exprs = append(policy.exprs, expr)
 	}
@@ -70,7 +80,7 @@ func (v *Authorizer) Check(ctx context.Context, subject, procedure string) (time
 	v.cache[subject] = policy
 
 	if policy.check(procedure) {
-		return policy.expires, nil
+		return policy.expires, role.Scope, nil
 	}
-	return time.Time{}, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("permission denied"))
+	return time.Time{}, "", connect.NewError(connect.CodePermissionDenied, fmt.Errorf("permission denied"))
 }

@@ -42,7 +42,7 @@ cd web && pnpm i && pnpm run dev
 
 # in another terminal start hornet in dev mode
 export DATABASE_SOURCE="mongodb://username:password@127.0.0.1:10260/?tls=true&tlsCAFile=.database/cert/cert.crt"
-go run ./cmd/hornet -D 
+go run ./cmd/hornet -D --token-secret abcd
 
 # use the default addr for development; hornet proxies the ui to vite so don't worry about that. 
 xdg-open http://127.0.0.1:9000

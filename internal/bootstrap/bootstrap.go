@@ -27,6 +27,7 @@ func CreateAdministrator(ctx context.Context, email string, coll *docstore.Colle
 		CreatedAt:   time.Now(),
 		Privileged:  true,
 		Role:        "0",
+		Scopes:      []role.Scope{},
 	}
 	password := rand.Text()
 	hash, err := argon2id.CreateHash(password, argon2id.DefaultParams)
@@ -40,6 +41,7 @@ func CreateAdministrator(ctx context.Context, email string, coll *docstore.Colle
 		UserId:         "0",
 		Code:           hash,
 		CodeExpiration: time.Now().Add(time.Hour * 8760),
+		Scopes:         []role.Scope{},
 	}
 	adminRole := &role.Data{
 		PK:             role.Key.New("0"),
@@ -47,7 +49,9 @@ func CreateAdministrator(ctx context.Context, email string, coll *docstore.Colle
 		Name:           "admin",
 		Description:    "Provides unlimited administrator access",
 		Builtin:        true,
-		ProcedureExprs: []string{"**/*"},
+		ProcedureExprs: []string{"**"},
+		Scope:          role.ScopeAdmin,
+		Scopes:         []role.Scope{role.ScopeAdmin},
 	}
 
 	if err = coll.Actions().Create(admin).Create(adminCreds).Create(adminRole).Do(ctx); err != nil {

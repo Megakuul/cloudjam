@@ -5,6 +5,7 @@ import (
 	"context"
 	"strings"
 
+	"codeberg.org/megakuul/cloudjam/internal/model/role"
 	"codeberg.org/megakuul/cloudjam/internal/rbac"
 	"codeberg.org/megakuul/cloudjam/internal/token"
 	"connectrpc.com/connect"
@@ -14,10 +15,18 @@ type contextKey string
 
 var claimsKey = contextKey("claims")
 
+var scopeKey = contextKey("scope")
+
 // Claims extracts the user claims form the ctx injected by the auth Interceptor.
 // This function will panic if the request had no auth interceptor that injects the claims...
 func Claims(ctx context.Context) *token.TokenClaims {
 	return ctx.Value(claimsKey).(*token.TokenClaims)
+}
+
+// Scope extracts the user data access scope from the ctx injected by the auth Interceptor.
+// This function will panic if the request had no auth interceptor that injects the scope...
+func Scope(ctx context.Context) role.Scope {
+	return ctx.Value(scopeKey).(role.Scope)
 }
 
 type Interceptor struct {
@@ -40,7 +49,7 @@ func (v *Interceptor) authenticate(ctx context.Context, spec connect.Spec, authH
 	if err != nil {
 		return nil, nil, err
 	}
-	deadline, err := v.authorizer.Check(ctx, claims.Subject, spec.Procedure)
+	deadline, scope, err := v.authorizer.Check(ctx, claims.Subject, spec.Procedure)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -48,6 +57,7 @@ func (v *Interceptor) authenticate(ctx context.Context, spec connect.Spec, authH
 		deadline = claims.ExpiresAt.Time
 	}
 	ctx, cancel := context.WithDeadline(ctx, deadline)
+	ctx = context.WithValue(ctx, scopeKey, scope)
 	return context.WithValue(ctx, claimsKey, claims), cancel, nil
 }
 

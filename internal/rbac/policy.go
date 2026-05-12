@@ -16,7 +16,7 @@ type policy struct {
 func (p *policy) check(procedure string) bool {
 	// add 30 second threshold to ensure that the request is not immediately cancelled
 	// instead the check is rejected to refetch from database.
-	if p.expires.After(time.Now().Add(time.Second * 30)) {
+	if p.expires.Before(time.Now().Add(time.Second * 30)) {
 		return false
 	}
 	for _, expr := range p.exprs {
