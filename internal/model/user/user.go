@@ -19,12 +19,12 @@ type Data struct {
 	Email       string               `docstore:"email"`
 	CreatedAt   time.Time            `docstore:"created_at"`
 	Score       float64              `docstore:"score"`
+	MaxScore    float64              `docstore:"max_score"`
 	Streak      int                  `docstore:"streak"`
 	MaxStreak   int                  `docstore:"max_streak"`
 	Privileged  bool                 `docstore:"privileged"`
 	Role        string               `docstore:"role"`
 
-	// defines WHO has access to this datablock
-	Scopes           []role.Scope `docstore:"scopes"`
+	Scope            role.Scope `docstore:"scope"`
 	DocstoreRevision any
 }

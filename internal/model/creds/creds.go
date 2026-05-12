@@ -21,6 +21,5 @@ type Data struct {
 	CodeExpiration   time.Time            `docstore:"code_expiration"`
 	DocstoreRevision any
 
-	// defines WHO has access to this datablock
-	Scopes []role.Scope `docstore:"scopes"`
+	Scope role.Scope `docstore:"scope"`
 }

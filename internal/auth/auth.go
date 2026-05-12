@@ -23,10 +23,14 @@ func Claims(ctx context.Context) *token.TokenClaims {
 	return ctx.Value(claimsKey).(*token.TokenClaims)
 }
 
-// Scope extracts the user data access scope from the ctx injected by the auth Interceptor.
+// Scopes extracts the user data access scopes from the ctx injected by the auth Interceptor.
 // This function will panic if the request had no auth interceptor that injects the scope...
-func Scope(ctx context.Context) role.Scope {
-	return ctx.Value(scopeKey).(role.Scope)
+func Scopes(ctx context.Context) []role.Scope {
+	scopes := ctx.Value(scopeKey).([]role.Scope)
+	if scopes == nil {
+		return []role.Scope{}
+	}
+	return scopes
 }
 
 type Interceptor struct {
@@ -49,7 +53,7 @@ func (v *Interceptor) authenticate(ctx context.Context, spec connect.Spec, authH
 	if err != nil {
 		return nil, nil, err
 	}
-	deadline, scope, err := v.authorizer.Check(ctx, claims.Subject, spec.Procedure)
+	deadline, scopes, err := v.authorizer.Check(ctx, claims.Subject, spec.Procedure)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -57,7 +61,7 @@ func (v *Interceptor) authenticate(ctx context.Context, spec connect.Spec, authH
 		deadline = claims.ExpiresAt.Time
 	}
 	ctx, cancel := context.WithDeadline(ctx, deadline)
-	ctx = context.WithValue(ctx, scopeKey, scope)
+	ctx = context.WithValue(ctx, scopeKey, scopes)
 	return context.WithValue(ctx, claimsKey, claims), cancel, nil
 }
 

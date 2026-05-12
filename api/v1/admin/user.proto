@@ -7,7 +7,7 @@ import "buf/validate/validate.proto";
 option go_package = "codeberg.org/megakuul/cloudjam/pkg/api/v1/admin";
 
 message User {
-  string id = 1 [(buf.validate.field).string.uuid = true];
+  string id = 1;
   string username = 2 [
     (buf.validate.field).string.min_len = 4,
     (buf.validate.field).string.max_len = 20
@@ -19,8 +19,9 @@ message User {
   string email = 4 [(buf.validate.field).string.email = true];
   int64 created_at = 5;
   double score = 6;
-  int64 streak = 7;
-  int64 max_streak = 8;
-  bool privileged = 9;
-  string role = 10 [(buf.validate.field).string.uuid = true];
+  double max_score = 7;
+  int64 streak = 8;
+  int64 max_streak = 9;
+  bool privileged = 10;
+  string role = 11;
 }

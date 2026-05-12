@@ -11,8 +11,7 @@ const SortData model.Sort = "DATA"
 type Scope string
 
 const (
-	ScopeSelf  Scope = "self"  // scopes to data referenced to your id
-	ScopeAdmin Scope = "admin" // scopes to everything
+	ScopeAdmin Scope = "admin"
 )
 
 type Data struct {
@@ -23,10 +22,9 @@ type Data struct {
 	Builtin     bool                 `docstore:"builtin"`
 	// ProcedureExprs defines ACTION access
 	ProcedureExprs []string `docstore:"procedure_exprs"`
-	// Scope defines DATA access
-	Scope Scope `docstore:"scope"`
+	// Scopes define DATA access
+	Scopes []Scope `docstore:"scopes"`
 
-	// defines WHO has access to this datablock
-	Scopes           []Scope `docstore:"scopes"`
+	Scope            Scope `docstore:"scope"`
 	DocstoreRevision any
 }

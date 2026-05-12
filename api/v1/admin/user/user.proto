@@ -29,13 +29,7 @@ message GetResponse {
 }
 
 message UpdateRequest {
-  string id = 1 [(buf.validate.field).string = {uuid: true}];
-  optional string username = 2 [(buf.validate.field).string = {
-    min_len: 3
-    max_len: 20
-  }];
-  optional string email = 3 [(buf.validate.field).string = {email: true}];
-  optional string role = 4 [(buf.validate.field).string.uuid = true];
+  User mod = 1;
 }
 
 message UpdateResponse {
@@ -49,16 +43,15 @@ message DeleteRequest {
 message DeleteResponse {}
 
 message ListRequest {
-  int32 page_size = 1 [(buf.validate.field).int32 = {
+  int32 limit = 1 [(buf.validate.field).int32 = {
     gt: 0
     lte: 100
   }];
-  string page_token = 2;
+  int32 offset = 2;
 }
 
 message ListResponse {
   repeated User users = 1;
-  string next_page_token = 2;
 }
 
 service UserService {

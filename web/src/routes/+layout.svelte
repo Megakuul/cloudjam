@@ -1,13 +1,25 @@
 <script lang="ts">
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
-	import { Avatar, Button, Menu, MenuItem, Settings, ThemeSelect, Toggle } from 'svelte-ux';
+	import { settings } from 'svelte-ux';
+	import { Avatar, Button, Menu, MenuItem, ThemeSelect, Toggle } from 'svelte-ux';
+	import { goto } from '$app/navigation';
+	import { setToken } from '$lib';
 
 	let { children } = $props();
 
 	let theme = $state('white');
 	$effect(() => {
 		document.documentElement.setAttribute('theme', theme);
+	});
+
+	settings({
+		components: {
+			Button: {
+				classes: 'cursor-pointer',
+				variant: 'outline'
+			}
+		}
 	});
 </script>
 
@@ -23,12 +35,21 @@
 		<Button on:click={toggle} variant="none" color="primary" class="cursor-pointer hover:scale-95">
 			<Avatar on:click={toggle} class="bg-primary/60 text-primary-content">A</Avatar>
 			<Menu {open} on:close={toggleOff}>
-				<MenuItem>Settings</MenuItem>
-				<MenuItem>Sign In</MenuItem>
-				<MenuItem disabled>Disabled</MenuItem>
+				<MenuItem class="cursor-pointer" on:click={() => goto('/profile')}>Profile</MenuItem>
+				<MenuItem
+					class="cursor-pointer"
+					on:click={() => {
+						setToken('');
+						goto('/login');
+					}}
+				>
+					Logout
+				</MenuItem>
 			</Menu>
 		</Button>
 	</Toggle>
 </div>
 
-{@render children()}
+<div class="p-4 w-full">
+	{@render children()}
+</div>

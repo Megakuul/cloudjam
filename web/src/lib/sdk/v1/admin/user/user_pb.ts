@@ -15,7 +15,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/admin/user/user.proto.
  */
 export const file_v1_admin_user_user: GenFile = /*@__PURE__*/
-  fileDesc("Chh2MS9hZG1pbi91c2VyL3VzZXIucHJvdG8SDXYxLmFkbWluLnVzZXIiXgoNQ3JlYXRlUmVxdWVzdBIWCgVlbWFpbBgBIAEoCUIHukgEcgJgARI1CgdleHBpcmVzGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIIukgFsgECQAEiHgoOQ3JlYXRlUmVzcG9uc2USDAoEY29kZRgBIAEoCSIlCgpHZXRSZXF1ZXN0EhcKAmlkGAEgASgJQgu6SAjYAQFyA7ABASIrCgtHZXRSZXNwb25zZRIcCgR1c2VyGAEgASgLMg4udjEuYWRtaW4uVXNlciKhAQoNVXBkYXRlUmVxdWVzdBIUCgJpZBgBIAEoCUIIukgFcgOwAQESIAoIdXNlcm5hbWUYAiABKAlCCbpIBnIEEAMYFEgAiAEBEhsKBWVtYWlsGAMgASgJQge6SARyAmABSAGIAQESGwoEcm9sZRgEIAEoCUIIukgFcgOwAQFIAogBAUILCglfdXNlcm5hbWVCCAoGX2VtYWlsQgcKBV9yb2xlIi4KDlVwZGF0ZVJlc3BvbnNlEhwKBHVzZXIYASABKAsyDi52MS5hZG1pbi5Vc2VyIiUKDURlbGV0ZVJlcXVlc3QSFAoCaWQYASABKAlCCLpIBXIDsAEBIhAKDkRlbGV0ZVJlc3BvbnNlIj8KC0xpc3RSZXF1ZXN0EhwKCXBhZ2Vfc2l6ZRgBIAEoBUIJukgGGgQYZCAAEhIKCnBhZ2VfdG9rZW4YAiABKAkiRgoMTGlzdFJlc3BvbnNlEh0KBXVzZXJzGAEgAygLMg4udjEuYWRtaW4uVXNlchIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAky4QIKC1VzZXJTZXJ2aWNlEkUKBkNyZWF0ZRIcLnYxLmFkbWluLnVzZXIuQ3JlYXRlUmVxdWVzdBodLnYxLmFkbWluLnVzZXIuQ3JlYXRlUmVzcG9uc2USPAoDR2V0EhkudjEuYWRtaW4udXNlci5HZXRSZXF1ZXN0GhoudjEuYWRtaW4udXNlci5HZXRSZXNwb25zZRJFCgZVcGRhdGUSHC52MS5hZG1pbi51c2VyLlVwZGF0ZVJlcXVlc3QaHS52MS5hZG1pbi51c2VyLlVwZGF0ZVJlc3BvbnNlEkUKBkRlbGV0ZRIcLnYxLmFkbWluLnVzZXIuRGVsZXRlUmVxdWVzdBodLnYxLmFkbWluLnVzZXIuRGVsZXRlUmVzcG9uc2USPwoETGlzdBIaLnYxLmFkbWluLnVzZXIuTGlzdFJlcXVlc3QaGy52MS5hZG1pbi51c2VyLkxpc3RSZXNwb25zZUI2WjRjb2RlYmVyZy5vcmcvbWVnYWt1dWwvY2xvdWRqYW0vcGtnL2FwaS92MS9hZG1pbi91c2VyYgZwcm90bzM", [file_buf_validate_validate, file_google_protobuf_timestamp, file_v1_admin_user]);
+  fileDesc("Chh2MS9hZG1pbi91c2VyL3VzZXIucHJvdG8SDXYxLmFkbWluLnVzZXIiXgoNQ3JlYXRlUmVxdWVzdBIWCgVlbWFpbBgBIAEoCUIHukgEcgJgARI1CgdleHBpcmVzGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIIukgFsgECQAEiHgoOQ3JlYXRlUmVzcG9uc2USDAoEY29kZRgBIAEoCSIlCgpHZXRSZXF1ZXN0EhcKAmlkGAEgASgJQgu6SAjYAQFyA7ABASIrCgtHZXRSZXNwb25zZRIcCgR1c2VyGAEgASgLMg4udjEuYWRtaW4uVXNlciIsCg1VcGRhdGVSZXF1ZXN0EhsKA21vZBgBIAEoCzIOLnYxLmFkbWluLlVzZXIiLgoOVXBkYXRlUmVzcG9uc2USHAoEdXNlchgBIAEoCzIOLnYxLmFkbWluLlVzZXIiJQoNRGVsZXRlUmVxdWVzdBIUCgJpZBgBIAEoCUIIukgFcgOwAQEiEAoORGVsZXRlUmVzcG9uc2UiNwoLTGlzdFJlcXVlc3QSGAoFbGltaXQYASABKAVCCbpIBhoEGGQgABIOCgZvZmZzZXQYAiABKAUiLQoMTGlzdFJlc3BvbnNlEh0KBXVzZXJzGAEgAygLMg4udjEuYWRtaW4uVXNlcjLhAgoLVXNlclNlcnZpY2USRQoGQ3JlYXRlEhwudjEuYWRtaW4udXNlci5DcmVhdGVSZXF1ZXN0Gh0udjEuYWRtaW4udXNlci5DcmVhdGVSZXNwb25zZRI8CgNHZXQSGS52MS5hZG1pbi51c2VyLkdldFJlcXVlc3QaGi52MS5hZG1pbi51c2VyLkdldFJlc3BvbnNlEkUKBlVwZGF0ZRIcLnYxLmFkbWluLnVzZXIuVXBkYXRlUmVxdWVzdBodLnYxLmFkbWluLnVzZXIuVXBkYXRlUmVzcG9uc2USRQoGRGVsZXRlEhwudjEuYWRtaW4udXNlci5EZWxldGVSZXF1ZXN0Gh0udjEuYWRtaW4udXNlci5EZWxldGVSZXNwb25zZRI/CgRMaXN0EhoudjEuYWRtaW4udXNlci5MaXN0UmVxdWVzdBobLnYxLmFkbWluLnVzZXIuTGlzdFJlc3BvbnNlQjZaNGNvZGViZXJnLm9yZy9tZWdha3V1bC9jbG91ZGphbS9wa2cvYXBpL3YxL2FkbWluL3VzZXJiBnByb3RvMw", [file_buf_validate_validate, file_google_protobuf_timestamp, file_v1_admin_user]);
 
 /**
  * @generated from message v1.admin.user.CreateRequest
@@ -95,24 +95,9 @@ export const GetResponseSchema: GenMessage<GetResponse> = /*@__PURE__*/
  */
 export type UpdateRequest = Message<"v1.admin.user.UpdateRequest"> & {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: v1.admin.User mod = 1;
    */
-  id: string;
-
-  /**
-   * @generated from field: optional string username = 2;
-   */
-  username?: string;
-
-  /**
-   * @generated from field: optional string email = 3;
-   */
-  email?: string;
-
-  /**
-   * @generated from field: optional string role = 4;
-   */
-  role?: string;
+  mod?: User;
 };
 
 /**
@@ -174,14 +159,14 @@ export const DeleteResponseSchema: GenMessage<DeleteResponse> = /*@__PURE__*/
  */
 export type ListRequest = Message<"v1.admin.user.ListRequest"> & {
   /**
-   * @generated from field: int32 page_size = 1;
+   * @generated from field: int32 limit = 1;
    */
-  pageSize: number;
+  limit: number;
 
   /**
-   * @generated from field: string page_token = 2;
+   * @generated from field: int32 offset = 2;
    */
-  pageToken: string;
+  offset: number;
 };
 
 /**
@@ -199,11 +184,6 @@ export type ListResponse = Message<"v1.admin.user.ListResponse"> & {
    * @generated from field: repeated v1.admin.User users = 1;
    */
   users: User[];
-
-  /**
-   * @generated from field: string next_page_token = 2;
-   */
-  nextPageToken: string;
 };
 
 /**

@@ -210,10 +210,7 @@ func (x *GetResponse) GetUser() *admin.User {
 
 type UpdateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Username      *string                `protobuf:"bytes,2,opt,name=username,proto3,oneof" json:"username,omitempty"`
-	Email         *string                `protobuf:"bytes,3,opt,name=email,proto3,oneof" json:"email,omitempty"`
-	Role          *string                `protobuf:"bytes,4,opt,name=role,proto3,oneof" json:"role,omitempty"`
+	Mod           *admin.User            `protobuf:"bytes,1,opt,name=mod,proto3" json:"mod,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -248,32 +245,11 @@ func (*UpdateRequest) Descriptor() ([]byte, []int) {
 	return file_v1_admin_user_user_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *UpdateRequest) GetId() string {
+func (x *UpdateRequest) GetMod() *admin.User {
 	if x != nil {
-		return x.Id
+		return x.Mod
 	}
-	return ""
-}
-
-func (x *UpdateRequest) GetUsername() string {
-	if x != nil && x.Username != nil {
-		return *x.Username
-	}
-	return ""
-}
-
-func (x *UpdateRequest) GetEmail() string {
-	if x != nil && x.Email != nil {
-		return *x.Email
-	}
-	return ""
-}
-
-func (x *UpdateRequest) GetRole() string {
-	if x != nil && x.Role != nil {
-		return *x.Role
-	}
-	return ""
+	return nil
 }
 
 type UpdateResponse struct {
@@ -402,8 +378,8 @@ func (*DeleteResponse) Descriptor() ([]byte, []int) {
 
 type ListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	PageSize      int32                  `protobuf:"varint,1,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageToken     string                 `protobuf:"bytes,2,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	Limit         int32                  `protobuf:"varint,1,opt,name=limit,proto3" json:"limit,omitempty"`
+	Offset        int32                  `protobuf:"varint,2,opt,name=offset,proto3" json:"offset,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -438,24 +414,23 @@ func (*ListRequest) Descriptor() ([]byte, []int) {
 	return file_v1_admin_user_user_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *ListRequest) GetPageSize() int32 {
+func (x *ListRequest) GetLimit() int32 {
 	if x != nil {
-		return x.PageSize
+		return x.Limit
 	}
 	return 0
 }
 
-func (x *ListRequest) GetPageToken() string {
+func (x *ListRequest) GetOffset() int32 {
 	if x != nil {
-		return x.PageToken
+		return x.Offset
 	}
-	return ""
+	return 0
 }
 
 type ListResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Users         []*admin.User          `protobuf:"bytes,1,rep,name=users,proto3" json:"users,omitempty"`
-	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -497,13 +472,6 @@ func (x *ListResponse) GetUsers() []*admin.User {
 	return nil
 }
 
-func (x *ListResponse) GetNextPageToken() string {
-	if x != nil {
-		return x.NextPageToken
-	}
-	return ""
-}
-
 var File_v1_admin_user_user_proto protoreflect.FileDescriptor
 
 const file_v1_admin_user_user_proto_rawDesc = "" +
@@ -518,27 +486,19 @@ const file_v1_admin_user_user_proto_rawDesc = "" +
 	"GetRequest\x12\x1b\n" +
 	"\x02id\x18\x01 \x01(\tB\v\xbaH\b\xd8\x01\x01r\x03\xb0\x01\x01R\x02id\"1\n" +
 	"\vGetResponse\x12\"\n" +
-	"\x04user\x18\x01 \x01(\v2\x0e.v1.admin.UserR\x04user\"\xbc\x01\n" +
-	"\rUpdateRequest\x12\x18\n" +
-	"\x02id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\x12*\n" +
-	"\busername\x18\x02 \x01(\tB\t\xbaH\x06r\x04\x10\x03\x18\x14H\x00R\busername\x88\x01\x01\x12\"\n" +
-	"\x05email\x18\x03 \x01(\tB\a\xbaH\x04r\x02`\x01H\x01R\x05email\x88\x01\x01\x12!\n" +
-	"\x04role\x18\x04 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01H\x02R\x04role\x88\x01\x01B\v\n" +
-	"\t_usernameB\b\n" +
-	"\x06_emailB\a\n" +
-	"\x05_role\"4\n" +
+	"\x04user\x18\x01 \x01(\v2\x0e.v1.admin.UserR\x04user\"1\n" +
+	"\rUpdateRequest\x12 \n" +
+	"\x03mod\x18\x01 \x01(\v2\x0e.v1.admin.UserR\x03mod\"4\n" +
 	"\x0eUpdateResponse\x12\"\n" +
 	"\x04user\x18\x01 \x01(\v2\x0e.v1.admin.UserR\x04user\")\n" +
 	"\rDeleteRequest\x12\x18\n" +
 	"\x02id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\"\x10\n" +
-	"\x0eDeleteResponse\"T\n" +
-	"\vListRequest\x12&\n" +
-	"\tpage_size\x18\x01 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d \x00R\bpageSize\x12\x1d\n" +
-	"\n" +
-	"page_token\x18\x02 \x01(\tR\tpageToken\"\\\n" +
+	"\x0eDeleteResponse\"F\n" +
+	"\vListRequest\x12\x1f\n" +
+	"\x05limit\x18\x01 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d \x00R\x05limit\x12\x16\n" +
+	"\x06offset\x18\x02 \x01(\x05R\x06offset\"4\n" +
 	"\fListResponse\x12$\n" +
-	"\x05users\x18\x01 \x03(\v2\x0e.v1.admin.UserR\x05users\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xe1\x02\n" +
+	"\x05users\x18\x01 \x03(\v2\x0e.v1.admin.UserR\x05users2\xe1\x02\n" +
 	"\vUserService\x12E\n" +
 	"\x06Create\x12\x1c.v1.admin.user.CreateRequest\x1a\x1d.v1.admin.user.CreateResponse\x12<\n" +
 	"\x03Get\x12\x19.v1.admin.user.GetRequest\x1a\x1a.v1.admin.user.GetResponse\x12E\n" +
@@ -576,23 +536,24 @@ var file_v1_admin_user_user_proto_goTypes = []any{
 var file_v1_admin_user_user_proto_depIdxs = []int32{
 	10, // 0: v1.admin.user.CreateRequest.expires:type_name -> google.protobuf.Timestamp
 	11, // 1: v1.admin.user.GetResponse.user:type_name -> v1.admin.User
-	11, // 2: v1.admin.user.UpdateResponse.user:type_name -> v1.admin.User
-	11, // 3: v1.admin.user.ListResponse.users:type_name -> v1.admin.User
-	0,  // 4: v1.admin.user.UserService.Create:input_type -> v1.admin.user.CreateRequest
-	2,  // 5: v1.admin.user.UserService.Get:input_type -> v1.admin.user.GetRequest
-	4,  // 6: v1.admin.user.UserService.Update:input_type -> v1.admin.user.UpdateRequest
-	6,  // 7: v1.admin.user.UserService.Delete:input_type -> v1.admin.user.DeleteRequest
-	8,  // 8: v1.admin.user.UserService.List:input_type -> v1.admin.user.ListRequest
-	1,  // 9: v1.admin.user.UserService.Create:output_type -> v1.admin.user.CreateResponse
-	3,  // 10: v1.admin.user.UserService.Get:output_type -> v1.admin.user.GetResponse
-	5,  // 11: v1.admin.user.UserService.Update:output_type -> v1.admin.user.UpdateResponse
-	7,  // 12: v1.admin.user.UserService.Delete:output_type -> v1.admin.user.DeleteResponse
-	9,  // 13: v1.admin.user.UserService.List:output_type -> v1.admin.user.ListResponse
-	9,  // [9:14] is the sub-list for method output_type
-	4,  // [4:9] is the sub-list for method input_type
-	4,  // [4:4] is the sub-list for extension type_name
-	4,  // [4:4] is the sub-list for extension extendee
-	0,  // [0:4] is the sub-list for field type_name
+	11, // 2: v1.admin.user.UpdateRequest.mod:type_name -> v1.admin.User
+	11, // 3: v1.admin.user.UpdateResponse.user:type_name -> v1.admin.User
+	11, // 4: v1.admin.user.ListResponse.users:type_name -> v1.admin.User
+	0,  // 5: v1.admin.user.UserService.Create:input_type -> v1.admin.user.CreateRequest
+	2,  // 6: v1.admin.user.UserService.Get:input_type -> v1.admin.user.GetRequest
+	4,  // 7: v1.admin.user.UserService.Update:input_type -> v1.admin.user.UpdateRequest
+	6,  // 8: v1.admin.user.UserService.Delete:input_type -> v1.admin.user.DeleteRequest
+	8,  // 9: v1.admin.user.UserService.List:input_type -> v1.admin.user.ListRequest
+	1,  // 10: v1.admin.user.UserService.Create:output_type -> v1.admin.user.CreateResponse
+	3,  // 11: v1.admin.user.UserService.Get:output_type -> v1.admin.user.GetResponse
+	5,  // 12: v1.admin.user.UserService.Update:output_type -> v1.admin.user.UpdateResponse
+	7,  // 13: v1.admin.user.UserService.Delete:output_type -> v1.admin.user.DeleteResponse
+	9,  // 14: v1.admin.user.UserService.List:output_type -> v1.admin.user.ListResponse
+	10, // [10:15] is the sub-list for method output_type
+	5,  // [5:10] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_v1_admin_user_user_proto_init() }
@@ -600,7 +561,6 @@ func file_v1_admin_user_user_proto_init() {
 	if File_v1_admin_user_user_proto != nil {
 		return
 	}
-	file_v1_admin_user_user_proto_msgTypes[4].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

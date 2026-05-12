@@ -11,7 +11,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/admin/user.proto.
  */
 export const file_v1_admin_user: GenFile = /*@__PURE__*/
-  fileDesc("ChN2MS9hZG1pbi91c2VyLnByb3RvEgh2MS5hZG1pbiLkAQoEVXNlchIUCgJpZBgBIAEoCUIIukgFcgOwAQESGwoIdXNlcm5hbWUYAiABKAlCCbpIBnIEEAQYFBIeCgtkZXNjcmlwdGlvbhgDIAEoCUIJukgGcgQQABgyEhYKBWVtYWlsGAQgASgJQge6SARyAmABEhIKCmNyZWF0ZWRfYXQYBSABKAMSDQoFc2NvcmUYBiABKAESDgoGc3RyZWFrGAcgASgDEhIKCm1heF9zdHJlYWsYCCABKAMSEgoKcHJpdmlsZWdlZBgJIAEoCBIWCgRyb2xlGAogASgJQgi6SAVyA7ABAUIxWi9jb2RlYmVyZy5vcmcvbWVnYWt1dWwvY2xvdWRqYW0vcGtnL2FwaS92MS9hZG1pbmIGcHJvdG8z", [file_buf_validate_validate]);
+  fileDesc("ChN2MS9hZG1pbi91c2VyLnByb3RvEgh2MS5hZG1pbiLjAQoEVXNlchIKCgJpZBgBIAEoCRIbCgh1c2VybmFtZRgCIAEoCUIJukgGcgQQBBgUEh4KC2Rlc2NyaXB0aW9uGAMgASgJQgm6SAZyBBAAGDISFgoFZW1haWwYBCABKAlCB7pIBHICYAESEgoKY3JlYXRlZF9hdBgFIAEoAxINCgVzY29yZRgGIAEoARIRCgltYXhfc2NvcmUYByABKAESDgoGc3RyZWFrGAggASgDEhIKCm1heF9zdHJlYWsYCSABKAMSEgoKcHJpdmlsZWdlZBgKIAEoCBIMCgRyb2xlGAsgASgJQjFaL2NvZGViZXJnLm9yZy9tZWdha3V1bC9jbG91ZGphbS9wa2cvYXBpL3YxL2FkbWluYgZwcm90bzM", [file_buf_validate_validate]);
 
 /**
  * @generated from message v1.admin.User
@@ -48,22 +48,27 @@ export type User = Message<"v1.admin.User"> & {
   score: number;
 
   /**
-   * @generated from field: int64 streak = 7;
+   * @generated from field: double max_score = 7;
+   */
+  maxScore: number;
+
+  /**
+   * @generated from field: int64 streak = 8;
    */
   streak: bigint;
 
   /**
-   * @generated from field: int64 max_streak = 8;
+   * @generated from field: int64 max_streak = 9;
    */
   maxStreak: bigint;
 
   /**
-   * @generated from field: bool privileged = 9;
+   * @generated from field: bool privileged = 10;
    */
   privileged: boolean;
 
   /**
-   * @generated from field: string role = 10;
+   * @generated from field: string role = 11;
    */
   role: string;
 };
