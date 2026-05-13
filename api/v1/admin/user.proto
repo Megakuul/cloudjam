@@ -24,4 +24,5 @@ message User {
   int64 max_streak = 9;
   bool privileged = 10;
   string role = 11;
+  string scope = 12;
 }

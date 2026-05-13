@@ -35,6 +35,7 @@ type User struct {
 	MaxStreak     int64                  `protobuf:"varint,9,opt,name=max_streak,json=maxStreak,proto3" json:"max_streak,omitempty"`
 	Privileged    bool                   `protobuf:"varint,10,opt,name=privileged,proto3" json:"privileged,omitempty"`
 	Role          string                 `protobuf:"bytes,11,opt,name=role,proto3" json:"role,omitempty"`
+	Scope         string                 `protobuf:"bytes,12,opt,name=scope,proto3" json:"scope,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -146,11 +147,18 @@ func (x *User) GetRole() string {
 	return ""
 }
 
+func (x *User) GetScope() string {
+	if x != nil {
+		return x.Scope
+	}
+	return ""
+}
+
 var File_v1_admin_user_proto protoreflect.FileDescriptor
 
 const file_v1_admin_user_proto_rawDesc = "" +
 	"\n" +
-	"\x13v1/admin/user.proto\x12\bv1.admin\x1a\x1bbuf/validate/validate.proto\"\xc6\x02\n" +
+	"\x13v1/admin/user.proto\x12\bv1.admin\x1a\x1bbuf/validate/validate.proto\"\xdc\x02\n" +
 	"\x04User\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12%\n" +
 	"\busername\x18\x02 \x01(\tB\t\xbaH\x06r\x04\x10\x04\x18\x14R\busername\x12+\n" +
@@ -167,7 +175,8 @@ const file_v1_admin_user_proto_rawDesc = "" +
 	"privileged\x18\n" +
 	" \x01(\bR\n" +
 	"privileged\x12\x12\n" +
-	"\x04role\x18\v \x01(\tR\x04roleB1Z/codeberg.org/megakuul/cloudjam/pkg/api/v1/adminb\x06proto3"
+	"\x04role\x18\v \x01(\tR\x04role\x12\x14\n" +
+	"\x05scope\x18\f \x01(\tR\x05scopeB1Z/codeberg.org/megakuul/cloudjam/pkg/api/v1/adminb\x06proto3"
 
 var (
 	file_v1_admin_user_proto_rawDescOnce sync.Once

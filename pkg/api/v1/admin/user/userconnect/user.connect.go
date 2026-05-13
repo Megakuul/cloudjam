@@ -33,25 +33,28 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
-	// UserServiceCreateProcedure is the fully-qualified name of the UserService's Create RPC.
-	UserServiceCreateProcedure = "/v1.admin.user.UserService/Create"
 	// UserServiceGetProcedure is the fully-qualified name of the UserService's Get RPC.
 	UserServiceGetProcedure = "/v1.admin.user.UserService/Get"
-	// UserServiceUpdateProcedure is the fully-qualified name of the UserService's Update RPC.
-	UserServiceUpdateProcedure = "/v1.admin.user.UserService/Update"
-	// UserServiceDeleteProcedure is the fully-qualified name of the UserService's Delete RPC.
-	UserServiceDeleteProcedure = "/v1.admin.user.UserService/Delete"
 	// UserServiceListProcedure is the fully-qualified name of the UserService's List RPC.
 	UserServiceListProcedure = "/v1.admin.user.UserService/List"
+	// UserServiceCreateProcedure is the fully-qualified name of the UserService's Create RPC.
+	UserServiceCreateProcedure = "/v1.admin.user.UserService/Create"
+	// UserServiceUpdateProcedure is the fully-qualified name of the UserService's Update RPC.
+	UserServiceUpdateProcedure = "/v1.admin.user.UserService/Update"
+	// UserServiceAttachRoleProcedure is the fully-qualified name of the UserService's AttachRole RPC.
+	UserServiceAttachRoleProcedure = "/v1.admin.user.UserService/AttachRole"
+	// UserServiceDeleteProcedure is the fully-qualified name of the UserService's Delete RPC.
+	UserServiceDeleteProcedure = "/v1.admin.user.UserService/Delete"
 )
 
 // UserServiceClient is a client for the v1.admin.user.UserService service.
 type UserServiceClient interface {
-	Create(context.Context, *connect.Request[user.CreateRequest]) (*connect.Response[user.CreateResponse], error)
 	Get(context.Context, *connect.Request[user.GetRequest]) (*connect.Response[user.GetResponse], error)
-	Update(context.Context, *connect.Request[user.UpdateRequest]) (*connect.Response[user.UpdateResponse], error)
-	Delete(context.Context, *connect.Request[user.DeleteRequest]) (*connect.Response[user.DeleteResponse], error)
 	List(context.Context, *connect.Request[user.ListRequest]) (*connect.Response[user.ListResponse], error)
+	Create(context.Context, *connect.Request[user.CreateRequest]) (*connect.Response[user.CreateResponse], error)
+	Update(context.Context, *connect.Request[user.UpdateRequest]) (*connect.Response[user.UpdateResponse], error)
+	AttachRole(context.Context, *connect.Request[user.AttachRoleRequest]) (*connect.Response[user.AttachRoleResponse], error)
+	Delete(context.Context, *connect.Request[user.DeleteRequest]) (*connect.Response[user.DeleteResponse], error)
 }
 
 // NewUserServiceClient constructs a client for the v1.admin.user.UserService service. By default,
@@ -65,28 +68,10 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 	baseURL = strings.TrimRight(baseURL, "/")
 	userServiceMethods := user.File_v1_admin_user_user_proto.Services().ByName("UserService").Methods()
 	return &userServiceClient{
-		create: connect.NewClient[user.CreateRequest, user.CreateResponse](
-			httpClient,
-			baseURL+UserServiceCreateProcedure,
-			connect.WithSchema(userServiceMethods.ByName("Create")),
-			connect.WithClientOptions(opts...),
-		),
 		get: connect.NewClient[user.GetRequest, user.GetResponse](
 			httpClient,
 			baseURL+UserServiceGetProcedure,
 			connect.WithSchema(userServiceMethods.ByName("Get")),
-			connect.WithClientOptions(opts...),
-		),
-		update: connect.NewClient[user.UpdateRequest, user.UpdateResponse](
-			httpClient,
-			baseURL+UserServiceUpdateProcedure,
-			connect.WithSchema(userServiceMethods.ByName("Update")),
-			connect.WithClientOptions(opts...),
-		),
-		delete: connect.NewClient[user.DeleteRequest, user.DeleteResponse](
-			httpClient,
-			baseURL+UserServiceDeleteProcedure,
-			connect.WithSchema(userServiceMethods.ByName("Delete")),
 			connect.WithClientOptions(opts...),
 		),
 		list: connect.NewClient[user.ListRequest, user.ListResponse](
@@ -95,21 +80,41 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(userServiceMethods.ByName("List")),
 			connect.WithClientOptions(opts...),
 		),
+		create: connect.NewClient[user.CreateRequest, user.CreateResponse](
+			httpClient,
+			baseURL+UserServiceCreateProcedure,
+			connect.WithSchema(userServiceMethods.ByName("Create")),
+			connect.WithClientOptions(opts...),
+		),
+		update: connect.NewClient[user.UpdateRequest, user.UpdateResponse](
+			httpClient,
+			baseURL+UserServiceUpdateProcedure,
+			connect.WithSchema(userServiceMethods.ByName("Update")),
+			connect.WithClientOptions(opts...),
+		),
+		attachRole: connect.NewClient[user.AttachRoleRequest, user.AttachRoleResponse](
+			httpClient,
+			baseURL+UserServiceAttachRoleProcedure,
+			connect.WithSchema(userServiceMethods.ByName("AttachRole")),
+			connect.WithClientOptions(opts...),
+		),
+		delete: connect.NewClient[user.DeleteRequest, user.DeleteResponse](
+			httpClient,
+			baseURL+UserServiceDeleteProcedure,
+			connect.WithSchema(userServiceMethods.ByName("Delete")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // userServiceClient implements UserServiceClient.
 type userServiceClient struct {
-	create *connect.Client[user.CreateRequest, user.CreateResponse]
-	get    *connect.Client[user.GetRequest, user.GetResponse]
-	update *connect.Client[user.UpdateRequest, user.UpdateResponse]
-	delete *connect.Client[user.DeleteRequest, user.DeleteResponse]
-	list   *connect.Client[user.ListRequest, user.ListResponse]
-}
-
-// Create calls v1.admin.user.UserService.Create.
-func (c *userServiceClient) Create(ctx context.Context, req *connect.Request[user.CreateRequest]) (*connect.Response[user.CreateResponse], error) {
-	return c.create.CallUnary(ctx, req)
+	get        *connect.Client[user.GetRequest, user.GetResponse]
+	list       *connect.Client[user.ListRequest, user.ListResponse]
+	create     *connect.Client[user.CreateRequest, user.CreateResponse]
+	update     *connect.Client[user.UpdateRequest, user.UpdateResponse]
+	attachRole *connect.Client[user.AttachRoleRequest, user.AttachRoleResponse]
+	delete     *connect.Client[user.DeleteRequest, user.DeleteResponse]
 }
 
 // Get calls v1.admin.user.UserService.Get.
@@ -117,9 +122,24 @@ func (c *userServiceClient) Get(ctx context.Context, req *connect.Request[user.G
 	return c.get.CallUnary(ctx, req)
 }
 
+// List calls v1.admin.user.UserService.List.
+func (c *userServiceClient) List(ctx context.Context, req *connect.Request[user.ListRequest]) (*connect.Response[user.ListResponse], error) {
+	return c.list.CallUnary(ctx, req)
+}
+
+// Create calls v1.admin.user.UserService.Create.
+func (c *userServiceClient) Create(ctx context.Context, req *connect.Request[user.CreateRequest]) (*connect.Response[user.CreateResponse], error) {
+	return c.create.CallUnary(ctx, req)
+}
+
 // Update calls v1.admin.user.UserService.Update.
 func (c *userServiceClient) Update(ctx context.Context, req *connect.Request[user.UpdateRequest]) (*connect.Response[user.UpdateResponse], error) {
 	return c.update.CallUnary(ctx, req)
+}
+
+// AttachRole calls v1.admin.user.UserService.AttachRole.
+func (c *userServiceClient) AttachRole(ctx context.Context, req *connect.Request[user.AttachRoleRequest]) (*connect.Response[user.AttachRoleResponse], error) {
+	return c.attachRole.CallUnary(ctx, req)
 }
 
 // Delete calls v1.admin.user.UserService.Delete.
@@ -127,18 +147,14 @@ func (c *userServiceClient) Delete(ctx context.Context, req *connect.Request[use
 	return c.delete.CallUnary(ctx, req)
 }
 
-// List calls v1.admin.user.UserService.List.
-func (c *userServiceClient) List(ctx context.Context, req *connect.Request[user.ListRequest]) (*connect.Response[user.ListResponse], error) {
-	return c.list.CallUnary(ctx, req)
-}
-
 // UserServiceHandler is an implementation of the v1.admin.user.UserService service.
 type UserServiceHandler interface {
-	Create(context.Context, *connect.Request[user.CreateRequest]) (*connect.Response[user.CreateResponse], error)
 	Get(context.Context, *connect.Request[user.GetRequest]) (*connect.Response[user.GetResponse], error)
-	Update(context.Context, *connect.Request[user.UpdateRequest]) (*connect.Response[user.UpdateResponse], error)
-	Delete(context.Context, *connect.Request[user.DeleteRequest]) (*connect.Response[user.DeleteResponse], error)
 	List(context.Context, *connect.Request[user.ListRequest]) (*connect.Response[user.ListResponse], error)
+	Create(context.Context, *connect.Request[user.CreateRequest]) (*connect.Response[user.CreateResponse], error)
+	Update(context.Context, *connect.Request[user.UpdateRequest]) (*connect.Response[user.UpdateResponse], error)
+	AttachRole(context.Context, *connect.Request[user.AttachRoleRequest]) (*connect.Response[user.AttachRoleResponse], error)
+	Delete(context.Context, *connect.Request[user.DeleteRequest]) (*connect.Response[user.DeleteResponse], error)
 }
 
 // NewUserServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -148,28 +164,10 @@ type UserServiceHandler interface {
 // and JSON codecs. They also support gzip compression.
 func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
 	userServiceMethods := user.File_v1_admin_user_user_proto.Services().ByName("UserService").Methods()
-	userServiceCreateHandler := connect.NewUnaryHandler(
-		UserServiceCreateProcedure,
-		svc.Create,
-		connect.WithSchema(userServiceMethods.ByName("Create")),
-		connect.WithHandlerOptions(opts...),
-	)
 	userServiceGetHandler := connect.NewUnaryHandler(
 		UserServiceGetProcedure,
 		svc.Get,
 		connect.WithSchema(userServiceMethods.ByName("Get")),
-		connect.WithHandlerOptions(opts...),
-	)
-	userServiceUpdateHandler := connect.NewUnaryHandler(
-		UserServiceUpdateProcedure,
-		svc.Update,
-		connect.WithSchema(userServiceMethods.ByName("Update")),
-		connect.WithHandlerOptions(opts...),
-	)
-	userServiceDeleteHandler := connect.NewUnaryHandler(
-		UserServiceDeleteProcedure,
-		svc.Delete,
-		connect.WithSchema(userServiceMethods.ByName("Delete")),
 		connect.WithHandlerOptions(opts...),
 	)
 	userServiceListHandler := connect.NewUnaryHandler(
@@ -178,18 +176,44 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(userServiceMethods.ByName("List")),
 		connect.WithHandlerOptions(opts...),
 	)
+	userServiceCreateHandler := connect.NewUnaryHandler(
+		UserServiceCreateProcedure,
+		svc.Create,
+		connect.WithSchema(userServiceMethods.ByName("Create")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceUpdateHandler := connect.NewUnaryHandler(
+		UserServiceUpdateProcedure,
+		svc.Update,
+		connect.WithSchema(userServiceMethods.ByName("Update")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceAttachRoleHandler := connect.NewUnaryHandler(
+		UserServiceAttachRoleProcedure,
+		svc.AttachRole,
+		connect.WithSchema(userServiceMethods.ByName("AttachRole")),
+		connect.WithHandlerOptions(opts...),
+	)
+	userServiceDeleteHandler := connect.NewUnaryHandler(
+		UserServiceDeleteProcedure,
+		svc.Delete,
+		connect.WithSchema(userServiceMethods.ByName("Delete")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/v1.admin.user.UserService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case UserServiceCreateProcedure:
-			userServiceCreateHandler.ServeHTTP(w, r)
 		case UserServiceGetProcedure:
 			userServiceGetHandler.ServeHTTP(w, r)
-		case UserServiceUpdateProcedure:
-			userServiceUpdateHandler.ServeHTTP(w, r)
-		case UserServiceDeleteProcedure:
-			userServiceDeleteHandler.ServeHTTP(w, r)
 		case UserServiceListProcedure:
 			userServiceListHandler.ServeHTTP(w, r)
+		case UserServiceCreateProcedure:
+			userServiceCreateHandler.ServeHTTP(w, r)
+		case UserServiceUpdateProcedure:
+			userServiceUpdateHandler.ServeHTTP(w, r)
+		case UserServiceAttachRoleProcedure:
+			userServiceAttachRoleHandler.ServeHTTP(w, r)
+		case UserServiceDeleteProcedure:
+			userServiceDeleteHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -199,22 +223,26 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 // UnimplementedUserServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedUserServiceHandler struct{}
 
-func (UnimplementedUserServiceHandler) Create(context.Context, *connect.Request[user.CreateRequest]) (*connect.Response[user.CreateResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.admin.user.UserService.Create is not implemented"))
-}
-
 func (UnimplementedUserServiceHandler) Get(context.Context, *connect.Request[user.GetRequest]) (*connect.Response[user.GetResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.admin.user.UserService.Get is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) List(context.Context, *connect.Request[user.ListRequest]) (*connect.Response[user.ListResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.admin.user.UserService.List is not implemented"))
+}
+
+func (UnimplementedUserServiceHandler) Create(context.Context, *connect.Request[user.CreateRequest]) (*connect.Response[user.CreateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.admin.user.UserService.Create is not implemented"))
 }
 
 func (UnimplementedUserServiceHandler) Update(context.Context, *connect.Request[user.UpdateRequest]) (*connect.Response[user.UpdateResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.admin.user.UserService.Update is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) Delete(context.Context, *connect.Request[user.DeleteRequest]) (*connect.Response[user.DeleteResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.admin.user.UserService.Delete is not implemented"))
+func (UnimplementedUserServiceHandler) AttachRole(context.Context, *connect.Request[user.AttachRoleRequest]) (*connect.Response[user.AttachRoleResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.admin.user.UserService.AttachRole is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) List(context.Context, *connect.Request[user.ListRequest]) (*connect.Response[user.ListResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.admin.user.UserService.List is not implemented"))
+func (UnimplementedUserServiceHandler) Delete(context.Context, *connect.Request[user.DeleteRequest]) (*connect.Response[user.DeleteResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.admin.user.UserService.Delete is not implemented"))
 }

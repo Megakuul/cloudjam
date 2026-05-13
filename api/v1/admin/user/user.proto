@@ -8,15 +8,6 @@ import "v1/admin/user.proto";
 
 option go_package = "codeberg.org/megakuul/cloudjam/pkg/api/v1/admin/user";
 
-message CreateRequest {
-  string email = 1 [(buf.validate.field).string.email = true];
-  google.protobuf.Timestamp expires = 2 [(buf.validate.field).timestamp.gt_now = true];
-}
-
-message CreateResponse {
-  string code = 1;
-}
-
 message GetRequest {
   string id = 1 [
     (buf.validate.field).ignore = IGNORE_IF_ZERO_VALUE,
@@ -27,20 +18,6 @@ message GetRequest {
 message GetResponse {
   User user = 1;
 }
-
-message UpdateRequest {
-  User mod = 1;
-}
-
-message UpdateResponse {
-  User user = 1;
-}
-
-message DeleteRequest {
-  string id = 1 [(buf.validate.field).string = {uuid: true}];
-}
-
-message DeleteResponse {}
 
 message ListRequest {
   int32 limit = 1 [(buf.validate.field).int32 = {
@@ -54,10 +31,39 @@ message ListResponse {
   repeated User users = 1;
 }
 
+message CreateRequest {
+  string email = 1 [(buf.validate.field).string.email = true];
+  google.protobuf.Timestamp expires = 2 [(buf.validate.field).timestamp.gt_now = true];
+}
+
+message CreateResponse {
+  string code = 1;
+}
+
+message UpdateRequest {
+  User mod = 1;
+}
+
+message UpdateResponse {}
+
+message AttachRoleRequest {
+  string id = 1 [(buf.validate.field).string = {uuid: true}];
+  string role = 2 [(buf.validate.field).string = {uuid: true}];
+}
+
+message AttachRoleResponse {}
+
+message DeleteRequest {
+  string id = 1 [(buf.validate.field).string = {uuid: true}];
+}
+
+message DeleteResponse {}
+
 service UserService {
-  rpc Create(CreateRequest) returns (CreateResponse);
   rpc Get(GetRequest) returns (GetResponse);
-  rpc Update(UpdateRequest) returns (UpdateResponse);
-  rpc Delete(DeleteRequest) returns (DeleteResponse);
   rpc List(ListRequest) returns (ListResponse);
+  rpc Create(CreateRequest) returns (CreateResponse);
+  rpc Update(UpdateRequest) returns (UpdateResponse);
+  rpc AttachRole(AttachRoleRequest) returns (AttachRoleResponse);
+  rpc Delete(DeleteRequest) returns (DeleteResponse);
 }

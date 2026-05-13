@@ -16,8 +16,7 @@
 	settings({
 		components: {
 			Button: {
-				classes: 'cursor-pointer',
-				variant: 'outline'
+				classes: 'cursor-pointer'
 			}
 		}
 	});
