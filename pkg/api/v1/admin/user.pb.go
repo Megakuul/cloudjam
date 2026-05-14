@@ -27,15 +27,16 @@ type User struct {
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Username      string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
 	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	Email         string                 `protobuf:"bytes,4,opt,name=email,proto3" json:"email,omitempty"`
-	CreatedAt     int64                  `protobuf:"varint,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	Score         float64                `protobuf:"fixed64,6,opt,name=score,proto3" json:"score,omitempty"`
-	MaxScore      float64                `protobuf:"fixed64,7,opt,name=max_score,json=maxScore,proto3" json:"max_score,omitempty"`
-	Streak        int64                  `protobuf:"varint,8,opt,name=streak,proto3" json:"streak,omitempty"`
-	MaxStreak     int64                  `protobuf:"varint,9,opt,name=max_streak,json=maxStreak,proto3" json:"max_streak,omitempty"`
-	Privileged    bool                   `protobuf:"varint,10,opt,name=privileged,proto3" json:"privileged,omitempty"`
-	Role          string                 `protobuf:"bytes,11,opt,name=role,proto3" json:"role,omitempty"`
-	Scope         string                 `protobuf:"bytes,12,opt,name=scope,proto3" json:"scope,omitempty"`
+	Organization  string                 `protobuf:"bytes,4,opt,name=organization,proto3" json:"organization,omitempty"`
+	Email         string                 `protobuf:"bytes,5,opt,name=email,proto3" json:"email,omitempty"`
+	CreatedAt     int64                  `protobuf:"varint,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	Score         float64                `protobuf:"fixed64,7,opt,name=score,proto3" json:"score,omitempty"`
+	MaxScore      float64                `protobuf:"fixed64,8,opt,name=max_score,json=maxScore,proto3" json:"max_score,omitempty"`
+	Streak        int64                  `protobuf:"varint,9,opt,name=streak,proto3" json:"streak,omitempty"`
+	MaxStreak     int64                  `protobuf:"varint,10,opt,name=max_streak,json=maxStreak,proto3" json:"max_streak,omitempty"`
+	Privileged    bool                   `protobuf:"varint,11,opt,name=privileged,proto3" json:"privileged,omitempty"`
+	Role          string                 `protobuf:"bytes,12,opt,name=role,proto3" json:"role,omitempty"`
+	Scope         string                 `protobuf:"bytes,13,opt,name=scope,proto3" json:"scope,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -87,6 +88,13 @@ func (x *User) GetUsername() string {
 func (x *User) GetDescription() string {
 	if x != nil {
 		return x.Description
+	}
+	return ""
+}
+
+func (x *User) GetOrganization() string {
+	if x != nil {
+		return x.Organization
 	}
 	return ""
 }
@@ -158,25 +166,26 @@ var File_v1_admin_user_proto protoreflect.FileDescriptor
 
 const file_v1_admin_user_proto_rawDesc = "" +
 	"\n" +
-	"\x13v1/admin/user.proto\x12\bv1.admin\x1a\x1bbuf/validate/validate.proto\"\xdc\x02\n" +
+	"\x13v1/admin/user.proto\x12\bv1.admin\x1a\x1bbuf/validate/validate.proto\"\x89\x03\n" +
 	"\x04User\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12%\n" +
 	"\busername\x18\x02 \x01(\tB\t\xbaH\x06r\x04\x10\x04\x18\x14R\busername\x12+\n" +
-	"\vdescription\x18\x03 \x01(\tB\t\xbaH\x06r\x04\x10\x00\x182R\vdescription\x12\x1d\n" +
-	"\x05email\x18\x04 \x01(\tB\a\xbaH\x04r\x02`\x01R\x05email\x12\x1d\n" +
+	"\vdescription\x18\x03 \x01(\tB\t\xbaH\x06r\x04\x10\x00\x182R\vdescription\x12+\n" +
+	"\forganization\x18\x04 \x01(\tB\a\xbaH\x04r\x02\x18\x14R\forganization\x12\x1d\n" +
+	"\x05email\x18\x05 \x01(\tB\a\xbaH\x04r\x02`\x01R\x05email\x12\x1d\n" +
 	"\n" +
-	"created_at\x18\x05 \x01(\x03R\tcreatedAt\x12\x14\n" +
-	"\x05score\x18\x06 \x01(\x01R\x05score\x12\x1b\n" +
-	"\tmax_score\x18\a \x01(\x01R\bmaxScore\x12\x16\n" +
-	"\x06streak\x18\b \x01(\x03R\x06streak\x12\x1d\n" +
+	"created_at\x18\x06 \x01(\x03R\tcreatedAt\x12\x14\n" +
+	"\x05score\x18\a \x01(\x01R\x05score\x12\x1b\n" +
+	"\tmax_score\x18\b \x01(\x01R\bmaxScore\x12\x16\n" +
+	"\x06streak\x18\t \x01(\x03R\x06streak\x12\x1d\n" +
 	"\n" +
-	"max_streak\x18\t \x01(\x03R\tmaxStreak\x12\x1e\n" +
+	"max_streak\x18\n" +
+	" \x01(\x03R\tmaxStreak\x12\x1e\n" +
 	"\n" +
-	"privileged\x18\n" +
-	" \x01(\bR\n" +
+	"privileged\x18\v \x01(\bR\n" +
 	"privileged\x12\x12\n" +
-	"\x04role\x18\v \x01(\tR\x04role\x12\x14\n" +
-	"\x05scope\x18\f \x01(\tR\x05scopeB1Z/codeberg.org/megakuul/cloudjam/pkg/api/v1/adminb\x06proto3"
+	"\x04role\x18\f \x01(\tR\x04role\x12\x14\n" +
+	"\x05scope\x18\r \x01(\tR\x05scopeB1Z/codeberg.org/megakuul/cloudjam/pkg/api/v1/adminb\x06proto3"
 
 var (
 	file_v1_admin_user_proto_rawDescOnce sync.Once

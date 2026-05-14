@@ -11,7 +11,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/admin/user.proto.
  */
 export const file_v1_admin_user: GenFile = /*@__PURE__*/
-  fileDesc("ChN2MS9hZG1pbi91c2VyLnByb3RvEgh2MS5hZG1pbiLyAQoEVXNlchIKCgJpZBgBIAEoCRIbCgh1c2VybmFtZRgCIAEoCUIJukgGcgQQBBgUEh4KC2Rlc2NyaXB0aW9uGAMgASgJQgm6SAZyBBAAGDISFgoFZW1haWwYBCABKAlCB7pIBHICYAESEgoKY3JlYXRlZF9hdBgFIAEoAxINCgVzY29yZRgGIAEoARIRCgltYXhfc2NvcmUYByABKAESDgoGc3RyZWFrGAggASgDEhIKCm1heF9zdHJlYWsYCSABKAMSEgoKcHJpdmlsZWdlZBgKIAEoCBIMCgRyb2xlGAsgASgJEg0KBXNjb3BlGAwgASgJQjFaL2NvZGViZXJnLm9yZy9tZWdha3V1bC9jbG91ZGphbS9wa2cvYXBpL3YxL2FkbWluYgZwcm90bzM", [file_buf_validate_validate]);
+  fileDesc("ChN2MS9hZG1pbi91c2VyLnByb3RvEgh2MS5hZG1pbiKRAgoEVXNlchIKCgJpZBgBIAEoCRIbCgh1c2VybmFtZRgCIAEoCUIJukgGcgQQBBgUEh4KC2Rlc2NyaXB0aW9uGAMgASgJQgm6SAZyBBAAGDISHQoMb3JnYW5pemF0aW9uGAQgASgJQge6SARyAhgUEhYKBWVtYWlsGAUgASgJQge6SARyAmABEhIKCmNyZWF0ZWRfYXQYBiABKAMSDQoFc2NvcmUYByABKAESEQoJbWF4X3Njb3JlGAggASgBEg4KBnN0cmVhaxgJIAEoAxISCgptYXhfc3RyZWFrGAogASgDEhIKCnByaXZpbGVnZWQYCyABKAgSDAoEcm9sZRgMIAEoCRINCgVzY29wZRgNIAEoCUIxWi9jb2RlYmVyZy5vcmcvbWVnYWt1dWwvY2xvdWRqYW0vcGtnL2FwaS92MS9hZG1pbmIGcHJvdG8z", [file_buf_validate_validate]);
 
 /**
  * @generated from message v1.admin.User
@@ -33,47 +33,52 @@ export type User = Message<"v1.admin.User"> & {
   description: string;
 
   /**
-   * @generated from field: string email = 4;
+   * @generated from field: string organization = 4;
+   */
+  organization: string;
+
+  /**
+   * @generated from field: string email = 5;
    */
   email: string;
 
   /**
-   * @generated from field: int64 created_at = 5;
+   * @generated from field: int64 created_at = 6;
    */
   createdAt: bigint;
 
   /**
-   * @generated from field: double score = 6;
+   * @generated from field: double score = 7;
    */
   score: number;
 
   /**
-   * @generated from field: double max_score = 7;
+   * @generated from field: double max_score = 8;
    */
   maxScore: number;
 
   /**
-   * @generated from field: int64 streak = 8;
+   * @generated from field: int64 streak = 9;
    */
   streak: bigint;
 
   /**
-   * @generated from field: int64 max_streak = 9;
+   * @generated from field: int64 max_streak = 10;
    */
   maxStreak: bigint;
 
   /**
-   * @generated from field: bool privileged = 10;
+   * @generated from field: bool privileged = 11;
    */
   privileged: boolean;
 
   /**
-   * @generated from field: string role = 11;
+   * @generated from field: string role = 12;
    */
   role: string;
 
   /**
-   * @generated from field: string scope = 12;
+   * @generated from field: string scope = 13;
    */
   scope: string;
 };

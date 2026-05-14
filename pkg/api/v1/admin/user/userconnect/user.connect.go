@@ -41,8 +41,9 @@ const (
 	UserServiceCreateProcedure = "/v1.admin.user.UserService/Create"
 	// UserServiceUpdateProcedure is the fully-qualified name of the UserService's Update RPC.
 	UserServiceUpdateProcedure = "/v1.admin.user.UserService/Update"
-	// UserServiceAttachRoleProcedure is the fully-qualified name of the UserService's AttachRole RPC.
-	UserServiceAttachRoleProcedure = "/v1.admin.user.UserService/AttachRole"
+	// UserServiceResetPasswordProcedure is the fully-qualified name of the UserService's ResetPassword
+	// RPC.
+	UserServiceResetPasswordProcedure = "/v1.admin.user.UserService/ResetPassword"
 	// UserServiceDeleteProcedure is the fully-qualified name of the UserService's Delete RPC.
 	UserServiceDeleteProcedure = "/v1.admin.user.UserService/Delete"
 )
@@ -53,7 +54,7 @@ type UserServiceClient interface {
 	List(context.Context, *connect.Request[user.ListRequest]) (*connect.Response[user.ListResponse], error)
 	Create(context.Context, *connect.Request[user.CreateRequest]) (*connect.Response[user.CreateResponse], error)
 	Update(context.Context, *connect.Request[user.UpdateRequest]) (*connect.Response[user.UpdateResponse], error)
-	AttachRole(context.Context, *connect.Request[user.AttachRoleRequest]) (*connect.Response[user.AttachRoleResponse], error)
+	ResetPassword(context.Context, *connect.Request[user.ResetPasswordRequest]) (*connect.Response[user.ResetPasswordResponse], error)
 	Delete(context.Context, *connect.Request[user.DeleteRequest]) (*connect.Response[user.DeleteResponse], error)
 }
 
@@ -92,10 +93,10 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(userServiceMethods.ByName("Update")),
 			connect.WithClientOptions(opts...),
 		),
-		attachRole: connect.NewClient[user.AttachRoleRequest, user.AttachRoleResponse](
+		resetPassword: connect.NewClient[user.ResetPasswordRequest, user.ResetPasswordResponse](
 			httpClient,
-			baseURL+UserServiceAttachRoleProcedure,
-			connect.WithSchema(userServiceMethods.ByName("AttachRole")),
+			baseURL+UserServiceResetPasswordProcedure,
+			connect.WithSchema(userServiceMethods.ByName("ResetPassword")),
 			connect.WithClientOptions(opts...),
 		),
 		delete: connect.NewClient[user.DeleteRequest, user.DeleteResponse](
@@ -109,12 +110,12 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 
 // userServiceClient implements UserServiceClient.
 type userServiceClient struct {
-	get        *connect.Client[user.GetRequest, user.GetResponse]
-	list       *connect.Client[user.ListRequest, user.ListResponse]
-	create     *connect.Client[user.CreateRequest, user.CreateResponse]
-	update     *connect.Client[user.UpdateRequest, user.UpdateResponse]
-	attachRole *connect.Client[user.AttachRoleRequest, user.AttachRoleResponse]
-	delete     *connect.Client[user.DeleteRequest, user.DeleteResponse]
+	get           *connect.Client[user.GetRequest, user.GetResponse]
+	list          *connect.Client[user.ListRequest, user.ListResponse]
+	create        *connect.Client[user.CreateRequest, user.CreateResponse]
+	update        *connect.Client[user.UpdateRequest, user.UpdateResponse]
+	resetPassword *connect.Client[user.ResetPasswordRequest, user.ResetPasswordResponse]
+	delete        *connect.Client[user.DeleteRequest, user.DeleteResponse]
 }
 
 // Get calls v1.admin.user.UserService.Get.
@@ -137,9 +138,9 @@ func (c *userServiceClient) Update(ctx context.Context, req *connect.Request[use
 	return c.update.CallUnary(ctx, req)
 }
 
-// AttachRole calls v1.admin.user.UserService.AttachRole.
-func (c *userServiceClient) AttachRole(ctx context.Context, req *connect.Request[user.AttachRoleRequest]) (*connect.Response[user.AttachRoleResponse], error) {
-	return c.attachRole.CallUnary(ctx, req)
+// ResetPassword calls v1.admin.user.UserService.ResetPassword.
+func (c *userServiceClient) ResetPassword(ctx context.Context, req *connect.Request[user.ResetPasswordRequest]) (*connect.Response[user.ResetPasswordResponse], error) {
+	return c.resetPassword.CallUnary(ctx, req)
 }
 
 // Delete calls v1.admin.user.UserService.Delete.
@@ -153,7 +154,7 @@ type UserServiceHandler interface {
 	List(context.Context, *connect.Request[user.ListRequest]) (*connect.Response[user.ListResponse], error)
 	Create(context.Context, *connect.Request[user.CreateRequest]) (*connect.Response[user.CreateResponse], error)
 	Update(context.Context, *connect.Request[user.UpdateRequest]) (*connect.Response[user.UpdateResponse], error)
-	AttachRole(context.Context, *connect.Request[user.AttachRoleRequest]) (*connect.Response[user.AttachRoleResponse], error)
+	ResetPassword(context.Context, *connect.Request[user.ResetPasswordRequest]) (*connect.Response[user.ResetPasswordResponse], error)
 	Delete(context.Context, *connect.Request[user.DeleteRequest]) (*connect.Response[user.DeleteResponse], error)
 }
 
@@ -188,10 +189,10 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(userServiceMethods.ByName("Update")),
 		connect.WithHandlerOptions(opts...),
 	)
-	userServiceAttachRoleHandler := connect.NewUnaryHandler(
-		UserServiceAttachRoleProcedure,
-		svc.AttachRole,
-		connect.WithSchema(userServiceMethods.ByName("AttachRole")),
+	userServiceResetPasswordHandler := connect.NewUnaryHandler(
+		UserServiceResetPasswordProcedure,
+		svc.ResetPassword,
+		connect.WithSchema(userServiceMethods.ByName("ResetPassword")),
 		connect.WithHandlerOptions(opts...),
 	)
 	userServiceDeleteHandler := connect.NewUnaryHandler(
@@ -210,8 +211,8 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 			userServiceCreateHandler.ServeHTTP(w, r)
 		case UserServiceUpdateProcedure:
 			userServiceUpdateHandler.ServeHTTP(w, r)
-		case UserServiceAttachRoleProcedure:
-			userServiceAttachRoleHandler.ServeHTTP(w, r)
+		case UserServiceResetPasswordProcedure:
+			userServiceResetPasswordHandler.ServeHTTP(w, r)
 		case UserServiceDeleteProcedure:
 			userServiceDeleteHandler.ServeHTTP(w, r)
 		default:
@@ -239,8 +240,8 @@ func (UnimplementedUserServiceHandler) Update(context.Context, *connect.Request[
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.admin.user.UserService.Update is not implemented"))
 }
 
-func (UnimplementedUserServiceHandler) AttachRole(context.Context, *connect.Request[user.AttachRoleRequest]) (*connect.Response[user.AttachRoleResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.admin.user.UserService.AttachRole is not implemented"))
+func (UnimplementedUserServiceHandler) ResetPassword(context.Context, *connect.Request[user.ResetPasswordRequest]) (*connect.Response[user.ResetPasswordResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.admin.user.UserService.ResetPassword is not implemented"))
 }
 
 func (UnimplementedUserServiceHandler) Delete(context.Context, *connect.Request[user.DeleteRequest]) (*connect.Response[user.DeleteResponse], error) {

@@ -51,7 +51,7 @@ func (s *Server) Register(ctx context.Context, req *connect.Request[auth.Registe
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch user invitation"))
 	}
 	if match, err := argon2id.ComparePasswordAndHash(req.Msg.Code, authCreds.Code); err != nil || !match {
-		l.Info("invalid registration attempt detected (incorrect password)", "ip", req.Peer().Addr, "email", req.Msg.Email)
+		l.Info("invalid registration attempt detected (incorrect invitation code)", "ip", req.Peer().Addr, "email", req.Msg.Email)
 		return nil, connect.NewError(connect.CodeUnauthenticated, fmt.Errorf("incorrect email or invitation code"))
 	}
 	if authCreds.CodeExpiration.Before(time.Now()) {
@@ -80,9 +80,8 @@ func (s *Server) Register(ctx context.Context, req *connect.Request[auth.Registe
 	}
 
 	err = s.coll.Actions().AtomicWrites().Update(linkedUser, docstore.Mods{
-		"username":   req.Msg.Username,
-		"email":      req.Msg.Email,
-		"created_at": time.Now(),
+		"username": req.Msg.Username,
+		"email":    req.Msg.Email,
 	}).Put(authCreds).Do(ctx)
 	if err != nil {
 		l.Error(fmt.Sprintf("failed to create user and disable invitation: %v", err))

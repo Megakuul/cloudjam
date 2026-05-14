@@ -32,7 +32,7 @@ message ListResponse {
 }
 
 message CreateRequest {
-  string email = 1 [(buf.validate.field).string.email = true];
+  User init = 1;
   google.protobuf.Timestamp expires = 2 [(buf.validate.field).timestamp.gt_now = true];
 }
 
@@ -46,12 +46,14 @@ message UpdateRequest {
 
 message UpdateResponse {}
 
-message AttachRoleRequest {
-  string id = 1 [(buf.validate.field).string = {uuid: true}];
-  string role = 2 [(buf.validate.field).string = {uuid: true}];
+message ResetPasswordRequest {
+  string email = 1 [(buf.validate.field).string.email = true];
+  google.protobuf.Timestamp expires = 2 [(buf.validate.field).timestamp.gt_now = true];
 }
 
-message AttachRoleResponse {}
+message ResetPasswordResponse {
+  string code = 1;
+}
 
 message DeleteRequest {
   string id = 1 [(buf.validate.field).string = {uuid: true}];
@@ -64,6 +66,6 @@ service UserService {
   rpc List(ListRequest) returns (ListResponse);
   rpc Create(CreateRequest) returns (CreateResponse);
   rpc Update(UpdateRequest) returns (UpdateResponse);
-  rpc AttachRole(AttachRoleRequest) returns (AttachRoleResponse);
+  rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse);
   rpc Delete(DeleteRequest) returns (DeleteResponse);
 }

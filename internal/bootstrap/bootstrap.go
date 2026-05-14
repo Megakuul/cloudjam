@@ -43,14 +43,16 @@ func CreateAdministrator(ctx context.Context, email string, coll *docstore.Colle
 		Scope:          role.ScopeAdmin,
 	}
 	adminRole := &role.Data{
-		PK:             role.Key.New("0"),
-		SK:             role.SortData.New(""),
-		Name:           "admin",
-		Description:    "Provides unlimited administrator access",
-		Builtin:        true,
-		ProcedureExprs: []string{"**"},
-		Scopes:         []role.Scope{role.ScopeAdmin},
-		Scope:          role.ScopeAdmin,
+		PK:          role.Key.New("0"),
+		SK:          role.SortData.New(""),
+		Name:        "admin",
+		Description: "Provides unlimited administrator access",
+		Builtin:     true,
+		Permissions: map[role.Scope][]string{
+			role.ScopeSelf:  {"**"},
+			role.ScopeAdmin: {"**"},
+		},
+		Scope: role.ScopeAdmin,
 	}
 
 	if err = coll.Actions().Create(admin).Create(adminCreds).Create(adminRole).Do(ctx); err != nil {

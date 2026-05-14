@@ -11,6 +11,9 @@ const SortData model.Sort = "DATA"
 type Scope string
 
 const (
+	// builtin pseudo scope (not attached to any resource but allows to operate on your owned resources)
+	ScopeSelf Scope = "self"
+	// builtin scope that allows privilege escalation (hardcoded) in `ConfigureRole` for root access.
 	ScopeAdmin Scope = "admin"
 )
 
@@ -20,10 +23,7 @@ type Data struct {
 	Name        string               `docstore:"name"`
 	Description string               `docstore:"description"`
 	Builtin     bool                 `docstore:"builtin"`
-	// ProcedureExprs defines ACTION access
-	ProcedureExprs []string `docstore:"procedure_exprs"`
-	// Scopes define DATA access
-	Scopes []Scope `docstore:"scopes"`
+	Permissions map[Scope][]string   `docstore:"permissions"`
 
 	Scope            Scope `docstore:"scope"`
 	DocstoreRevision any

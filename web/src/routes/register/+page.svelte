@@ -5,10 +5,19 @@
 	import { RegisterRequestSchema } from '$lib/sdk/v1/auth/auth_pb';
 	import { Glue, Submit } from '$lib';
 	import { goto } from '$app/navigation';
+	import { onMount } from 'svelte';
+	import { page } from '$app/state';
 
 	let request = $state(create(RegisterRequestSchema, {}));
 	let loading = $state(false);
 	let error = $state('');
+
+	onMount(() => {
+		request.email = page.url.searchParams.get('email') ?? '';
+		request.username = page.url.searchParams.get('username') ?? '';
+		request.code = page.url.searchParams.get('code') ?? '';
+		history.replaceState(null, '', '/register');
+	});
 </script>
 
 <svelte:head>

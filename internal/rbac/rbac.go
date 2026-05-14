@@ -39,8 +39,9 @@ func (v *Authorizer) Check(ctx context.Context, subject, procedure string) (time
 	v.cacheLock.RLock()
 	cachedPolicy, ok := v.cache[subject]
 	if ok {
-		if cachedPolicy.check(procedure) {
-			return cachedPolicy.expires, nil, nil
+		if scopes := cachedPolicy.check(procedure); len(scopes) > 0 {
+			v.cacheLock.RUnlock()
+			return cachedPolicy.expires, scopes, nil
 		}
 	}
 	v.cacheLock.RUnlock()
@@ -59,28 +60,30 @@ func (v *Authorizer) Check(ctx context.Context, subject, procedure string) (time
 		Where("sk", "=", role.SortData.New("")).
 		Get(ctx)
 	defer roleIter.Stop()
-	role := &role.Data{}
-	if err := roleIter.Next(ctx, role); err != nil {
+	roleData := &role.Data{}
+	if err := roleIter.Next(ctx, roleData); err != nil {
 		return time.Time{}, nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("role not found: %w", err))
 	}
 	policy := policy{
-		expires: time.Now().Add(v.cacheTimeout),
-		exprs:   []glob.Glob{},
+		expires:     time.Now().Add(v.cacheTimeout),
+		permissions: map[role.Scope][]glob.Glob{},
 	}
-	for _, rawExpr := range role.ProcedureExprs {
-		expr, err := glob.Compile(rawExpr, '/')
-		if err != nil {
-			return time.Time{}, nil, connect.NewError(connect.CodeInternal, fmt.Errorf("role policy contains invalid matcher: %v", err))
+	for scope, exprs := range roleData.Permissions {
+		for _, expr := range exprs {
+			compiledExpr, err := glob.Compile(string(expr), '/')
+			if err != nil {
+				return time.Time{}, nil, connect.NewError(connect.CodeInternal, fmt.Errorf("role policy contains invalid matcher: %v", err))
+			}
+			policy.permissions[scope] = append(policy.permissions[scope], compiledExpr)
 		}
-		policy.exprs = append(policy.exprs, expr)
 	}
 
 	v.cacheLock.Lock()
 	defer v.cacheLock.Unlock()
 	v.cache[subject] = policy
 
-	if policy.check(procedure) {
-		return policy.expires, role.Scopes, nil
+	if scopes := policy.check(procedure); len(scopes) > 0 {
+		return policy.expires, scopes, nil
 	}
 	return time.Time{}, nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("permission denied"))
 }

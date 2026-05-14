@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package v1.admin.rbac;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+import "v1/admin/role.proto";
+
+option go_package = "codeberg.org/megakuul/cloudjam/pkg/api/v1/admin/rbac";
+
+message ConfigureRoleRequest {
+  Role mod = 1;
+}
+
+message ConfigureRoleResponse {}
+
+message AttachRoleRequest {
+  string id = 1 [(buf.validate.field).string = {uuid: true}];
+  string role = 2 [(buf.validate.field).string = {uuid: true}];
+}
+
+message AttachRoleResponse {}
+
+enum Resource {
+  // resources are named after <PkSk> from the model.
+  UserData = 0;
+  CredsData = 1;
+  RoleData = 2;
+}
+
+message AttachScopeRequest {
+  Resource resource = 1;
+  string id = 2 [(buf.validate.field).string = {uuid: true}];
+  string scope = 3;
+}
+
+message AttachScopeResponse {}
+
+service RBACService {
+  rpc ConfigureRole(ConfigureRoleRequest) returns (ConfigureRoleResponse);
+  rpc AttachRole(AttachRoleRequest) returns (AttachRoleResponse);
+  rpc AttachScope(AttachScopeRequest) returns (AttachScopeResponse);
+}

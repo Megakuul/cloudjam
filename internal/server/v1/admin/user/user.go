@@ -8,6 +8,7 @@ import (
 	"io"
 	"log/slog"
 	"slices"
+	"time"
 
 	"codeberg.org/megakuul/cloudjam/internal/auth"
 	"codeberg.org/megakuul/cloudjam/internal/model/creds"
@@ -37,11 +38,16 @@ func New(logger *slog.Logger, coll *docstore.Collection) *Server {
 func (s *Server) Get(ctx context.Context, req *connect.Request[user.GetRequest]) (*connect.Response[user.GetResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
 
-	query := s.coll.Query().
-		Where("pk", "=", usermodel.Key.New(auth.Claims(ctx).Subject)).
-		Where("sk", "=", usermodel.SortData.New(""))
-	// if the requested user is not the requesting user perform scope check.
-	if req.Msg.Id != "" && req.Msg.Id != auth.Claims(ctx).Subject {
+	var query *docstore.Query
+	if req.Msg.Id == "" || req.Msg.Id == auth.Claims(ctx).Subject {
+		if !slices.Contains(auth.Scopes(ctx), role.ScopeSelf) {
+			return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("no self management access"))
+		}
+		query = s.coll.Query().
+			Where("pk", "=", usermodel.Key.New(auth.Claims(ctx).Subject)).
+			Where("sk", "=", usermodel.SortData.New(""))
+	} else {
+		// if the requested user is not the requesting user perform scope check.
 		query = s.coll.Query().
 			Where("pk", "=", usermodel.Key.New(req.Msg.Id)).
 			Where("sk", "=", usermodel.SortData.New("")).
@@ -114,21 +120,44 @@ func (s *Server) List(ctx context.Context, req *connect.Request[user.ListRequest
 
 func (s *Server) Create(ctx context.Context, req *connect.Request[user.CreateRequest]) (*connect.Response[user.CreateResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
+
+	if !slices.Contains(auth.Scopes(ctx), role.Scope(req.Msg.Init.Scope)) {
+		return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("can't attach a scope you don't possess"))
+	}
+
 	code := rand.Text()
 	codeHash, err := argon2id.CreateHash(code, argon2id.DefaultParams)
 	if err != nil {
 		l.Error(fmt.Sprintf("failed to construct argon2id hash for code: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to construct invitation code"))
 	}
-	err = s.coll.Create(ctx, &creds.Data{
-		PK:             creds.Key.New(req.Msg.Email),
-		SK:             creds.SortData.New(""),
-		Active:         false,
-		UserId:         uuid.NewString(),
-		Code:           codeHash,
-		CodeExpiration: req.Msg.Expires.AsTime(),
-		Scope:          role.ScopeAdmin,
-	})
+	userId := uuid.NewString()
+	err = s.coll.Actions().AtomicWrites().
+		Create(&creds.Data{
+			PK:             creds.Key.New(req.Msg.Init.Email),
+			SK:             creds.SortData.New(""),
+			Active:         false,
+			UserId:         userId,
+			Code:           codeHash,
+			CodeExpiration: req.Msg.Expires.AsTime(),
+			Scope:          role.Scope(req.Msg.Init.Scope),
+		}).
+		Create(&usermodel.Data{
+			PK:           usermodel.Key.New(userId),
+			SK:           usermodel.SortData.New(""),
+			Email:        req.Msg.Init.Email,
+			Username:     req.Msg.Init.Username,
+			Description:  req.Msg.Init.Description,
+			Organization: req.Msg.Init.Organization,
+			Score:        0,
+			MaxScore:     0,
+			Streak:       0,
+			MaxStreak:    0,
+			Privileged:   false,
+			CreatedAt:    time.Now(),
+			Scope:        role.Scope(req.Msg.Init.Scope),
+		}).
+		Do(ctx)
 	if err != nil {
 		if errors.Is(err, gcerrors.ErrAlreadyExists) {
 			return nil, connect.NewError(connect.CodeAlreadyExists, fmt.Errorf("user does already exist"))
@@ -164,17 +193,17 @@ func (s *Server) Update(ctx context.Context, req *connect.Request[user.UpdateReq
 		if userData.Privileged {
 			return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("privileged users cannot be modified"))
 		}
-		if !slices.Contains(auth.Scopes(ctx), role.Scope(req.Msg.Mod.Scope)) {
-			return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("cannot move user to unauthorized scope"))
-		}
 		err := s.coll.Update(ctx, userData, docstore.Mods{
-			"scope": req.Msg.Mod.Scope,
+			"organization": req.Msg.Mod.Organization,
 		})
 		if err != nil {
 			l.Error(fmt.Sprintf("failed to update user: %v", err))
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update user"))
 		}
 	} else {
+		if !slices.Contains(auth.Scopes(ctx), role.ScopeSelf) {
+			return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("no self management access"))
+		}
 		userIter := s.coll.Query().
 			Where("pk", "=", usermodel.Key.New(auth.Claims(ctx).Subject)).
 			Where("sk", "=", usermodel.SortData.New("")).
@@ -200,7 +229,62 @@ func (s *Server) Update(ctx context.Context, req *connect.Request[user.UpdateReq
 	return &connect.Response[user.UpdateResponse]{Msg: &user.UpdateResponse{}}, nil
 }
 
-func (s *Server) AttachRole(ctx context.Context, req *connect.Request[user.AttachRoleRequest]) (*connect.Response[user.AttachRoleResponse], error) {
+func (s *Server) ResetPassword(ctx context.Context, req *connect.Request[user.ResetPasswordRequest]) (*connect.Response[user.ResetPasswordResponse], error) {
+	l := s.logger.With("proc", req.Spec().Procedure)
+
+	code := rand.Text()
+	codeHash, err := argon2id.CreateHash(code, argon2id.DefaultParams)
+	if err != nil {
+		l.Error(fmt.Sprintf("failed to construct argon2id hash for code: %v", err))
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to construct invitation code"))
+	}
+
+	var credsQuery *docstore.Query
+	if req.Msg.Email == auth.Claims(ctx).Email {
+		if !slices.Contains(auth.Scopes(ctx), role.ScopeSelf) {
+			return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("no self management access"))
+		}
+		credsQuery = s.coll.Query().
+			Where("pk", "=", creds.Key.New(auth.Claims(ctx).Email)).
+			Where("sk", "=", usermodel.SortData.New("")).
+			Where("user_id", "=", auth.Claims(ctx).Subject)
+	} else {
+		credsQuery = s.coll.Query().
+			Where("pk", "=", creds.Key.New(req.Msg.Email)).
+			Where("sk", "=", usermodel.SortData.New("")).
+			Where("scope", "in", auth.Scopes(ctx))
+	}
+
+	credsIter := credsQuery.Get(ctx)
+	defer credsIter.Stop()
+	credsData := &creds.Data{}
+	if err := credsIter.Next(ctx, credsData); err != nil {
+		if errors.Is(err, gcerrors.ErrNotFound) || errors.Is(err, io.EOF) {
+			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("user does not exist"))
+		}
+		l.Error(fmt.Sprintf("failed to fetch user credentials: %v", err))
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch user credentials"))
+	}
+
+	err = s.coll.Update(ctx, credsData, docstore.Mods{
+		"code":            codeHash,
+		"code_expiration": req.Msg.Expires.AsTime(),
+	})
+	if err != nil {
+		if errors.Is(err, gcerrors.ErrAlreadyExists) {
+			return nil, connect.NewError(connect.CodeAlreadyExists, fmt.Errorf("user does already exist"))
+		}
+		l.Error(fmt.Sprintf("failed to create user invitation: %v", err))
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create user invitation"))
+	}
+	return &connect.Response[user.ResetPasswordResponse]{
+		Msg: &user.ResetPasswordResponse{
+			Code: code,
+		},
+	}, nil
+}
+
+func (s *Server) Delete(ctx context.Context, req *connect.Request[user.DeleteRequest]) (*connect.Response[user.DeleteResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
 
 	userIter := s.coll.Query().
@@ -216,35 +300,13 @@ func (s *Server) AttachRole(ctx context.Context, req *connect.Request[user.Attac
 		l.Error(fmt.Sprintf("failed to fetch user: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch user"))
 	}
-	// load role to ensure A) it exists and B) the requestor has access to its scope.
-	roleIter := s.coll.Query().
-		Where("pk", "=", role.Key.New(req.Msg.Role)).
-		Where("sk", "=", role.SortData.New("")).
-		Where("scope", "in", auth.Scopes(ctx)).Get(ctx)
-	defer roleIter.Stop()
-	roleData := &role.Data{}
-	if err := roleIter.Next(ctx, roleData); err != nil {
-		if errors.Is(err, gcerrors.ErrNotFound) || errors.Is(err, io.EOF) {
-			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("role does not exist"))
-		}
-		l.Error(fmt.Sprintf("failed to fetch role: %v", err))
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch role"))
-	}
-
 	if userData.Privileged {
-		return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("privileged users cannot be modified"))
+		return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("privileged users cannot be deleted"))
 	}
-
-	err := s.coll.Update(ctx, userData, docstore.Mods{
-		"role": req.Msg.Role,
-	})
+	err := s.coll.Delete(ctx, userData)
 	if err != nil {
-		l.Error(fmt.Sprintf("failed to attach role: %v", err))
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to attach role"))
+		l.Error(fmt.Sprintf("failed to update user: %v", err))
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update user"))
 	}
-	return &connect.Response[user.AttachRoleResponse]{Msg: &user.AttachRoleResponse{}}, nil
-}
-
-func (s *Server) Delete(ctx context.Context, req *connect.Request[user.DeleteRequest]) (*connect.Response[user.DeleteResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, nil)
+	return &connect.Response[user.DeleteResponse]{Msg: &user.DeleteResponse{}}, nil
 }

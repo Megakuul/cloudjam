@@ -4,7 +4,12 @@
 	import { create } from '@bufbuild/protobuf';
 	import { Glue, setToken, Submit } from '$lib';
 	import { onMount } from 'svelte';
-	import { GetRequestSchema, UpdateRequestSchema } from '$lib/sdk/v1/admin/user/user_pb';
+	import { timestampFromDate } from '@bufbuild/protobuf/wkt';
+	import {
+		GetRequestSchema,
+		ResetPasswordRequestSchema,
+		UpdateRequestSchema
+	} from '$lib/sdk/v1/admin/user/user_pb';
 	import { UserSchema, type User } from '$lib/sdk/v1/admin/user_pb';
 	import Gauge from './Gauge.svelte';
 	import { goto } from '$app/navigation';
@@ -109,28 +114,34 @@
 				</form>
 				<div class="w-full h-1 rounded-2xl lg:w-1 lg:h-64 bg-neutral/80"></div>
 				<div class="flex flex-col gap-8 justify-center items-start w-full lg:flex-row">
-					<Button icon={mdiEmailEditOutline} on:click={() => console.log('TODO')}
-						>Reset Email</Button
-					>
-					<Button icon={mdiFormTextboxPassword} on:click={() => console.log('TODO')}
-						>Change Password</Button
-					>
 					<Toggle let:on={open} let:toggle let:toggleOff>
-						<Button icon={mdiTrashCan} on:click={toggle} color="danger">Delete</Button>
+						<Button icon={mdiFormTextboxPassword} on:click={toggle}>Change Password</Button>
 						<Dialog {open} on:close={toggleOff}>
-							<div slot="title">Are you sure?</div>
-							<div class="py-3 px-6">
-								This will permanently delete your account and can not be undone!
-							</div>
+							<div slot="title">Reset password?</div>
+							<div class="py-3 px-6">This will take you back to the registration process.</div>
 							<div slot="actions">
 								<Button
 									on:click={() => {
-										console.log('TODO');
+										Submit(
+											async () => {
+												const resp = await Glue.user.resetPassword(
+													create(ResetPasswordRequestSchema, {
+														email: user?.email,
+														expires: timestampFromDate(new Date(Date.now() + 10 * 60 * 1000)) // expires in 10 minutes
+													})
+												);
+												goto(
+													`/register?email=${user!.email}&username=${user!.username}&code=${resp.code}`
+												);
+											},
+											(e, l) => ((error = e), (loading = l))
+										);
 									}}
+									{loading}
 									variant="fill"
 									color="danger"
 								>
-									Yes, delete account
+									Yes, proceed
 								</Button>
 								<Button>Cancel</Button>
 							</div>
