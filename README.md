@@ -76,7 +76,7 @@ If at least 1 scope matches the action is executed with data permissions being r
 
 To keep critical code together and reducing dangerous misconfigurations the `rbac` API isolates all operations which can escalate privileges (e.g. `AttachRole`). Other APIs like `user` and `role` only manage metadata and should never even be capable of escalating privileges.
 
-> [!INFO]  
+> [!NOTE]  
 > Action permissions are ENFORCED via middleware, data permissions are be implemented manually per call.
 
 
