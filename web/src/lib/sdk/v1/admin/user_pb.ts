@@ -11,7 +11,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/admin/user.proto.
  */
 export const file_v1_admin_user: GenFile = /*@__PURE__*/
-  fileDesc("ChN2MS9hZG1pbi91c2VyLnByb3RvEgh2MS5hZG1pbiKRAgoEVXNlchIKCgJpZBgBIAEoCRIbCgh1c2VybmFtZRgCIAEoCUIJukgGcgQQBBgUEh4KC2Rlc2NyaXB0aW9uGAMgASgJQgm6SAZyBBAAGDISHQoMb3JnYW5pemF0aW9uGAQgASgJQge6SARyAhgUEhYKBWVtYWlsGAUgASgJQge6SARyAmABEhIKCmNyZWF0ZWRfYXQYBiABKAMSDQoFc2NvcmUYByABKAESEQoJbWF4X3Njb3JlGAggASgBEg4KBnN0cmVhaxgJIAEoAxISCgptYXhfc3RyZWFrGAogASgDEhIKCnByaXZpbGVnZWQYCyABKAgSDAoEcm9sZRgMIAEoCRINCgVzY29wZRgNIAEoCUIxWi9jb2RlYmVyZy5vcmcvbWVnYWt1dWwvY2xvdWRqYW0vcGtnL2FwaS92MS9hZG1pbmIGcHJvdG8z", [file_buf_validate_validate]);
+  fileDesc("ChN2MS9hZG1pbi91c2VyLnByb3RvEgh2MS5hZG1pbiKhAgoEVXNlchIKCgJpZBgBIAEoCRIOCgZwdWJfaWQYAiABKAkSGwoIdXNlcm5hbWUYAyABKAlCCbpIBnIEEAQYFBIeCgtkZXNjcmlwdGlvbhgEIAEoCUIJukgGcgQQABgyEh0KDG9yZ2FuaXphdGlvbhgFIAEoCUIHukgEcgIYFBIWCgVlbWFpbBgGIAEoCUIHukgEcgJgARISCgpjcmVhdGVkX2F0GAcgASgDEg0KBXNjb3JlGAggASgBEhEKCW1heF9zY29yZRgJIAEoARIOCgZzdHJlYWsYCiABKAMSEgoKbWF4X3N0cmVhaxgLIAEoAxISCgpwcml2aWxlZ2VkGAwgASgIEgwKBHJvbGUYDSABKAkSDQoFc2NvcGUYDiABKAlCMVovY29kZWJlcmcub3JnL21lZ2FrdXVsL2Nsb3VkamFtL3BrZy9hcGkvdjEvYWRtaW5iBnByb3RvMw", [file_buf_validate_validate]);
 
 /**
  * @generated from message v1.admin.User
@@ -23,62 +23,67 @@ export type User = Message<"v1.admin.User"> & {
   id: string;
 
   /**
-   * @generated from field: string username = 2;
+   * @generated from field: string pub_id = 2;
+   */
+  pubId: string;
+
+  /**
+   * @generated from field: string username = 3;
    */
   username: string;
 
   /**
-   * @generated from field: string description = 3;
+   * @generated from field: string description = 4;
    */
   description: string;
 
   /**
-   * @generated from field: string organization = 4;
+   * @generated from field: string organization = 5;
    */
   organization: string;
 
   /**
-   * @generated from field: string email = 5;
+   * @generated from field: string email = 6;
    */
   email: string;
 
   /**
-   * @generated from field: int64 created_at = 6;
+   * @generated from field: int64 created_at = 7;
    */
   createdAt: bigint;
 
   /**
-   * @generated from field: double score = 7;
+   * @generated from field: double score = 8;
    */
   score: number;
 
   /**
-   * @generated from field: double max_score = 8;
+   * @generated from field: double max_score = 9;
    */
   maxScore: number;
 
   /**
-   * @generated from field: int64 streak = 9;
+   * @generated from field: int64 streak = 10;
    */
   streak: bigint;
 
   /**
-   * @generated from field: int64 max_streak = 10;
+   * @generated from field: int64 max_streak = 11;
    */
   maxStreak: bigint;
 
   /**
-   * @generated from field: bool privileged = 11;
+   * @generated from field: bool privileged = 12;
    */
   privileged: boolean;
 
   /**
-   * @generated from field: string role = 12;
+   * @generated from field: string role = 13;
    */
   role: string;
 
   /**
-   * @generated from field: string scope = 13;
+   * @generated from field: string scope = 14;
    */
   scope: string;
 };

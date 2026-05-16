@@ -26,6 +26,7 @@
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-svelte": "^3.14.0",
 		"globals": "^17.3.0",
+		"jdenticon": "^3.3.0",
 		"mdsvex": "^0.12.6",
 		"prettier": "^3.8.1",
 		"prettier-plugin-svelte": "^3.4.1",

@@ -11,6 +11,7 @@ import (
 	"codeberg.org/megakuul/cloudjam/internal/model/role"
 	"codeberg.org/megakuul/cloudjam/internal/model/user"
 	"github.com/alexedwards/argon2id"
+	"github.com/google/uuid"
 	"gocloud.dev/docstore"
 	"gocloud.dev/gcerrors"
 )
@@ -19,14 +20,16 @@ import (
 // Returns the temporary authentication code if the user was generated.
 func CreateAdministrator(ctx context.Context, email string, coll *docstore.Collection) (string, error) {
 	admin := &user.Data{
-		PK:          user.Key.New("0"),
-		SK:          user.SortData.New(""),
-		Username:    "admin",
-		Description: "Administrator account",
-		Email:       email,
-		CreatedAt:   time.Now(),
-		Privileged:  true,
-		Role:        "0",
+		PK:           user.Key.New("0"),
+		SK:           user.SortData.New(""),
+		PubId:        uuid.NewString(),
+		Username:     "admin",
+		Description:  "Administrator account",
+		Organization: "Admin",
+		Email:        email,
+		CreatedAt:    time.Now(),
+		Privileged:   true,
+		Role:         "0",
 	}
 	password := rand.Text()
 	hash, err := argon2id.CreateHash(password, argon2id.DefaultParams)

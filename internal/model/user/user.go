@@ -14,6 +14,7 @@ const SortData model.Sort = "DATA"
 type Data struct {
 	PK           model.PartitionValue `docstore:"pk"`
 	SK           model.SortValue      `docstore:"sk"`
+	PubId        string               `docstore:"pub_id"`
 	Username     string               `docstore:"username"`
 	Description  string               `docstore:"description"`
 	Organization string               `docstore:"organization"`

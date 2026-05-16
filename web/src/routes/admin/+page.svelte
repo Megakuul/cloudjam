@@ -1,13 +1,5 @@
 <script lang="ts">
-	import {
-		mdiTrashCan,
-		mdiFormTextboxPassword,
-		mdiEmailEditOutline,
-		mdiCheckCircleOutline,
-		mdiCloseCircleOutline,
-		mdiPencil,
-		mdiLogout
-	} from '@mdi/js';
+	let error = $state('');
 </script>
 
 <svelte:head>

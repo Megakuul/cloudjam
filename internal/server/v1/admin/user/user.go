@@ -66,17 +66,19 @@ func (s *Server) Get(ctx context.Context, req *connect.Request[user.GetRequest])
 	}
 
 	return &connect.Response[user.GetResponse]{Msg: &user.GetResponse{User: &admin.User{
-		Id:          userData.PK.ID(usermodel.Key),
-		Username:    userData.Username,
-		Description: userData.Description,
-		Email:       userData.Email,
-		Score:       userData.Score,
-		MaxScore:    userData.MaxScore,
-		Streak:      int64(userData.Streak),
-		MaxStreak:   int64(userData.MaxStreak),
-		Privileged:  userData.Privileged,
-		Role:        userData.Role,
-		CreatedAt:   userData.CreatedAt.Unix(),
+		Id:           userData.PK.ID(usermodel.Key),
+		PubId:        userData.PubId,
+		Username:     userData.Username,
+		Description:  userData.Description,
+		Organization: userData.Organization,
+		Email:        userData.Email,
+		Score:        userData.Score,
+		MaxScore:     userData.MaxScore,
+		Streak:       int64(userData.Streak),
+		MaxStreak:    int64(userData.MaxStreak),
+		Privileged:   userData.Privileged,
+		Role:         userData.Role,
+		CreatedAt:    userData.CreatedAt.Unix(),
 	}}}, nil
 }
 
@@ -99,17 +101,19 @@ func (s *Server) List(ctx context.Context, req *connect.Request[user.ListRequest
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to iterate user"))
 		}
 		users = append(users, &admin.User{
-			Id:          userData.PK.ID(usermodel.Key),
-			Username:    userData.Username,
-			Description: userData.Description,
-			Email:       userData.Email,
-			Score:       userData.Score,
-			MaxScore:    userData.MaxScore,
-			Streak:      int64(userData.Streak),
-			MaxStreak:   int64(userData.MaxStreak),
-			Privileged:  userData.Privileged,
-			Role:        userData.Role,
-			CreatedAt:   userData.CreatedAt.Unix(),
+			Id:           userData.PK.ID(usermodel.Key),
+			PubId:        userData.PubId,
+			Username:     userData.Username,
+			Description:  userData.Description,
+			Organization: userData.Organization,
+			Email:        userData.Email,
+			Score:        userData.Score,
+			MaxScore:     userData.MaxScore,
+			Streak:       int64(userData.Streak),
+			MaxStreak:    int64(userData.MaxStreak),
+			Privileged:   userData.Privileged,
+			Role:         userData.Role,
+			CreatedAt:    userData.CreatedAt.Unix(),
 		})
 	}
 
@@ -145,6 +149,7 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[user.CreateReq
 		Create(&usermodel.Data{
 			PK:           usermodel.Key.New(userId),
 			SK:           usermodel.SortData.New(""),
+			PubId:        uuid.NewString(),
 			Email:        req.Msg.Init.Email,
 			Username:     req.Msg.Init.Username,
 			Description:  req.Msg.Init.Description,

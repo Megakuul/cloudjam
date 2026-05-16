@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { Button, Dialog, TextField, Toggle, Tooltip } from 'svelte-ux';
-	import logo from '$lib/assets/favicon.svg';
+	import { Button, Dialog, Icon, Shine, TextField, Toggle, Tooltip } from 'svelte-ux';
+	import { toSvg } from 'jdenticon';
 	import { create } from '@bufbuild/protobuf';
 	import { Glue, setToken, Submit } from '$lib';
 	import { onMount } from 'svelte';
@@ -15,13 +15,14 @@
 	import { goto } from '$app/navigation';
 	import WordSwapper from './WordSwapper.svelte';
 	import {
-		mdiTrashCan,
 		mdiFormTextboxPassword,
-		mdiEmailEditOutline,
 		mdiCheckCircleOutline,
 		mdiCloseCircleOutline,
 		mdiPencil,
-		mdiLogout
+		mdiLogout,
+		mdiDomain,
+		mdiShieldCrossOutline,
+		mdiShieldCrownOutline
 	} from '@mdi/js';
 
 	let user: User | undefined = $state();
@@ -34,10 +35,6 @@
 		Submit(
 			async () => {
 				user = (await Glue.user.get(create(GetRequestSchema, {}))).user;
-				user!.score = 95;
-				user!.maxScore = 100;
-				user!.streak = BigInt(3);
-				user!.maxStreak = BigInt(0);
 			},
 			(e, l) => ((loading = l), (error = e))
 		);
@@ -150,13 +147,27 @@
 				</div>
 			{:else}
 				<div class="flex flex-col gap-1 items-start w-full">
-					<img alt="icon" src={logo} class="h-32" />
+					<Icon
+						svg={toSvg(user.pubId, 20)}
+						width="8rem"
+						height="8rem"
+						class="rounded-lg bg-primary/5"
+					/>
 					<h1 class="text-4xl opacity-80">{user.username}</h1>
 					<p class="mt-auto text-neutral/80">
 						Proud CloudJamer since {new Date(Number(user.createdAt) * 1000).toLocaleDateString()}
 					</p>
+					<Shine>
+						<div
+							class="flex flex-row gap-1 items-center py-1 px-2 text-sm rounded-sm opacity-80 cursor-default select-none bg-primary/80"
+						>
+							<span>{user.organization}</span>
+							<Icon path={mdiDomain} />
+						</div>
+					</Shine>
 					<div class="flex flex-row gap-2 items-center mt-2">
 						<Button on:click={() => (edit = true)} icon={mdiPencil}>Edit</Button>
+						<Button href="/admin" icon={mdiShieldCrownOutline}>Admin</Button>
 						<Button
 							color="danger"
 							on:click={() => {

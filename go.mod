@@ -13,6 +13,8 @@ require (
 	github.com/lmittmann/tint v1.1.3
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/viper v1.21.0
+	gocloud.dev v0.45.1-0.20260420170451-45a8cfcde0ab
+	gocloud.dev/docstore/mongodocstore v0.45.1-0.20260420170451-45a8cfcde0ab
 	google.golang.org/protobuf v1.36.11
 )
 
@@ -51,8 +53,6 @@ require (
 	go.opentelemetry.io/otel/sdk/metric v1.43.0 // indirect
 	go.opentelemetry.io/otel/trace v1.43.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
-	gocloud.dev v0.45.1-0.20260420170451-45a8cfcde0ab // indirect
-	gocloud.dev/docstore/mongodocstore v0.45.1-0.20260420170451-45a8cfcde0ab // indirect
 	golang.org/x/crypto v0.49.0 // indirect
 	golang.org/x/exp v0.0.0-20250911091902-df9299821621 // indirect
 	golang.org/x/net v0.52.0 // indirect

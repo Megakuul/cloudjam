@@ -8,22 +8,23 @@ option go_package = "codeberg.org/megakuul/cloudjam/pkg/api/v1/admin";
 
 message User {
   string id = 1;
-  string username = 2 [
+  string pub_id = 2;
+  string username = 3 [
     (buf.validate.field).string.min_len = 4,
     (buf.validate.field).string.max_len = 20
   ];
-  string description = 3 [
+  string description = 4 [
     (buf.validate.field).string.min_len = 0,
     (buf.validate.field).string.max_len = 50
   ];
-  string organization = 4 [(buf.validate.field).string.max_len = 20];
-  string email = 5 [(buf.validate.field).string.email = true];
-  int64 created_at = 6;
-  double score = 7;
-  double max_score = 8;
-  int64 streak = 9;
-  int64 max_streak = 10;
-  bool privileged = 11;
-  string role = 12;
-  string scope = 13;
+  string organization = 5 [(buf.validate.field).string.max_len = 20];
+  string email = 6 [(buf.validate.field).string.email = true];
+  int64 created_at = 7;
+  double score = 8;
+  double max_score = 9;
+  int64 streak = 10;
+  int64 max_streak = 11;
+  bool privileged = 12;
+  string role = 13;
+  string scope = 14;
 }
