@@ -5,60 +5,50 @@ import (
 	"crypto/rand"
 	"errors"
 	"fmt"
-	"io"
 	"log/slog"
 	"slices"
 	"time"
 
 	"codeberg.org/megakuul/cloudjam/internal/auth"
-	"codeberg.org/megakuul/cloudjam/internal/model/creds"
-	"codeberg.org/megakuul/cloudjam/internal/model/role"
-	usermodel "codeberg.org/megakuul/cloudjam/internal/model/user"
+	"codeberg.org/megakuul/cloudjam/internal/model"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/admin"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/admin/user"
 	"connectrpc.com/connect"
 	"github.com/alexedwards/argon2id"
 	"github.com/google/uuid"
-	"gocloud.dev/docstore"
-	"gocloud.dev/gcerrors"
+	"github.com/megakuul/dynamitedb"
 )
 
 type Server struct {
 	logger *slog.Logger
-	coll   *docstore.Collection
+	bucket *dynamitedb.Bucket
 }
 
-func New(logger *slog.Logger, coll *docstore.Collection) *Server {
+func New(logger *slog.Logger, bucket *dynamitedb.Bucket) *Server {
 	return &Server{
 		logger: logger,
-		coll:   coll,
+		bucket: bucket,
 	}
 }
 
 func (s *Server) Get(ctx context.Context, req *connect.Request[user.GetRequest]) (*connect.Response[user.GetResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
 
-	var query *docstore.Query
+	userFilter := &model.User{}
 	if req.Msg.Id == "" || req.Msg.Id == auth.Claims(ctx).Subject {
-		if !slices.Contains(auth.Scopes(ctx), role.ScopeSelf) {
+		if !slices.Contains(auth.Scopes(ctx), model.ScopeSelf) {
 			return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("no self management access"))
 		}
-		query = s.coll.Query().
-			Where("pk", "=", usermodel.Key.New(auth.Claims(ctx).Subject)).
-			Where("sk", "=", usermodel.SortData.New(""))
+		userFilter.UserID = dynamitedb.Key(auth.Claims(ctx).Subject)
 	} else {
 		// if the requested user is not the requesting user perform scope check.
-		query = s.coll.Query().
-			Where("pk", "=", usermodel.Key.New(req.Msg.Id)).
-			Where("sk", "=", usermodel.SortData.New("")).
-			Where("scope", "in", auth.Scopes(ctx))
+		userFilter.UserID = dynamitedb.Key(req.Msg.Id)
+		userFilter.Scope = dynamitedb.In(auth.Scopes(ctx)...)
 	}
 
-	userIter := query.Get(ctx)
-	defer userIter.Stop()
-	userData := &usermodel.Data{}
-	if err := userIter.Next(ctx, userData); err != nil {
-		if errors.Is(err, gcerrors.ErrNotFound) || errors.Is(err, io.EOF) {
+	foundUser, err := dynamitedb.Get(ctx, s.bucket, userFilter)
+	if err != nil {
+		if errors.Is(err, dynamitedb.ErrNotFound) {
 			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("user does not exist"))
 		}
 		l.Error(fmt.Sprintf("failed to fetch user: %v", err))
@@ -66,66 +56,69 @@ func (s *Server) Get(ctx context.Context, req *connect.Request[user.GetRequest])
 	}
 
 	return &connect.Response[user.GetResponse]{Msg: &user.GetResponse{User: &admin.User{
-		Id:           userData.PK.ID(usermodel.Key),
-		PubId:        userData.PubId,
-		Username:     userData.Username,
-		Description:  userData.Description,
-		Organization: userData.Organization,
-		Email:        userData.Email,
-		Score:        userData.Score,
-		MaxScore:     userData.MaxScore,
-		Streak:       int64(userData.Streak),
-		MaxStreak:    int64(userData.MaxStreak),
-		Privileged:   userData.Privileged,
-		Role:         userData.Role,
-		CreatedAt:    userData.CreatedAt.Unix(),
+		Id:           foundUser.UserID.Value(),
+		PubId:        foundUser.PubId.Value(),
+		Username:     foundUser.Username.Value(),
+		Description:  foundUser.Description.Value(),
+		Organization: foundUser.Organization.Value(),
+		Email:        foundUser.Email.Value(),
+		Score:        foundUser.Score.Value(),
+		MaxScore:     foundUser.MaxScore.Value(),
+		Streak:       int64(foundUser.Streak.Value()),
+		MaxStreak:    int64(foundUser.MaxStreak.Value()),
+		Privileged:   foundUser.Privileged.Value(),
+		Role:         foundUser.Role.Value(),
+		Scope:        foundUser.Scope.Value(),
+		CreatedAt:    foundUser.CreatedAt.Value().Unix(),
 	}}}, nil
 }
 
 func (s *Server) List(ctx context.Context, req *connect.Request[user.ListRequest]) (*connect.Response[user.ListResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
 
-	userIter := s.coll.Query().Limit(int(req.Msg.Limit)).Offset(int(req.Msg.Offset)).
-		Where("scope", "in", auth.Scopes(ctx)).
-		Get(ctx)
-	defer userIter.Stop()
+	opts := []dynamitedb.Option{dynamitedb.WithLimit(int(req.Msg.Limit))}
+	if req.Msg.StartAfter != "" {
+		opts = append(opts, dynamitedb.WithStartAfter(&model.User{
+			UserID: dynamitedb.Key(req.Msg.StartAfter),
+		}))
+	}
+	users, err := dynamitedb.Query(ctx, s.bucket, &model.User{
+		UserID: dynamitedb.KeyPrefix(""), // scan and yes this is expensive...
+		Scope:  dynamitedb.In(auth.Scopes(ctx)...),
+	}, opts...)
+	if err != nil {
+		l.Error(fmt.Sprintf("failed to iterate user: %v", err))
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to iterate user"))
+	}
 
-	users := []*admin.User{}
-	for {
-		userData := usermodel.Data{}
-		if err := userIter.Next(ctx, &userData); err != nil {
-			if errors.Is(err, gcerrors.ErrNotFound) || errors.Is(err, io.EOF) {
-				break
-			}
-			l.Error(fmt.Sprintf("failed to iterate user: %v", err))
-			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to iterate user"))
-		}
-		users = append(users, &admin.User{
-			Id:           userData.PK.ID(usermodel.Key),
-			PubId:        userData.PubId,
-			Username:     userData.Username,
-			Description:  userData.Description,
-			Organization: userData.Organization,
-			Email:        userData.Email,
-			Score:        userData.Score,
-			MaxScore:     userData.MaxScore,
-			Streak:       int64(userData.Streak),
-			MaxStreak:    int64(userData.MaxStreak),
-			Privileged:   userData.Privileged,
-			Role:         userData.Role,
-			CreatedAt:    userData.CreatedAt.Unix(),
+	usersOutput := []*admin.User{}
+	for _, user := range users {
+		usersOutput = append(usersOutput, &admin.User{
+			Id:           user.UserID.Value(),
+			PubId:        user.PubId.Value(),
+			Username:     user.Username.Value(),
+			Description:  user.Description.Value(),
+			Organization: user.Organization.Value(),
+			Email:        user.Email.Value(),
+			Score:        user.Score.Value(),
+			MaxScore:     user.MaxScore.Value(),
+			Streak:       int64(user.Streak.Value()),
+			MaxStreak:    int64(user.MaxStreak.Value()),
+			Privileged:   user.Privileged.Value(),
+			Role:         user.Role.Value(),
+			CreatedAt:    user.CreatedAt.Value().Unix(),
 		})
 	}
 
 	return &connect.Response[user.ListResponse]{Msg: &user.ListResponse{
-		Users: users,
+		Users: usersOutput,
 	}}, nil
 }
 
 func (s *Server) Create(ctx context.Context, req *connect.Request[user.CreateRequest]) (*connect.Response[user.CreateResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
 
-	if !slices.Contains(auth.Scopes(ctx), role.Scope(req.Msg.Init.Scope)) {
+	if !slices.Contains(auth.Scopes(ctx), req.Msg.Init.Scope) {
 		return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("can't attach a scope you don't possess"))
 	}
 
@@ -136,39 +129,41 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[user.CreateReq
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to construct invitation code"))
 	}
 	userId := uuid.NewString()
-	err = s.coll.Actions().AtomicWrites().
-		Create(&creds.Data{
-			PK:             creds.Key.New(req.Msg.Init.Email),
-			SK:             creds.SortData.New(""),
-			Active:         false,
-			UserId:         userId,
-			Code:           codeHash,
-			CodeExpiration: req.Msg.Expires.AsTime(),
-			Scope:          role.Scope(req.Msg.Init.Scope),
-		}).
-		Create(&usermodel.Data{
-			PK:           usermodel.Key.New(userId),
-			SK:           usermodel.SortData.New(""),
-			PubId:        uuid.NewString(),
-			Email:        req.Msg.Init.Email,
-			Username:     req.Msg.Init.Username,
-			Description:  req.Msg.Init.Description,
-			Organization: req.Msg.Init.Organization,
-			Score:        0,
-			MaxScore:     0,
-			Streak:       0,
-			MaxStreak:    0,
-			Privileged:   false,
-			CreatedAt:    time.Now(),
-			Scope:        role.Scope(req.Msg.Init.Scope),
-		}).
-		Do(ctx)
+
+	err = dynamitedb.Create(ctx, s.bucket, &model.Creds{
+		Email:          dynamitedb.Key(req.Msg.Init.Email),
+		Active:         dynamitedb.Set(false),
+		UserId:         dynamitedb.Set(userId),
+		Code:           dynamitedb.Set(codeHash),
+		CodeExpiration: dynamitedb.Set(req.Msg.Expires.AsTime()),
+		Scope:          dynamitedb.Set(req.Msg.Init.Scope),
+	})
 	if err != nil {
-		if errors.Is(err, gcerrors.ErrAlreadyExists) {
+		if errors.Is(err, dynamitedb.ErrAlreadyExists) {
 			return nil, connect.NewError(connect.CodeAlreadyExists, fmt.Errorf("user does already exist"))
 		}
 		l.Error(fmt.Sprintf("failed to create user invitation: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create user invitation"))
+	}
+
+	err = dynamitedb.Create(ctx, s.bucket, &model.User{
+		UserID:       dynamitedb.Key(userId),
+		PubId:        dynamitedb.Set(uuid.NewString()),
+		Email:        dynamitedb.Set(req.Msg.Init.Email),
+		Username:     dynamitedb.Set(req.Msg.Init.Username),
+		Description:  dynamitedb.Set(req.Msg.Init.Description),
+		Organization: dynamitedb.Set(req.Msg.Init.Organization),
+		Score:        dynamitedb.Set(0.0),
+		MaxScore:     dynamitedb.Set(0.0),
+		Streak:       dynamitedb.Set(0),
+		MaxStreak:    dynamitedb.Set(0),
+		Privileged:   dynamitedb.Set(false),
+		CreatedAt:    dynamitedb.Set(time.Now()),
+		Scope:        dynamitedb.Set(req.Msg.Init.Scope),
+	})
+	if err != nil {
+		l.Error(fmt.Sprintf("failed to create user: %v", err))
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create user"))
 	}
 	return &connect.Response[user.CreateResponse]{
 		Msg: &user.CreateResponse{
@@ -182,51 +177,41 @@ func (s *Server) Update(ctx context.Context, req *connect.Request[user.UpdateReq
 
 	// if the requested user is not the requesting user perform scope check and ensure the user is not privileged.
 	if req.Msg.Mod.Id != auth.Claims(ctx).Subject {
-		userIter := s.coll.Query().
-			Where("pk", "=", usermodel.Key.New(req.Msg.Mod.Id)).
-			Where("sk", "=", usermodel.SortData.New("")).
-			Where("scope", "in", auth.Scopes(ctx)).Get(ctx)
-		defer userIter.Stop()
-		userData := &usermodel.Data{}
-		if err := userIter.Next(ctx, userData); err != nil {
-			if errors.Is(err, gcerrors.ErrNotFound) || errors.Is(err, io.EOF) {
+		targetUser, err := dynamitedb.Get(ctx, s.bucket, &model.User{
+			UserID: dynamitedb.Key(req.Msg.Mod.Id),
+			Scope:  dynamitedb.In(auth.Scopes(ctx)...),
+		})
+		if err != nil {
+			if errors.Is(err, dynamitedb.ErrNotFound) {
 				return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("user does not exist"))
 			}
 			l.Error(fmt.Sprintf("failed to fetch user: %v", err))
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch user"))
 		}
-		if userData.Privileged {
+		if targetUser.Privileged.Value() {
 			return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("privileged users cannot be modified"))
 		}
-		err := s.coll.Update(ctx, userData, docstore.Mods{
-			"organization": req.Msg.Mod.Organization,
+		dynamitedb.Update(ctx, s.bucket, &model.User{
+			UserID:       dynamitedb.Key(req.Msg.Mod.Id),
+			Organization: dynamitedb.Set(req.Msg.Mod.Organization),
 		})
 		if err != nil {
 			l.Error(fmt.Sprintf("failed to update user: %v", err))
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update user"))
 		}
 	} else {
-		if !slices.Contains(auth.Scopes(ctx), role.ScopeSelf) {
+		if !slices.Contains(auth.Scopes(ctx), model.ScopeSelf) {
 			return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("no self management access"))
 		}
-		userIter := s.coll.Query().
-			Where("pk", "=", usermodel.Key.New(auth.Claims(ctx).Subject)).
-			Where("sk", "=", usermodel.SortData.New("")).
-			Get(ctx)
-		defer userIter.Stop()
-		userData := &usermodel.Data{}
-		if err := userIter.Next(ctx, userData); err != nil {
-			if errors.Is(err, gcerrors.ErrNotFound) || errors.Is(err, io.EOF) {
-				return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("user does not exist"))
-			}
-			l.Error(fmt.Sprintf("failed to fetch user: %v", err))
-			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch user"))
-		}
-		err := s.coll.Update(ctx, userData, docstore.Mods{
-			"username":    req.Msg.Mod.Username,
-			"description": req.Msg.Mod.Description,
+		err := dynamitedb.Update(ctx, s.bucket, &model.User{
+			UserID:      dynamitedb.Key(auth.Claims(ctx).Subject),
+			Username:    dynamitedb.Set(req.Msg.Mod.Username),
+			Description: dynamitedb.Set(req.Msg.Mod.Description),
 		})
 		if err != nil {
+			if errors.Is(err, dynamitedb.ErrNotFound) {
+				return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("user does not exist"))
+			}
 			l.Error(fmt.Sprintf("failed to update user: %v", err))
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update user"))
 		}
@@ -244,43 +229,35 @@ func (s *Server) ResetPassword(ctx context.Context, req *connect.Request[user.Re
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to construct invitation code"))
 	}
 
-	var credsQuery *docstore.Query
+	credsFilter := &model.Creds{}
 	if req.Msg.Email == auth.Claims(ctx).Email {
-		if !slices.Contains(auth.Scopes(ctx), role.ScopeSelf) {
+		if !slices.Contains(auth.Scopes(ctx), model.ScopeSelf) {
 			return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("no self management access"))
 		}
-		credsQuery = s.coll.Query().
-			Where("pk", "=", creds.Key.New(auth.Claims(ctx).Email)).
-			Where("sk", "=", usermodel.SortData.New("")).
-			Where("user_id", "=", auth.Claims(ctx).Subject)
+		credsFilter.Email = dynamitedb.Key(auth.Claims(ctx).Email)
+		credsFilter.UserId = dynamitedb.Eq(auth.Claims(ctx).Subject)
 	} else {
-		credsQuery = s.coll.Query().
-			Where("pk", "=", creds.Key.New(req.Msg.Email)).
-			Where("sk", "=", usermodel.SortData.New("")).
-			Where("scope", "in", auth.Scopes(ctx))
+		credsFilter.Email = dynamitedb.Key(req.Msg.Email)
+		credsFilter.Scope = dynamitedb.In(auth.Scopes(ctx)...)
 	}
 
-	credsIter := credsQuery.Get(ctx)
-	defer credsIter.Stop()
-	credsData := &creds.Data{}
-	if err := credsIter.Next(ctx, credsData); err != nil {
-		if errors.Is(err, gcerrors.ErrNotFound) || errors.Is(err, io.EOF) {
+	creds, err := dynamitedb.Get(ctx, s.bucket, credsFilter)
+	if err != nil {
+		if errors.Is(err, dynamitedb.ErrNotFound) {
 			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("user does not exist"))
 		}
 		l.Error(fmt.Sprintf("failed to fetch user credentials: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch user credentials"))
 	}
 
-	err = s.coll.Update(ctx, credsData, docstore.Mods{
-		"code":            codeHash,
-		"code_expiration": req.Msg.Expires.AsTime(),
+	err = dynamitedb.Update(ctx, s.bucket, &model.Creds{
+		Email:          creds.Email,
+		Code:           dynamitedb.Set(codeHash),
+		CodeExpiration: dynamitedb.Set(req.Msg.Expires.AsTime()),
 	})
 	if err != nil {
-		if errors.Is(err, gcerrors.ErrAlreadyExists) {
-			return nil, connect.NewError(connect.CodeAlreadyExists, fmt.Errorf("user does already exist"))
-		}
-		l.Error(fmt.Sprintf("failed to create user invitation: %v", err))
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create user invitation"))
+		l.Error(fmt.Sprintf("failed to reset user password: %v", err))
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to reset user password"))
 	}
 	return &connect.Response[user.ResetPasswordResponse]{
 		Msg: &user.ResetPasswordResponse{
@@ -292,26 +269,26 @@ func (s *Server) ResetPassword(ctx context.Context, req *connect.Request[user.Re
 func (s *Server) Delete(ctx context.Context, req *connect.Request[user.DeleteRequest]) (*connect.Response[user.DeleteResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
 
-	userIter := s.coll.Query().
-		Where("pk", "=", usermodel.Key.New(req.Msg.Id)).
-		Where("sk", "=", usermodel.SortData.New("")).
-		Where("scope", "in", auth.Scopes(ctx)).Get(ctx)
-	defer userIter.Stop()
-	userData := &usermodel.Data{}
-	if err := userIter.Next(ctx, userData); err != nil {
-		if errors.Is(err, gcerrors.ErrNotFound) || errors.Is(err, io.EOF) {
+	targetUser, err := dynamitedb.Get(ctx, s.bucket, &model.User{
+		UserID: dynamitedb.Key(req.Msg.Id),
+		Scope:  dynamitedb.In(auth.Scopes(ctx)...),
+	})
+	if err != nil {
+		if errors.Is(err, dynamitedb.ErrNotFound) {
 			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("user does not exist"))
 		}
 		l.Error(fmt.Sprintf("failed to fetch user: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch user"))
 	}
-	if userData.Privileged {
+	if targetUser.Privileged.Value() {
 		return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("privileged users cannot be deleted"))
 	}
-	err := s.coll.Delete(ctx, userData)
-	if err != nil {
-		l.Error(fmt.Sprintf("failed to update user: %v", err))
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update user"))
-	}
+
+	// TODO
+	// err := s.coll.Delete(ctx, userData)
+	// if err != nil {
+	// 	l.Error(fmt.Sprintf("failed to update user: %v", err))
+	// 	return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update user"))
+	// }
 	return &connect.Response[user.DeleteResponse]{Msg: &user.DeleteResponse{}}, nil
 }

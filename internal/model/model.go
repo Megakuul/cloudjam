@@ -1,30 +1,52 @@
+// Package model contains the database schemas / models.
 package model
 
 import (
-	"fmt"
-	"strings"
+	"time"
+
+	"github.com/megakuul/dynamitedb"
 )
 
-type Partition string
+type User struct {
+	UserID       dynamitedb.KeyField             `pk:"user_id" json:"-"`
+	PubId        dynamitedb.DataField[string]    `json:"pub_id,omitempty"`
+	Username     dynamitedb.DataField[string]    `json:"username,omitempty"`
+	Description  dynamitedb.DataField[string]    `json:"description,omitempty"`
+	Organization dynamitedb.DataField[string]    `json:"organization,omitempty"`
+	Email        dynamitedb.DataField[string]    `json:"email,omitempty"`
+	CreatedAt    dynamitedb.DataField[time.Time] `json:"created_at,omitempty"`
+	Score        dynamitedb.DataField[float64]   `json:"score,omitempty"`
+	MaxScore     dynamitedb.DataField[float64]   `json:"max_score,omitempty"`
+	Streak       dynamitedb.DataField[int]       `json:"streak,omitempty"`
+	MaxStreak    dynamitedb.DataField[int]       `json:"max_streak,omitempty"`
+	Privileged   dynamitedb.DataField[bool]      `json:"privileged,omitempty"`
+	Role         dynamitedb.DataField[string]    `json:"role,omitempty"`
 
-func (p Partition) New(id string) PartitionValue {
-	return PartitionValue(fmt.Sprint(p, id))
+	Scope dynamitedb.DataField[string] `json:"scope,omitempty"`
 }
 
-type PartitionValue string
+type Creds struct {
+	Email          dynamitedb.KeyField             `pk:"email" json:"-"`
+	Active         dynamitedb.DataField[bool]      `json:"active,omitempty"`
+	UserId         dynamitedb.DataField[string]    `json:"user_id,omitempty"`
+	Password       dynamitedb.DataField[string]    `json:"password,omitempty"`
+	Code           dynamitedb.DataField[string]    `json:"code,omitempty"`
+	CodeExpiration dynamitedb.DataField[time.Time] `json:"code_expiration,omitempty"`
 
-func (p PartitionValue) ID(pk Partition) string {
-	return strings.TrimPrefix(string(p), string(pk))
+	Scope dynamitedb.DataField[string] `json:"scope,omitempty"`
 }
 
-type Sort string
+const (
+	ScopeAdmin string = "admin"
+	ScopeSelf  string = "self"
+)
 
-func (s Sort) New(id string) SortValue {
-	return SortValue(fmt.Sprint(s, id))
-}
+type Role struct {
+	RoleID      dynamitedb.KeyField                     `pk:"role_id"`
+	Name        dynamitedb.DataField[string]            `json:"name,omitempty"`
+	Description dynamitedb.DataField[string]            `json:"description,omitempty"`
+	Builtin     dynamitedb.DataField[bool]              `json:"builtin,omitempty"`
+	Permissions dynamitedb.DataField[map[string]string] `json:"permissions,omitempty"`
 
-type SortValue string
-
-func (s SortValue) ID(sk Sort) string {
-	return strings.TrimPrefix(string(s), string(sk))
+	Scope dynamitedb.DataField[string] `json:"scope,omitempty"`
 }

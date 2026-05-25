@@ -4,28 +4,29 @@ package rbac
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"strings"
 	"sync"
 	"time"
 
-	"codeberg.org/megakuul/cloudjam/internal/model/role"
-	"codeberg.org/megakuul/cloudjam/internal/model/user"
+	"codeberg.org/megakuul/cloudjam/internal/model"
 	"connectrpc.com/connect"
 	"github.com/gobwas/glob"
-	"gocloud.dev/docstore"
+	"github.com/megakuul/dynamitedb"
 )
 
 type Authorizer struct {
-	coll *docstore.Collection
+	bucket *dynamitedb.Bucket
 
 	cacheLock    sync.RWMutex
 	cache        map[string]policy
 	cacheTimeout time.Duration
 }
 
-func New(coll *docstore.Collection, cacheTimeout time.Duration) *Authorizer {
+func New(bucket *dynamitedb.Bucket, cacheTimeout time.Duration) *Authorizer {
 	return &Authorizer{
-		coll:         coll,
+		bucket:       bucket,
 		cacheLock:    sync.RWMutex{},
 		cache:        map[string]policy{},
 		cacheTimeout: cacheTimeout,
@@ -35,7 +36,7 @@ func New(coll *docstore.Collection, cacheTimeout time.Duration) *Authorizer {
 // Check verifies that the provided subject has access to the procedure (gRPC procedure name).
 // The function performs in memory caching for the happy path in a defined timeout (thread safe).
 // Returns the cache expiration time of the applied policy; it's advisable to reconnect streams at this time.
-func (v *Authorizer) Check(ctx context.Context, subject, procedure string) (time.Time, []role.Scope, error) {
+func (v *Authorizer) Check(ctx context.Context, subject, procedure string) (time.Time, []string, error) {
 	v.cacheLock.RLock()
 	cachedPolicy, ok := v.cache[subject]
 	if ok {
@@ -46,30 +47,31 @@ func (v *Authorizer) Check(ctx context.Context, subject, procedure string) (time
 	}
 	v.cacheLock.RUnlock()
 
-	userIter := v.coll.Query().
-		Where("pk", "=", user.Key.New(subject)).
-		Where("sk", "=", user.SortData.New("")).
-		Get(ctx)
-	defer userIter.Stop()
-	user := &user.Data{}
-	if err := userIter.Next(ctx, user); err != nil {
-		return time.Time{}, nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("user not found: %w", err))
+	user, err := dynamitedb.Get(ctx, v.bucket, &model.User{
+		UserID: dynamitedb.Key(subject),
+	})
+	if err != nil {
+		if errors.Is(err, dynamitedb.ErrNotFound) {
+			return time.Time{}, nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("user not found"))
+		}
+		return time.Time{}, nil, connect.NewError(connect.CodeInternal, err)
 	}
-	roleIter := v.coll.Query().
-		Where("pk", "=", role.Key.New(user.Role)).
-		Where("sk", "=", role.SortData.New("")).
-		Get(ctx)
-	defer roleIter.Stop()
-	roleData := &role.Data{}
-	if err := roleIter.Next(ctx, roleData); err != nil {
-		return time.Time{}, nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("role not found: %w", err))
+	role, err := dynamitedb.Get(ctx, v.bucket, &model.Role{
+		RoleID: dynamitedb.Key(user.Role.Value()),
+	})
+	if err != nil {
+		if errors.Is(err, dynamitedb.ErrNotFound) {
+			return time.Time{}, nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("role not found"))
+		}
+		return time.Time{}, nil, connect.NewError(connect.CodeInternal, err)
 	}
+
 	policy := policy{
 		expires:     time.Now().Add(v.cacheTimeout),
-		permissions: map[role.Scope][]glob.Glob{},
+		permissions: map[string][]glob.Glob{},
 	}
-	for scope, exprs := range roleData.Permissions {
-		for _, expr := range exprs {
+	for scope, exprs := range role.Permissions.Value() {
+		for _, expr := range strings.Split(exprs, ",") {
 			compiledExpr, err := glob.Compile(string(expr), '/')
 			if err != nil {
 				return time.Time{}, nil, connect.NewError(connect.CodeInternal, fmt.Errorf("role policy contains invalid matcher: %v", err))

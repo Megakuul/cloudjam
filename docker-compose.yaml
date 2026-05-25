@@ -1,40 +1,61 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/compose-spec/compose-go/master/schema/compose-spec.json
 services:
-  init-cert:
-    user: root
-    image: cleanstart/step-cli
-    command: certificate create --force --insecure --no-password --san "localhost" --san "127.0.0.1" --subtle --profile self-signed "CloudJam Database Certificate" "/usr/documentdb/cert/cert.crt" "/usr/documentdb/cert/cert.key"
-    volumes:
-      - ./.database/cert:/usr/documentdb/cert:U
-  init-volume:
-    user: root
-    image: alpine
-    depends_on:
-      init-cert:
-        condition: service_completed_successfully
-    command: "chmod 777 -R /usr/documentdb"
-    volumes:
-      - ./.database/data:/usr/documentdb/data
-      - ./.database/cert:/usr/documentdb/cert
-  documentdb:
-    image: ghcr.io/documentdb/documentdb/documentdb-local:latest
-    restart: always
-    depends_on:
-      init-cert:
-        condition: service_completed_successfully
-    environment:
-      - USERNAME=username
-      - PASSWORD=password
-      - PORT=10260
-      - SKIP_INIT_DATA=true
-      - DATA_PATH=/usr/documentdb/data
-      - CERT_PATH=/usr/documentdb/cert/cert.crt
-      - KEY_FILE=/usr/documentdb/cert/cert.key
-    volumes:
-      - ./.database/data:/usr/documentdb/data
-      - ./.database/cert:/usr/documentdb/cert
+  garage:
+    image: dxflrs/garage:v2.3.0
+    container_name: garage
     ports:
-      - 10260:10260
-networks:
-  default:
-    name: cloudjam
+      - "3900:3900"
+      - "3903:3903"
+    volumes:
+      - garage-data:/var/lib/garage/data
+      - garage-meta:/var/lib/garage/meta
+    restart: unless-stopped
+    entrypoint: ["/garage"]
+    command:
+      - server
+      - --single-node
+    configs:
+      - source: "garage_toml"
+        target: "/etc/garage.toml"
+  garage-ui:
+    image: noooste/garage-ui:latest
+    container_name: garage-ui
+    ports:
+      - "8080:8080"
+    environment:
+      - GARAGE_UI_GARAGE_ENDPOINT=http://garage:3900
+      - GARAGE_UI_GARAGE_ADMIN_ENDPOINT=http://garage:3903
+      - GARAGE_UI_GARAGE_ADMIN_TOKEN=secret-admin-token
+      - GARAGE_UI_GARAGE_REGION=garage
+    depends_on:
+      - garage
+    restart: unless-stopped
+volumes:
+  garage-data:
+  garage-meta:
+configs:
+  garage_toml:
+    content: |
+      metadata_dir = "/var/lib/garage/meta"
+      data_dir = "/var/lib/garage/data"
+      db_engine = "sqlite"
+
+      replication_factor = 1
+
+      rpc_bind_addr = "[::]:3901"
+      rpc_public_addr = "127.0.0.1:3901"
+      rpc_secret = "993e19a84c4f97374f24eb686e424e4a28d4a13bad33cdfc4524f6b999bd2733"
+
+      [s3_api]
+      s3_region = "garage"
+      api_bind_addr = "[::]:3900"
+      root_domain = ".s3.garage.localhost"
+
+      [s3_web]
+      bind_addr = "[::]:3902"
+      root_domain = ".web.garage.localhost"
+      index = "index.html"
+
+      [admin]
+      api_bind_addr = "[::]:3903"
+      admin_token = "secret-admin-token"

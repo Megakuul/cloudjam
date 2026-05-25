@@ -3,7 +3,6 @@ package rbac
 import (
 	"time"
 
-	"codeberg.org/megakuul/cloudjam/internal/model/role"
 	"github.com/gobwas/glob"
 )
 
@@ -11,16 +10,16 @@ import (
 // Access is modeled as list of glob patterns that must match the gRPC procedure name.
 type policy struct {
 	expires     time.Time
-	permissions map[role.Scope][]glob.Glob
+	permissions map[string][]glob.Glob
 }
 
-func (p *policy) check(procedure string) []role.Scope {
+func (p *policy) check(procedure string) []string {
 	// add 30 second threshold to ensure that the request is not immediately cancelled
 	// instead the check is rejected to refetch from database.
 	if p.expires.Before(time.Now().Add(time.Second * 30)) {
 		return nil
 	}
-	scopes := []role.Scope{}
+	scopes := []string{}
 	for scope, exprs := range p.permissions {
 		for _, expr := range exprs {
 			if expr.Match(procedure) {

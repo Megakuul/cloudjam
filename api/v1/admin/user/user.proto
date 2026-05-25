@@ -24,7 +24,7 @@ message ListRequest {
     gt: 0
     lte: 100
   }];
-  int32 offset = 2;
+  string start_after = 2;
 }
 
 message ListResponse {

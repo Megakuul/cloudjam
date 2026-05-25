@@ -5,7 +5,6 @@ import (
 	"context"
 	"strings"
 
-	"codeberg.org/megakuul/cloudjam/internal/model/role"
 	"codeberg.org/megakuul/cloudjam/internal/rbac"
 	"codeberg.org/megakuul/cloudjam/internal/token"
 	"connectrpc.com/connect"
@@ -25,10 +24,10 @@ func Claims(ctx context.Context) *token.TokenClaims {
 
 // Scopes extracts the user data access scopes from the ctx injected by the auth Interceptor.
 // This function will panic if the request had no auth interceptor that injects the scope...
-func Scopes(ctx context.Context) []role.Scope {
-	scopes := ctx.Value(scopeKey).([]role.Scope)
+func Scopes(ctx context.Context) []string {
+	scopes := ctx.Value(scopeKey).([]string)
 	if scopes == nil {
-		return []role.Scope{}
+		return []string{}
 	}
 	return scopes
 }
