@@ -6,13 +6,6 @@ import "buf/validate/validate.proto";
 
 option go_package = "codeberg.org/megakuul/cloudjam/pkg/api/v1/admin";
 
-message Permission {
-  repeated string action_exprs = 1 [
-    (buf.validate.field).repeated.min_items = 1,
-    (buf.validate.field).repeated.max_items = 10
-  ];
-}
-
 message Role {
   string id = 1;
   string name = 2 [
@@ -24,9 +17,14 @@ message Role {
     (buf.validate.field).string.max_len = 50
   ];
   bool builtin = 4;
-  map<string, Permission> permissions = 5 [
-    (buf.validate.field).repeated.min_items = 1,
-    (buf.validate.field).repeated.max_items = 20
+  map<string, string> permissions = 5 [
+    (buf.validate.field).map.min_pairs = 1,
+    (buf.validate.field).map.max_pairs = 20,
+    (buf.validate.field).map.values.string = {
+      min_len: 1
+      max_len: 100
+      pattern: "^[a-zA-Z0-9,*]+$"
+    }
   ];
   string scope = 6;
 }

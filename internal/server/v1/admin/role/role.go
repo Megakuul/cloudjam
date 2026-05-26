@@ -4,121 +4,112 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"io"
 	"log/slog"
 	"slices"
 
 	"codeberg.org/megakuul/cloudjam/internal/auth"
-	rolemodel "codeberg.org/megakuul/cloudjam/internal/model/role"
+	"codeberg.org/megakuul/cloudjam/internal/model"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/admin"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/admin/role"
 	"connectrpc.com/connect"
-	"gocloud.dev/docstore"
-	"gocloud.dev/gcerrors"
+	"github.com/megakuul/dynamitedb"
 )
 
 type Server struct {
 	logger *slog.Logger
-	coll   *docstore.Collection
+	bucket *dynamitedb.Bucket
 }
 
-func New(logger *slog.Logger, coll *docstore.Collection) *Server {
+func New(logger *slog.Logger, bucket *dynamitedb.Bucket) *Server {
 	return &Server{
 		logger: logger,
-		coll:   coll,
+		bucket: bucket,
 	}
 }
 
 func (s *Server) Get(ctx context.Context, req *connect.Request[role.GetRequest]) (*connect.Response[role.GetResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
 
-	query := s.coll.Query().
-		Where("pk", "=", rolemodel.Key.New(req.Msg.Id)).
-		Where("sk", "=", rolemodel.SortData.New("")).
-		Where("scope", "in", auth.Scopes(ctx))
-	roleIter := query.Get(ctx)
-	defer roleIter.Stop()
-	roleData := &rolemodel.Data{}
-	if err := roleIter.Next(ctx, roleData); err != nil {
-		if errors.Is(err, gcerrors.ErrNotFound) || errors.Is(err, io.EOF) {
+	foundRole, err := dynamitedb.Get(ctx, s.bucket, &model.Role{
+		RoleID: dynamitedb.Key(req.Msg.Id),
+		Scope:  dynamitedb.In(auth.Scopes(ctx)...),
+	})
+	if err != nil {
+		if errors.Is(err, dynamitedb.ErrNotFound) {
 			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("role does not exist"))
 		}
 		l.Error(fmt.Sprintf("failed to fetch role: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch role"))
 	}
 
-	permissions := map[string]*admin.Permission{}
-	for scope, exprs := range roleData.Permissions {
-		permissions[string(scope)] = &admin.Permission{ActionExprs: exprs}
+	permissions := map[string]string{}
+	for scope, permission := range foundRole.Permissions.Value() {
+		permissions[string(scope)] = permission
 	}
 	return &connect.Response[role.GetResponse]{Msg: &role.GetResponse{Role: &admin.Role{
-		Id:          roleData.PK.ID(rolemodel.Key),
-		Name:        roleData.Name,
-		Description: roleData.Description,
-		Builtin:     roleData.Builtin,
+		Id:          foundRole.RoleID.Value(),
+		Name:        foundRole.Name.Value(),
+		Description: foundRole.Description.Value(),
+		Builtin:     foundRole.Builtin.Value(),
 		Permissions: permissions,
-		Scope:       string(roleData.Scope),
+		Scope:       foundRole.Scope.Value(),
 	}}}, nil
 }
 
 func (s *Server) List(ctx context.Context, req *connect.Request[role.ListRequest]) (*connect.Response[role.ListResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
 
-	roleIter := s.coll.Query().Limit(int(req.Msg.Limit)).Offset(int(req.Msg.Offset)).
-		Where("scope", "in", auth.Scopes(ctx)).
-		Get(ctx)
-	defer roleIter.Stop()
+	opts := []dynamitedb.Option{dynamitedb.WithLimit(int(req.Msg.Limit))}
+	if req.Msg.StartAfter != "" {
+		opts = append(opts, dynamitedb.WithStartAfter(&model.Role{
+			RoleID: dynamitedb.Key(req.Msg.StartAfter),
+		}))
+	}
+	roles, err := dynamitedb.Query(ctx, s.bucket, &model.Role{
+		RoleID: dynamitedb.KeyPrefix(""),
+		Scope:  dynamitedb.In(auth.Scopes(ctx)...),
+	}, opts...)
+	if err != nil {
+		l.Error(fmt.Sprintf("failed to iterate roles: %v", err))
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to iterate roles"))
+	}
 
-	roles := []*admin.Role{}
-	for {
-		roleData := rolemodel.Data{}
-		if err := roleIter.Next(ctx, &roleData); err != nil {
-			if errors.Is(err, gcerrors.ErrNotFound) || errors.Is(err, io.EOF) {
-				break
-			}
-			l.Error(fmt.Sprintf("failed to iterate role: %v", err))
-			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to iterate role"))
-		}
-		permissions := map[string]*admin.Permission{}
-		for scope, exprs := range roleData.Permissions {
-			permissions[string(scope)] = &admin.Permission{ActionExprs: exprs}
-		}
-		roles = append(roles, &admin.Role{
-			Id:          roleData.PK.ID(rolemodel.Key),
-			Name:        roleData.Name,
-			Description: roleData.Description,
-			Builtin:     roleData.Builtin,
-			Permissions: permissions,
-			Scope:       string(roleData.Scope),
+	rolesOutput := []*admin.Role{}
+	for _, role := range roles {
+		rolesOutput = append(rolesOutput, &admin.Role{
+			Id:          role.RoleID.Value(),
+			Name:        role.Name.Value(),
+			Builtin:     role.Builtin.Value(),
+			Permissions: role.Permissions.Value(),
+			Scope:       role.Scope.Value(),
 		})
 	}
 
 	return &connect.Response[role.ListResponse]{Msg: &role.ListResponse{
-		Roles: roles,
+		Roles: rolesOutput,
 	}}, nil
 }
 
 func (s *Server) Create(ctx context.Context, req *connect.Request[role.CreateRequest]) (*connect.Response[role.CreateResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
 
-	if !slices.Contains(auth.Scopes(ctx), rolemodel.Scope(req.Msg.Init.Scope)) {
+	if !slices.Contains(auth.Scopes(ctx), req.Msg.Init.Scope) {
 		return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("can't attach a scope you don't possess"))
 	}
 
-	err := s.coll.Create(ctx, &rolemodel.Data{
-		PK:          rolemodel.Key.New(req.Msg.Init.Id),
-		SK:          rolemodel.SortData.New(""),
-		Name:        req.Msg.Init.Name,
-		Description: req.Msg.Init.Description,
-		Builtin:     false,
-		Scope:       rolemodel.Scope(req.Msg.Init.Scope),
+	err := dynamitedb.Create(ctx, s.bucket, &model.Role{
+		RoleID:      dynamitedb.Key(req.Msg.Init.Id),
+		Name:        dynamitedb.Set(req.Msg.Init.Name),
+		Description: dynamitedb.Set(req.Msg.Init.Description),
+		Builtin:     dynamitedb.Set(req.Msg.Init.Builtin),
+		Scope:       dynamitedb.Set(req.Msg.Init.Scope),
 	})
 	if err != nil {
-		if errors.Is(err, gcerrors.ErrAlreadyExists) {
+		if errors.Is(err, dynamitedb.ErrAlreadyExists) {
 			return nil, connect.NewError(connect.CodeAlreadyExists, fmt.Errorf("role does already exist"))
 		}
-		l.Error(fmt.Sprintf("failed to create role invitation: %v", err))
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create role invitation"))
+		l.Error(fmt.Sprintf("failed to create role: %v", err))
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create role"))
 	}
 	return &connect.Response[role.CreateResponse]{Msg: &role.CreateResponse{}}, nil
 }
@@ -126,25 +117,24 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[role.CreateReq
 func (s *Server) Update(ctx context.Context, req *connect.Request[role.UpdateRequest]) (*connect.Response[role.UpdateResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
 
-	roleIter := s.coll.Query().
-		Where("pk", "=", rolemodel.Key.New(req.Msg.Mod.Id)).
-		Where("sk", "=", rolemodel.SortData.New("")).
-		Where("scope", "in", auth.Scopes(ctx)).Get(ctx)
-	defer roleIter.Stop()
-	roleData := &rolemodel.Data{}
-	if err := roleIter.Next(ctx, roleData); err != nil {
-		if errors.Is(err, gcerrors.ErrNotFound) || errors.Is(err, io.EOF) {
+	targetRole, err := dynamitedb.Get(ctx, s.bucket, &model.Role{
+		RoleID: dynamitedb.Key(req.Msg.Mod.Id),
+		Scope:  dynamitedb.In(auth.Scopes(ctx)...),
+	})
+	if err != nil {
+		if errors.Is(err, dynamitedb.ErrNotFound) {
 			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("role does not exist"))
 		}
 		l.Error(fmt.Sprintf("failed to fetch role: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch role"))
 	}
-	if roleData.Builtin {
+	if targetRole.Builtin.Value() {
 		return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("builtin roles cannot be modified"))
 	}
-	err := s.coll.Update(ctx, roleData, docstore.Mods{
-		"name":        req.Msg.Mod.Name,
-		"description": req.Msg.Mod.Description,
+	err = dynamitedb.Update(ctx, s.bucket, &model.Role{
+		RoleID:      targetRole.RoleID,
+		Name:        dynamitedb.Set(req.Msg.Mod.Name),
+		Description: dynamitedb.Set(req.Msg.Mod.Description),
 	})
 	if err != nil {
 		l.Error(fmt.Sprintf("failed to update role: %v", err))
@@ -156,26 +146,17 @@ func (s *Server) Update(ctx context.Context, req *connect.Request[role.UpdateReq
 func (s *Server) Delete(ctx context.Context, req *connect.Request[role.DeleteRequest]) (*connect.Response[role.DeleteResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
 
-	roleIter := s.coll.Query().
-		Where("pk", "=", rolemodel.Key.New(req.Msg.Id)).
-		Where("sk", "=", rolemodel.SortData.New("")).
-		Where("scope", "in", auth.Scopes(ctx)).Get(ctx)
-	defer roleIter.Stop()
-	roleData := &rolemodel.Data{}
-	if err := roleIter.Next(ctx, roleData); err != nil {
-		if errors.Is(err, gcerrors.ErrNotFound) || errors.Is(err, io.EOF) {
-			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("role does not exist"))
+	err := dynamitedb.Delete(ctx, s.bucket, &model.Role{
+		RoleID:  dynamitedb.Key(req.Msg.Id),
+		Scope:   dynamitedb.In(auth.Scopes(ctx)...),
+		Builtin: dynamitedb.Eq(false),
+	})
+	if err != nil {
+		if errors.Is(err, dynamitedb.ErrFilterMismatch) {
+			return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("builtin or out of scope roles cannot be deleted"))
 		}
 		l.Error(fmt.Sprintf("failed to fetch role: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch role"))
-	}
-	if roleData.Builtin {
-		return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("builtin roles cannot be deleted"))
-	}
-	err := s.coll.Delete(ctx, roleData)
-	if err != nil {
-		l.Error(fmt.Sprintf("failed to update role: %v", err))
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update role"))
 	}
 	return &connect.Response[role.DeleteResponse]{Msg: &role.DeleteResponse{}}, nil
 }

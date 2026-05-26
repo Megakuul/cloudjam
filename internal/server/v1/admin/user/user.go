@@ -191,7 +191,7 @@ func (s *Server) Update(ctx context.Context, req *connect.Request[user.UpdateReq
 		if targetUser.Privileged.Value() {
 			return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("privileged users cannot be modified"))
 		}
-		dynamitedb.Update(ctx, s.bucket, &model.User{
+		err = dynamitedb.Update(ctx, s.bucket, &model.User{
 			UserID:       dynamitedb.Key(req.Msg.Mod.Id),
 			Organization: dynamitedb.Set(req.Msg.Mod.Organization),
 		})
@@ -269,26 +269,17 @@ func (s *Server) ResetPassword(ctx context.Context, req *connect.Request[user.Re
 func (s *Server) Delete(ctx context.Context, req *connect.Request[user.DeleteRequest]) (*connect.Response[user.DeleteResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
 
-	targetUser, err := dynamitedb.Get(ctx, s.bucket, &model.User{
-		UserID: dynamitedb.Key(req.Msg.Id),
-		Scope:  dynamitedb.In(auth.Scopes(ctx)...),
+	err := dynamitedb.Delete(ctx, s.bucket, &model.User{
+		UserID:     dynamitedb.Key(req.Msg.Id),
+		Scope:      dynamitedb.In(auth.Scopes(ctx)...),
+		Privileged: dynamitedb.Eq(false),
 	})
 	if err != nil {
-		if errors.Is(err, dynamitedb.ErrNotFound) {
-			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("user does not exist"))
+		if errors.Is(err, dynamitedb.ErrFilterMismatch) {
+			return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("privileged or out of scope users cannot be deleted"))
 		}
 		l.Error(fmt.Sprintf("failed to fetch user: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch user"))
 	}
-	if targetUser.Privileged.Value() {
-		return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("privileged users cannot be deleted"))
-	}
-
-	// TODO
-	// err := s.coll.Delete(ctx, userData)
-	// if err != nil {
-	// 	l.Error(fmt.Sprintf("failed to update user: %v", err))
-	// 	return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update user"))
-	// }
 	return &connect.Response[user.DeleteResponse]{Msg: &user.DeleteResponse{}}, nil
 }

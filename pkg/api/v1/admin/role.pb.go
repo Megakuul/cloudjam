@@ -22,57 +22,13 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type Permission struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ActionExprs   []string               `protobuf:"bytes,1,rep,name=action_exprs,json=actionExprs,proto3" json:"action_exprs,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *Permission) Reset() {
-	*x = Permission{}
-	mi := &file_v1_admin_role_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Permission) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Permission) ProtoMessage() {}
-
-func (x *Permission) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_admin_role_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Permission.ProtoReflect.Descriptor instead.
-func (*Permission) Descriptor() ([]byte, []int) {
-	return file_v1_admin_role_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *Permission) GetActionExprs() []string {
-	if x != nil {
-		return x.ActionExprs
-	}
-	return nil
-}
-
 type Role struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
 	Builtin       bool                   `protobuf:"varint,4,opt,name=builtin,proto3" json:"builtin,omitempty"`
-	Permissions   map[string]*Permission `protobuf:"bytes,5,rep,name=permissions,proto3" json:"permissions,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Permissions   map[string]string      `protobuf:"bytes,5,rep,name=permissions,proto3" json:"permissions,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	Scope         string                 `protobuf:"bytes,6,opt,name=scope,proto3" json:"scope,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -80,7 +36,7 @@ type Role struct {
 
 func (x *Role) Reset() {
 	*x = Role{}
-	mi := &file_v1_admin_role_proto_msgTypes[1]
+	mi := &file_v1_admin_role_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -92,7 +48,7 @@ func (x *Role) String() string {
 func (*Role) ProtoMessage() {}
 
 func (x *Role) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_admin_role_proto_msgTypes[1]
+	mi := &file_v1_admin_role_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -105,7 +61,7 @@ func (x *Role) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Role.ProtoReflect.Descriptor instead.
 func (*Role) Descriptor() ([]byte, []int) {
-	return file_v1_admin_role_proto_rawDescGZIP(), []int{1}
+	return file_v1_admin_role_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Role) GetId() string {
@@ -136,7 +92,7 @@ func (x *Role) GetBuiltin() bool {
 	return false
 }
 
-func (x *Role) GetPermissions() map[string]*Permission {
+func (x *Role) GetPermissions() map[string]string {
 	if x != nil {
 		return x.Permissions
 	}
@@ -154,23 +110,17 @@ var File_v1_admin_role_proto protoreflect.FileDescriptor
 
 const file_v1_admin_role_proto_rawDesc = "" +
 	"\n" +
-	"\x13v1/admin/role.proto\x12\bv1.admin\x1a\x1bbuf/validate/validate.proto\";\n" +
-	"\n" +
-	"Permission\x12-\n" +
-	"\faction_exprs\x18\x01 \x03(\tB\n" +
-	"\xbaH\a\x92\x01\x04\b\x01\x10\n" +
-	"R\vactionExprs\"\xb7\x02\n" +
+	"\x13v1/admin/role.proto\x12\bv1.admin\x1a\x1bbuf/validate/validate.proto\"\xbb\x02\n" +
 	"\x04Role\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1d\n" +
 	"\x04name\x18\x02 \x01(\tB\t\xbaH\x06r\x04\x10\x04\x18\x14R\x04name\x12+\n" +
 	"\vdescription\x18\x03 \x01(\tB\t\xbaH\x06r\x04\x10\x00\x182R\vdescription\x12\x18\n" +
-	"\abuiltin\x18\x04 \x01(\bR\abuiltin\x12M\n" +
-	"\vpermissions\x18\x05 \x03(\v2\x1f.v1.admin.Role.PermissionsEntryB\n" +
-	"\xbaH\a\x92\x01\x04\b\x01\x10\x14R\vpermissions\x12\x14\n" +
-	"\x05scope\x18\x06 \x01(\tR\x05scope\x1aT\n" +
+	"\abuiltin\x18\x04 \x01(\bR\abuiltin\x12g\n" +
+	"\vpermissions\x18\x05 \x03(\v2\x1f.v1.admin.Role.PermissionsEntryB$\xbaH!\x9a\x01\x1e\b\x01\x10\x14*\x18r\x16\x10\x01\x18d2\x10^[a-zA-Z0-9,*]+$R\vpermissions\x12\x14\n" +
+	"\x05scope\x18\x06 \x01(\tR\x05scope\x1a>\n" +
 	"\x10PermissionsEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12*\n" +
-	"\x05value\x18\x02 \x01(\v2\x14.v1.admin.PermissionR\x05value:\x028\x01B1Z/codeberg.org/megakuul/cloudjam/pkg/api/v1/adminb\x06proto3"
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B1Z/codeberg.org/megakuul/cloudjam/pkg/api/v1/adminb\x06proto3"
 
 var (
 	file_v1_admin_role_proto_rawDescOnce sync.Once
@@ -184,20 +134,18 @@ func file_v1_admin_role_proto_rawDescGZIP() []byte {
 	return file_v1_admin_role_proto_rawDescData
 }
 
-var file_v1_admin_role_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_v1_admin_role_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_v1_admin_role_proto_goTypes = []any{
-	(*Permission)(nil), // 0: v1.admin.Permission
-	(*Role)(nil),       // 1: v1.admin.Role
-	nil,                // 2: v1.admin.Role.PermissionsEntry
+	(*Role)(nil), // 0: v1.admin.Role
+	nil,          // 1: v1.admin.Role.PermissionsEntry
 }
 var file_v1_admin_role_proto_depIdxs = []int32{
-	2, // 0: v1.admin.Role.permissions:type_name -> v1.admin.Role.PermissionsEntry
-	0, // 1: v1.admin.Role.PermissionsEntry.value:type_name -> v1.admin.Permission
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	1, // 0: v1.admin.Role.permissions:type_name -> v1.admin.Role.PermissionsEntry
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_v1_admin_role_proto_init() }
@@ -211,7 +159,7 @@ func file_v1_admin_role_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_v1_admin_role_proto_rawDesc), len(file_v1_admin_role_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
