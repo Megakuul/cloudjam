@@ -37,9 +37,10 @@ func CreateAdministrator(ctx context.Context, email string, bucket *dynamitedb.B
 		if errors.Is(err, dynamitedb.ErrAlreadyExists) {
 			return "", nil
 		}
-		return "", err
+		return "", fmt.Errorf("user creation: %v", err)
 	}
 
+	println(email)
 	err = dynamitedb.Put(ctx, bucket, &model.Creds{
 		Email:          dynamitedb.Key(email),
 		Active:         dynamitedb.Set(false),
@@ -49,7 +50,7 @@ func CreateAdministrator(ctx context.Context, email string, bucket *dynamitedb.B
 		Scope:          dynamitedb.Set(model.ScopeAdmin),
 	})
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("cred insertion: %v", err)
 	}
 
 	err = dynamitedb.Put(ctx, bucket, &model.Role{
@@ -65,7 +66,7 @@ func CreateAdministrator(ctx context.Context, email string, bucket *dynamitedb.B
 		Scope: dynamitedb.Set(model.ScopeAdmin),
 	})
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("role insertion: %v", err)
 	}
 	return password, nil
 }

@@ -19,10 +19,13 @@ type Options struct {
 	Json    bool   `mapstructure:"json"`
 	Verbose bool   `mapstructure:"verbose"`
 
-	AdminEmail         string        `mapstructure:"admin-email"`
-	DatabaseSource     string        `mapstructure:"database-source"`
-	DatabaseName       string        `mapstructure:"database-name"`
-	DatabaseCollection string        `mapstructure:"database-collection"`
+	AdminEmail      string `mapstructure:"admin-email"`
+	BucketURL       string `mapstructure:"bucket-url"`
+	BucketName      string `mapstructure:"bucket-name"`
+	BucketRegion    string `mapstructure:"bucket-region"`
+	BucketAccessKey string `mapstructure:"bucket-access-key"`
+	BucketSecretKey string `mapstructure:"bucket-secret-key"`
+
 	TokenIssuer        string        `mapstructure:"token-issuer"`
 	TokenLifetime      time.Duration `mapstructure:"token-lifetime"`
 	TokenSecret        string        `mapstructure:"token-secret"`
@@ -69,9 +72,11 @@ func main() {
 	cmd.Flags().BoolP("verbose", "", false, "enable verbose logs")
 	cmd.Flags().StringP("addr", "", "0.0.0.0:9000", "location of the hornet server entrypoint")
 	cmd.Flags().StringP("admin-email", "", "admin@local", "initial administrator account email")
-	cmd.Flags().StringP("database-source", "", "mongodb://username:password@127.0.0.1:10260/?tls=true&tlsInsecure=true", "mongo source connection string")
-	cmd.Flags().StringP("database-name", "", "cloudjam", "name of the mongo database")
-	cmd.Flags().StringP("database-collection", "", "table", "name of the mongo collection (single table dynamodb type shiii)")
+	cmd.Flags().StringP("bucket-url", "", "http://127.0.0.1:3900", "s3 bucket url used for the database backend")
+	cmd.Flags().StringP("bucket-name", "", "cloudjam", "s3 bucket name used for the database backend")
+	cmd.Flags().StringP("bucket-region", "", "garage", "s3 bucket region used for the database backend")
+	cmd.Flags().StringP("bucket-access-key", "", "cloudjam-access-key", "s3 bucket access key used for the database backend")
+	cmd.Flags().StringP("bucket-secret-key", "", "cloudjam-secret-key", "s3 bucket secret key used for the database backend")
 	cmd.Flags().StringP("token-issuer", "", "cloudjam", "issuer used inside issued jwt tokens (iss)")
 	cmd.Flags().DurationP("token-lifetime", "", 24*time.Hour, "lifetime of issued jwt tokens")
 	cmd.Flags().StringP("token-secret", "", rand.Text(), "secret used to HMAC sign jwt tokens")

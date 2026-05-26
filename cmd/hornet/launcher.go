@@ -21,8 +21,7 @@ import (
 	"connectrpc.com/connect"
 	"connectrpc.com/validate"
 	"github.com/golang-jwt/jwt/v5"
-
-	"gocloud.dev/docstore/mongodocstore"
+	"github.com/megakuul/dynamitedb"
 )
 
 func Start(ctx context.Context, opts *Options) error {
@@ -42,20 +41,17 @@ func Start(ctx context.Context, opts *Options) error {
 	issuer := token.New(opts.TokenIssuer, opts.TokenLifetime, jwt.SigningMethodHS256, []byte(opts.TokenSecret), func(ctx context.Context) any {
 		return []byte(opts.TokenSecret)
 	})
-	slog.Debug(fmt.Sprintf("dialing mongodb database at '%s'...", opts.DatabaseSource))
-	client, err := mongodocstore.Dial(ctx, opts.DatabaseSource)
+	slog.Debug(fmt.Sprintf("initializing dynamitedb bucket at '%s'...", opts.BucketURL))
+	bucket, err := dynamitedb.New(ctx, opts.BucketURL, opts.BucketName,
+		dynamitedb.WithRegion(opts.BucketRegion),
+		dynamitedb.WithCredentials(opts.BucketAccessKey, opts.BucketSecretKey),
+	)
 	if err != nil {
-		return err
+		return fmt.Errorf("failed to initialize dynamitedb bucket: %v", err)
 	}
-	slog.Debug(fmt.Sprintf("connecting to mongodb collection (db: '%s', col: '%s')...", opts.DatabaseName, opts.DatabaseCollection))
-	coll, err := mongodocstore.OpenCollection(client.Database(opts.DatabaseName).Collection(opts.DatabaseCollection), "pk", nil)
-	if err != nil {
-		return err
-	}
-	defer coll.Close()
 
 	slog.Debug("initializing administrator account not existing...")
-	code, err := bootstrap.CreateAdministrator(ctx, opts.AdminEmail, coll)
+	code, err := bootstrap.CreateAdministrator(ctx, opts.AdminEmail, bucket)
 	if err != nil {
 		return fmt.Errorf("failed to initialize administrator: %v", err)
 	} else if code != "" {
@@ -63,11 +59,11 @@ func Start(ctx context.Context, opts *Options) error {
 	}
 
 	apiMux := http.NewServeMux()
-	authorizer := rbac.New(coll, opts.PolicyCacheTimeout)
-	apiMux.Handle(authconnect.NewAuthServiceHandler(auth.New(slog.With("system", "svc.auth"), coll, issuer),
+	authorizer := rbac.New(bucket, opts.PolicyCacheTimeout)
+	apiMux.Handle(authconnect.NewAuthServiceHandler(auth.New(slog.With("system", "svc.auth"), bucket, issuer),
 		connect.WithInterceptors(validate.NewInterceptor()),
 	))
-	apiMux.Handle(userconnect.NewUserServiceHandler(user.New(slog.With("system", "svc.admin.user"), coll),
+	apiMux.Handle(userconnect.NewUserServiceHandler(user.New(slog.With("system", "svc.admin.user"), bucket),
 		connect.WithInterceptors(
 			authmiddleware.New(issuer, authorizer),
 			validate.NewInterceptor(),

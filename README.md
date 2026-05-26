@@ -8,11 +8,15 @@ Platform to design, host and play CTF like challenges for DevOps guys.
 ## Deployment 🪖
 ---
 
-There are two ways to host CloudJam, the system is abstracting the underlying database and storage layer via `go-cloud` sdk.
+> [!CAUTION]
+> Do NOT use the `docker-compose` file for deployment. It is ONLY for development and contains hardcoded dummy secrets.
+
+
+There are two ways to host CloudJam:
 
 ### hornet 🐝 
 
-Single binary launcher with documentdb used for development and cheap hosting.
+Single binary launcher used for development and cheap hosting.
 
 **Deployment**:
 
@@ -22,7 +26,7 @@ TBD
 
 ### orca 🫍
 
-Serverless pulumi deployment using Lambda and DynamoDB used for cost effective scaling.
+Serverless pulumi deployment on Lambda used for cost effective scaling.
 
 **Deployment**:
 
@@ -34,15 +38,14 @@ TBD
 ---
 
 ```bash
-# starts documentdb (data is in './.database/data' certs in './.database/cert')
+# starts development garage s3 server including webui on http://127.0.0.1:8080 (token "secret-admin-token").
 docker-compose up -d
 
 # start the local sveltekit vite server
 cd web && pnpm i && pnpm run dev
 
-# in another terminal start hornet in dev mode
-export DATABASE_SOURCE="mongodb://username:password@127.0.0.1:10260/?tls=true&tlsCAFile=.database/cert/cert.crt"
-go run ./cmd/hornet -D --token-secret abcd
+# in another terminal start hornet in dev mode (s3 params default to the hardcoded options in the docker-compose)
+go run ./cmd/hornet -D --token-secret 123
 
 # use the default addr for development; hornet proxies the ui to vite so don't worry about that. 
 xdg-open http://127.0.0.1:9000
@@ -88,8 +91,7 @@ List of things that need to be programmed manually and can be abstracted eventua
 2. Automatically create logger with proper request information in rpc methods (could be done by transporting labels via ctx)
 3. Mapping query fields typesafe in Query() db calls (evtl. derive from model struct).
 4. `AttachScope` avoid manual mapping of "Resource"->Models (technically all data just has a scope field so...).
-5. Simplify the iter database interface (usually I don't need to iterate, so iter is unnecessary boilerplate).
-6. Log errors automatically via rpc middleware instead of manual logging.
+5. Log errors automatically via rpc middleware instead of manual logging.
 
 > [!IMPORTANT]  
 > Note that implementing those automations opens a can of worms.

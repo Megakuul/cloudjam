@@ -11,9 +11,14 @@ services:
       - garage-meta:/var/lib/garage/meta
     restart: unless-stopped
     entrypoint: ["/garage"]
+    environment:
+      - GARAGE_DEFAULT_ACCESS_KEY=cloudjam-access-key
+      - GARAGE_DEFAULT_SECRET_KEY=cloudjam-secret-key
+      - GARAGE_DEFAULT_BUCKET=cloudjam
     command:
       - server
       - --single-node
+      - --default-bucket
     configs:
       - source: "garage_toml"
         target: "/etc/garage.toml"
