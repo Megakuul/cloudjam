@@ -6,10 +6,9 @@
 Platform to design, host and play CTF like challenges for DevOps guys.
 
 ## Deployment 🪖
----
 
-> [!CAUTION]
-> Do NOT use the `docker-compose` file for deployment. It is ONLY for development and contains hardcoded dummy secrets.
+> [!Warning]
+> Do *NOT* use the `docker-compose.yaml` file for deployment. It is *ONLY* for development and contains hardcoded dummy secrets.
 
 
 There are two ways to host CloudJam:
@@ -35,7 +34,6 @@ TBD
 ```
 
 ## Development 🚀
----
 
 ```bash
 # starts development garage s3 server including webui on http://127.0.0.1:8080 (token "secret-admin-token").
@@ -52,7 +50,6 @@ xdg-open http://127.0.0.1:9000
 ```
 
 ## RBAC Concept 🏷️
----
 
 CloudJam uses a **one-role-per-user** RBAC concept (a user cannot be attached to multiple roles at the same time). 
 This avoids ambiguity with multisource- or transitive permissions.
