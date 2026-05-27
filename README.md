@@ -36,7 +36,7 @@ TBD
 ## Development 🚀
 
 ```bash
-# starts development garage s3 server including webui on http://127.0.0.1:8080 (token "secret-admin-token").
+# starts development rustfs s3 server including webui on http://127.0.0.1:9001 ("cloudjam-access-key" & "cloudjam-secret-key").
 docker-compose up -d
 
 # start the local sveltekit vite server
@@ -46,7 +46,7 @@ cd web && pnpm i && pnpm run dev
 go run ./cmd/hornet -D --token-secret 123
 
 # use the default addr for development; hornet proxies the ui to vite so don't worry about that. 
-xdg-open http://127.0.0.1:9000
+xdg-open http://127.0.0.1:8000
 ```
 
 ## RBAC Concept 🏷️

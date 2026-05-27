@@ -102,6 +102,12 @@ github.com/megakuul/dynamitedb v0.2.1 h1:bUAMGM38IVsKkqj41AvRWIb2eGJsHXv/QU3JtY5
 github.com/megakuul/dynamitedb v0.2.1/go.mod h1:lQQsFB5uxlS5ivS+pzu05HpiA0P8gl4HLjXkaRWAcU8=
 github.com/megakuul/dynamitedb v0.2.2 h1:Pw1wmxg1UmKDgvOK89q1ZppNwrm46ObFv6nAaMxKqy8=
 github.com/megakuul/dynamitedb v0.2.2/go.mod h1:lQQsFB5uxlS5ivS+pzu05HpiA0P8gl4HLjXkaRWAcU8=
+github.com/megakuul/dynamitedb v0.2.4 h1:kNd7R5JJs9vonmCaV64CNt+zOlZDBX8uDhz+b58fhK4=
+github.com/megakuul/dynamitedb v0.2.4/go.mod h1:lQQsFB5uxlS5ivS+pzu05HpiA0P8gl4HLjXkaRWAcU8=
+github.com/megakuul/dynamitedb v0.2.5 h1:qyjol68bY8DDDCvjV+oEp4I7dcdWbMfXSYe1JBtmdVc=
+github.com/megakuul/dynamitedb v0.2.5/go.mod h1:lQQsFB5uxlS5ivS+pzu05HpiA0P8gl4HLjXkaRWAcU8=
+github.com/megakuul/dynamitedb v0.2.6 h1:D4FTCmDW4AnJ4PTcEie/z6z+GEkFUTUhb6pmbG6ItWI=
+github.com/megakuul/dynamitedb v0.2.6/go.mod h1:lQQsFB5uxlS5ivS+pzu05HpiA0P8gl4HLjXkaRWAcU8=
 github.com/montanaflynn/stats v0.8.2 h1:52wnefTJnPI5FoHif1DQh2soKRw0yYs+4AVyvtcZCH0=
 github.com/montanaflynn/stats v0.8.2/go.mod h1:etXPPgVO6n31NxCd9KQUMvCM+ve0ruNzt6R8Bnaayow=
 github.com/pelletier/go-toml/v2 v2.2.4 h1:mye9XuhQ6gvn5h28+VilKrrPoQVanw5PMw/TB0t5Ec4=

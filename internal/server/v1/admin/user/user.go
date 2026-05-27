@@ -87,8 +87,8 @@ func (s *Server) List(ctx context.Context, req *connect.Request[user.ListRequest
 		Scope:  dynamitedb.In(auth.Scopes(ctx)...),
 	}, opts...)
 	if err != nil {
-		l.Error(fmt.Sprintf("failed to iterate user: %v", err))
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to iterate user"))
+		l.Error(fmt.Sprintf("failed to iterate users: %v", err))
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to iterate users"))
 	}
 
 	usersOutput := []*admin.User{}

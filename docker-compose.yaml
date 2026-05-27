@@ -1,66 +1,23 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/compose-spec/compose-go/master/schema/compose-spec.json
 services:
-  garage:
-    image: dxflrs/garage:v2.3.0
-    container_name: garage
+  rustfs:
+    image: rustfs/rustfs:latest
     ports:
-      - "3900:3900"
-      - "3903:3903"
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      - RUSTFS_ACCESS_KEY=cloudjam-access-key
+      - RUSTFS_SECRET_KEY=cloudjam-secret-key
     volumes:
-      - garage-data:/var/lib/garage/data
-      - garage-meta:/var/lib/garage/meta
-    restart: unless-stopped
-    entrypoint: ["/garage"]
-    environment:
-      - GARAGE_DEFAULT_ACCESS_KEY=cloudjam-access-key
-      - GARAGE_DEFAULT_SECRET_KEY=cloudjam-secret-key
-      - GARAGE_DEFAULT_BUCKET=cloudjam
-    command:
-      - server
-      - --single-node
-      - --default-bucket
-    configs:
-      - source: "garage_toml"
-        target: "/etc/garage.toml"
-  garage-ui:
-    image: noooste/garage-ui:latest
-    container_name: garage-ui
-    ports:
-      - "8080:8080"
-    environment:
-      - GARAGE_UI_GARAGE_ENDPOINT=http://garage:3900
-      - GARAGE_UI_GARAGE_ADMIN_ENDPOINT=http://garage:3903
-      - GARAGE_UI_GARAGE_ADMIN_TOKEN=secret-admin-token
-      - GARAGE_UI_GARAGE_REGION=garage
+      - data:/data
+  init-bucket:
+    image: amazon/aws-cli
     depends_on:
-      - garage
-    restart: unless-stopped
+      - rustfs
+    environment:
+      - AWS_ACCESS_KEY_ID=cloudjam-access-key
+      - AWS_SECRET_ACCESS_KEY=cloudjam-secret-key
+      - AWS_DEFAULT_REGION=us-east-1
+    entrypoint: /bin/sh -c "sleep 3 && aws s3api create-bucket --bucket cloudjam --endpoint-url http://rustfs:9000"
 volumes:
-  garage-data:
-  garage-meta:
-configs:
-  garage_toml:
-    content: |
-      metadata_dir = "/var/lib/garage/meta"
-      data_dir = "/var/lib/garage/data"
-      db_engine = "sqlite"
-
-      replication_factor = 1
-
-      rpc_bind_addr = "[::]:3901"
-      rpc_public_addr = "127.0.0.1:3901"
-      rpc_secret = "993e19a84c4f97374f24eb686e424e4a28d4a13bad33cdfc4524f6b999bd2733"
-
-      [s3_api]
-      s3_region = "garage"
-      api_bind_addr = "[::]:3900"
-      root_domain = ".s3.garage.localhost"
-
-      [s3_web]
-      bind_addr = "[::]:3902"
-      root_domain = ".web.garage.localhost"
-      index = "index.html"
-
-      [admin]
-      api_bind_addr = "[::]:3903"
-      admin_token = "secret-admin-token"
+  data:
