@@ -8,9 +8,15 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"strings"
+
+	gokitlog "github.com/go-kit/log"
 
 	authmiddleware "codeberg.org/megakuul/cloudjam/internal/auth"
 	"codeberg.org/megakuul/cloudjam/internal/bootstrap"
+	"codeberg.org/megakuul/cloudjam/internal/olap"
+	"codeberg.org/megakuul/cloudjam/internal/olap/log"
+	"codeberg.org/megakuul/cloudjam/internal/olap/request"
 	"codeberg.org/megakuul/cloudjam/internal/rbac"
 	"codeberg.org/megakuul/cloudjam/internal/server/v1/admin/user"
 	"codeberg.org/megakuul/cloudjam/internal/server/v1/auth"
@@ -20,8 +26,12 @@ import (
 	"codeberg.org/megakuul/cloudjam/web"
 	"connectrpc.com/connect"
 	"connectrpc.com/validate"
+	"github.com/apache/arrow-go/v18/arrow/memory"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/megakuul/dynamitedb"
+	"github.com/polarsignals/frostdb"
+	"github.com/polarsignals/frostdb/query"
+	"github.com/thanos-io/objstore/providers/s3"
 )
 
 func Start(ctx context.Context, opts *Options) error {
@@ -50,7 +60,55 @@ func Start(ctx context.Context, opts *Options) error {
 		return fmt.Errorf("failed to initialize dynamitedb bucket: %v", err)
 	}
 
-	slog.Debug("initializing administrator account not existing...")
+	olapBucketConfig := s3.Config{
+		Bucket:    opts.BucketName,
+		Region:    opts.BucketRegion,
+		AccessKey: opts.BucketAccessKey,
+		SecretKey: opts.BucketSecretKey,
+	}
+	if bucketEndpoint, ok := strings.CutPrefix(opts.BucketURL, "https://"); ok {
+		olapBucketConfig.Endpoint = bucketEndpoint
+	} else if bucketEndpoint, ok := strings.CutPrefix(opts.BucketURL, "http://"); ok {
+		olapBucketConfig.Endpoint = bucketEndpoint
+		olapBucketConfig.Insecure = true
+	}
+	olapBucket, err := s3.NewBucketWithConfig(gokitlog.NewNopLogger(), olapBucketConfig, "olap")
+	if err != nil {
+		return fmt.Errorf("failed to initialize olap bucket: %v", err)
+	}
+	olapStore, err := frostdb.New(
+		frostdb.WithReadWriteStorage(frostdb.NewDefaultObjstoreBucket(olapBucket)),
+	)
+	if err != nil {
+		return fmt.Errorf("failed to initialize olap frostdb store: %v", err)
+	}
+	defer olapStore.Close()
+	olapDatabase, err := olapStore.DB(ctx, "olap")
+	if err != nil {
+		return fmt.Errorf("failed to initialize olap frostdb database: %v", err)
+	}
+	defer olapDatabase.Close()
+
+	olapEngine := query.NewEngine(memory.DefaultAllocator, olapDatabase.TableProvider())
+
+	logTable, err := frostdb.NewGenericTable[log.Log](olapDatabase, "log", memory.DefaultAllocator)
+	if err != nil {
+		return fmt.Errorf("failed to initialize log olap table: %v", err)
+	}
+	logController := log.New("log", olapEngine)
+
+	slog.SetDefault(slog.New(slog.NewMultiHandler(
+		slog.Default().Handler(),
+		log.NewSink(olap.NewLocalInserter(olapDatabase, logTable), &log.SinkOptions{Level: slog.LevelDebug}),
+	)))
+
+	requestTable, err := frostdb.NewGenericTable[request.Request](olapDatabase, "request", memory.DefaultAllocator)
+	if err != nil {
+		return fmt.Errorf("failed to initialize request olap table: %v", err)
+	}
+	requestController := request.New("request", olapEngine)
+	requestInserter := olap.NewLocalInserter(olapDatabase, requestTable)
+
 	code, err := bootstrap.CreateAdministrator(ctx, opts.AdminEmail, bucket)
 	if err != nil {
 		return fmt.Errorf("failed to initialize administrator: %v", err)
@@ -61,10 +119,14 @@ func Start(ctx context.Context, opts *Options) error {
 	apiMux := http.NewServeMux()
 	authorizer := rbac.New(bucket, opts.PolicyCacheTimeout)
 	apiMux.Handle(authconnect.NewAuthServiceHandler(auth.New(slog.With("system", "svc.auth"), bucket, issuer),
-		connect.WithInterceptors(validate.NewInterceptor()),
+		connect.WithInterceptors(
+			request.NewInterceptor(requestInserter),
+			validate.NewInterceptor(),
+		),
 	))
 	apiMux.Handle(userconnect.NewUserServiceHandler(user.New(slog.With("system", "svc.admin.user"), bucket),
 		connect.WithInterceptors(
+			request.NewInterceptor(requestInserter),
 			authmiddleware.New(issuer, authorizer),
 			validate.NewInterceptor(),
 		),
