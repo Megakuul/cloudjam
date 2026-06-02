@@ -39,8 +39,8 @@ TBD
 # starts development rustfs s3 server including webui on http://127.0.0.1:9001 ("cloudjam-access-key" & "cloudjam-secret-key").
 docker-compose up -d
 
-# start the local sveltekit vite server
-cd web && pnpm i && pnpm run dev
+# build webapp initially and start the local sveltekit vite server
+cd web && pnpm i && pnpm run build && pnpm run dev
 
 # in another terminal start hornet in dev mode (s3 params default to the hardcoded options in the docker-compose)
 go run ./cmd/hornet -D --token-secret 123
