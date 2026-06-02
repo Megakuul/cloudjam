@@ -30,7 +30,6 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/megakuul/dynamitedb"
 	"github.com/polarsignals/frostdb"
-	"github.com/polarsignals/frostdb/query"
 	"github.com/thanos-io/objstore/providers/s3"
 )
 
@@ -89,13 +88,13 @@ func Start(ctx context.Context, opts *Options) error {
 	}
 	defer olapDatabase.Close()
 
-	olapEngine := query.NewEngine(memory.DefaultAllocator, olapDatabase.TableProvider())
+	// olapEngine := query.NewEngine(memory.DefaultAllocator, olapDatabase.TableProvider())
 
 	logTable, err := frostdb.NewGenericTable[log.Log](olapDatabase, "log", memory.DefaultAllocator)
 	if err != nil {
 		return fmt.Errorf("failed to initialize log olap table: %v", err)
 	}
-	logController := log.New("log", olapEngine)
+	// logController := log.New("log", olapEngine)
 
 	slog.SetDefault(slog.New(slog.NewMultiHandler(
 		slog.Default().Handler(),
@@ -106,7 +105,7 @@ func Start(ctx context.Context, opts *Options) error {
 	if err != nil {
 		return fmt.Errorf("failed to initialize request olap table: %v", err)
 	}
-	requestController := request.New("request", olapEngine)
+	// requestController := request.New("request", olapEngine)
 	requestInserter := olap.NewLocalInserter(olapDatabase, requestTable)
 
 	code, err := bootstrap.CreateAdministrator(ctx, opts.AdminEmail, bucket)
