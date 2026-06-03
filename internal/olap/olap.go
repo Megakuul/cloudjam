@@ -16,22 +16,19 @@ type Inserter[T any] interface {
 
 // LocalInserter directly writes inserts to an underlying frostdb instance.
 type LocalInserter[T any] struct {
-	db    *frostdb.DB
 	table *frostdb.GenericTable[T]
 }
 
-func NewLocalInserter[T any](db *frostdb.DB, table *frostdb.GenericTable[T]) *LocalInserter[T] {
+func NewLocalInserter[T any](table *frostdb.GenericTable[T]) *LocalInserter[T] {
 	return &LocalInserter[T]{
 		table: table,
-		db:    db,
 	}
 }
 
 func (i *LocalInserter[T]) Insert(ctx context.Context, record T) error {
-	tx, err := i.table.Write(ctx, record)
+	_, err := i.table.Write(ctx, record)
 	if err != nil {
 		return err
 	}
-	i.db.Wait(tx)
 	return nil
 }

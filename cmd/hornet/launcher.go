@@ -18,9 +18,15 @@ import (
 	"codeberg.org/megakuul/cloudjam/internal/olap/log"
 	"codeberg.org/megakuul/cloudjam/internal/olap/request"
 	"codeberg.org/megakuul/cloudjam/internal/rbac"
+	rbacsvc "codeberg.org/megakuul/cloudjam/internal/server/v1/admin/rbac"
+	"codeberg.org/megakuul/cloudjam/internal/server/v1/admin/role"
+	"codeberg.org/megakuul/cloudjam/internal/server/v1/admin/system"
 	"codeberg.org/megakuul/cloudjam/internal/server/v1/admin/user"
 	"codeberg.org/megakuul/cloudjam/internal/server/v1/auth"
 	"codeberg.org/megakuul/cloudjam/internal/token"
+	"codeberg.org/megakuul/cloudjam/pkg/api/v1/admin/rbac/rbacconnect"
+	"codeberg.org/megakuul/cloudjam/pkg/api/v1/admin/role/roleconnect"
+	"codeberg.org/megakuul/cloudjam/pkg/api/v1/admin/system/systemconnect"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/admin/user/userconnect"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/auth/authconnect"
 	"codeberg.org/megakuul/cloudjam/web"
@@ -30,6 +36,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/megakuul/dynamitedb"
 	"github.com/polarsignals/frostdb"
+	"github.com/polarsignals/frostdb/query"
 	"github.com/thanos-io/objstore/providers/s3"
 )
 
@@ -88,7 +95,7 @@ func Start(ctx context.Context, opts *Options) error {
 	}
 	defer olapDatabase.Close()
 
-	// olapEngine := query.NewEngine(memory.DefaultAllocator, olapDatabase.TableProvider())
+	olapEngine := query.NewEngine(memory.DefaultAllocator, olapDatabase.TableProvider())
 
 	logTable, err := frostdb.NewGenericTable[log.Log](olapDatabase, "log", memory.DefaultAllocator)
 	if err != nil {
@@ -98,15 +105,15 @@ func Start(ctx context.Context, opts *Options) error {
 
 	slog.SetDefault(slog.New(slog.NewMultiHandler(
 		slog.Default().Handler(),
-		log.NewSink(olap.NewLocalInserter(olapDatabase, logTable), &log.SinkOptions{Level: slog.LevelDebug}),
+		log.NewSink(olap.NewLocalInserter(logTable), &log.SinkOptions{Level: slog.LevelDebug}),
 	)))
 
 	requestTable, err := frostdb.NewGenericTable[request.Request](olapDatabase, "request", memory.DefaultAllocator)
 	if err != nil {
 		return fmt.Errorf("failed to initialize request olap table: %v", err)
 	}
-	// requestController := request.New("request", olapEngine)
-	requestInserter := olap.NewLocalInserter(olapDatabase, requestTable)
+	requestController := request.New("request", olapEngine)
+	requestInserter := olap.NewLocalInserter(requestTable)
 
 	code, err := bootstrap.CreateAdministrator(ctx, opts.AdminEmail, bucket)
 	if err != nil {
@@ -119,13 +126,34 @@ func Start(ctx context.Context, opts *Options) error {
 	authorizer := rbac.New(bucket, opts.PolicyCacheTimeout)
 	apiMux.Handle(authconnect.NewAuthServiceHandler(auth.New(slog.With("system", "svc.auth"), bucket, issuer),
 		connect.WithInterceptors(
-			request.NewInterceptor(requestInserter),
+			request.NewInterceptor(slog.With("system", "olap.request"), requestInserter),
 			validate.NewInterceptor(),
 		),
 	))
 	apiMux.Handle(userconnect.NewUserServiceHandler(user.New(slog.With("system", "svc.admin.user"), bucket),
 		connect.WithInterceptors(
-			request.NewInterceptor(requestInserter),
+			request.NewInterceptor(slog.With("system", "olap.request"), requestInserter),
+			authmiddleware.New(issuer, authorizer),
+			validate.NewInterceptor(),
+		),
+	))
+	apiMux.Handle(roleconnect.NewRoleServiceHandler(role.New(slog.With("system", "svc.admin.role"), bucket),
+		connect.WithInterceptors(
+			request.NewInterceptor(slog.With("system", "olap.request"), requestInserter),
+			authmiddleware.New(issuer, authorizer),
+			validate.NewInterceptor(),
+		),
+	))
+	apiMux.Handle(rbacconnect.NewRBACServiceHandler(rbacsvc.New(slog.With("system", "svc.admin.rbac"), bucket),
+		connect.WithInterceptors(
+			request.NewInterceptor(slog.With("system", "olap.request"), requestInserter),
+			authmiddleware.New(issuer, authorizer),
+			validate.NewInterceptor(),
+		),
+	))
+	apiMux.Handle(systemconnect.NewSystemServiceHandler(system.New(slog.With("system", "svc.admin.system"), bucket, requestController),
+		connect.WithInterceptors(
+			request.NewInterceptor(slog.With("system", "olap.request"), requestInserter),
 			authmiddleware.New(issuer, authorizer),
 			validate.NewInterceptor(),
 		),

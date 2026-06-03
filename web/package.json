@@ -48,6 +48,7 @@
 		"@megakuul/glue-protocol": "../../glue-protocol",
 		"@tailwindcss/typography": "^0.5.19",
 		"jwt-decode": "^4.0.0",
+		"layerchart": "^1.0.13",
 		"svelte-ux": "next"
 	},
 	"packageManager": "pnpm@10.28.0"

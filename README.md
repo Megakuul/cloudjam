@@ -78,6 +78,8 @@ To keep critical code together and reducing dangerous misconfigurations the `rba
 
 > [!NOTE]  
 > Action permissions are ENFORCED via middleware, data permissions are be implemented manually per call.
+> For OLAP data there is generally no data permission.
+
 
 
 ## Things to SDK 🧩

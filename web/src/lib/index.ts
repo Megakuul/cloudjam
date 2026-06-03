@@ -4,6 +4,9 @@ import { createGlue } from '@megakuul/glue-protocol';
 import { AuthService } from './sdk/v1/auth/auth_pb';
 import { goto } from '$app/navigation';
 import { UserService } from './sdk/v1/admin/user/user_pb';
+import { RoleService } from './sdk/v1/admin/role/role_pb';
+import { RBACService } from './sdk/v1/admin/rbac/rbac_pb';
+import { SystemService } from './sdk/v1/admin/system/system_pb';
 
 export const Glue = createGlue(
 	'/api',
@@ -15,7 +18,10 @@ export const Glue = createGlue(
 	},
 	{
 		auth: AuthService,
-		user: UserService
+		user: UserService,
+		role: RoleService,
+		rbac: RBACService,
+		system: SystemService
 	}
 );
 
