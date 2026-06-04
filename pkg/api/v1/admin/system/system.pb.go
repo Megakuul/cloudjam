@@ -205,9 +205,10 @@ func (x *ScanLogsResponse) GetLogs() []*Log {
 
 type RequestWindow struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Start         *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=start,proto3" json:"start,omitempty"`
-	Count         int64                  `protobuf:"varint,2,opt,name=count,proto3" json:"count,omitempty"`
-	Latency       int64                  `protobuf:"varint,3,opt,name=latency,proto3" json:"latency,omitempty"`
+	Endpoint      string                 `protobuf:"bytes,1,opt,name=endpoint,proto3" json:"endpoint,omitempty"`
+	Start         *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=start,proto3" json:"start,omitempty"`
+	Count         int64                  `protobuf:"varint,3,opt,name=count,proto3" json:"count,omitempty"`
+	Latency       int64                  `protobuf:"varint,4,opt,name=latency,proto3" json:"latency,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -242,6 +243,13 @@ func (*RequestWindow) Descriptor() ([]byte, []int) {
 	return file_v1_admin_system_system_proto_rawDescGZIP(), []int{3}
 }
 
+func (x *RequestWindow) GetEndpoint() string {
+	if x != nil {
+		return x.Endpoint
+	}
+	return ""
+}
+
 func (x *RequestWindow) GetStart() *timestamppb.Timestamp {
 	if x != nil {
 		return x.Start
@@ -268,7 +276,6 @@ type AggregateRequestsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	From          *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`
 	To            *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=to,proto3" json:"to,omitempty"`
-	Endpoint      string                 `protobuf:"bytes,3,opt,name=endpoint,proto3" json:"endpoint,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -315,13 +322,6 @@ func (x *AggregateRequestsRequest) GetTo() *timestamppb.Timestamp {
 		return x.To
 	}
 	return nil
-}
-
-func (x *AggregateRequestsRequest) GetEndpoint() string {
-	if x != nil {
-		return x.Endpoint
-	}
-	return ""
 }
 
 type AggregateRequestsResponse struct {
@@ -387,15 +387,15 @@ const file_v1_admin_system_system_proto_rawDesc = "" +
 	"\x05level\x18\x03 \x01(\tR\x05level\x12\x1f\n" +
 	"\x05limit\x18\x04 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d \x00R\x05limit\"<\n" +
 	"\x10ScanLogsResponse\x12(\n" +
-	"\x04logs\x18\x01 \x03(\v2\x14.v1.admin.system.LogR\x04logs\"q\n" +
-	"\rRequestWindow\x120\n" +
-	"\x05start\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x05start\x12\x14\n" +
-	"\x05count\x18\x02 \x01(\x03R\x05count\x12\x18\n" +
-	"\alatency\x18\x03 \x01(\x03R\alatency\"\x92\x01\n" +
+	"\x04logs\x18\x01 \x03(\v2\x14.v1.admin.system.LogR\x04logs\"\x8d\x01\n" +
+	"\rRequestWindow\x12\x1a\n" +
+	"\bendpoint\x18\x01 \x01(\tR\bendpoint\x120\n" +
+	"\x05start\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x05start\x12\x14\n" +
+	"\x05count\x18\x03 \x01(\x03R\x05count\x12\x18\n" +
+	"\alatency\x18\x04 \x01(\x03R\alatency\"v\n" +
 	"\x18AggregateRequestsRequest\x12.\n" +
 	"\x04from\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x04from\x12*\n" +
-	"\x02to\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x02to\x12\x1a\n" +
-	"\bendpoint\x18\x03 \x01(\tR\bendpoint\"d\n" +
+	"\x02to\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x02to\"d\n" +
 	"\x19AggregateRequestsResponse\x12G\n" +
 	"\x0frequest_windows\x18\x01 \x03(\v2\x1e.v1.admin.system.RequestWindowR\x0erequestWindows2\xcc\x01\n" +
 	"\rSystemService\x12O\n" +

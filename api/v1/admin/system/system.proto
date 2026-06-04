@@ -29,16 +29,16 @@ message ScanLogsResponse {
 }
 
 message RequestWindow {
-  google.protobuf.Timestamp start = 1;
-  int64 count = 2;
-  int64 latency = 3;
+  string endpoint = 1;
+  google.protobuf.Timestamp start = 2;
+  int64 count = 3;
+  int64 latency = 4;
 }
 
 // what a cursed name xD
 message AggregateRequestsRequest {
   google.protobuf.Timestamp from = 1;
   google.protobuf.Timestamp to = 2;
-  string endpoint = 3;
 }
 
 message AggregateRequestsResponse {
