@@ -7,24 +7,24 @@ import "buf/validate/validate.proto";
 option go_package = "codeberg.org/megakuul/cloudjam/pkg/api/v1/admin";
 
 message User {
-  string id = 1;
-  string pub_id = 2;
-  string username = 3 [
+  string scope = 1;
+  string id = 2;
+  string pub_id = 3;
+  string username = 4 [
     (buf.validate.field).string.min_len = 4,
     (buf.validate.field).string.max_len = 20
   ];
-  string description = 4 [
+  string description = 5 [
     (buf.validate.field).string.min_len = 0,
     (buf.validate.field).string.max_len = 50
   ];
-  string organization = 5 [(buf.validate.field).string.max_len = 20];
-  string email = 6 [(buf.validate.field).string.email = true];
-  int64 created_at = 7;
-  double score = 8;
-  double max_score = 9;
-  int64 streak = 10;
-  int64 max_streak = 11;
-  bool privileged = 12;
-  string role = 13;
-  string scope = 14;
+  string organization = 6 [(buf.validate.field).string.max_len = 20];
+  string email = 7 [(buf.validate.field).string.email = true];
+  int64 created_at = 8;
+  double score = 9;
+  double max_score = 10;
+  int64 streak = 11;
+  int64 max_streak = 12;
+  bool privileged = 13;
+  string role = 14;
 }

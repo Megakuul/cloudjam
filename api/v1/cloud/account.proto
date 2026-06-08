@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package v1.cloud;
+
+import "buf/validate/validate.proto";
+
+option go_package = "codeberg.org/megakuul/cloudjam/pkg/api/v1/cloud";
+
+enum AccountState {
+  Provisioning = 0;
+  Active = 1;
+  Evicting = 2;
+  Corrupted = 3;
+  Deleting = 4;
+}
+
+message Account {
+  string scope = 1;
+  string id = 2;
+  string name = 3 [
+    (buf.validate.field).string.min_len = 4,
+    (buf.validate.field).string.max_len = 20
+  ];
+  string description = 4 [
+    (buf.validate.field).string.min_len = 0,
+    (buf.validate.field).string.max_len = 50
+  ];
+  string credentials = 5 [
+    (buf.validate.field).string.min_len = 0,
+    (buf.validate.field).string.max_len = 1000
+  ];
+  AccountState state = 6;
+}

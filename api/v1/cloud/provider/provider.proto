@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+package v1.cloud.provider;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+import "v1/cloud/provider.proto";
+
+option go_package = "codeberg.org/megakuul/cloudjam/pkg/api/v1/cloud/provider";
+
+message GetRequest {
+  string id = 1 [(buf.validate.field).string = {uuid: true}];
+}
+
+message GetResponse {
+  Provider provider = 1;
+}
+
+message ListRequest {
+  int32 limit = 1 [(buf.validate.field).int32 = {
+    gt: 0
+    lte: 100
+  }];
+  string start_after = 2;
+}
+
+message ListResponse {
+  repeated Provider providers = 1;
+}
+
+message CreateRequest {
+  Provider init = 1;
+}
+
+message CreateResponse {}
+
+message UpdateRequest {
+  Provider mod = 1;
+}
+
+message UpdateResponse {}
+
+message DeleteRequest {
+  string id = 1 [(buf.validate.field).string = {uuid: true}];
+}
+
+message DeleteResponse {}
+
+service RoleService {
+  rpc Get(GetRequest) returns (GetResponse);
+  rpc List(ListRequest) returns (ListResponse);
+  rpc Create(CreateRequest) returns (CreateResponse);
+  rpc Update(UpdateRequest) returns (UpdateResponse);
+  rpc Delete(DeleteRequest) returns (DeleteResponse);
+}
