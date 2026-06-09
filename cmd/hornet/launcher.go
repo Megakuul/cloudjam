@@ -8,9 +8,6 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
-	"strings"
-
-	gokitlog "github.com/go-kit/log"
 
 	authmiddleware "codeberg.org/megakuul/cloudjam/internal/auth"
 	"codeberg.org/megakuul/cloudjam/internal/bootstrap"
@@ -36,8 +33,6 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/megakuul/dynamitedb"
 	"github.com/polarsignals/frostdb"
-	"github.com/polarsignals/frostdb/query"
-	"github.com/thanos-io/objstore/providers/s3"
 )
 
 func Start(ctx context.Context, opts *Options) error {
@@ -65,43 +60,6 @@ func Start(ctx context.Context, opts *Options) error {
 	if err != nil {
 		return fmt.Errorf("failed to initialize dynamitedb bucket: %v", err)
 	}
-
-	olapBucketConfig := s3.Config{
-		Bucket:    opts.BucketName,
-		Region:    opts.BucketRegion,
-		AccessKey: opts.BucketAccessKey,
-		SecretKey: opts.BucketSecretKey,
-	}
-	if bucketEndpoint, ok := strings.CutPrefix(opts.BucketURL, "https://"); ok {
-		olapBucketConfig.Endpoint = bucketEndpoint
-	} else if bucketEndpoint, ok := strings.CutPrefix(opts.BucketURL, "http://"); ok {
-		olapBucketConfig.Endpoint = bucketEndpoint
-		olapBucketConfig.Insecure = true
-	}
-	olapBucket, err := s3.NewBucketWithConfig(gokitlog.NewNopLogger(), olapBucketConfig, "olap")
-	if err != nil {
-		return fmt.Errorf("failed to initialize olap bucket: %v", err)
-	}
-	olapStore, err := frostdb.New(
-		frostdb.WithReadWriteStorage(frostdb.NewDefaultObjstoreBucket(olapBucket)),
-	)
-	if err != nil {
-		return fmt.Errorf("failed to initialize olap frostdb store: %v", err)
-	}
-	defer olapStore.Close()
-	olapDatabase, err := olapStore.DB(ctx, "olap")
-	if err != nil {
-		return fmt.Errorf("failed to initialize olap frostdb database: %v", err)
-	}
-	defer olapDatabase.Close()
-
-	olapEngine := query.NewEngine(memory.DefaultAllocator, olapDatabase.TableProvider())
-
-	logTable, err := frostdb.NewGenericTable[log.Log](olapDatabase, "log", memory.DefaultAllocator)
-	if err != nil {
-		return fmt.Errorf("failed to initialize log olap table: %v", err)
-	}
-	// logController := log.New("log", olapEngine)
 
 	slog.SetDefault(slog.New(slog.NewMultiHandler(
 		slog.Default().Handler(),

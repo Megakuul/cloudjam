@@ -55,7 +55,7 @@ func (v *Interceptor) emitMetric(ctx context.Context, stream bool, latency time.
 		anonymPeerIP = string(rawIp[:])
 	}
 	if err := v.inserter.Insert(ctx, Request{
-		Timestamp: uint64(time.Now().Unix()),
+		Timestamp: time.Now().Unix(),
 		Endpoint:  procedure,
 		Latency:   int64(latency),
 		Stream:    stream,
