@@ -24,8 +24,8 @@ importers:
         specifier: next
         version: 2.0.0-next.22
       '@megakuul/glue-protocol':
-        specifier: ../../glue-protocol
-        version: link:../../glue-protocol
+        specifier: ^0.1.0
+        version: 0.1.0(typescript@5.9.3)
       '@tailwindcss/typography':
         specifier: ^0.5.19
         version: 0.5.19(tailwindcss@4.2.2)
@@ -449,6 +449,11 @@ packages:
 
   '@mdi/js@7.4.47':
     resolution: {integrity: sha512-KPnNOtm5i2pMabqZxpUz7iQf+mfrYZyKCZ8QNz85czgEt7cuHcGorWfdzUMWYA0SD+a6Hn4FmJ+YhzzzjkTZrQ==}
+
+  '@megakuul/glue-protocol@0.1.0':
+    resolution: {integrity: sha512-e8DsgOmY/Gz0EGQyHWvvo2lE3hATmOmvTodgfUy3d18iSFav04pG1zwnG0jzbVp4fyWOpQnhixJpHvEMH00BIQ==}
+    peerDependencies:
+      typescript: ^5
 
   '@napi-rs/wasm-runtime@1.1.1':
     resolution: {integrity: sha512-p64ah1M1ld8xjWv3qbvFwHiFVWrq1yFvV4f7w+mzaqiR4IlSgkqhcRdHwsGgomwzBH51sRY4NEowLxnaBjcW/A==}
@@ -2390,6 +2395,14 @@ snapshots:
       svelte: 5.55.0
 
   '@mdi/js@7.4.47': {}
+
+  '@megakuul/glue-protocol@0.1.0(typescript@5.9.3)':
+    dependencies:
+      '@bufbuild/protobuf': 2.11.0
+      '@bufbuild/protovalidate': 1.1.1(@bufbuild/protobuf@2.11.0)
+      '@connectrpc/connect': 2.1.1(@bufbuild/protobuf@2.11.0)
+      '@connectrpc/connect-web': 2.1.1(@bufbuild/protobuf@2.11.0)(@connectrpc/connect@2.1.1(@bufbuild/protobuf@2.11.0))
+      typescript: 5.9.3
 
   '@napi-rs/wasm-runtime@1.1.1':
     dependencies:

@@ -45,7 +45,7 @@
 		"@connectrpc/connect": "^2.1.1",
 		"@connectrpc/connect-web": "^2.1.1",
 		"@layerstack/tailwind": "next",
-		"@megakuul/glue-protocol": "../../glue-protocol",
+		"@megakuul/glue-protocol": "^0.1.0",
 		"@tailwindcss/typography": "^0.5.19",
 		"jwt-decode": "^4.0.0",
 		"layerchart": "^1.0.13",
