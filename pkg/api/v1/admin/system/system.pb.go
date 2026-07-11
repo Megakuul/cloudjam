@@ -23,12 +23,65 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type AggregateWindow int32
+
+const (
+	AggregateWindow_Minute AggregateWindow = 0
+	AggregateWindow_Hour   AggregateWindow = 1
+	AggregateWindow_Day    AggregateWindow = 2
+	AggregateWindow_Month  AggregateWindow = 3
+)
+
+// Enum value maps for AggregateWindow.
+var (
+	AggregateWindow_name = map[int32]string{
+		0: "Minute",
+		1: "Hour",
+		2: "Day",
+		3: "Month",
+	}
+	AggregateWindow_value = map[string]int32{
+		"Minute": 0,
+		"Hour":   1,
+		"Day":    2,
+		"Month":  3,
+	}
+)
+
+func (x AggregateWindow) Enum() *AggregateWindow {
+	p := new(AggregateWindow)
+	*p = x
+	return p
+}
+
+func (x AggregateWindow) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (AggregateWindow) Descriptor() protoreflect.EnumDescriptor {
+	return file_v1_admin_system_system_proto_enumTypes[0].Descriptor()
+}
+
+func (AggregateWindow) Type() protoreflect.EnumType {
+	return &file_v1_admin_system_system_proto_enumTypes[0]
+}
+
+func (x AggregateWindow) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use AggregateWindow.Descriptor instead.
+func (AggregateWindow) EnumDescriptor() ([]byte, []int) {
+	return file_v1_admin_system_system_proto_rawDescGZIP(), []int{0}
+}
+
 type Log struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Timestamp     *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
 	Level         string                 `protobuf:"bytes,2,opt,name=level,proto3" json:"level,omitempty"`
 	Message       string                 `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
-	Labels        map[string]string      `protobuf:"bytes,4,rep,name=labels,proto3" json:"labels,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	System        string                 `protobuf:"bytes,4,opt,name=system,proto3" json:"system,omitempty"`
+	Service       string                 `protobuf:"bytes,5,opt,name=service,proto3" json:"service,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -84,19 +137,27 @@ func (x *Log) GetMessage() string {
 	return ""
 }
 
-func (x *Log) GetLabels() map[string]string {
+func (x *Log) GetSystem() string {
 	if x != nil {
-		return x.Labels
+		return x.System
 	}
-	return nil
+	return ""
+}
+
+func (x *Log) GetService() string {
+	if x != nil {
+		return x.Service
+	}
+	return ""
 }
 
 type ScanLogsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	From          *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`
 	To            *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=to,proto3" json:"to,omitempty"`
-	Level         string                 `protobuf:"bytes,3,opt,name=level,proto3" json:"level,omitempty"`
-	Limit         int32                  `protobuf:"varint,4,opt,name=limit,proto3" json:"limit,omitempty"`
+	System        string                 `protobuf:"bytes,3,opt,name=system,proto3" json:"system,omitempty"`
+	Service       string                 `protobuf:"bytes,4,opt,name=service,proto3" json:"service,omitempty"`
+	Limit         int32                  `protobuf:"varint,5,opt,name=limit,proto3" json:"limit,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -145,9 +206,16 @@ func (x *ScanLogsRequest) GetTo() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *ScanLogsRequest) GetLevel() string {
+func (x *ScanLogsRequest) GetSystem() string {
 	if x != nil {
-		return x.Level
+		return x.System
+	}
+	return ""
+}
+
+func (x *ScanLogsRequest) GetService() string {
+	if x != nil {
+		return x.Service
 	}
 	return ""
 }
@@ -203,30 +271,30 @@ func (x *ScanLogsResponse) GetLogs() []*Log {
 	return nil
 }
 
-type RequestWindow struct {
+type Request struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Endpoint      string                 `protobuf:"bytes,1,opt,name=endpoint,proto3" json:"endpoint,omitempty"`
-	Start         *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=start,proto3" json:"start,omitempty"`
-	Count         int64                  `protobuf:"varint,3,opt,name=count,proto3" json:"count,omitempty"`
-	Latency       int64                  `protobuf:"varint,4,opt,name=latency,proto3" json:"latency,omitempty"`
+	Timestamp     *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	Latency       int64                  `protobuf:"varint,2,opt,name=latency,proto3" json:"latency,omitempty"`
+	Endpoint      string                 `protobuf:"bytes,3,opt,name=endpoint,proto3" json:"endpoint,omitempty"`
+	Source        string                 `protobuf:"bytes,4,opt,name=source,proto3" json:"source,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *RequestWindow) Reset() {
-	*x = RequestWindow{}
+func (x *Request) Reset() {
+	*x = Request{}
 	mi := &file_v1_admin_system_system_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *RequestWindow) String() string {
+func (x *Request) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RequestWindow) ProtoMessage() {}
+func (*Request) ProtoMessage() {}
 
-func (x *RequestWindow) ProtoReflect() protoreflect.Message {
+func (x *Request) ProtoReflect() protoreflect.Message {
 	mi := &file_v1_admin_system_system_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -238,62 +306,63 @@ func (x *RequestWindow) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use RequestWindow.ProtoReflect.Descriptor instead.
-func (*RequestWindow) Descriptor() ([]byte, []int) {
+// Deprecated: Use Request.ProtoReflect.Descriptor instead.
+func (*Request) Descriptor() ([]byte, []int) {
 	return file_v1_admin_system_system_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *RequestWindow) GetEndpoint() string {
+func (x *Request) GetTimestamp() *timestamppb.Timestamp {
 	if x != nil {
-		return x.Endpoint
-	}
-	return ""
-}
-
-func (x *RequestWindow) GetStart() *timestamppb.Timestamp {
-	if x != nil {
-		return x.Start
+		return x.Timestamp
 	}
 	return nil
 }
 
-func (x *RequestWindow) GetCount() int64 {
-	if x != nil {
-		return x.Count
-	}
-	return 0
-}
-
-func (x *RequestWindow) GetLatency() int64 {
+func (x *Request) GetLatency() int64 {
 	if x != nil {
 		return x.Latency
 	}
 	return 0
 }
 
-// what a cursed name xD
-type AggregateRequestsRequest struct {
+func (x *Request) GetEndpoint() string {
+	if x != nil {
+		return x.Endpoint
+	}
+	return ""
+}
+
+func (x *Request) GetSource() string {
+	if x != nil {
+		return x.Source
+	}
+	return ""
+}
+
+type ScanRequestsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	From          *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`
 	To            *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=to,proto3" json:"to,omitempty"`
+	Endpoint      string                 `protobuf:"bytes,3,opt,name=endpoint,proto3" json:"endpoint,omitempty"`
+	Limit         int32                  `protobuf:"varint,4,opt,name=limit,proto3" json:"limit,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *AggregateRequestsRequest) Reset() {
-	*x = AggregateRequestsRequest{}
+func (x *ScanRequestsRequest) Reset() {
+	*x = ScanRequestsRequest{}
 	mi := &file_v1_admin_system_system_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AggregateRequestsRequest) String() string {
+func (x *ScanRequestsRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AggregateRequestsRequest) ProtoMessage() {}
+func (*ScanRequestsRequest) ProtoMessage() {}
 
-func (x *AggregateRequestsRequest) ProtoReflect() protoreflect.Message {
+func (x *ScanRequestsRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_v1_admin_system_system_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -305,46 +374,60 @@ func (x *AggregateRequestsRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AggregateRequestsRequest.ProtoReflect.Descriptor instead.
-func (*AggregateRequestsRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ScanRequestsRequest.ProtoReflect.Descriptor instead.
+func (*ScanRequestsRequest) Descriptor() ([]byte, []int) {
 	return file_v1_admin_system_system_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *AggregateRequestsRequest) GetFrom() *timestamppb.Timestamp {
+func (x *ScanRequestsRequest) GetFrom() *timestamppb.Timestamp {
 	if x != nil {
 		return x.From
 	}
 	return nil
 }
 
-func (x *AggregateRequestsRequest) GetTo() *timestamppb.Timestamp {
+func (x *ScanRequestsRequest) GetTo() *timestamppb.Timestamp {
 	if x != nil {
 		return x.To
 	}
 	return nil
 }
 
-type AggregateRequestsResponse struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	RequestWindows []*RequestWindow       `protobuf:"bytes,1,rep,name=request_windows,json=requestWindows,proto3" json:"request_windows,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+func (x *ScanRequestsRequest) GetEndpoint() string {
+	if x != nil {
+		return x.Endpoint
+	}
+	return ""
 }
 
-func (x *AggregateRequestsResponse) Reset() {
-	*x = AggregateRequestsResponse{}
+func (x *ScanRequestsRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+type ScanRequestsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Requests      []*Request             `protobuf:"bytes,1,rep,name=requests,proto3" json:"requests,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ScanRequestsResponse) Reset() {
+	*x = ScanRequestsResponse{}
 	mi := &file_v1_admin_system_system_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *AggregateRequestsResponse) String() string {
+func (x *ScanRequestsResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*AggregateRequestsResponse) ProtoMessage() {}
+func (*ScanRequestsResponse) ProtoMessage() {}
 
-func (x *AggregateRequestsResponse) ProtoReflect() protoreflect.Message {
+func (x *ScanRequestsResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_v1_admin_system_system_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -356,14 +439,342 @@ func (x *AggregateRequestsResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use AggregateRequestsResponse.ProtoReflect.Descriptor instead.
-func (*AggregateRequestsResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use ScanRequestsResponse.ProtoReflect.Descriptor instead.
+func (*ScanRequestsResponse) Descriptor() ([]byte, []int) {
 	return file_v1_admin_system_system_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *AggregateRequestsResponse) GetRequestWindows() []*RequestWindow {
+func (x *ScanRequestsResponse) GetRequests() []*Request {
 	if x != nil {
-		return x.RequestWindows
+		return x.Requests
+	}
+	return nil
+}
+
+type EndpointLatency struct {
+	state         protoimpl.MessageState   `protogen:"open.v1"`
+	Endpoint      string                   `protobuf:"bytes,1,opt,name=endpoint,proto3" json:"endpoint,omitempty"`
+	Time          []*timestamppb.Timestamp `protobuf:"bytes,2,rep,name=time,proto3" json:"time,omitempty"`
+	Latency       []int64                  `protobuf:"varint,3,rep,packed,name=latency,proto3" json:"latency,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EndpointLatency) Reset() {
+	*x = EndpointLatency{}
+	mi := &file_v1_admin_system_system_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EndpointLatency) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EndpointLatency) ProtoMessage() {}
+
+func (x *EndpointLatency) ProtoReflect() protoreflect.Message {
+	mi := &file_v1_admin_system_system_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EndpointLatency.ProtoReflect.Descriptor instead.
+func (*EndpointLatency) Descriptor() ([]byte, []int) {
+	return file_v1_admin_system_system_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *EndpointLatency) GetEndpoint() string {
+	if x != nil {
+		return x.Endpoint
+	}
+	return ""
+}
+
+func (x *EndpointLatency) GetTime() []*timestamppb.Timestamp {
+	if x != nil {
+		return x.Time
+	}
+	return nil
+}
+
+func (x *EndpointLatency) GetLatency() []int64 {
+	if x != nil {
+		return x.Latency
+	}
+	return nil
+}
+
+type AggregateLatencyRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Window        AggregateWindow        `protobuf:"varint,1,opt,name=window,proto3,enum=v1.admin.system.AggregateWindow" json:"window,omitempty"`
+	From          *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=from,proto3" json:"from,omitempty"`
+	To            *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=to,proto3" json:"to,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AggregateLatencyRequest) Reset() {
+	*x = AggregateLatencyRequest{}
+	mi := &file_v1_admin_system_system_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AggregateLatencyRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AggregateLatencyRequest) ProtoMessage() {}
+
+func (x *AggregateLatencyRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_v1_admin_system_system_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AggregateLatencyRequest.ProtoReflect.Descriptor instead.
+func (*AggregateLatencyRequest) Descriptor() ([]byte, []int) {
+	return file_v1_admin_system_system_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *AggregateLatencyRequest) GetWindow() AggregateWindow {
+	if x != nil {
+		return x.Window
+	}
+	return AggregateWindow_Minute
+}
+
+func (x *AggregateLatencyRequest) GetFrom() *timestamppb.Timestamp {
+	if x != nil {
+		return x.From
+	}
+	return nil
+}
+
+func (x *AggregateLatencyRequest) GetTo() *timestamppb.Timestamp {
+	if x != nil {
+		return x.To
+	}
+	return nil
+}
+
+type AggregateLatencyResponse struct {
+	state         protoimpl.MessageState      `protogen:"open.v1"`
+	Endpoints     map[string]*EndpointLatency `protobuf:"bytes,1,rep,name=endpoints,proto3" json:"endpoints,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AggregateLatencyResponse) Reset() {
+	*x = AggregateLatencyResponse{}
+	mi := &file_v1_admin_system_system_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AggregateLatencyResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AggregateLatencyResponse) ProtoMessage() {}
+
+func (x *AggregateLatencyResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_v1_admin_system_system_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AggregateLatencyResponse.ProtoReflect.Descriptor instead.
+func (*AggregateLatencyResponse) Descriptor() ([]byte, []int) {
+	return file_v1_admin_system_system_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *AggregateLatencyResponse) GetEndpoints() map[string]*EndpointLatency {
+	if x != nil {
+		return x.Endpoints
+	}
+	return nil
+}
+
+type EndpointHits struct {
+	state         protoimpl.MessageState   `protogen:"open.v1"`
+	Endpoint      string                   `protobuf:"bytes,1,opt,name=endpoint,proto3" json:"endpoint,omitempty"`
+	Time          []*timestamppb.Timestamp `protobuf:"bytes,2,rep,name=time,proto3" json:"time,omitempty"`
+	Count         []int64                  `protobuf:"varint,3,rep,packed,name=count,proto3" json:"count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EndpointHits) Reset() {
+	*x = EndpointHits{}
+	mi := &file_v1_admin_system_system_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EndpointHits) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EndpointHits) ProtoMessage() {}
+
+func (x *EndpointHits) ProtoReflect() protoreflect.Message {
+	mi := &file_v1_admin_system_system_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EndpointHits.ProtoReflect.Descriptor instead.
+func (*EndpointHits) Descriptor() ([]byte, []int) {
+	return file_v1_admin_system_system_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *EndpointHits) GetEndpoint() string {
+	if x != nil {
+		return x.Endpoint
+	}
+	return ""
+}
+
+func (x *EndpointHits) GetTime() []*timestamppb.Timestamp {
+	if x != nil {
+		return x.Time
+	}
+	return nil
+}
+
+func (x *EndpointHits) GetCount() []int64 {
+	if x != nil {
+		return x.Count
+	}
+	return nil
+}
+
+type AggregateHitsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Window        AggregateWindow        `protobuf:"varint,1,opt,name=window,proto3,enum=v1.admin.system.AggregateWindow" json:"window,omitempty"`
+	From          *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=from,proto3" json:"from,omitempty"`
+	To            *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=to,proto3" json:"to,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AggregateHitsRequest) Reset() {
+	*x = AggregateHitsRequest{}
+	mi := &file_v1_admin_system_system_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AggregateHitsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AggregateHitsRequest) ProtoMessage() {}
+
+func (x *AggregateHitsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_v1_admin_system_system_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AggregateHitsRequest.ProtoReflect.Descriptor instead.
+func (*AggregateHitsRequest) Descriptor() ([]byte, []int) {
+	return file_v1_admin_system_system_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *AggregateHitsRequest) GetWindow() AggregateWindow {
+	if x != nil {
+		return x.Window
+	}
+	return AggregateWindow_Minute
+}
+
+func (x *AggregateHitsRequest) GetFrom() *timestamppb.Timestamp {
+	if x != nil {
+		return x.From
+	}
+	return nil
+}
+
+func (x *AggregateHitsRequest) GetTo() *timestamppb.Timestamp {
+	if x != nil {
+		return x.To
+	}
+	return nil
+}
+
+type AggregateHitsResponse struct {
+	state         protoimpl.MessageState   `protogen:"open.v1"`
+	Endpoints     map[string]*EndpointHits `protobuf:"bytes,1,rep,name=endpoints,proto3" json:"endpoints,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AggregateHitsResponse) Reset() {
+	*x = AggregateHitsResponse{}
+	mi := &file_v1_admin_system_system_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AggregateHitsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AggregateHitsResponse) ProtoMessage() {}
+
+func (x *AggregateHitsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_v1_admin_system_system_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AggregateHitsResponse.ProtoReflect.Descriptor instead.
+func (*AggregateHitsResponse) Descriptor() ([]byte, []int) {
+	return file_v1_admin_system_system_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *AggregateHitsResponse) GetEndpoints() map[string]*EndpointHits {
+	if x != nil {
+		return x.Endpoints
 	}
 	return nil
 }
@@ -372,35 +783,70 @@ var File_v1_admin_system_system_proto protoreflect.FileDescriptor
 
 const file_v1_admin_system_system_proto_rawDesc = "" +
 	"\n" +
-	"\x1cv1/admin/system/system.proto\x12\x0fv1.admin.system\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xe4\x01\n" +
+	"\x1cv1/admin/system/system.proto\x12\x0fv1.admin.system\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xa1\x01\n" +
 	"\x03Log\x128\n" +
 	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12\x14\n" +
 	"\x05level\x18\x02 \x01(\tR\x05level\x12\x18\n" +
-	"\amessage\x18\x03 \x01(\tR\amessage\x128\n" +
-	"\x06labels\x18\x04 \x03(\v2 .v1.admin.system.Log.LabelsEntryR\x06labels\x1a9\n" +
-	"\vLabelsEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xa4\x01\n" +
+	"\amessage\x18\x03 \x01(\tR\amessage\x12\x16\n" +
+	"\x06system\x18\x04 \x01(\tR\x06system\x12\x18\n" +
+	"\aservice\x18\x05 \x01(\tR\aservice\"\xc0\x01\n" +
 	"\x0fScanLogsRequest\x12.\n" +
 	"\x04from\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x04from\x12*\n" +
-	"\x02to\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x02to\x12\x14\n" +
-	"\x05level\x18\x03 \x01(\tR\x05level\x12\x1f\n" +
-	"\x05limit\x18\x04 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d \x00R\x05limit\"<\n" +
+	"\x02to\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x02to\x12\x16\n" +
+	"\x06system\x18\x03 \x01(\tR\x06system\x12\x18\n" +
+	"\aservice\x18\x04 \x01(\tR\aservice\x12\x1f\n" +
+	"\x05limit\x18\x05 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d \x00R\x05limit\"<\n" +
 	"\x10ScanLogsResponse\x12(\n" +
-	"\x04logs\x18\x01 \x03(\v2\x14.v1.admin.system.LogR\x04logs\"\x8d\x01\n" +
-	"\rRequestWindow\x12\x1a\n" +
-	"\bendpoint\x18\x01 \x01(\tR\bendpoint\x120\n" +
-	"\x05start\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x05start\x12\x14\n" +
-	"\x05count\x18\x03 \x01(\x03R\x05count\x12\x18\n" +
-	"\alatency\x18\x04 \x01(\x03R\alatency\"v\n" +
-	"\x18AggregateRequestsRequest\x12.\n" +
+	"\x04logs\x18\x01 \x03(\v2\x14.v1.admin.system.LogR\x04logs\"\x91\x01\n" +
+	"\aRequest\x128\n" +
+	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12\x18\n" +
+	"\alatency\x18\x02 \x01(\x03R\alatency\x12\x1a\n" +
+	"\bendpoint\x18\x03 \x01(\tR\bendpoint\x12\x16\n" +
+	"\x06source\x18\x04 \x01(\tR\x06source\"\xae\x01\n" +
+	"\x13ScanRequestsRequest\x12.\n" +
 	"\x04from\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x04from\x12*\n" +
-	"\x02to\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x02to\"d\n" +
-	"\x19AggregateRequestsResponse\x12G\n" +
-	"\x0frequest_windows\x18\x01 \x03(\v2\x1e.v1.admin.system.RequestWindowR\x0erequestWindows2\xcc\x01\n" +
+	"\x02to\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x02to\x12\x1a\n" +
+	"\bendpoint\x18\x03 \x01(\tR\bendpoint\x12\x1f\n" +
+	"\x05limit\x18\x04 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d \x00R\x05limit\"L\n" +
+	"\x14ScanRequestsResponse\x124\n" +
+	"\brequests\x18\x01 \x03(\v2\x18.v1.admin.system.RequestR\brequests\"w\n" +
+	"\x0fEndpointLatency\x12\x1a\n" +
+	"\bendpoint\x18\x01 \x01(\tR\bendpoint\x12.\n" +
+	"\x04time\x18\x02 \x03(\v2\x1a.google.protobuf.TimestampR\x04time\x12\x18\n" +
+	"\alatency\x18\x03 \x03(\x03R\alatency\"\xaf\x01\n" +
+	"\x17AggregateLatencyRequest\x128\n" +
+	"\x06window\x18\x01 \x01(\x0e2 .v1.admin.system.AggregateWindowR\x06window\x12.\n" +
+	"\x04from\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x04from\x12*\n" +
+	"\x02to\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x02to\"\xd2\x01\n" +
+	"\x18AggregateLatencyResponse\x12V\n" +
+	"\tendpoints\x18\x01 \x03(\v28.v1.admin.system.AggregateLatencyResponse.EndpointsEntryR\tendpoints\x1a^\n" +
+	"\x0eEndpointsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x126\n" +
+	"\x05value\x18\x02 \x01(\v2 .v1.admin.system.EndpointLatencyR\x05value:\x028\x01\"p\n" +
+	"\fEndpointHits\x12\x1a\n" +
+	"\bendpoint\x18\x01 \x01(\tR\bendpoint\x12.\n" +
+	"\x04time\x18\x02 \x03(\v2\x1a.google.protobuf.TimestampR\x04time\x12\x14\n" +
+	"\x05count\x18\x03 \x03(\x03R\x05count\"\xac\x01\n" +
+	"\x14AggregateHitsRequest\x128\n" +
+	"\x06window\x18\x01 \x01(\x0e2 .v1.admin.system.AggregateWindowR\x06window\x12.\n" +
+	"\x04from\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x04from\x12*\n" +
+	"\x02to\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\x02to\"\xc9\x01\n" +
+	"\x15AggregateHitsResponse\x12S\n" +
+	"\tendpoints\x18\x01 \x03(\v25.v1.admin.system.AggregateHitsResponse.EndpointsEntryR\tendpoints\x1a[\n" +
+	"\x0eEndpointsEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x123\n" +
+	"\x05value\x18\x02 \x01(\v2\x1d.v1.admin.system.EndpointHitsR\x05value:\x028\x01*;\n" +
+	"\x0fAggregateWindow\x12\n" +
+	"\n" +
+	"\x06Minute\x10\x00\x12\b\n" +
+	"\x04Hour\x10\x01\x12\a\n" +
+	"\x03Day\x10\x02\x12\t\n" +
+	"\x05Month\x10\x032\x86\x03\n" +
 	"\rSystemService\x12O\n" +
-	"\bScanLogs\x12 .v1.admin.system.ScanLogsRequest\x1a!.v1.admin.system.ScanLogsResponse\x12j\n" +
-	"\x11AggregateRequests\x12).v1.admin.system.AggregateRequestsRequest\x1a*.v1.admin.system.AggregateRequestsResponseB8Z6codeberg.org/megakuul/cloudjam/pkg/api/v1/admin/systemb\x06proto3"
+	"\bScanLogs\x12 .v1.admin.system.ScanLogsRequest\x1a!.v1.admin.system.ScanLogsResponse\x12[\n" +
+	"\fScanRequests\x12$.v1.admin.system.ScanRequestsRequest\x1a%.v1.admin.system.ScanRequestsResponse\x12g\n" +
+	"\x10AggregateLatency\x12(.v1.admin.system.AggregateLatencyRequest\x1a).v1.admin.system.AggregateLatencyResponse\x12^\n" +
+	"\rAggregateHits\x12%.v1.admin.system.AggregateHitsRequest\x1a&.v1.admin.system.AggregateHitsResponseB8Z6codeberg.org/megakuul/cloudjam/pkg/api/v1/admin/systemb\x06proto3"
 
 var (
 	file_v1_admin_system_system_proto_rawDescOnce sync.Once
@@ -414,36 +860,60 @@ func file_v1_admin_system_system_proto_rawDescGZIP() []byte {
 	return file_v1_admin_system_system_proto_rawDescData
 }
 
-var file_v1_admin_system_system_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
+var file_v1_admin_system_system_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_v1_admin_system_system_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_v1_admin_system_system_proto_goTypes = []any{
-	(*Log)(nil),                       // 0: v1.admin.system.Log
-	(*ScanLogsRequest)(nil),           // 1: v1.admin.system.ScanLogsRequest
-	(*ScanLogsResponse)(nil),          // 2: v1.admin.system.ScanLogsResponse
-	(*RequestWindow)(nil),             // 3: v1.admin.system.RequestWindow
-	(*AggregateRequestsRequest)(nil),  // 4: v1.admin.system.AggregateRequestsRequest
-	(*AggregateRequestsResponse)(nil), // 5: v1.admin.system.AggregateRequestsResponse
-	nil,                               // 6: v1.admin.system.Log.LabelsEntry
-	(*timestamppb.Timestamp)(nil),     // 7: google.protobuf.Timestamp
+	(AggregateWindow)(0),             // 0: v1.admin.system.AggregateWindow
+	(*Log)(nil),                      // 1: v1.admin.system.Log
+	(*ScanLogsRequest)(nil),          // 2: v1.admin.system.ScanLogsRequest
+	(*ScanLogsResponse)(nil),         // 3: v1.admin.system.ScanLogsResponse
+	(*Request)(nil),                  // 4: v1.admin.system.Request
+	(*ScanRequestsRequest)(nil),      // 5: v1.admin.system.ScanRequestsRequest
+	(*ScanRequestsResponse)(nil),     // 6: v1.admin.system.ScanRequestsResponse
+	(*EndpointLatency)(nil),          // 7: v1.admin.system.EndpointLatency
+	(*AggregateLatencyRequest)(nil),  // 8: v1.admin.system.AggregateLatencyRequest
+	(*AggregateLatencyResponse)(nil), // 9: v1.admin.system.AggregateLatencyResponse
+	(*EndpointHits)(nil),             // 10: v1.admin.system.EndpointHits
+	(*AggregateHitsRequest)(nil),     // 11: v1.admin.system.AggregateHitsRequest
+	(*AggregateHitsResponse)(nil),    // 12: v1.admin.system.AggregateHitsResponse
+	nil,                              // 13: v1.admin.system.AggregateLatencyResponse.EndpointsEntry
+	nil,                              // 14: v1.admin.system.AggregateHitsResponse.EndpointsEntry
+	(*timestamppb.Timestamp)(nil),    // 15: google.protobuf.Timestamp
 }
 var file_v1_admin_system_system_proto_depIdxs = []int32{
-	7,  // 0: v1.admin.system.Log.timestamp:type_name -> google.protobuf.Timestamp
-	6,  // 1: v1.admin.system.Log.labels:type_name -> v1.admin.system.Log.LabelsEntry
-	7,  // 2: v1.admin.system.ScanLogsRequest.from:type_name -> google.protobuf.Timestamp
-	7,  // 3: v1.admin.system.ScanLogsRequest.to:type_name -> google.protobuf.Timestamp
-	0,  // 4: v1.admin.system.ScanLogsResponse.logs:type_name -> v1.admin.system.Log
-	7,  // 5: v1.admin.system.RequestWindow.start:type_name -> google.protobuf.Timestamp
-	7,  // 6: v1.admin.system.AggregateRequestsRequest.from:type_name -> google.protobuf.Timestamp
-	7,  // 7: v1.admin.system.AggregateRequestsRequest.to:type_name -> google.protobuf.Timestamp
-	3,  // 8: v1.admin.system.AggregateRequestsResponse.request_windows:type_name -> v1.admin.system.RequestWindow
-	1,  // 9: v1.admin.system.SystemService.ScanLogs:input_type -> v1.admin.system.ScanLogsRequest
-	4,  // 10: v1.admin.system.SystemService.AggregateRequests:input_type -> v1.admin.system.AggregateRequestsRequest
-	2,  // 11: v1.admin.system.SystemService.ScanLogs:output_type -> v1.admin.system.ScanLogsResponse
-	5,  // 12: v1.admin.system.SystemService.AggregateRequests:output_type -> v1.admin.system.AggregateRequestsResponse
-	11, // [11:13] is the sub-list for method output_type
-	9,  // [9:11] is the sub-list for method input_type
-	9,  // [9:9] is the sub-list for extension type_name
-	9,  // [9:9] is the sub-list for extension extendee
-	0,  // [0:9] is the sub-list for field type_name
+	15, // 0: v1.admin.system.Log.timestamp:type_name -> google.protobuf.Timestamp
+	15, // 1: v1.admin.system.ScanLogsRequest.from:type_name -> google.protobuf.Timestamp
+	15, // 2: v1.admin.system.ScanLogsRequest.to:type_name -> google.protobuf.Timestamp
+	1,  // 3: v1.admin.system.ScanLogsResponse.logs:type_name -> v1.admin.system.Log
+	15, // 4: v1.admin.system.Request.timestamp:type_name -> google.protobuf.Timestamp
+	15, // 5: v1.admin.system.ScanRequestsRequest.from:type_name -> google.protobuf.Timestamp
+	15, // 6: v1.admin.system.ScanRequestsRequest.to:type_name -> google.protobuf.Timestamp
+	4,  // 7: v1.admin.system.ScanRequestsResponse.requests:type_name -> v1.admin.system.Request
+	15, // 8: v1.admin.system.EndpointLatency.time:type_name -> google.protobuf.Timestamp
+	0,  // 9: v1.admin.system.AggregateLatencyRequest.window:type_name -> v1.admin.system.AggregateWindow
+	15, // 10: v1.admin.system.AggregateLatencyRequest.from:type_name -> google.protobuf.Timestamp
+	15, // 11: v1.admin.system.AggregateLatencyRequest.to:type_name -> google.protobuf.Timestamp
+	13, // 12: v1.admin.system.AggregateLatencyResponse.endpoints:type_name -> v1.admin.system.AggregateLatencyResponse.EndpointsEntry
+	15, // 13: v1.admin.system.EndpointHits.time:type_name -> google.protobuf.Timestamp
+	0,  // 14: v1.admin.system.AggregateHitsRequest.window:type_name -> v1.admin.system.AggregateWindow
+	15, // 15: v1.admin.system.AggregateHitsRequest.from:type_name -> google.protobuf.Timestamp
+	15, // 16: v1.admin.system.AggregateHitsRequest.to:type_name -> google.protobuf.Timestamp
+	14, // 17: v1.admin.system.AggregateHitsResponse.endpoints:type_name -> v1.admin.system.AggregateHitsResponse.EndpointsEntry
+	7,  // 18: v1.admin.system.AggregateLatencyResponse.EndpointsEntry.value:type_name -> v1.admin.system.EndpointLatency
+	10, // 19: v1.admin.system.AggregateHitsResponse.EndpointsEntry.value:type_name -> v1.admin.system.EndpointHits
+	2,  // 20: v1.admin.system.SystemService.ScanLogs:input_type -> v1.admin.system.ScanLogsRequest
+	5,  // 21: v1.admin.system.SystemService.ScanRequests:input_type -> v1.admin.system.ScanRequestsRequest
+	8,  // 22: v1.admin.system.SystemService.AggregateLatency:input_type -> v1.admin.system.AggregateLatencyRequest
+	11, // 23: v1.admin.system.SystemService.AggregateHits:input_type -> v1.admin.system.AggregateHitsRequest
+	3,  // 24: v1.admin.system.SystemService.ScanLogs:output_type -> v1.admin.system.ScanLogsResponse
+	6,  // 25: v1.admin.system.SystemService.ScanRequests:output_type -> v1.admin.system.ScanRequestsResponse
+	9,  // 26: v1.admin.system.SystemService.AggregateLatency:output_type -> v1.admin.system.AggregateLatencyResponse
+	12, // 27: v1.admin.system.SystemService.AggregateHits:output_type -> v1.admin.system.AggregateHitsResponse
+	24, // [24:28] is the sub-list for method output_type
+	20, // [20:24] is the sub-list for method input_type
+	20, // [20:20] is the sub-list for extension type_name
+	20, // [20:20] is the sub-list for extension extendee
+	0,  // [0:20] is the sub-list for field type_name
 }
 
 func init() { file_v1_admin_system_system_proto_init() }
@@ -456,13 +926,14 @@ func file_v1_admin_system_system_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_v1_admin_system_system_proto_rawDesc), len(file_v1_admin_system_system_proto_rawDesc)),
-			NumEnums:      0,
-			NumMessages:   7,
+			NumEnums:      1,
+			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_v1_admin_system_system_proto_goTypes,
 		DependencyIndexes: file_v1_admin_system_system_proto_depIdxs,
+		EnumInfos:         file_v1_admin_system_system_proto_enumTypes,
 		MessageInfos:      file_v1_admin_system_system_proto_msgTypes,
 	}.Build()
 	File_v1_admin_system_system_proto = out.File

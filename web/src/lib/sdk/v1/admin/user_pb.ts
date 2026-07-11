@@ -11,81 +11,81 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/admin/user.proto.
  */
 export const file_v1_admin_user: GenFile = /*@__PURE__*/
-  fileDesc("ChN2MS9hZG1pbi91c2VyLnByb3RvEgh2MS5hZG1pbiKhAgoEVXNlchIKCgJpZBgBIAEoCRIOCgZwdWJfaWQYAiABKAkSGwoIdXNlcm5hbWUYAyABKAlCCbpIBnIEEAQYFBIeCgtkZXNjcmlwdGlvbhgEIAEoCUIJukgGcgQQABgyEh0KDG9yZ2FuaXphdGlvbhgFIAEoCUIHukgEcgIYFBIWCgVlbWFpbBgGIAEoCUIHukgEcgJgARISCgpjcmVhdGVkX2F0GAcgASgDEg0KBXNjb3JlGAggASgBEhEKCW1heF9zY29yZRgJIAEoARIOCgZzdHJlYWsYCiABKAMSEgoKbWF4X3N0cmVhaxgLIAEoAxISCgpwcml2aWxlZ2VkGAwgASgIEgwKBHJvbGUYDSABKAkSDQoFc2NvcGUYDiABKAlCMVovY29kZWJlcmcub3JnL21lZ2FrdXVsL2Nsb3VkamFtL3BrZy9hcGkvdjEvYWRtaW5iBnByb3RvMw", [file_buf_validate_validate]);
+  fileDesc("ChN2MS9hZG1pbi91c2VyLnByb3RvEgh2MS5hZG1pbiKhAgoEVXNlchINCgVzY29wZRgBIAEoCRIKCgJpZBgCIAEoCRIOCgZwdWJfaWQYAyABKAkSGwoIdXNlcm5hbWUYBCABKAlCCbpIBnIEEAQYFBIeCgtkZXNjcmlwdGlvbhgFIAEoCUIJukgGcgQQABgyEh0KDG9yZ2FuaXphdGlvbhgGIAEoCUIHukgEcgIYFBIWCgVlbWFpbBgHIAEoCUIHukgEcgJgARISCgpjcmVhdGVkX2F0GAggASgDEg0KBXNjb3JlGAkgASgBEhEKCW1heF9zY29yZRgKIAEoARIOCgZzdHJlYWsYCyABKAMSEgoKbWF4X3N0cmVhaxgMIAEoAxISCgpwcml2aWxlZ2VkGA0gASgIEgwKBHJvbGUYDiABKAlCMVovY29kZWJlcmcub3JnL21lZ2FrdXVsL2Nsb3VkamFtL3BrZy9hcGkvdjEvYWRtaW5iBnByb3RvMw", [file_buf_validate_validate]);
 
 /**
  * @generated from message v1.admin.User
  */
 export type User = Message<"v1.admin.User"> & {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: string scope = 1;
+   */
+  scope: string;
+
+  /**
+   * @generated from field: string id = 2;
    */
   id: string;
 
   /**
-   * @generated from field: string pub_id = 2;
+   * @generated from field: string pub_id = 3;
    */
   pubId: string;
 
   /**
-   * @generated from field: string username = 3;
+   * @generated from field: string username = 4;
    */
   username: string;
 
   /**
-   * @generated from field: string description = 4;
+   * @generated from field: string description = 5;
    */
   description: string;
 
   /**
-   * @generated from field: string organization = 5;
+   * @generated from field: string organization = 6;
    */
   organization: string;
 
   /**
-   * @generated from field: string email = 6;
+   * @generated from field: string email = 7;
    */
   email: string;
 
   /**
-   * @generated from field: int64 created_at = 7;
+   * @generated from field: int64 created_at = 8;
    */
   createdAt: bigint;
 
   /**
-   * @generated from field: double score = 8;
+   * @generated from field: double score = 9;
    */
   score: number;
 
   /**
-   * @generated from field: double max_score = 9;
+   * @generated from field: double max_score = 10;
    */
   maxScore: number;
 
   /**
-   * @generated from field: int64 streak = 10;
+   * @generated from field: int64 streak = 11;
    */
   streak: bigint;
 
   /**
-   * @generated from field: int64 max_streak = 11;
+   * @generated from field: int64 max_streak = 12;
    */
   maxStreak: bigint;
 
   /**
-   * @generated from field: bool privileged = 12;
+   * @generated from field: bool privileged = 13;
    */
   privileged: boolean;
 
   /**
-   * @generated from field: string role = 13;
+   * @generated from field: string role = 14;
    */
   role: string;
-
-  /**
-   * @generated from field: string scope = 14;
-   */
-  scope: string;
 };
 
 /**

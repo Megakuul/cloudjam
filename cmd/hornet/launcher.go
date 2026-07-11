@@ -8,15 +8,12 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
-	"strings"
-
-	gokitlog "github.com/go-kit/log"
+	"time"
 
 	authmiddleware "codeberg.org/megakuul/cloudjam/internal/auth"
 	"codeberg.org/megakuul/cloudjam/internal/bootstrap"
 	"codeberg.org/megakuul/cloudjam/internal/olap"
-	"codeberg.org/megakuul/cloudjam/internal/olap/log"
-	"codeberg.org/megakuul/cloudjam/internal/olap/request"
+	"codeberg.org/megakuul/cloudjam/internal/olap/middleware"
 	"codeberg.org/megakuul/cloudjam/internal/rbac"
 	rbacsvc "codeberg.org/megakuul/cloudjam/internal/server/v1/admin/rbac"
 	"codeberg.org/megakuul/cloudjam/internal/server/v1/admin/role"
@@ -32,12 +29,9 @@ import (
 	"codeberg.org/megakuul/cloudjam/web"
 	"connectrpc.com/connect"
 	"connectrpc.com/validate"
-	"github.com/apache/arrow-go/v18/arrow/memory"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/megakuul/dynamitedb"
-	"github.com/polarsignals/frostdb"
-	"github.com/polarsignals/frostdb/query"
-	"github.com/thanos-io/objstore/providers/s3"
+	lake "github.com/megakuul/lake"
 )
 
 func Start(ctx context.Context, opts *Options) error {
@@ -57,65 +51,37 @@ func Start(ctx context.Context, opts *Options) error {
 	issuer := token.New(opts.TokenIssuer, opts.TokenLifetime, jwt.SigningMethodHS256, []byte(opts.TokenSecret), func(ctx context.Context) any {
 		return []byte(opts.TokenSecret)
 	})
-	slog.Debug(fmt.Sprintf("initializing dynamitedb bucket at '%s'...", opts.BucketURL))
-	bucket, err := dynamitedb.New(ctx, opts.BucketURL, opts.BucketName,
-		dynamitedb.WithRegion(opts.BucketRegion),
-		dynamitedb.WithCredentials(opts.BucketAccessKey, opts.BucketSecretKey),
+	slog.Debug(fmt.Sprintf("initializing oltp bucket at '%s'...", opts.OLTPBucketURL))
+	oltpBucket, err := dynamitedb.New(ctx, opts.OLTPBucketURL, opts.OLTPBucketName,
+		dynamitedb.WithRegion(opts.OLTPBucketRegion),
+		dynamitedb.WithCredentials(opts.OLTPBucketAccessKey, opts.OLTPBucketSecretKey),
 	)
 	if err != nil {
-		return fmt.Errorf("failed to initialize dynamitedb bucket: %v", err)
+		return fmt.Errorf("failed to initialize dynamitedb oltp bucket: %v", err)
 	}
 
-	olapBucketConfig := s3.Config{
-		Bucket:    opts.BucketName,
-		Region:    opts.BucketRegion,
-		AccessKey: opts.BucketAccessKey,
-		SecretKey: opts.BucketSecretKey,
-	}
-	if bucketEndpoint, ok := strings.CutPrefix(opts.BucketURL, "https://"); ok {
-		olapBucketConfig.Endpoint = bucketEndpoint
-	} else if bucketEndpoint, ok := strings.CutPrefix(opts.BucketURL, "http://"); ok {
-		olapBucketConfig.Endpoint = bucketEndpoint
-		olapBucketConfig.Insecure = true
-	}
-	olapBucket, err := s3.NewBucketWithConfig(gokitlog.NewNopLogger(), olapBucketConfig, "olap")
-	if err != nil {
-		return fmt.Errorf("failed to initialize olap bucket: %v", err)
-	}
-	olapStore, err := frostdb.New(
-		frostdb.WithReadWriteStorage(frostdb.NewDefaultObjstoreBucket(olapBucket)),
+	slog.Debug(fmt.Sprintf("initializing olap bucket at '%s'...", opts.OLAPBucketURL))
+	olapBucket, err := lake.New(ctx, opts.OLAPBucketURL, opts.OLAPBucketName,
+		lake.WithRegion(opts.OLAPBucketRegion),
+		lake.WithCredentials(opts.OLAPBucketAccessKey, opts.OLAPBucketSecretKey),
 	)
 	if err != nil {
-		return fmt.Errorf("failed to initialize olap frostdb store: %v", err)
+		return fmt.Errorf("failed to initialize lakedb olap bucket: %v", err)
 	}
-	defer olapStore.Close()
-	olapDatabase, err := olapStore.DB(ctx, "olap")
-	if err != nil {
-		return fmt.Errorf("failed to initialize olap frostdb database: %v", err)
-	}
-	defer olapDatabase.Close()
 
-	olapEngine := query.NewEngine(memory.DefaultAllocator, olapDatabase.TableProvider())
+	logIngestor := lake.NewIngestor(olapBucket, lake.WithAutoCommit[olap.Log](time.Second*10))
+	defer logIngestor.Close(ctx)
 
-	logTable, err := frostdb.NewGenericTable[log.Log](olapDatabase, "log", memory.DefaultAllocator)
-	if err != nil {
-		return fmt.Errorf("failed to initialize log olap table: %v", err)
-	}
-	// logController := log.New("log", olapEngine)
-
+	slog.Debug(fmt.Sprintf("initializing logging backend..."))
 	slog.SetDefault(slog.New(slog.NewMultiHandler(
 		slog.Default().Handler(),
-		log.NewSink(olap.NewLocalInserter(logTable), &log.SinkOptions{Level: slog.LevelDebug}),
+		middleware.NewLogSink(logIngestor, &middleware.LogSinkOptions{Level: slog.LevelDebug}),
 	)))
 
-	requestTable, err := frostdb.NewGenericTable[request.Request](olapDatabase, "request", memory.DefaultAllocator)
-	if err != nil {
-		return fmt.Errorf("failed to initialize request olap table: %v", err)
-	}
-	requestController := request.New("request", olapEngine)
-	requestInserter := olap.NewLocalInserter(requestTable)
+	requestIngestor := lake.NewIngestor(olapBucket, lake.WithAutoCommit[olap.Request](time.Second*10))
+	defer requestIngestor.Close(ctx)
 
-	code, err := bootstrap.CreateAdministrator(ctx, opts.AdminEmail, bucket)
+	code, err := bootstrap.CreateAdministrator(ctx, opts.AdminEmail, oltpBucket)
 	if err != nil {
 		return fmt.Errorf("failed to initialize administrator: %v", err)
 	} else if code != "" {
@@ -123,37 +89,37 @@ func Start(ctx context.Context, opts *Options) error {
 	}
 
 	apiMux := http.NewServeMux()
-	authorizer := rbac.New(bucket, opts.PolicyCacheTimeout)
-	apiMux.Handle(authconnect.NewAuthServiceHandler(auth.New(slog.With("system", "svc.auth"), bucket, issuer),
+	authorizer := rbac.New(oltpBucket, opts.PolicyCacheTimeout)
+	apiMux.Handle(authconnect.NewAuthServiceHandler(auth.New(slog.With("system", "svc.auth"), oltpBucket, issuer),
 		connect.WithInterceptors(
-			request.NewInterceptor(slog.With("system", "olap.request"), requestInserter),
+			middleware.NewRequestTracer(slog.With("system", "olap.request"), requestIngestor),
 			validate.NewInterceptor(),
 		),
 	))
-	apiMux.Handle(userconnect.NewUserServiceHandler(user.New(slog.With("system", "svc.admin.user"), bucket),
+	apiMux.Handle(userconnect.NewUserServiceHandler(user.New(slog.With("system", "svc.admin.user"), oltpBucket),
 		connect.WithInterceptors(
-			request.NewInterceptor(slog.With("system", "olap.request"), requestInserter),
+			middleware.NewRequestTracer(slog.With("system", "olap.request"), requestIngestor),
 			authmiddleware.New(issuer, authorizer),
 			validate.NewInterceptor(),
 		),
 	))
-	apiMux.Handle(roleconnect.NewRoleServiceHandler(role.New(slog.With("system", "svc.admin.role"), bucket),
+	apiMux.Handle(roleconnect.NewRoleServiceHandler(role.New(slog.With("system", "svc.admin.role"), oltpBucket),
 		connect.WithInterceptors(
-			request.NewInterceptor(slog.With("system", "olap.request"), requestInserter),
+			middleware.NewRequestTracer(slog.With("system", "olap.request"), requestIngestor),
 			authmiddleware.New(issuer, authorizer),
 			validate.NewInterceptor(),
 		),
 	))
-	apiMux.Handle(rbacconnect.NewRBACServiceHandler(rbacsvc.New(slog.With("system", "svc.admin.rbac"), bucket),
+	apiMux.Handle(rbacconnect.NewRBACServiceHandler(rbacsvc.New(slog.With("system", "svc.admin.rbac"), oltpBucket),
 		connect.WithInterceptors(
-			request.NewInterceptor(slog.With("system", "olap.request"), requestInserter),
+			middleware.NewRequestTracer(slog.With("system", "olap.request"), requestIngestor),
 			authmiddleware.New(issuer, authorizer),
 			validate.NewInterceptor(),
 		),
 	))
-	apiMux.Handle(systemconnect.NewSystemServiceHandler(system.New(slog.With("system", "svc.admin.system"), bucket, requestController),
+	apiMux.Handle(systemconnect.NewSystemServiceHandler(system.New(slog.With("system", "svc.admin.system"), oltpBucket, olapBucket),
 		connect.WithInterceptors(
-			request.NewInterceptor(slog.With("system", "olap.request"), requestInserter),
+			middleware.NewRequestTracer(slog.With("system", "olap.request"), requestIngestor),
 			authmiddleware.New(issuer, authorizer),
 			validate.NewInterceptor(),
 		),

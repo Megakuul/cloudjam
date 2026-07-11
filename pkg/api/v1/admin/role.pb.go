@@ -24,12 +24,12 @@ const (
 
 type Role struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	Builtin       bool                   `protobuf:"varint,4,opt,name=builtin,proto3" json:"builtin,omitempty"`
-	Permissions   map[string]string      `protobuf:"bytes,5,rep,name=permissions,proto3" json:"permissions,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	Scope         string                 `protobuf:"bytes,6,opt,name=scope,proto3" json:"scope,omitempty"`
+	Scope         string                 `protobuf:"bytes,1,opt,name=scope,proto3" json:"scope,omitempty"`
+	Id            string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
+	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	Description   string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
+	Builtin       bool                   `protobuf:"varint,5,opt,name=builtin,proto3" json:"builtin,omitempty"`
+	Permissions   map[string]string      `protobuf:"bytes,6,rep,name=permissions,proto3" json:"permissions,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -62,6 +62,13 @@ func (x *Role) ProtoReflect() protoreflect.Message {
 // Deprecated: Use Role.ProtoReflect.Descriptor instead.
 func (*Role) Descriptor() ([]byte, []int) {
 	return file_v1_admin_role_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *Role) GetScope() string {
+	if x != nil {
+		return x.Scope
+	}
+	return ""
 }
 
 func (x *Role) GetId() string {
@@ -99,25 +106,18 @@ func (x *Role) GetPermissions() map[string]string {
 	return nil
 }
 
-func (x *Role) GetScope() string {
-	if x != nil {
-		return x.Scope
-	}
-	return ""
-}
-
 var File_v1_admin_role_proto protoreflect.FileDescriptor
 
 const file_v1_admin_role_proto_rawDesc = "" +
 	"\n" +
 	"\x13v1/admin/role.proto\x12\bv1.admin\x1a\x1bbuf/validate/validate.proto\"\xbb\x02\n" +
-	"\x04Role\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1d\n" +
-	"\x04name\x18\x02 \x01(\tB\t\xbaH\x06r\x04\x10\x04\x18\x14R\x04name\x12+\n" +
-	"\vdescription\x18\x03 \x01(\tB\t\xbaH\x06r\x04\x10\x00\x182R\vdescription\x12\x18\n" +
-	"\abuiltin\x18\x04 \x01(\bR\abuiltin\x12g\n" +
-	"\vpermissions\x18\x05 \x03(\v2\x1f.v1.admin.Role.PermissionsEntryB$\xbaH!\x9a\x01\x1e\b\x01\x10\x14*\x18r\x16\x10\x01\x18d2\x10^[a-zA-Z0-9,*]+$R\vpermissions\x12\x14\n" +
-	"\x05scope\x18\x06 \x01(\tR\x05scope\x1a>\n" +
+	"\x04Role\x12\x14\n" +
+	"\x05scope\x18\x01 \x01(\tR\x05scope\x12\x0e\n" +
+	"\x02id\x18\x02 \x01(\tR\x02id\x12\x1d\n" +
+	"\x04name\x18\x03 \x01(\tB\t\xbaH\x06r\x04\x10\x04\x18\x14R\x04name\x12+\n" +
+	"\vdescription\x18\x04 \x01(\tB\t\xbaH\x06r\x04\x10\x00\x182R\vdescription\x12\x18\n" +
+	"\abuiltin\x18\x05 \x01(\bR\abuiltin\x12g\n" +
+	"\vpermissions\x18\x06 \x03(\v2\x1f.v1.admin.Role.PermissionsEntryB$\xbaH!\x9a\x01\x1e\b\x01\x10\x14*\x18r\x16\x10\x01\x18d2\x10^[a-zA-Z0-9,*]+$R\vpermissions\x1a>\n" +
 	"\x10PermissionsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B1Z/codeberg.org/megakuul/cloudjam/pkg/api/v1/adminb\x06proto3"

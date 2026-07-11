@@ -11,41 +11,41 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/admin/role.proto.
  */
 export const file_v1_admin_role: GenFile = /*@__PURE__*/
-  fileDesc("ChN2MS9hZG1pbi9yb2xlLnByb3RvEgh2MS5hZG1pbiL7AQoEUm9sZRIKCgJpZBgBIAEoCRIXCgRuYW1lGAIgASgJQgm6SAZyBBAEGBQSHgoLZGVzY3JpcHRpb24YAyABKAlCCbpIBnIEEAAYMhIPCgdidWlsdGluGAQgASgIEloKC3Blcm1pc3Npb25zGAUgAygLMh8udjEuYWRtaW4uUm9sZS5QZXJtaXNzaW9uc0VudHJ5QiS6SCGaAR4IARAUKhhyFhABGGQyEF5bYS16QS1aMC05LCpdKyQSDQoFc2NvcGUYBiABKAkaMgoQUGVybWlzc2lvbnNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBQjFaL2NvZGViZXJnLm9yZy9tZWdha3V1bC9jbG91ZGphbS9wa2cvYXBpL3YxL2FkbWluYgZwcm90bzM", [file_buf_validate_validate]);
+  fileDesc("ChN2MS9hZG1pbi9yb2xlLnByb3RvEgh2MS5hZG1pbiL7AQoEUm9sZRINCgVzY29wZRgBIAEoCRIKCgJpZBgCIAEoCRIXCgRuYW1lGAMgASgJQgm6SAZyBBAEGBQSHgoLZGVzY3JpcHRpb24YBCABKAlCCbpIBnIEEAAYMhIPCgdidWlsdGluGAUgASgIEloKC3Blcm1pc3Npb25zGAYgAygLMh8udjEuYWRtaW4uUm9sZS5QZXJtaXNzaW9uc0VudHJ5QiS6SCGaAR4IARAUKhhyFhABGGQyEF5bYS16QS1aMC05LCpdKyQaMgoQUGVybWlzc2lvbnNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBQjFaL2NvZGViZXJnLm9yZy9tZWdha3V1bC9jbG91ZGphbS9wa2cvYXBpL3YxL2FkbWluYgZwcm90bzM", [file_buf_validate_validate]);
 
 /**
  * @generated from message v1.admin.Role
  */
 export type Role = Message<"v1.admin.Role"> & {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: string scope = 1;
+   */
+  scope: string;
+
+  /**
+   * @generated from field: string id = 2;
    */
   id: string;
 
   /**
-   * @generated from field: string name = 2;
+   * @generated from field: string name = 3;
    */
   name: string;
 
   /**
-   * @generated from field: string description = 3;
+   * @generated from field: string description = 4;
    */
   description: string;
 
   /**
-   * @generated from field: bool builtin = 4;
+   * @generated from field: bool builtin = 5;
    */
   builtin: boolean;
 
   /**
-   * @generated from field: map<string, string> permissions = 5;
+   * @generated from field: map<string, string> permissions = 6;
    */
   permissions: { [key: string]: string };
-
-  /**
-   * @generated from field: string scope = 6;
-   */
-  scope: string;
 };
 
 /**

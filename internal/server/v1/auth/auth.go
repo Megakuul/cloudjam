@@ -11,7 +11,7 @@ import (
 	"github.com/alexedwards/argon2id"
 	"github.com/megakuul/dynamitedb"
 
-	"codeberg.org/megakuul/cloudjam/internal/model"
+	"codeberg.org/megakuul/cloudjam/internal/oltp"
 	"codeberg.org/megakuul/cloudjam/internal/token"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/auth"
 )
@@ -32,7 +32,7 @@ func New(logger *slog.Logger, bucket *dynamitedb.Bucket, issuer *token.Issuer) *
 
 func (s *Server) Register(ctx context.Context, req *connect.Request[auth.RegisterRequest]) (*connect.Response[auth.RegisterResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
-	creds, err := dynamitedb.Get(ctx, s.bucket, &model.Creds{
+	creds, err := dynamitedb.Get(ctx, s.bucket, &oltp.Creds{
 		Email:  dynamitedb.Key(req.Msg.Email),
 		Active: dynamitedb.Eq(false),
 	})
@@ -58,7 +58,7 @@ func (s *Server) Register(ctx context.Context, req *connect.Request[auth.Registe
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to construct argon2id hash"))
 	}
 
-	linkedUser, err := dynamitedb.Get(ctx, s.bucket, &model.User{
+	linkedUser, err := dynamitedb.Get(ctx, s.bucket, &oltp.User{
 		UserID: dynamitedb.Key(creds.UserId.Value()),
 	})
 	if err != nil {
@@ -66,7 +66,7 @@ func (s *Server) Register(ctx context.Context, req *connect.Request[auth.Registe
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch user"))
 	}
 
-	err = dynamitedb.Update(ctx, s.bucket, &model.User{
+	err = dynamitedb.Update(ctx, s.bucket, &oltp.User{
 		UserID:   linkedUser.UserID,
 		Username: dynamitedb.Set(req.Msg.Username),
 		Email:    dynamitedb.Set(req.Msg.Email),
@@ -76,7 +76,7 @@ func (s *Server) Register(ctx context.Context, req *connect.Request[auth.Registe
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("user registration failed"))
 	}
 
-	err = dynamitedb.Update(ctx, s.bucket, &model.Creds{
+	err = dynamitedb.Update(ctx, s.bucket, &oltp.Creds{
 		Email:          creds.Email,
 		Active:         dynamitedb.Set(true),
 		Code:           dynamitedb.Set(""),
@@ -95,7 +95,7 @@ func (s *Server) Register(ctx context.Context, req *connect.Request[auth.Registe
 
 func (s *Server) Login(ctx context.Context, req *connect.Request[auth.LoginRequest]) (*connect.Response[auth.LoginResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
-	creds, err := dynamitedb.Get(ctx, s.bucket, &model.Creds{
+	creds, err := dynamitedb.Get(ctx, s.bucket, &oltp.Creds{
 		Email:  dynamitedb.Key(req.Msg.Email),
 		Active: dynamitedb.Eq(true),
 	})
@@ -112,7 +112,7 @@ func (s *Server) Login(ctx context.Context, req *connect.Request[auth.LoginReque
 		return nil, connect.NewError(connect.CodeUnauthenticated, fmt.Errorf("incorrect email or password"))
 	}
 
-	linkedUser, err := dynamitedb.Get(ctx, s.bucket, &model.User{
+	linkedUser, err := dynamitedb.Get(ctx, s.bucket, &oltp.User{
 		UserID: dynamitedb.Key(creds.UserId.Value()),
 	})
 	if err != nil {

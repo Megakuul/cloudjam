@@ -35,15 +35,23 @@ const (
 const (
 	// SystemServiceScanLogsProcedure is the fully-qualified name of the SystemService's ScanLogs RPC.
 	SystemServiceScanLogsProcedure = "/v1.admin.system.SystemService/ScanLogs"
-	// SystemServiceAggregateRequestsProcedure is the fully-qualified name of the SystemService's
-	// AggregateRequests RPC.
-	SystemServiceAggregateRequestsProcedure = "/v1.admin.system.SystemService/AggregateRequests"
+	// SystemServiceScanRequestsProcedure is the fully-qualified name of the SystemService's
+	// ScanRequests RPC.
+	SystemServiceScanRequestsProcedure = "/v1.admin.system.SystemService/ScanRequests"
+	// SystemServiceAggregateLatencyProcedure is the fully-qualified name of the SystemService's
+	// AggregateLatency RPC.
+	SystemServiceAggregateLatencyProcedure = "/v1.admin.system.SystemService/AggregateLatency"
+	// SystemServiceAggregateHitsProcedure is the fully-qualified name of the SystemService's
+	// AggregateHits RPC.
+	SystemServiceAggregateHitsProcedure = "/v1.admin.system.SystemService/AggregateHits"
 )
 
 // SystemServiceClient is a client for the v1.admin.system.SystemService service.
 type SystemServiceClient interface {
 	ScanLogs(context.Context, *connect.Request[system.ScanLogsRequest]) (*connect.Response[system.ScanLogsResponse], error)
-	AggregateRequests(context.Context, *connect.Request[system.AggregateRequestsRequest]) (*connect.Response[system.AggregateRequestsResponse], error)
+	ScanRequests(context.Context, *connect.Request[system.ScanRequestsRequest]) (*connect.Response[system.ScanRequestsResponse], error)
+	AggregateLatency(context.Context, *connect.Request[system.AggregateLatencyRequest]) (*connect.Response[system.AggregateLatencyResponse], error)
+	AggregateHits(context.Context, *connect.Request[system.AggregateHitsRequest]) (*connect.Response[system.AggregateHitsResponse], error)
 }
 
 // NewSystemServiceClient constructs a client for the v1.admin.system.SystemService service. By
@@ -63,10 +71,22 @@ func NewSystemServiceClient(httpClient connect.HTTPClient, baseURL string, opts 
 			connect.WithSchema(systemServiceMethods.ByName("ScanLogs")),
 			connect.WithClientOptions(opts...),
 		),
-		aggregateRequests: connect.NewClient[system.AggregateRequestsRequest, system.AggregateRequestsResponse](
+		scanRequests: connect.NewClient[system.ScanRequestsRequest, system.ScanRequestsResponse](
 			httpClient,
-			baseURL+SystemServiceAggregateRequestsProcedure,
-			connect.WithSchema(systemServiceMethods.ByName("AggregateRequests")),
+			baseURL+SystemServiceScanRequestsProcedure,
+			connect.WithSchema(systemServiceMethods.ByName("ScanRequests")),
+			connect.WithClientOptions(opts...),
+		),
+		aggregateLatency: connect.NewClient[system.AggregateLatencyRequest, system.AggregateLatencyResponse](
+			httpClient,
+			baseURL+SystemServiceAggregateLatencyProcedure,
+			connect.WithSchema(systemServiceMethods.ByName("AggregateLatency")),
+			connect.WithClientOptions(opts...),
+		),
+		aggregateHits: connect.NewClient[system.AggregateHitsRequest, system.AggregateHitsResponse](
+			httpClient,
+			baseURL+SystemServiceAggregateHitsProcedure,
+			connect.WithSchema(systemServiceMethods.ByName("AggregateHits")),
 			connect.WithClientOptions(opts...),
 		),
 	}
@@ -74,8 +94,10 @@ func NewSystemServiceClient(httpClient connect.HTTPClient, baseURL string, opts 
 
 // systemServiceClient implements SystemServiceClient.
 type systemServiceClient struct {
-	scanLogs          *connect.Client[system.ScanLogsRequest, system.ScanLogsResponse]
-	aggregateRequests *connect.Client[system.AggregateRequestsRequest, system.AggregateRequestsResponse]
+	scanLogs         *connect.Client[system.ScanLogsRequest, system.ScanLogsResponse]
+	scanRequests     *connect.Client[system.ScanRequestsRequest, system.ScanRequestsResponse]
+	aggregateLatency *connect.Client[system.AggregateLatencyRequest, system.AggregateLatencyResponse]
+	aggregateHits    *connect.Client[system.AggregateHitsRequest, system.AggregateHitsResponse]
 }
 
 // ScanLogs calls v1.admin.system.SystemService.ScanLogs.
@@ -83,15 +105,27 @@ func (c *systemServiceClient) ScanLogs(ctx context.Context, req *connect.Request
 	return c.scanLogs.CallUnary(ctx, req)
 }
 
-// AggregateRequests calls v1.admin.system.SystemService.AggregateRequests.
-func (c *systemServiceClient) AggregateRequests(ctx context.Context, req *connect.Request[system.AggregateRequestsRequest]) (*connect.Response[system.AggregateRequestsResponse], error) {
-	return c.aggregateRequests.CallUnary(ctx, req)
+// ScanRequests calls v1.admin.system.SystemService.ScanRequests.
+func (c *systemServiceClient) ScanRequests(ctx context.Context, req *connect.Request[system.ScanRequestsRequest]) (*connect.Response[system.ScanRequestsResponse], error) {
+	return c.scanRequests.CallUnary(ctx, req)
+}
+
+// AggregateLatency calls v1.admin.system.SystemService.AggregateLatency.
+func (c *systemServiceClient) AggregateLatency(ctx context.Context, req *connect.Request[system.AggregateLatencyRequest]) (*connect.Response[system.AggregateLatencyResponse], error) {
+	return c.aggregateLatency.CallUnary(ctx, req)
+}
+
+// AggregateHits calls v1.admin.system.SystemService.AggregateHits.
+func (c *systemServiceClient) AggregateHits(ctx context.Context, req *connect.Request[system.AggregateHitsRequest]) (*connect.Response[system.AggregateHitsResponse], error) {
+	return c.aggregateHits.CallUnary(ctx, req)
 }
 
 // SystemServiceHandler is an implementation of the v1.admin.system.SystemService service.
 type SystemServiceHandler interface {
 	ScanLogs(context.Context, *connect.Request[system.ScanLogsRequest]) (*connect.Response[system.ScanLogsResponse], error)
-	AggregateRequests(context.Context, *connect.Request[system.AggregateRequestsRequest]) (*connect.Response[system.AggregateRequestsResponse], error)
+	ScanRequests(context.Context, *connect.Request[system.ScanRequestsRequest]) (*connect.Response[system.ScanRequestsResponse], error)
+	AggregateLatency(context.Context, *connect.Request[system.AggregateLatencyRequest]) (*connect.Response[system.AggregateLatencyResponse], error)
+	AggregateHits(context.Context, *connect.Request[system.AggregateHitsRequest]) (*connect.Response[system.AggregateHitsResponse], error)
 }
 
 // NewSystemServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -107,18 +141,34 @@ func NewSystemServiceHandler(svc SystemServiceHandler, opts ...connect.HandlerOp
 		connect.WithSchema(systemServiceMethods.ByName("ScanLogs")),
 		connect.WithHandlerOptions(opts...),
 	)
-	systemServiceAggregateRequestsHandler := connect.NewUnaryHandler(
-		SystemServiceAggregateRequestsProcedure,
-		svc.AggregateRequests,
-		connect.WithSchema(systemServiceMethods.ByName("AggregateRequests")),
+	systemServiceScanRequestsHandler := connect.NewUnaryHandler(
+		SystemServiceScanRequestsProcedure,
+		svc.ScanRequests,
+		connect.WithSchema(systemServiceMethods.ByName("ScanRequests")),
+		connect.WithHandlerOptions(opts...),
+	)
+	systemServiceAggregateLatencyHandler := connect.NewUnaryHandler(
+		SystemServiceAggregateLatencyProcedure,
+		svc.AggregateLatency,
+		connect.WithSchema(systemServiceMethods.ByName("AggregateLatency")),
+		connect.WithHandlerOptions(opts...),
+	)
+	systemServiceAggregateHitsHandler := connect.NewUnaryHandler(
+		SystemServiceAggregateHitsProcedure,
+		svc.AggregateHits,
+		connect.WithSchema(systemServiceMethods.ByName("AggregateHits")),
 		connect.WithHandlerOptions(opts...),
 	)
 	return "/v1.admin.system.SystemService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case SystemServiceScanLogsProcedure:
 			systemServiceScanLogsHandler.ServeHTTP(w, r)
-		case SystemServiceAggregateRequestsProcedure:
-			systemServiceAggregateRequestsHandler.ServeHTTP(w, r)
+		case SystemServiceScanRequestsProcedure:
+			systemServiceScanRequestsHandler.ServeHTTP(w, r)
+		case SystemServiceAggregateLatencyProcedure:
+			systemServiceAggregateLatencyHandler.ServeHTTP(w, r)
+		case SystemServiceAggregateHitsProcedure:
+			systemServiceAggregateHitsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -132,6 +182,14 @@ func (UnimplementedSystemServiceHandler) ScanLogs(context.Context, *connect.Requ
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.admin.system.SystemService.ScanLogs is not implemented"))
 }
 
-func (UnimplementedSystemServiceHandler) AggregateRequests(context.Context, *connect.Request[system.AggregateRequestsRequest]) (*connect.Response[system.AggregateRequestsResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.admin.system.SystemService.AggregateRequests is not implemented"))
+func (UnimplementedSystemServiceHandler) ScanRequests(context.Context, *connect.Request[system.ScanRequestsRequest]) (*connect.Response[system.ScanRequestsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.admin.system.SystemService.ScanRequests is not implemented"))
+}
+
+func (UnimplementedSystemServiceHandler) AggregateLatency(context.Context, *connect.Request[system.AggregateLatencyRequest]) (*connect.Response[system.AggregateLatencyResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.admin.system.SystemService.AggregateLatency is not implemented"))
+}
+
+func (UnimplementedSystemServiceHandler) AggregateHits(context.Context, *connect.Request[system.AggregateHitsRequest]) (*connect.Response[system.AggregateHitsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.admin.system.SystemService.AggregateHits is not implemented"))
 }

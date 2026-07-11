@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"codeberg.org/megakuul/cloudjam/internal/auth"
-	"codeberg.org/megakuul/cloudjam/internal/model"
+	"codeberg.org/megakuul/cloudjam/internal/oltp"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/admin"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/admin/user"
 	"connectrpc.com/connect"
@@ -34,9 +34,9 @@ func New(logger *slog.Logger, bucket *dynamitedb.Bucket) *Server {
 func (s *Server) Get(ctx context.Context, req *connect.Request[user.GetRequest]) (*connect.Response[user.GetResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
 
-	userFilter := &model.User{}
+	userFilter := &oltp.User{}
 	if req.Msg.Id == "" || req.Msg.Id == auth.Claims(ctx).Subject {
-		if !slices.Contains(auth.Scopes(ctx), model.ScopeSelf) {
+		if !slices.Contains(auth.Scopes(ctx), oltp.ScopeSelf) {
 			return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("no self management access"))
 		}
 		userFilter.UserID = dynamitedb.Key(auth.Claims(ctx).Subject)
@@ -78,11 +78,11 @@ func (s *Server) List(ctx context.Context, req *connect.Request[user.ListRequest
 
 	opts := []dynamitedb.Option{dynamitedb.WithLimit(int(req.Msg.Limit))}
 	if req.Msg.StartAfter != "" {
-		opts = append(opts, dynamitedb.WithStartAfter(&model.User{
+		opts = append(opts, dynamitedb.WithStartAfter(&oltp.User{
 			UserID: dynamitedb.Key(req.Msg.StartAfter),
 		}))
 	}
-	users, err := dynamitedb.Query(ctx, s.bucket, &model.User{
+	users, err := dynamitedb.Query(ctx, s.bucket, &oltp.User{
 		UserID: dynamitedb.KeyPrefix(""), // scan and yes this is expensive...
 		Scope:  dynamitedb.In(auth.Scopes(ctx)...),
 	}, opts...)
@@ -130,7 +130,7 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[user.CreateReq
 	}
 	userId := uuid.NewString()
 
-	err = dynamitedb.Create(ctx, s.bucket, &model.Creds{
+	err = dynamitedb.Create(ctx, s.bucket, &oltp.Creds{
 		Email:          dynamitedb.Key(req.Msg.Init.Email),
 		Active:         dynamitedb.Set(false),
 		UserId:         dynamitedb.Set(userId),
@@ -146,7 +146,7 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[user.CreateReq
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create user invitation"))
 	}
 
-	err = dynamitedb.Create(ctx, s.bucket, &model.User{
+	err = dynamitedb.Create(ctx, s.bucket, &oltp.User{
 		UserID:       dynamitedb.Key(userId),
 		PubId:        dynamitedb.Set(uuid.NewString()),
 		Email:        dynamitedb.Set(req.Msg.Init.Email),
@@ -177,7 +177,7 @@ func (s *Server) Update(ctx context.Context, req *connect.Request[user.UpdateReq
 
 	// if the requested user is not the requesting user perform scope check and ensure the user is not privileged.
 	if req.Msg.Mod.Id != auth.Claims(ctx).Subject {
-		targetUser, err := dynamitedb.Get(ctx, s.bucket, &model.User{
+		targetUser, err := dynamitedb.Get(ctx, s.bucket, &oltp.User{
 			UserID: dynamitedb.Key(req.Msg.Mod.Id),
 			Scope:  dynamitedb.In(auth.Scopes(ctx)...),
 		})
@@ -191,7 +191,7 @@ func (s *Server) Update(ctx context.Context, req *connect.Request[user.UpdateReq
 		if targetUser.Privileged.Value() {
 			return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("privileged users cannot be modified"))
 		}
-		err = dynamitedb.Update(ctx, s.bucket, &model.User{
+		err = dynamitedb.Update(ctx, s.bucket, &oltp.User{
 			UserID:       dynamitedb.Key(req.Msg.Mod.Id),
 			Organization: dynamitedb.Set(req.Msg.Mod.Organization),
 		})
@@ -200,10 +200,10 @@ func (s *Server) Update(ctx context.Context, req *connect.Request[user.UpdateReq
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update user"))
 		}
 	} else {
-		if !slices.Contains(auth.Scopes(ctx), model.ScopeSelf) {
+		if !slices.Contains(auth.Scopes(ctx), oltp.ScopeSelf) {
 			return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("no self management access"))
 		}
-		err := dynamitedb.Update(ctx, s.bucket, &model.User{
+		err := dynamitedb.Update(ctx, s.bucket, &oltp.User{
 			UserID:      dynamitedb.Key(auth.Claims(ctx).Subject),
 			Username:    dynamitedb.Set(req.Msg.Mod.Username),
 			Description: dynamitedb.Set(req.Msg.Mod.Description),
@@ -229,9 +229,9 @@ func (s *Server) ResetPassword(ctx context.Context, req *connect.Request[user.Re
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to construct invitation code"))
 	}
 
-	credsFilter := &model.Creds{}
+	credsFilter := &oltp.Creds{}
 	if req.Msg.Email == auth.Claims(ctx).Email {
-		if !slices.Contains(auth.Scopes(ctx), model.ScopeSelf) {
+		if !slices.Contains(auth.Scopes(ctx), oltp.ScopeSelf) {
 			return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("no self management access"))
 		}
 		credsFilter.Email = dynamitedb.Key(auth.Claims(ctx).Email)
@@ -250,7 +250,7 @@ func (s *Server) ResetPassword(ctx context.Context, req *connect.Request[user.Re
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch user credentials"))
 	}
 
-	err = dynamitedb.Update(ctx, s.bucket, &model.Creds{
+	err = dynamitedb.Update(ctx, s.bucket, &oltp.Creds{
 		Email:          creds.Email,
 		Code:           dynamitedb.Set(codeHash),
 		CodeExpiration: dynamitedb.Set(req.Msg.Expires.AsTime()),
@@ -269,7 +269,7 @@ func (s *Server) ResetPassword(ctx context.Context, req *connect.Request[user.Re
 func (s *Server) Delete(ctx context.Context, req *connect.Request[user.DeleteRequest]) (*connect.Response[user.DeleteResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
 
-	err := dynamitedb.Delete(ctx, s.bucket, &model.User{
+	err := dynamitedb.Delete(ctx, s.bucket, &oltp.User{
 		UserID:     dynamitedb.Key(req.Msg.Id),
 		Scope:      dynamitedb.In(auth.Scopes(ctx)...),
 		Privileged: dynamitedb.Eq(false),

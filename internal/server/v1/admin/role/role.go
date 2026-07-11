@@ -8,7 +8,7 @@ import (
 	"slices"
 
 	"codeberg.org/megakuul/cloudjam/internal/auth"
-	"codeberg.org/megakuul/cloudjam/internal/model"
+	"codeberg.org/megakuul/cloudjam/internal/oltp"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/admin"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/admin/role"
 	"connectrpc.com/connect"
@@ -30,7 +30,7 @@ func New(logger *slog.Logger, bucket *dynamitedb.Bucket) *Server {
 func (s *Server) Get(ctx context.Context, req *connect.Request[role.GetRequest]) (*connect.Response[role.GetResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
 
-	foundRole, err := dynamitedb.Get(ctx, s.bucket, &model.Role{
+	foundRole, err := dynamitedb.Get(ctx, s.bucket, &oltp.Role{
 		RoleID: dynamitedb.Key(req.Msg.Id),
 		Scope:  dynamitedb.In(auth.Scopes(ctx)...),
 	})
@@ -61,11 +61,11 @@ func (s *Server) List(ctx context.Context, req *connect.Request[role.ListRequest
 
 	opts := []dynamitedb.Option{dynamitedb.WithLimit(int(req.Msg.Limit))}
 	if req.Msg.StartAfter != "" {
-		opts = append(opts, dynamitedb.WithStartAfter(&model.Role{
+		opts = append(opts, dynamitedb.WithStartAfter(&oltp.Role{
 			RoleID: dynamitedb.Key(req.Msg.StartAfter),
 		}))
 	}
-	roles, err := dynamitedb.Query(ctx, s.bucket, &model.Role{
+	roles, err := dynamitedb.Query(ctx, s.bucket, &oltp.Role{
 		RoleID: dynamitedb.KeyPrefix(""),
 		Scope:  dynamitedb.In(auth.Scopes(ctx)...),
 	}, opts...)
@@ -97,7 +97,7 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[role.CreateReq
 		return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("can't attach a scope you don't possess"))
 	}
 
-	err := dynamitedb.Create(ctx, s.bucket, &model.Role{
+	err := dynamitedb.Create(ctx, s.bucket, &oltp.Role{
 		RoleID:      dynamitedb.Key(req.Msg.Init.Id),
 		Name:        dynamitedb.Set(req.Msg.Init.Name),
 		Description: dynamitedb.Set(req.Msg.Init.Description),
@@ -117,7 +117,7 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[role.CreateReq
 func (s *Server) Update(ctx context.Context, req *connect.Request[role.UpdateRequest]) (*connect.Response[role.UpdateResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
 
-	targetRole, err := dynamitedb.Get(ctx, s.bucket, &model.Role{
+	targetRole, err := dynamitedb.Get(ctx, s.bucket, &oltp.Role{
 		RoleID: dynamitedb.Key(req.Msg.Mod.Id),
 		Scope:  dynamitedb.In(auth.Scopes(ctx)...),
 	})
@@ -131,7 +131,7 @@ func (s *Server) Update(ctx context.Context, req *connect.Request[role.UpdateReq
 	if targetRole.Builtin.Value() {
 		return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("builtin roles cannot be modified"))
 	}
-	err = dynamitedb.Update(ctx, s.bucket, &model.Role{
+	err = dynamitedb.Update(ctx, s.bucket, &oltp.Role{
 		RoleID:      targetRole.RoleID,
 		Name:        dynamitedb.Set(req.Msg.Mod.Name),
 		Description: dynamitedb.Set(req.Msg.Mod.Description),
@@ -146,7 +146,7 @@ func (s *Server) Update(ctx context.Context, req *connect.Request[role.UpdateReq
 func (s *Server) Delete(ctx context.Context, req *connect.Request[role.DeleteRequest]) (*connect.Response[role.DeleteResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
 
-	err := dynamitedb.Delete(ctx, s.bucket, &model.Role{
+	err := dynamitedb.Delete(ctx, s.bucket, &oltp.Role{
 		RoleID:  dynamitedb.Key(req.Msg.Id),
 		Scope:   dynamitedb.In(auth.Scopes(ctx)...),
 		Builtin: dynamitedb.Eq(false),

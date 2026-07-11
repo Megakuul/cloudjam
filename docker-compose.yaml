@@ -18,6 +18,6 @@ services:
       - AWS_ACCESS_KEY_ID=cloudjam-access-key
       - AWS_SECRET_ACCESS_KEY=cloudjam-secret-key
       - AWS_DEFAULT_REGION=us-east-1
-    entrypoint: /bin/sh -c "sleep 3 && aws s3api create-bucket --bucket cloudjam --endpoint-url http://rustfs:9000"
+    entrypoint: /bin/sh -c "sleep 3 && aws s3api create-bucket --bucket cloudjam-oltp --endpoint-url http://rustfs:9000 && aws s3api create-bucket --bucket cloudjam-olap --endpoint-url http://rustfs:9000"
 volumes:
   data:

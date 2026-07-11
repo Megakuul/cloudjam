@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"time"
 
-	"codeberg.org/megakuul/cloudjam/internal/model"
+	"codeberg.org/megakuul/cloudjam/internal/oltp"
 	"github.com/alexedwards/argon2id"
 	"github.com/google/uuid"
 	"github.com/megakuul/dynamitedb"
@@ -22,7 +22,7 @@ func CreateAdministrator(ctx context.Context, email string, bucket *dynamitedb.B
 		return "", fmt.Errorf("failed to create argon2id hash: %v", err)
 	}
 
-	err = dynamitedb.Create(ctx, bucket, &model.User{
+	err = dynamitedb.Create(ctx, bucket, &oltp.User{
 		UserID:       dynamitedb.Key("0"),
 		PubId:        dynamitedb.Set(uuid.NewString()),
 		Username:     dynamitedb.Set("admin"),
@@ -32,7 +32,7 @@ func CreateAdministrator(ctx context.Context, email string, bucket *dynamitedb.B
 		CreatedAt:    dynamitedb.Set(time.Now()),
 		Privileged:   dynamitedb.Set(true),
 		Role:         dynamitedb.Set("0"),
-		Scope:        dynamitedb.Set(model.ScopeAdmin),
+		Scope:        dynamitedb.Set(oltp.ScopeAdmin),
 	})
 	if err != nil {
 		if errors.Is(err, dynamitedb.ErrAlreadyExists) {
@@ -41,29 +41,29 @@ func CreateAdministrator(ctx context.Context, email string, bucket *dynamitedb.B
 		return "", fmt.Errorf("user creation: %v", err)
 	}
 
-	err = dynamitedb.Put(ctx, bucket, &model.Creds{
+	err = dynamitedb.Put(ctx, bucket, &oltp.Creds{
 		Email:          dynamitedb.Key(email),
 		Active:         dynamitedb.Set(false),
 		UserId:         dynamitedb.Set("0"),
 		Code:           dynamitedb.Set(hash),
 		CodeExpiration: dynamitedb.Set(time.Now().Add(time.Hour * 8760)),
-		Scope:          dynamitedb.Set(model.ScopeAdmin),
+		Scope:          dynamitedb.Set(oltp.ScopeAdmin),
 	})
 	if err != nil {
 		return "", fmt.Errorf("cred insertion: %v", err)
 	}
 
-	err = dynamitedb.Put(ctx, bucket, &model.Role{
+	err = dynamitedb.Put(ctx, bucket, &oltp.Role{
 		RoleID:      dynamitedb.Key("0"),
 		Name:        dynamitedb.Set("admin"),
 		Description: dynamitedb.Set("Provides unlimited administrator access"),
 		Builtin:     dynamitedb.Set(true),
 		Permissions: dynamitedb.Set(map[string]string{
-			model.ScopeAdmin: "**",
-			model.ScopeSelf:  "**",
+			oltp.ScopeAdmin: "**",
+			oltp.ScopeSelf:  "**",
 		}),
 
-		Scope: dynamitedb.Set(model.ScopeAdmin),
+		Scope: dynamitedb.Set(oltp.ScopeAdmin),
 	})
 	if err != nil {
 		return "", fmt.Errorf("role insertion: %v", err)

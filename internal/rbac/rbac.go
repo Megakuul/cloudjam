@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	"codeberg.org/megakuul/cloudjam/internal/model"
+	"codeberg.org/megakuul/cloudjam/internal/oltp"
 	"connectrpc.com/connect"
 	"github.com/gobwas/glob"
 	"github.com/megakuul/dynamitedb"
@@ -47,7 +47,7 @@ func (v *Authorizer) Check(ctx context.Context, subject, procedure string) (time
 	}
 	v.cacheLock.RUnlock()
 
-	user, err := dynamitedb.Get(ctx, v.bucket, &model.User{
+	user, err := dynamitedb.Get(ctx, v.bucket, &oltp.User{
 		UserID: dynamitedb.Key(subject),
 	})
 	if err != nil {
@@ -56,7 +56,7 @@ func (v *Authorizer) Check(ctx context.Context, subject, procedure string) (time
 		}
 		return time.Time{}, nil, connect.NewError(connect.CodeInternal, err)
 	}
-	role, err := dynamitedb.Get(ctx, v.bucket, &model.Role{
+	role, err := dynamitedb.Get(ctx, v.bucket, &oltp.Role{
 		RoleID: dynamitedb.Key(user.Role.Value()),
 	})
 	if err != nil {

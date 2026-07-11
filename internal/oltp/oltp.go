@@ -1,5 +1,5 @@
-// Package model contains the database schemas / models.
-package model
+// Package oltp contains the dynamite oltp database schemas / models.
+package oltp
 
 import (
 	"time"

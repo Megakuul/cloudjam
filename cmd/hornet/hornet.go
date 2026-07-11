@@ -19,12 +19,19 @@ type Options struct {
 	Json    bool   `mapstructure:"json"`
 	Verbose bool   `mapstructure:"verbose"`
 
-	AdminEmail      string `mapstructure:"admin-email"`
-	BucketURL       string `mapstructure:"bucket-url"`
-	BucketName      string `mapstructure:"bucket-name"`
-	BucketRegion    string `mapstructure:"bucket-region"`
-	BucketAccessKey string `mapstructure:"bucket-access-key"`
-	BucketSecretKey string `mapstructure:"bucket-secret-key"`
+	AdminEmail string `mapstructure:"admin-email"`
+
+	OLTPBucketURL       string `mapstructure:"oltp-bucket-url"`
+	OLTPBucketName      string `mapstructure:"oltp-bucket-name"`
+	OLTPBucketRegion    string `mapstructure:"oltp-bucket-region"`
+	OLTPBucketAccessKey string `mapstructure:"oltp-bucket-access-key"`
+	OLTPBucketSecretKey string `mapstructure:"oltp-bucket-secret-key"`
+
+	OLAPBucketURL       string `mapstructure:"olap-bucket-url"`
+	OLAPBucketName      string `mapstructure:"olap-bucket-name"`
+	OLAPBucketRegion    string `mapstructure:"olap-bucket-region"`
+	OLAPBucketAccessKey string `mapstructure:"olap-bucket-access-key"`
+	OLAPBucketSecretKey string `mapstructure:"olap-bucket-secret-key"`
 
 	TokenIssuer        string        `mapstructure:"token-issuer"`
 	TokenLifetime      time.Duration `mapstructure:"token-lifetime"`
@@ -72,11 +79,19 @@ func main() {
 	cmd.Flags().BoolP("verbose", "", false, "enable verbose logs")
 	cmd.Flags().StringP("addr", "", "0.0.0.0:8000", "location of the hornet server entrypoint")
 	cmd.Flags().StringP("admin-email", "", "admin@local", "initial administrator account email")
-	cmd.Flags().StringP("bucket-url", "", "http://127.0.0.1:9000", "s3 bucket url used for the database backend")
-	cmd.Flags().StringP("bucket-name", "", "cloudjam", "s3 bucket name used for the database backend")
-	cmd.Flags().StringP("bucket-region", "", "us-east-1", "s3 bucket region used for the database backend")
-	cmd.Flags().StringP("bucket-access-key", "", "cloudjam-access-key", "s3 bucket access key used for the database backend")
-	cmd.Flags().StringP("bucket-secret-key", "", "cloudjam-secret-key", "s3 bucket secret key used for the database backend")
+
+	cmd.Flags().StringP("oltp-bucket-url", "", "http://127.0.0.1:9000", "s3 oltp-bucket url used for the database backend")
+	cmd.Flags().StringP("oltp-bucket-name", "", "cloudjam-oltp", "s3 bucket name used for the database backend")
+	cmd.Flags().StringP("oltp-bucket-region", "", "us-east-1", "s3 bucket region used for the database backend")
+	cmd.Flags().StringP("oltp-bucket-access-key", "", "cloudjam-access-key", "s3 bucket access key used for the database backend")
+	cmd.Flags().StringP("oltp-bucket-secret-key", "", "cloudjam-secret-key", "s3 bucket secret key used for the database backend")
+
+	cmd.Flags().StringP("olap-bucket-url", "", "http://127.0.0.1:9000", "s3 olap-bucket url used for the analytics database backend")
+	cmd.Flags().StringP("olap-bucket-name", "", "cloudjam-olap", "s3 bucket name used for the analytics database backend")
+	cmd.Flags().StringP("olap-bucket-region", "", "us-east-1", "s3 bucket region used for the database backend")
+	cmd.Flags().StringP("olap-bucket-access-key", "", "cloudjam-access-key", "s3 bucket access key used for the analytics database backend")
+	cmd.Flags().StringP("olap-bucket-secret-key", "", "cloudjam-secret-key", "s3 bucket secret key used for the analytics database backend")
+
 	cmd.Flags().StringP("token-issuer", "", "cloudjam", "issuer used inside issued jwt tokens (iss)")
 	cmd.Flags().DurationP("token-lifetime", "", 24*time.Hour, "lifetime of issued jwt tokens")
 	cmd.Flags().StringP("token-secret", "", rand.Text(), "secret used to HMAC sign jwt tokens")

@@ -11,14 +11,16 @@ message Log {
   google.protobuf.Timestamp timestamp = 1;
   string level = 2;
   string message = 3;
-  map<string, string> labels = 4;
+  string system = 4;
+  string service = 5;
 }
 
 message ScanLogsRequest {
   google.protobuf.Timestamp from = 1;
   google.protobuf.Timestamp to = 2;
-  string level = 3;
-  int32 limit = 4 [(buf.validate.field).int32 = {
+  string system = 3;
+  string service = 4;
+  int32 limit = 5 [(buf.validate.field).int32 = {
     gt: 0
     lte: 100
   }];
@@ -28,24 +30,69 @@ message ScanLogsResponse {
   repeated Log logs = 1;
 }
 
-message RequestWindow {
-  string endpoint = 1;
-  google.protobuf.Timestamp start = 2;
-  int64 count = 3;
-  int64 latency = 4;
+message Request {
+  google.protobuf.Timestamp timestamp = 1;
+  int64 latency = 2;
+  string endpoint = 3;
+  string source = 4;
 }
 
-// what a cursed name xD
-message AggregateRequestsRequest {
+message ScanRequestsRequest {
   google.protobuf.Timestamp from = 1;
   google.protobuf.Timestamp to = 2;
+  string endpoint = 3;
+  int32 limit = 4 [(buf.validate.field).int32 = {
+    gt: 0
+    lte: 100
+  }];
 }
 
-message AggregateRequestsResponse {
-  repeated RequestWindow request_windows = 1;
+message ScanRequestsResponse {
+  repeated Request requests = 1;
+}
+
+enum AggregateWindow {
+  Minute = 0;
+  Hour = 1;
+  Day = 2;
+  Month = 3;
+}
+
+message EndpointLatency {
+  string endpoint = 1;
+  repeated google.protobuf.Timestamp time = 2;
+  repeated int64 latency = 3;
+}
+
+message AggregateLatencyRequest {
+  AggregateWindow window = 1;
+  google.protobuf.Timestamp from = 2;
+  google.protobuf.Timestamp to = 3;
+}
+
+message AggregateLatencyResponse {
+  map<string, EndpointLatency> endpoints = 1;
+}
+
+message EndpointHits {
+  string endpoint = 1;
+  repeated google.protobuf.Timestamp time = 2;
+  repeated int64 count = 3;
+}
+
+message AggregateHitsRequest {
+  AggregateWindow window = 1;
+  google.protobuf.Timestamp from = 2;
+  google.protobuf.Timestamp to = 3;
+}
+
+message AggregateHitsResponse {
+  map<string, EndpointHits> endpoints = 1;
 }
 
 service SystemService {
   rpc ScanLogs(ScanLogsRequest) returns (ScanLogsResponse);
-  rpc AggregateRequests(AggregateRequestsRequest) returns (AggregateRequestsResponse);
+  rpc ScanRequests(ScanRequestsRequest) returns (ScanRequestsResponse);
+  rpc AggregateLatency(AggregateLatencyRequest) returns (AggregateLatencyResponse);
+  rpc AggregateHits(AggregateHitsRequest) returns (AggregateHitsResponse);
 }
