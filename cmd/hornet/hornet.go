@@ -27,11 +27,12 @@ type Options struct {
 	OLTPBucketAccessKey string `mapstructure:"oltp-bucket-access-key"`
 	OLTPBucketSecretKey string `mapstructure:"oltp-bucket-secret-key"`
 
-	OLAPBucketURL       string `mapstructure:"olap-bucket-url"`
-	OLAPBucketName      string `mapstructure:"olap-bucket-name"`
-	OLAPBucketRegion    string `mapstructure:"olap-bucket-region"`
-	OLAPBucketAccessKey string `mapstructure:"olap-bucket-access-key"`
-	OLAPBucketSecretKey string `mapstructure:"olap-bucket-secret-key"`
+	OLAPCompactionInterval time.Duration `mapstructure:"olap-compaction-interval"`
+	OLAPBucketURL          string        `mapstructure:"olap-bucket-url"`
+	OLAPBucketName         string        `mapstructure:"olap-bucket-name"`
+	OLAPBucketRegion       string        `mapstructure:"olap-bucket-region"`
+	OLAPBucketAccessKey    string        `mapstructure:"olap-bucket-access-key"`
+	OLAPBucketSecretKey    string        `mapstructure:"olap-bucket-secret-key"`
 
 	TokenIssuer        string        `mapstructure:"token-issuer"`
 	TokenLifetime      time.Duration `mapstructure:"token-lifetime"`
@@ -86,6 +87,7 @@ func main() {
 	cmd.Flags().StringP("oltp-bucket-access-key", "", "cloudjam-access-key", "s3 bucket access key used for the database backend")
 	cmd.Flags().StringP("oltp-bucket-secret-key", "", "cloudjam-secret-key", "s3 bucket secret key used for the database backend")
 
+	cmd.Flags().DurationP("olap-compaction-interval", "", time.Hour, "interval for the olap parquet compaction process")
 	cmd.Flags().StringP("olap-bucket-url", "", "http://127.0.0.1:9000", "s3 olap-bucket url used for the analytics database backend")
 	cmd.Flags().StringP("olap-bucket-name", "", "cloudjam-olap", "s3 bucket name used for the analytics database backend")
 	cmd.Flags().StringP("olap-bucket-region", "", "us-east-1", "s3 bucket region used for the database backend")

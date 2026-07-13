@@ -32,6 +32,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/megakuul/dynamitedb"
 	lake "github.com/megakuul/lake"
+	"golang.org/x/sync/errgroup"
 )
 
 func Start(ctx context.Context, opts *Options) error {
@@ -72,7 +73,7 @@ func Start(ctx context.Context, opts *Options) error {
 	logIngestor := lake.NewIngestor(olapBucket, lake.WithAutoCommit[olap.Log](time.Second*10))
 	defer logIngestor.Close(ctx)
 
-	slog.Debug(fmt.Sprintf("initializing logging backend..."))
+	slog.Debug("initializing logging backend...")
 	slog.SetDefault(slog.New(slog.NewMultiHandler(
 		slog.Default().Handler(),
 		middleware.NewLogSink(logIngestor, &middleware.LogSinkOptions{Level: slog.LevelDebug}),
@@ -132,12 +133,36 @@ func Start(ctx context.Context, opts *Options) error {
 		ErrorLog: slog.NewLogLogger(slog.With("system", "http.server").Handler(), slog.LevelWarn),
 	}
 
-	go func() {
-		<-ctx.Done()
-		server.Close()
-	}()
-	slog.Info(fmt.Sprintf("starting hornet server at http://%s", opts.Addr))
-	if err := server.ListenAndServe(); err != nil && !errors.Is(http.ErrServerClosed, err) {
+	runGroups, runCtx := errgroup.WithContext(ctx)
+
+	requestCompactor := lake.NewCompactor[olap.Request](olapBucket)
+	logCompactor := lake.NewCompactor[olap.Log](olapBucket)
+	runGroups.Go(func() error {
+		for {
+			slog.Info("starting olap compaction process...")
+			if err := logCompactor.Compact(runCtx); err != nil {
+				slog.Error(fmt.Sprintf("log compaction failure: %v", err))
+			}
+			if err := requestCompactor.Compact(runCtx); err != nil {
+				slog.Error(fmt.Sprintf("request compaction failure: %v", err))
+			}
+			select {
+			case <-time.After(time.Hour):
+				continue
+			case <-runCtx.Done():
+				return nil
+			}
+		}
+	})
+	runGroups.Go(func() error {
+		<-runCtx.Done()
+		return server.Close()
+	})
+	runGroups.Go(func() error {
+		slog.Info(fmt.Sprintf("starting hornet server at http://%s", opts.Addr))
+		return server.ListenAndServe()
+	})
+	if err = runGroups.Wait(); err != nil && !errors.Is(http.ErrServerClosed, err) {
 		return err
 	}
 	return nil

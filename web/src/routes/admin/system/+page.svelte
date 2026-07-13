@@ -1,45 +1,53 @@
 <script lang="ts">
-	import { Glue, Submit } from '$lib';
-	import { AggregateRequestsRequestSchema } from '$lib/sdk/v1/admin/system/system_pb';
+	import { Glue } from '$lib';
+	import {
+		AggregateHitsRequestSchema,
+		AggregateLatencyRequestSchema,
+		AggregateWindow
+	} from '$lib/sdk/v1/admin/system/system_pb';
 	import { create } from '@bufbuild/protobuf';
-	import { onMount } from 'svelte';
-	import { Area, AreaChart, LinearGradient } from 'layerchart';
+	import { timestampFromDate } from '@bufbuild/protobuf/wkt';
+	import StatChart from './StatChart.svelte';
+	import * as Chart from '$lib/components/ui/chart/index.js';
+	import * as Select from '$lib/components/ui/select/index.js';
 
-	let error = $state('');
-	let loading = $state(false);
+	// safe generates "layerchart" safe identifiers / keys.
+	const safe = (k: string) => k.replace(/[^a-zA-Z0-9_]/g, '_');
 
-	let windows: { key: string; color: string; data: { date: Date; value: number }[] }[] = $state([]);
-
-	onMount(() => {
-		Submit(
-			async () => {
-				const resp = await Glue.system.aggregateRequests(
-					create(AggregateRequestsRequestSchema, {})
-				);
-				const endpoints: Record<string, { date: Date; value: number }[]> = {};
-				for (const requestWindow of resp.requestWindows) {
-					endpoints[requestWindow.endpoint] = endpoints[requestWindow.endpoint] ?? [];
-					endpoints[requestWindow.endpoint].push({
-						date: new Date(Number(requestWindow.start?.seconds) * 1000),
-						value: Number(requestWindow.latency / requestWindow.count) / 1_000_000_000
+	let from = $state('24'); // in hours
+	const fromLabel = (from: string) => {
+		switch (from) {
+			case String(8):
+				return 'Last 12 hours';
+			case String(24):
+				return 'Last 24 hours';
+			case String(168):
+				return 'Last 7 days';
+			case String(720):
+				return 'Last 3 months';
+		}
+	};
+	const fromTimeformat = (from: string) => {
+		switch (from) {
+			case String(8):
+			case String(24):
+				return (v: any) => {
+					return v.toLocaleTimeString('en-US', {
+						hour: '2-digit',
+						minute: '2-digit',
+						hour12: false
 					});
-				}
-				const getHueFromString = (str: string) => {
-					let hash = 0;
-					for (let i = 0; i < str.length; i++) {
-						hash = str.charCodeAt(i) + ((hash << 5) - hash);
-					}
-					return Math.abs(hash) % 360;
 				};
-				windows = Object.entries(endpoints).map(([key, value]) => ({
-					key: key,
-					color: `hsl(${getHueFromString(key)}, 65%, 55%)`,
-					data: value.sort((a, b) => a.date.getTime() - b.date.getTime())
-				}));
-			},
-			(e, l) => ((error = e), (loading = l))
-		);
-	});
+			case String(168):
+			case String(720):
+				return (v: any) => {
+					return v.toLocaleDateString('en-US', {
+						month: '2-digit',
+						day: '2-digit'
+					});
+				};
+		}
+	};
 </script>
 
 <svelte:head>
@@ -50,22 +58,104 @@
 </svelte:head>
 
 <div class="flex flex-col gap-4 justify-center items-center w-full">
-	<h1>System</h1>
-	<div class="p-4 w-full rounded border h-[300px]">
-		<AreaChart x="date" y="value" series={windows} renderContext="svg" />
-		<!-- <AreaChart -->
-		<!-- 	data={windows} -->
-		<!-- 	x="date" -->
-		<!-- 	y="value" -->
-		<!-- 	renderContext="svg" -->
-		<!-- 	series={[{ key: 'value', color: 'var(--color-primary)' }]} -->
-		<!-- 	props={{ -->
-		<!-- 		xAxis: { format: undefined, tweened: { duration: 200 } }, -->
-		<!-- 		tooltip: { item: { format: undefined } } -->
-		<!-- 	}} -->
-		<!-- /> -->
-	</div>
-	{#if error}
-		<div class="p-4 rounded-lg border-red-900 border-[0.1rem] bg-red-600/20">{error}</div>
-	{/if}
+	<Select.Root type="single" bind:value={from}>
+		<Select.Trigger class="w-40 rounded-lg sm:ms-auto" aria-label="Select a value">
+			{fromLabel(from)}
+		</Select.Trigger>
+		<Select.Content class="rounded-xl">
+			<Select.Item value={String(8)} class="rounded-lg">{fromLabel(String(8))}</Select.Item>
+			<Select.Item value={String(24)} class="rounded-lg">{fromLabel(String(24))}</Select.Item>
+			<Select.Item value={String(168)} class="rounded-lg">{fromLabel(String(168))}</Select.Item>
+			<Select.Item value={String(720)} class="rounded-lg">{fromLabel(String(720))}</Select.Item>
+		</Select.Content>
+	</Select.Root>
+
+	<StatChart
+		title="Requests"
+		description="Endpoint requests of CloudJam service endpoints"
+		timeFormat={fromTimeformat(from)}
+		load={async () => {
+			const resp = await Glue.system.aggregateHits(
+				create(AggregateHitsRequestSchema, {
+					window: AggregateWindow.Hour,
+					from: timestampFromDate(new Date(Date.now() - Number(from) * 60 * 60 * 1000)),
+					to: timestampFromDate(new Date(Date.now()))
+				})
+			);
+			const endpoints = Object.keys(resp.endpoints);
+			const records: Record<number, any> = {};
+			for (let i = 0; i < Number(from); i++) {
+				const timestamp = new Date(Date.now() - i * 60 * 60 * 1000);
+				timestamp.setMinutes(0, 0, 0);
+				records[timestamp.getTime()] = {
+					date: timestamp
+				};
+				for (const endpoint of endpoints) {
+					records[timestamp.getTime()][safe(endpoint)] = 0;
+				}
+			}
+
+			for (const [endpoint, series] of Object.entries(resp.endpoints)) {
+				for (let i = 0; i < series.time.length; i++) {
+					const timestamp = Number(series.time[i].seconds) * 1000;
+					if (records[timestamp]) {
+						records[timestamp][safe(endpoint)] = Number(series.count[i]);
+					}
+				}
+			}
+			const labels: Chart.ChartConfig = {};
+			for (let i = 0; i < endpoints.length; i++) {
+				labels[safe(endpoints[i])] = {
+					label: endpoints[i],
+					color: `var(--chart-${(i % 5) + 1})`
+				};
+			}
+			const data = Object.values(records).sort((a, b) => a.date - b.date);
+			return [labels, data];
+		}}
+	/>
+	<StatChart
+		title="Latency"
+		description="Latency of CloudJam service endpoints"
+		timeFormat={fromTimeformat(from)}
+		load={async () => {
+			const resp = await Glue.system.aggregateLatency(
+				create(AggregateLatencyRequestSchema, {
+					window: AggregateWindow.Hour,
+					from: timestampFromDate(new Date(Date.now() - Number(from) * 60 * 60 * 1000)),
+					to: timestampFromDate(new Date(Date.now()))
+				})
+			);
+			const endpoints = Object.keys(resp.endpoints);
+			const records: Record<number, any> = {};
+			for (let i = 0; i < Number(from); i++) {
+				const timestamp = new Date(Date.now() - i * 60 * 60 * 1000);
+				timestamp.setMinutes(0, 0, 0);
+				records[timestamp.getTime()] = {
+					date: timestamp
+				};
+				for (const endpoint of endpoints) {
+					records[timestamp.getTime()][safe(endpoint)] = 0;
+				}
+			}
+
+			for (const [endpoint, series] of Object.entries(resp.endpoints)) {
+				for (let i = 0; i < series.time.length; i++) {
+					const timestamp = Number(series.time[i].seconds) * 1000;
+					if (records[timestamp]) {
+						records[timestamp][safe(endpoint)] = Number(series.latency[i]) / 100_000;
+					}
+				}
+			}
+			const labels: Chart.ChartConfig = {};
+			for (let i = 0; i < endpoints.length; i++) {
+				labels[safe(endpoints[i])] = {
+					label: endpoints[i],
+					color: `var(--chart-${(i % 5) + 1})`
+				};
+			}
+			const data = Object.values(records).sort((a, b) => a.date - b.date);
+			return [labels, data];
+		}}
+	/>
 </div>
