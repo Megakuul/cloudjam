@@ -10,6 +10,7 @@
 	import StatChart from './StatChart.svelte';
 	import * as Chart from '$lib/components/ui/chart/index.js';
 	import * as Select from '$lib/components/ui/select/index.js';
+	import LogTable from './LogTable.svelte';
 
 	// safe generates "layerchart" safe identifiers / keys.
 	const safe = (k: string) => k.replace(/[^a-zA-Z0-9_]/g, '_');
@@ -69,6 +70,8 @@
 			<Select.Item value={String(720)} class="rounded-lg">{fromLabel(String(720))}</Select.Item>
 		</Select.Content>
 	</Select.Root>
+
+	<LogTable from={Number(from)} />
 
 	<StatChart
 		title="Requests"

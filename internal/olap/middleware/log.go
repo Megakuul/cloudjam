@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 
 	"codeberg.org/megakuul/cloudjam/internal/olap"
@@ -34,22 +35,21 @@ func (l *LogSink) Enabled(_ context.Context, level slog.Level) bool {
 func (l *LogSink) Handle(ctx context.Context, r slog.Record) error {
 	r.AddAttrs(l.attrs...)
 	log := olap.Log{
-		Timestamp: lake.NewInt(r.Time.Unix()),
+		Timestamp: lake.NewInt(r.Time.UnixNano()),
 		Level:     lake.NewInt(int64(r.Level)),
 		Message:   lake.NewString(r.Message),
+		Trace:     lake.NewString(fmt.Sprintf("%s:%d", r.Source().File, r.Source().Line)),
 	}
 	r.Attrs(func(a slog.Attr) bool {
 		switch a.Key {
 		case "system":
 			log.System = lake.NewString(a.Value.String())
-		case "svc":
-			log.Service = lake.NewString(a.Value.String())
 		case "proc":
 			log.Procedure = lake.NewString(a.Value.String())
 		}
 		return true
 	})
-	return l.ingestor.Insert(ctx, log)
+	return l.ingestor.Insert(context.TODO(), log)
 }
 
 func (l *LogSink) WithAttrs(attrs []slog.Attr) slog.Handler {

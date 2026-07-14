@@ -14,6 +14,6 @@ type Log struct {
 	Level     lake.Int    `parquet:"level"`
 	Message   lake.String `parquet:"message"`
 	System    lake.String `parquet:"system"`
-	Service   lake.String `parquet:"service"`
 	Procedure lake.String `parquet:"procedure"`
+	Trace     lake.String `parquet:"trace"`
 }

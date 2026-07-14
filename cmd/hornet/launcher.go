@@ -71,16 +71,29 @@ func Start(ctx context.Context, opts *Options) error {
 	}
 
 	logIngestor := lake.NewIngestor(olapBucket, lake.WithAutoCommit[olap.Log](time.Second*10))
-	defer logIngestor.Close(ctx)
+	defer func() {
+		ctx, cancel := context.WithTimeout(context.Background(), opts.ShutdownTimeout)
+		defer cancel()
+		slog.Debug("shutting down log ingestor...")
+		if err = logIngestor.Close(ctx); err != nil {
+			slog.Error(fmt.Sprintf("failed to close log ingestor: %v", err))
+		}
+	}()
+	requestIngestor := lake.NewIngestor(olapBucket, lake.WithAutoCommit[olap.Request](time.Second*10))
+	defer func() {
+		ctx, cancel := context.WithTimeout(context.Background(), opts.ShutdownTimeout)
+		defer cancel()
+		slog.Debug("shutting down request ingestor...")
+		if err = requestIngestor.Close(ctx); err != nil {
+			slog.Error(fmt.Sprintf("failed to close request ingestor: %v", err))
+		}
+	}()
 
 	slog.Debug("initializing logging backend...")
 	slog.SetDefault(slog.New(slog.NewMultiHandler(
 		slog.Default().Handler(),
 		middleware.NewLogSink(logIngestor, &middleware.LogSinkOptions{Level: slog.LevelDebug}),
 	)))
-
-	requestIngestor := lake.NewIngestor(olapBucket, lake.WithAutoCommit[olap.Request](time.Second*10))
-	defer requestIngestor.Close(ctx)
 
 	code, err := bootstrap.CreateAdministrator(ctx, opts.AdminEmail, oltpBucket)
 	if err != nil {

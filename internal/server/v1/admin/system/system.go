@@ -2,6 +2,7 @@ package system
 
 import (
 	"context"
+	"fmt"
 	"log/slog"
 	"time"
 
@@ -28,12 +29,29 @@ func New(logger *slog.Logger, oltp *dynamitedb.Bucket, olap *lake.Bucket) *Serve
 }
 
 func (s *Server) ScanLogs(ctx context.Context, req *connect.Request[system.ScanLogsRequest]) (*connect.Response[system.ScanLogsResponse], error) {
+	levelFilters := []lake.Filter[int64]{}
+	if req.Msg.Level != "" {
+		var level slog.Level
+		if err := level.UnmarshalText([]byte(req.Msg.Level)); err != nil {
+			return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("invalid level"))
+		}
+		levelFilters = append(levelFilters, lake.Eq(int64(level)))
+	}
+	systemFilters := []lake.Filter[string]{}
+	if req.Msg.System != "" {
+		systemFilters = append(systemFilters, lake.Eq(req.Msg.System))
+	}
+	procedureFilters := []lake.Filter[string]{}
+	if req.Msg.Procedure != "" {
+		procedureFilters = append(procedureFilters, lake.Eq(req.Msg.Procedure))
+	}
 	logs, err := lake.Query[olap.Log]().
 		Limit(int(req.Msg.Limit)).
 		Where(olap.Log{
 			Timestamp: lake.FilterInt(lake.After(req.Msg.From.AsTime()), lake.Before(req.Msg.To.AsTime())),
-			System:    lake.FilterString(lake.Eq(req.Msg.System)),
-			Service:   lake.FilterString(lake.Eq(req.Msg.Service)),
+			System:    lake.FilterString(systemFilters...),
+			Procedure: lake.FilterString(procedureFilters...),
+			Level:     lake.FilterInt(levelFilters...),
 		}).
 		Scan(ctx, s.olap)
 	if err != nil {
@@ -42,11 +60,12 @@ func (s *Server) ScanLogs(ctx context.Context, req *connect.Request[system.ScanL
 	outputLogs := make([]*system.Log, len(logs))
 	for i, log := range logs {
 		outputLogs[i] = &system.Log{
-			Timestamp: timestamppb.New(time.Unix(log.Timestamp.Data, 0)),
+			Timestamp: timestamppb.New(time.Unix(0, log.Timestamp.Data)),
 			Level:     slog.Level(log.Level.Data).String(),
 			Message:   log.Message.Data,
 			System:    log.System.Data,
-			Service:   log.Service.Data,
+			Procedure: log.Procedure.Data,
+			Trace:     log.Trace.Data,
 		}
 	}
 	return &connect.Response[system.ScanLogsResponse]{Msg: &system.ScanLogsResponse{

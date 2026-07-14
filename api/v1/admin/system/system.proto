@@ -12,17 +12,19 @@ message Log {
   string level = 2;
   string message = 3;
   string system = 4;
-  string service = 5;
+  string procedure = 5;
+  string trace = 6;
 }
 
 message ScanLogsRequest {
   google.protobuf.Timestamp from = 1;
   google.protobuf.Timestamp to = 2;
   string system = 3;
-  string service = 4;
-  int32 limit = 5 [(buf.validate.field).int32 = {
+  string procedure = 4;
+  string level = 5;
+  int32 limit = 6 [(buf.validate.field).int32 = {
     gt: 0
-    lte: 100
+    lte: 200
   }];
 }
 

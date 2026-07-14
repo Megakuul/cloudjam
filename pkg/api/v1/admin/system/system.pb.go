@@ -81,7 +81,8 @@ type Log struct {
 	Level         string                 `protobuf:"bytes,2,opt,name=level,proto3" json:"level,omitempty"`
 	Message       string                 `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
 	System        string                 `protobuf:"bytes,4,opt,name=system,proto3" json:"system,omitempty"`
-	Service       string                 `protobuf:"bytes,5,opt,name=service,proto3" json:"service,omitempty"`
+	Procedure     string                 `protobuf:"bytes,5,opt,name=procedure,proto3" json:"procedure,omitempty"`
+	Trace         string                 `protobuf:"bytes,6,opt,name=trace,proto3" json:"trace,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -144,9 +145,16 @@ func (x *Log) GetSystem() string {
 	return ""
 }
 
-func (x *Log) GetService() string {
+func (x *Log) GetProcedure() string {
 	if x != nil {
-		return x.Service
+		return x.Procedure
+	}
+	return ""
+}
+
+func (x *Log) GetTrace() string {
+	if x != nil {
+		return x.Trace
 	}
 	return ""
 }
@@ -156,8 +164,9 @@ type ScanLogsRequest struct {
 	From          *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`
 	To            *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=to,proto3" json:"to,omitempty"`
 	System        string                 `protobuf:"bytes,3,opt,name=system,proto3" json:"system,omitempty"`
-	Service       string                 `protobuf:"bytes,4,opt,name=service,proto3" json:"service,omitempty"`
-	Limit         int32                  `protobuf:"varint,5,opt,name=limit,proto3" json:"limit,omitempty"`
+	Procedure     string                 `protobuf:"bytes,4,opt,name=procedure,proto3" json:"procedure,omitempty"`
+	Level         string                 `protobuf:"bytes,5,opt,name=level,proto3" json:"level,omitempty"`
+	Limit         int32                  `protobuf:"varint,6,opt,name=limit,proto3" json:"limit,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -213,9 +222,16 @@ func (x *ScanLogsRequest) GetSystem() string {
 	return ""
 }
 
-func (x *ScanLogsRequest) GetService() string {
+func (x *ScanLogsRequest) GetProcedure() string {
 	if x != nil {
-		return x.Service
+		return x.Procedure
+	}
+	return ""
+}
+
+func (x *ScanLogsRequest) GetLevel() string {
+	if x != nil {
+		return x.Level
 	}
 	return ""
 }
@@ -783,19 +799,22 @@ var File_v1_admin_system_system_proto protoreflect.FileDescriptor
 
 const file_v1_admin_system_system_proto_rawDesc = "" +
 	"\n" +
-	"\x1cv1/admin/system/system.proto\x12\x0fv1.admin.system\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xa1\x01\n" +
+	"\x1cv1/admin/system/system.proto\x12\x0fv1.admin.system\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xbb\x01\n" +
 	"\x03Log\x128\n" +
 	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12\x14\n" +
 	"\x05level\x18\x02 \x01(\tR\x05level\x12\x18\n" +
 	"\amessage\x18\x03 \x01(\tR\amessage\x12\x16\n" +
-	"\x06system\x18\x04 \x01(\tR\x06system\x12\x18\n" +
-	"\aservice\x18\x05 \x01(\tR\aservice\"\xc0\x01\n" +
+	"\x06system\x18\x04 \x01(\tR\x06system\x12\x1c\n" +
+	"\tprocedure\x18\x05 \x01(\tR\tprocedure\x12\x14\n" +
+	"\x05trace\x18\x06 \x01(\tR\x05trace\"\xdb\x01\n" +
 	"\x0fScanLogsRequest\x12.\n" +
 	"\x04from\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x04from\x12*\n" +
 	"\x02to\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x02to\x12\x16\n" +
-	"\x06system\x18\x03 \x01(\tR\x06system\x12\x18\n" +
-	"\aservice\x18\x04 \x01(\tR\aservice\x12\x1f\n" +
-	"\x05limit\x18\x05 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d \x00R\x05limit\"<\n" +
+	"\x06system\x18\x03 \x01(\tR\x06system\x12\x1c\n" +
+	"\tprocedure\x18\x04 \x01(\tR\tprocedure\x12\x14\n" +
+	"\x05level\x18\x05 \x01(\tR\x05level\x12 \n" +
+	"\x05limit\x18\x06 \x01(\x05B\n" +
+	"\xbaH\a\x1a\x05\x18\xc8\x01 \x00R\x05limit\"<\n" +
 	"\x10ScanLogsResponse\x12(\n" +
 	"\x04logs\x18\x01 \x03(\v2\x14.v1.admin.system.LogR\x04logs\"\x91\x01\n" +
 	"\aRequest\x128\n" +

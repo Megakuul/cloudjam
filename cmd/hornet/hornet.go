@@ -39,6 +39,8 @@ type Options struct {
 	TokenSecret        string        `mapstructure:"token-secret"`
 	PolicyCacheTimeout time.Duration `mapstructure:"policy-cache-timeout"`
 
+	ShutdownTimeout time.Duration `mapstructure:"shutdown-timeout"`
+
 	Dev        bool   `mapstructure:"dev"`
 	DevWebAddr string `mapstructure:"dev-web-addr"`
 }
@@ -98,6 +100,7 @@ func main() {
 	cmd.Flags().DurationP("token-lifetime", "", 24*time.Hour, "lifetime of issued jwt tokens")
 	cmd.Flags().StringP("token-secret", "", rand.Text(), "secret used to HMAC sign jwt tokens")
 	cmd.Flags().DurationP("policy-cache-timeout", "", time.Minute*15, "duration for policy cache (also dictates the max request duration)")
+	cmd.Flags().DurationP("shutdown-timeout", "", time.Second*5, "maximum time to wait for one shutdown step")
 	cmd.Flags().BoolP("dev", "D", false, "enable dev mode (proxies web requests to live watcher)")
 	cmd.Flags().StringP("dev-web-addr", "", "127.0.0.1:5173", "location of the live web server in dev mode")
 
