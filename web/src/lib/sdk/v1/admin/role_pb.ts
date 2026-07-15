@@ -2,56 +2,58 @@
 // @generated from file v1/admin/role.proto (package v1.admin, syntax proto3)
 /* eslint-disable */
 
-import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
-import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
-import { file_buf_validate_validate } from "../../buf/validate/validate_pb";
-import type { Message } from "@bufbuild/protobuf";
+import type { Message } from '@bufbuild/protobuf';
+import type { GenFile, GenMessage } from '@bufbuild/protobuf/codegenv2';
+import { fileDesc, messageDesc } from '@bufbuild/protobuf/codegenv2';
+import { file_buf_validate_validate } from '../../buf/validate/validate_pb';
 
 /**
  * Describes the file v1/admin/role.proto.
  */
-export const file_v1_admin_role: GenFile = /*@__PURE__*/
-  fileDesc("ChN2MS9hZG1pbi9yb2xlLnByb3RvEgh2MS5hZG1pbiL7AQoEUm9sZRINCgVzY29wZRgBIAEoCRIKCgJpZBgCIAEoCRIXCgRuYW1lGAMgASgJQgm6SAZyBBAEGBQSHgoLZGVzY3JpcHRpb24YBCABKAlCCbpIBnIEEAAYMhIPCgdidWlsdGluGAUgASgIEloKC3Blcm1pc3Npb25zGAYgAygLMh8udjEuYWRtaW4uUm9sZS5QZXJtaXNzaW9uc0VudHJ5QiS6SCGaAR4IARAUKhhyFhABGGQyEF5bYS16QS1aMC05LCpdKyQaMgoQUGVybWlzc2lvbnNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBQjFaL2NvZGViZXJnLm9yZy9tZWdha3V1bC9jbG91ZGphbS9wa2cvYXBpL3YxL2FkbWluYgZwcm90bzM", [file_buf_validate_validate]);
+export const file_v1_admin_role: GenFile =
+	/*@__PURE__*/
+	fileDesc(
+		'ChN2MS9hZG1pbi9yb2xlLnByb3RvEgh2MS5hZG1pbiL7AQoEUm9sZRINCgVzY29wZRgBIAEoCRIKCgJpZBgCIAEoCRIXCgRuYW1lGAMgASgJQgm6SAZyBBAEGBQSHgoLZGVzY3JpcHRpb24YBCABKAlCCbpIBnIEEAAYMhIPCgdidWlsdGluGAUgASgIEloKC3Blcm1pc3Npb25zGAYgAygLMh8udjEuYWRtaW4uUm9sZS5QZXJtaXNzaW9uc0VudHJ5QiS6SCGaAR4IARAUKhhyFhABGGQyEF5bYS16QS1aMC05LCpdKyQaMgoQUGVybWlzc2lvbnNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBQjFaL2NvZGViZXJnLm9yZy9tZWdha3V1bC9jbG91ZGphbS9wa2cvYXBpL3YxL2FkbWluYgZwcm90bzM',
+		[file_buf_validate_validate]
+	);
 
 /**
  * @generated from message v1.admin.Role
  */
-export type Role = Message<"v1.admin.Role"> & {
-  /**
-   * @generated from field: string scope = 1;
-   */
-  scope: string;
+export type Role = Message<'v1.admin.Role'> & {
+	/**
+	 * @generated from field: string scope = 1;
+	 */
+	scope: string;
 
-  /**
-   * @generated from field: string id = 2;
-   */
-  id: string;
+	/**
+	 * @generated from field: string id = 2;
+	 */
+	id: string;
 
-  /**
-   * @generated from field: string name = 3;
-   */
-  name: string;
+	/**
+	 * @generated from field: string name = 3;
+	 */
+	name: string;
 
-  /**
-   * @generated from field: string description = 4;
-   */
-  description: string;
+	/**
+	 * @generated from field: string description = 4;
+	 */
+	description: string;
 
-  /**
-   * @generated from field: bool builtin = 5;
-   */
-  builtin: boolean;
+	/**
+	 * @generated from field: bool builtin = 5;
+	 */
+	builtin: boolean;
 
-  /**
-   * @generated from field: map<string, string> permissions = 6;
-   */
-  permissions: { [key: string]: string };
+	/**
+	 * @generated from field: map<string, string> permissions = 6;
+	 */
+	permissions: { [key: string]: string };
 };
 
 /**
  * Describes the message v1.admin.Role.
  * Use `create(RoleSchema)` to create a new message.
  */
-export const RoleSchema: GenMessage<Role> = /*@__PURE__*/
-  messageDesc(file_v1_admin_role, 0);
-
+export const RoleSchema: GenMessage<Role> = /*@__PURE__*/ messageDesc(file_v1_admin_role, 0);

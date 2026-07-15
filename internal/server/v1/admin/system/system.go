@@ -133,11 +133,11 @@ func (s *Server) AggregateLatency(ctx context.Context, req *connect.Request[syst
 		if !ok {
 			endpoints[window.Endpoint.Data] = &system.EndpointLatency{
 				Endpoint: window.Endpoint.Data,
-				Time:     []*timestamppb.Timestamp{timestamppb.New(time.Unix(window.Timestamp.Data, 0))},
+				Time:     []*timestamppb.Timestamp{timestamppb.New(time.Unix(0, window.Timestamp.Data))},
 				Latency:  []int64{window.Latency.Data},
 			}
 		} else {
-			endpoint.Time = append(endpoint.Time, timestamppb.New(time.Unix(window.Timestamp.Data, 0)))
+			endpoint.Time = append(endpoint.Time, timestamppb.New(time.Unix(0, window.Timestamp.Data)))
 			endpoint.Latency = append(endpoint.Latency, window.Latency.Data)
 		}
 	}
@@ -181,11 +181,11 @@ func (s *Server) AggregateHits(ctx context.Context, req *connect.Request[system.
 		if !ok {
 			endpoints[window.Endpoint.Data] = &system.EndpointHits{
 				Endpoint: window.Endpoint.Data,
-				Time:     []*timestamppb.Timestamp{timestamppb.New(time.Unix(window.Timestamp.Data, 0))},
+				Time:     []*timestamppb.Timestamp{timestamppb.New(time.Unix(0, window.Timestamp.Data))},
 				Count:    []int64{window.Type.Data},
 			}
 		} else {
-			endpoint.Time = append(endpoint.Time, timestamppb.New(time.Unix(window.Timestamp.Data, 0)))
+			endpoint.Time = append(endpoint.Time, timestamppb.New(time.Unix(0, window.Timestamp.Data)))
 			endpoint.Count = append(endpoint.Count, window.Type.Data)
 		}
 	}

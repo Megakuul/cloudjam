@@ -28,12 +28,12 @@
 	<meta property="og:image" content="favicon.png" />
 </svelte:head>
 
-<div class="flex flex-col gap-4 justify-center items-center w-full">
+<div class="flex w-full flex-col items-center justify-center gap-4">
 	{#each users as user}
 		<div>{user.username}</div>
 	{/each}
 	{#if error}
-		<div class="p-2 m-2 w-full rounded-sm border-[0.05rem] border-red-600/80 bg-red-600/10">
+		<div class="m-2 w-full rounded-sm border-[0.05rem] border-red-600/80 bg-red-600/10 p-2">
 			{error}
 		</div>
 	{/if}

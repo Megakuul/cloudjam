@@ -56,7 +56,7 @@ func (v *RequestTracer) emitMetric(ctx context.Context, typ olap.RequestType, la
 		anonymPeerIP = string(rawIp[:])
 	}
 	if err := v.ingestor.Insert(ctx, olap.Request{
-		Timestamp: lake.NewInt(time.Now().Unix()),
+		Timestamp: lake.NewInt(time.Now().UnixNano()),
 		Endpoint:  lake.NewString(procedure),
 		Latency:   lake.NewInt(int64(latency)),
 		Type:      lake.NewInt(int64(typ)),

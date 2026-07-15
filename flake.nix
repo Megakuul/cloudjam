@@ -21,6 +21,7 @@
             gotools
             gofumpt
             buf
+            prettier
             awscli2
             localstack
           ];

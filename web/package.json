@@ -38,6 +38,7 @@
 		"layerchart": "2.0.0-next.48",
 		"mdsvex": "^0.12.6",
 		"prettier": "^3.8.1",
+		"prettier-plugin-organize-imports": "^4.3.0",
 		"prettier-plugin-svelte": "^3.4.1",
 		"prettier-plugin-tailwindcss": "^0.7.2",
 		"shadcn-svelte": "^1.4.1",

@@ -1,6 +1,8 @@
 <script lang="ts">
+	import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import * as Table from '$lib/components/ui/table/index.js';
+	import * as Alert from '$lib/components/ui/alert';
 	import { Glue, Submit } from '$lib';
 	import { create } from '@bufbuild/protobuf';
 	import { ScanLogsRequestSchema, type Log } from '$lib/sdk/v1/admin/system/system_pb';
@@ -114,14 +116,9 @@
 </Table.Root>
 
 {#if error}
-	<div
-		class="flex flex-col justify-center p-3 w-full rounded-xl border border-red-900/90 bg-red-800/20 text-slate-100/80"
-	>
-		<h1 class="flex flex-row gap-2 items-center text-xl">
-			<!-- prettier-ignore -->
-			<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"> <path d="M0 0h24v24H0z" fill="none" /> <g fill="none"> <path fill="currentColor" fill-opacity=".16" d="M3.23 7.913L7.91 3.23c.15-.15.35-.23.57-.23h7.05c.21 0 .42.08.57.23l4.67 4.673c.15.15.23.35.23.57v7.054c0 .21-.08.42-.23.57L16.1 20.77c-.15.15-.35.23-.57.23H8.47a.8.8 0 0 1-.57-.23l-4.67-4.673a.8.8 0 0 1-.23-.57V8.473c0-.21.08-.42.23-.57z" /> <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="1.5" d="M12 16h.008M12 8v5M3.23 7.913L7.91 3.23c.15-.15.35-.23.57-.23h7.05c.21 0 .42.08.57.23l4.67 4.673c.15.15.23.35.23.57v7.054c0 .21-.08.42-.23.57L16.1 20.77c-.15.15-.35.23-.57.23H8.47a.8.8 0 0 1-.57-.23l-4.67-4.673a.8.8 0 0 1-.23-.57V8.473c0-.21.08-.42.23-.57z" /> </g> </svg>
-			<span class="font-bold">Error</span>
-		</h1>
-		<p class="text-sm">{error}</p>
-	</div>
+	<Alert.Root>
+		<AlertCircleIcon />
+		<Alert.Title>Failed to load log data</Alert.Title>
+		<Alert.Description>{error}</Alert.Description>
+	</Alert.Root>
 {/if}

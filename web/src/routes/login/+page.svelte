@@ -18,7 +18,7 @@
 	<meta property="og:image" content="favicon.png" />
 </svelte:head>
 
-<div class="flex justify-center items-center w-full">
+<div class="flex w-full items-center justify-center">
 	<form
 		class="mt-[10%] flex w-96 flex-col items-center gap-4 rounded-2xl border-[0.05rem] border-neutral/40 p-7 shadow-sm shadow-primary/20"
 		onsubmit={() =>
@@ -57,7 +57,7 @@
 			variant="fill">Login</Button
 		>
 		{#if error}
-			<div class="p-2 w-full rounded-sm border-[0.05rem] border-red-600/80 bg-red-600/10">
+			<div class="w-full rounded-sm border-[0.05rem] border-red-600/80 bg-red-600/10 p-2">
 				{error}
 			</div>
 		{/if}

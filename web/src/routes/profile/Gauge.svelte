@@ -9,7 +9,7 @@
 
 <Tilt maxRotation={8} class="rounded-full transition duration-500 hover:scale-105">
 	<div
-		class="relative p-2 rounded-full transition ease-out pointer-events-none select-none border-[0.05rem] border-primary/20 bg-neutral/5"
+		class="pointer-events-none relative rounded-full border-[0.05rem] border-primary/20 bg-neutral/5 p-2 transition ease-out select-none"
 	>
 		<Gauge
 			width={300}
