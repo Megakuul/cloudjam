@@ -110,14 +110,14 @@ var File_v1_admin_role_proto protoreflect.FileDescriptor
 
 const file_v1_admin_role_proto_rawDesc = "" +
 	"\n" +
-	"\x13v1/admin/role.proto\x12\bv1.admin\x1a\x1bbuf/validate/validate.proto\"\xbb\x02\n" +
+	"\x13v1/admin/role.proto\x12\bv1.admin\x1a\x1bbuf/validate/validate.proto\"\xbd\x02\n" +
 	"\x04Role\x12\x14\n" +
 	"\x05scope\x18\x01 \x01(\tR\x05scope\x12\x0e\n" +
 	"\x02id\x18\x02 \x01(\tR\x02id\x12\x1d\n" +
 	"\x04name\x18\x03 \x01(\tB\t\xbaH\x06r\x04\x10\x04\x18\x14R\x04name\x12+\n" +
 	"\vdescription\x18\x04 \x01(\tB\t\xbaH\x06r\x04\x10\x00\x182R\vdescription\x12\x18\n" +
-	"\abuiltin\x18\x05 \x01(\bR\abuiltin\x12g\n" +
-	"\vpermissions\x18\x06 \x03(\v2\x1f.v1.admin.Role.PermissionsEntryB$\xbaH!\x9a\x01\x1e\b\x01\x10\x14*\x18r\x16\x10\x01\x18d2\x10^[a-zA-Z0-9,*]+$R\vpermissions\x1a>\n" +
+	"\abuiltin\x18\x05 \x01(\bR\abuiltin\x12i\n" +
+	"\vpermissions\x18\x06 \x03(\v2\x1f.v1.admin.Role.PermissionsEntryB&\xbaH#\x9a\x01 \b\x01\x10\x14*\x1ar\x18\x10\x01\x18d2\x12^[a-zA-Z0-9,*/.]+$R\vpermissions\x1a>\n" +
 	"\x10PermissionsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B1Z/codeberg.org/megakuul/cloudjam/pkg/api/v1/adminb\x06proto3"

@@ -2,417 +2,494 @@
 // @generated from file v1/admin/system/system.proto (package v1.admin.system, syntax proto3)
 /* eslint-disable */
 
-import type { Message } from '@bufbuild/protobuf';
-import type { GenEnum, GenFile, GenMessage, GenService } from '@bufbuild/protobuf/codegenv2';
-import { enumDesc, fileDesc, messageDesc, serviceDesc } from '@bufbuild/protobuf/codegenv2';
-import type { Timestamp } from '@bufbuild/protobuf/wkt';
-import { file_google_protobuf_timestamp } from '@bufbuild/protobuf/wkt';
-import { file_buf_validate_validate } from '../../../buf/validate/validate_pb';
+import type { GenEnum, GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
+import { enumDesc, fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
+import { file_buf_validate_validate } from "../../../buf/validate/validate_pb";
+import type { Timestamp } from "@bufbuild/protobuf/wkt";
+import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
+import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file v1/admin/system/system.proto.
  */
-export const file_v1_admin_system_system: GenFile =
-	/*@__PURE__*/
-	fileDesc(
-		'Chx2MS9hZG1pbi9zeXN0ZW0vc3lzdGVtLnByb3RvEg92MS5hZG1pbi5zeXN0ZW0ihgEKA0xvZxItCgl0aW1lc3RhbXAYASABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEg0KBWxldmVsGAIgASgJEg8KB21lc3NhZ2UYAyABKAkSDgoGc3lzdGVtGAQgASgJEhEKCXByb2NlZHVyZRgFIAEoCRINCgV0cmFjZRgGIAEoCSKwAQoPU2NhbkxvZ3NSZXF1ZXN0EigKBGZyb20YASABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEiYKAnRvGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIOCgZzeXN0ZW0YAyABKAkSEQoJcHJvY2VkdXJlGAQgASgJEg0KBWxldmVsGAUgASgJEhkKBWxpbWl0GAYgASgFQgq6SAcaBRjIASAAIjYKEFNjYW5Mb2dzUmVzcG9uc2USIgoEbG9ncxgBIAMoCzIULnYxLmFkbWluLnN5c3RlbS5Mb2ciawoHUmVxdWVzdBItCgl0aW1lc3RhbXAYASABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEg8KB2xhdGVuY3kYAiABKAMSEAoIZW5kcG9pbnQYAyABKAkSDgoGc291cmNlGAQgASgJIpMBChNTY2FuUmVxdWVzdHNSZXF1ZXN0EigKBGZyb20YASABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEiYKAnRvGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIQCghlbmRwb2ludBgDIAEoCRIYCgVsaW1pdBgEIAEoBUIJukgGGgQYZCAAIkIKFFNjYW5SZXF1ZXN0c1Jlc3BvbnNlEioKCHJlcXVlc3RzGAEgAygLMhgudjEuYWRtaW4uc3lzdGVtLlJlcXVlc3QiXgoPRW5kcG9pbnRMYXRlbmN5EhAKCGVuZHBvaW50GAEgASgJEigKBHRpbWUYAiADKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEg8KB2xhdGVuY3kYAyADKAMinQEKF0FnZ3JlZ2F0ZUxhdGVuY3lSZXF1ZXN0EjAKBndpbmRvdxgBIAEoDjIgLnYxLmFkbWluLnN5c3RlbS5BZ2dyZWdhdGVXaW5kb3cSKAoEZnJvbRgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASJgoCdG8YAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIrsBChhBZ2dyZWdhdGVMYXRlbmN5UmVzcG9uc2USSwoJZW5kcG9pbnRzGAEgAygLMjgudjEuYWRtaW4uc3lzdGVtLkFnZ3JlZ2F0ZUxhdGVuY3lSZXNwb25zZS5FbmRwb2ludHNFbnRyeRpSCg5FbmRwb2ludHNFbnRyeRILCgNrZXkYASABKAkSLwoFdmFsdWUYAiABKAsyIC52MS5hZG1pbi5zeXN0ZW0uRW5kcG9pbnRMYXRlbmN5OgI4ASJZCgxFbmRwb2ludEhpdHMSEAoIZW5kcG9pbnQYASABKAkSKAoEdGltZRgCIAMoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASDQoFY291bnQYAyADKAMimgEKFEFnZ3JlZ2F0ZUhpdHNSZXF1ZXN0EjAKBndpbmRvdxgBIAEoDjIgLnYxLmFkbWluLnN5c3RlbS5BZ2dyZWdhdGVXaW5kb3cSKAoEZnJvbRgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASJgoCdG8YAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIrIBChVBZ2dyZWdhdGVIaXRzUmVzcG9uc2USSAoJZW5kcG9pbnRzGAEgAygLMjUudjEuYWRtaW4uc3lzdGVtLkFnZ3JlZ2F0ZUhpdHNSZXNwb25zZS5FbmRwb2ludHNFbnRyeRpPCg5FbmRwb2ludHNFbnRyeRILCgNrZXkYASABKAkSLAoFdmFsdWUYAiABKAsyHS52MS5hZG1pbi5zeXN0ZW0uRW5kcG9pbnRIaXRzOgI4ASo7Cg9BZ2dyZWdhdGVXaW5kb3cSCgoGTWludXRlEAASCAoESG91chABEgcKA0RheRACEgkKBU1vbnRoEAMyhgMKDVN5c3RlbVNlcnZpY2USTwoIU2NhbkxvZ3MSIC52MS5hZG1pbi5zeXN0ZW0uU2NhbkxvZ3NSZXF1ZXN0GiEudjEuYWRtaW4uc3lzdGVtLlNjYW5Mb2dzUmVzcG9uc2USWwoMU2NhblJlcXVlc3RzEiQudjEuYWRtaW4uc3lzdGVtLlNjYW5SZXF1ZXN0c1JlcXVlc3QaJS52MS5hZG1pbi5zeXN0ZW0uU2NhblJlcXVlc3RzUmVzcG9uc2USZwoQQWdncmVnYXRlTGF0ZW5jeRIoLnYxLmFkbWluLnN5c3RlbS5BZ2dyZWdhdGVMYXRlbmN5UmVxdWVzdBopLnYxLmFkbWluLnN5c3RlbS5BZ2dyZWdhdGVMYXRlbmN5UmVzcG9uc2USXgoNQWdncmVnYXRlSGl0cxIlLnYxLmFkbWluLnN5c3RlbS5BZ2dyZWdhdGVIaXRzUmVxdWVzdBomLnYxLmFkbWluLnN5c3RlbS5BZ2dyZWdhdGVIaXRzUmVzcG9uc2VCOFo2Y29kZWJlcmcub3JnL21lZ2FrdXVsL2Nsb3VkamFtL3BrZy9hcGkvdjEvYWRtaW4vc3lzdGVtYgZwcm90bzM',
-		[file_buf_validate_validate, file_google_protobuf_timestamp]
-	);
+export const file_v1_admin_system_system: GenFile = /*@__PURE__*/
+  fileDesc("Chx2MS9hZG1pbi9zeXN0ZW0vc3lzdGVtLnByb3RvEg92MS5hZG1pbi5zeXN0ZW0ihgEKA0xvZxItCgl0aW1lc3RhbXAYASABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEg0KBWxldmVsGAIgASgJEg8KB21lc3NhZ2UYAyABKAkSDgoGc3lzdGVtGAQgASgJEhEKCXByb2NlZHVyZRgFIAEoCRINCgV0cmFjZRgGIAEoCSKwAQoPU2NhbkxvZ3NSZXF1ZXN0EigKBGZyb20YASABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEiYKAnRvGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIOCgZzeXN0ZW0YAyABKAkSEQoJcHJvY2VkdXJlGAQgASgJEg0KBWxldmVsGAUgASgJEhkKBWxpbWl0GAYgASgFQgq6SAcaBRjIASAAIjYKEFNjYW5Mb2dzUmVzcG9uc2USIgoEbG9ncxgBIAMoCzIULnYxLmFkbWluLnN5c3RlbS5Mb2ciawoHUmVxdWVzdBItCgl0aW1lc3RhbXAYASABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEg8KB2xhdGVuY3kYAiABKAMSEAoIZW5kcG9pbnQYAyABKAkSDgoGc291cmNlGAQgASgJIpMBChNTY2FuUmVxdWVzdHNSZXF1ZXN0EigKBGZyb20YASABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEiYKAnRvGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIQCghlbmRwb2ludBgDIAEoCRIYCgVsaW1pdBgEIAEoBUIJukgGGgQYZCAAIkIKFFNjYW5SZXF1ZXN0c1Jlc3BvbnNlEioKCHJlcXVlc3RzGAEgAygLMhgudjEuYWRtaW4uc3lzdGVtLlJlcXVlc3QiVAoKTGV2ZWxDb3VudBINCgVsZXZlbBgBIAEoCRIoCgR0aW1lGAIgAygLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBINCgVjb3VudBgDIAMoAyKtAQoUQWdncmVnYXRlTG9nc1JlcXVlc3QSMAoGd2luZG93GAEgASgOMiAudjEuYWRtaW4uc3lzdGVtLkFnZ3JlZ2F0ZVdpbmRvdxIoCgRmcm9tGAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBImCgJ0bxgDIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASEQoJbWluX2xldmVsGAQgASgJIqcBChVBZ2dyZWdhdGVMb2dzUmVzcG9uc2USQgoGbGV2ZWxzGAEgAygLMjIudjEuYWRtaW4uc3lzdGVtLkFnZ3JlZ2F0ZUxvZ3NSZXNwb25zZS5MZXZlbHNFbnRyeRpKCgtMZXZlbHNFbnRyeRILCgNrZXkYASABKAkSKgoFdmFsdWUYAiABKAsyGy52MS5hZG1pbi5zeXN0ZW0uTGV2ZWxDb3VudDoCOAEiXgoPRW5kcG9pbnRMYXRlbmN5EhAKCGVuZHBvaW50GAEgASgJEigKBHRpbWUYAiADKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEg8KB2xhdGVuY3kYAyADKAMinQEKF0FnZ3JlZ2F0ZUxhdGVuY3lSZXF1ZXN0EjAKBndpbmRvdxgBIAEoDjIgLnYxLmFkbWluLnN5c3RlbS5BZ2dyZWdhdGVXaW5kb3cSKAoEZnJvbRgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASJgoCdG8YAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIrsBChhBZ2dyZWdhdGVMYXRlbmN5UmVzcG9uc2USSwoJZW5kcG9pbnRzGAEgAygLMjgudjEuYWRtaW4uc3lzdGVtLkFnZ3JlZ2F0ZUxhdGVuY3lSZXNwb25zZS5FbmRwb2ludHNFbnRyeRpSCg5FbmRwb2ludHNFbnRyeRILCgNrZXkYASABKAkSLwoFdmFsdWUYAiABKAsyIC52MS5hZG1pbi5zeXN0ZW0uRW5kcG9pbnRMYXRlbmN5OgI4ASJZCgxFbmRwb2ludEhpdHMSEAoIZW5kcG9pbnQYASABKAkSKAoEdGltZRgCIAMoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASDQoFY291bnQYAyADKAMimgEKFEFnZ3JlZ2F0ZUhpdHNSZXF1ZXN0EjAKBndpbmRvdxgBIAEoDjIgLnYxLmFkbWluLnN5c3RlbS5BZ2dyZWdhdGVXaW5kb3cSKAoEZnJvbRgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASJgoCdG8YAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIrIBChVBZ2dyZWdhdGVIaXRzUmVzcG9uc2USSAoJZW5kcG9pbnRzGAEgAygLMjUudjEuYWRtaW4uc3lzdGVtLkFnZ3JlZ2F0ZUhpdHNSZXNwb25zZS5FbmRwb2ludHNFbnRyeRpPCg5FbmRwb2ludHNFbnRyeRILCgNrZXkYASABKAkSLAoFdmFsdWUYAiABKAsyHS52MS5hZG1pbi5zeXN0ZW0uRW5kcG9pbnRIaXRzOgI4ASo7Cg9BZ2dyZWdhdGVXaW5kb3cSCgoGTWludXRlEAASCAoESG91chABEgcKA0RheRACEgkKBU1vbnRoEAMy5gMKDVN5c3RlbVNlcnZpY2USTwoIU2NhbkxvZ3MSIC52MS5hZG1pbi5zeXN0ZW0uU2NhbkxvZ3NSZXF1ZXN0GiEudjEuYWRtaW4uc3lzdGVtLlNjYW5Mb2dzUmVzcG9uc2USWwoMU2NhblJlcXVlc3RzEiQudjEuYWRtaW4uc3lzdGVtLlNjYW5SZXF1ZXN0c1JlcXVlc3QaJS52MS5hZG1pbi5zeXN0ZW0uU2NhblJlcXVlc3RzUmVzcG9uc2USXgoNQWdncmVnYXRlTG9ncxIlLnYxLmFkbWluLnN5c3RlbS5BZ2dyZWdhdGVMb2dzUmVxdWVzdBomLnYxLmFkbWluLnN5c3RlbS5BZ2dyZWdhdGVMb2dzUmVzcG9uc2USZwoQQWdncmVnYXRlTGF0ZW5jeRIoLnYxLmFkbWluLnN5c3RlbS5BZ2dyZWdhdGVMYXRlbmN5UmVxdWVzdBopLnYxLmFkbWluLnN5c3RlbS5BZ2dyZWdhdGVMYXRlbmN5UmVzcG9uc2USXgoNQWdncmVnYXRlSGl0cxIlLnYxLmFkbWluLnN5c3RlbS5BZ2dyZWdhdGVIaXRzUmVxdWVzdBomLnYxLmFkbWluLnN5c3RlbS5BZ2dyZWdhdGVIaXRzUmVzcG9uc2VCOFo2Y29kZWJlcmcub3JnL21lZ2FrdXVsL2Nsb3VkamFtL3BrZy9hcGkvdjEvYWRtaW4vc3lzdGVtYgZwcm90bzM", [file_buf_validate_validate, file_google_protobuf_timestamp]);
 
 /**
  * @generated from message v1.admin.system.Log
  */
-export type Log = Message<'v1.admin.system.Log'> & {
-	/**
-	 * @generated from field: google.protobuf.Timestamp timestamp = 1;
-	 */
-	timestamp?: Timestamp;
+export type Log = Message<"v1.admin.system.Log"> & {
+  /**
+   * @generated from field: google.protobuf.Timestamp timestamp = 1;
+   */
+  timestamp?: Timestamp;
 
-	/**
-	 * @generated from field: string level = 2;
-	 */
-	level: string;
+  /**
+   * @generated from field: string level = 2;
+   */
+  level: string;
 
-	/**
-	 * @generated from field: string message = 3;
-	 */
-	message: string;
+  /**
+   * @generated from field: string message = 3;
+   */
+  message: string;
 
-	/**
-	 * @generated from field: string system = 4;
-	 */
-	system: string;
+  /**
+   * @generated from field: string system = 4;
+   */
+  system: string;
 
-	/**
-	 * @generated from field: string procedure = 5;
-	 */
-	procedure: string;
+  /**
+   * @generated from field: string procedure = 5;
+   */
+  procedure: string;
 
-	/**
-	 * @generated from field: string trace = 6;
-	 */
-	trace: string;
+  /**
+   * @generated from field: string trace = 6;
+   */
+  trace: string;
 };
 
 /**
  * Describes the message v1.admin.system.Log.
  * Use `create(LogSchema)` to create a new message.
  */
-export const LogSchema: GenMessage<Log> = /*@__PURE__*/ messageDesc(file_v1_admin_system_system, 0);
+export const LogSchema: GenMessage<Log> = /*@__PURE__*/
+  messageDesc(file_v1_admin_system_system, 0);
 
 /**
  * @generated from message v1.admin.system.ScanLogsRequest
  */
-export type ScanLogsRequest = Message<'v1.admin.system.ScanLogsRequest'> & {
-	/**
-	 * @generated from field: google.protobuf.Timestamp from = 1;
-	 */
-	from?: Timestamp;
+export type ScanLogsRequest = Message<"v1.admin.system.ScanLogsRequest"> & {
+  /**
+   * @generated from field: google.protobuf.Timestamp from = 1;
+   */
+  from?: Timestamp;
 
-	/**
-	 * @generated from field: google.protobuf.Timestamp to = 2;
-	 */
-	to?: Timestamp;
+  /**
+   * @generated from field: google.protobuf.Timestamp to = 2;
+   */
+  to?: Timestamp;
 
-	/**
-	 * @generated from field: string system = 3;
-	 */
-	system: string;
+  /**
+   * @generated from field: string system = 3;
+   */
+  system: string;
 
-	/**
-	 * @generated from field: string procedure = 4;
-	 */
-	procedure: string;
+  /**
+   * @generated from field: string procedure = 4;
+   */
+  procedure: string;
 
-	/**
-	 * @generated from field: string level = 5;
-	 */
-	level: string;
+  /**
+   * @generated from field: string level = 5;
+   */
+  level: string;
 
-	/**
-	 * @generated from field: int32 limit = 6;
-	 */
-	limit: number;
+  /**
+   * @generated from field: int32 limit = 6;
+   */
+  limit: number;
 };
 
 /**
  * Describes the message v1.admin.system.ScanLogsRequest.
  * Use `create(ScanLogsRequestSchema)` to create a new message.
  */
-export const ScanLogsRequestSchema: GenMessage<ScanLogsRequest> =
-	/*@__PURE__*/
-	messageDesc(file_v1_admin_system_system, 1);
+export const ScanLogsRequestSchema: GenMessage<ScanLogsRequest> = /*@__PURE__*/
+  messageDesc(file_v1_admin_system_system, 1);
 
 /**
  * @generated from message v1.admin.system.ScanLogsResponse
  */
-export type ScanLogsResponse = Message<'v1.admin.system.ScanLogsResponse'> & {
-	/**
-	 * @generated from field: repeated v1.admin.system.Log logs = 1;
-	 */
-	logs: Log[];
+export type ScanLogsResponse = Message<"v1.admin.system.ScanLogsResponse"> & {
+  /**
+   * @generated from field: repeated v1.admin.system.Log logs = 1;
+   */
+  logs: Log[];
 };
 
 /**
  * Describes the message v1.admin.system.ScanLogsResponse.
  * Use `create(ScanLogsResponseSchema)` to create a new message.
  */
-export const ScanLogsResponseSchema: GenMessage<ScanLogsResponse> =
-	/*@__PURE__*/
-	messageDesc(file_v1_admin_system_system, 2);
+export const ScanLogsResponseSchema: GenMessage<ScanLogsResponse> = /*@__PURE__*/
+  messageDesc(file_v1_admin_system_system, 2);
 
 /**
  * @generated from message v1.admin.system.Request
  */
-export type Request = Message<'v1.admin.system.Request'> & {
-	/**
-	 * @generated from field: google.protobuf.Timestamp timestamp = 1;
-	 */
-	timestamp?: Timestamp;
+export type Request = Message<"v1.admin.system.Request"> & {
+  /**
+   * @generated from field: google.protobuf.Timestamp timestamp = 1;
+   */
+  timestamp?: Timestamp;
 
-	/**
-	 * @generated from field: int64 latency = 2;
-	 */
-	latency: bigint;
+  /**
+   * @generated from field: int64 latency = 2;
+   */
+  latency: bigint;
 
-	/**
-	 * @generated from field: string endpoint = 3;
-	 */
-	endpoint: string;
+  /**
+   * @generated from field: string endpoint = 3;
+   */
+  endpoint: string;
 
-	/**
-	 * @generated from field: string source = 4;
-	 */
-	source: string;
+  /**
+   * @generated from field: string source = 4;
+   */
+  source: string;
 };
 
 /**
  * Describes the message v1.admin.system.Request.
  * Use `create(RequestSchema)` to create a new message.
  */
-export const RequestSchema: GenMessage<Request> = /*@__PURE__*/ messageDesc(file_v1_admin_system_system, 3);
+export const RequestSchema: GenMessage<Request> = /*@__PURE__*/
+  messageDesc(file_v1_admin_system_system, 3);
 
 /**
  * @generated from message v1.admin.system.ScanRequestsRequest
  */
-export type ScanRequestsRequest = Message<'v1.admin.system.ScanRequestsRequest'> & {
-	/**
-	 * @generated from field: google.protobuf.Timestamp from = 1;
-	 */
-	from?: Timestamp;
+export type ScanRequestsRequest = Message<"v1.admin.system.ScanRequestsRequest"> & {
+  /**
+   * @generated from field: google.protobuf.Timestamp from = 1;
+   */
+  from?: Timestamp;
 
-	/**
-	 * @generated from field: google.protobuf.Timestamp to = 2;
-	 */
-	to?: Timestamp;
+  /**
+   * @generated from field: google.protobuf.Timestamp to = 2;
+   */
+  to?: Timestamp;
 
-	/**
-	 * @generated from field: string endpoint = 3;
-	 */
-	endpoint: string;
+  /**
+   * @generated from field: string endpoint = 3;
+   */
+  endpoint: string;
 
-	/**
-	 * @generated from field: int32 limit = 4;
-	 */
-	limit: number;
+  /**
+   * @generated from field: int32 limit = 4;
+   */
+  limit: number;
 };
 
 /**
  * Describes the message v1.admin.system.ScanRequestsRequest.
  * Use `create(ScanRequestsRequestSchema)` to create a new message.
  */
-export const ScanRequestsRequestSchema: GenMessage<ScanRequestsRequest> =
-	/*@__PURE__*/
-	messageDesc(file_v1_admin_system_system, 4);
+export const ScanRequestsRequestSchema: GenMessage<ScanRequestsRequest> = /*@__PURE__*/
+  messageDesc(file_v1_admin_system_system, 4);
 
 /**
  * @generated from message v1.admin.system.ScanRequestsResponse
  */
-export type ScanRequestsResponse = Message<'v1.admin.system.ScanRequestsResponse'> & {
-	/**
-	 * @generated from field: repeated v1.admin.system.Request requests = 1;
-	 */
-	requests: Request[];
+export type ScanRequestsResponse = Message<"v1.admin.system.ScanRequestsResponse"> & {
+  /**
+   * @generated from field: repeated v1.admin.system.Request requests = 1;
+   */
+  requests: Request[];
 };
 
 /**
  * Describes the message v1.admin.system.ScanRequestsResponse.
  * Use `create(ScanRequestsResponseSchema)` to create a new message.
  */
-export const ScanRequestsResponseSchema: GenMessage<ScanRequestsResponse> =
-	/*@__PURE__*/
-	messageDesc(file_v1_admin_system_system, 5);
+export const ScanRequestsResponseSchema: GenMessage<ScanRequestsResponse> = /*@__PURE__*/
+  messageDesc(file_v1_admin_system_system, 5);
+
+/**
+ * @generated from message v1.admin.system.LevelCount
+ */
+export type LevelCount = Message<"v1.admin.system.LevelCount"> & {
+  /**
+   * @generated from field: string level = 1;
+   */
+  level: string;
+
+  /**
+   * @generated from field: repeated google.protobuf.Timestamp time = 2;
+   */
+  time: Timestamp[];
+
+  /**
+   * @generated from field: repeated int64 count = 3;
+   */
+  count: bigint[];
+};
+
+/**
+ * Describes the message v1.admin.system.LevelCount.
+ * Use `create(LevelCountSchema)` to create a new message.
+ */
+export const LevelCountSchema: GenMessage<LevelCount> = /*@__PURE__*/
+  messageDesc(file_v1_admin_system_system, 6);
+
+/**
+ * @generated from message v1.admin.system.AggregateLogsRequest
+ */
+export type AggregateLogsRequest = Message<"v1.admin.system.AggregateLogsRequest"> & {
+  /**
+   * @generated from field: v1.admin.system.AggregateWindow window = 1;
+   */
+  window: AggregateWindow;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp from = 2;
+   */
+  from?: Timestamp;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp to = 3;
+   */
+  to?: Timestamp;
+
+  /**
+   * @generated from field: string min_level = 4;
+   */
+  minLevel: string;
+};
+
+/**
+ * Describes the message v1.admin.system.AggregateLogsRequest.
+ * Use `create(AggregateLogsRequestSchema)` to create a new message.
+ */
+export const AggregateLogsRequestSchema: GenMessage<AggregateLogsRequest> = /*@__PURE__*/
+  messageDesc(file_v1_admin_system_system, 7);
+
+/**
+ * @generated from message v1.admin.system.AggregateLogsResponse
+ */
+export type AggregateLogsResponse = Message<"v1.admin.system.AggregateLogsResponse"> & {
+  /**
+   * @generated from field: map<string, v1.admin.system.LevelCount> levels = 1;
+   */
+  levels: { [key: string]: LevelCount };
+};
+
+/**
+ * Describes the message v1.admin.system.AggregateLogsResponse.
+ * Use `create(AggregateLogsResponseSchema)` to create a new message.
+ */
+export const AggregateLogsResponseSchema: GenMessage<AggregateLogsResponse> = /*@__PURE__*/
+  messageDesc(file_v1_admin_system_system, 8);
 
 /**
  * @generated from message v1.admin.system.EndpointLatency
  */
-export type EndpointLatency = Message<'v1.admin.system.EndpointLatency'> & {
-	/**
-	 * @generated from field: string endpoint = 1;
-	 */
-	endpoint: string;
+export type EndpointLatency = Message<"v1.admin.system.EndpointLatency"> & {
+  /**
+   * @generated from field: string endpoint = 1;
+   */
+  endpoint: string;
 
-	/**
-	 * @generated from field: repeated google.protobuf.Timestamp time = 2;
-	 */
-	time: Timestamp[];
+  /**
+   * @generated from field: repeated google.protobuf.Timestamp time = 2;
+   */
+  time: Timestamp[];
 
-	/**
-	 * @generated from field: repeated int64 latency = 3;
-	 */
-	latency: bigint[];
+  /**
+   * @generated from field: repeated int64 latency = 3;
+   */
+  latency: bigint[];
 };
 
 /**
  * Describes the message v1.admin.system.EndpointLatency.
  * Use `create(EndpointLatencySchema)` to create a new message.
  */
-export const EndpointLatencySchema: GenMessage<EndpointLatency> =
-	/*@__PURE__*/
-	messageDesc(file_v1_admin_system_system, 6);
+export const EndpointLatencySchema: GenMessage<EndpointLatency> = /*@__PURE__*/
+  messageDesc(file_v1_admin_system_system, 9);
 
 /**
  * @generated from message v1.admin.system.AggregateLatencyRequest
  */
-export type AggregateLatencyRequest = Message<'v1.admin.system.AggregateLatencyRequest'> & {
-	/**
-	 * @generated from field: v1.admin.system.AggregateWindow window = 1;
-	 */
-	window: AggregateWindow;
+export type AggregateLatencyRequest = Message<"v1.admin.system.AggregateLatencyRequest"> & {
+  /**
+   * @generated from field: v1.admin.system.AggregateWindow window = 1;
+   */
+  window: AggregateWindow;
 
-	/**
-	 * @generated from field: google.protobuf.Timestamp from = 2;
-	 */
-	from?: Timestamp;
+  /**
+   * @generated from field: google.protobuf.Timestamp from = 2;
+   */
+  from?: Timestamp;
 
-	/**
-	 * @generated from field: google.protobuf.Timestamp to = 3;
-	 */
-	to?: Timestamp;
+  /**
+   * @generated from field: google.protobuf.Timestamp to = 3;
+   */
+  to?: Timestamp;
 };
 
 /**
  * Describes the message v1.admin.system.AggregateLatencyRequest.
  * Use `create(AggregateLatencyRequestSchema)` to create a new message.
  */
-export const AggregateLatencyRequestSchema: GenMessage<AggregateLatencyRequest> =
-	/*@__PURE__*/
-	messageDesc(file_v1_admin_system_system, 7);
+export const AggregateLatencyRequestSchema: GenMessage<AggregateLatencyRequest> = /*@__PURE__*/
+  messageDesc(file_v1_admin_system_system, 10);
 
 /**
  * @generated from message v1.admin.system.AggregateLatencyResponse
  */
-export type AggregateLatencyResponse = Message<'v1.admin.system.AggregateLatencyResponse'> & {
-	/**
-	 * @generated from field: map<string, v1.admin.system.EndpointLatency> endpoints = 1;
-	 */
-	endpoints: { [key: string]: EndpointLatency };
+export type AggregateLatencyResponse = Message<"v1.admin.system.AggregateLatencyResponse"> & {
+  /**
+   * @generated from field: map<string, v1.admin.system.EndpointLatency> endpoints = 1;
+   */
+  endpoints: { [key: string]: EndpointLatency };
 };
 
 /**
  * Describes the message v1.admin.system.AggregateLatencyResponse.
  * Use `create(AggregateLatencyResponseSchema)` to create a new message.
  */
-export const AggregateLatencyResponseSchema: GenMessage<AggregateLatencyResponse> =
-	/*@__PURE__*/
-	messageDesc(file_v1_admin_system_system, 8);
+export const AggregateLatencyResponseSchema: GenMessage<AggregateLatencyResponse> = /*@__PURE__*/
+  messageDesc(file_v1_admin_system_system, 11);
 
 /**
  * @generated from message v1.admin.system.EndpointHits
  */
-export type EndpointHits = Message<'v1.admin.system.EndpointHits'> & {
-	/**
-	 * @generated from field: string endpoint = 1;
-	 */
-	endpoint: string;
+export type EndpointHits = Message<"v1.admin.system.EndpointHits"> & {
+  /**
+   * @generated from field: string endpoint = 1;
+   */
+  endpoint: string;
 
-	/**
-	 * @generated from field: repeated google.protobuf.Timestamp time = 2;
-	 */
-	time: Timestamp[];
+  /**
+   * @generated from field: repeated google.protobuf.Timestamp time = 2;
+   */
+  time: Timestamp[];
 
-	/**
-	 * @generated from field: repeated int64 count = 3;
-	 */
-	count: bigint[];
+  /**
+   * @generated from field: repeated int64 count = 3;
+   */
+  count: bigint[];
 };
 
 /**
  * Describes the message v1.admin.system.EndpointHits.
  * Use `create(EndpointHitsSchema)` to create a new message.
  */
-export const EndpointHitsSchema: GenMessage<EndpointHits> = /*@__PURE__*/ messageDesc(file_v1_admin_system_system, 9);
+export const EndpointHitsSchema: GenMessage<EndpointHits> = /*@__PURE__*/
+  messageDesc(file_v1_admin_system_system, 12);
 
 /**
  * @generated from message v1.admin.system.AggregateHitsRequest
  */
-export type AggregateHitsRequest = Message<'v1.admin.system.AggregateHitsRequest'> & {
-	/**
-	 * @generated from field: v1.admin.system.AggregateWindow window = 1;
-	 */
-	window: AggregateWindow;
+export type AggregateHitsRequest = Message<"v1.admin.system.AggregateHitsRequest"> & {
+  /**
+   * @generated from field: v1.admin.system.AggregateWindow window = 1;
+   */
+  window: AggregateWindow;
 
-	/**
-	 * @generated from field: google.protobuf.Timestamp from = 2;
-	 */
-	from?: Timestamp;
+  /**
+   * @generated from field: google.protobuf.Timestamp from = 2;
+   */
+  from?: Timestamp;
 
-	/**
-	 * @generated from field: google.protobuf.Timestamp to = 3;
-	 */
-	to?: Timestamp;
+  /**
+   * @generated from field: google.protobuf.Timestamp to = 3;
+   */
+  to?: Timestamp;
 };
 
 /**
  * Describes the message v1.admin.system.AggregateHitsRequest.
  * Use `create(AggregateHitsRequestSchema)` to create a new message.
  */
-export const AggregateHitsRequestSchema: GenMessage<AggregateHitsRequest> =
-	/*@__PURE__*/
-	messageDesc(file_v1_admin_system_system, 10);
+export const AggregateHitsRequestSchema: GenMessage<AggregateHitsRequest> = /*@__PURE__*/
+  messageDesc(file_v1_admin_system_system, 13);
 
 /**
  * @generated from message v1.admin.system.AggregateHitsResponse
  */
-export type AggregateHitsResponse = Message<'v1.admin.system.AggregateHitsResponse'> & {
-	/**
-	 * @generated from field: map<string, v1.admin.system.EndpointHits> endpoints = 1;
-	 */
-	endpoints: { [key: string]: EndpointHits };
+export type AggregateHitsResponse = Message<"v1.admin.system.AggregateHitsResponse"> & {
+  /**
+   * @generated from field: map<string, v1.admin.system.EndpointHits> endpoints = 1;
+   */
+  endpoints: { [key: string]: EndpointHits };
 };
 
 /**
  * Describes the message v1.admin.system.AggregateHitsResponse.
  * Use `create(AggregateHitsResponseSchema)` to create a new message.
  */
-export const AggregateHitsResponseSchema: GenMessage<AggregateHitsResponse> =
-	/*@__PURE__*/
-	messageDesc(file_v1_admin_system_system, 11);
+export const AggregateHitsResponseSchema: GenMessage<AggregateHitsResponse> = /*@__PURE__*/
+  messageDesc(file_v1_admin_system_system, 14);
 
 /**
  * @generated from enum v1.admin.system.AggregateWindow
  */
 export enum AggregateWindow {
-	/**
-	 * @generated from enum value: Minute = 0;
-	 */
-	Minute = 0,
+  /**
+   * @generated from enum value: Minute = 0;
+   */
+  Minute = 0,
 
-	/**
-	 * @generated from enum value: Hour = 1;
-	 */
-	Hour = 1,
+  /**
+   * @generated from enum value: Hour = 1;
+   */
+  Hour = 1,
 
-	/**
-	 * @generated from enum value: Day = 2;
-	 */
-	Day = 2,
+  /**
+   * @generated from enum value: Day = 2;
+   */
+  Day = 2,
 
-	/**
-	 * @generated from enum value: Month = 3;
-	 */
-	Month = 3
+  /**
+   * @generated from enum value: Month = 3;
+   */
+  Month = 3,
 }
 
 /**
  * Describes the enum v1.admin.system.AggregateWindow.
  */
-export const AggregateWindowSchema: GenEnum<AggregateWindow> = /*@__PURE__*/ enumDesc(file_v1_admin_system_system, 0);
+export const AggregateWindowSchema: GenEnum<AggregateWindow> = /*@__PURE__*/
+  enumDesc(file_v1_admin_system_system, 0);
 
 /**
  * @generated from service v1.admin.system.SystemService
  */
 export const SystemService: GenService<{
-	/**
-	 * @generated from rpc v1.admin.system.SystemService.ScanLogs
-	 */
-	scanLogs: {
-		methodKind: 'unary';
-		input: typeof ScanLogsRequestSchema;
-		output: typeof ScanLogsResponseSchema;
-	};
-	/**
-	 * @generated from rpc v1.admin.system.SystemService.ScanRequests
-	 */
-	scanRequests: {
-		methodKind: 'unary';
-		input: typeof ScanRequestsRequestSchema;
-		output: typeof ScanRequestsResponseSchema;
-	};
-	/**
-	 * @generated from rpc v1.admin.system.SystemService.AggregateLatency
-	 */
-	aggregateLatency: {
-		methodKind: 'unary';
-		input: typeof AggregateLatencyRequestSchema;
-		output: typeof AggregateLatencyResponseSchema;
-	};
-	/**
-	 * @generated from rpc v1.admin.system.SystemService.AggregateHits
-	 */
-	aggregateHits: {
-		methodKind: 'unary';
-		input: typeof AggregateHitsRequestSchema;
-		output: typeof AggregateHitsResponseSchema;
-	};
-}> = /*@__PURE__*/ serviceDesc(file_v1_admin_system_system, 0);
+  /**
+   * @generated from rpc v1.admin.system.SystemService.ScanLogs
+   */
+  scanLogs: {
+    methodKind: "unary";
+    input: typeof ScanLogsRequestSchema;
+    output: typeof ScanLogsResponseSchema;
+  },
+  /**
+   * @generated from rpc v1.admin.system.SystemService.ScanRequests
+   */
+  scanRequests: {
+    methodKind: "unary";
+    input: typeof ScanRequestsRequestSchema;
+    output: typeof ScanRequestsResponseSchema;
+  },
+  /**
+   * @generated from rpc v1.admin.system.SystemService.AggregateLogs
+   */
+  aggregateLogs: {
+    methodKind: "unary";
+    input: typeof AggregateLogsRequestSchema;
+    output: typeof AggregateLogsResponseSchema;
+  },
+  /**
+   * @generated from rpc v1.admin.system.SystemService.AggregateLatency
+   */
+  aggregateLatency: {
+    methodKind: "unary";
+    input: typeof AggregateLatencyRequestSchema;
+    output: typeof AggregateLatencyResponseSchema;
+  },
+  /**
+   * @generated from rpc v1.admin.system.SystemService.AggregateHits
+   */
+  aggregateHits: {
+    methodKind: "unary";
+    input: typeof AggregateHitsRequestSchema;
+    output: typeof AggregateHitsResponseSchema;
+  },
+}> = /*@__PURE__*/
+  serviceDesc(file_v1_admin_system_system, 0);
+

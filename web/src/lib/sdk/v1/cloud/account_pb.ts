@@ -2,93 +2,92 @@
 // @generated from file v1/cloud/account.proto (package v1.cloud, syntax proto3)
 /* eslint-disable */
 
-import type { Message } from '@bufbuild/protobuf';
-import type { GenEnum, GenFile, GenMessage } from '@bufbuild/protobuf/codegenv2';
-import { enumDesc, fileDesc, messageDesc } from '@bufbuild/protobuf/codegenv2';
-import { file_buf_validate_validate } from '../../buf/validate/validate_pb';
+import type { GenEnum, GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
+import { enumDesc, fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
+import { file_buf_validate_validate } from "../../buf/validate/validate_pb";
+import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file v1/cloud/account.proto.
  */
-export const file_v1_cloud_account: GenFile =
-	/*@__PURE__*/
-	fileDesc(
-		'ChZ2MS9jbG91ZC9hY2NvdW50LnByb3RvEgh2MS5jbG91ZCKlAQoHQWNjb3VudBINCgVzY29wZRgBIAEoCRIKCgJpZBgCIAEoCRIXCgRuYW1lGAMgASgJQgm6SAZyBBAEGBQSHgoLZGVzY3JpcHRpb24YBCABKAlCCbpIBnIEEAAYMhIfCgtjcmVkZW50aWFscxgFIAEoCUIKukgHcgUQABjoBxIlCgVzdGF0ZRgGIAEoDjIWLnYxLmNsb3VkLkFjY291bnRTdGF0ZSpXCgxBY2NvdW50U3RhdGUSEAoMUHJvdmlzaW9uaW5nEAASCgoGQWN0aXZlEAESDAoIRXZpY3RpbmcQAhINCglDb3JydXB0ZWQQAxIMCghEZWxldGluZxAEQjFaL2NvZGViZXJnLm9yZy9tZWdha3V1bC9jbG91ZGphbS9wa2cvYXBpL3YxL2Nsb3VkYgZwcm90bzM',
-		[file_buf_validate_validate]
-	);
+export const file_v1_cloud_account: GenFile = /*@__PURE__*/
+  fileDesc("ChZ2MS9jbG91ZC9hY2NvdW50LnByb3RvEgh2MS5jbG91ZCKlAQoHQWNjb3VudBINCgVzY29wZRgBIAEoCRIKCgJpZBgCIAEoCRIXCgRuYW1lGAMgASgJQgm6SAZyBBAEGBQSHgoLZGVzY3JpcHRpb24YBCABKAlCCbpIBnIEEAAYMhIfCgtjcmVkZW50aWFscxgFIAEoCUIKukgHcgUQABjoBxIlCgVzdGF0ZRgGIAEoDjIWLnYxLmNsb3VkLkFjY291bnRTdGF0ZSpXCgxBY2NvdW50U3RhdGUSEAoMUHJvdmlzaW9uaW5nEAASCgoGQWN0aXZlEAESDAoIRXZpY3RpbmcQAhINCglDb3JydXB0ZWQQAxIMCghEZWxldGluZxAEQjFaL2NvZGViZXJnLm9yZy9tZWdha3V1bC9jbG91ZGphbS9wa2cvYXBpL3YxL2Nsb3VkYgZwcm90bzM", [file_buf_validate_validate]);
 
 /**
  * @generated from message v1.cloud.Account
  */
-export type Account = Message<'v1.cloud.Account'> & {
-	/**
-	 * @generated from field: string scope = 1;
-	 */
-	scope: string;
+export type Account = Message<"v1.cloud.Account"> & {
+  /**
+   * @generated from field: string scope = 1;
+   */
+  scope: string;
 
-	/**
-	 * @generated from field: string id = 2;
-	 */
-	id: string;
+  /**
+   * @generated from field: string id = 2;
+   */
+  id: string;
 
-	/**
-	 * @generated from field: string name = 3;
-	 */
-	name: string;
+  /**
+   * @generated from field: string name = 3;
+   */
+  name: string;
 
-	/**
-	 * @generated from field: string description = 4;
-	 */
-	description: string;
+  /**
+   * @generated from field: string description = 4;
+   */
+  description: string;
 
-	/**
-	 * @generated from field: string credentials = 5;
-	 */
-	credentials: string;
+  /**
+   * @generated from field: string credentials = 5;
+   */
+  credentials: string;
 
-	/**
-	 * @generated from field: v1.cloud.AccountState state = 6;
-	 */
-	state: AccountState;
+  /**
+   * @generated from field: v1.cloud.AccountState state = 6;
+   */
+  state: AccountState;
 };
 
 /**
  * Describes the message v1.cloud.Account.
  * Use `create(AccountSchema)` to create a new message.
  */
-export const AccountSchema: GenMessage<Account> = /*@__PURE__*/ messageDesc(file_v1_cloud_account, 0);
+export const AccountSchema: GenMessage<Account> = /*@__PURE__*/
+  messageDesc(file_v1_cloud_account, 0);
 
 /**
  * @generated from enum v1.cloud.AccountState
  */
 export enum AccountState {
-	/**
-	 * @generated from enum value: Provisioning = 0;
-	 */
-	Provisioning = 0,
+  /**
+   * @generated from enum value: Provisioning = 0;
+   */
+  Provisioning = 0,
 
-	/**
-	 * @generated from enum value: Active = 1;
-	 */
-	Active = 1,
+  /**
+   * @generated from enum value: Active = 1;
+   */
+  Active = 1,
 
-	/**
-	 * @generated from enum value: Evicting = 2;
-	 */
-	Evicting = 2,
+  /**
+   * @generated from enum value: Evicting = 2;
+   */
+  Evicting = 2,
 
-	/**
-	 * @generated from enum value: Corrupted = 3;
-	 */
-	Corrupted = 3,
+  /**
+   * @generated from enum value: Corrupted = 3;
+   */
+  Corrupted = 3,
 
-	/**
-	 * @generated from enum value: Deleting = 4;
-	 */
-	Deleting = 4
+  /**
+   * @generated from enum value: Deleting = 4;
+   */
+  Deleting = 4,
 }
 
 /**
  * Describes the enum v1.cloud.AccountState.
  */
-export const AccountStateSchema: GenEnum<AccountState> = /*@__PURE__*/ enumDesc(file_v1_cloud_account, 0);
+export const AccountStateSchema: GenEnum<AccountState> = /*@__PURE__*/
+  enumDesc(file_v1_cloud_account, 0);
+

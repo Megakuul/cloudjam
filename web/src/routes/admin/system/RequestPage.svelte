@@ -201,7 +201,7 @@
 	</Alert.Root>
 {:else}
 	<Card.Root class="w-full">
-		<Card.Header class="flex gap-20 justify-start items-center py-5 space-y-0 border-b sm:flex-row">
+		<Card.Header class="flex items-center justify-start gap-20 space-y-0 border-b py-5 sm:flex-row">
 			<div>
 				<Card.Title class="text-4xl">
 					{totalHits}
@@ -216,7 +216,7 @@
 				<Card.Description class="text-xl">avg latency delivered</Card.Description>
 			</div>
 
-			<div class="flex gap-2 items-center ml-auto">
+			<div class="ml-auto flex items-center gap-2">
 				<span class="text-xs text-muted-foreground">
 					{from.toLocaleDateString(undefined, { hour: '2-digit', minute: '2-digit' })}
 					–

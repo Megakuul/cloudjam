@@ -24,7 +24,7 @@ message Role {
     (buf.validate.field).map.values.string = {
       min_len: 1
       max_len: 100
-      pattern: "^[a-zA-Z0-9,*]+$"
+      pattern: "^[a-zA-Z0-9,*/.]+$"
     }
   ];
 }

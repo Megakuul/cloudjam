@@ -2,7 +2,6 @@ package system
 
 import (
 	"context"
-	"fmt"
 	"log/slog"
 	"time"
 
@@ -29,29 +28,13 @@ func New(logger *slog.Logger, oltp *dynamitedb.Bucket, olap *lake.Bucket) *Serve
 }
 
 func (s *Server) ScanLogs(ctx context.Context, req *connect.Request[system.ScanLogsRequest]) (*connect.Response[system.ScanLogsResponse], error) {
-	levelFilters := []lake.Filter[int64]{}
-	if req.Msg.Level != "" {
-		var level slog.Level
-		if err := level.UnmarshalText([]byte(req.Msg.Level)); err != nil {
-			return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("invalid level"))
-		}
-		levelFilters = append(levelFilters, lake.Eq(int64(level)))
-	}
-	systemFilters := []lake.Filter[string]{}
-	if req.Msg.System != "" {
-		systemFilters = append(systemFilters, lake.Eq(req.Msg.System))
-	}
-	procedureFilters := []lake.Filter[string]{}
-	if req.Msg.Procedure != "" {
-		procedureFilters = append(procedureFilters, lake.Eq(req.Msg.Procedure))
-	}
 	logs, err := lake.Query[olap.Log]().
 		Limit(int(req.Msg.Limit)).
 		Where(olap.Log{
 			Timestamp: lake.FilterInt(lake.After(req.Msg.From.AsTime()), lake.Before(req.Msg.To.AsTime())),
-			System:    lake.FilterString(systemFilters...),
-			Procedure: lake.FilterString(procedureFilters...),
-			Level:     lake.FilterInt(levelFilters...),
+			System:    lake.FilterString(lake.When(req.Msg.System != "", lake.Eq(req.Msg.System))),
+			Procedure: lake.FilterString(lake.When(req.Msg.Procedure != "", lake.Eq(req.Msg.Procedure))),
+			Level:     lake.FilterInt(lake.When(req.Msg.Level != "", lake.Eq(int64(getLevel(req.Msg.Level))))),
 		}).
 		Scan(ctx, s.olap)
 	if err != nil {
@@ -98,26 +81,52 @@ func (s *Server) ScanRequests(ctx context.Context, req *connect.Request[system.S
 	}}, nil
 }
 
-func (s *Server) AggregateLatency(ctx context.Context, req *connect.Request[system.AggregateLatencyRequest]) (*connect.Response[system.AggregateLatencyResponse], error) {
-	aggrWindow := lake.DateHour
-	switch req.Msg.Window {
-	case system.AggregateWindow_Minute:
-		aggrWindow = lake.DateMinute
-	case system.AggregateWindow_Hour:
-		aggrWindow = lake.DateHour
-	case system.AggregateWindow_Day:
-		aggrWindow = lake.DateDay
-	case system.AggregateWindow_Month:
-		aggrWindow = lake.DateMonth
+func (s *Server) AggregateLogs(ctx context.Context, req *connect.Request[system.AggregateLogsRequest]) (*connect.Response[system.AggregateLogsResponse], error) {
+	windows, err := lake.Query[olap.Log]().
+		Where(olap.Log{
+			Timestamp:  lake.FilterInt(lake.After(req.Msg.From.AsTime()), lake.Before(req.Msg.To.AsTime())),
+			Level:      lake.FilterInt(lake.When(req.Msg.MinLevel != "", lake.Gte(int64(getLevel(req.Msg.MinLevel))))),
+			Redirected: lake.FilterInt(lake.Eq(int64(0))),
+		}).
+		GroupBy(olap.Log{
+			Timestamp: lake.GroupInt(lake.Date(getRange(req.Msg.Window))),
+			Level:     lake.GroupInt(lake.Exact()),
+		}).
+		Aggregate(olap.Log{
+			Redirected: lake.AggrInt(lake.Count), // for count it doesn't matter what property we use
+		}).
+		Scan(ctx, s.olap)
+	if err != nil {
+		return nil, err
 	}
+	levelCounts := map[string]*system.LevelCount{}
+	for _, window := range windows {
+		level := slog.Level(window.Level.Data).String()
+		levelCount, ok := levelCounts[level]
+		if !ok {
+			levelCounts[level] = &system.LevelCount{
+				Level: level,
+				Time:  []*timestamppb.Timestamp{timestamppb.New(time.Unix(0, window.Timestamp.Data))},
+				Count: []int64{window.Redirected.Data},
+			}
+		} else {
+			levelCount.Time = append(levelCount.Time, timestamppb.New(time.Unix(0, window.Timestamp.Data)))
+			levelCount.Count = append(levelCount.Count, window.Redirected.Data)
+		}
+	}
+	return &connect.Response[system.AggregateLogsResponse]{Msg: &system.AggregateLogsResponse{
+		Levels: levelCounts,
+	}}, nil
+}
 
+func (s *Server) AggregateLatency(ctx context.Context, req *connect.Request[system.AggregateLatencyRequest]) (*connect.Response[system.AggregateLatencyResponse], error) {
 	windows, err := lake.Query[olap.Request]().
 		Where(olap.Request{
 			Timestamp: lake.FilterInt(lake.After(req.Msg.From.AsTime()), lake.Before(req.Msg.To.AsTime())),
 			Type:      lake.FilterInt(lake.Eq(int64(olap.RequestUnary))),
 		}).
 		GroupBy(olap.Request{
-			Timestamp: lake.GroupInt(lake.Date(aggrWindow)),
+			Timestamp: lake.GroupInt(lake.Date(getRange(req.Msg.Window))),
 			Endpoint:  lake.GroupString(lake.Exact()),
 		}).
 		Aggregate(olap.Request{
@@ -147,25 +156,13 @@ func (s *Server) AggregateLatency(ctx context.Context, req *connect.Request[syst
 }
 
 func (s *Server) AggregateHits(ctx context.Context, req *connect.Request[system.AggregateHitsRequest]) (*connect.Response[system.AggregateHitsResponse], error) {
-	aggrWindow := lake.DateHour
-	switch req.Msg.Window {
-	case system.AggregateWindow_Minute:
-		aggrWindow = lake.DateMinute
-	case system.AggregateWindow_Hour:
-		aggrWindow = lake.DateHour
-	case system.AggregateWindow_Day:
-		aggrWindow = lake.DateDay
-	case system.AggregateWindow_Month:
-		aggrWindow = lake.DateMonth
-	}
-
 	windows, err := lake.Query[olap.Request]().
 		Where(olap.Request{
 			Timestamp: lake.FilterInt(lake.After(req.Msg.From.AsTime()), lake.Before(req.Msg.To.AsTime())),
 			Type:      lake.FilterInt(lake.Eq(int64(olap.RequestUnary))),
 		}).
 		GroupBy(olap.Request{
-			Timestamp: lake.GroupInt(lake.Date(aggrWindow)),
+			Timestamp: lake.GroupInt(lake.Date(getRange(req.Msg.Window))),
 			Endpoint:  lake.GroupString(lake.Exact()),
 		}).
 		Aggregate(olap.Request{
@@ -192,4 +189,25 @@ func (s *Server) AggregateHits(ctx context.Context, req *connect.Request[system.
 	return &connect.Response[system.AggregateHitsResponse]{Msg: &system.AggregateHitsResponse{
 		Endpoints: endpoints,
 	}}, nil
+}
+
+// getRange converts the api aggregate window to a lakedb range.
+func getRange(window system.AggregateWindow) lake.DateRange {
+	switch window {
+	case system.AggregateWindow_Minute:
+		return lake.DateMinute
+	case system.AggregateWindow_Hour:
+		return lake.DateHour
+	case system.AggregateWindow_Day:
+		return lake.DateDay
+	case system.AggregateWindow_Month:
+		return lake.DateMonth
+	}
+	return lake.DateHour
+}
+
+// getLevel parses the raw slog level and defaults to slog.Info in case of a malformed input.
+func getLevel(rawLevel string) (level slog.Level) {
+	level.UnmarshalText([]byte(rawLevel))
+	return level
 }

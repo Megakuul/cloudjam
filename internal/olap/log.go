@@ -10,10 +10,11 @@ import (
 type Log struct {
 	lake.Table `name:"log" sort:"timestamp:desc"`
 
-	Timestamp lake.Int    `parquet:"timestamp"`
-	Level     lake.Int    `parquet:"level"`
-	Message   lake.String `parquet:"message"`
-	System    lake.String `parquet:"system"`
-	Procedure lake.String `parquet:"procedure"`
-	Trace     lake.String `parquet:"trace"`
+	Timestamp  lake.Int    `parquet:"timestamp"`
+	Level      lake.Int    `parquet:"level"`
+	Redirected lake.Int    `parquet:"redirected"` // logs are redirected from external platforms
+	Message    lake.String `parquet:"message"`
+	System     lake.String `parquet:"system"`
+	Procedure  lake.String `parquet:"procedure"`
+	Trace      lake.String `parquet:"trace"`
 }

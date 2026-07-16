@@ -60,6 +60,23 @@ enum AggregateWindow {
   Month = 3;
 }
 
+message LevelCount {
+  string level = 1;
+  repeated google.protobuf.Timestamp time = 2;
+  repeated int64 count = 3;
+}
+
+message AggregateLogsRequest {
+  AggregateWindow window = 1;
+  google.protobuf.Timestamp from = 2;
+  google.protobuf.Timestamp to = 3;
+  string min_level = 4;
+}
+
+message AggregateLogsResponse {
+  map<string, LevelCount> levels = 1;
+}
+
 message EndpointLatency {
   string endpoint = 1;
   repeated google.protobuf.Timestamp time = 2;
@@ -95,6 +112,7 @@ message AggregateHitsResponse {
 service SystemService {
   rpc ScanLogs(ScanLogsRequest) returns (ScanLogsResponse);
   rpc ScanRequests(ScanRequestsRequest) returns (ScanRequestsResponse);
+  rpc AggregateLogs(AggregateLogsRequest) returns (AggregateLogsResponse);
   rpc AggregateLatency(AggregateLatencyRequest) returns (AggregateLatencyResponse);
   rpc AggregateHits(AggregateHitsRequest) returns (AggregateHitsResponse);
 }

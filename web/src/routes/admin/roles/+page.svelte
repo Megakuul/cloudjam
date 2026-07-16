@@ -1,0 +1,139 @@
+<script lang="ts">
+	import { Glue, Submit } from '$lib';
+	import * as Alert from '$lib/components/ui/alert';
+	import { Badge } from '$lib/components/ui/badge';
+	import { Button } from '$lib/components/ui/button';
+	import * as Table from '$lib/components/ui/table';
+	import { ListRequestSchema } from '$lib/sdk/v1/admin/role/role_pb';
+	import type { Role } from '$lib/sdk/v1/admin/role_pb';
+	import { create } from '@bufbuild/protobuf';
+	import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
+	import ChevronLeftIcon from '@lucide/svelte/icons/chevron-left';
+	import PlusIcon from '@lucide/svelte/icons/plus';
+	import { onMount } from 'svelte';
+	import CreateRole from './CreateRole.svelte';
+	import RolePanel from './RolePanel.svelte';
+
+	const limit = 100;
+
+	let error = $state('');
+	let loading = $state(false);
+	let forbidden = $state(false);
+
+	let roles: Role[] = $state([]);
+	let exhausted = $state(true);
+
+	let selected: Role | undefined = $state();
+	let creating = $state(false);
+
+	// scopes already known from the existing roles, used as suggestions for scope inputs.
+	let scopes = $derived(
+		[...new Set(roles.flatMap((role) => [role.scope, ...Object.keys(role.permissions)]))].filter((s) => s).sort()
+	);
+
+	function load() {
+		selected = undefined;
+		Submit(
+			async () => {
+				const resp = await Glue.role.list(create(ListRequestSchema, { limit: limit }));
+				roles = resp.roles;
+				exhausted = resp.roles.length < limit;
+			},
+			(e, l, f) => ((error = e), (loading = l), (forbidden = f))
+		);
+	}
+
+	onMount(() => load());
+</script>
+
+<svelte:head>
+	<title>Roles | CloudJam</title>
+	<meta property="og:title" content="Roles | CloudJam" />
+	<meta property="og:type" content="website" />
+	<meta property="og:image" content="favicon.png" />
+</svelte:head>
+
+<div class="flex w-full flex-col gap-4">
+	<div class="flex flex-row items-center gap-2">
+		<Button variant="ghost" size="icon" class="cursor-pointer" href="/admin/">
+			<ChevronLeftIcon />
+		</Button>
+		<h1 class="text-3xl opacity-80">Roles</h1>
+		<Button variant="outline" class="ml-auto cursor-pointer" onclick={() => (creating = !creating)}>
+			<PlusIcon /> Create Role
+		</Button>
+	</div>
+
+	{#if creating}
+		<CreateRole {scopes} oncreated={() => load()} />
+	{/if}
+
+	{#if forbidden}
+		<Alert.Root>
+			<AlertCircleIcon />
+			<Alert.Title>Permission Denied</Alert.Title>
+			<Alert.Description>You are not allowed to list roles in your scope</Alert.Description>
+		</Alert.Root>
+	{:else}
+		<Table.Root>
+			<Table.Header>
+				<Table.Row>
+					<Table.Head>Name</Table.Head>
+					<Table.Head>Scope</Table.Head>
+					<Table.Head>Permissions</Table.Head>
+					<Table.Head>Id</Table.Head>
+					<Table.Head></Table.Head>
+				</Table.Row>
+			</Table.Header>
+			<Table.Body>
+				{#each roles as role (role.id)}
+					<Table.Row class="cursor-pointer" onclick={() => (selected = selected?.id === role.id ? undefined : role)}>
+						<Table.Cell class="font-medium">{role.name}</Table.Cell>
+						<Table.Cell>{role.scope}</Table.Cell>
+						<Table.Cell>{Object.keys(role.permissions).length} scope(s)</Table.Cell>
+						<Table.Cell class="font-mono text-xs">{role.id}</Table.Cell>
+						<Table.Cell>
+							{#if role.builtin}
+								<Badge variant="secondary">builtin</Badge>
+							{/if}
+						</Table.Cell>
+					</Table.Row>
+				{/each}
+			</Table.Body>
+		</Table.Root>
+		{#if !exhausted}
+			<Button
+				variant="outline"
+				class="cursor-pointer self-center"
+				disabled={loading}
+				onclick={() =>
+					Submit(
+						async () => {
+							const resp = await Glue.role.list(
+								create(ListRequestSchema, { limit: limit, startAfter: roles.at(-1)?.id })
+							);
+							roles = [...roles, ...resp.roles];
+							exhausted = resp.roles.length < limit;
+						},
+						(e, l, f) => ((error = e), (loading = l), (forbidden = f))
+					)}
+			>
+				Load More
+			</Button>
+		{/if}
+	{/if}
+
+	{#if selected}
+		{#key selected.id}
+			<RolePanel role={selected} {scopes} refresh={() => load()} />
+		{/key}
+	{/if}
+
+	{#if error}
+		<Alert.Root variant="destructive">
+			<AlertCircleIcon />
+			<Alert.Title>Failed to load roles</Alert.Title>
+			<Alert.Description>{error}</Alert.Description>
+		</Alert.Root>
+	{/if}
+</div>

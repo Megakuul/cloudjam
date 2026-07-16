@@ -43,7 +43,7 @@
 </script>
 
 <Card.Root class="w-full">
-	<Card.Header class="flex gap-2 items-center py-5 space-y-0 border-b sm:flex-row">
+	<Card.Header class="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
 		<div class="grid flex-1 gap-1 text-center sm:text-start">
 			<Card.Title>System Logs</Card.Title>
 			<Card.Description>Analyze CloudJam Logs</Card.Description>

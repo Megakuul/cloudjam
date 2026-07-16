@@ -13,8 +13,8 @@
 	<meta property="og:image" content="favicon.png" />
 </svelte:head>
 
-<div class="flex flex-col gap-4 justify-center items-center w-full">
-	<div class="flex flex-row gap-2 justify-around w-full">
+<div class="flex w-full flex-col items-center justify-center gap-4">
+	<div class="flex w-full flex-row justify-around gap-2">
 		<button
 			onclick={() => (page = 'logging')}
 			class="w-full cursor-pointer rounded-xl p-8 text-3xl transition-all duration-200 hover:bg-slate-50/5
