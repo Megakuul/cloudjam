@@ -53,8 +53,8 @@
 	<meta property="og:image" content="favicon.png" />
 </svelte:head>
 
-<div class="flex w-full flex-col gap-4">
-	<div class="flex flex-row items-center gap-2">
+<div class="flex flex-col gap-4 w-full">
+	<div class="flex flex-row gap-2 items-center">
 		<Button variant="ghost" size="icon" class="cursor-pointer" href="/admin/">
 			<ChevronLeftIcon />
 		</Button>
@@ -104,7 +104,7 @@
 		{#if !exhausted}
 			<Button
 				variant="outline"
-				class="cursor-pointer self-center"
+				class="self-center cursor-pointer"
 				disabled={loading}
 				onclick={() =>
 					Submit(

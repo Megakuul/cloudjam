@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { Button, Dialog, Icon, Shine, TextField, Toggle, Tooltip } from 'svelte-ux';
 	import { toSvg } from 'jdenticon';
 	import { create } from '@bufbuild/protobuf';
 	import { Glue, setToken, Submit } from '$lib';
@@ -10,16 +9,11 @@
 	import Gauge from './Gauge.svelte';
 	import { goto } from '$app/navigation';
 	import WordSwapper from './WordSwapper.svelte';
-	import {
-		mdiFormTextboxPassword,
-		mdiCheckCircleOutline,
-		mdiCloseCircleOutline,
-		mdiPencil,
-		mdiLogout,
-		mdiDomain,
-		mdiShieldCrossOutline,
-		mdiShieldCrownOutline
-	} from '@mdi/js';
+	import Button from '$lib/components/ui/button/button.svelte';
+	import { CircleCheck, CircleX, Loader, LogOut, Pencil, ShieldCheck } from '@lucide/svelte';
+	import Input from '$lib/components/ui/input/input.svelte';
+	import Badge from '$lib/components/ui/badge/badge.svelte';
+	import * as Dialog from '$lib/components/ui/dialog';
 
 	let user: User | undefined = $state();
 
@@ -44,14 +38,14 @@
 	<meta property="og:image" content="favicon.png" />
 </svelte:head>
 
-<div class="flex w-full flex-col items-center justify-center gap-4">
+<div class="flex flex-col gap-4 justify-center items-center w-full">
 	{#if user}
 		<div
 			class="my-[5%] flex w-full flex-col items-center gap-4 overflow-hidden rounded-2xl border-[0.05rem] border-neutral/40 p-7 shadow-sm shadow-primary/20 lg:flex-row"
 		>
 			{#if edit}
 				<form
-					class="flex h-full w-full flex-col items-start gap-1"
+					class="flex flex-col gap-1 items-start w-full h-full"
 					onsubmit={() =>
 						Submit(
 							async () => {
@@ -60,112 +54,115 @@
 							(e, l) => ((error = e), (loading = l))
 						)}
 				>
-					<div class="mt-2 flex h-full w-full flex-col items-start gap-4">
+					<div class="flex flex-col gap-4 items-start mt-2 w-full h-full">
 						<h1 class="text-4xl opacity-80">Edit User</h1>
-						<TextField
+						<Input
 							bind:value={user.username}
 							class="w-full"
-							label="Username"
 							placeholder="Change your username"
 							type="text"
-							dense
 							error={Glue.Validate(UserSchema, user).violation.username}
 						/>
-						<TextField
+						<Input
 							bind:value={user.description}
 							class="w-full"
-							label="Slogan"
 							placeholder="Invent a creative Slogan"
 							type="text"
-							dense
 							error={Glue.Validate(UserSchema, user).violation.description}
 						/>
-						<div class="mt-auto flex flex-row items-center gap-2">
-							<Button on:click={() => (edit = false)} icon={mdiCloseCircleOutline}>Close</Button>
-							<Tooltip
-								title={Glue.Validate(UpdateRequestSchema, create(UpdateRequestSchema, { mod: user })).error}
-								cursor
+						<div class="flex flex-row gap-2 items-center mt-auto">
+							<Button onclick={() => (edit = false)}>
+								<CircleX />
+								Close
+							</Button>
+							<Button
+								type="submit"
+								variant="default"
+								disabled={Boolean(Glue.Validate(UpdateRequestSchema, create(UpdateRequestSchema, { mod: user })).error)}
 							>
-								<Button
-									type="submit"
-									variant="fill"
-									disabled={Boolean(
-										Glue.Validate(UpdateRequestSchema, create(UpdateRequestSchema, { mod: user })).error
-									)}
-									{loading}
-									icon={mdiCheckCircleOutline}
-								>
-									Update
-								</Button>
-							</Tooltip>
+								{#if loading}
+									<Loader />
+								{:else}
+									<CircleCheck />
+								{/if}
+								Update
+							</Button>
 						</div>
 					</div>
 				</form>
-				<div class="h-1 w-full rounded-2xl bg-neutral/80 lg:h-64 lg:w-1"></div>
-				<div class="flex w-full flex-col items-start justify-center gap-8 lg:flex-row">
-					<Toggle let:on={open} let:toggle let:toggleOff>
-						<Button icon={mdiFormTextboxPassword} on:click={toggle}>Change Password</Button>
-						<Dialog {open} on:close={toggleOff}>
-							<div slot="title">Reset password?</div>
-							<div class="px-6 py-3">This will take you back to the registration process.</div>
-							<div slot="actions">
-								<Button
-									on:click={() => {
-										Submit(
-											async () => {
-												const resp = await Glue.user.resetPassword(
-													create(ResetPasswordRequestSchema, {
-														email: user?.email,
-														expires: timestampFromDate(new Date(Date.now() + 10 * 60 * 1000)) // expires in 10 minutes
-													})
-												);
-												goto(`/register?email=${user!.email}&username=${user!.username}&code=${resp.code}`);
-											},
-											(e, l) => ((error = e), (loading = l))
-										);
-									}}
-									{loading}
-									variant="fill"
-									color="danger"
-								>
-									Yes, proceed
-								</Button>
-								<Button>Cancel</Button>
-							</div>
-						</Dialog>
-					</Toggle>
+				<div class="w-full h-1 rounded-2xl lg:w-1 lg:h-64 bg-neutral/80"></div>
+				<div class="flex flex-col gap-8 justify-center items-start w-full lg:flex-row">
+					<Dialog.Root>
+						<Dialog.Trigger>
+							<Button variant="ghost">Change Password</Button>
+						</Dialog.Trigger>
+						<Dialog.Content>
+							<Dialog.Header>
+								<Dialog.Title>Reset password?</Dialog.Title>
+								<Dialog.Description>This will take you back to the registration process.</Dialog.Description>
+							</Dialog.Header>
+							<Button
+								onclick={() => {
+									Submit(
+										async () => {
+											const resp = await Glue.user.resetPassword(
+												create(ResetPasswordRequestSchema, {
+													email: user?.email,
+													expires: timestampFromDate(new Date(Date.now() + 10 * 60 * 1000)) // expires in 10 minutes
+												})
+											);
+											goto(`/register?email=${user!.email}&username=${user!.username}&code=${resp.code}`);
+										},
+										(e, l) => ((error = e), (loading = l))
+									);
+								}}
+								variant="default"
+								color="danger"
+							>
+								{#if loading}
+									<Loader />
+								{/if}
+								Yes, proceed
+							</Button>
+						</Dialog.Content>
+					</Dialog.Root>
 				</div>
 			{:else}
-				<div class="flex w-full flex-col items-start gap-1">
-					<Icon svg={toSvg(user.pubId, 20)} width="8rem" height="8rem" class="rounded-lg bg-primary/5" />
+				<div class="flex flex-col gap-1 items-start w-full">
+					<img
+						alt="user profile"
+						src={`data:image/svg+xml;base64,${btoa(toSvg(user.pubId, 140))}`}
+						height="8rem"
+						class="rounded-lg bg-primary/5"
+					/>
 					<h1 class="text-4xl opacity-80">{user.username}</h1>
 					<p class="mt-auto text-neutral/80">
 						Proud CloudJamer since {new Date(Number(user.createdAt) * 1000).toLocaleDateString()}
 					</p>
-					<Shine>
-						<div
-							class="flex cursor-default flex-row items-center gap-1 rounded-sm bg-primary/80 px-2 py-1 text-sm opacity-80 select-none"
-						>
-							<span>{user.organization}</span>
-							<Icon path={mdiDomain} />
-						</div>
-					</Shine>
-					<div class="mt-2 flex flex-row items-center gap-2">
-						<Button on:click={() => (edit = true)} icon={mdiPencil}>Edit</Button>
-						<Button href="/admin" icon={mdiShieldCrownOutline}>Admin</Button>
+					<Badge variant="default">{user.organization}</Badge>
+					<div class="flex flex-row gap-2 items-center mt-2">
+						<Button onclick={() => (edit = true)}>
+							<Pencil />
+							Edit
+						</Button>
+						<Button href="/admin" variant="secondary">
+							<ShieldCheck />
+							Admin
+						</Button>
 						<Button
-							color="danger"
-							on:click={() => {
+							variant="destructive"
+							onclick={() => {
 								setToken('');
 								goto('/login');
 							}}
-							icon={mdiLogout}
-							>Logout
+						>
+							<LogOut />
+							Logout
 						</Button>
 					</div>
 				</div>
-				<div class="h-1 w-full rounded-2xl bg-neutral/80 lg:h-64 lg:w-1"></div>
-				<div class="flex w-full flex-col items-center justify-end gap-8 lg:flex-row">
+				<div class="w-full h-1 rounded-2xl lg:w-1 lg:h-64 bg-neutral/80"></div>
+				<div class="flex flex-col gap-8 justify-end items-center w-full lg:flex-row">
 					<!-- TODO add chart -->
 					<Gauge title="Score" scale={30} center={user.score} outer={user.maxScore} inner={user.score} />
 					<Gauge title="Streak" scale={1} center={user.streak} outer={user.maxStreak} inner={user.streak} />
@@ -176,7 +173,7 @@
 		<WordSwapper description={user.description} />
 	{/if}
 	{#if error}
-		<div class="m-2 w-full rounded-sm border-[0.05rem] border-red-600/80 bg-red-600/10 p-2">
+		<div class="p-2 m-2 w-full rounded-sm border-[0.05rem] border-red-600/80 bg-red-600/10">
 			{error}
 		</div>
 	{/if}

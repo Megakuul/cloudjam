@@ -58,8 +58,8 @@ importers:
         specifier: ^1.0.1
         version: 1.0.1
       '@lucide/svelte':
-        specifier: ^1.24.0
-        version: 1.24.0(svelte@5.55.0)
+        specifier: ^1.25.0
+        version: 1.25.0(svelte@5.55.0)
       '@mdi/js':
         specifier: latest
         version: 7.4.47
@@ -490,8 +490,8 @@ packages:
     peerDependencies:
       svelte: ^5
 
-  '@lucide/svelte@1.24.0':
-    resolution: {integrity: sha512-yXwewA7ANQ5hfaSDrvsecosWjZn5RglzeXUZRSnxeANBskpNwblOkEJTqD0ujDdNKIKL8E9eVc2U/P3ziJr7OA==}
+  '@lucide/svelte@1.25.0':
+    resolution: {integrity: sha512-v9m+dD68jxVnqkU3K59mG/RSRFlPGzmKCGSyMfnXcaGv9jODDQMyQkcp1CGvk3Y/cUj9v7f8rw1n//K0B53xGQ==}
     peerDependencies:
       svelte: ^5
 
@@ -2373,7 +2373,7 @@ snapshots:
     dependencies:
       svelte: 5.55.0
 
-  '@lucide/svelte@1.24.0(svelte@5.55.0)':
+  '@lucide/svelte@1.25.0(svelte@5.55.0)':
     dependencies:
       svelte: 5.55.0
 

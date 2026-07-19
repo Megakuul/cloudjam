@@ -19,7 +19,7 @@
 		"@fontsource-variable/inter": "^5.2.8",
 		"@internationalized/date": "^3.12.2",
 		"@layerstack/utils": "^1.0.1",
-		"@lucide/svelte": "^1.24.0",
+		"@lucide/svelte": "^1.25.0",
 		"@mdi/js": "latest",
 		"@sveltejs/adapter-static": "^3.0.10",
 		"@sveltejs/kit": "^2.55.0",

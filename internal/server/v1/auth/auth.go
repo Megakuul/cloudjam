@@ -33,8 +33,7 @@ func New(logger *slog.Logger, bucket *dynamitedb.Bucket, issuer *token.Issuer) *
 func (s *Server) Register(ctx context.Context, req *connect.Request[auth.RegisterRequest]) (*connect.Response[auth.RegisterResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
 	creds, err := dynamitedb.Get(ctx, s.bucket, &oltp.Creds{
-		Email:  dynamitedb.Key(req.Msg.Email),
-		Active: dynamitedb.Eq(false),
+		Email: dynamitedb.Key(req.Msg.Email),
 	})
 	if err != nil {
 		if errors.Is(err, dynamitedb.ErrNotFound) {
