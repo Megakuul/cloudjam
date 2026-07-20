@@ -64,6 +64,7 @@
 		"d3-scale": "^4.0.2",
 		"d3-shape": "^3.2.0",
 		"jwt-decode": "^4.0.0",
+		"mode-watcher": "^1.1.0",
 		"svelte-ux": "next"
 	},
 	"packageManager": "pnpm@10.28.0"

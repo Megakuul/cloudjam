@@ -53,6 +53,15 @@ export function setToken(token: string) {
 	localStorage.setItem('auth_token', token);
 }
 
+export function getEmail(): string {
+	const token = localStorage.getItem('auth_token');
+	if (token) {
+		const decoded = jwtDecode(token, {});
+		if ((decoded.exp ?? 0) * 1000 > Date.now()) return (decoded as any).email;
+	}
+	return '';
+}
+
 export function getPubId(): string {
 	const token = localStorage.getItem('auth_token');
 	if (token) {
