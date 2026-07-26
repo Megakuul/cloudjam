@@ -57,9 +57,6 @@ importers:
       '@internationalized/date':
         specifier: ^3.12.2
         version: 3.12.2
-      '@layerstack/utils':
-        specifier: ^1.0.1
-        version: 1.0.1
       '@lucide/svelte':
         specifier: ^1.25.0
         version: 1.25.0(svelte@5.55.0)
@@ -481,9 +478,6 @@ packages:
 
   '@layerstack/tailwind@2.0.0-next.22':
     resolution: {integrity: sha512-IRp2yvZE7rPPKIt7rWcfm7PtSUAorpqexP73Set39iRS0POOHFqfD6pbV5If1eHMewAdk3xgEQ5QLoz3CPUiHQ==}
-
-  '@layerstack/utils@1.0.1':
-    resolution: {integrity: sha512-sWP9b+SFMkJYMZyYFI01aLxbg2ZUrix6Tv+BCDmeOrcLNxtWFsMYAomMhALzTMHbb+Vis/ua5vXhpdNXEw8a2Q==}
 
   '@layerstack/utils@2.0.0-next.18':
     resolution: {integrity: sha512-EYILHpfBRYMMEahajInu9C2AXQom5IcAEdtCeucD3QIl/fdDgRbtzn6/8QW9ewumfyNZetdUvitOksmI1+gZYQ==}
@@ -1095,9 +1089,6 @@ packages:
   d3-tricontour@1.1.0:
     resolution: {integrity: sha512-G7gHKj89n2owmkGb6WX6ixcnQ0Kf/0wpa9VIh9DGdbHu8wdrlaHU4ir3/bFNERl8N8nn4G7e7qbtBG8N9caihQ==}
     engines: {node: '>=12'}
-
-  date-fns@4.4.0:
-    resolution: {integrity: sha512-+1UMbeh68lH1SegH83CGWwpb6OHHbpSgr3+s5Eww5M4CAgswBpoWS0AjTOfEJ33HiYKz1hdj/KTFprzXHmq/6w==}
 
   debug@4.4.3:
     resolution: {integrity: sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==}
@@ -2381,12 +2372,6 @@ snapshots:
       d3-array: 3.2.4
       tailwind-merge: 3.6.0
 
-  '@layerstack/utils@1.0.1':
-    dependencies:
-      d3-array: 3.2.4
-      date-fns: 4.4.0
-      lodash-es: 4.17.23
-
   '@layerstack/utils@2.0.0-next.18':
     dependencies:
       d3-array: 3.2.4
@@ -2964,8 +2949,6 @@ snapshots:
     dependencies:
       d3-delaunay: 6.0.4
       d3-scale: 4.0.2
-
-  date-fns@4.4.0: {}
 
   debug@4.4.3:
     dependencies:

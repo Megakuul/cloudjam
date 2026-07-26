@@ -2,8 +2,8 @@
 // @generated from file v1/cloud/provider.proto (package v1.cloud, syntax proto3)
 /* eslint-disable */
 
-import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
-import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
+import type { GenEnum, GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
+import { enumDesc, fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
 import { file_buf_validate_validate } from "../../buf/validate/validate_pb";
 import type { Message } from "@bufbuild/protobuf";
 
@@ -11,7 +11,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/cloud/provider.proto.
  */
 export const file_v1_cloud_provider: GenFile = /*@__PURE__*/
-  fileDesc("Chd2MS9jbG91ZC9wcm92aWRlci5wcm90bxIIdjEuY2xvdWQifwoIUHJvdmlkZXISDQoFc2NvcGUYASABKAkSCgoCaWQYAiABKAkSFwoEbmFtZRgDIAEoCUIJukgGcgQQBBgUEh4KC2Rlc2NyaXB0aW9uGAQgASgJQgm6SAZyBBAAGDISHwoLY3JlZGVudGlhbHMYBSABKAlCCrpIB3IFEAAY6AdCMVovY29kZWJlcmcub3JnL21lZ2FrdXVsL2Nsb3VkamFtL3BrZy9hcGkvdjEvY2xvdWRiBnByb3RvMw", [file_buf_validate_validate]);
+  fileDesc("Chd2MS9jbG91ZC9wcm92aWRlci5wcm90bxIIdjEuY2xvdWQivwEKCFByb3ZpZGVyEg0KBXNjb3BlGAEgASgJEgoKAmlkGAIgASgJEiQKBHR5cGUYAyABKA4yFi52MS5jbG91ZC5Qcm92aWRlclR5cGUSFwoEbmFtZRgEIAEoCUIJukgGcgQQBBgUEh4KC2Rlc2NyaXB0aW9uGAUgASgJQgm6SAZyBBAAGDISHwoLY3JlZGVudGlhbHMYBiABKAlCCrpIB3IFEAAY6AcSGAoQZGVzaXJlZF9hY2NvdW50cxgHIAEoAyoXCgxQcm92aWRlclR5cGUSBwoDQVdTEABCMVovY29kZWJlcmcub3JnL21lZ2FrdXVsL2Nsb3VkamFtL3BrZy9hcGkvdjEvY2xvdWRiBnByb3RvMw", [file_buf_validate_validate]);
 
 /**
  * @generated from message v1.cloud.Provider
@@ -28,19 +28,29 @@ export type Provider = Message<"v1.cloud.Provider"> & {
   id: string;
 
   /**
-   * @generated from field: string name = 3;
+   * @generated from field: v1.cloud.ProviderType type = 3;
+   */
+  type: ProviderType;
+
+  /**
+   * @generated from field: string name = 4;
    */
   name: string;
 
   /**
-   * @generated from field: string description = 4;
+   * @generated from field: string description = 5;
    */
   description: string;
 
   /**
-   * @generated from field: string credentials = 5;
+   * @generated from field: string credentials = 6;
    */
   credentials: string;
+
+  /**
+   * @generated from field: int64 desired_accounts = 7;
+   */
+  desiredAccounts: bigint;
 };
 
 /**
@@ -49,4 +59,20 @@ export type Provider = Message<"v1.cloud.Provider"> & {
  */
 export const ProviderSchema: GenMessage<Provider> = /*@__PURE__*/
   messageDesc(file_v1_cloud_provider, 0);
+
+/**
+ * @generated from enum v1.cloud.ProviderType
+ */
+export enum ProviderType {
+  /**
+   * @generated from enum value: AWS = 0;
+   */
+  AWS = 0,
+}
+
+/**
+ * Describes the enum v1.cloud.ProviderType.
+ */
+export const ProviderTypeSchema: GenEnum<ProviderType> = /*@__PURE__*/
+  enumDesc(file_v1_cloud_provider, 0);
 

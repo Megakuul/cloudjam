@@ -21,8 +21,8 @@ import (
 const _ = connect.IsAtLeastVersion1_13_0
 
 const (
-	// RoleServiceName is the fully-qualified name of the RoleService service.
-	RoleServiceName = "v1.cloud.account.RoleService"
+	// AccountServiceName is the fully-qualified name of the AccountService service.
+	AccountServiceName = "v1.cloud.account.AccountService"
 )
 
 // These constants are the fully-qualified names of the RPCs defined in this package. They're
@@ -33,188 +33,132 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
-	// RoleServiceGetProcedure is the fully-qualified name of the RoleService's Get RPC.
-	RoleServiceGetProcedure = "/v1.cloud.account.RoleService/Get"
-	// RoleServiceListProcedure is the fully-qualified name of the RoleService's List RPC.
-	RoleServiceListProcedure = "/v1.cloud.account.RoleService/List"
-	// RoleServiceCreateProcedure is the fully-qualified name of the RoleService's Create RPC.
-	RoleServiceCreateProcedure = "/v1.cloud.account.RoleService/Create"
-	// RoleServiceUpdateProcedure is the fully-qualified name of the RoleService's Update RPC.
-	RoleServiceUpdateProcedure = "/v1.cloud.account.RoleService/Update"
-	// RoleServiceDeleteProcedure is the fully-qualified name of the RoleService's Delete RPC.
-	RoleServiceDeleteProcedure = "/v1.cloud.account.RoleService/Delete"
+	// AccountServiceGetProcedure is the fully-qualified name of the AccountService's Get RPC.
+	AccountServiceGetProcedure = "/v1.cloud.account.AccountService/Get"
+	// AccountServiceListProcedure is the fully-qualified name of the AccountService's List RPC.
+	AccountServiceListProcedure = "/v1.cloud.account.AccountService/List"
+	// AccountServiceUpdateProcedure is the fully-qualified name of the AccountService's Update RPC.
+	AccountServiceUpdateProcedure = "/v1.cloud.account.AccountService/Update"
 )
 
-// RoleServiceClient is a client for the v1.cloud.account.RoleService service.
-type RoleServiceClient interface {
+// AccountServiceClient is a client for the v1.cloud.account.AccountService service.
+type AccountServiceClient interface {
 	Get(context.Context, *connect.Request[account.GetRequest]) (*connect.Response[account.GetResponse], error)
 	List(context.Context, *connect.Request[account.ListRequest]) (*connect.Response[account.ListResponse], error)
-	Create(context.Context, *connect.Request[account.CreateRequest]) (*connect.Response[account.CreateResponse], error)
 	Update(context.Context, *connect.Request[account.UpdateRequest]) (*connect.Response[account.UpdateResponse], error)
-	Delete(context.Context, *connect.Request[account.DeleteRequest]) (*connect.Response[account.DeleteResponse], error)
 }
 
-// NewRoleServiceClient constructs a client for the v1.cloud.account.RoleService service. By
+// NewAccountServiceClient constructs a client for the v1.cloud.account.AccountService service. By
 // default, it uses the Connect protocol with the binary Protobuf Codec, asks for gzipped responses,
 // and sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the
 // connect.WithGRPC() or connect.WithGRPCWeb() options.
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewRoleServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) RoleServiceClient {
+func NewAccountServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) AccountServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
-	roleServiceMethods := account.File_v1_cloud_account_account_proto.Services().ByName("RoleService").Methods()
-	return &roleServiceClient{
+	accountServiceMethods := account.File_v1_cloud_account_account_proto.Services().ByName("AccountService").Methods()
+	return &accountServiceClient{
 		get: connect.NewClient[account.GetRequest, account.GetResponse](
 			httpClient,
-			baseURL+RoleServiceGetProcedure,
-			connect.WithSchema(roleServiceMethods.ByName("Get")),
+			baseURL+AccountServiceGetProcedure,
+			connect.WithSchema(accountServiceMethods.ByName("Get")),
 			connect.WithClientOptions(opts...),
 		),
 		list: connect.NewClient[account.ListRequest, account.ListResponse](
 			httpClient,
-			baseURL+RoleServiceListProcedure,
-			connect.WithSchema(roleServiceMethods.ByName("List")),
-			connect.WithClientOptions(opts...),
-		),
-		create: connect.NewClient[account.CreateRequest, account.CreateResponse](
-			httpClient,
-			baseURL+RoleServiceCreateProcedure,
-			connect.WithSchema(roleServiceMethods.ByName("Create")),
+			baseURL+AccountServiceListProcedure,
+			connect.WithSchema(accountServiceMethods.ByName("List")),
 			connect.WithClientOptions(opts...),
 		),
 		update: connect.NewClient[account.UpdateRequest, account.UpdateResponse](
 			httpClient,
-			baseURL+RoleServiceUpdateProcedure,
-			connect.WithSchema(roleServiceMethods.ByName("Update")),
-			connect.WithClientOptions(opts...),
-		),
-		delete: connect.NewClient[account.DeleteRequest, account.DeleteResponse](
-			httpClient,
-			baseURL+RoleServiceDeleteProcedure,
-			connect.WithSchema(roleServiceMethods.ByName("Delete")),
+			baseURL+AccountServiceUpdateProcedure,
+			connect.WithSchema(accountServiceMethods.ByName("Update")),
 			connect.WithClientOptions(opts...),
 		),
 	}
 }
 
-// roleServiceClient implements RoleServiceClient.
-type roleServiceClient struct {
+// accountServiceClient implements AccountServiceClient.
+type accountServiceClient struct {
 	get    *connect.Client[account.GetRequest, account.GetResponse]
 	list   *connect.Client[account.ListRequest, account.ListResponse]
-	create *connect.Client[account.CreateRequest, account.CreateResponse]
 	update *connect.Client[account.UpdateRequest, account.UpdateResponse]
-	delete *connect.Client[account.DeleteRequest, account.DeleteResponse]
 }
 
-// Get calls v1.cloud.account.RoleService.Get.
-func (c *roleServiceClient) Get(ctx context.Context, req *connect.Request[account.GetRequest]) (*connect.Response[account.GetResponse], error) {
+// Get calls v1.cloud.account.AccountService.Get.
+func (c *accountServiceClient) Get(ctx context.Context, req *connect.Request[account.GetRequest]) (*connect.Response[account.GetResponse], error) {
 	return c.get.CallUnary(ctx, req)
 }
 
-// List calls v1.cloud.account.RoleService.List.
-func (c *roleServiceClient) List(ctx context.Context, req *connect.Request[account.ListRequest]) (*connect.Response[account.ListResponse], error) {
+// List calls v1.cloud.account.AccountService.List.
+func (c *accountServiceClient) List(ctx context.Context, req *connect.Request[account.ListRequest]) (*connect.Response[account.ListResponse], error) {
 	return c.list.CallUnary(ctx, req)
 }
 
-// Create calls v1.cloud.account.RoleService.Create.
-func (c *roleServiceClient) Create(ctx context.Context, req *connect.Request[account.CreateRequest]) (*connect.Response[account.CreateResponse], error) {
-	return c.create.CallUnary(ctx, req)
-}
-
-// Update calls v1.cloud.account.RoleService.Update.
-func (c *roleServiceClient) Update(ctx context.Context, req *connect.Request[account.UpdateRequest]) (*connect.Response[account.UpdateResponse], error) {
+// Update calls v1.cloud.account.AccountService.Update.
+func (c *accountServiceClient) Update(ctx context.Context, req *connect.Request[account.UpdateRequest]) (*connect.Response[account.UpdateResponse], error) {
 	return c.update.CallUnary(ctx, req)
 }
 
-// Delete calls v1.cloud.account.RoleService.Delete.
-func (c *roleServiceClient) Delete(ctx context.Context, req *connect.Request[account.DeleteRequest]) (*connect.Response[account.DeleteResponse], error) {
-	return c.delete.CallUnary(ctx, req)
-}
-
-// RoleServiceHandler is an implementation of the v1.cloud.account.RoleService service.
-type RoleServiceHandler interface {
+// AccountServiceHandler is an implementation of the v1.cloud.account.AccountService service.
+type AccountServiceHandler interface {
 	Get(context.Context, *connect.Request[account.GetRequest]) (*connect.Response[account.GetResponse], error)
 	List(context.Context, *connect.Request[account.ListRequest]) (*connect.Response[account.ListResponse], error)
-	Create(context.Context, *connect.Request[account.CreateRequest]) (*connect.Response[account.CreateResponse], error)
 	Update(context.Context, *connect.Request[account.UpdateRequest]) (*connect.Response[account.UpdateResponse], error)
-	Delete(context.Context, *connect.Request[account.DeleteRequest]) (*connect.Response[account.DeleteResponse], error)
 }
 
-// NewRoleServiceHandler builds an HTTP handler from the service implementation. It returns the path
-// on which to mount the handler and the handler itself.
+// NewAccountServiceHandler builds an HTTP handler from the service implementation. It returns the
+// path on which to mount the handler and the handler itself.
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewRoleServiceHandler(svc RoleServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
-	roleServiceMethods := account.File_v1_cloud_account_account_proto.Services().ByName("RoleService").Methods()
-	roleServiceGetHandler := connect.NewUnaryHandler(
-		RoleServiceGetProcedure,
+func NewAccountServiceHandler(svc AccountServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	accountServiceMethods := account.File_v1_cloud_account_account_proto.Services().ByName("AccountService").Methods()
+	accountServiceGetHandler := connect.NewUnaryHandler(
+		AccountServiceGetProcedure,
 		svc.Get,
-		connect.WithSchema(roleServiceMethods.ByName("Get")),
+		connect.WithSchema(accountServiceMethods.ByName("Get")),
 		connect.WithHandlerOptions(opts...),
 	)
-	roleServiceListHandler := connect.NewUnaryHandler(
-		RoleServiceListProcedure,
+	accountServiceListHandler := connect.NewUnaryHandler(
+		AccountServiceListProcedure,
 		svc.List,
-		connect.WithSchema(roleServiceMethods.ByName("List")),
+		connect.WithSchema(accountServiceMethods.ByName("List")),
 		connect.WithHandlerOptions(opts...),
 	)
-	roleServiceCreateHandler := connect.NewUnaryHandler(
-		RoleServiceCreateProcedure,
-		svc.Create,
-		connect.WithSchema(roleServiceMethods.ByName("Create")),
-		connect.WithHandlerOptions(opts...),
-	)
-	roleServiceUpdateHandler := connect.NewUnaryHandler(
-		RoleServiceUpdateProcedure,
+	accountServiceUpdateHandler := connect.NewUnaryHandler(
+		AccountServiceUpdateProcedure,
 		svc.Update,
-		connect.WithSchema(roleServiceMethods.ByName("Update")),
+		connect.WithSchema(accountServiceMethods.ByName("Update")),
 		connect.WithHandlerOptions(opts...),
 	)
-	roleServiceDeleteHandler := connect.NewUnaryHandler(
-		RoleServiceDeleteProcedure,
-		svc.Delete,
-		connect.WithSchema(roleServiceMethods.ByName("Delete")),
-		connect.WithHandlerOptions(opts...),
-	)
-	return "/v1.cloud.account.RoleService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	return "/v1.cloud.account.AccountService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case RoleServiceGetProcedure:
-			roleServiceGetHandler.ServeHTTP(w, r)
-		case RoleServiceListProcedure:
-			roleServiceListHandler.ServeHTTP(w, r)
-		case RoleServiceCreateProcedure:
-			roleServiceCreateHandler.ServeHTTP(w, r)
-		case RoleServiceUpdateProcedure:
-			roleServiceUpdateHandler.ServeHTTP(w, r)
-		case RoleServiceDeleteProcedure:
-			roleServiceDeleteHandler.ServeHTTP(w, r)
+		case AccountServiceGetProcedure:
+			accountServiceGetHandler.ServeHTTP(w, r)
+		case AccountServiceListProcedure:
+			accountServiceListHandler.ServeHTTP(w, r)
+		case AccountServiceUpdateProcedure:
+			accountServiceUpdateHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
 	})
 }
 
-// UnimplementedRoleServiceHandler returns CodeUnimplemented from all methods.
-type UnimplementedRoleServiceHandler struct{}
+// UnimplementedAccountServiceHandler returns CodeUnimplemented from all methods.
+type UnimplementedAccountServiceHandler struct{}
 
-func (UnimplementedRoleServiceHandler) Get(context.Context, *connect.Request[account.GetRequest]) (*connect.Response[account.GetResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.cloud.account.RoleService.Get is not implemented"))
+func (UnimplementedAccountServiceHandler) Get(context.Context, *connect.Request[account.GetRequest]) (*connect.Response[account.GetResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.cloud.account.AccountService.Get is not implemented"))
 }
 
-func (UnimplementedRoleServiceHandler) List(context.Context, *connect.Request[account.ListRequest]) (*connect.Response[account.ListResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.cloud.account.RoleService.List is not implemented"))
+func (UnimplementedAccountServiceHandler) List(context.Context, *connect.Request[account.ListRequest]) (*connect.Response[account.ListResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.cloud.account.AccountService.List is not implemented"))
 }
 
-func (UnimplementedRoleServiceHandler) Create(context.Context, *connect.Request[account.CreateRequest]) (*connect.Response[account.CreateResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.cloud.account.RoleService.Create is not implemented"))
-}
-
-func (UnimplementedRoleServiceHandler) Update(context.Context, *connect.Request[account.UpdateRequest]) (*connect.Response[account.UpdateResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.cloud.account.RoleService.Update is not implemented"))
-}
-
-func (UnimplementedRoleServiceHandler) Delete(context.Context, *connect.Request[account.DeleteRequest]) (*connect.Response[account.DeleteResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.cloud.account.RoleService.Delete is not implemented"))
+func (UnimplementedAccountServiceHandler) Update(context.Context, *connect.Request[account.UpdateRequest]) (*connect.Response[account.UpdateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.cloud.account.AccountService.Update is not implemented"))
 }

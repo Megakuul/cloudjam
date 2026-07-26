@@ -16,7 +16,6 @@
         default = pkgs.mkShell {
           packages = with pkgs; [
             nodejs-slim_24
-            corepack
             go
             gotools
             gofumpt
@@ -24,6 +23,7 @@
             prettier
             awscli2
             localstack
+            pnpm
           ];
         };
       }

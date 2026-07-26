@@ -472,8 +472,8 @@ const file_v1_cloud_provider_provider_proto_rawDesc = "" +
 	"\x0eUpdateResponse\")\n" +
 	"\rDeleteRequest\x12\x18\n" +
 	"\x02id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\"\x10\n" +
-	"\x0eDeleteResponse2\x89\x03\n" +
-	"\vRoleService\x12D\n" +
+	"\x0eDeleteResponse2\x8d\x03\n" +
+	"\x0fProviderService\x12D\n" +
 	"\x03Get\x12\x1d.v1.cloud.provider.GetRequest\x1a\x1e.v1.cloud.provider.GetResponse\x12G\n" +
 	"\x04List\x12\x1e.v1.cloud.provider.ListRequest\x1a\x1f.v1.cloud.provider.ListResponse\x12M\n" +
 	"\x06Create\x12 .v1.cloud.provider.CreateRequest\x1a!.v1.cloud.provider.CreateResponse\x12M\n" +
@@ -511,16 +511,16 @@ var file_v1_cloud_provider_provider_proto_depIdxs = []int32{
 	10, // 1: v1.cloud.provider.ListResponse.providers:type_name -> v1.cloud.Provider
 	10, // 2: v1.cloud.provider.CreateRequest.init:type_name -> v1.cloud.Provider
 	10, // 3: v1.cloud.provider.UpdateRequest.mod:type_name -> v1.cloud.Provider
-	0,  // 4: v1.cloud.provider.RoleService.Get:input_type -> v1.cloud.provider.GetRequest
-	2,  // 5: v1.cloud.provider.RoleService.List:input_type -> v1.cloud.provider.ListRequest
-	4,  // 6: v1.cloud.provider.RoleService.Create:input_type -> v1.cloud.provider.CreateRequest
-	6,  // 7: v1.cloud.provider.RoleService.Update:input_type -> v1.cloud.provider.UpdateRequest
-	8,  // 8: v1.cloud.provider.RoleService.Delete:input_type -> v1.cloud.provider.DeleteRequest
-	1,  // 9: v1.cloud.provider.RoleService.Get:output_type -> v1.cloud.provider.GetResponse
-	3,  // 10: v1.cloud.provider.RoleService.List:output_type -> v1.cloud.provider.ListResponse
-	5,  // 11: v1.cloud.provider.RoleService.Create:output_type -> v1.cloud.provider.CreateResponse
-	7,  // 12: v1.cloud.provider.RoleService.Update:output_type -> v1.cloud.provider.UpdateResponse
-	9,  // 13: v1.cloud.provider.RoleService.Delete:output_type -> v1.cloud.provider.DeleteResponse
+	0,  // 4: v1.cloud.provider.ProviderService.Get:input_type -> v1.cloud.provider.GetRequest
+	2,  // 5: v1.cloud.provider.ProviderService.List:input_type -> v1.cloud.provider.ListRequest
+	4,  // 6: v1.cloud.provider.ProviderService.Create:input_type -> v1.cloud.provider.CreateRequest
+	6,  // 7: v1.cloud.provider.ProviderService.Update:input_type -> v1.cloud.provider.UpdateRequest
+	8,  // 8: v1.cloud.provider.ProviderService.Delete:input_type -> v1.cloud.provider.DeleteRequest
+	1,  // 9: v1.cloud.provider.ProviderService.Get:output_type -> v1.cloud.provider.GetResponse
+	3,  // 10: v1.cloud.provider.ProviderService.List:output_type -> v1.cloud.provider.ListResponse
+	5,  // 11: v1.cloud.provider.ProviderService.Create:output_type -> v1.cloud.provider.CreateResponse
+	7,  // 12: v1.cloud.provider.ProviderService.Update:output_type -> v1.cloud.provider.UpdateResponse
+	9,  // 13: v1.cloud.provider.ProviderService.Delete:output_type -> v1.cloud.provider.DeleteResponse
 	9,  // [9:14] is the sub-list for method output_type
 	4,  // [4:9] is the sub-list for method input_type
 	4,  // [4:4] is the sub-list for extension type_name

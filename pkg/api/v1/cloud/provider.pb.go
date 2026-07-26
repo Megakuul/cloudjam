@@ -22,15 +22,60 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type ProviderType int32
+
+const (
+	ProviderType_AWS ProviderType = 0
+)
+
+// Enum value maps for ProviderType.
+var (
+	ProviderType_name = map[int32]string{
+		0: "AWS",
+	}
+	ProviderType_value = map[string]int32{
+		"AWS": 0,
+	}
+)
+
+func (x ProviderType) Enum() *ProviderType {
+	p := new(ProviderType)
+	*p = x
+	return p
+}
+
+func (x ProviderType) String() string {
+	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
+}
+
+func (ProviderType) Descriptor() protoreflect.EnumDescriptor {
+	return file_v1_cloud_provider_proto_enumTypes[0].Descriptor()
+}
+
+func (ProviderType) Type() protoreflect.EnumType {
+	return &file_v1_cloud_provider_proto_enumTypes[0]
+}
+
+func (x ProviderType) Number() protoreflect.EnumNumber {
+	return protoreflect.EnumNumber(x)
+}
+
+// Deprecated: Use ProviderType.Descriptor instead.
+func (ProviderType) EnumDescriptor() ([]byte, []int) {
+	return file_v1_cloud_provider_proto_rawDescGZIP(), []int{0}
+}
+
 type Provider struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Scope         string                 `protobuf:"bytes,1,opt,name=scope,proto3" json:"scope,omitempty"`
-	Id            string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
-	Name          string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	Description   string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
-	Credentials   string                 `protobuf:"bytes,5,opt,name=credentials,proto3" json:"credentials,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Scope           string                 `protobuf:"bytes,1,opt,name=scope,proto3" json:"scope,omitempty"`
+	Id              string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
+	Type            ProviderType           `protobuf:"varint,3,opt,name=type,proto3,enum=v1.cloud.ProviderType" json:"type,omitempty"`
+	Name            string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
+	Description     string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
+	Credentials     string                 `protobuf:"bytes,6,opt,name=credentials,proto3" json:"credentials,omitempty"`
+	DesiredAccounts int64                  `protobuf:"varint,7,opt,name=desired_accounts,json=desiredAccounts,proto3" json:"desired_accounts,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
 }
 
 func (x *Provider) Reset() {
@@ -77,6 +122,13 @@ func (x *Provider) GetId() string {
 	return ""
 }
 
+func (x *Provider) GetType() ProviderType {
+	if x != nil {
+		return x.Type
+	}
+	return ProviderType_AWS
+}
+
 func (x *Provider) GetName() string {
 	if x != nil {
 		return x.Name
@@ -98,18 +150,29 @@ func (x *Provider) GetCredentials() string {
 	return ""
 }
 
+func (x *Provider) GetDesiredAccounts() int64 {
+	if x != nil {
+		return x.DesiredAccounts
+	}
+	return 0
+}
+
 var File_v1_cloud_provider_proto protoreflect.FileDescriptor
 
 const file_v1_cloud_provider_proto_rawDesc = "" +
 	"\n" +
-	"\x17v1/cloud/provider.proto\x12\bv1.cloud\x1a\x1bbuf/validate/validate.proto\"\xaa\x01\n" +
+	"\x17v1/cloud/provider.proto\x12\bv1.cloud\x1a\x1bbuf/validate/validate.proto\"\x81\x02\n" +
 	"\bProvider\x12\x14\n" +
 	"\x05scope\x18\x01 \x01(\tR\x05scope\x12\x0e\n" +
-	"\x02id\x18\x02 \x01(\tR\x02id\x12\x1d\n" +
-	"\x04name\x18\x03 \x01(\tB\t\xbaH\x06r\x04\x10\x04\x18\x14R\x04name\x12+\n" +
-	"\vdescription\x18\x04 \x01(\tB\t\xbaH\x06r\x04\x10\x00\x182R\vdescription\x12,\n" +
-	"\vcredentials\x18\x05 \x01(\tB\n" +
-	"\xbaH\ar\x05\x10\x00\x18\xe8\aR\vcredentialsB1Z/codeberg.org/megakuul/cloudjam/pkg/api/v1/cloudb\x06proto3"
+	"\x02id\x18\x02 \x01(\tR\x02id\x12*\n" +
+	"\x04type\x18\x03 \x01(\x0e2\x16.v1.cloud.ProviderTypeR\x04type\x12\x1d\n" +
+	"\x04name\x18\x04 \x01(\tB\t\xbaH\x06r\x04\x10\x04\x18\x14R\x04name\x12+\n" +
+	"\vdescription\x18\x05 \x01(\tB\t\xbaH\x06r\x04\x10\x00\x182R\vdescription\x12,\n" +
+	"\vcredentials\x18\x06 \x01(\tB\n" +
+	"\xbaH\ar\x05\x10\x00\x18\xe8\aR\vcredentials\x12)\n" +
+	"\x10desired_accounts\x18\a \x01(\x03R\x0fdesiredAccounts*\x17\n" +
+	"\fProviderType\x12\a\n" +
+	"\x03AWS\x10\x00B1Z/codeberg.org/megakuul/cloudjam/pkg/api/v1/cloudb\x06proto3"
 
 var (
 	file_v1_cloud_provider_proto_rawDescOnce sync.Once
@@ -123,16 +186,19 @@ func file_v1_cloud_provider_proto_rawDescGZIP() []byte {
 	return file_v1_cloud_provider_proto_rawDescData
 }
 
+var file_v1_cloud_provider_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_v1_cloud_provider_proto_msgTypes = make([]protoimpl.MessageInfo, 1)
 var file_v1_cloud_provider_proto_goTypes = []any{
-	(*Provider)(nil), // 0: v1.cloud.Provider
+	(ProviderType)(0), // 0: v1.cloud.ProviderType
+	(*Provider)(nil),  // 1: v1.cloud.Provider
 }
 var file_v1_cloud_provider_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0, // 0: v1.cloud.Provider.type:type_name -> v1.cloud.ProviderType
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_v1_cloud_provider_proto_init() }
@@ -145,13 +211,14 @@ func file_v1_cloud_provider_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_v1_cloud_provider_proto_rawDesc), len(file_v1_cloud_provider_proto_rawDesc)),
-			NumEnums:      0,
+			NumEnums:      1,
 			NumMessages:   1,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_v1_cloud_provider_proto_goTypes,
 		DependencyIndexes: file_v1_cloud_provider_proto_depIdxs,
+		EnumInfos:         file_v1_cloud_provider_proto_enumTypes,
 		MessageInfos:      file_v1_cloud_provider_proto_msgTypes,
 	}.Build()
 	File_v1_cloud_provider_proto = out.File

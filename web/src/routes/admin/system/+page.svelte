@@ -10,7 +10,7 @@
 	<title>System | CloudJam</title>
 	<meta property="og:title" content="System | CloudJam" />
 	<meta property="og:type" content="website" />
-	<meta property="og:image" content="favicon.png" />
+	<meta property="og:image" content="/favicon.png" />
 </svelte:head>
 
 <div class="flex w-full flex-col items-center justify-center gap-4">

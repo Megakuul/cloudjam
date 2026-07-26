@@ -71,7 +71,7 @@
 	<title>Users | CloudJam</title>
 	<meta property="og:title" content="Users | CloudJam" />
 	<meta property="og:type" content="website" />
-	<meta property="og:image" content="favicon.png" />
+	<meta property="og:image" content="/favicon.png" />
 </svelte:head>
 
 <div class="flex w-full flex-col gap-4">

@@ -30,31 +30,14 @@ message ListResponse {
   repeated Account accounts = 1;
 }
 
-message CreateRequest {
-  string provider = 1 [(buf.validate.field).string = {uuid: true}];
-  Account init = 2;
-}
-
-message CreateResponse {}
-
 message UpdateRequest {
-  string provider = 1 [(buf.validate.field).string = {uuid: true}];
-  Account mod = 2;
+  Account mod = 1;
 }
 
 message UpdateResponse {}
 
-message DeleteRequest {
-  string provider = 1 [(buf.validate.field).string = {uuid: true}];
-  string id = 2 [(buf.validate.field).string = {uuid: true}];
-}
-
-message DeleteResponse {}
-
-service RoleService {
+service AccountService {
   rpc Get(GetRequest) returns (GetResponse);
   rpc List(ListRequest) returns (ListResponse);
-  rpc Create(CreateRequest) returns (CreateResponse);
   rpc Update(UpdateRequest) returns (UpdateResponse);
-  rpc Delete(DeleteRequest) returns (DeleteResponse);
 }

@@ -11,7 +11,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/cloud/account.proto.
  */
 export const file_v1_cloud_account: GenFile = /*@__PURE__*/
-  fileDesc("ChZ2MS9jbG91ZC9hY2NvdW50LnByb3RvEgh2MS5jbG91ZCKlAQoHQWNjb3VudBINCgVzY29wZRgBIAEoCRIKCgJpZBgCIAEoCRIXCgRuYW1lGAMgASgJQgm6SAZyBBAEGBQSHgoLZGVzY3JpcHRpb24YBCABKAlCCbpIBnIEEAAYMhIfCgtjcmVkZW50aWFscxgFIAEoCUIKukgHcgUQABjoBxIlCgVzdGF0ZRgGIAEoDjIWLnYxLmNsb3VkLkFjY291bnRTdGF0ZSpXCgxBY2NvdW50U3RhdGUSEAoMUHJvdmlzaW9uaW5nEAASCgoGQWN0aXZlEAESDAoIRXZpY3RpbmcQAhINCglDb3JydXB0ZWQQAxIMCghEZWxldGluZxAEQjFaL2NvZGViZXJnLm9yZy9tZWdha3V1bC9jbG91ZGphbS9wa2cvYXBpL3YxL2Nsb3VkYgZwcm90bzM", [file_buf_validate_validate]);
+  fileDesc("ChZ2MS9jbG91ZC9hY2NvdW50LnByb3RvEgh2MS5jbG91ZCLmAQoHQWNjb3VudBINCgVzY29wZRgBIAEoCRIQCghwcm92aWRlchgCIAEoCRIKCgJpZBgDIAEoCRIXCgRuYW1lGAQgASgJQgm6SAZyBBAEGBQSHgoLZGVzY3JpcHRpb24YBSABKAlCCbpIBnIEEAAYMhIfCgtjcmVkZW50aWFscxgGIAEoCUIKukgHcgUQABjoBxIlCgVzdGF0ZRgHIAEoDjIWLnYxLmNsb3VkLkFjY291bnRTdGF0ZRItCg1kZXNpcmVkX3N0YXRlGAggASgOMhYudjEuY2xvdWQuQWNjb3VudFN0YXRlKlcKDEFjY291bnRTdGF0ZRIQCgxQcm92aXNpb25pbmcQABIKCgZBY3RpdmUQARIMCghFdmljdGluZxACEg0KCUNvcnJ1cHRlZBADEgwKCERlbGV0aW5nEARCMVovY29kZWJlcmcub3JnL21lZ2FrdXVsL2Nsb3VkamFtL3BrZy9hcGkvdjEvY2xvdWRiBnByb3RvMw", [file_buf_validate_validate]);
 
 /**
  * @generated from message v1.cloud.Account
@@ -23,29 +23,39 @@ export type Account = Message<"v1.cloud.Account"> & {
   scope: string;
 
   /**
-   * @generated from field: string id = 2;
+   * @generated from field: string provider = 2;
+   */
+  provider: string;
+
+  /**
+   * @generated from field: string id = 3;
    */
   id: string;
 
   /**
-   * @generated from field: string name = 3;
+   * @generated from field: string name = 4;
    */
   name: string;
 
   /**
-   * @generated from field: string description = 4;
+   * @generated from field: string description = 5;
    */
   description: string;
 
   /**
-   * @generated from field: string credentials = 5;
+   * @generated from field: string credentials = 6;
    */
   credentials: string;
 
   /**
-   * @generated from field: v1.cloud.AccountState state = 6;
+   * @generated from field: v1.cloud.AccountState state = 7;
    */
   state: AccountState;
+
+  /**
+   * @generated from field: v1.cloud.AccountState desired_state = 8;
+   */
+  desiredState: AccountState;
 };
 
 /**

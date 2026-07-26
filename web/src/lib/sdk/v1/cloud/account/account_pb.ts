@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/cloud/account/account.proto.
  */
 export const file_v1_cloud_account_account: GenFile = /*@__PURE__*/
-  fileDesc("Ch52MS9jbG91ZC9hY2NvdW50L2FjY291bnQucHJvdG8SEHYxLmNsb3VkLmFjY291bnQiPgoKR2V0UmVxdWVzdBIaCghwcm92aWRlchgBIAEoCUIIukgFcgOwAQESFAoCaWQYAiABKAlCCLpIBXIDsAEBIjEKC0dldFJlc3BvbnNlEiIKB2FjY291bnQYASABKAsyES52MS5jbG91ZC5BY2NvdW50IlgKC0xpc3RSZXF1ZXN0EhoKCHByb3ZpZGVyGAEgASgJQgi6SAVyA7ABARIYCgVsaW1pdBgCIAEoBUIJukgGGgQYZCAAEhMKC3N0YXJ0X2FmdGVyGAMgASgJIjMKDExpc3RSZXNwb25zZRIjCghhY2NvdW50cxgBIAMoCzIRLnYxLmNsb3VkLkFjY291bnQiTAoNQ3JlYXRlUmVxdWVzdBIaCghwcm92aWRlchgBIAEoCUIIukgFcgOwAQESHwoEaW5pdBgCIAEoCzIRLnYxLmNsb3VkLkFjY291bnQiEAoOQ3JlYXRlUmVzcG9uc2UiSwoNVXBkYXRlUmVxdWVzdBIaCghwcm92aWRlchgBIAEoCUIIukgFcgOwAQESHgoDbW9kGAIgASgLMhEudjEuY2xvdWQuQWNjb3VudCIQCg5VcGRhdGVSZXNwb25zZSJBCg1EZWxldGVSZXF1ZXN0EhoKCHByb3ZpZGVyGAEgASgJQgi6SAVyA7ABARIUCgJpZBgCIAEoCUIIukgFcgOwAQEiEAoORGVsZXRlUmVzcG9uc2Uy/wIKC1JvbGVTZXJ2aWNlEkIKA0dldBIcLnYxLmNsb3VkLmFjY291bnQuR2V0UmVxdWVzdBodLnYxLmNsb3VkLmFjY291bnQuR2V0UmVzcG9uc2USRQoETGlzdBIdLnYxLmNsb3VkLmFjY291bnQuTGlzdFJlcXVlc3QaHi52MS5jbG91ZC5hY2NvdW50Lkxpc3RSZXNwb25zZRJLCgZDcmVhdGUSHy52MS5jbG91ZC5hY2NvdW50LkNyZWF0ZVJlcXVlc3QaIC52MS5jbG91ZC5hY2NvdW50LkNyZWF0ZVJlc3BvbnNlEksKBlVwZGF0ZRIfLnYxLmNsb3VkLmFjY291bnQuVXBkYXRlUmVxdWVzdBogLnYxLmNsb3VkLmFjY291bnQuVXBkYXRlUmVzcG9uc2USSwoGRGVsZXRlEh8udjEuY2xvdWQuYWNjb3VudC5EZWxldGVSZXF1ZXN0GiAudjEuY2xvdWQuYWNjb3VudC5EZWxldGVSZXNwb25zZUI5Wjdjb2RlYmVyZy5vcmcvbWVnYWt1dWwvY2xvdWRqYW0vcGtnL2FwaS92MS9jbG91ZC9hY2NvdW50YgZwcm90bzM", [file_buf_validate_validate, file_google_protobuf_timestamp, file_v1_cloud_account]);
+  fileDesc("Ch52MS9jbG91ZC9hY2NvdW50L2FjY291bnQucHJvdG8SEHYxLmNsb3VkLmFjY291bnQiPgoKR2V0UmVxdWVzdBIaCghwcm92aWRlchgBIAEoCUIIukgFcgOwAQESFAoCaWQYAiABKAlCCLpIBXIDsAEBIjEKC0dldFJlc3BvbnNlEiIKB2FjY291bnQYASABKAsyES52MS5jbG91ZC5BY2NvdW50IlgKC0xpc3RSZXF1ZXN0EhoKCHByb3ZpZGVyGAEgASgJQgi6SAVyA7ABARIYCgVsaW1pdBgCIAEoBUIJukgGGgQYZCAAEhMKC3N0YXJ0X2FmdGVyGAMgASgJIjMKDExpc3RSZXNwb25zZRIjCghhY2NvdW50cxgBIAMoCzIRLnYxLmNsb3VkLkFjY291bnQiLwoNVXBkYXRlUmVxdWVzdBIeCgNtb2QYASABKAsyES52MS5jbG91ZC5BY2NvdW50IhAKDlVwZGF0ZVJlc3BvbnNlMugBCg5BY2NvdW50U2VydmljZRJCCgNHZXQSHC52MS5jbG91ZC5hY2NvdW50LkdldFJlcXVlc3QaHS52MS5jbG91ZC5hY2NvdW50LkdldFJlc3BvbnNlEkUKBExpc3QSHS52MS5jbG91ZC5hY2NvdW50Lkxpc3RSZXF1ZXN0Gh4udjEuY2xvdWQuYWNjb3VudC5MaXN0UmVzcG9uc2USSwoGVXBkYXRlEh8udjEuY2xvdWQuYWNjb3VudC5VcGRhdGVSZXF1ZXN0GiAudjEuY2xvdWQuYWNjb3VudC5VcGRhdGVSZXNwb25zZUI5Wjdjb2RlYmVyZy5vcmcvbWVnYWt1dWwvY2xvdWRqYW0vcGtnL2FwaS92MS9jbG91ZC9hY2NvdW50YgZwcm90bzM", [file_buf_validate_validate, file_google_protobuf_timestamp, file_v1_cloud_account]);
 
 /**
  * @generated from message v1.cloud.account.GetRequest
@@ -100,51 +100,11 @@ export const ListResponseSchema: GenMessage<ListResponse> = /*@__PURE__*/
   messageDesc(file_v1_cloud_account_account, 3);
 
 /**
- * @generated from message v1.cloud.account.CreateRequest
- */
-export type CreateRequest = Message<"v1.cloud.account.CreateRequest"> & {
-  /**
-   * @generated from field: string provider = 1;
-   */
-  provider: string;
-
-  /**
-   * @generated from field: v1.cloud.Account init = 2;
-   */
-  init?: Account;
-};
-
-/**
- * Describes the message v1.cloud.account.CreateRequest.
- * Use `create(CreateRequestSchema)` to create a new message.
- */
-export const CreateRequestSchema: GenMessage<CreateRequest> = /*@__PURE__*/
-  messageDesc(file_v1_cloud_account_account, 4);
-
-/**
- * @generated from message v1.cloud.account.CreateResponse
- */
-export type CreateResponse = Message<"v1.cloud.account.CreateResponse"> & {
-};
-
-/**
- * Describes the message v1.cloud.account.CreateResponse.
- * Use `create(CreateResponseSchema)` to create a new message.
- */
-export const CreateResponseSchema: GenMessage<CreateResponse> = /*@__PURE__*/
-  messageDesc(file_v1_cloud_account_account, 5);
-
-/**
  * @generated from message v1.cloud.account.UpdateRequest
  */
 export type UpdateRequest = Message<"v1.cloud.account.UpdateRequest"> & {
   /**
-   * @generated from field: string provider = 1;
-   */
-  provider: string;
-
-  /**
-   * @generated from field: v1.cloud.Account mod = 2;
+   * @generated from field: v1.cloud.Account mod = 1;
    */
   mod?: Account;
 };
@@ -154,7 +114,7 @@ export type UpdateRequest = Message<"v1.cloud.account.UpdateRequest"> & {
  * Use `create(UpdateRequestSchema)` to create a new message.
  */
 export const UpdateRequestSchema: GenMessage<UpdateRequest> = /*@__PURE__*/
-  messageDesc(file_v1_cloud_account_account, 6);
+  messageDesc(file_v1_cloud_account_account, 4);
 
 /**
  * @generated from message v1.cloud.account.UpdateResponse
@@ -167,49 +127,14 @@ export type UpdateResponse = Message<"v1.cloud.account.UpdateResponse"> & {
  * Use `create(UpdateResponseSchema)` to create a new message.
  */
 export const UpdateResponseSchema: GenMessage<UpdateResponse> = /*@__PURE__*/
-  messageDesc(file_v1_cloud_account_account, 7);
+  messageDesc(file_v1_cloud_account_account, 5);
 
 /**
- * @generated from message v1.cloud.account.DeleteRequest
+ * @generated from service v1.cloud.account.AccountService
  */
-export type DeleteRequest = Message<"v1.cloud.account.DeleteRequest"> & {
+export const AccountService: GenService<{
   /**
-   * @generated from field: string provider = 1;
-   */
-  provider: string;
-
-  /**
-   * @generated from field: string id = 2;
-   */
-  id: string;
-};
-
-/**
- * Describes the message v1.cloud.account.DeleteRequest.
- * Use `create(DeleteRequestSchema)` to create a new message.
- */
-export const DeleteRequestSchema: GenMessage<DeleteRequest> = /*@__PURE__*/
-  messageDesc(file_v1_cloud_account_account, 8);
-
-/**
- * @generated from message v1.cloud.account.DeleteResponse
- */
-export type DeleteResponse = Message<"v1.cloud.account.DeleteResponse"> & {
-};
-
-/**
- * Describes the message v1.cloud.account.DeleteResponse.
- * Use `create(DeleteResponseSchema)` to create a new message.
- */
-export const DeleteResponseSchema: GenMessage<DeleteResponse> = /*@__PURE__*/
-  messageDesc(file_v1_cloud_account_account, 9);
-
-/**
- * @generated from service v1.cloud.account.RoleService
- */
-export const RoleService: GenService<{
-  /**
-   * @generated from rpc v1.cloud.account.RoleService.Get
+   * @generated from rpc v1.cloud.account.AccountService.Get
    */
   get: {
     methodKind: "unary";
@@ -217,7 +142,7 @@ export const RoleService: GenService<{
     output: typeof GetResponseSchema;
   },
   /**
-   * @generated from rpc v1.cloud.account.RoleService.List
+   * @generated from rpc v1.cloud.account.AccountService.List
    */
   list: {
     methodKind: "unary";
@@ -225,28 +150,12 @@ export const RoleService: GenService<{
     output: typeof ListResponseSchema;
   },
   /**
-   * @generated from rpc v1.cloud.account.RoleService.Create
-   */
-  create: {
-    methodKind: "unary";
-    input: typeof CreateRequestSchema;
-    output: typeof CreateResponseSchema;
-  },
-  /**
-   * @generated from rpc v1.cloud.account.RoleService.Update
+   * @generated from rpc v1.cloud.account.AccountService.Update
    */
   update: {
     methodKind: "unary";
     input: typeof UpdateRequestSchema;
     output: typeof UpdateResponseSchema;
-  },
-  /**
-   * @generated from rpc v1.cloud.account.RoleService.Delete
-   */
-  delete: {
-    methodKind: "unary";
-    input: typeof DeleteRequestSchema;
-    output: typeof DeleteResponseSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_v1_cloud_account_account, 0);

@@ -18,7 +18,6 @@
 		"@eslint/js": "^9.39.2",
 		"@fontsource-variable/inter": "^5.2.8",
 		"@internationalized/date": "^3.12.2",
-		"@layerstack/utils": "^1.0.1",
 		"@lucide/svelte": "^1.25.0",
 		"@mdi/js": "latest",
 		"@sveltejs/adapter-static": "^3.0.10",
@@ -66,6 +65,5 @@
 		"jwt-decode": "^4.0.0",
 		"mode-watcher": "^1.1.0",
 		"svelte-ux": "next"
-	},
-	"packageManager": "pnpm@10.28.0"
+	}
 }

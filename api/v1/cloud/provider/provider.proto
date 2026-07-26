@@ -46,7 +46,7 @@ message DeleteRequest {
 
 message DeleteResponse {}
 
-service RoleService {
+service ProviderService {
   rpc Get(GetRequest) returns (GetResponse);
   rpc List(ListRequest) returns (ListResponse);
   rpc Create(CreateRequest) returns (CreateResponse);

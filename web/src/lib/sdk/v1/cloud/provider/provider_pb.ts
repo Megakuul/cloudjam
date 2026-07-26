@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/cloud/provider/provider.proto.
  */
 export const file_v1_cloud_provider_provider: GenFile = /*@__PURE__*/
-  fileDesc("CiB2MS9jbG91ZC9wcm92aWRlci9wcm92aWRlci5wcm90bxIRdjEuY2xvdWQucHJvdmlkZXIiIgoKR2V0UmVxdWVzdBIUCgJpZBgBIAEoCUIIukgFcgOwAQEiMwoLR2V0UmVzcG9uc2USJAoIcHJvdmlkZXIYASABKAsyEi52MS5jbG91ZC5Qcm92aWRlciI8CgtMaXN0UmVxdWVzdBIYCgVsaW1pdBgBIAEoBUIJukgGGgQYZCAAEhMKC3N0YXJ0X2FmdGVyGAIgASgJIjUKDExpc3RSZXNwb25zZRIlCglwcm92aWRlcnMYASADKAsyEi52MS5jbG91ZC5Qcm92aWRlciIxCg1DcmVhdGVSZXF1ZXN0EiAKBGluaXQYASABKAsyEi52MS5jbG91ZC5Qcm92aWRlciIQCg5DcmVhdGVSZXNwb25zZSIwCg1VcGRhdGVSZXF1ZXN0Eh8KA21vZBgBIAEoCzISLnYxLmNsb3VkLlByb3ZpZGVyIhAKDlVwZGF0ZVJlc3BvbnNlIiUKDURlbGV0ZVJlcXVlc3QSFAoCaWQYASABKAlCCLpIBXIDsAEBIhAKDkRlbGV0ZVJlc3BvbnNlMokDCgtSb2xlU2VydmljZRJECgNHZXQSHS52MS5jbG91ZC5wcm92aWRlci5HZXRSZXF1ZXN0Gh4udjEuY2xvdWQucHJvdmlkZXIuR2V0UmVzcG9uc2USRwoETGlzdBIeLnYxLmNsb3VkLnByb3ZpZGVyLkxpc3RSZXF1ZXN0Gh8udjEuY2xvdWQucHJvdmlkZXIuTGlzdFJlc3BvbnNlEk0KBkNyZWF0ZRIgLnYxLmNsb3VkLnByb3ZpZGVyLkNyZWF0ZVJlcXVlc3QaIS52MS5jbG91ZC5wcm92aWRlci5DcmVhdGVSZXNwb25zZRJNCgZVcGRhdGUSIC52MS5jbG91ZC5wcm92aWRlci5VcGRhdGVSZXF1ZXN0GiEudjEuY2xvdWQucHJvdmlkZXIuVXBkYXRlUmVzcG9uc2USTQoGRGVsZXRlEiAudjEuY2xvdWQucHJvdmlkZXIuRGVsZXRlUmVxdWVzdBohLnYxLmNsb3VkLnByb3ZpZGVyLkRlbGV0ZVJlc3BvbnNlQjpaOGNvZGViZXJnLm9yZy9tZWdha3V1bC9jbG91ZGphbS9wa2cvYXBpL3YxL2Nsb3VkL3Byb3ZpZGVyYgZwcm90bzM", [file_buf_validate_validate, file_google_protobuf_timestamp, file_v1_cloud_provider]);
+  fileDesc("CiB2MS9jbG91ZC9wcm92aWRlci9wcm92aWRlci5wcm90bxIRdjEuY2xvdWQucHJvdmlkZXIiIgoKR2V0UmVxdWVzdBIUCgJpZBgBIAEoCUIIukgFcgOwAQEiMwoLR2V0UmVzcG9uc2USJAoIcHJvdmlkZXIYASABKAsyEi52MS5jbG91ZC5Qcm92aWRlciI8CgtMaXN0UmVxdWVzdBIYCgVsaW1pdBgBIAEoBUIJukgGGgQYZCAAEhMKC3N0YXJ0X2FmdGVyGAIgASgJIjUKDExpc3RSZXNwb25zZRIlCglwcm92aWRlcnMYASADKAsyEi52MS5jbG91ZC5Qcm92aWRlciIxCg1DcmVhdGVSZXF1ZXN0EiAKBGluaXQYASABKAsyEi52MS5jbG91ZC5Qcm92aWRlciIQCg5DcmVhdGVSZXNwb25zZSIwCg1VcGRhdGVSZXF1ZXN0Eh8KA21vZBgBIAEoCzISLnYxLmNsb3VkLlByb3ZpZGVyIhAKDlVwZGF0ZVJlc3BvbnNlIiUKDURlbGV0ZVJlcXVlc3QSFAoCaWQYASABKAlCCLpIBXIDsAEBIhAKDkRlbGV0ZVJlc3BvbnNlMo0DCg9Qcm92aWRlclNlcnZpY2USRAoDR2V0Eh0udjEuY2xvdWQucHJvdmlkZXIuR2V0UmVxdWVzdBoeLnYxLmNsb3VkLnByb3ZpZGVyLkdldFJlc3BvbnNlEkcKBExpc3QSHi52MS5jbG91ZC5wcm92aWRlci5MaXN0UmVxdWVzdBofLnYxLmNsb3VkLnByb3ZpZGVyLkxpc3RSZXNwb25zZRJNCgZDcmVhdGUSIC52MS5jbG91ZC5wcm92aWRlci5DcmVhdGVSZXF1ZXN0GiEudjEuY2xvdWQucHJvdmlkZXIuQ3JlYXRlUmVzcG9uc2USTQoGVXBkYXRlEiAudjEuY2xvdWQucHJvdmlkZXIuVXBkYXRlUmVxdWVzdBohLnYxLmNsb3VkLnByb3ZpZGVyLlVwZGF0ZVJlc3BvbnNlEk0KBkRlbGV0ZRIgLnYxLmNsb3VkLnByb3ZpZGVyLkRlbGV0ZVJlcXVlc3QaIS52MS5jbG91ZC5wcm92aWRlci5EZWxldGVSZXNwb25zZUI6Wjhjb2RlYmVyZy5vcmcvbWVnYWt1dWwvY2xvdWRqYW0vcGtnL2FwaS92MS9jbG91ZC9wcm92aWRlcmIGcHJvdG8z", [file_buf_validate_validate, file_google_protobuf_timestamp, file_v1_cloud_provider]);
 
 /**
  * @generated from message v1.cloud.provider.GetRequest
@@ -180,11 +180,11 @@ export const DeleteResponseSchema: GenMessage<DeleteResponse> = /*@__PURE__*/
   messageDesc(file_v1_cloud_provider_provider, 9);
 
 /**
- * @generated from service v1.cloud.provider.RoleService
+ * @generated from service v1.cloud.provider.ProviderService
  */
-export const RoleService: GenService<{
+export const ProviderService: GenService<{
   /**
-   * @generated from rpc v1.cloud.provider.RoleService.Get
+   * @generated from rpc v1.cloud.provider.ProviderService.Get
    */
   get: {
     methodKind: "unary";
@@ -192,7 +192,7 @@ export const RoleService: GenService<{
     output: typeof GetResponseSchema;
   },
   /**
-   * @generated from rpc v1.cloud.provider.RoleService.List
+   * @generated from rpc v1.cloud.provider.ProviderService.List
    */
   list: {
     methodKind: "unary";
@@ -200,7 +200,7 @@ export const RoleService: GenService<{
     output: typeof ListResponseSchema;
   },
   /**
-   * @generated from rpc v1.cloud.provider.RoleService.Create
+   * @generated from rpc v1.cloud.provider.ProviderService.Create
    */
   create: {
     methodKind: "unary";
@@ -208,7 +208,7 @@ export const RoleService: GenService<{
     output: typeof CreateResponseSchema;
   },
   /**
-   * @generated from rpc v1.cloud.provider.RoleService.Update
+   * @generated from rpc v1.cloud.provider.ProviderService.Update
    */
   update: {
     methodKind: "unary";
@@ -216,7 +216,7 @@ export const RoleService: GenService<{
     output: typeof UpdateResponseSchema;
   },
   /**
-   * @generated from rpc v1.cloud.provider.RoleService.Delete
+   * @generated from rpc v1.cloud.provider.ProviderService.Delete
    */
   delete: {
     methodKind: "unary";

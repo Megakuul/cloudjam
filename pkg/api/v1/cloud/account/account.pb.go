@@ -224,105 +224,16 @@ func (x *ListResponse) GetAccounts() []*cloud.Account {
 	return nil
 }
 
-type CreateRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Provider      string                 `protobuf:"bytes,1,opt,name=provider,proto3" json:"provider,omitempty"`
-	Init          *cloud.Account         `protobuf:"bytes,2,opt,name=init,proto3" json:"init,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateRequest) Reset() {
-	*x = CreateRequest{}
-	mi := &file_v1_cloud_account_account_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateRequest) ProtoMessage() {}
-
-func (x *CreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_cloud_account_account_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateRequest.ProtoReflect.Descriptor instead.
-func (*CreateRequest) Descriptor() ([]byte, []int) {
-	return file_v1_cloud_account_account_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *CreateRequest) GetProvider() string {
-	if x != nil {
-		return x.Provider
-	}
-	return ""
-}
-
-func (x *CreateRequest) GetInit() *cloud.Account {
-	if x != nil {
-		return x.Init
-	}
-	return nil
-}
-
-type CreateResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateResponse) Reset() {
-	*x = CreateResponse{}
-	mi := &file_v1_cloud_account_account_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateResponse) ProtoMessage() {}
-
-func (x *CreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_cloud_account_account_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateResponse.ProtoReflect.Descriptor instead.
-func (*CreateResponse) Descriptor() ([]byte, []int) {
-	return file_v1_cloud_account_account_proto_rawDescGZIP(), []int{5}
-}
-
 type UpdateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Provider      string                 `protobuf:"bytes,1,opt,name=provider,proto3" json:"provider,omitempty"`
-	Mod           *cloud.Account         `protobuf:"bytes,2,opt,name=mod,proto3" json:"mod,omitempty"`
+	Mod           *cloud.Account         `protobuf:"bytes,1,opt,name=mod,proto3" json:"mod,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *UpdateRequest) Reset() {
 	*x = UpdateRequest{}
-	mi := &file_v1_cloud_account_account_proto_msgTypes[6]
+	mi := &file_v1_cloud_account_account_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -334,7 +245,7 @@ func (x *UpdateRequest) String() string {
 func (*UpdateRequest) ProtoMessage() {}
 
 func (x *UpdateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_cloud_account_account_proto_msgTypes[6]
+	mi := &file_v1_cloud_account_account_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -347,14 +258,7 @@ func (x *UpdateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateRequest.ProtoReflect.Descriptor instead.
 func (*UpdateRequest) Descriptor() ([]byte, []int) {
-	return file_v1_cloud_account_account_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *UpdateRequest) GetProvider() string {
-	if x != nil {
-		return x.Provider
-	}
-	return ""
+	return file_v1_cloud_account_account_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *UpdateRequest) GetMod() *cloud.Account {
@@ -372,7 +276,7 @@ type UpdateResponse struct {
 
 func (x *UpdateResponse) Reset() {
 	*x = UpdateResponse{}
-	mi := &file_v1_cloud_account_account_proto_msgTypes[7]
+	mi := &file_v1_cloud_account_account_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -384,7 +288,7 @@ func (x *UpdateResponse) String() string {
 func (*UpdateResponse) ProtoMessage() {}
 
 func (x *UpdateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_cloud_account_account_proto_msgTypes[7]
+	mi := &file_v1_cloud_account_account_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -397,95 +301,7 @@ func (x *UpdateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateResponse.ProtoReflect.Descriptor instead.
 func (*UpdateResponse) Descriptor() ([]byte, []int) {
-	return file_v1_cloud_account_account_proto_rawDescGZIP(), []int{7}
-}
-
-type DeleteRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Provider      string                 `protobuf:"bytes,1,opt,name=provider,proto3" json:"provider,omitempty"`
-	Id            string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteRequest) Reset() {
-	*x = DeleteRequest{}
-	mi := &file_v1_cloud_account_account_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteRequest) ProtoMessage() {}
-
-func (x *DeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_cloud_account_account_proto_msgTypes[8]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteRequest.ProtoReflect.Descriptor instead.
-func (*DeleteRequest) Descriptor() ([]byte, []int) {
-	return file_v1_cloud_account_account_proto_rawDescGZIP(), []int{8}
-}
-
-func (x *DeleteRequest) GetProvider() string {
-	if x != nil {
-		return x.Provider
-	}
-	return ""
-}
-
-func (x *DeleteRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-type DeleteResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteResponse) Reset() {
-	*x = DeleteResponse{}
-	mi := &file_v1_cloud_account_account_proto_msgTypes[9]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteResponse) ProtoMessage() {}
-
-func (x *DeleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_cloud_account_account_proto_msgTypes[9]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteResponse.ProtoReflect.Descriptor instead.
-func (*DeleteResponse) Descriptor() ([]byte, []int) {
-	return file_v1_cloud_account_account_proto_rawDescGZIP(), []int{9}
+	return file_v1_cloud_account_account_proto_rawDescGZIP(), []int{5}
 }
 
 var File_v1_cloud_account_account_proto protoreflect.FileDescriptor
@@ -505,25 +321,14 @@ const file_v1_cloud_account_account_proto_rawDesc = "" +
 	"\vstart_after\x18\x03 \x01(\tR\n" +
 	"startAfter\"=\n" +
 	"\fListResponse\x12-\n" +
-	"\baccounts\x18\x01 \x03(\v2\x11.v1.cloud.AccountR\baccounts\"\\\n" +
-	"\rCreateRequest\x12$\n" +
-	"\bprovider\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\bprovider\x12%\n" +
-	"\x04init\x18\x02 \x01(\v2\x11.v1.cloud.AccountR\x04init\"\x10\n" +
-	"\x0eCreateResponse\"Z\n" +
-	"\rUpdateRequest\x12$\n" +
-	"\bprovider\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\bprovider\x12#\n" +
-	"\x03mod\x18\x02 \x01(\v2\x11.v1.cloud.AccountR\x03mod\"\x10\n" +
-	"\x0eUpdateResponse\"O\n" +
-	"\rDeleteRequest\x12$\n" +
-	"\bprovider\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\bprovider\x12\x18\n" +
-	"\x02id\x18\x02 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\"\x10\n" +
-	"\x0eDeleteResponse2\xff\x02\n" +
-	"\vRoleService\x12B\n" +
+	"\baccounts\x18\x01 \x03(\v2\x11.v1.cloud.AccountR\baccounts\"4\n" +
+	"\rUpdateRequest\x12#\n" +
+	"\x03mod\x18\x01 \x01(\v2\x11.v1.cloud.AccountR\x03mod\"\x10\n" +
+	"\x0eUpdateResponse2\xe8\x01\n" +
+	"\x0eAccountService\x12B\n" +
 	"\x03Get\x12\x1c.v1.cloud.account.GetRequest\x1a\x1d.v1.cloud.account.GetResponse\x12E\n" +
 	"\x04List\x12\x1d.v1.cloud.account.ListRequest\x1a\x1e.v1.cloud.account.ListResponse\x12K\n" +
-	"\x06Create\x12\x1f.v1.cloud.account.CreateRequest\x1a .v1.cloud.account.CreateResponse\x12K\n" +
-	"\x06Update\x12\x1f.v1.cloud.account.UpdateRequest\x1a .v1.cloud.account.UpdateResponse\x12K\n" +
-	"\x06Delete\x12\x1f.v1.cloud.account.DeleteRequest\x1a .v1.cloud.account.DeleteResponseB9Z7codeberg.org/megakuul/cloudjam/pkg/api/v1/cloud/accountb\x06proto3"
+	"\x06Update\x12\x1f.v1.cloud.account.UpdateRequest\x1a .v1.cloud.account.UpdateResponseB9Z7codeberg.org/megakuul/cloudjam/pkg/api/v1/cloud/accountb\x06proto3"
 
 var (
 	file_v1_cloud_account_account_proto_rawDescOnce sync.Once
@@ -537,40 +342,31 @@ func file_v1_cloud_account_account_proto_rawDescGZIP() []byte {
 	return file_v1_cloud_account_account_proto_rawDescData
 }
 
-var file_v1_cloud_account_account_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_v1_cloud_account_account_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_v1_cloud_account_account_proto_goTypes = []any{
 	(*GetRequest)(nil),     // 0: v1.cloud.account.GetRequest
 	(*GetResponse)(nil),    // 1: v1.cloud.account.GetResponse
 	(*ListRequest)(nil),    // 2: v1.cloud.account.ListRequest
 	(*ListResponse)(nil),   // 3: v1.cloud.account.ListResponse
-	(*CreateRequest)(nil),  // 4: v1.cloud.account.CreateRequest
-	(*CreateResponse)(nil), // 5: v1.cloud.account.CreateResponse
-	(*UpdateRequest)(nil),  // 6: v1.cloud.account.UpdateRequest
-	(*UpdateResponse)(nil), // 7: v1.cloud.account.UpdateResponse
-	(*DeleteRequest)(nil),  // 8: v1.cloud.account.DeleteRequest
-	(*DeleteResponse)(nil), // 9: v1.cloud.account.DeleteResponse
-	(*cloud.Account)(nil),  // 10: v1.cloud.Account
+	(*UpdateRequest)(nil),  // 4: v1.cloud.account.UpdateRequest
+	(*UpdateResponse)(nil), // 5: v1.cloud.account.UpdateResponse
+	(*cloud.Account)(nil),  // 6: v1.cloud.Account
 }
 var file_v1_cloud_account_account_proto_depIdxs = []int32{
-	10, // 0: v1.cloud.account.GetResponse.account:type_name -> v1.cloud.Account
-	10, // 1: v1.cloud.account.ListResponse.accounts:type_name -> v1.cloud.Account
-	10, // 2: v1.cloud.account.CreateRequest.init:type_name -> v1.cloud.Account
-	10, // 3: v1.cloud.account.UpdateRequest.mod:type_name -> v1.cloud.Account
-	0,  // 4: v1.cloud.account.RoleService.Get:input_type -> v1.cloud.account.GetRequest
-	2,  // 5: v1.cloud.account.RoleService.List:input_type -> v1.cloud.account.ListRequest
-	4,  // 6: v1.cloud.account.RoleService.Create:input_type -> v1.cloud.account.CreateRequest
-	6,  // 7: v1.cloud.account.RoleService.Update:input_type -> v1.cloud.account.UpdateRequest
-	8,  // 8: v1.cloud.account.RoleService.Delete:input_type -> v1.cloud.account.DeleteRequest
-	1,  // 9: v1.cloud.account.RoleService.Get:output_type -> v1.cloud.account.GetResponse
-	3,  // 10: v1.cloud.account.RoleService.List:output_type -> v1.cloud.account.ListResponse
-	5,  // 11: v1.cloud.account.RoleService.Create:output_type -> v1.cloud.account.CreateResponse
-	7,  // 12: v1.cloud.account.RoleService.Update:output_type -> v1.cloud.account.UpdateResponse
-	9,  // 13: v1.cloud.account.RoleService.Delete:output_type -> v1.cloud.account.DeleteResponse
-	9,  // [9:14] is the sub-list for method output_type
-	4,  // [4:9] is the sub-list for method input_type
-	4,  // [4:4] is the sub-list for extension type_name
-	4,  // [4:4] is the sub-list for extension extendee
-	0,  // [0:4] is the sub-list for field type_name
+	6, // 0: v1.cloud.account.GetResponse.account:type_name -> v1.cloud.Account
+	6, // 1: v1.cloud.account.ListResponse.accounts:type_name -> v1.cloud.Account
+	6, // 2: v1.cloud.account.UpdateRequest.mod:type_name -> v1.cloud.Account
+	0, // 3: v1.cloud.account.AccountService.Get:input_type -> v1.cloud.account.GetRequest
+	2, // 4: v1.cloud.account.AccountService.List:input_type -> v1.cloud.account.ListRequest
+	4, // 5: v1.cloud.account.AccountService.Update:input_type -> v1.cloud.account.UpdateRequest
+	1, // 6: v1.cloud.account.AccountService.Get:output_type -> v1.cloud.account.GetResponse
+	3, // 7: v1.cloud.account.AccountService.List:output_type -> v1.cloud.account.ListResponse
+	5, // 8: v1.cloud.account.AccountService.Update:output_type -> v1.cloud.account.UpdateResponse
+	6, // [6:9] is the sub-list for method output_type
+	3, // [3:6] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_v1_cloud_account_account_proto_init() }
@@ -584,7 +380,7 @@ func file_v1_cloud_account_account_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_v1_cloud_account_account_proto_rawDesc), len(file_v1_cloud_account_account_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   10,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

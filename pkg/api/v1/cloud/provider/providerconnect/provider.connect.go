@@ -21,8 +21,8 @@ import (
 const _ = connect.IsAtLeastVersion1_13_0
 
 const (
-	// RoleServiceName is the fully-qualified name of the RoleService service.
-	RoleServiceName = "v1.cloud.provider.RoleService"
+	// ProviderServiceName is the fully-qualified name of the ProviderService service.
+	ProviderServiceName = "v1.cloud.provider.ProviderService"
 )
 
 // These constants are the fully-qualified names of the RPCs defined in this package. They're
@@ -33,20 +33,20 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
-	// RoleServiceGetProcedure is the fully-qualified name of the RoleService's Get RPC.
-	RoleServiceGetProcedure = "/v1.cloud.provider.RoleService/Get"
-	// RoleServiceListProcedure is the fully-qualified name of the RoleService's List RPC.
-	RoleServiceListProcedure = "/v1.cloud.provider.RoleService/List"
-	// RoleServiceCreateProcedure is the fully-qualified name of the RoleService's Create RPC.
-	RoleServiceCreateProcedure = "/v1.cloud.provider.RoleService/Create"
-	// RoleServiceUpdateProcedure is the fully-qualified name of the RoleService's Update RPC.
-	RoleServiceUpdateProcedure = "/v1.cloud.provider.RoleService/Update"
-	// RoleServiceDeleteProcedure is the fully-qualified name of the RoleService's Delete RPC.
-	RoleServiceDeleteProcedure = "/v1.cloud.provider.RoleService/Delete"
+	// ProviderServiceGetProcedure is the fully-qualified name of the ProviderService's Get RPC.
+	ProviderServiceGetProcedure = "/v1.cloud.provider.ProviderService/Get"
+	// ProviderServiceListProcedure is the fully-qualified name of the ProviderService's List RPC.
+	ProviderServiceListProcedure = "/v1.cloud.provider.ProviderService/List"
+	// ProviderServiceCreateProcedure is the fully-qualified name of the ProviderService's Create RPC.
+	ProviderServiceCreateProcedure = "/v1.cloud.provider.ProviderService/Create"
+	// ProviderServiceUpdateProcedure is the fully-qualified name of the ProviderService's Update RPC.
+	ProviderServiceUpdateProcedure = "/v1.cloud.provider.ProviderService/Update"
+	// ProviderServiceDeleteProcedure is the fully-qualified name of the ProviderService's Delete RPC.
+	ProviderServiceDeleteProcedure = "/v1.cloud.provider.ProviderService/Delete"
 )
 
-// RoleServiceClient is a client for the v1.cloud.provider.RoleService service.
-type RoleServiceClient interface {
+// ProviderServiceClient is a client for the v1.cloud.provider.ProviderService service.
+type ProviderServiceClient interface {
 	Get(context.Context, *connect.Request[provider.GetRequest]) (*connect.Response[provider.GetResponse], error)
 	List(context.Context, *connect.Request[provider.ListRequest]) (*connect.Response[provider.ListResponse], error)
 	Create(context.Context, *connect.Request[provider.CreateRequest]) (*connect.Response[provider.CreateResponse], error)
@@ -54,52 +54,52 @@ type RoleServiceClient interface {
 	Delete(context.Context, *connect.Request[provider.DeleteRequest]) (*connect.Response[provider.DeleteResponse], error)
 }
 
-// NewRoleServiceClient constructs a client for the v1.cloud.provider.RoleService service. By
-// default, it uses the Connect protocol with the binary Protobuf Codec, asks for gzipped responses,
-// and sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the
+// NewProviderServiceClient constructs a client for the v1.cloud.provider.ProviderService service.
+// By default, it uses the Connect protocol with the binary Protobuf Codec, asks for gzipped
+// responses, and sends uncompressed requests. To use the gRPC or gRPC-Web protocols, supply the
 // connect.WithGRPC() or connect.WithGRPCWeb() options.
 //
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
-func NewRoleServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) RoleServiceClient {
+func NewProviderServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) ProviderServiceClient {
 	baseURL = strings.TrimRight(baseURL, "/")
-	roleServiceMethods := provider.File_v1_cloud_provider_provider_proto.Services().ByName("RoleService").Methods()
-	return &roleServiceClient{
+	providerServiceMethods := provider.File_v1_cloud_provider_provider_proto.Services().ByName("ProviderService").Methods()
+	return &providerServiceClient{
 		get: connect.NewClient[provider.GetRequest, provider.GetResponse](
 			httpClient,
-			baseURL+RoleServiceGetProcedure,
-			connect.WithSchema(roleServiceMethods.ByName("Get")),
+			baseURL+ProviderServiceGetProcedure,
+			connect.WithSchema(providerServiceMethods.ByName("Get")),
 			connect.WithClientOptions(opts...),
 		),
 		list: connect.NewClient[provider.ListRequest, provider.ListResponse](
 			httpClient,
-			baseURL+RoleServiceListProcedure,
-			connect.WithSchema(roleServiceMethods.ByName("List")),
+			baseURL+ProviderServiceListProcedure,
+			connect.WithSchema(providerServiceMethods.ByName("List")),
 			connect.WithClientOptions(opts...),
 		),
 		create: connect.NewClient[provider.CreateRequest, provider.CreateResponse](
 			httpClient,
-			baseURL+RoleServiceCreateProcedure,
-			connect.WithSchema(roleServiceMethods.ByName("Create")),
+			baseURL+ProviderServiceCreateProcedure,
+			connect.WithSchema(providerServiceMethods.ByName("Create")),
 			connect.WithClientOptions(opts...),
 		),
 		update: connect.NewClient[provider.UpdateRequest, provider.UpdateResponse](
 			httpClient,
-			baseURL+RoleServiceUpdateProcedure,
-			connect.WithSchema(roleServiceMethods.ByName("Update")),
+			baseURL+ProviderServiceUpdateProcedure,
+			connect.WithSchema(providerServiceMethods.ByName("Update")),
 			connect.WithClientOptions(opts...),
 		),
 		delete: connect.NewClient[provider.DeleteRequest, provider.DeleteResponse](
 			httpClient,
-			baseURL+RoleServiceDeleteProcedure,
-			connect.WithSchema(roleServiceMethods.ByName("Delete")),
+			baseURL+ProviderServiceDeleteProcedure,
+			connect.WithSchema(providerServiceMethods.ByName("Delete")),
 			connect.WithClientOptions(opts...),
 		),
 	}
 }
 
-// roleServiceClient implements RoleServiceClient.
-type roleServiceClient struct {
+// providerServiceClient implements ProviderServiceClient.
+type providerServiceClient struct {
 	get    *connect.Client[provider.GetRequest, provider.GetResponse]
 	list   *connect.Client[provider.ListRequest, provider.ListResponse]
 	create *connect.Client[provider.CreateRequest, provider.CreateResponse]
@@ -107,33 +107,33 @@ type roleServiceClient struct {
 	delete *connect.Client[provider.DeleteRequest, provider.DeleteResponse]
 }
 
-// Get calls v1.cloud.provider.RoleService.Get.
-func (c *roleServiceClient) Get(ctx context.Context, req *connect.Request[provider.GetRequest]) (*connect.Response[provider.GetResponse], error) {
+// Get calls v1.cloud.provider.ProviderService.Get.
+func (c *providerServiceClient) Get(ctx context.Context, req *connect.Request[provider.GetRequest]) (*connect.Response[provider.GetResponse], error) {
 	return c.get.CallUnary(ctx, req)
 }
 
-// List calls v1.cloud.provider.RoleService.List.
-func (c *roleServiceClient) List(ctx context.Context, req *connect.Request[provider.ListRequest]) (*connect.Response[provider.ListResponse], error) {
+// List calls v1.cloud.provider.ProviderService.List.
+func (c *providerServiceClient) List(ctx context.Context, req *connect.Request[provider.ListRequest]) (*connect.Response[provider.ListResponse], error) {
 	return c.list.CallUnary(ctx, req)
 }
 
-// Create calls v1.cloud.provider.RoleService.Create.
-func (c *roleServiceClient) Create(ctx context.Context, req *connect.Request[provider.CreateRequest]) (*connect.Response[provider.CreateResponse], error) {
+// Create calls v1.cloud.provider.ProviderService.Create.
+func (c *providerServiceClient) Create(ctx context.Context, req *connect.Request[provider.CreateRequest]) (*connect.Response[provider.CreateResponse], error) {
 	return c.create.CallUnary(ctx, req)
 }
 
-// Update calls v1.cloud.provider.RoleService.Update.
-func (c *roleServiceClient) Update(ctx context.Context, req *connect.Request[provider.UpdateRequest]) (*connect.Response[provider.UpdateResponse], error) {
+// Update calls v1.cloud.provider.ProviderService.Update.
+func (c *providerServiceClient) Update(ctx context.Context, req *connect.Request[provider.UpdateRequest]) (*connect.Response[provider.UpdateResponse], error) {
 	return c.update.CallUnary(ctx, req)
 }
 
-// Delete calls v1.cloud.provider.RoleService.Delete.
-func (c *roleServiceClient) Delete(ctx context.Context, req *connect.Request[provider.DeleteRequest]) (*connect.Response[provider.DeleteResponse], error) {
+// Delete calls v1.cloud.provider.ProviderService.Delete.
+func (c *providerServiceClient) Delete(ctx context.Context, req *connect.Request[provider.DeleteRequest]) (*connect.Response[provider.DeleteResponse], error) {
 	return c.delete.CallUnary(ctx, req)
 }
 
-// RoleServiceHandler is an implementation of the v1.cloud.provider.RoleService service.
-type RoleServiceHandler interface {
+// ProviderServiceHandler is an implementation of the v1.cloud.provider.ProviderService service.
+type ProviderServiceHandler interface {
 	Get(context.Context, *connect.Request[provider.GetRequest]) (*connect.Response[provider.GetResponse], error)
 	List(context.Context, *connect.Request[provider.ListRequest]) (*connect.Response[provider.ListResponse], error)
 	Create(context.Context, *connect.Request[provider.CreateRequest]) (*connect.Response[provider.CreateResponse], error)
@@ -141,80 +141,80 @@ type RoleServiceHandler interface {
 	Delete(context.Context, *connect.Request[provider.DeleteRequest]) (*connect.Response[provider.DeleteResponse], error)
 }
 
-// NewRoleServiceHandler builds an HTTP handler from the service implementation. It returns the path
-// on which to mount the handler and the handler itself.
+// NewProviderServiceHandler builds an HTTP handler from the service implementation. It returns the
+// path on which to mount the handler and the handler itself.
 //
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
-func NewRoleServiceHandler(svc RoleServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
-	roleServiceMethods := provider.File_v1_cloud_provider_provider_proto.Services().ByName("RoleService").Methods()
-	roleServiceGetHandler := connect.NewUnaryHandler(
-		RoleServiceGetProcedure,
+func NewProviderServiceHandler(svc ProviderServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	providerServiceMethods := provider.File_v1_cloud_provider_provider_proto.Services().ByName("ProviderService").Methods()
+	providerServiceGetHandler := connect.NewUnaryHandler(
+		ProviderServiceGetProcedure,
 		svc.Get,
-		connect.WithSchema(roleServiceMethods.ByName("Get")),
+		connect.WithSchema(providerServiceMethods.ByName("Get")),
 		connect.WithHandlerOptions(opts...),
 	)
-	roleServiceListHandler := connect.NewUnaryHandler(
-		RoleServiceListProcedure,
+	providerServiceListHandler := connect.NewUnaryHandler(
+		ProviderServiceListProcedure,
 		svc.List,
-		connect.WithSchema(roleServiceMethods.ByName("List")),
+		connect.WithSchema(providerServiceMethods.ByName("List")),
 		connect.WithHandlerOptions(opts...),
 	)
-	roleServiceCreateHandler := connect.NewUnaryHandler(
-		RoleServiceCreateProcedure,
+	providerServiceCreateHandler := connect.NewUnaryHandler(
+		ProviderServiceCreateProcedure,
 		svc.Create,
-		connect.WithSchema(roleServiceMethods.ByName("Create")),
+		connect.WithSchema(providerServiceMethods.ByName("Create")),
 		connect.WithHandlerOptions(opts...),
 	)
-	roleServiceUpdateHandler := connect.NewUnaryHandler(
-		RoleServiceUpdateProcedure,
+	providerServiceUpdateHandler := connect.NewUnaryHandler(
+		ProviderServiceUpdateProcedure,
 		svc.Update,
-		connect.WithSchema(roleServiceMethods.ByName("Update")),
+		connect.WithSchema(providerServiceMethods.ByName("Update")),
 		connect.WithHandlerOptions(opts...),
 	)
-	roleServiceDeleteHandler := connect.NewUnaryHandler(
-		RoleServiceDeleteProcedure,
+	providerServiceDeleteHandler := connect.NewUnaryHandler(
+		ProviderServiceDeleteProcedure,
 		svc.Delete,
-		connect.WithSchema(roleServiceMethods.ByName("Delete")),
+		connect.WithSchema(providerServiceMethods.ByName("Delete")),
 		connect.WithHandlerOptions(opts...),
 	)
-	return "/v1.cloud.provider.RoleService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	return "/v1.cloud.provider.ProviderService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case RoleServiceGetProcedure:
-			roleServiceGetHandler.ServeHTTP(w, r)
-		case RoleServiceListProcedure:
-			roleServiceListHandler.ServeHTTP(w, r)
-		case RoleServiceCreateProcedure:
-			roleServiceCreateHandler.ServeHTTP(w, r)
-		case RoleServiceUpdateProcedure:
-			roleServiceUpdateHandler.ServeHTTP(w, r)
-		case RoleServiceDeleteProcedure:
-			roleServiceDeleteHandler.ServeHTTP(w, r)
+		case ProviderServiceGetProcedure:
+			providerServiceGetHandler.ServeHTTP(w, r)
+		case ProviderServiceListProcedure:
+			providerServiceListHandler.ServeHTTP(w, r)
+		case ProviderServiceCreateProcedure:
+			providerServiceCreateHandler.ServeHTTP(w, r)
+		case ProviderServiceUpdateProcedure:
+			providerServiceUpdateHandler.ServeHTTP(w, r)
+		case ProviderServiceDeleteProcedure:
+			providerServiceDeleteHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
 	})
 }
 
-// UnimplementedRoleServiceHandler returns CodeUnimplemented from all methods.
-type UnimplementedRoleServiceHandler struct{}
+// UnimplementedProviderServiceHandler returns CodeUnimplemented from all methods.
+type UnimplementedProviderServiceHandler struct{}
 
-func (UnimplementedRoleServiceHandler) Get(context.Context, *connect.Request[provider.GetRequest]) (*connect.Response[provider.GetResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.cloud.provider.RoleService.Get is not implemented"))
+func (UnimplementedProviderServiceHandler) Get(context.Context, *connect.Request[provider.GetRequest]) (*connect.Response[provider.GetResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.cloud.provider.ProviderService.Get is not implemented"))
 }
 
-func (UnimplementedRoleServiceHandler) List(context.Context, *connect.Request[provider.ListRequest]) (*connect.Response[provider.ListResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.cloud.provider.RoleService.List is not implemented"))
+func (UnimplementedProviderServiceHandler) List(context.Context, *connect.Request[provider.ListRequest]) (*connect.Response[provider.ListResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.cloud.provider.ProviderService.List is not implemented"))
 }
 
-func (UnimplementedRoleServiceHandler) Create(context.Context, *connect.Request[provider.CreateRequest]) (*connect.Response[provider.CreateResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.cloud.provider.RoleService.Create is not implemented"))
+func (UnimplementedProviderServiceHandler) Create(context.Context, *connect.Request[provider.CreateRequest]) (*connect.Response[provider.CreateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.cloud.provider.ProviderService.Create is not implemented"))
 }
 
-func (UnimplementedRoleServiceHandler) Update(context.Context, *connect.Request[provider.UpdateRequest]) (*connect.Response[provider.UpdateResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.cloud.provider.RoleService.Update is not implemented"))
+func (UnimplementedProviderServiceHandler) Update(context.Context, *connect.Request[provider.UpdateRequest]) (*connect.Response[provider.UpdateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.cloud.provider.ProviderService.Update is not implemented"))
 }
 
-func (UnimplementedRoleServiceHandler) Delete(context.Context, *connect.Request[provider.DeleteRequest]) (*connect.Response[provider.DeleteResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.cloud.provider.RoleService.Delete is not implemented"))
+func (UnimplementedProviderServiceHandler) Delete(context.Context, *connect.Request[provider.DeleteRequest]) (*connect.Response[provider.DeleteResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.cloud.provider.ProviderService.Delete is not implemented"))
 }
