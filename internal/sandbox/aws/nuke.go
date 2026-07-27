@@ -69,13 +69,13 @@ type nukeParameters struct {
 
 // clean wipes the account with the configured tool and returns the path of
 // the persisted tool log (also on failure, for inspection).
-func (r *Repository) clean(ctx context.Context, id string) (string, error) {
+func (r *Provider) clean(ctx context.Context, id string) (string, error) {
 	binary, err := exec.LookPath(r.config.NukeBinary)
 	if err != nil {
 		return "", fmt.Errorf("cleanup tool %q not found (install %s): %w", r.config.NukeBinary, r.config.Nuke, err)
 	}
 
-	config, _, err := r.assume(ctx, id, r.config.SandboxRole)
+	config, err := r.assume(ctx, id, r.config.SandboxRole)
 	if err != nil {
 		return "", err
 	}

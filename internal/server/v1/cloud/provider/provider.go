@@ -9,6 +9,7 @@ import (
 
 	"codeberg.org/megakuul/cloudjam/internal/auth"
 	"codeberg.org/megakuul/cloudjam/internal/oltp"
+	"codeberg.org/megakuul/cloudjam/internal/sandbox"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/cloud"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/cloud/provider"
 	"connectrpc.com/connect"
@@ -18,6 +19,7 @@ import (
 type Server struct {
 	logger *slog.Logger
 	bucket *dynamitedb.Bucket
+	boxer  sandbox.Repository
 }
 
 func New(logger *slog.Logger, bucket *dynamitedb.Bucket) *Server {

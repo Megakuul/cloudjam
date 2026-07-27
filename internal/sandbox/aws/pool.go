@@ -68,7 +68,7 @@ func (r *Repository) clearState(ctx context.Context, id string) error {
 }
 
 func (r *Repository) readAccount(ctx context.Context, id string) (*sandbox.Account, error) {
-	account, err := r.organizations.DescribeAccount(ctx, &organizations.DescribeAccountInput{
+	descResp, err := r.organizations.DescribeAccount(ctx, &organizations.DescribeAccountInput{
 		AccountId: &id,
 	})
 	if err != nil {
@@ -83,11 +83,9 @@ func (r *Repository) readAccount(ctx context.Context, id string) (*sandbox.Accou
 	}
 	updated, _ := time.Parse(time.RFC3339, tags[tagUpdated])
 	return &sandbox.Account{
-		ID:      *account.Account.Id,
-		Name:    *account.Account.Name,
-		State:   sandbox.State(tags[tagState]),
-		Owner:   tags[tagOwner],
-		Updated: updated,
+		ID:    *descResp.Account.Id,
+		Name:  *descResp.Account.Name,
+		State: sandbox.State(tags[tagState]),
 	}, nil
 }
 
