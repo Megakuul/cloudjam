@@ -19,7 +19,7 @@ import (
 type Server struct {
 	logger *slog.Logger
 	bucket *dynamitedb.Bucket
-	boxer  sandbox.Repository
+	boxer  sandbox.Provider
 }
 
 func New(logger *slog.Logger, bucket *dynamitedb.Bucket) *Server {

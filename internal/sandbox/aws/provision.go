@@ -10,14 +10,12 @@ import (
 	orgtypes "github.com/aws/aws-sdk-go-v2/service/organizations/types"
 )
 
-func (r *Provider) Provision(ctx context.Context, id string) (*sandbox.Account, error) {
-	if r.blocked(id) {
-		return nil, fmt.Errorf("account %q is the management account or blocklisted", id)
-	}
+func (r *Provider) Provision(ctx context.Context, name string) (*sandbox.Account, error) {
 	createResp, err := r.organizations.CreateAccount(ctx, &organizations.CreateAccountInput{
-		AccountName:            new(id),
-		Email:                  new(id + r.emailSuffix),
+		AccountName:            &name,
+		Email:                  new(name + r.emailSuffix),
 		IamUserAccessToBilling: orgtypes.IAMUserAccessToBillingDeny,
+		RoleName:               &r.adminRole,
 	})
 	if err != nil {
 		return nil, err
@@ -40,11 +38,18 @@ func (r *Provider) Provision(ctx context.Context, id string) (*sandbox.Account, 
 		case orgtypes.CreateAccountStateFailed:
 			return nil, fmt.Errorf("account creation failed for '%s'; please inspect the account manually", *descResp.CreateAccountStatus.AccountId)
 		}
+
+		_, err = r.organizations.MoveAccount(ctx, &organizations.MoveAccountInput{
+			AccountId:           descResp.CreateAccountStatus.AccountId,
+			SourceParentId:      &r.rootOU,
+			DestinationParentId: &r.cloudjamOU,
+		})
+		if err != nil {
+			return nil, fmt.Errorf("account ou assignment failed for '%s': %w", *descResp.CreateAccountStatus.AccountId, err)
+		}
 		return &sandbox.Account{
 			ID:   *descResp.CreateAccountStatus.AccountId,
 			Name: *descResp.CreateAccountStatus.AccountName,
 		}, nil
 	}
-
-	// TODO also create roles
 }

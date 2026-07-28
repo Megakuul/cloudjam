@@ -39,10 +39,11 @@ type Account struct {
 type Provider interface {
 	Provision(ctx context.Context, id string) (*Account, error)
 	Get(ctx context.Context, id string) (*Account, error)
-	List(ctx context.Context) ([]*Account, error)
+	List(ctx context.Context) ([]Account, error)
+	Nuke(ctx context.Context, id string) error
 	// Credentials generates shortlived credentials that a end-user will use to connect to the specified account.
 	// The credentials format is a generic string that may be json formatted so that the frontend can interpret it.
 	Credentials(ctx context.Context, id string) (string, error)
-	Cost(ctx context.Context, id string) ([]*Cost, error)
-	Check(ctx context.Context, id string) ([]*Leak, error)
+	Cost(ctx context.Context, id string) ([]Cost, error)
+	Check(ctx context.Context, id string) ([]Leak, error)
 }

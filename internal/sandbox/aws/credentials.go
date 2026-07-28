@@ -8,7 +8,7 @@ import (
 )
 
 func (r *Provider) Credentials(ctx context.Context, id string, sessionDuration time.Duration) (string, error) {
-	config, err := r.assume(ctx, id, r.sandboxRole, sessionDuration)
+	config, err := r.assume(ctx, id, r.adminRole, sessionDuration)
 	if err != nil {
 		return "", err
 	}

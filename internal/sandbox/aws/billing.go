@@ -17,7 +17,7 @@ import (
 // management (payer) account. Cost explorer data is delayed by up to ~24h,
 // so this catches leaks late; Check covers the realtime side with resource
 // heuristics.
-func (r *Repository) Bill(ctx context.Context, id string) (*sandbox.Bill, error) {
+func (r *Provider) Bill(ctx context.Context, id string) (*sandbox.Bill, error) {
 	if _, err := r.readAccount(ctx, id); err != nil {
 		return nil, err
 	}
@@ -100,7 +100,7 @@ func (r *Repository) Bill(ctx context.Context, id string) (*sandbox.Bill, error)
 }
 
 // scanBilling converts the billing state into check findings.
-func (r *Repository) scanBilling(ctx context.Context, id string) []sandbox.Finding {
+func (r *Provider) scanBilling(ctx context.Context, id string) []sandbox.Finding {
 	bill, err := r.Bill(ctx, id)
 	if err != nil {
 		return []sandbox.Finding{{
