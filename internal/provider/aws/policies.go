@@ -16,6 +16,7 @@ type policyStatement struct {
 	Effect      string                    `json:"Effect"`
 	Action      []string                  `json:"Action,omitempty"`
 	NotAction   []string                  `json:"NotAction,omitempty"`
+	Principal   map[string]string         `json:"Principal,omitempty"`
 	Resource    []string                  `json:"Resource,omitempty"`
 	NotResource []string                  `json:"NotResource,omitempty"`
 	Condition   map[string]map[string]any `json:"Condition,omitempty"`
@@ -153,7 +154,6 @@ func guardControlPolicy(adminRole, sandboxRole, boundaryPolicy string) ([]byte, 
 // The boundary exists in order to create IAM challenges where the user has access to IAM without auto allowing privilege escalation.
 // (without this, a user who can modify policies could potentially gain root access and solve the challenge by infiltrating the account).
 func guardBoundaryPolicy(doc policyDocument) ([]byte, error) {
-	// TODO
 	return json.Marshal(doc)
 }
 

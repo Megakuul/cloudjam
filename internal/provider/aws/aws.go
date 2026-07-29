@@ -30,7 +30,7 @@ import (
 	orgtypes "github.com/aws/aws-sdk-go-v2/service/organizations/types"
 	"github.com/aws/aws-sdk-go-v2/service/sts"
 
-	"codeberg.org/megakuul/cloudjam/internal/sandbox"
+	"codeberg.org/megakuul/cloudjam/internal/provider"
 )
 
 // maxVolumeSize defines the hardcoded maximum storage size (ebs).
@@ -59,6 +59,7 @@ type Provider struct {
 	emailSuffix   string
 	sandboxRole   string
 	adminRole     string
+	boundaryARN   string
 	instanceTypes []string
 
 	maxVolumeSize int
@@ -78,7 +79,7 @@ type Provider struct {
 	mutex sync.Mutex
 }
 
-var _ sandbox.Provider = (*Provider)(nil)
+var _ provider.Provider = (*Provider)(nil)
 
 // New creates the repository and resolves the organization management account.
 func New(ctx context.Context, config awssdk.Config) (*Provider, error) {
@@ -193,38 +194,4 @@ func (r *Provider) assume(ctx context.Context, id string, role string, sessionDu
 		*session.Credentials.SecretAccessKey,
 		*session.Credentials.SessionToken,
 	)), nil
-}
-
-func (r *Provider) Get(ctx context.Context, id string) (*sandbox.Account, error) {
-	descResp, err := r.organizations.DescribeAccount(ctx, &organizations.DescribeAccountInput{
-		AccountId: &id,
-	})
-	if err != nil {
-		return nil, fmt.Errorf("failed to describe account %q: %w", id, err)
-	}
-	return &sandbox.Account{
-		ID:   *descResp.Account.Id,
-		Name: *descResp.Account.Name,
-	}, nil
-}
-
-func (r *Provider) List(ctx context.Context) ([]*sandbox.Account, error) {
-	var accounts []*sandbox.Account
-	paginator := organizations.NewListAccountsPaginator(r.organizations, &organizations.ListAccountsInput{})
-	for paginator.HasMorePages() {
-		page, err := paginator.NextPage(ctx)
-		if err != nil {
-			return nil, fmt.Errorf("failed to list organization accounts: %w", err)
-		}
-		for _, entry := range page.Accounts {
-			if r.blocked(*entry.Id) {
-				continue
-			}
-			accounts = append(accounts, &sandbox.Account{
-				ID:   *entry.Id,
-				Name: *entry.Name,
-			})
-		}
-	}
-	return accounts, nil
 }

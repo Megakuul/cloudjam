@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"codeberg.org/megakuul/cloudjam/internal/sandbox"
+	"codeberg.org/megakuul/cloudjam/internal/provider"
 	awssdk "github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/acmpca"
 	acmpcatypes "github.com/aws/aws-sdk-go-v2/service/acmpca/types"
@@ -21,13 +21,13 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/resourcegroupstaggingapi"
 )
 
-func (r *Provider) Check(ctx context.Context, id string) ([]sandbox.Leak, error) {
+func (r *Provider) Check(ctx context.Context, id string) ([]provider.Leak, error) {
 	config, err := r.assume(ctx, id, r.adminRole, 10*time.Hour)
 	if err != nil {
 		return nil, err
 	}
 
-	leaks := []sandbox.Leak{}
+	leaks := []provider.Leak{}
 
 	// heuristic 1: are the guardrail policies still in place and unmodified?
 	leaks = append(leaks, r.verifyPolicies(ctx, id)...)
@@ -37,11 +37,11 @@ func (r *Provider) Check(ctx context.Context, id string) ([]sandbox.Leak, error)
 
 	// heuristic 3: is any postNukeCheck reporting something?
 	for _, postNukeCheck := range postNukeChecks {
-		leak := []sandbox.Leak{}
+		leak := []provider.Leak{}
 		for _, region := range r.regions {
 			results, err := postNukeCheck.run(ctx, config, region)
 			if err != nil {
-				leak = append(leak, sandbox.Leak{
+				leak = append(leak, provider.Leak{
 					Severity: slog.LevelWarn,
 					Region:   region,
 					Resource: postNukeCheck.name,
@@ -52,7 +52,7 @@ func (r *Provider) Check(ctx context.Context, id string) ([]sandbox.Leak, error)
 			leak = append(leak, results...)
 		}
 		if len(leak) == 0 {
-			leak = append(leak, sandbox.Leak{
+			leak = append(leak, provider.Leak{
 				Severity: slog.LevelInfo,
 				Resource: postNukeCheck.name,
 				Message:  fmt.Sprintf("%s (checked regions: %s)", postNukeCheck.pass, strings.Join(r.regions, ", ")),
@@ -71,7 +71,7 @@ type postNukeCheck struct {
 	// so every heuristic is always visible in the report.
 	pass string
 	// run returns findings for everything suspicious in the region.
-	run func(ctx context.Context, config awssdk.Config, region string) ([]sandbox.Leak, error)
+	run func(ctx context.Context, config awssdk.Config, region string) ([]provider.Leak, error)
 }
 
 // postNukeChecks provide a hardcoded independent list of "after-cleanup" checks on stupid things that should never be active.
@@ -88,9 +88,9 @@ var postNukeChecks = []postNukeCheck{
 	{
 		name: "ec2-instances",
 		pass: "no running ec2 instances",
-		run: func(ctx context.Context, config awssdk.Config, region string) ([]sandbox.Leak, error) {
+		run: func(ctx context.Context, config awssdk.Config, region string) ([]provider.Leak, error) {
 			client := ec2.NewFromConfig(config, func(o *ec2.Options) { o.Region = region })
-			var findings []sandbox.Leak
+			var findings []provider.Leak
 			paginator := ec2.NewDescribeInstancesPaginator(client, &ec2.DescribeInstancesInput{
 				Filters: []ec2types.Filter{
 					{Name: new("instance-state-name"), Values: []string{"pending", "running"}},
@@ -103,7 +103,7 @@ var postNukeChecks = []postNukeCheck{
 				}
 				for _, reservation := range page.Reservations {
 					for _, instance := range reservation.Instances {
-						finding := sandbox.Leak{
+						finding := provider.Leak{
 							Severity: slog.LevelWarn,
 							Region:   region,
 							Resource: *instance.InstanceId,
@@ -123,9 +123,9 @@ var postNukeChecks = []postNukeCheck{
 	{
 		name: "ec2-nat-gateways",
 		pass: "no nat gateways",
-		run: func(ctx context.Context, config awssdk.Config, region string) ([]sandbox.Leak, error) {
+		run: func(ctx context.Context, config awssdk.Config, region string) ([]provider.Leak, error) {
 			client := ec2.NewFromConfig(config, func(o *ec2.Options) { o.Region = region })
-			var findings []sandbox.Leak
+			var findings []provider.Leak
 			paginator := ec2.NewDescribeNatGatewaysPaginator(client, &ec2.DescribeNatGatewaysInput{
 				Filter: []ec2types.Filter{
 					{Name: new("state"), Values: []string{"pending", "available"}},
@@ -137,7 +137,7 @@ var postNukeChecks = []postNukeCheck{
 					return nil, err
 				}
 				for _, gateway := range page.NatGateways {
-					findings = append(findings, sandbox.Leak{
+					findings = append(findings, provider.Leak{
 						Severity: slog.LevelWarn,
 						Region:   region,
 						Resource: *gateway.NatGatewayId,
@@ -152,18 +152,18 @@ var postNukeChecks = []postNukeCheck{
 	{
 		name: "ec2-addresses",
 		pass: "no unassociated elastic ips",
-		run: func(ctx context.Context, config awssdk.Config, region string) ([]sandbox.Leak, error) {
+		run: func(ctx context.Context, config awssdk.Config, region string) ([]provider.Leak, error) {
 			client := ec2.NewFromConfig(config, func(o *ec2.Options) { o.Region = region })
 			addresses, err := client.DescribeAddresses(ctx, &ec2.DescribeAddressesInput{})
 			if err != nil {
 				return nil, err
 			}
-			var findings []sandbox.Leak
+			var findings []provider.Leak
 			for _, address := range addresses.Addresses {
 				if address.AssociationId != nil {
 					continue
 				}
-				findings = append(findings, sandbox.Leak{
+				findings = append(findings, provider.Leak{
 					Severity: slog.LevelWarn,
 					Region:   region,
 					Resource: awssdk.ToString(address.AllocationId),
@@ -177,18 +177,18 @@ var postNukeChecks = []postNukeCheck{
 	{
 		name: "ec2-dedicated-hosts",
 		pass: "no dedicated hosts",
-		run: func(ctx context.Context, config awssdk.Config, region string) ([]sandbox.Leak, error) {
+		run: func(ctx context.Context, config awssdk.Config, region string) ([]provider.Leak, error) {
 			client := ec2.NewFromConfig(config, func(o *ec2.Options) { o.Region = region })
 			hosts, err := client.DescribeHosts(ctx, &ec2.DescribeHostsInput{})
 			if err != nil {
 				return nil, err
 			}
-			var findings []sandbox.Leak
+			var findings []provider.Leak
 			for _, host := range hosts.Hosts {
 				if host.State != ec2types.AllocationStateAvailable && host.State != ec2types.AllocationStatePending {
 					continue
 				}
-				findings = append(findings, sandbox.Leak{
+				findings = append(findings, provider.Leak{
 					Severity: slog.LevelError,
 					Region:   region,
 					Resource: awssdk.ToString(host.HostId),
@@ -202,18 +202,18 @@ var postNukeChecks = []postNukeCheck{
 	{
 		name: "ec2-capacity-reservations",
 		pass: "no active capacity reservations",
-		run: func(ctx context.Context, config awssdk.Config, region string) ([]sandbox.Leak, error) {
+		run: func(ctx context.Context, config awssdk.Config, region string) ([]provider.Leak, error) {
 			client := ec2.NewFromConfig(config, func(o *ec2.Options) { o.Region = region })
 			reservations, err := client.DescribeCapacityReservations(ctx, &ec2.DescribeCapacityReservationsInput{})
 			if err != nil {
 				return nil, err
 			}
-			var findings []sandbox.Leak
+			var findings []provider.Leak
 			for _, reservation := range reservations.CapacityReservations {
 				if reservation.State != ec2types.CapacityReservationStateActive {
 					continue
 				}
-				findings = append(findings, sandbox.Leak{
+				findings = append(findings, provider.Leak{
 					Severity: slog.LevelError,
 					Region:   region,
 					Resource: awssdk.ToString(reservation.CapacityReservationId),
@@ -226,9 +226,9 @@ var postNukeChecks = []postNukeCheck{
 	{
 		name: "ec2-volumes",
 		pass: "no unattached ebs volumes",
-		run: func(ctx context.Context, config awssdk.Config, region string) ([]sandbox.Leak, error) {
+		run: func(ctx context.Context, config awssdk.Config, region string) ([]provider.Leak, error) {
 			client := ec2.NewFromConfig(config, func(o *ec2.Options) { o.Region = region })
-			var findings []sandbox.Leak
+			var findings []provider.Leak
 			paginator := ec2.NewDescribeVolumesPaginator(client, &ec2.DescribeVolumesInput{
 				Filters: []ec2types.Filter{
 					{Name: new("status"), Values: []string{"available"}},
@@ -240,7 +240,7 @@ var postNukeChecks = []postNukeCheck{
 					return nil, err
 				}
 				for _, volume := range page.Volumes {
-					findings = append(findings, sandbox.Leak{
+					findings = append(findings, provider.Leak{
 						Severity: slog.LevelWarn,
 						Region:   region,
 						Resource: awssdk.ToString(volume.VolumeId),
@@ -255,9 +255,9 @@ var postNukeChecks = []postNukeCheck{
 	{
 		name: "acm-pca",
 		pass: "no private certificate authorities",
-		run: func(ctx context.Context, config awssdk.Config, region string) ([]sandbox.Leak, error) {
+		run: func(ctx context.Context, config awssdk.Config, region string) ([]provider.Leak, error) {
 			client := acmpca.NewFromConfig(config, func(o *acmpca.Options) { o.Region = region })
-			var findings []sandbox.Leak
+			var findings []provider.Leak
 			paginator := acmpca.NewListCertificateAuthoritiesPaginator(client, &acmpca.ListCertificateAuthoritiesInput{})
 			for paginator.HasMorePages() {
 				page, err := paginator.NextPage(ctx)
@@ -268,7 +268,7 @@ var postNukeChecks = []postNukeCheck{
 					if authority.Status == acmpcatypes.CertificateAuthorityStatusDeleted {
 						continue
 					}
-					findings = append(findings, sandbox.Leak{
+					findings = append(findings, provider.Leak{
 						Severity: slog.LevelError,
 						Region:   region,
 						Resource: awssdk.ToString(authority.Arn),
@@ -283,18 +283,18 @@ var postNukeChecks = []postNukeCheck{
 	{
 		name: "cloudhsm",
 		pass: "no cloudhsm clusters",
-		run: func(ctx context.Context, config awssdk.Config, region string) ([]sandbox.Leak, error) {
+		run: func(ctx context.Context, config awssdk.Config, region string) ([]provider.Leak, error) {
 			client := cloudhsmv2.NewFromConfig(config, func(o *cloudhsmv2.Options) { o.Region = region })
 			clusters, err := client.DescribeClusters(ctx, &cloudhsmv2.DescribeClustersInput{})
 			if err != nil {
 				return nil, err
 			}
-			var findings []sandbox.Leak
+			var findings []provider.Leak
 			for _, cluster := range clusters.Clusters {
 				if cluster.State == cloudhsmtypes.ClusterStateDeleted {
 					continue
 				}
-				findings = append(findings, sandbox.Leak{
+				findings = append(findings, provider.Leak{
 					Severity: slog.LevelError,
 					Region:   region,
 					Resource: awssdk.ToString(cluster.ClusterId),
@@ -308,9 +308,9 @@ var postNukeChecks = []postNukeCheck{
 	{
 		name: "rds",
 		pass: "no rds instances",
-		run: func(ctx context.Context, config awssdk.Config, region string) ([]sandbox.Leak, error) {
+		run: func(ctx context.Context, config awssdk.Config, region string) ([]provider.Leak, error) {
 			client := rds.NewFromConfig(config, func(o *rds.Options) { o.Region = region })
-			var findings []sandbox.Leak
+			var findings []provider.Leak
 			paginator := rds.NewDescribeDBInstancesPaginator(client, &rds.DescribeDBInstancesInput{})
 			for paginator.HasMorePages() {
 				page, err := paginator.NextPage(ctx)
@@ -319,7 +319,7 @@ var postNukeChecks = []postNukeCheck{
 				}
 				for _, instance := range page.DBInstances {
 					class := awssdk.ToString(instance.DBInstanceClass)
-					finding := sandbox.Leak{
+					finding := provider.Leak{
 						Severity: slog.LevelWarn,
 						Region:   region,
 						Resource: awssdk.ToString(instance.DBInstanceIdentifier),
@@ -339,16 +339,16 @@ var postNukeChecks = []postNukeCheck{
 	{
 		name: "cloudwatch",
 		pass: "no metric streams, contributor insights rules or heavy custom metrics",
-		run: func(ctx context.Context, config awssdk.Config, region string) ([]sandbox.Leak, error) {
+		run: func(ctx context.Context, config awssdk.Config, region string) ([]provider.Leak, error) {
 			client := cloudwatch.NewFromConfig(config, func(o *cloudwatch.Options) { o.Region = region })
-			var findings []sandbox.Leak
+			var findings []provider.Leak
 
 			streams, err := client.ListMetricStreams(ctx, &cloudwatch.ListMetricStreamsInput{})
 			if err != nil {
 				return nil, err
 			}
 			for _, stream := range streams.Entries {
-				findings = append(findings, sandbox.Leak{
+				findings = append(findings, provider.Leak{
 					Severity: slog.LevelWarn,
 					Region:   region,
 					Resource: awssdk.ToString(stream.Name),
@@ -361,7 +361,7 @@ var postNukeChecks = []postNukeCheck{
 				return nil, err
 			}
 			for _, rule := range rules.InsightRules {
-				findings = append(findings, sandbox.Leak{
+				findings = append(findings, provider.Leak{
 					Severity: slog.LevelWarn,
 					Region:   region,
 					Resource: awssdk.ToString(rule.Name),
@@ -383,7 +383,7 @@ var postNukeChecks = []postNukeCheck{
 				}
 			}
 			if custom > 500 {
-				findings = append(findings, sandbox.Leak{
+				findings = append(findings, provider.Leak{
 					Severity: slog.LevelWarn,
 					Region:   region,
 					Resource: "custom-metrics",
@@ -397,9 +397,9 @@ var postNukeChecks = []postNukeCheck{
 	{
 		name: "cloudwatch-logs",
 		pass: "no large log groups without retention",
-		run: func(ctx context.Context, config awssdk.Config, region string) ([]sandbox.Leak, error) {
+		run: func(ctx context.Context, config awssdk.Config, region string) ([]provider.Leak, error) {
 			client := cloudwatchlogs.NewFromConfig(config, func(o *cloudwatchlogs.Options) { o.Region = region })
-			var findings []sandbox.Leak
+			var findings []provider.Leak
 			paginator := cloudwatchlogs.NewDescribeLogGroupsPaginator(client, &cloudwatchlogs.DescribeLogGroupsInput{})
 			for paginator.HasMorePages() {
 				page, err := paginator.NextPage(ctx)
@@ -411,7 +411,7 @@ var postNukeChecks = []postNukeCheck{
 					if group.RetentionInDays != nil || stored < 5<<30 {
 						continue
 					}
-					findings = append(findings, sandbox.Leak{
+					findings = append(findings, provider.Leak{
 						Severity: slog.LevelWarn,
 						Region:   region,
 						Resource: awssdk.ToString(group.LogGroupName),
@@ -426,7 +426,7 @@ var postNukeChecks = []postNukeCheck{
 	{
 		name: "leftovers",
 		pass: "no tagged resources present",
-		run: func(ctx context.Context, config awssdk.Config, region string) ([]sandbox.Leak, error) {
+		run: func(ctx context.Context, config awssdk.Config, region string) ([]provider.Leak, error) {
 			client := resourcegroupstaggingapi.NewFromConfig(config, func(o *resourcegroupstaggingapi.Options) { o.Region = region })
 			var resources []string
 			paginator := resourcegroupstaggingapi.NewGetResourcesPaginator(client, &resourcegroupstaggingapi.GetResourcesInput{})
@@ -446,7 +446,7 @@ var postNukeChecks = []postNukeCheck{
 			if len(samples) > 5 {
 				samples = samples[:5]
 			}
-			return []sandbox.Leak{{
+			return []provider.Leak{{
 				Severity: slog.LevelWarn,
 				Region:   region,
 				Resource: "tagging-api",

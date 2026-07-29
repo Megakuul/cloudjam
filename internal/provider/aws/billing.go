@@ -10,20 +10,20 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/costexplorer"
 	cetypes "github.com/aws/aws-sdk-go-v2/service/costexplorer/types"
 
-	"codeberg.org/megakuul/cloudjam/internal/sandbox"
+	"codeberg.org/megakuul/cloudjam/internal/provider"
 )
 
 // Bill aggregates the spend of one member account via cost explorer on the
 // management (payer) account. Cost explorer data is delayed by up to ~24h,
 // so this catches leaks late; Check covers the realtime side with resource
 // heuristics.
-func (r *Provider) Bill(ctx context.Context, id string) (*sandbox.Bill, error) {
+func (r *Provider) Bill(ctx context.Context, id string) (*provider.Bill, error) {
 	if _, err := r.readAccount(ctx, id); err != nil {
 		return nil, err
 	}
 
 	now := time.Now().UTC()
-	bill := &sandbox.Bill{
+	bill := &provider.Bill{
 		Account: id,
 		Window:  r.config.BillingWindow,
 		Checked: now,
@@ -72,7 +72,7 @@ func (r *Provider) Bill(ctx context.Context, id string) (*sandbox.Bill, error) {
 					services[group.Keys[0]] += amount
 				}
 			}
-			bill.Daily = append(bill.Daily, sandbox.Cost{
+			bill.Daily = append(bill.Daily, provider.Cost{
 				Date:   *day.TimePeriod.Start,
 				Amount: daily,
 			})
@@ -88,7 +88,7 @@ func (r *Provider) Bill(ctx context.Context, id string) (*sandbox.Bill, error) {
 	}
 
 	for service, amount := range services {
-		bill.Services = append(bill.Services, sandbox.Cost{
+		bill.Services = append(bill.Services, provider.Cost{
 			Service: service,
 			Amount:  amount,
 		})
@@ -100,25 +100,25 @@ func (r *Provider) Bill(ctx context.Context, id string) (*sandbox.Bill, error) {
 }
 
 // scanBilling converts the billing state into check findings.
-func (r *Provider) scanBilling(ctx context.Context, id string) []sandbox.Finding {
+func (r *Provider) scanBilling(ctx context.Context, id string) []provider.Finding {
 	bill, err := r.Bill(ctx, id)
 	if err != nil {
-		return []sandbox.Finding{{
-			Severity: sandbox.SeverityWarning,
+		return []provider.Finding{{
+			Severity: provider.SeverityWarning,
 			Resource: "billing",
 			Message:  fmt.Sprintf("failed to read billing data: %v", err),
 		}}
 	}
 
-	peak := sandbox.Cost{}
+	peak := provider.Cost{}
 	for _, day := range bill.Daily {
 		if day.Amount > peak.Amount {
 			peak = day
 		}
 	}
 
-	finding := sandbox.Finding{
-		Severity: sandbox.SeverityInfo,
+	finding := provider.Finding{
+		Severity: provider.SeverityInfo,
 		Resource: "billing",
 		Message: fmt.Sprintf(
 			"spent %.2f %s over the last %d days, peak day %s at %.2f (budget %.2f/day); billing data lags up to ~24h",
@@ -126,11 +126,11 @@ func (r *Provider) scanBilling(ctx context.Context, id string) []sandbox.Finding
 		),
 	}
 	if bill.Leaking {
-		finding.Severity = sandbox.SeverityCritical
+		finding.Severity = provider.SeverityCritical
 		finding.Burn = fmt.Sprintf("~$%.2f/day", peak.Amount)
 	}
 	if len(bill.Services) > 0 {
 		finding.Message += fmt.Sprintf("; top service %q at %.2f", bill.Services[0].Service, bill.Services[0].Amount)
 	}
-	return []sandbox.Finding{finding}
+	return []provider.Finding{finding}
 }

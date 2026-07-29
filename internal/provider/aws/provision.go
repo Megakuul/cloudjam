@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"time"
 
-	"codeberg.org/megakuul/cloudjam/internal/sandbox"
+	"codeberg.org/megakuul/cloudjam/internal/provider"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	orgtypes "github.com/aws/aws-sdk-go-v2/service/organizations/types"
 )
 
-func (r *Provider) Provision(ctx context.Context, name string) (*sandbox.Account, error) {
+func (r *Provider) Provision(ctx context.Context, name string) (*provider.Account, error) {
 	createResp, err := r.organizations.CreateAccount(ctx, &organizations.CreateAccountInput{
 		AccountName:            &name,
 		Email:                  new(name + r.emailSuffix),
@@ -47,7 +47,7 @@ func (r *Provider) Provision(ctx context.Context, name string) (*sandbox.Account
 		if err != nil {
 			return nil, fmt.Errorf("account ou assignment failed for '%s': %w", *descResp.CreateAccountStatus.AccountId, err)
 		}
-		return &sandbox.Account{
+		return &provider.Account{
 			ID:   *descResp.CreateAccountStatus.AccountId,
 			Name: *descResp.CreateAccountStatus.AccountName,
 		}, nil
