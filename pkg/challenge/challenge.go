@@ -8,6 +8,8 @@ type InitInput struct {
 	Clues       map[string]float64 `json:"clues,omitempty"`
 }
 
+type InitOutput struct{}
+
 const ReadScore = "read_score"
 
 type ReadScoreInput struct{}
@@ -63,3 +65,13 @@ type DeleteResourceInput struct {
 }
 
 type DeleteResourceOutput struct{}
+
+const ListResource = "list_resource"
+
+type ListResourceInput struct {
+	Type string `json:"type,omitempty"`
+}
+
+type ListResourceOutput struct {
+	Resources map[string]string `json:"resources,omitempty"`
+}

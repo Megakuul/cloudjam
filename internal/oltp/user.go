@@ -8,7 +8,7 @@ import (
 
 type User struct {
 	UserID       dynamitedb.KeyField             `pk:"user_id" json:"-"`
-	PubId        dynamitedb.DataField[string]    `json:"pub_id,omitempty"`
+	PubID        dynamitedb.DataField[string]    `json:"pub_id,omitempty"`
 	Username     dynamitedb.DataField[string]    `json:"username,omitempty"`
 	Description  dynamitedb.DataField[string]    `json:"description,omitempty"`
 	Organization dynamitedb.DataField[string]    `json:"organization,omitempty"`

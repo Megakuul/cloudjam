@@ -22,6 +22,9 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/rds v1.119.5
 	github.com/aws/aws-sdk-go-v2/service/resourcegroupstaggingapi v1.33.5
 	github.com/aws/aws-sdk-go-v2/service/sts v1.45.0
+	github.com/awslabs/goformation/v7 v7.14.9
+	github.com/extism/go-pdk v1.1.3
+	github.com/extism/go-sdk v1.7.1
 	github.com/gobwas/glob v0.2.3
 	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/google/uuid v1.6.0
@@ -110,7 +113,6 @@ require (
 	github.com/containerd/console v1.0.3 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.6 // indirect
 	github.com/dylibso/observe-sdk/go v0.0.0-20240828172851-9145d8ad07e1 // indirect
-	github.com/extism/go-sdk v1.7.1 // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
 	github.com/go-errors/errors v1.4.2 // indirect
 	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
