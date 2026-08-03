@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { create, type Message } from '@bufbuild/protobuf';
 	import { CreateRequestSchema, type CreateRequest } from '$lib/sdk/v1/admin/user/user_pb';
-	import { TextField, ToggleButton } from 'svelte-ux';
-	import { Input } from 'svelte-ux';
 	import { Glue } from '$lib';
 	import { UserSchema } from '$lib/sdk/v1/admin/user_pb';
+	import {Input} from "$lib/components/shad/input";
+	import {Button} from "$lib/components/ui/button";
 
 	let user = $state(
 		create(UserSchema, {
@@ -22,13 +22,17 @@
 	}}
 ></form>
 
-<ToggleButton buttonPlacement="after">Bodenlos</ToggleButton>
+<Button variant="outline">Bodenlos</Button>
 
+<!--Linus, what is this?-->
 <Input placeholder="" />
 
-<TextField
-	bind:value={user.username}
-	label="Bombaclad"
-	placeholder="Enter your bombaclad"
-	error={Glue.Validate(UserSchema, user).violation.username}
-/>
+<Input type="text" label="Bombaclad" placeholder="Enter your bombaclad" />
+
+
+<!--<TextField-->
+<!--	bind:value={user.username}-->
+<!--	label="Bombaclad"-->
+<!--	placeholder="Enter your bombaclad"-->
+<!--	error={Glue.Validate(UserSchema, user).violation.username}-->
+<!--/>-->

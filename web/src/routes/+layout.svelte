@@ -20,9 +20,9 @@
 		Flag,
 		ChartNoAxesCombined
 	} from '@lucide/svelte';
-	import Button from '$lib/components/ui/button/button.svelte';
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
-	import Badge from '$lib/components/ui/badge/badge.svelte';
+	import Button from '$lib/components/shad/button/button.svelte';
+	import * as DropdownMenu from '$lib/components/shad/dropdown-menu';
+	import Badge from '$lib/components/shad/badge/badge.svelte';
 
 	let { children } = $props();
 
