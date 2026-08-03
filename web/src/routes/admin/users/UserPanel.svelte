@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Glue, Submit } from '$lib';
-	import ScopeInput from '$lib/components/ScopeInput.svelte';
+	import ScopeInput from '$lib/components/custom/ScopeInput.svelte';
 	import * as Alert from '$lib/components/ui/alert';
 	import { Badge } from '$lib/components/ui/badge';
 	import { Button } from '$lib/components/ui/button';

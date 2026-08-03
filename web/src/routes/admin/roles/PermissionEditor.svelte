@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ScopeInput from '$lib/components/ScopeInput.svelte';
+	import ScopeInput from '$lib/components/custom/ScopeInput.svelte';
 	import { Badge } from '$lib/components/ui/badge';
 	import { Button } from '$lib/components/ui/button';
 	import { Input } from '$lib/components/ui/input';
