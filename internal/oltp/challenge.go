@@ -17,12 +17,17 @@ type Game struct {
 }
 
 type Player struct {
-	GameID      dynamitedb.KeyField           `pk:"game_id"`
-	PlayerID    dynamitedb.KeyField           `sk:"player_id"`
-	Username    dynamitedb.DataField[string]  `json:"username,omitempty"`
-	PubID       dynamitedb.DataField[string]  `json:"pub_id,omitempty"`
-	PlayerScore dynamitedb.DataField[float64] `json:"player_score,omitempty"`
-	GameScore   dynamitedb.DataField[float64] `json:"game_score,omitempty"`
+	GameID   dynamitedb.KeyField           `pk:"game_id"`
+	PlayerID dynamitedb.KeyField           `sk:"player_id"`
+	Username dynamitedb.DataField[string]  `json:"username,omitempty"`
+	PubID    dynamitedb.DataField[string]  `json:"pub_id,omitempty"`
+	Score    dynamitedb.DataField[float64] `json:"player_score,omitempty"`
+	EventLog struct {
+		Timestamps   dynamitedb.DataField[[]time.Time] `json:"timestamps"`
+		Types        dynamitedb.DataField[[]string]    `json:"types"`
+		Texts        dynamitedb.DataField[[]string]    `json:"texts"`
+		ScoreChanges dynamitedb.DataField[[]float64]   `json:"score_changes"`
+	} `json:"event_log"`
 
 	Scope dynamitedb.DataField[string] `json:"scope,omitempty"`
 }
