@@ -1,5 +1,3 @@
-import type { BadgeVariant } from '$lib/components/shad/badge';
-import type { Component } from 'svelte';
 import {
 	ChartNoAxesCombinedIcon,
 	FlagIcon,
@@ -10,6 +8,7 @@ import {
 	WandSparklesIcon,
 	ZapIcon
 } from '@lucide/svelte';
+import type { Component } from 'svelte';
 
 export type sidebarSection = {
 	icon: Component;

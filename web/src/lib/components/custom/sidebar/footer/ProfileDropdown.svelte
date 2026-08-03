@@ -36,11 +36,11 @@
 		page.data.session && page.data.session.user
 			? page.data.session.user
 			: {
-				name: 'NA',
-				image: null,
-				permission: 'STANDARD',
-				email: 'na@notfound.com'
-			}
+					name: 'NA',
+					image: null,
+					permission: 'STANDARD',
+					email: 'na@notfound.com'
+				}
 	);
 
 	// Theme Stuff
@@ -115,12 +115,7 @@
 							<div
 								class="flex aspect-square size-8 items-center justify-center rounded-lg text-sidebar-primary-foreground"
 							>
-								<AvatarRenderer
-									image={user.image ?? ''}
-									name={user.name ?? 'Unknown'}
-									width="6"
-									height="6"
-								/>
+								<AvatarRenderer image={user.image ?? ''} name={user.name ?? 'Unknown'} width="6" height="6" />
 							</div>
 							<div class="grid flex-1 text-start text-sm leading-tight">
 								<span>{user.name ?? 'Unknown'}</span>
@@ -139,12 +134,7 @@
 				sideOffset={15}
 			>
 				<Popover.Header class="flex flex-col items-center">
-					<AvatarRenderer
-						image={user.image ?? ''}
-						name={user.name ?? 'Unknown'}
-						width="w-20"
-						height="h-20"
-					/>
+					<AvatarRenderer image={user.image ?? ''} name={user.name ?? 'Unknown'} width="w-20" height="h-20" />
 					<Popover.Title class="inline-flex items-center text-2xl font-bold">
 						{user.name}
 						<span class="ml-2">
@@ -200,11 +190,7 @@
 							<Field.Field orientation="horizontal">
 								<Field.Label class="font-dyslexic">Dyslexia</Field.Label>
 
-								<Button
-									variant="outline"
-									class="mr-auto ml-auto"
-									onclick={async () => await toggleDyslexic()}
-								>
+								<Button variant="outline" class="mr-auto ml-auto" onclick={async () => await toggleDyslexic()}>
 									{#if dyslexiaChanging}
 										<LoaderCircleIcon class="animate-spin" />
 									{:else if page.data.session?.user.useDyslexic}

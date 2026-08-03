@@ -19,36 +19,34 @@
 {/snippet}
 
 <Sidebar.Menu>
-		{#if group.collapsible}
-			<Collapsible.Root bind:open class="group/collapsible">
-				<Sidebar.MenuItem>
-					<Collapsible.Trigger>
-						{#snippet child({ props })}
-							{@const Icon = group.icon}
-							<Sidebar.MenuButton {...props}>
-								<Icon class="mr-2 h-4 w-4" />
-								{group.title}
-								<ChevronDownIcon
-									class="ml-auto h-4 w-4 {open
-										? 'rotate-0'
-										: '-rotate-180'} transition-all duration-250 ease-in-out"
-								/>
-							</Sidebar.MenuButton>
-						{/snippet}
-					</Collapsible.Trigger>
-					<Collapsible.Content>
-						{@render options()}
-					</Collapsible.Content>
-				</Sidebar.MenuItem>
-			</Collapsible.Root>
-		{:else}
+	{#if group.collapsible}
+		<Collapsible.Root bind:open class="group/collapsible">
 			<Sidebar.MenuItem>
-				<Sidebar.MenuButton>
-					{@const Icon = group.icon}
-					<Icon class="mr-2 h-4 w-4" />
-					<span>{group.title}</span>
-				</Sidebar.MenuButton>
-				{@render options()}
+				<Collapsible.Trigger>
+					{#snippet child({ props })}
+						{@const Icon = group.icon}
+						<Sidebar.MenuButton {...props}>
+							<Icon class="mr-2 h-4 w-4" />
+							{group.title}
+							<ChevronDownIcon
+								class="ml-auto h-4 w-4 {open ? 'rotate-0' : '-rotate-180'} transition-all duration-250 ease-in-out"
+							/>
+						</Sidebar.MenuButton>
+					{/snippet}
+				</Collapsible.Trigger>
+				<Collapsible.Content>
+					{@render options()}
+				</Collapsible.Content>
 			</Sidebar.MenuItem>
-		{/if}
+		</Collapsible.Root>
+	{:else}
+		<Sidebar.MenuItem>
+			<Sidebar.MenuButton>
+				{@const Icon = group.icon}
+				<Icon class="mr-2 h-4 w-4" />
+				<span>{group.title}</span>
+			</Sidebar.MenuButton>
+			{@render options()}
+		</Sidebar.MenuItem>
+	{/if}
 </Sidebar.Menu>

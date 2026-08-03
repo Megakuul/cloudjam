@@ -8,7 +8,7 @@
 
 	let loading = $state(true);
 
-	console.log(jamOptions)
+	console.log(jamOptions);
 </script>
 
 <Sidebar.Root collapsible="icon">
@@ -22,6 +22,6 @@
 	</Sidebar.Content>
 
 	<Sidebar.Footer>
-<!--		<ProfileDropdown bind:loading />-->
+		<!--		<ProfileDropdown bind:loading />-->
 	</Sidebar.Footer>
 </Sidebar.Root>

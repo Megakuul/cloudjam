@@ -2,96 +2,98 @@
 // @generated from file v1/admin/user.proto (package v1.admin, syntax proto3)
 /* eslint-disable */
 
-import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
-import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
-import { file_buf_validate_validate } from "../../buf/validate/validate_pb";
-import type { Message } from "@bufbuild/protobuf";
+import type { Message } from '@bufbuild/protobuf';
+import type { GenFile, GenMessage } from '@bufbuild/protobuf/codegenv2';
+import { fileDesc, messageDesc } from '@bufbuild/protobuf/codegenv2';
+import { file_buf_validate_validate } from '../../buf/validate/validate_pb';
 
 /**
  * Describes the file v1/admin/user.proto.
  */
-export const file_v1_admin_user: GenFile = /*@__PURE__*/
-  fileDesc("ChN2MS9hZG1pbi91c2VyLnByb3RvEgh2MS5hZG1pbiKhAgoEVXNlchINCgVzY29wZRgBIAEoCRIKCgJpZBgCIAEoCRIOCgZwdWJfaWQYAyABKAkSGwoIdXNlcm5hbWUYBCABKAlCCbpIBnIEEAQYFBIeCgtkZXNjcmlwdGlvbhgFIAEoCUIJukgGcgQQABgyEh0KDG9yZ2FuaXphdGlvbhgGIAEoCUIHukgEcgIYFBIWCgVlbWFpbBgHIAEoCUIHukgEcgJgARISCgpjcmVhdGVkX2F0GAggASgDEg0KBXNjb3JlGAkgASgBEhEKCW1heF9zY29yZRgKIAEoARIOCgZzdHJlYWsYCyABKAMSEgoKbWF4X3N0cmVhaxgMIAEoAxISCgpwcml2aWxlZ2VkGA0gASgIEgwKBHJvbGUYDiABKAlCMVovY29kZWJlcmcub3JnL21lZ2FrdXVsL2Nsb3VkamFtL3BrZy9hcGkvdjEvYWRtaW5iBnByb3RvMw", [file_buf_validate_validate]);
+export const file_v1_admin_user: GenFile =
+	/*@__PURE__*/
+	fileDesc(
+		'ChN2MS9hZG1pbi91c2VyLnByb3RvEgh2MS5hZG1pbiKhAgoEVXNlchINCgVzY29wZRgBIAEoCRIKCgJpZBgCIAEoCRIOCgZwdWJfaWQYAyABKAkSGwoIdXNlcm5hbWUYBCABKAlCCbpIBnIEEAQYFBIeCgtkZXNjcmlwdGlvbhgFIAEoCUIJukgGcgQQABgyEh0KDG9yZ2FuaXphdGlvbhgGIAEoCUIHukgEcgIYFBIWCgVlbWFpbBgHIAEoCUIHukgEcgJgARISCgpjcmVhdGVkX2F0GAggASgDEg0KBXNjb3JlGAkgASgBEhEKCW1heF9zY29yZRgKIAEoARIOCgZzdHJlYWsYCyABKAMSEgoKbWF4X3N0cmVhaxgMIAEoAxISCgpwcml2aWxlZ2VkGA0gASgIEgwKBHJvbGUYDiABKAlCMVovY29kZWJlcmcub3JnL21lZ2FrdXVsL2Nsb3VkamFtL3BrZy9hcGkvdjEvYWRtaW5iBnByb3RvMw',
+		[file_buf_validate_validate]
+	);
 
 /**
  * @generated from message v1.admin.User
  */
-export type User = Message<"v1.admin.User"> & {
-  /**
-   * @generated from field: string scope = 1;
-   */
-  scope: string;
+export type User = Message<'v1.admin.User'> & {
+	/**
+	 * @generated from field: string scope = 1;
+	 */
+	scope: string;
 
-  /**
-   * @generated from field: string id = 2;
-   */
-  id: string;
+	/**
+	 * @generated from field: string id = 2;
+	 */
+	id: string;
 
-  /**
-   * @generated from field: string pub_id = 3;
-   */
-  pubId: string;
+	/**
+	 * @generated from field: string pub_id = 3;
+	 */
+	pubId: string;
 
-  /**
-   * @generated from field: string username = 4;
-   */
-  username: string;
+	/**
+	 * @generated from field: string username = 4;
+	 */
+	username: string;
 
-  /**
-   * @generated from field: string description = 5;
-   */
-  description: string;
+	/**
+	 * @generated from field: string description = 5;
+	 */
+	description: string;
 
-  /**
-   * @generated from field: string organization = 6;
-   */
-  organization: string;
+	/**
+	 * @generated from field: string organization = 6;
+	 */
+	organization: string;
 
-  /**
-   * @generated from field: string email = 7;
-   */
-  email: string;
+	/**
+	 * @generated from field: string email = 7;
+	 */
+	email: string;
 
-  /**
-   * @generated from field: int64 created_at = 8;
-   */
-  createdAt: bigint;
+	/**
+	 * @generated from field: int64 created_at = 8;
+	 */
+	createdAt: bigint;
 
-  /**
-   * @generated from field: double score = 9;
-   */
-  score: number;
+	/**
+	 * @generated from field: double score = 9;
+	 */
+	score: number;
 
-  /**
-   * @generated from field: double max_score = 10;
-   */
-  maxScore: number;
+	/**
+	 * @generated from field: double max_score = 10;
+	 */
+	maxScore: number;
 
-  /**
-   * @generated from field: int64 streak = 11;
-   */
-  streak: bigint;
+	/**
+	 * @generated from field: int64 streak = 11;
+	 */
+	streak: bigint;
 
-  /**
-   * @generated from field: int64 max_streak = 12;
-   */
-  maxStreak: bigint;
+	/**
+	 * @generated from field: int64 max_streak = 12;
+	 */
+	maxStreak: bigint;
 
-  /**
-   * @generated from field: bool privileged = 13;
-   */
-  privileged: boolean;
+	/**
+	 * @generated from field: bool privileged = 13;
+	 */
+	privileged: boolean;
 
-  /**
-   * @generated from field: string role = 14;
-   */
-  role: string;
+	/**
+	 * @generated from field: string role = 14;
+	 */
+	role: string;
 };
 
 /**
  * Describes the message v1.admin.User.
  * Use `create(UserSchema)` to create a new message.
  */
-export const UserSchema: GenMessage<User> = /*@__PURE__*/
-  messageDesc(file_v1_admin_user, 0);
-
+export const UserSchema: GenMessage<User> = /*@__PURE__*/ messageDesc(file_v1_admin_user, 0);

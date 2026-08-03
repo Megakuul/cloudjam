@@ -7,19 +7,19 @@
 	let { section }: { section: sidebarSection } = $props();
 </script>
 
-	<Sidebar.Group id={section.title}>
-		<Sidebar.GroupLabel>
-			{@const Icon = section.icon}
-			<Icon class="mr-2 h-4 w-4" />
-			{section.title}
-		</Sidebar.GroupLabel>
-		<Sidebar.GroupContent>
-			{#each section.items as item (item.title)}
-				{#if 'contents' in item}
-					<GroupingRenderer group={item} />
-				{:else}
-					<OptionRenderer option={item} />
-				{/if}
-			{/each}
-		</Sidebar.GroupContent>
-	</Sidebar.Group>
+<Sidebar.Group id={section.title}>
+	<Sidebar.GroupLabel>
+		{@const Icon = section.icon}
+		<Icon class="mr-2 h-4 w-4" />
+		{section.title}
+	</Sidebar.GroupLabel>
+	<Sidebar.GroupContent>
+		{#each section.items as item (item.title)}
+			{#if 'contents' in item}
+				<GroupingRenderer group={item} />
+			{:else}
+				<OptionRenderer option={item} />
+			{/if}
+		{/each}
+	</Sidebar.GroupContent>
+</Sidebar.Group>

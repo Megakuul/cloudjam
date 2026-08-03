@@ -23,11 +23,7 @@
 		<Avatar.Image alt={name} src={image} />
 		<Avatar.Fallback>
 			{#if useDiceBear}
-				<img
-					alt={name}
-					id="fallback"
-					src={`https://api.dicebear.com/9.x/notionists/svg?seed=${name}`}
-				/>
+				<img alt={name} id="fallback" src={`https://api.dicebear.com/9.x/notionists/svg?seed=${name}`} />
 			{:else}
 				{toShortInitials(name)}
 			{/if}

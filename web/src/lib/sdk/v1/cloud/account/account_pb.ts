@@ -2,161 +2,160 @@
 // @generated from file v1/cloud/account/account.proto (package v1.cloud.account, syntax proto3)
 /* eslint-disable */
 
-import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
-import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
-import { file_buf_validate_validate } from "../../../buf/validate/validate_pb";
-import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
-import type { Account } from "../account_pb";
-import { file_v1_cloud_account } from "../account_pb";
-import type { Message } from "@bufbuild/protobuf";
+import type { Message } from '@bufbuild/protobuf';
+import type { GenFile, GenMessage, GenService } from '@bufbuild/protobuf/codegenv2';
+import { fileDesc, messageDesc, serviceDesc } from '@bufbuild/protobuf/codegenv2';
+import { file_google_protobuf_timestamp } from '@bufbuild/protobuf/wkt';
+import { file_buf_validate_validate } from '../../../buf/validate/validate_pb';
+import type { Account } from '../account_pb';
+import { file_v1_cloud_account } from '../account_pb';
 
 /**
  * Describes the file v1/cloud/account/account.proto.
  */
-export const file_v1_cloud_account_account: GenFile = /*@__PURE__*/
-  fileDesc("Ch52MS9jbG91ZC9hY2NvdW50L2FjY291bnQucHJvdG8SEHYxLmNsb3VkLmFjY291bnQiPgoKR2V0UmVxdWVzdBIaCghwcm92aWRlchgBIAEoCUIIukgFcgOwAQESFAoCaWQYAiABKAlCCLpIBXIDsAEBIjEKC0dldFJlc3BvbnNlEiIKB2FjY291bnQYASABKAsyES52MS5jbG91ZC5BY2NvdW50IlgKC0xpc3RSZXF1ZXN0EhoKCHByb3ZpZGVyGAEgASgJQgi6SAVyA7ABARIYCgVsaW1pdBgCIAEoBUIJukgGGgQYZCAAEhMKC3N0YXJ0X2FmdGVyGAMgASgJIjMKDExpc3RSZXNwb25zZRIjCghhY2NvdW50cxgBIAMoCzIRLnYxLmNsb3VkLkFjY291bnQiLwoNVXBkYXRlUmVxdWVzdBIeCgNtb2QYASABKAsyES52MS5jbG91ZC5BY2NvdW50IhAKDlVwZGF0ZVJlc3BvbnNlMugBCg5BY2NvdW50U2VydmljZRJCCgNHZXQSHC52MS5jbG91ZC5hY2NvdW50LkdldFJlcXVlc3QaHS52MS5jbG91ZC5hY2NvdW50LkdldFJlc3BvbnNlEkUKBExpc3QSHS52MS5jbG91ZC5hY2NvdW50Lkxpc3RSZXF1ZXN0Gh4udjEuY2xvdWQuYWNjb3VudC5MaXN0UmVzcG9uc2USSwoGVXBkYXRlEh8udjEuY2xvdWQuYWNjb3VudC5VcGRhdGVSZXF1ZXN0GiAudjEuY2xvdWQuYWNjb3VudC5VcGRhdGVSZXNwb25zZUI5Wjdjb2RlYmVyZy5vcmcvbWVnYWt1dWwvY2xvdWRqYW0vcGtnL2FwaS92MS9jbG91ZC9hY2NvdW50YgZwcm90bzM", [file_buf_validate_validate, file_google_protobuf_timestamp, file_v1_cloud_account]);
+export const file_v1_cloud_account_account: GenFile =
+	/*@__PURE__*/
+	fileDesc(
+		'Ch52MS9jbG91ZC9hY2NvdW50L2FjY291bnQucHJvdG8SEHYxLmNsb3VkLmFjY291bnQiPgoKR2V0UmVxdWVzdBIaCghwcm92aWRlchgBIAEoCUIIukgFcgOwAQESFAoCaWQYAiABKAlCCLpIBXIDsAEBIjEKC0dldFJlc3BvbnNlEiIKB2FjY291bnQYASABKAsyES52MS5jbG91ZC5BY2NvdW50IlgKC0xpc3RSZXF1ZXN0EhoKCHByb3ZpZGVyGAEgASgJQgi6SAVyA7ABARIYCgVsaW1pdBgCIAEoBUIJukgGGgQYZCAAEhMKC3N0YXJ0X2FmdGVyGAMgASgJIjMKDExpc3RSZXNwb25zZRIjCghhY2NvdW50cxgBIAMoCzIRLnYxLmNsb3VkLkFjY291bnQiLwoNVXBkYXRlUmVxdWVzdBIeCgNtb2QYASABKAsyES52MS5jbG91ZC5BY2NvdW50IhAKDlVwZGF0ZVJlc3BvbnNlMugBCg5BY2NvdW50U2VydmljZRJCCgNHZXQSHC52MS5jbG91ZC5hY2NvdW50LkdldFJlcXVlc3QaHS52MS5jbG91ZC5hY2NvdW50LkdldFJlc3BvbnNlEkUKBExpc3QSHS52MS5jbG91ZC5hY2NvdW50Lkxpc3RSZXF1ZXN0Gh4udjEuY2xvdWQuYWNjb3VudC5MaXN0UmVzcG9uc2USSwoGVXBkYXRlEh8udjEuY2xvdWQuYWNjb3VudC5VcGRhdGVSZXF1ZXN0GiAudjEuY2xvdWQuYWNjb3VudC5VcGRhdGVSZXNwb25zZUI5Wjdjb2RlYmVyZy5vcmcvbWVnYWt1dWwvY2xvdWRqYW0vcGtnL2FwaS92MS9jbG91ZC9hY2NvdW50YgZwcm90bzM',
+		[file_buf_validate_validate, file_google_protobuf_timestamp, file_v1_cloud_account]
+	);
 
 /**
  * @generated from message v1.cloud.account.GetRequest
  */
-export type GetRequest = Message<"v1.cloud.account.GetRequest"> & {
-  /**
-   * @generated from field: string provider = 1;
-   */
-  provider: string;
+export type GetRequest = Message<'v1.cloud.account.GetRequest'> & {
+	/**
+	 * @generated from field: string provider = 1;
+	 */
+	provider: string;
 
-  /**
-   * @generated from field: string id = 2;
-   */
-  id: string;
+	/**
+	 * @generated from field: string id = 2;
+	 */
+	id: string;
 };
 
 /**
  * Describes the message v1.cloud.account.GetRequest.
  * Use `create(GetRequestSchema)` to create a new message.
  */
-export const GetRequestSchema: GenMessage<GetRequest> = /*@__PURE__*/
-  messageDesc(file_v1_cloud_account_account, 0);
+export const GetRequestSchema: GenMessage<GetRequest> = /*@__PURE__*/ messageDesc(file_v1_cloud_account_account, 0);
 
 /**
  * @generated from message v1.cloud.account.GetResponse
  */
-export type GetResponse = Message<"v1.cloud.account.GetResponse"> & {
-  /**
-   * @generated from field: v1.cloud.Account account = 1;
-   */
-  account?: Account;
+export type GetResponse = Message<'v1.cloud.account.GetResponse'> & {
+	/**
+	 * @generated from field: v1.cloud.Account account = 1;
+	 */
+	account?: Account;
 };
 
 /**
  * Describes the message v1.cloud.account.GetResponse.
  * Use `create(GetResponseSchema)` to create a new message.
  */
-export const GetResponseSchema: GenMessage<GetResponse> = /*@__PURE__*/
-  messageDesc(file_v1_cloud_account_account, 1);
+export const GetResponseSchema: GenMessage<GetResponse> = /*@__PURE__*/ messageDesc(file_v1_cloud_account_account, 1);
 
 /**
  * @generated from message v1.cloud.account.ListRequest
  */
-export type ListRequest = Message<"v1.cloud.account.ListRequest"> & {
-  /**
-   * @generated from field: string provider = 1;
-   */
-  provider: string;
+export type ListRequest = Message<'v1.cloud.account.ListRequest'> & {
+	/**
+	 * @generated from field: string provider = 1;
+	 */
+	provider: string;
 
-  /**
-   * @generated from field: int32 limit = 2;
-   */
-  limit: number;
+	/**
+	 * @generated from field: int32 limit = 2;
+	 */
+	limit: number;
 
-  /**
-   * @generated from field: string start_after = 3;
-   */
-  startAfter: string;
+	/**
+	 * @generated from field: string start_after = 3;
+	 */
+	startAfter: string;
 };
 
 /**
  * Describes the message v1.cloud.account.ListRequest.
  * Use `create(ListRequestSchema)` to create a new message.
  */
-export const ListRequestSchema: GenMessage<ListRequest> = /*@__PURE__*/
-  messageDesc(file_v1_cloud_account_account, 2);
+export const ListRequestSchema: GenMessage<ListRequest> = /*@__PURE__*/ messageDesc(file_v1_cloud_account_account, 2);
 
 /**
  * @generated from message v1.cloud.account.ListResponse
  */
-export type ListResponse = Message<"v1.cloud.account.ListResponse"> & {
-  /**
-   * @generated from field: repeated v1.cloud.Account accounts = 1;
-   */
-  accounts: Account[];
+export type ListResponse = Message<'v1.cloud.account.ListResponse'> & {
+	/**
+	 * @generated from field: repeated v1.cloud.Account accounts = 1;
+	 */
+	accounts: Account[];
 };
 
 /**
  * Describes the message v1.cloud.account.ListResponse.
  * Use `create(ListResponseSchema)` to create a new message.
  */
-export const ListResponseSchema: GenMessage<ListResponse> = /*@__PURE__*/
-  messageDesc(file_v1_cloud_account_account, 3);
+export const ListResponseSchema: GenMessage<ListResponse> = /*@__PURE__*/ messageDesc(file_v1_cloud_account_account, 3);
 
 /**
  * @generated from message v1.cloud.account.UpdateRequest
  */
-export type UpdateRequest = Message<"v1.cloud.account.UpdateRequest"> & {
-  /**
-   * @generated from field: v1.cloud.Account mod = 1;
-   */
-  mod?: Account;
+export type UpdateRequest = Message<'v1.cloud.account.UpdateRequest'> & {
+	/**
+	 * @generated from field: v1.cloud.Account mod = 1;
+	 */
+	mod?: Account;
 };
 
 /**
  * Describes the message v1.cloud.account.UpdateRequest.
  * Use `create(UpdateRequestSchema)` to create a new message.
  */
-export const UpdateRequestSchema: GenMessage<UpdateRequest> = /*@__PURE__*/
-  messageDesc(file_v1_cloud_account_account, 4);
+export const UpdateRequestSchema: GenMessage<UpdateRequest> =
+	/*@__PURE__*/
+	messageDesc(file_v1_cloud_account_account, 4);
 
 /**
  * @generated from message v1.cloud.account.UpdateResponse
  */
-export type UpdateResponse = Message<"v1.cloud.account.UpdateResponse"> & {
-};
+export type UpdateResponse = Message<'v1.cloud.account.UpdateResponse'> & {};
 
 /**
  * Describes the message v1.cloud.account.UpdateResponse.
  * Use `create(UpdateResponseSchema)` to create a new message.
  */
-export const UpdateResponseSchema: GenMessage<UpdateResponse> = /*@__PURE__*/
-  messageDesc(file_v1_cloud_account_account, 5);
+export const UpdateResponseSchema: GenMessage<UpdateResponse> =
+	/*@__PURE__*/
+	messageDesc(file_v1_cloud_account_account, 5);
 
 /**
  * @generated from service v1.cloud.account.AccountService
  */
 export const AccountService: GenService<{
-  /**
-   * @generated from rpc v1.cloud.account.AccountService.Get
-   */
-  get: {
-    methodKind: "unary";
-    input: typeof GetRequestSchema;
-    output: typeof GetResponseSchema;
-  },
-  /**
-   * @generated from rpc v1.cloud.account.AccountService.List
-   */
-  list: {
-    methodKind: "unary";
-    input: typeof ListRequestSchema;
-    output: typeof ListResponseSchema;
-  },
-  /**
-   * @generated from rpc v1.cloud.account.AccountService.Update
-   */
-  update: {
-    methodKind: "unary";
-    input: typeof UpdateRequestSchema;
-    output: typeof UpdateResponseSchema;
-  },
-}> = /*@__PURE__*/
-  serviceDesc(file_v1_cloud_account_account, 0);
-
+	/**
+	 * @generated from rpc v1.cloud.account.AccountService.Get
+	 */
+	get: {
+		methodKind: 'unary';
+		input: typeof GetRequestSchema;
+		output: typeof GetResponseSchema;
+	};
+	/**
+	 * @generated from rpc v1.cloud.account.AccountService.List
+	 */
+	list: {
+		methodKind: 'unary';
+		input: typeof ListRequestSchema;
+		output: typeof ListResponseSchema;
+	};
+	/**
+	 * @generated from rpc v1.cloud.account.AccountService.Update
+	 */
+	update: {
+		methodKind: 'unary';
+		input: typeof UpdateRequestSchema;
+		output: typeof UpdateResponseSchema;
+	};
+}> = /*@__PURE__*/ serviceDesc(file_v1_cloud_account_account, 0);

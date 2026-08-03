@@ -3,8 +3,8 @@
 	import { CreateRequestSchema, type CreateRequest } from '$lib/sdk/v1/admin/user/user_pb';
 	import { Glue } from '$lib';
 	import { UserSchema } from '$lib/sdk/v1/admin/user_pb';
-	import {Input} from "$lib/components/shad/input";
-	import {Button} from "$lib/components/shad/button";
+	import { Input } from '$lib/components/shad/input';
+	import { Button } from '$lib/components/shad/button';
 	import * as Field from '$lib/components/shad/field';
 	import { User } from '@lucide/svelte';
 
@@ -32,7 +32,12 @@
 
 <Field.Field data-invalid={validUsername}>
 	<Field.Label for="username">Username</Field.Label>
-	<Input bind:value={user.username} id="username" type="text" placeholder="Enter your username" aria-invalid={validUsername} />
+	<Input
+		bind:value={user.username}
+		id="username"
+		type="text"
+		placeholder="Enter your username"
+		aria-invalid={validUsername}
+	/>
 	<Field.Error>{validator.violation.username}</Field.Error>
 </Field.Field>
-

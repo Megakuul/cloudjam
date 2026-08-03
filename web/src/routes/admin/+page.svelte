@@ -1,5 +1,5 @@
 <script lang="ts">
-	import * as Card from '$lib/components/ui/card';
+	import * as Card from '$lib/components/card';
 	import UsersIcon from '@lucide/svelte/icons/users';
 	import ShieldCheckIcon from '@lucide/svelte/icons/shield-check';
 	import ActivityIcon from '@lucide/svelte/icons/activity';

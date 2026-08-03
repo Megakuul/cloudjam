@@ -38,14 +38,14 @@
 	<meta property="og:image" content="/favicon.png" />
 </svelte:head>
 
-<div class="flex flex-col gap-4 justify-center items-center w-full">
+<div class="flex w-full flex-col items-center justify-center gap-4">
 	{#if user}
 		<div
 			class="my-[5%] flex w-full flex-col items-center gap-4 overflow-hidden rounded-2xl border-[0.05rem] border-neutral/40 p-7 shadow-sm shadow-primary/20 lg:flex-row"
 		>
 			{#if edit}
 				<form
-					class="flex flex-col gap-1 items-start w-full h-full"
+					class="flex h-full w-full flex-col items-start gap-1"
 					onsubmit={() =>
 						Submit(
 							async () => {
@@ -54,7 +54,7 @@
 							(e, l) => ((error = e), (loading = l))
 						)}
 				>
-					<div class="flex flex-col gap-4 items-start mt-2 w-full h-full">
+					<div class="mt-2 flex h-full w-full flex-col items-start gap-4">
 						<h1 class="text-4xl opacity-80">Edit User</h1>
 						<Input
 							bind:value={user.username}
@@ -70,7 +70,7 @@
 							type="text"
 							error={Glue.Validate(UserSchema, user).violation.description}
 						/>
-						<div class="flex flex-row gap-2 items-center mt-auto">
+						<div class="mt-auto flex flex-row items-center gap-2">
 							<Button onclick={() => (edit = false)}>
 								<CircleX />
 								Close
@@ -90,8 +90,8 @@
 						</div>
 					</div>
 				</form>
-				<div class="w-full h-1 rounded-2xl lg:w-1 lg:h-64 bg-neutral/80"></div>
-				<div class="flex flex-col gap-8 justify-center items-start w-full lg:flex-row">
+				<div class="h-1 w-full rounded-2xl bg-neutral/80 lg:h-64 lg:w-1"></div>
+				<div class="flex w-full flex-col items-start justify-center gap-8 lg:flex-row">
 					<Dialog.Root>
 						<Dialog.Trigger>
 							<Button variant="ghost">Change Password</Button>
@@ -128,7 +128,7 @@
 					</Dialog.Root>
 				</div>
 			{:else}
-				<div class="flex flex-col gap-1 items-start w-full">
+				<div class="flex w-full flex-col items-start gap-1">
 					<img
 						alt="user profile"
 						src={`data:image/svg+xml;base64,${btoa(toSvg(user.pubId, 140))}`}
@@ -140,7 +140,7 @@
 						Proud CloudJamer since {new Date(Number(user.createdAt) * 1000).toLocaleDateString()}
 					</p>
 					<Badge variant="default">{user.organization}</Badge>
-					<div class="flex flex-row gap-2 items-center mt-2">
+					<div class="mt-2 flex flex-row items-center gap-2">
 						<Button onclick={() => (edit = true)}>
 							<Pencil />
 							Edit
@@ -161,8 +161,8 @@
 						</Button>
 					</div>
 				</div>
-				<div class="w-full h-1 rounded-2xl lg:w-1 lg:h-64 bg-neutral/80"></div>
-				<div class="flex flex-col gap-8 justify-end items-center w-full lg:flex-row">
+				<div class="h-1 w-full rounded-2xl bg-neutral/80 lg:h-64 lg:w-1"></div>
+				<div class="flex w-full flex-col items-center justify-end gap-8 lg:flex-row">
 					<!-- TODO add chart -->
 					<Gauge title="Score" scale={30} center={user.score} outer={user.maxScore} inner={user.score} />
 					<Gauge title="Streak" scale={1} center={user.streak} outer={user.maxStreak} inner={user.streak} />
@@ -173,7 +173,7 @@
 		<WordSwapper description={user.description} />
 	{/if}
 	{#if error}
-		<div class="p-2 m-2 w-full rounded-sm border-[0.05rem] border-red-600/80 bg-red-600/10">
+		<div class="m-2 w-full rounded-sm border-[0.05rem] border-red-600/80 bg-red-600/10 p-2">
 			{error}
 		</div>
 	{/if}

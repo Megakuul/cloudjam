@@ -2,181 +2,185 @@
 // @generated from file v1/admin/rbac/rbac.proto (package v1.admin.rbac, syntax proto3)
 /* eslint-disable */
 
-import type { GenEnum, GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
-import { enumDesc, fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
-import { file_buf_validate_validate } from "../../../buf/validate/validate_pb";
-import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
-import type { Role } from "../role_pb";
-import { file_v1_admin_role } from "../role_pb";
-import type { Message } from "@bufbuild/protobuf";
+import type { Message } from '@bufbuild/protobuf';
+import type { GenEnum, GenFile, GenMessage, GenService } from '@bufbuild/protobuf/codegenv2';
+import { enumDesc, fileDesc, messageDesc, serviceDesc } from '@bufbuild/protobuf/codegenv2';
+import { file_google_protobuf_timestamp } from '@bufbuild/protobuf/wkt';
+import { file_buf_validate_validate } from '../../../buf/validate/validate_pb';
+import type { Role } from '../role_pb';
+import { file_v1_admin_role } from '../role_pb';
 
 /**
  * Describes the file v1/admin/rbac/rbac.proto.
  */
-export const file_v1_admin_rbac_rbac: GenFile = /*@__PURE__*/
-  fileDesc("Chh2MS9hZG1pbi9yYmFjL3JiYWMucHJvdG8SDXYxLmFkbWluLnJiYWMiMwoUQ29uZmlndXJlUm9sZVJlcXVlc3QSGwoDbW9kGAEgASgLMg4udjEuYWRtaW4uUm9sZSIXChVDb25maWd1cmVSb2xlUmVzcG9uc2UiQQoRQXR0YWNoUm9sZVJlcXVlc3QSFAoCaWQYASABKAlCCLpIBXIDsAEBEhYKBHJvbGUYAiABKAlCCLpIBXIDsAEBIhQKEkF0dGFjaFJvbGVSZXNwb25zZSJkChJBdHRhY2hTY29wZVJlcXVlc3QSKQoIcmVzb3VyY2UYASABKA4yFy52MS5hZG1pbi5yYmFjLlJlc291cmNlEhQKAmlkGAIgASgJQgi6SAVyA7ABARINCgVzY29wZRgDIAEoCSIVChNBdHRhY2hTY29wZVJlc3BvbnNlKjUKCFJlc291cmNlEgwKCFVzZXJEYXRhEAASDQoJQ3JlZHNEYXRhEAESDAoIUm9sZURhdGEQAjKSAgoLUkJBQ1NlcnZpY2USWgoNQ29uZmlndXJlUm9sZRIjLnYxLmFkbWluLnJiYWMuQ29uZmlndXJlUm9sZVJlcXVlc3QaJC52MS5hZG1pbi5yYmFjLkNvbmZpZ3VyZVJvbGVSZXNwb25zZRJRCgpBdHRhY2hSb2xlEiAudjEuYWRtaW4ucmJhYy5BdHRhY2hSb2xlUmVxdWVzdBohLnYxLmFkbWluLnJiYWMuQXR0YWNoUm9sZVJlc3BvbnNlElQKC0F0dGFjaFNjb3BlEiEudjEuYWRtaW4ucmJhYy5BdHRhY2hTY29wZVJlcXVlc3QaIi52MS5hZG1pbi5yYmFjLkF0dGFjaFNjb3BlUmVzcG9uc2VCNlo0Y29kZWJlcmcub3JnL21lZ2FrdXVsL2Nsb3VkamFtL3BrZy9hcGkvdjEvYWRtaW4vcmJhY2IGcHJvdG8z", [file_buf_validate_validate, file_google_protobuf_timestamp, file_v1_admin_role]);
+export const file_v1_admin_rbac_rbac: GenFile =
+	/*@__PURE__*/
+	fileDesc(
+		'Chh2MS9hZG1pbi9yYmFjL3JiYWMucHJvdG8SDXYxLmFkbWluLnJiYWMiMwoUQ29uZmlndXJlUm9sZVJlcXVlc3QSGwoDbW9kGAEgASgLMg4udjEuYWRtaW4uUm9sZSIXChVDb25maWd1cmVSb2xlUmVzcG9uc2UiQQoRQXR0YWNoUm9sZVJlcXVlc3QSFAoCaWQYASABKAlCCLpIBXIDsAEBEhYKBHJvbGUYAiABKAlCCLpIBXIDsAEBIhQKEkF0dGFjaFJvbGVSZXNwb25zZSJkChJBdHRhY2hTY29wZVJlcXVlc3QSKQoIcmVzb3VyY2UYASABKA4yFy52MS5hZG1pbi5yYmFjLlJlc291cmNlEhQKAmlkGAIgASgJQgi6SAVyA7ABARINCgVzY29wZRgDIAEoCSIVChNBdHRhY2hTY29wZVJlc3BvbnNlKjUKCFJlc291cmNlEgwKCFVzZXJEYXRhEAASDQoJQ3JlZHNEYXRhEAESDAoIUm9sZURhdGEQAjKSAgoLUkJBQ1NlcnZpY2USWgoNQ29uZmlndXJlUm9sZRIjLnYxLmFkbWluLnJiYWMuQ29uZmlndXJlUm9sZVJlcXVlc3QaJC52MS5hZG1pbi5yYmFjLkNvbmZpZ3VyZVJvbGVSZXNwb25zZRJRCgpBdHRhY2hSb2xlEiAudjEuYWRtaW4ucmJhYy5BdHRhY2hSb2xlUmVxdWVzdBohLnYxLmFkbWluLnJiYWMuQXR0YWNoUm9sZVJlc3BvbnNlElQKC0F0dGFjaFNjb3BlEiEudjEuYWRtaW4ucmJhYy5BdHRhY2hTY29wZVJlcXVlc3QaIi52MS5hZG1pbi5yYmFjLkF0dGFjaFNjb3BlUmVzcG9uc2VCNlo0Y29kZWJlcmcub3JnL21lZ2FrdXVsL2Nsb3VkamFtL3BrZy9hcGkvdjEvYWRtaW4vcmJhY2IGcHJvdG8z',
+		[file_buf_validate_validate, file_google_protobuf_timestamp, file_v1_admin_role]
+	);
 
 /**
  * @generated from message v1.admin.rbac.ConfigureRoleRequest
  */
-export type ConfigureRoleRequest = Message<"v1.admin.rbac.ConfigureRoleRequest"> & {
-  /**
-   * @generated from field: v1.admin.Role mod = 1;
-   */
-  mod?: Role;
+export type ConfigureRoleRequest = Message<'v1.admin.rbac.ConfigureRoleRequest'> & {
+	/**
+	 * @generated from field: v1.admin.Role mod = 1;
+	 */
+	mod?: Role;
 };
 
 /**
  * Describes the message v1.admin.rbac.ConfigureRoleRequest.
  * Use `create(ConfigureRoleRequestSchema)` to create a new message.
  */
-export const ConfigureRoleRequestSchema: GenMessage<ConfigureRoleRequest> = /*@__PURE__*/
-  messageDesc(file_v1_admin_rbac_rbac, 0);
+export const ConfigureRoleRequestSchema: GenMessage<ConfigureRoleRequest> =
+	/*@__PURE__*/
+	messageDesc(file_v1_admin_rbac_rbac, 0);
 
 /**
  * @generated from message v1.admin.rbac.ConfigureRoleResponse
  */
-export type ConfigureRoleResponse = Message<"v1.admin.rbac.ConfigureRoleResponse"> & {
-};
+export type ConfigureRoleResponse = Message<'v1.admin.rbac.ConfigureRoleResponse'> & {};
 
 /**
  * Describes the message v1.admin.rbac.ConfigureRoleResponse.
  * Use `create(ConfigureRoleResponseSchema)` to create a new message.
  */
-export const ConfigureRoleResponseSchema: GenMessage<ConfigureRoleResponse> = /*@__PURE__*/
-  messageDesc(file_v1_admin_rbac_rbac, 1);
+export const ConfigureRoleResponseSchema: GenMessage<ConfigureRoleResponse> =
+	/*@__PURE__*/
+	messageDesc(file_v1_admin_rbac_rbac, 1);
 
 /**
  * @generated from message v1.admin.rbac.AttachRoleRequest
  */
-export type AttachRoleRequest = Message<"v1.admin.rbac.AttachRoleRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
+export type AttachRoleRequest = Message<'v1.admin.rbac.AttachRoleRequest'> & {
+	/**
+	 * @generated from field: string id = 1;
+	 */
+	id: string;
 
-  /**
-   * @generated from field: string role = 2;
-   */
-  role: string;
+	/**
+	 * @generated from field: string role = 2;
+	 */
+	role: string;
 };
 
 /**
  * Describes the message v1.admin.rbac.AttachRoleRequest.
  * Use `create(AttachRoleRequestSchema)` to create a new message.
  */
-export const AttachRoleRequestSchema: GenMessage<AttachRoleRequest> = /*@__PURE__*/
-  messageDesc(file_v1_admin_rbac_rbac, 2);
+export const AttachRoleRequestSchema: GenMessage<AttachRoleRequest> =
+	/*@__PURE__*/
+	messageDesc(file_v1_admin_rbac_rbac, 2);
 
 /**
  * @generated from message v1.admin.rbac.AttachRoleResponse
  */
-export type AttachRoleResponse = Message<"v1.admin.rbac.AttachRoleResponse"> & {
-};
+export type AttachRoleResponse = Message<'v1.admin.rbac.AttachRoleResponse'> & {};
 
 /**
  * Describes the message v1.admin.rbac.AttachRoleResponse.
  * Use `create(AttachRoleResponseSchema)` to create a new message.
  */
-export const AttachRoleResponseSchema: GenMessage<AttachRoleResponse> = /*@__PURE__*/
-  messageDesc(file_v1_admin_rbac_rbac, 3);
+export const AttachRoleResponseSchema: GenMessage<AttachRoleResponse> =
+	/*@__PURE__*/
+	messageDesc(file_v1_admin_rbac_rbac, 3);
 
 /**
  * @generated from message v1.admin.rbac.AttachScopeRequest
  */
-export type AttachScopeRequest = Message<"v1.admin.rbac.AttachScopeRequest"> & {
-  /**
-   * @generated from field: v1.admin.rbac.Resource resource = 1;
-   */
-  resource: Resource;
+export type AttachScopeRequest = Message<'v1.admin.rbac.AttachScopeRequest'> & {
+	/**
+	 * @generated from field: v1.admin.rbac.Resource resource = 1;
+	 */
+	resource: Resource;
 
-  /**
-   * @generated from field: string id = 2;
-   */
-  id: string;
+	/**
+	 * @generated from field: string id = 2;
+	 */
+	id: string;
 
-  /**
-   * @generated from field: string scope = 3;
-   */
-  scope: string;
+	/**
+	 * @generated from field: string scope = 3;
+	 */
+	scope: string;
 };
 
 /**
  * Describes the message v1.admin.rbac.AttachScopeRequest.
  * Use `create(AttachScopeRequestSchema)` to create a new message.
  */
-export const AttachScopeRequestSchema: GenMessage<AttachScopeRequest> = /*@__PURE__*/
-  messageDesc(file_v1_admin_rbac_rbac, 4);
+export const AttachScopeRequestSchema: GenMessage<AttachScopeRequest> =
+	/*@__PURE__*/
+	messageDesc(file_v1_admin_rbac_rbac, 4);
 
 /**
  * @generated from message v1.admin.rbac.AttachScopeResponse
  */
-export type AttachScopeResponse = Message<"v1.admin.rbac.AttachScopeResponse"> & {
-};
+export type AttachScopeResponse = Message<'v1.admin.rbac.AttachScopeResponse'> & {};
 
 /**
  * Describes the message v1.admin.rbac.AttachScopeResponse.
  * Use `create(AttachScopeResponseSchema)` to create a new message.
  */
-export const AttachScopeResponseSchema: GenMessage<AttachScopeResponse> = /*@__PURE__*/
-  messageDesc(file_v1_admin_rbac_rbac, 5);
+export const AttachScopeResponseSchema: GenMessage<AttachScopeResponse> =
+	/*@__PURE__*/
+	messageDesc(file_v1_admin_rbac_rbac, 5);
 
 /**
  * @generated from enum v1.admin.rbac.Resource
  */
 export enum Resource {
-  /**
-   * resources are named after <PkSk> from the model.
-   *
-   * @generated from enum value: UserData = 0;
-   */
-  UserData = 0,
+	/**
+	 * resources are named after <PkSk> from the model.
+	 *
+	 * @generated from enum value: UserData = 0;
+	 */
+	UserData = 0,
 
-  /**
-   * @generated from enum value: CredsData = 1;
-   */
-  CredsData = 1,
+	/**
+	 * @generated from enum value: CredsData = 1;
+	 */
+	CredsData = 1,
 
-  /**
-   * @generated from enum value: RoleData = 2;
-   */
-  RoleData = 2,
+	/**
+	 * @generated from enum value: RoleData = 2;
+	 */
+	RoleData = 2
 }
 
 /**
  * Describes the enum v1.admin.rbac.Resource.
  */
-export const ResourceSchema: GenEnum<Resource> = /*@__PURE__*/
-  enumDesc(file_v1_admin_rbac_rbac, 0);
+export const ResourceSchema: GenEnum<Resource> = /*@__PURE__*/ enumDesc(file_v1_admin_rbac_rbac, 0);
 
 /**
  * @generated from service v1.admin.rbac.RBACService
  */
 export const RBACService: GenService<{
-  /**
-   * @generated from rpc v1.admin.rbac.RBACService.ConfigureRole
-   */
-  configureRole: {
-    methodKind: "unary";
-    input: typeof ConfigureRoleRequestSchema;
-    output: typeof ConfigureRoleResponseSchema;
-  },
-  /**
-   * @generated from rpc v1.admin.rbac.RBACService.AttachRole
-   */
-  attachRole: {
-    methodKind: "unary";
-    input: typeof AttachRoleRequestSchema;
-    output: typeof AttachRoleResponseSchema;
-  },
-  /**
-   * @generated from rpc v1.admin.rbac.RBACService.AttachScope
-   */
-  attachScope: {
-    methodKind: "unary";
-    input: typeof AttachScopeRequestSchema;
-    output: typeof AttachScopeResponseSchema;
-  },
-}> = /*@__PURE__*/
-  serviceDesc(file_v1_admin_rbac_rbac, 0);
-
+	/**
+	 * @generated from rpc v1.admin.rbac.RBACService.ConfigureRole
+	 */
+	configureRole: {
+		methodKind: 'unary';
+		input: typeof ConfigureRoleRequestSchema;
+		output: typeof ConfigureRoleResponseSchema;
+	};
+	/**
+	 * @generated from rpc v1.admin.rbac.RBACService.AttachRole
+	 */
+	attachRole: {
+		methodKind: 'unary';
+		input: typeof AttachRoleRequestSchema;
+		output: typeof AttachRoleResponseSchema;
+	};
+	/**
+	 * @generated from rpc v1.admin.rbac.RBACService.AttachScope
+	 */
+	attachScope: {
+		methodKind: 'unary';
+		input: typeof AttachScopeRequestSchema;
+		output: typeof AttachScopeResponseSchema;
+	};
+}> = /*@__PURE__*/ serviceDesc(file_v1_admin_rbac_rbac, 0);
