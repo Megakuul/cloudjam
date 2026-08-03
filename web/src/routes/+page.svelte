@@ -4,13 +4,19 @@
 	import { Glue } from '$lib';
 	import { UserSchema } from '$lib/sdk/v1/admin/user_pb';
 	import {Input} from "$lib/components/shad/input";
-	import {Button} from "$lib/components/ui/button";
+	import {Button} from "$lib/components/shad/button";
+	import * as Field from '$lib/components/shad/field';
+	import { User } from '@lucide/svelte';
 
 	let user = $state(
 		create(UserSchema, {
-			username: ''
+			username: '',
+			email: ''
 		})
 	);
+
+	let validator = $derived(Glue.Validate(UserSchema, user));
+	let validUsername = $derived(validator.violation.username !== undefined);
 </script>
 
 <h1>Create User</h1>
@@ -24,15 +30,9 @@
 
 <Button variant="outline">Bodenlos</Button>
 
-<!--Linus, what is this?-->
-<Input placeholder="" />
+<Field.Field data-invalid={validUsername}>
+	<Field.Label for="username">Username</Field.Label>
+	<Input bind:value={user.username} id="username" type="text" placeholder="Enter your username" aria-invalid={validUsername} />
+	<Field.Error>{validator.violation.username}</Field.Error>
+</Field.Field>
 
-<Input type="text" label="Bombaclad" placeholder="Enter your bombaclad" />
-
-
-<!--<TextField-->
-<!--	bind:value={user.username}-->
-<!--	label="Bombaclad"-->
-<!--	placeholder="Enter your bombaclad"-->
-<!--	error={Glue.Validate(UserSchema, user).violation.username}-->
-<!--/>-->
