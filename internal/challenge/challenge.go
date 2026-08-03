@@ -13,22 +13,34 @@ import (
 	"github.com/megakuul/lake"
 )
 
-// Challenge represents the current state of an account according to teh provider.
 type Challenge struct {
 	logger *slog.Logger
-	otlp   *dynamitedb.Bucket
+	oltp   *dynamitedb.Bucket
 	olap   *lake.Bucket
 
-	providerID  string
+	providerID     string
+	definitionID   string
+	definitionName string
+
+	gameID      string
 	challengeID string
-	userID      string
+	scope       string
 }
 
 func (c *Challenge) Start(ctx context.Context) error {
+	if err := dynamitedb.Create(ctx, c.oltp, &oltp.Challenge{
+		GameID:         dynamitedb.Key(c.gameID),
+		ChallengeID:    dynamitedb.Key(c.challengeID),
+		DefinitionID:   dynamitedb.Set(c.definitionID),
+		DefinitionName: dynamitedb.Set(c.definitionName),
+		Scope:          dynamitedb.Set(c.scope),
+	}); err != nil {
+		return err
+	}
 	report := func(err error) {
 		c.logger.Error(err.Error())
-		if dErr := dynamitedb.Update(ctx, c.otlp, &oltp.Challenge{
-			ProviderID:  dynamitedb.Key(c.providerID),
+		if dErr := dynamitedb.Update(ctx, c.oltp, &oltp.Challenge{
+			GameID:      dynamitedb.Key(c.gameID),
 			ChallengeID: dynamitedb.Key(c.challengeID),
 			Errors:      dynamitedb.Append(err.Error()),
 		}); dErr != nil {
@@ -97,6 +109,17 @@ func createHostFunction[Input, Output any](name string, callback func(context.Co
 }
 
 func (c *Challenge) Init(ctx context.Context, input *challenge.InitInput) (*challenge.InitOutput, error) {
+	err := dynamitedb.Update(ctx, c.oltp, &oltp.Challenge{
+		GameID:      dynamitedb.Key(c.gameID),
+		ChallengeID: dynamitedb.Key(c.challengeID),
+		Title:       dynamitedb.Set(input.Title),
+		Description: dynamitedb.Set(input.Description),
+		Clues:       dynamitedb.Set(input.Clues),
+	})
+	if err != nil {
+		return nil, err
+	}
+	return nil, nil
 }
 
 func (c *Challenge) EmitPoints() string {

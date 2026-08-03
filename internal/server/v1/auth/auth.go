@@ -119,7 +119,7 @@ func (s *Server) Login(ctx context.Context, req *connect.Request[auth.LoginReque
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch user"))
 	}
 
-	token, err := s.issuer.Issue(ctx, linkedUser.UserID.Value(), creds.Email.Value(), linkedUser.PubId.Value())
+	token, err := s.issuer.Issue(ctx, linkedUser.UserID.Value(), creds.Email.Value(), linkedUser.PubID.Value())
 	if err != nil {
 		l.Error(fmt.Sprintf("failed to issue token: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to issue token"))

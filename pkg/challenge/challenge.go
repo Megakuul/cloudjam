@@ -3,9 +3,9 @@ package challenge
 const Init = "init"
 
 type InitInput struct {
-	Title       string             `json:"title,omitempty"`
-	Description string             `json:"description,omitempty"`
-	Clues       map[string]float64 `json:"clues,omitempty"`
+	Title       string            `json:"title,omitempty"`
+	Description string            `json:"description,omitempty"`
+	Clues       map[string]string `json:"clues,omitempty"`
 }
 
 type InitOutput struct{}
