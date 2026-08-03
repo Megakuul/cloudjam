@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Input } from '$lib/components/ui/input';
+	import { Input } from '$lib/components/shad/input';
 
 	// ScopeInput is a text input suggesting known scopes (collected from existing roles)
 	// while still allowing arbitrary new scopes to be typed.
