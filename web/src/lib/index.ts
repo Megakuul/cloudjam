@@ -79,3 +79,21 @@ function getToken(): string {
 	goto('/login');
 	return '';
 }
+
+/**
+ * Convert a longer string into initials of a set length
+ * @param value The string to initialise
+ * @param length Optional, a length to cap the initials ot
+ * @returns A string that has been initialised
+ */
+export function toShortInitials(value: string, length: number = 2) {
+	if (value.length <= length) {
+		return value.toUpperCase();
+	}
+
+	return value
+		.split(' ')
+		.join('')
+		.substring(0, length - 1)
+		.toUpperCase();
+}
