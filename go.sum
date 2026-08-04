@@ -187,6 +187,8 @@ github.com/aws/aws-sdk-go-v2/service/s3 v1.106.0 h1:7QZWVJZWzHivHWIa+5TELLaBBkbu
 github.com/aws/aws-sdk-go-v2/service/s3 v1.106.0/go.mod h1:fcvq5L7dK+5cQFicEJwpI6e6Wn8NY2i6yT5wRLYVc7s=
 github.com/aws/aws-sdk-go-v2/service/s3 v1.106.3 h1:oSfubHEP3a0nTRAtm99IDaws0f15qwf+fOwS1Esh5jI=
 github.com/aws/aws-sdk-go-v2/service/s3 v1.106.3/go.mod h1:lWk6L5Q3YkaC7so1bQUJkvF7hj2KUFzdZ4w15wc2GHY=
+github.com/aws/aws-sdk-go-v2/service/s3 v1.106.4 h1:nN+nb2rhWmPOMwFA+e6xDJZJ0h/VAI39XVBzn52Fn8A=
+github.com/aws/aws-sdk-go-v2/service/s3 v1.106.4/go.mod h1:lWk6L5Q3YkaC7so1bQUJkvF7hj2KUFzdZ4w15wc2GHY=
 github.com/aws/aws-sdk-go-v2/service/s3control v1.53.3 h1:jBjYVTlJDPKkw0wP0G+sGVwm1vVAv4Tyr+VohF3aq5k=
 github.com/aws/aws-sdk-go-v2/service/s3control v1.53.3/go.mod h1:jPbA1jIv5ErlmS4Bdiu6qvNHCsCeqTXSsJI0wmmA5Jc=
 github.com/aws/aws-sdk-go-v2/service/sagemaker v1.174.1 h1:DNwJVFo2E6APmKZfZY8qDtzlKE76XsjvagcNwaSAHxI=
@@ -312,6 +314,8 @@ github.com/megakuul/dynamitedb v0.2.7 h1:ijddgPEn6MeiXLcQyph65O2cEQJQtwH3U77GIy4
 github.com/megakuul/dynamitedb v0.2.7/go.mod h1:lQQsFB5uxlS5ivS+pzu05HpiA0P8gl4HLjXkaRWAcU8=
 github.com/megakuul/dynamitedb v0.3.0 h1:4mf+P2Hq+XYtQauDpMmK2ZWmaRRehUPaTnFHvJQDYFA=
 github.com/megakuul/dynamitedb v0.3.0/go.mod h1:lQQsFB5uxlS5ivS+pzu05HpiA0P8gl4HLjXkaRWAcU8=
+github.com/megakuul/dynamitedb v0.4.0 h1:kJJTX/qcHc8Wx+4gO0MpQ++pmnVi3xL3sEa8Cf1svBA=
+github.com/megakuul/dynamitedb v0.4.0/go.mod h1:lQQsFB5uxlS5ivS+pzu05HpiA0P8gl4HLjXkaRWAcU8=
 github.com/megakuul/lake v0.4.1 h1:31c9tV7Ozy6VGXxJ0m8dPDpy9l3E3vd/WTIEFCPAS7s=
 github.com/megakuul/lake v0.4.1/go.mod h1:r6noDrdL7kdvwBMiTMtY+KGyBQDsbmMZTf7qwZbEaZM=
 github.com/parquet-go/bitpack v1.0.0 h1:AUqzlKzPPXf2bCdjfj4sTeacrUwsT7NlcYDMUQxPcQA=

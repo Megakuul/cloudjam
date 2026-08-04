@@ -28,14 +28,6 @@ func (r *Provider) Check(ctx context.Context, id string) ([]provider.Leak, error
 	}
 
 	leaks := []provider.Leak{}
-
-	// heuristic 1: are the guardrail policies still in place and unmodified?
-	leaks = append(leaks, r.verifyPolicies(ctx, id)...)
-
-	// heuristic 2: does the (delayed) billing data already show a leak?
-	leaks = append(leaks, r.scanBilling(ctx, id)...)
-
-	// heuristic 3: is any postNukeCheck reporting something?
 	for _, postNukeCheck := range postNukeChecks {
 		leak := []provider.Leak{}
 		for _, region := range r.regions {

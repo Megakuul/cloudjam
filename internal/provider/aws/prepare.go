@@ -9,25 +9,12 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/service/iam"
 	iamtypes "github.com/aws/aws-sdk-go-v2/service/iam/types"
-	"github.com/aws/aws-sdk-go-v2/service/organizations"
 )
 
 func (r *Provider) Prepare(ctx context.Context, id string) error {
 	if r.blocked(id) {
 		return fmt.Errorf("account %q is the management account or blocklisted", id)
 	}
-	r.organizations.UpdatePolicy(ctx, &organizations.UpdatePolicyInput{
-		PolicyId: "",
-	})
-	r.organizations.CreatePolicy(ctx, &organizations.CreatePolicyInput{
-		Content: new(""),
-	})
-	r.organizations.AttachPolicy(ctx, &organizations.AttachPolicyInput{
-		TargetId: new(id),
-	})
-
-	// TODO also create roles
-
 	config, err := r.assume(ctx, id, r.adminRole, time.Hour)
 	if err != nil {
 		return err

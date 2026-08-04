@@ -30,7 +30,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/gruntwork-io/cloud-nuke v0.52.0
 	github.com/lmittmann/tint v1.1.3
-	github.com/megakuul/dynamitedb v0.3.0
+	github.com/megakuul/dynamitedb v0.4.0
 	github.com/megakuul/lake v0.4.1
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/viper v1.21.0
@@ -94,7 +94,7 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/ram v1.36.2 // indirect
 	github.com/aws/aws-sdk-go-v2/service/redshift v1.53.11 // indirect
 	github.com/aws/aws-sdk-go-v2/service/route53 v1.48.6 // indirect
-	github.com/aws/aws-sdk-go-v2/service/s3 v1.106.3 // indirect
+	github.com/aws/aws-sdk-go-v2/service/s3 v1.106.4 // indirect
 	github.com/aws/aws-sdk-go-v2/service/s3control v1.53.3 // indirect
 	github.com/aws/aws-sdk-go-v2/service/sagemaker v1.174.1 // indirect
 	github.com/aws/aws-sdk-go-v2/service/scheduler v1.12.16 // indirect

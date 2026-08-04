@@ -1,4 +1,6 @@
-package challenge
+// package api contains the plugin API function names and serialization structs.
+// Usually you do not need this, it is wrapped by the challenge pkg that provides a high level sdk.
+package api
 
 const Init = "init"
 
@@ -9,6 +11,14 @@ type InitInput struct {
 }
 
 type InitOutput struct{}
+
+const Report = "report"
+
+type ReportInput struct {
+	Error string `json:"error,omitempty"`
+}
+
+type ReportOutput struct{}
 
 const ReadScore = "read_score"
 
@@ -32,6 +42,7 @@ const CreateResource = "create_resource"
 type CreateResourceInput struct {
 	Type    string `json:"type,omitempty"`
 	Desired string `json:"desired,omitempty"`
+	Wait    bool   `json:"wait,omitempty"`
 }
 
 type CreateResourceOutput struct{}
@@ -53,6 +64,7 @@ type UpdateResourceInput struct {
 	Type       string `json:"type,omitempty"`
 	Identifier string `json:"identifier,omitempty"`
 	Patch      string `json:"patch,omitempty"`
+	Wait       bool   `json:"wait,omitempty"`
 }
 
 type UpdateResourceOutput struct{}
@@ -62,6 +74,7 @@ const DeleteResource = "delete_resource"
 type DeleteResourceInput struct {
 	Type       string `json:"type,omitempty"`
 	Identifier string `json:"identifier,omitempty"`
+	Wait       bool   `json:"wait,omitempty"`
 }
 
 type DeleteResourceOutput struct{}

@@ -5,9 +5,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"log/slog"
+	"time"
 
 	"codeberg.org/megakuul/cloudjam/internal/oltp"
-	"codeberg.org/megakuul/cloudjam/pkg/challenge"
+	"codeberg.org/megakuul/cloudjam/internal/provider"
+	"codeberg.org/megakuul/cloudjam/pkg/challenge/api"
 	extism "github.com/extism/go-sdk"
 	"github.com/megakuul/dynamitedb"
 	"github.com/megakuul/lake"
@@ -17,6 +19,8 @@ type Challenge struct {
 	logger *slog.Logger
 	oltp   *dynamitedb.Bucket
 	olap   *lake.Bucket
+
+	account provider.Account
 
 	providerID     string
 	definitionID   string
@@ -67,14 +71,15 @@ func (c *Challenge) Start(ctx context.Context) error {
 	}
 	config := extism.PluginConfig{}
 	plugin, err := extism.NewCompiledPlugin(ctx, manifests, config, []extism.HostFunction{
-		createHostFunction(challenge.Init, c.Init, report),
-		createHostFunction(challenge.ReadScore, c.ReadScore, report),
-		createHostFunction(challenge.UpdateScore, c.UpdateScore, report),
-		createHostFunction(challenge.CreateResource, c.CreateResource, report),
-		createHostFunction(challenge.ReadResource, c.ReadResource, report),
-		createHostFunction(challenge.UpdateResource, c.UpdateResource, report),
-		createHostFunction(challenge.DeleteResource, c.DeleteResource, report),
-		createHostFunction(challenge.ListResource, c.ListResource, report),
+		createHostFunction(api.Init, c.Init, report),
+		createHostFunction(api.Report, c.Report, report),
+		createHostFunction(api.ReadScore, c.ReadScore, report),
+		createHostFunction(api.UpdateScore, c.UpdateScore, report),
+		createHostFunction(api.CreateResource, c.CreateResource, report),
+		createHostFunction(api.ReadResource, c.ReadResource, report),
+		createHostFunction(api.UpdateResource, c.UpdateResource, report),
+		createHostFunction(api.DeleteResource, c.DeleteResource, report),
+		createHostFunction(api.ListResource, c.ListResource, report),
 	})
 	if err != nil {
 		return nil
@@ -121,7 +126,7 @@ func createHostFunction[Input, Output any](name string, callback func(context.Co
 	)
 }
 
-func (c *Challenge) Init(ctx context.Context, input *challenge.InitInput) (*challenge.InitOutput, error) {
+func (c *Challenge) Init(ctx context.Context, input *api.InitInput) (*api.InitOutput, error) {
 	err := dynamitedb.Update(ctx, c.oltp, &oltp.Challenge{
 		GameID:      dynamitedb.Key(c.gameID),
 		ChallengeID: dynamitedb.Key(c.challengeID),
@@ -129,38 +134,61 @@ func (c *Challenge) Init(ctx context.Context, input *challenge.InitInput) (*chal
 		Description: dynamitedb.Set(input.Description),
 		Clues:       dynamitedb.Set(input.Clues),
 	})
-	return &challenge.InitOutput{}, err
+	return &api.InitOutput{}, err
 }
 
-func (c *Challenge) ReadScore(ctx context.Context, input *challenge.ReadScoreInput) (*challenge.ReadScoreOutput, error) {
-	return nil, nil
+func (c *Challenge) Report(ctx context.Context, input *api.ReportInput) (*api.ReportOutput, error) {
+	err := dynamitedb.Update(ctx, c.oltp, &oltp.Challenge{
+		GameID:      dynamitedb.Key(c.gameID),
+		ChallengeID: dynamitedb.Key(c.challengeID),
+		Errors:      dynamitedb.Append(input.Error),
+	})
+	return &api.ReportOutput{}, err
 }
 
-func (c *Challenge) UpdateScore(ctx context.Context, input *challenge.UpdateScoreInput) (*challenge.UpdateScoreOutput, error) {
+func (c *Challenge) ReadScore(ctx context.Context, input *api.ReadScoreInput) (*api.ReadScoreOutput, error) {
+	player, err := dynamitedb.Get(ctx, c.oltp, &oltp.Player{
+		GameID:   dynamitedb.Key(c.gameID),
+		PlayerID: dynamitedb.Key(c.playerID),
+	})
+	if err != nil {
+		return nil, err
+	}
+	return &api.ReadScoreOutput{
+		Score: player.Score.Value(),
+	}, nil
+}
+
+func (c *Challenge) UpdateScore(ctx context.Context, input *api.UpdateScoreInput) (*api.UpdateScoreOutput, error) {
 	err := dynamitedb.Update(ctx, c.oltp, &oltp.Player{
 		GameID:   dynamitedb.Key(c.gameID),
 		PlayerID: dynamitedb.Key(c.playerID),
-		// PlayerScore: dynamitedb.Increment(input.Increment),
+		Score:    dynamitedb.Increment(input.Increment),
+		ScoreEvents: dynamitedb.Append(oltp.ScoreEvent{
+			Timestamp: time.Now(),
+			Text:      input.Reason,
+			Change:    input.Increment,
+		}),
 	})
-	return &challenge.UpdateScoreOutput{}, err
+	return &api.UpdateScoreOutput{}, err
 }
 
-func (c *Challenge) CreateResource(ctx context.Context, input *challenge.CreateResourceInput) (*challenge.CreateResourceOutput, error) {
+func (c *Challenge) CreateResource(ctx context.Context, input *api.CreateResourceInput) (*api.CreateResourceOutput, error) {
 	return nil, nil
 }
 
-func (c *Challenge) ReadResource(ctx context.Context, input *challenge.ReadResourceInput) (*challenge.ReadResourceOutput, error) {
+func (c *Challenge) ReadResource(ctx context.Context, input *api.ReadResourceInput) (*api.ReadResourceOutput, error) {
 	return nil, nil
 }
 
-func (c *Challenge) UpdateResource(ctx context.Context, input *challenge.UpdateResourceInput) (*challenge.UpdateResourceOutput, error) {
+func (c *Challenge) UpdateResource(ctx context.Context, input *api.UpdateResourceInput) (*api.UpdateResourceOutput, error) {
 	return nil, nil
 }
 
-func (c *Challenge) DeleteResource(ctx context.Context, input *challenge.DeleteResourceInput) (*challenge.DeleteResourceOutput, error) {
+func (c *Challenge) DeleteResource(ctx context.Context, input *api.DeleteResourceInput) (*api.DeleteResourceOutput, error) {
 	return nil, nil
 }
 
-func (c *Challenge) ListResource(ctx context.Context, input *challenge.ListResourceInput) (*challenge.ListResourceOutput, error) {
+func (c *Challenge) ListResource(ctx context.Context, input *api.ListResourceInput) (*api.ListResourceOutput, error) {
 	return nil, nil
 }

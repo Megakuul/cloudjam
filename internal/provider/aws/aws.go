@@ -63,7 +63,6 @@ type Provider struct {
 	instanceTypes []string
 
 	maxVolumeSize int
-	maxDailyCost  float64
 	// blockedAccounts contains additional account ids that must never be acquired
 	// or cleaned (the management account is always blocked).
 	blockedAccounts   []string
@@ -89,7 +88,6 @@ func New(ctx context.Context, config awssdk.Config) (*Provider, error) {
 		regions:       []string{"us-east-1", "eu-central-1"},
 		instanceTypes: []string{"t2.*", "t3.*", "t3a.*", "t4g.*", "*.micro", "*.small"},
 		maxVolumeSize: 10,
-		maxDailyCost:  10,
 
 		createConfig: func(provider credentials.StaticCredentialsProvider) awssdk.Config {
 			newConfig := config.Copy()
@@ -127,14 +125,27 @@ func (r *Provider) bootstrap(ctx context.Context) error {
 	}
 	r.rootOU = *roots.Roots[0].Id
 
-	_, err = r.organizations.CreateOrganizationalUnit(ctx, &organizations.CreateOrganizationalUnitInput{
-		Name:     new("cloudjam"), // hardcoded unchangable API
+	ouListResp, err := r.organizations.ListOrganizationalUnitsForParent(ctx, &organizations.ListOrganizationalUnitsForParentInput{
 		ParentId: &r.rootOU,
 	})
 	if err != nil {
-		if _, ok := errors.AsType[*orgtypes.DuplicateOrganizationalUnitException](err); !ok {
-			return err
+		return fmt.Errorf("list account ous: %w", err)
+	}
+
+	for _, ou := range ouListResp.OrganizationalUnits {
+		if ou.Name != nil && *ou.Name == "cloudjam" {
+			r.cloudjamOU = *ou.Id
 		}
+	}
+	if r.cloudjamOU == "" {
+		ouResp, err := r.organizations.CreateOrganizationalUnit(ctx, &organizations.CreateOrganizationalUnitInput{
+			Name:     new("cloudjam"), // hardcoded unchangable API
+			ParentId: &r.rootOU,
+		})
+		if err != nil {
+			return fmt.Errorf("creating cloudjam ou: %w", err)
+		}
+		r.cloudjamOU = *ouResp.OrganizationalUnit.Id
 	}
 
 	policiesResp, err := r.organizations.ListPoliciesForTarget(ctx, &organizations.ListPoliciesForTargetInput{
@@ -142,32 +153,46 @@ func (r *Provider) bootstrap(ctx context.Context) error {
 		Filter:   orgtypes.PolicyTypeServiceControlPolicy,
 	})
 	if err != nil {
-		return err
+		return fmt.Errorf("list account policies: %w", err)
 	}
 
-	guardPolicy := ""
+	guardPolicyID := ""
 	for _, policy := range policiesResp.Policies {
 		if policy.Name != nil && *policy.Name == "cloudjam-guard" {
-			guardPolicy = *policy.Id
+			guardPolicyID = *policy.Id
 		}
 	}
 
-	if guardPolicy == "" {
+	guardPolicyContent, err := guardControlPolicy(r.adminRole, r.sandboxRole, r.boundaryARN)
+	if err != nil {
+		return err
+	}
+	if guardPolicyID == "" {
 		_, err = r.organizations.CreatePolicy(ctx, &organizations.CreatePolicyInput{
 			Name:    new("cloudjam-guard"), // hardcoded unchangable API
 			Type:    orgtypes.PolicyTypeServiceControlPolicy,
-			Content: new(""),
+			Content: new(string(guardPolicyContent)),
 		})
 		if err != nil {
 			return fmt.Errorf("creating cloudjam guard policy: %w", err)
 		}
 	} else {
 		_, err = r.organizations.UpdatePolicy(ctx, &organizations.UpdatePolicyInput{
-			PolicyId: &guardPolicy,
-			Content:  new(""),
+			PolicyId: &guardPolicyID,
+			Content:  new(string(guardPolicyContent)),
 		})
 		if err != nil {
 			return fmt.Errorf("updating cloudjam guard policy: %w", err)
+		}
+	}
+
+	_, err = r.organizations.AttachPolicy(ctx, &organizations.AttachPolicyInput{
+		PolicyId: &guardPolicyID,
+		TargetId: &r.cloudjamOU,
+	})
+	if err != nil {
+		if _, ok := errors.AsType[*orgtypes.DuplicatePolicyAttachmentException](err); !ok {
+			return fmt.Errorf("attaching guard policy to cloudjam ou: %w", err)
 		}
 	}
 

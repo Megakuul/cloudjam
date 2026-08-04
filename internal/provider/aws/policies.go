@@ -149,14 +149,6 @@ func guardControlPolicy(adminRole, sandboxRole, boundaryPolicy string) ([]byte, 
 	})
 }
 
-// guardBoundaryPolicy creates a IAM permission boundary (policy) that should be attached to every entity.
-// The guardControlPolicy must enforce that all entities (users, roles, etc) use this permission boundary.
-// The boundary exists in order to create IAM challenges where the user has access to IAM without auto allowing privilege escalation.
-// (without this, a user who can modify policies could potentially gain root access and solve the challenge by infiltrating the account).
-func guardBoundaryPolicy(doc policyDocument) ([]byte, error) {
-	return json.Marshal(doc)
-}
-
 // costControlPolicy generates an SCP that denies common cost / commitment traps.
 // It also denies resources that should definitely never be used (like regions out of scope).
 func costControlPolicy(regions []string) ([]byte, error) {

@@ -25,16 +25,9 @@ type Cost struct {
 	Amount  float64 // specified in good old fashioned us dollars
 }
 
-// Account represents the current state of an account according to teh provider.
-type Account struct {
-	// ID is the provider specific account identifier.
-	ID   string
-	Name string
-}
-
 type Provider interface {
 	// Provision rolls out a new account to the provider.
-	Provision(ctx context.Context, name string) (*Account, error)
+	Provision(ctx context.Context, name string) (string, error)
 	// Prepare prepares the account for a challenge with necessary guards and configurations.
 	Prepare(ctx context.Context, id string) error
 	// Nuke erases all contents of an account. This may also raze guardrails / configs, therefore Prepare() must be called before reusing.
