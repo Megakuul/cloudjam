@@ -14,25 +14,25 @@ import (
 	"github.com/gruntwork-io/cloud-nuke/util"
 )
 
-func (r *Provider) Nuke(ctx context.Context, id string) error {
+func (p *Provider) Nuke(ctx context.Context, id string) error {
 	// retarded ctx api implemented by cloudgrunts nuke tool (this API guys I'M LOSING MY FUCKING MIND)
 	ctx = context.WithValue(ctx, util.ExcludeFirstSeenTagKey, true)
 	ctx = context.WithValue(ctx, util.AccountIdKey, id)
 
 	backoffTimeout := 10 * time.Second
 
-	config, err := r.assume(ctx, id, r.adminRole, time.Hour*10)
+	config, err := p.assume(ctx, id, p.adminRole, time.Hour*10)
 	if err != nil {
 		return err
 	}
-	r.logger.Info(fmt.Sprintf("starting nuke loop for account (account '%s')...", id))
+	p.logger.Info(fmt.Sprintf("starting nuke loop for account (account '%s')...", id))
 	for {
 		var retryErrs error
 		var retryErrsLock sync.Mutex
 		var regionWg sync.WaitGroup
 
-		r.logger.Debug(fmt.Sprintf("nuking aws regional resources (account '%s')...", id))
-		for _, region := range r.regions {
+		p.logger.Debug(fmt.Sprintf("nuking aws regional resources (account '%s')...", id))
+		for _, region := range p.regions {
 			regionWg.Add(1)
 			go func() {
 				defer regionWg.Done()
@@ -47,12 +47,12 @@ func (r *Provider) Nuke(ctx context.Context, id string) error {
 		}
 		regionWg.Wait()
 
-		r.logger.Debug(fmt.Sprintf("nuking aws global resources (account '%s')...", id))
+		p.logger.Debug(fmt.Sprintf("nuking aws global resources (account '%s')...", id))
 		retryErrs = errors.Join(retryErrs, nukeRegion(ctx, config, "global", nuke_config.Config{
 			IAMRoles: nuke_config.ResourceType{ExcludeRule: nuke_config.FilterRule{
 				NamesRegExp: []nuke_config.Expression{
-					{RE: *regexp.MustCompile(fmt.Sprintf("^%s$", r.adminRole))},
-					{RE: *regexp.MustCompile(fmt.Sprintf("^%s$", r.sandboxRole))},
+					{RE: *regexp.MustCompile(fmt.Sprintf("^%s$", p.adminRole))},
+					{RE: *regexp.MustCompile(fmt.Sprintf("^%s$", p.sandboxRole))},
 				},
 			}},
 		}))
@@ -60,7 +60,7 @@ func (r *Provider) Nuke(ctx context.Context, id string) error {
 		if retryErrs == nil {
 			return nil
 		}
-		r.logger.Debug(fmt.Sprintf("nuke will retry due to remaining resources (account '%s'):\n%v", id, retryErrs))
+		p.logger.Debug(fmt.Sprintf("nuke will retry due to remaining resources (account '%s'):\n%v", id, retryErrs))
 		select {
 		case <-ctx.Done():
 			return retryErrs

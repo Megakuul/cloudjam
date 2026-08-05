@@ -11,11 +11,11 @@ import (
 	iamtypes "github.com/aws/aws-sdk-go-v2/service/iam/types"
 )
 
-func (r *Provider) Prepare(ctx context.Context, id string) error {
-	if r.blocked(id) {
+func (p *Provider) Prepare(ctx context.Context, id string) error {
+	if p.blocked(id) {
 		return fmt.Errorf("account %q is the management account or blocklisted", id)
 	}
-	config, err := r.assume(ctx, id, r.adminRole, time.Hour)
+	config, err := p.assume(ctx, id, p.adminRole, time.Hour)
 	if err != nil {
 		return err
 	}
@@ -35,9 +35,9 @@ func (r *Provider) Prepare(ctx context.Context, id string) error {
 	})
 
 	_, err = iamClient.CreateRole(ctx, &iam.CreateRoleInput{
-		RoleName:                 &r.sandboxRole,
+		RoleName:                 &p.sandboxRole,
 		AssumeRolePolicyDocument: new(string(sandboxTrust)),
-		PermissionsBoundary:      &r.boundaryARN,
+		PermissionsBoundary:      &p.boundaryARN,
 	})
 	if err != nil {
 		if _, ok := errors.AsType[*iamtypes.EntityAlreadyExistsException](err); !ok {
@@ -59,7 +59,7 @@ func (r *Provider) Prepare(ctx context.Context, id string) error {
 	})
 
 	_, err = iamClient.PutRolePolicy(ctx, &iam.PutRolePolicyInput{
-		RoleName:       &r.sandboxRole,
+		RoleName:       &p.sandboxRole,
 		PolicyName:     new("cloudjam"),
 		PolicyDocument: new(string(sandboxPolicy)),
 	})

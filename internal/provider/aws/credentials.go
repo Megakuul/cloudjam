@@ -7,8 +7,8 @@ import (
 	"time"
 )
 
-func (r *Provider) Credentials(ctx context.Context, id string, sessionDuration time.Duration) (string, error) {
-	config, err := r.assume(ctx, id, r.adminRole, sessionDuration)
+func (p *Provider) Credentials(ctx context.Context, id string, lifetime time.Duration) (string, error) {
+	config, err := p.assume(ctx, id, p.adminRole, lifetime)
 	if err != nil {
 		return "", err
 	}

@@ -113,8 +113,8 @@ func New(ctx context.Context, config awssdk.Config) (*Provider, error) {
 	return repository, nil
 }
 
-func (r *Provider) bootstrap(ctx context.Context) error {
-	roots, err := r.organizations.ListRoots(ctx, &organizations.ListRootsInput{
+func (p *Provider) bootstrap(ctx context.Context) error {
+	roots, err := p.organizations.ListRoots(ctx, &organizations.ListRootsInput{
 		MaxResults: new(int32(1)),
 	})
 	if err != nil {
@@ -123,10 +123,10 @@ func (r *Provider) bootstrap(ctx context.Context) error {
 		// never happens practically (there is always a root ou on organization management accounts).
 		return fmt.Errorf("fuck the aws api design")
 	}
-	r.rootOU = *roots.Roots[0].Id
+	p.rootOU = *roots.Roots[0].Id
 
-	ouListResp, err := r.organizations.ListOrganizationalUnitsForParent(ctx, &organizations.ListOrganizationalUnitsForParentInput{
-		ParentId: &r.rootOU,
+	ouListResp, err := p.organizations.ListOrganizationalUnitsForParent(ctx, &organizations.ListOrganizationalUnitsForParentInput{
+		ParentId: &p.rootOU,
 	})
 	if err != nil {
 		return fmt.Errorf("list account ous: %w", err)
@@ -134,22 +134,22 @@ func (r *Provider) bootstrap(ctx context.Context) error {
 
 	for _, ou := range ouListResp.OrganizationalUnits {
 		if ou.Name != nil && *ou.Name == "cloudjam" {
-			r.cloudjamOU = *ou.Id
+			p.cloudjamOU = *ou.Id
 		}
 	}
-	if r.cloudjamOU == "" {
-		ouResp, err := r.organizations.CreateOrganizationalUnit(ctx, &organizations.CreateOrganizationalUnitInput{
+	if p.cloudjamOU == "" {
+		ouResp, err := p.organizations.CreateOrganizationalUnit(ctx, &organizations.CreateOrganizationalUnitInput{
 			Name:     new("cloudjam"), // hardcoded unchangable API
-			ParentId: &r.rootOU,
+			ParentId: &p.rootOU,
 		})
 		if err != nil {
 			return fmt.Errorf("creating cloudjam ou: %w", err)
 		}
-		r.cloudjamOU = *ouResp.OrganizationalUnit.Id
+		p.cloudjamOU = *ouResp.OrganizationalUnit.Id
 	}
 
-	policiesResp, err := r.organizations.ListPoliciesForTarget(ctx, &organizations.ListPoliciesForTargetInput{
-		TargetId: &r.cloudjamOU,
+	policiesResp, err := p.organizations.ListPoliciesForTarget(ctx, &organizations.ListPoliciesForTargetInput{
+		TargetId: &p.cloudjamOU,
 		Filter:   orgtypes.PolicyTypeServiceControlPolicy,
 	})
 	if err != nil {
@@ -163,12 +163,12 @@ func (r *Provider) bootstrap(ctx context.Context) error {
 		}
 	}
 
-	guardPolicyContent, err := guardControlPolicy(r.adminRole, r.sandboxRole, r.boundaryARN)
+	guardPolicyContent, err := guardControlPolicy(p.adminRole, p.sandboxRole, p.boundaryARN)
 	if err != nil {
 		return err
 	}
 	if guardPolicyID == "" {
-		_, err = r.organizations.CreatePolicy(ctx, &organizations.CreatePolicyInput{
+		_, err = p.organizations.CreatePolicy(ctx, &organizations.CreatePolicyInput{
 			Name:    new("cloudjam-guard"), // hardcoded unchangable API
 			Type:    orgtypes.PolicyTypeServiceControlPolicy,
 			Content: new(string(guardPolicyContent)),
@@ -177,7 +177,7 @@ func (r *Provider) bootstrap(ctx context.Context) error {
 			return fmt.Errorf("creating cloudjam guard policy: %w", err)
 		}
 	} else {
-		_, err = r.organizations.UpdatePolicy(ctx, &organizations.UpdatePolicyInput{
+		_, err = p.organizations.UpdatePolicy(ctx, &organizations.UpdatePolicyInput{
 			PolicyId: &guardPolicyID,
 			Content:  new(string(guardPolicyContent)),
 		})
@@ -186,9 +186,9 @@ func (r *Provider) bootstrap(ctx context.Context) error {
 		}
 	}
 
-	_, err = r.organizations.AttachPolicy(ctx, &organizations.AttachPolicyInput{
+	_, err = p.organizations.AttachPolicy(ctx, &organizations.AttachPolicyInput{
 		PolicyId: &guardPolicyID,
-		TargetId: &r.cloudjamOU,
+		TargetId: &p.cloudjamOU,
 	})
 	if err != nil {
 		if _, ok := errors.AsType[*orgtypes.DuplicatePolicyAttachmentException](err); !ok {
@@ -199,14 +199,14 @@ func (r *Provider) bootstrap(ctx context.Context) error {
 	return nil
 }
 
-func (r *Provider) blocked(id string) bool {
-	return id == r.managementAccount || slices.Contains(r.blockedAccounts, id)
+func (p *Provider) blocked(id string) bool {
+	return id == p.managementAccount || slices.Contains(p.blockedAccounts, id)
 }
 
 // assume returns an sdk configuration with short-lived credentials for the
 // specified role inside a member account, along with the session expiry.
-func (r *Provider) assume(ctx context.Context, id string, role string, sessionDuration time.Duration) (awssdk.Config, error) {
-	session, err := r.sts.AssumeRole(ctx, &sts.AssumeRoleInput{
+func (p *Provider) assume(ctx context.Context, id string, role string, sessionDuration time.Duration) (awssdk.Config, error) {
+	session, err := p.sts.AssumeRole(ctx, &sts.AssumeRoleInput{
 		RoleArn:         new(fmt.Sprintf("arn:aws:iam::%s:role/%s", id, role)),
 		RoleSessionName: new("cloudjam"),
 		DurationSeconds: new(int32(sessionDuration.Seconds())),
@@ -214,7 +214,7 @@ func (r *Provider) assume(ctx context.Context, id string, role string, sessionDu
 	if err != nil {
 		return awssdk.Config{}, fmt.Errorf("failed to assume role %q in account %q: %w", role, id, err)
 	}
-	return r.createConfig(credentials.NewStaticCredentialsProvider(
+	return p.createConfig(credentials.NewStaticCredentialsProvider(
 		*session.Credentials.AccessKeyId,
 		*session.Credentials.SecretAccessKey,
 		*session.Credentials.SessionToken,

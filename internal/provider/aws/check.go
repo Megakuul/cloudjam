@@ -21,8 +21,8 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/resourcegroupstaggingapi"
 )
 
-func (r *Provider) Check(ctx context.Context, id string) ([]provider.Leak, error) {
-	config, err := r.assume(ctx, id, r.adminRole, 10*time.Hour)
+func (p *Provider) Check(ctx context.Context, id string) ([]provider.Leak, error) {
+	config, err := p.assume(ctx, id, p.adminRole, 10*time.Hour)
 	if err != nil {
 		return nil, err
 	}
@@ -30,7 +30,7 @@ func (r *Provider) Check(ctx context.Context, id string) ([]provider.Leak, error
 	leaks := []provider.Leak{}
 	for _, postNukeCheck := range postNukeChecks {
 		leak := []provider.Leak{}
-		for _, region := range r.regions {
+		for _, region := range p.regions {
 			results, err := postNukeCheck.run(ctx, config, region)
 			if err != nil {
 				leak = append(leak, provider.Leak{
@@ -47,7 +47,7 @@ func (r *Provider) Check(ctx context.Context, id string) ([]provider.Leak, error
 			leak = append(leak, provider.Leak{
 				Severity: slog.LevelInfo,
 				Resource: postNukeCheck.name,
-				Message:  fmt.Sprintf("%s (checked regions: %s)", postNukeCheck.pass, strings.Join(r.regions, ", ")),
+				Message:  fmt.Sprintf("%s (checked regions: %s)", postNukeCheck.pass, strings.Join(p.regions, ", ")),
 			})
 		}
 		leaks = append(leaks, leak...)

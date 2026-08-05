@@ -12,7 +12,7 @@ import (
 	"codeberg.org/megakuul/cloudjam/internal/provider"
 )
 
-func (r *Provider) Cost(ctx context.Context, id string, window time.Duration) ([]provider.Cost, error) {
+func (p *Provider) Cost(ctx context.Context, id string, window time.Duration) ([]provider.Cost, error) {
 	now := time.Now().UTC()
 	input := &costexplorer.GetCostAndUsageInput{
 		Granularity: cetypes.GranularityDaily,
@@ -34,7 +34,7 @@ func (r *Provider) Cost(ctx context.Context, id string, window time.Duration) ([
 
 	costs := []provider.Cost{}
 	for {
-		page, err := r.costexplorer.GetCostAndUsage(ctx, input)
+		page, err := p.costexplorer.GetCostAndUsage(ctx, input)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get cost and usage of account %q: %w", id, err)
 		}
