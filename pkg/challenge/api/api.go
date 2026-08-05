@@ -2,7 +2,10 @@
 // Usually you do not need this, it is wrapped by the challenge pkg that provides a high level sdk.
 package api
 
-const Init = "init"
+const InitName = "init"
+
+//go:wasmimport extism:host/user init
+func hostInit(uint64) uint64
 
 type InitInput struct {
 	Title       string            `json:"title,omitempty"`
@@ -12,7 +15,14 @@ type InitInput struct {
 
 type InitOutput struct{}
 
-const Report = "report"
+func Init(in InitInput) (InitOutput, error) {
+	return call[InitInput, InitOutput](hostInit, in)
+}
+
+const ReportName = "report"
+
+//go:wasmimport extism:host/user report
+func hostReport(uint64) uint64
 
 type ReportInput struct {
 	Error string `json:"error,omitempty"`
@@ -20,7 +30,14 @@ type ReportInput struct {
 
 type ReportOutput struct{}
 
-const ReadScore = "read_score"
+func Report(in ReportInput) (ReportOutput, error) {
+	return call[ReportInput, ReportOutput](hostReport, in)
+}
+
+const ReadScoreName = "read_score"
+
+//go:wasmimport extism:host/user read_score
+func hostReadScore(uint64) uint64
 
 type ReadScoreInput struct{}
 
@@ -28,7 +45,14 @@ type ReadScoreOutput struct {
 	Score float64 `json:"score,omitempty"`
 }
 
-const UpdateScore = "update_score"
+func ReadScore(in ReadScoreInput) (ReadScoreOutput, error) {
+	return call[ReadScoreInput, ReadScoreOutput](hostReadScore, in)
+}
+
+const UpdateScoreName = "update_score"
+
+//go:wasmimport extism:host/user update_score
+func hostUpdateScore(uint64) uint64
 
 type UpdateScoreInput struct {
 	Reason    string  `json:"reason,omitempty"`
@@ -37,17 +61,32 @@ type UpdateScoreInput struct {
 
 type UpdateScoreOutput struct{}
 
-const CreateResource = "create_resource"
+func UpdateScore(in UpdateScoreInput) (UpdateScoreOutput, error) {
+	return call[UpdateScoreInput, UpdateScoreOutput](hostUpdateScore, in)
+}
+
+const CreateResourceName = "create_resource"
+
+//go:wasmimport extism:host/user create_resource
+func hostCreateResource(uint64) uint64
 
 type CreateResourceInput struct {
 	Type    string `json:"type,omitempty"`
 	Desired string `json:"desired,omitempty"`
-	Wait    bool   `json:"wait,omitempty"`
 }
 
-type CreateResourceOutput struct{}
+type CreateResourceOutput struct {
+	Identifier string `json:"identifier,omitempty"`
+}
 
-const ReadResource = "register_resource"
+func CreateResource(in CreateResourceInput) (CreateResourceOutput, error) {
+	return call[CreateResourceInput, CreateResourceOutput](hostCreateResource, in)
+}
+
+const ReadResourceName = "read_resource"
+
+//go:wasmimport extism:host/user read_resource
+func hostReadResource(uint64) uint64
 
 type ReadResourceInput struct {
 	Type       string `json:"type,omitempty"`
@@ -58,28 +97,47 @@ type ReadResourceOutput struct {
 	State string `json:"state,omitempty"`
 }
 
-const UpdateResource = "update_resource"
+func ReadResource(in ReadResourceInput) (ReadResourceOutput, error) {
+	return call[ReadResourceInput, ReadResourceOutput](hostReadResource, in)
+}
+
+const UpdateResourceName = "update_resource"
+
+//go:wasmimport extism:host/user update_resource
+func hostUpdateResource(uint64) uint64
 
 type UpdateResourceInput struct {
 	Type       string `json:"type,omitempty"`
 	Identifier string `json:"identifier,omitempty"`
 	Patch      string `json:"patch,omitempty"`
-	Wait       bool   `json:"wait,omitempty"`
 }
 
 type UpdateResourceOutput struct{}
 
-const DeleteResource = "delete_resource"
+func UpdateResource(in UpdateResourceInput) (UpdateResourceOutput, error) {
+	return call[UpdateResourceInput, UpdateResourceOutput](hostUpdateResource, in)
+}
+
+const DeleteResourceName = "delete_resource"
+
+//go:wasmimport extism:host/user delete_resource
+func hostDeleteResource(uint64) uint64
 
 type DeleteResourceInput struct {
 	Type       string `json:"type,omitempty"`
 	Identifier string `json:"identifier,omitempty"`
-	Wait       bool   `json:"wait,omitempty"`
 }
 
 type DeleteResourceOutput struct{}
 
-const ListResource = "list_resource"
+func DeleteResource(in DeleteResourceInput) (DeleteResourceOutput, error) {
+	return call[DeleteResourceInput, DeleteResourceOutput](hostDeleteResource, in)
+}
+
+const ListResourceName = "list_resource"
+
+//go:wasmimport extism:host/user list_resource
+func hostListResource(uint64) uint64
 
 type ListResourceInput struct {
 	Type string `json:"type,omitempty"`
@@ -87,4 +145,8 @@ type ListResourceInput struct {
 
 type ListResourceOutput struct {
 	Resources map[string]string `json:"resources,omitempty"`
+}
+
+func ListResource(in ListResourceInput) (ListResourceOutput, error) {
+	return call[ListResourceInput, ListResourceOutput](hostListResource, in)
 }

@@ -51,9 +51,10 @@ func (r *ResourceController) Read(ctx context.Context, resourceType, resourceID 
 	return *resp.ResourceDescription.Properties, nil
 }
 
-func (r *ResourceController) Update(ctx context.Context, resourceType, resourceData string) error {
+func (r *ResourceController) Update(ctx context.Context, resourceType, resourceID, resourceData string) error {
 	resp, err := r.client.UpdateResource(ctx, &cloudcontrol.UpdateResourceInput{
 		TypeName:      &resourceType,
+		Identifier:    &resourceID,
 		PatchDocument: &resourceData,
 	})
 	if err != nil {

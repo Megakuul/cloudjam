@@ -1,32 +1,34 @@
 package challenge
 
 import (
-	"codeberg.org/megakuul/cloudjam/pkg/challenge/api"
 	"fmt"
 	"time"
 )
 
-// Host is everything a Challenge needs from the plugin host. A provider package
-// (pkg/challenge/aws) implements it over the WASM imports; tests use a fake.
+// Host is everything the challenge needs from the plugin host. A provider
+// package (pkg/challenge/aws) implements it over the WASM imports and installs
+// it with Use; tests install a fake.
 type Host interface {
-	Register(api.InitInput) error
+	Register(InitInput) error
 	Report(message string) error
 	Award(reason string, points float64) error
 	Log(message string)
 }
 
+// A plugin serves exactly one challenge, so it is global: Describe, Provision,
+// Check and Run all act on this. There is nothing to construct and nothing to
+// pass around.
+var current = &Challenge{
+	interval: 10 * time.Second,
+	now:      time.Now,
+	sleep:    time.Sleep,
+}
+
 // Challenge is a scenario: some resources to provision and some checks that
 // score the player's progress against them.
-//
-// Build one with New, declare what it needs, then Run it:
-//
-//	c := challenge.New(host, "Lock Down the Bucket", "Secure it.")
-//	c.Provision("bucket", createBucket)
-//	c.Check("encrypted").Points(50).Done(encrypted)
-//	c.Run()
 type Challenge struct {
 	host  Host
-	meta  api.InitInput
+	meta  InitInput
 	steps []*step
 	specs []*Spec
 
@@ -38,75 +40,79 @@ type Challenge struct {
 	sleep func(time.Duration)
 }
 
-// step is provisioning work, retried every round until it succeeds once.
+// step is provisioning work, retried every tick until it succeeds once.
 type step struct {
 	name string
 	run  func() error
 	done bool
 }
 
-// New builds a challenge that reports to host and shows title and description to
-// the player.
-func New(host Host, title, description string) *Challenge {
-	return &Challenge{
-		host:     host,
-		meta:     api.InitInput{Title: title, Description: description},
-		interval: 10 * time.Second,
-		now:      time.Now,
-		sleep:    time.Sleep,
-	}
+// Use installs the host the challenge talks to. Provider packages call it from
+// their package init.
+func Use(host Host) { current.host = host }
+
+// Describe sets the title and briefing shown to the player.
+func Describe(title, description string) {
+	current.meta.Title = title
+	current.meta.Description = description
 }
 
 // Clue adds a hint the player can reveal.
-func (c *Challenge) Clue(id, text string) {
-	if c.meta.Clues == nil {
-		c.meta.Clues = map[string]string{}
+func Clue(id, text string) {
+	if current.meta.Clues == nil {
+		current.meta.Clues = map[string]string{}
 	}
-	c.meta.Clues[id] = text
+	current.meta.Clues[id] = text
 }
 
-// Interval sets how long Run waits between rounds. Defaults to 10s.
-func (c *Challenge) Interval(d time.Duration) { c.interval = d }
+// Interval sets how long Run waits between evaluation rounds. Defaults to 10s.
+func Interval(d time.Duration) { current.interval = d }
 
-// Timeout stops Run after d, even with checks still outstanding. Zero (the
+// Timeout stops Run after d, even if checks are still outstanding. Zero (the
 // default) means run until there is nothing left to do — which for a challenge
 // with a repeating check is forever, until the host tears the plugin down.
-func (c *Challenge) Timeout(d time.Duration) { c.timeout = d }
+func Timeout(d time.Duration) { current.timeout = d }
 
-// Provision registers setup work. Run retries it every round until it succeeds,
-// reporting each failure, so callers never handle the error themselves. Provider
-// packages build their typed resource declarations on top of this.
-func (c *Challenge) Provision(name string, run func() error) {
-	c.steps = append(c.steps, &step{name: name, run: run})
+// Provision registers setup work. Run retries it every tick until it succeeds,
+// reporting each failure, so callers never handle the error themselves.
+func Provision(name string, run func() error) {
+	current.steps = append(current.steps, &step{name: name, run: run})
 }
 
-// Check starts declaring a scored objective and returns its builder:
+// Check starts declaring a scored objective. It returns a builder:
 //
-//	c.Check("bucket-encrypted").
+//	challenge.Check("bucket-encrypted").
 //		Reason("Enabled default encryption").
 //		Points(50).
 //		Every(30 * time.Second).
 //		Done(encrypted)
 //
 // The check is registered immediately, so the builder calls may come in any
-// order and any of them may be left out.
-func (c *Challenge) Check(id string) *Spec {
+// order and Done can be set last.
+func Check(id string) *Spec {
 	spec := &Spec{id: id}
-	c.specs = append(c.specs, spec)
+	current.specs = append(current.specs, spec)
 	return spec
 }
 
 // Run executes the challenge: register the metadata, provision the scenario,
 // then evaluate the checks on a timer until nothing is left to do.
 //
-// It is the plugin's whole body — a WASM command module runs main at startup, so
-// there is no lifecycle to export and nothing else to call.
+// It is the plugin's whole body — a WASM command module runs main at startup,
+// so there is no lifecycle to export and nothing else to call.
+func Run() { current.Run() }
+
+// Run is the method behind the package-level Run, exposed for tests.
 func (c *Challenge) Run() {
+	if c.host == nil {
+		panic("challenge: no host installed; import a provider package such as pkg/challenge/aws")
+	}
+
 	if err := c.host.Register(c.meta); err != nil {
 		c.report(fmt.Errorf("register challenge: %w", err))
 	}
 
-	var deadline time.Time
+	deadline := time.Time{}
 	if c.timeout > 0 {
 		deadline = c.now().Add(c.timeout)
 	}
@@ -171,7 +177,7 @@ func (c *Challenge) evaluate() {
 			continue
 		}
 		if err := c.host.Award(s.why(), points); err != nil {
-			// Leave the check live so the award is attempted again next round.
+			// Leave the check live so the award is attempted again next tick.
 			c.report(fmt.Errorf("check %q: award: %w", s.id, err))
 			continue
 		}

@@ -20,7 +20,7 @@ type Challenge struct {
 	oltp   *dynamitedb.Bucket
 	olap   *lake.Bucket
 
-	account provider.Account
+	resources provider.ResourceController
 
 	providerID     string
 	definitionID   string
@@ -71,15 +71,15 @@ func (c *Challenge) Start(ctx context.Context) error {
 	}
 	config := extism.PluginConfig{}
 	plugin, err := extism.NewCompiledPlugin(ctx, manifests, config, []extism.HostFunction{
-		createHostFunction(api.Init, c.Init, report),
-		createHostFunction(api.Report, c.Report, report),
-		createHostFunction(api.ReadScore, c.ReadScore, report),
-		createHostFunction(api.UpdateScore, c.UpdateScore, report),
-		createHostFunction(api.CreateResource, c.CreateResource, report),
-		createHostFunction(api.ReadResource, c.ReadResource, report),
-		createHostFunction(api.UpdateResource, c.UpdateResource, report),
-		createHostFunction(api.DeleteResource, c.DeleteResource, report),
-		createHostFunction(api.ListResource, c.ListResource, report),
+		createHostFunction(api.InitName, c.Init, report),
+		createHostFunction(api.ReportName, c.Report, report),
+		createHostFunction(api.ReadScoreName, c.ReadScore, report),
+		createHostFunction(api.UpdateScoreName, c.UpdateScore, report),
+		createHostFunction(api.CreateResourceName, c.CreateResource, report),
+		createHostFunction(api.ReadResourceName, c.ReadResource, report),
+		createHostFunction(api.UpdateResourceName, c.UpdateResource, report),
+		createHostFunction(api.DeleteResourceName, c.DeleteResource, report),
+		createHostFunction(api.ListResourceName, c.ListResource, report),
 	})
 	if err != nil {
 		return nil
@@ -174,21 +174,26 @@ func (c *Challenge) UpdateScore(ctx context.Context, input *api.UpdateScoreInput
 }
 
 func (c *Challenge) CreateResource(ctx context.Context, input *api.CreateResourceInput) (*api.CreateResourceOutput, error) {
-	return nil, nil
+	id, err := c.resources.Create(ctx, input.Type, input.Desired)
+	return &api.CreateResourceOutput{Identifier: id}, err
 }
 
 func (c *Challenge) ReadResource(ctx context.Context, input *api.ReadResourceInput) (*api.ReadResourceOutput, error) {
-	return nil, nil
+	state, err := c.resources.Read(ctx, input.Type, input.Identifier)
+	return &api.ReadResourceOutput{State: state}, err
 }
 
 func (c *Challenge) UpdateResource(ctx context.Context, input *api.UpdateResourceInput) (*api.UpdateResourceOutput, error) {
-	return nil, nil
+	err := c.resources.Update(ctx, input.Type, input.Identifier, input.Patch)
+	return &api.UpdateResourceOutput{}, err
 }
 
 func (c *Challenge) DeleteResource(ctx context.Context, input *api.DeleteResourceInput) (*api.DeleteResourceOutput, error) {
-	return nil, nil
+	err := c.resources.Delete(ctx, input.Type, input.Identifier)
+	return &api.DeleteResourceOutput{}, err
 }
 
 func (c *Challenge) ListResource(ctx context.Context, input *api.ListResourceInput) (*api.ListResourceOutput, error) {
-	return nil, nil
+	resources, err := c.resources.List(ctx, input.Type)
+	return &api.ListResourceOutput{Resources: resources}, err
 }

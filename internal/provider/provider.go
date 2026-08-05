@@ -44,11 +44,11 @@ type Provider interface {
 // in the plugin sdk.
 type ResourceController interface {
 	// Creates a resource and waits until successfully deployed. Returns the id of the resource.
-	Create(ctx context.Context, resourceType, resourceData string) (string, error)
+	Create(ctx context.Context, resourceType, resourceState string) (string, error)
 	// Reads a resource with the specified type and id.
 	Read(ctx context.Context, resourceType, resourceID string) (string, error)
 	// Updates a resource and waits until successfully updated.
-	Update(ctx context.Context, resourceType, resourceID string) error
+	Update(ctx context.Context, resourceType, resourceID, resourceState string) error
 	// Deletes a resource and returns (does not wait for resource deletion).
 	Delete(ctx context.Context, resourceType, resourceID string) error
 	// Lists all resources from the specified type.

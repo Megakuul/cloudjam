@@ -7,25 +7,23 @@ import (
 	"codeberg.org/megakuul/cloudjam/pkg/challenge/api"
 )
 
-// Wait makes a mutating call block until the Cloud Control operation reaches a
-// terminal state, instead of returning as soon as it is accepted. Pass it when
-// the next step depends on the resource really being there:
+// Create provisions a resource from its typed goformation definition and returns
+// its primary identifier. Both type parameters are inferred from the argument:
 //
-//	aws.Create(&s3.Bucket{BucketName: aws.String("x")}, aws.Wait)
+//	id, err := aws.Create(&ec2.VPC{CidrBlock: aws.String("10.0.0.0/16")})
+//	// id == "vpc-0a1b2c3d"
 //
-// Provision always waits, so it needs no flag.
-const Wait = true
-
-// Create provisions a resource from its typed goformation definition. Both type
-// parameters are inferred from the argument:
+// The identifier is the only way to reach a resource AWS names itself, so keep
+// it. For resources you name (a bucket, a role) it is the name you set.
 //
-//	err := aws.Create(&s3.Bucket{BucketName: aws.String("cloudjam-demo")}, aws.Wait)
-func Create[P ResourceOf[T], T any](desired P, wait ...bool) error {
+// Every mutating call blocks until the Cloud Control operation reaches a
+// terminal state, so once this returns the resource is really there.
+func Create[P ResourceOf[T], T any](desired P) (string, error) {
 	properties, err := marshalResource(desired)
 	if err != nil {
-		return err
+		return "", err
 	}
-	return createResource(TypeName[P, T](), properties, waiting(wait))
+	return createResource(TypeName[P, T](), properties)
 }
 
 // Read loads a resource's live state into its typed goformation struct. The type
@@ -67,8 +65,8 @@ func ReadState[P ResourceOf[T], T any](identifier string) (*State[T], error) {
 //
 //	err := aws.Update[*s3.Bucket]("cloudjam-demo", aws.Patch{
 //		aws.Replace("/VersioningConfiguration/Status", "Enabled"),
-//	}, aws.Wait)
-func Update[P ResourceOf[T], T any](identifier string, patch Patch, wait ...bool) error {
+//	})
+func Update[P ResourceOf[T], T any](identifier string, patch Patch) error {
 	typeName := TypeName[P, T]()
 	if len(patch) == 0 {
 		return fmt.Errorf("update %s %q: patch is empty", typeName, identifier)
@@ -81,7 +79,6 @@ func Update[P ResourceOf[T], T any](identifier string, patch Patch, wait ...bool
 		Type:       typeName,
 		Identifier: identifier,
 		Patch:      string(encoded),
-		Wait:       waiting(wait),
 	}); err != nil {
 		return fmt.Errorf("update %s %q: %w", typeName, identifier, err)
 	}
@@ -90,13 +87,12 @@ func Update[P ResourceOf[T], T any](identifier string, patch Patch, wait ...bool
 
 // Delete removes a provisioned resource.
 //
-//	err := aws.Delete[*s3.Bucket]("cloudjam-demo", aws.Wait)
-func Delete[P ResourceOf[T], T any](identifier string, wait ...bool) error {
+//	err := aws.Delete[*s3.Bucket]("cloudjam-demo")
+func Delete[P ResourceOf[T], T any](identifier string) error {
 	typeName := TypeName[P, T]()
 	if _, err := host.DeleteResource(api.DeleteResourceInput{
 		Type:       typeName,
 		Identifier: identifier,
-		Wait:       waiting(wait),
 	}); err != nil {
 		return fmt.Errorf("delete %s %q: %w", typeName, identifier, err)
 	}
@@ -140,21 +136,18 @@ func Exists[P ResourceOf[T], T any](identifier string) (bool, error) {
 	return ok, nil
 }
 
-// waiting resolves the optional wait argument.
-func waiting(wait []bool) bool { return len(wait) > 0 && wait[0] }
-
-func createResource(typeName string, desired json.RawMessage, wait bool) error {
+func createResource(typeName string, desired json.RawMessage) (string, error) {
 	if len(desired) == 0 {
 		desired = json.RawMessage("{}")
 	}
-	if _, err := host.CreateResource(api.CreateResourceInput{
+	out, err := host.CreateResource(api.CreateResourceInput{
 		Type:    typeName,
 		Desired: string(desired),
-		Wait:    wait,
-	}); err != nil {
-		return fmt.Errorf("create %s: %w", typeName, err)
+	})
+	if err != nil {
+		return "", fmt.Errorf("create %s: %w", typeName, err)
 	}
-	return nil
+	return out.Identifier, nil
 }
 
 func readResource(typeName, identifier string) ([]byte, error) {
