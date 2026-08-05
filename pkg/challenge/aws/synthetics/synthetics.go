@@ -13,12 +13,12 @@ type ArtifactConfig struct {
 }
 
 type BrowserConfig struct {
-	BrowserType *string `json:"BrowserType,omitempty"`
+	BrowserType *BrowserType `json:"BrowserType,omitempty"`
 }
 
 type Dependency struct {
-	Reference *string `json:"Reference,omitempty"`
-	Type      *string `json:"Type,omitempty"`
+	Reference *string         `json:"Reference,omitempty"`
+	Type      *DependencyType `json:"Type,omitempty"`
 }
 
 type Code struct {
@@ -54,7 +54,7 @@ type Replica struct {
 	LastModified             *float64                  `json:"LastModified,omitempty"`
 	Location                 *string                   `json:"Location,omitempty"`
 	ReplicationStatus        *ReplicaReplicationStatus `json:"ReplicationStatus,omitempty"`
-	ResourcesToReplicateTags []string                  `json:"ResourcesToReplicateTags,omitempty"`
+	ResourcesToReplicateTags []ResourceToTag           `json:"ResourcesToReplicateTags,omitempty"`
 	Tags                     []Tag                     `json:"Tags,omitempty"`
 	VpcConfig                *VPCConfig                `json:"VpcConfig,omitempty"`
 }
@@ -85,34 +85,34 @@ type BaseScreenshot struct {
 type VisualReference struct {
 	BaseCanaryRunId *string          `json:"BaseCanaryRunId,omitempty"`
 	BaseScreenshots []BaseScreenshot `json:"BaseScreenshots,omitempty"`
-	BrowserType     *string          `json:"BrowserType,omitempty"`
+	BrowserType     *BrowserType     `json:"BrowserType,omitempty"`
 }
 
 type Canary struct {
-	ArtifactConfig                        *ArtifactConfig   `json:"ArtifactConfig,omitempty"`
-	ArtifactS3Location                    *string           `json:"ArtifactS3Location,omitempty"`
-	BrowserConfigs                        []BrowserConfig   `json:"BrowserConfigs,omitempty"`
-	Code                                  *Code             `json:"Code,omitempty"`
-	DeleteLambdaResourcesOnCanaryDeletion *bool             `json:"DeleteLambdaResourcesOnCanaryDeletion,omitempty"`
-	DryRunAndUpdate                       *bool             `json:"DryRunAndUpdate,omitempty"`
-	ExecutionRoleArn                      *string           `json:"ExecutionRoleArn,omitempty"`
-	FailureRetentionPeriod                *int              `json:"FailureRetentionPeriod,omitempty"`
-	Id                                    *string           `json:"Id,omitempty"`
-	KmsKeyArn                             *string           `json:"KmsKeyArn,omitempty"`
-	Name                                  *string           `json:"Name,omitempty"`
-	ProvisionedResourceCleanup            *string           `json:"ProvisionedResourceCleanup,omitempty"`
-	Replicas                              []Replica         `json:"Replicas,omitempty"`
-	ResourcesToReplicateTags              []string          `json:"ResourcesToReplicateTags,omitempty"`
-	RunConfig                             *RunConfig        `json:"RunConfig,omitempty"`
-	RuntimeVersion                        *string           `json:"RuntimeVersion,omitempty"`
-	Schedule                              *Schedule         `json:"Schedule,omitempty"`
-	StartCanaryAfterCreation              *bool             `json:"StartCanaryAfterCreation,omitempty"`
-	State                                 *string           `json:"State,omitempty"`
-	SuccessRetentionPeriod                *int              `json:"SuccessRetentionPeriod,omitempty"`
-	Tags                                  []Tag             `json:"Tags,omitempty"`
-	VPCConfig                             *VPCConfig        `json:"VPCConfig,omitempty"`
-	VisualReference                       *VisualReference  `json:"VisualReference,omitempty"`
-	VisualReferences                      []VisualReference `json:"VisualReferences,omitempty"`
+	ArtifactConfig                        *ArtifactConfig                   `json:"ArtifactConfig,omitempty"`
+	ArtifactS3Location                    *string                           `json:"ArtifactS3Location,omitempty"`
+	BrowserConfigs                        []BrowserConfig                   `json:"BrowserConfigs,omitempty"`
+	Code                                  *Code                             `json:"Code,omitempty"`
+	DeleteLambdaResourcesOnCanaryDeletion *bool                             `json:"DeleteLambdaResourcesOnCanaryDeletion,omitempty"`
+	DryRunAndUpdate                       *bool                             `json:"DryRunAndUpdate,omitempty"`
+	ExecutionRoleArn                      *string                           `json:"ExecutionRoleArn,omitempty"`
+	FailureRetentionPeriod                *int                              `json:"FailureRetentionPeriod,omitempty"`
+	Id                                    *string                           `json:"Id,omitempty"`
+	KmsKeyArn                             *string                           `json:"KmsKeyArn,omitempty"`
+	Name                                  *string                           `json:"Name,omitempty"`
+	ProvisionedResourceCleanup            *CanaryProvisionedResourceCleanup `json:"ProvisionedResourceCleanup,omitempty"`
+	Replicas                              []Replica                         `json:"Replicas,omitempty"`
+	ResourcesToReplicateTags              []ResourceToTag                   `json:"ResourcesToReplicateTags,omitempty"`
+	RunConfig                             *RunConfig                        `json:"RunConfig,omitempty"`
+	RuntimeVersion                        *string                           `json:"RuntimeVersion,omitempty"`
+	Schedule                              *Schedule                         `json:"Schedule,omitempty"`
+	StartCanaryAfterCreation              *bool                             `json:"StartCanaryAfterCreation,omitempty"`
+	State                                 *string                           `json:"State,omitempty"`
+	SuccessRetentionPeriod                *int                              `json:"SuccessRetentionPeriod,omitempty"`
+	Tags                                  []Tag                             `json:"Tags,omitempty"`
+	VPCConfig                             *VPCConfig                        `json:"VPCConfig,omitempty"`
+	VisualReference                       *VisualReference                  `json:"VisualReference,omitempty"`
+	VisualReferences                      []VisualReference                 `json:"VisualReferences,omitempty"`
 }
 
 func (Canary) CloudControlType() string { return "AWS::Synthetics::Canary" }
@@ -130,3 +130,29 @@ type Group struct {
 }
 
 func (Group) CloudControlType() string { return "AWS::Synthetics::Group" }
+
+type BrowserType string
+
+const (
+	BrowserTypeCHROME  BrowserType = "CHROME"
+	BrowserTypeFIREFOX BrowserType = "FIREFOX"
+)
+
+type DependencyType string
+
+const (
+	DependencyTypeLambdaLayer DependencyType = "LambdaLayer"
+)
+
+type CanaryProvisionedResourceCleanup string
+
+const (
+	CanaryProvisionedResourceCleanupAUTOMATIC CanaryProvisionedResourceCleanup = "AUTOMATIC"
+	CanaryProvisionedResourceCleanupOFF       CanaryProvisionedResourceCleanup = "OFF"
+)
+
+type ResourceToTag string
+
+const (
+	ResourceToTagLambdaFunction ResourceToTag = "lambda-function"
+)

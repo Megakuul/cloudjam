@@ -103,8 +103,8 @@ type ComponentChild struct {
 }
 
 type SortProperty struct {
-	Direction *string `json:"Direction,omitempty"`
-	Field     *string `json:"Field,omitempty"`
+	Direction *SortDirection `json:"Direction,omitempty"`
+	Field     *string        `json:"Field,omitempty"`
 }
 
 type ComponentDataConfiguration struct {
@@ -148,24 +148,24 @@ type FormButton struct {
 }
 
 type FormCTA struct {
-	Cancel   *FormButton `json:"Cancel,omitempty"`
-	Clear    *FormButton `json:"Clear,omitempty"`
-	Position *string     `json:"Position,omitempty"`
-	Submit   *FormButton `json:"Submit,omitempty"`
+	Cancel   *FormButton          `json:"Cancel,omitempty"`
+	Clear    *FormButton          `json:"Clear,omitempty"`
+	Position *FormButtonsPosition `json:"Position,omitempty"`
+	Submit   *FormButton          `json:"Submit,omitempty"`
 }
 
 type FormDataTypeConfig struct {
-	DataSourceType *string `json:"DataSourceType,omitempty"`
-	DataTypeName   *string `json:"DataTypeName,omitempty"`
+	DataSourceType *FormDataSourceType `json:"DataSourceType,omitempty"`
+	DataTypeName   *string             `json:"DataTypeName,omitempty"`
 }
 
 type FileUploaderFieldConfig struct {
-	AcceptedFileTypes []string `json:"AcceptedFileTypes,omitempty"`
-	AccessLevel       *string  `json:"AccessLevel,omitempty"`
-	IsResumable       *bool    `json:"IsResumable,omitempty"`
-	MaxFileCount      *float64 `json:"MaxFileCount,omitempty"`
-	MaxSize           *float64 `json:"MaxSize,omitempty"`
-	ShowThumbnails    *bool    `json:"ShowThumbnails,omitempty"`
+	AcceptedFileTypes []string            `json:"AcceptedFileTypes,omitempty"`
+	AccessLevel       *StorageAccessLevel `json:"AccessLevel,omitempty"`
+	IsResumable       *bool               `json:"IsResumable,omitempty"`
+	MaxFileCount      *float64            `json:"MaxFileCount,omitempty"`
+	MaxSize           *float64            `json:"MaxSize,omitempty"`
+	ShowThumbnails    *bool               `json:"ShowThumbnails,omitempty"`
 }
 
 type FormInputBindingPropertiesValueProperties struct {
@@ -253,9 +253,9 @@ type Form struct {
 	DataType          *FormDataTypeConfig         `json:"DataType,omitempty"`
 	EnvironmentName   *string                     `json:"EnvironmentName,omitempty"`
 	Fields            map[string]FieldConfig      `json:"Fields,omitempty"`
-	FormActionType    *string                     `json:"FormActionType,omitempty"`
+	FormActionType    *FormActionType             `json:"FormActionType,omitempty"`
 	Id                *string                     `json:"Id,omitempty"`
-	LabelDecorator    *string                     `json:"LabelDecorator,omitempty"`
+	LabelDecorator    *LabelDecorator             `json:"LabelDecorator,omitempty"`
 	Name              *string                     `json:"Name,omitempty"`
 	SchemaVersion     *string                     `json:"SchemaVersion,omitempty"`
 	SectionalElements map[string]SectionalElement `json:"SectionalElements,omitempty"`
@@ -288,3 +288,48 @@ type Theme struct {
 }
 
 func (Theme) CloudControlType() string { return "AWS::AmplifyUIBuilder::Theme" }
+
+type SortDirection string
+
+const (
+	SortDirectionASC  SortDirection = "ASC"
+	SortDirectionDESC SortDirection = "DESC"
+)
+
+type FormButtonsPosition string
+
+const (
+	FormButtonsPositionTop          FormButtonsPosition = "top"
+	FormButtonsPositionBottom       FormButtonsPosition = "bottom"
+	FormButtonsPositionTopAndBottom FormButtonsPosition = "top_and_bottom"
+)
+
+type FormDataSourceType string
+
+const (
+	FormDataSourceTypeDataStore FormDataSourceType = "DataStore"
+	FormDataSourceTypeCustom    FormDataSourceType = "Custom"
+)
+
+type StorageAccessLevel string
+
+const (
+	StorageAccessLevelPublic    StorageAccessLevel = "public"
+	StorageAccessLevelProtected StorageAccessLevel = "protected"
+	StorageAccessLevelPrivate   StorageAccessLevel = "private"
+)
+
+type FormActionType string
+
+const (
+	FormActionTypeCreate FormActionType = "create"
+	FormActionTypeUpdate FormActionType = "update"
+)
+
+type LabelDecorator string
+
+const (
+	LabelDecoratorRequired LabelDecorator = "required"
+	LabelDecoratorOptional LabelDecorator = "optional"
+	LabelDecoratorNone     LabelDecorator = "none"
+)

@@ -25,8 +25,8 @@ type Query struct {
 }
 
 type ResourceQuery struct {
-	Query *Query  `json:"Query,omitempty"`
-	Type  *string `json:"Type,omitempty"`
+	Query *Query             `json:"Query,omitempty"`
+	Type  *ResourceQueryType `json:"Type,omitempty"`
 }
 
 type Tag struct {
@@ -47,14 +47,28 @@ type Group struct {
 func (Group) CloudControlType() string { return "AWS::ResourceGroups::Group" }
 
 type TagSyncTask struct {
-	Group     *string `json:"Group,omitempty"`
-	GroupArn  *string `json:"GroupArn,omitempty"`
-	GroupName *string `json:"GroupName,omitempty"`
-	RoleArn   *string `json:"RoleArn,omitempty"`
-	Status    *string `json:"Status,omitempty"`
-	TagKey    *string `json:"TagKey,omitempty"`
-	TagValue  *string `json:"TagValue,omitempty"`
-	TaskArn   *string `json:"TaskArn,omitempty"`
+	Group     *string            `json:"Group,omitempty"`
+	GroupArn  *string            `json:"GroupArn,omitempty"`
+	GroupName *string            `json:"GroupName,omitempty"`
+	RoleArn   *string            `json:"RoleArn,omitempty"`
+	Status    *TagSyncTaskStatus `json:"Status,omitempty"`
+	TagKey    *string            `json:"TagKey,omitempty"`
+	TagValue  *string            `json:"TagValue,omitempty"`
+	TaskArn   *string            `json:"TaskArn,omitempty"`
 }
 
 func (TagSyncTask) CloudControlType() string { return "AWS::ResourceGroups::TagSyncTask" }
+
+type ResourceQueryType string
+
+const (
+	ResourceQueryTypeTAGFILTERS10          ResourceQueryType = "TAG_FILTERS_1_0"
+	ResourceQueryTypeCLOUDFORMATIONSTACK10 ResourceQueryType = "CLOUDFORMATION_STACK_1_0"
+)
+
+type TagSyncTaskStatus string
+
+const (
+	TagSyncTaskStatusACTIVE TagSyncTaskStatus = "ACTIVE"
+	TagSyncTaskStatusERROR  TagSyncTaskStatus = "ERROR"
+)

@@ -36,8 +36,8 @@ type RecurrenceRule struct {
 }
 
 type Window struct {
-	Duration     *int    `json:"Duration,omitempty"`
-	DurationUnit *string `json:"DurationUnit,omitempty"`
+	Duration     *int          `json:"Duration,omitempty"`
+	DurationUnit *DurationUnit `json:"DurationUnit,omitempty"`
 }
 
 type ExclusionWindow struct {
@@ -48,14 +48,14 @@ type ExclusionWindow struct {
 }
 
 type CalendarInterval struct {
-	Duration     *int    `json:"Duration,omitempty"`
-	DurationUnit *string `json:"DurationUnit,omitempty"`
-	StartTime    *int    `json:"StartTime,omitempty"`
+	Duration     *int          `json:"Duration,omitempty"`
+	DurationUnit *DurationUnit `json:"DurationUnit,omitempty"`
+	StartTime    *int          `json:"StartTime,omitempty"`
 }
 
 type RollingInterval struct {
-	Duration     *int    `json:"Duration,omitempty"`
-	DurationUnit *string `json:"DurationUnit,omitempty"`
+	Duration     *int          `json:"Duration,omitempty"`
+	DurationUnit *DurationUnit `json:"DurationUnit,omitempty"`
 }
 
 type Interval struct {
@@ -74,8 +74,8 @@ type CompositeSliComponent struct {
 }
 
 type SelectionConfig struct {
-	Pattern *string `json:"Pattern,omitempty"`
-	Type    *string `json:"Type,omitempty"`
+	Pattern *string        `json:"Pattern,omitempty"`
+	Type    *SelectionType `json:"Type,omitempty"`
 }
 
 type CompositeSliConfig struct {
@@ -125,40 +125,40 @@ type MonitoredRequestCountMetric struct {
 }
 
 type RequestBasedSliMetric struct {
-	CompositeSliConfig          *CompositeSliConfig          `json:"CompositeSliConfig,omitempty"`
-	DependencyConfig            *DependencyConfig            `json:"DependencyConfig,omitempty"`
-	KeyAttributes               json.RawMessage              `json:"KeyAttributes,omitempty"`
-	MetricName                  *string                      `json:"MetricName,omitempty"`
-	MetricSource                *MetricSource                `json:"MetricSource,omitempty"`
-	MetricType                  *string                      `json:"MetricType,omitempty"`
-	MonitoredRequestCountMetric *MonitoredRequestCountMetric `json:"MonitoredRequestCountMetric,omitempty"`
-	OperationName               *string                      `json:"OperationName,omitempty"`
-	TotalRequestCountMetric     []MetricDataQuery            `json:"TotalRequestCountMetric,omitempty"`
+	CompositeSliConfig          *CompositeSliConfig              `json:"CompositeSliConfig,omitempty"`
+	DependencyConfig            *DependencyConfig                `json:"DependencyConfig,omitempty"`
+	KeyAttributes               json.RawMessage                  `json:"KeyAttributes,omitempty"`
+	MetricName                  *string                          `json:"MetricName,omitempty"`
+	MetricSource                *MetricSource                    `json:"MetricSource,omitempty"`
+	MetricType                  *RequestBasedSliMetricMetricType `json:"MetricType,omitempty"`
+	MonitoredRequestCountMetric *MonitoredRequestCountMetric     `json:"MonitoredRequestCountMetric,omitempty"`
+	OperationName               *string                          `json:"OperationName,omitempty"`
+	TotalRequestCountMetric     []MetricDataQuery                `json:"TotalRequestCountMetric,omitempty"`
 }
 
 type RequestBasedSli struct {
-	ComparisonOperator    *string                `json:"ComparisonOperator,omitempty"`
-	MetricThreshold       *float64               `json:"MetricThreshold,omitempty"`
-	RequestBasedSliMetric *RequestBasedSliMetric `json:"RequestBasedSliMetric,omitempty"`
+	ComparisonOperator    *RequestBasedSliComparisonOperator `json:"ComparisonOperator,omitempty"`
+	MetricThreshold       *float64                           `json:"MetricThreshold,omitempty"`
+	RequestBasedSliMetric *RequestBasedSliMetric             `json:"RequestBasedSliMetric,omitempty"`
 }
 
 type SliMetric struct {
-	CompositeSliConfig *CompositeSliConfig `json:"CompositeSliConfig,omitempty"`
-	DependencyConfig   *DependencyConfig   `json:"DependencyConfig,omitempty"`
-	KeyAttributes      json.RawMessage     `json:"KeyAttributes,omitempty"`
-	MetricDataQueries  []MetricDataQuery   `json:"MetricDataQueries,omitempty"`
-	MetricName         *string             `json:"MetricName,omitempty"`
-	MetricSource       *MetricSource       `json:"MetricSource,omitempty"`
-	MetricType         *string             `json:"MetricType,omitempty"`
-	OperationName      *string             `json:"OperationName,omitempty"`
-	PeriodSeconds      *int                `json:"PeriodSeconds,omitempty"`
-	Statistic          *string             `json:"Statistic,omitempty"`
+	CompositeSliConfig *CompositeSliConfig  `json:"CompositeSliConfig,omitempty"`
+	DependencyConfig   *DependencyConfig    `json:"DependencyConfig,omitempty"`
+	KeyAttributes      json.RawMessage      `json:"KeyAttributes,omitempty"`
+	MetricDataQueries  []MetricDataQuery    `json:"MetricDataQueries,omitempty"`
+	MetricName         *string              `json:"MetricName,omitempty"`
+	MetricSource       *MetricSource        `json:"MetricSource,omitempty"`
+	MetricType         *SliMetricMetricType `json:"MetricType,omitempty"`
+	OperationName      *string              `json:"OperationName,omitempty"`
+	PeriodSeconds      *int                 `json:"PeriodSeconds,omitempty"`
+	Statistic          *string              `json:"Statistic,omitempty"`
 }
 
 type Sli struct {
-	ComparisonOperator *string    `json:"ComparisonOperator,omitempty"`
-	MetricThreshold    *float64   `json:"MetricThreshold,omitempty"`
-	SliMetric          *SliMetric `json:"SliMetric,omitempty"`
+	ComparisonOperator *SliComparisonOperator `json:"ComparisonOperator,omitempty"`
+	MetricThreshold    *float64               `json:"MetricThreshold,omitempty"`
+	SliMetric          *SliMetric             `json:"SliMetric,omitempty"`
 }
 
 type Tag struct {
@@ -167,20 +167,76 @@ type Tag struct {
 }
 
 type ServiceLevelObjective struct {
-	Arn                    *string                 `json:"Arn,omitempty"`
-	BurnRateConfigurations []BurnRateConfiguration `json:"BurnRateConfigurations,omitempty"`
-	CreatedTime            *int                    `json:"CreatedTime,omitempty"`
-	Description            *string                 `json:"Description,omitempty"`
-	EvaluationType         *string                 `json:"EvaluationType,omitempty"`
-	ExclusionWindows       []ExclusionWindow       `json:"ExclusionWindows,omitempty"`
-	Goal                   *Goal                   `json:"Goal,omitempty"`
-	LastUpdatedTime        *int                    `json:"LastUpdatedTime,omitempty"`
-	Name                   *string                 `json:"Name,omitempty"`
-	RequestBasedSli        *RequestBasedSli        `json:"RequestBasedSli,omitempty"`
-	Sli                    *Sli                    `json:"Sli,omitempty"`
-	Tags                   []Tag                   `json:"Tags,omitempty"`
+	Arn                    *string                              `json:"Arn,omitempty"`
+	BurnRateConfigurations []BurnRateConfiguration              `json:"BurnRateConfigurations,omitempty"`
+	CreatedTime            *int                                 `json:"CreatedTime,omitempty"`
+	Description            *string                              `json:"Description,omitempty"`
+	EvaluationType         *ServiceLevelObjectiveEvaluationType `json:"EvaluationType,omitempty"`
+	ExclusionWindows       []ExclusionWindow                    `json:"ExclusionWindows,omitempty"`
+	Goal                   *Goal                                `json:"Goal,omitempty"`
+	LastUpdatedTime        *int                                 `json:"LastUpdatedTime,omitempty"`
+	Name                   *string                              `json:"Name,omitempty"`
+	RequestBasedSli        *RequestBasedSli                     `json:"RequestBasedSli,omitempty"`
+	Sli                    *Sli                                 `json:"Sli,omitempty"`
+	Tags                   []Tag                                `json:"Tags,omitempty"`
 }
 
 func (ServiceLevelObjective) CloudControlType() string {
 	return "AWS::ApplicationSignals::ServiceLevelObjective"
 }
+
+type ServiceLevelObjectiveEvaluationType string
+
+const (
+	ServiceLevelObjectiveEvaluationTypePeriodBased  ServiceLevelObjectiveEvaluationType = "PeriodBased"
+	ServiceLevelObjectiveEvaluationTypeRequestBased ServiceLevelObjectiveEvaluationType = "RequestBased"
+)
+
+type DurationUnit string
+
+const (
+	DurationUnitMINUTE DurationUnit = "MINUTE"
+	DurationUnitHOUR   DurationUnit = "HOUR"
+	DurationUnitDAY    DurationUnit = "DAY"
+	DurationUnitMONTH  DurationUnit = "MONTH"
+)
+
+type RequestBasedSliComparisonOperator string
+
+const (
+	RequestBasedSliComparisonOperatorGreaterThanOrEqualTo RequestBasedSliComparisonOperator = "GreaterThanOrEqualTo"
+	RequestBasedSliComparisonOperatorLessThanOrEqualTo    RequestBasedSliComparisonOperator = "LessThanOrEqualTo"
+	RequestBasedSliComparisonOperatorLessThan             RequestBasedSliComparisonOperator = "LessThan"
+	RequestBasedSliComparisonOperatorGreaterThan          RequestBasedSliComparisonOperator = "GreaterThan"
+)
+
+type SelectionType string
+
+const (
+	SelectionTypeEXPLICIT SelectionType = "EXPLICIT"
+	SelectionTypePREFIX   SelectionType = "PREFIX"
+	SelectionTypeREGEX    SelectionType = "REGEX"
+)
+
+type RequestBasedSliMetricMetricType string
+
+const (
+	RequestBasedSliMetricMetricTypeLATENCY      RequestBasedSliMetricMetricType = "LATENCY"
+	RequestBasedSliMetricMetricTypeAVAILABILITY RequestBasedSliMetricMetricType = "AVAILABILITY"
+)
+
+type SliComparisonOperator string
+
+const (
+	SliComparisonOperatorGreaterThanOrEqualTo SliComparisonOperator = "GreaterThanOrEqualTo"
+	SliComparisonOperatorLessThanOrEqualTo    SliComparisonOperator = "LessThanOrEqualTo"
+	SliComparisonOperatorLessThan             SliComparisonOperator = "LessThan"
+	SliComparisonOperatorGreaterThan          SliComparisonOperator = "GreaterThan"
+)
+
+type SliMetricMetricType string
+
+const (
+	SliMetricMetricTypeLATENCY      SliMetricMetricType = "LATENCY"
+	SliMetricMetricTypeAVAILABILITY SliMetricMetricType = "AVAILABILITY"
+)

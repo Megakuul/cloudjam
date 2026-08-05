@@ -4,10 +4,25 @@
 package uxc
 
 type AccountCustomization struct {
-	AccountColor    *string  `json:"AccountColor,omitempty"`
-	AccountId       *string  `json:"AccountId,omitempty"`
-	VisibleRegions  []string `json:"VisibleRegions,omitempty"`
-	VisibleServices []string `json:"VisibleServices,omitempty"`
+	AccountColor    *AccountCustomizationAccountColor `json:"AccountColor,omitempty"`
+	AccountId       *string                           `json:"AccountId,omitempty"`
+	VisibleRegions  []string                          `json:"VisibleRegions,omitempty"`
+	VisibleServices []string                          `json:"VisibleServices,omitempty"`
 }
 
 func (AccountCustomization) CloudControlType() string { return "AWS::UXC::AccountCustomization" }
+
+type AccountCustomizationAccountColor string
+
+const (
+	AccountCustomizationAccountColorNone      AccountCustomizationAccountColor = "none"
+	AccountCustomizationAccountColorPink      AccountCustomizationAccountColor = "pink"
+	AccountCustomizationAccountColorPurple    AccountCustomizationAccountColor = "purple"
+	AccountCustomizationAccountColorDarkBlue  AccountCustomizationAccountColor = "darkBlue"
+	AccountCustomizationAccountColorLightBlue AccountCustomizationAccountColor = "lightBlue"
+	AccountCustomizationAccountColorTeal      AccountCustomizationAccountColor = "teal"
+	AccountCustomizationAccountColorGreen     AccountCustomizationAccountColor = "green"
+	AccountCustomizationAccountColorYellow    AccountCustomizationAccountColor = "yellow"
+	AccountCustomizationAccountColorOrange    AccountCustomizationAccountColor = "orange"
+	AccountCustomizationAccountColorRed       AccountCustomizationAccountColor = "red"
+)

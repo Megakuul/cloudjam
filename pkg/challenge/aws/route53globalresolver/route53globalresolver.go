@@ -9,18 +9,18 @@ type Tag struct {
 }
 
 type AccessSource struct {
-	AccessSourceId *string `json:"AccessSourceId,omitempty"`
-	Arn            *string `json:"Arn,omitempty"`
-	Cidr           *string `json:"Cidr,omitempty"`
-	ClientToken    *string `json:"ClientToken,omitempty"`
-	CreatedAt      *string `json:"CreatedAt,omitempty"`
-	DnsViewId      *string `json:"DnsViewId,omitempty"`
-	IpAddressType  *string `json:"IpAddressType,omitempty"`
-	Name           *string `json:"Name,omitempty"`
-	Protocol       *string `json:"Protocol,omitempty"`
-	Status         *string `json:"Status,omitempty"`
-	Tags           []Tag   `json:"Tags,omitempty"`
-	UpdatedAt      *string `json:"UpdatedAt,omitempty"`
+	AccessSourceId *string           `json:"AccessSourceId,omitempty"`
+	Arn            *string           `json:"Arn,omitempty"`
+	Cidr           *string           `json:"Cidr,omitempty"`
+	ClientToken    *string           `json:"ClientToken,omitempty"`
+	CreatedAt      *string           `json:"CreatedAt,omitempty"`
+	DnsViewId      *string           `json:"DnsViewId,omitempty"`
+	IpAddressType  *IpAddressType    `json:"IpAddressType,omitempty"`
+	Name           *string           `json:"Name,omitempty"`
+	Protocol       *DnsProtocol      `json:"Protocol,omitempty"`
+	Status         *CRResourceStatus `json:"Status,omitempty"`
+	Tags           []Tag             `json:"Tags,omitempty"`
+	UpdatedAt      *string           `json:"UpdatedAt,omitempty"`
 }
 
 func (AccessSource) CloudControlType() string { return "AWS::Route53GlobalResolver::AccessSource" }
@@ -39,10 +39,10 @@ type AccessToken struct {
 	ExpiresAt        *string          `json:"ExpiresAt,omitempty"`
 	GlobalResolverId *string          `json:"GlobalResolverId,omitempty"`
 	Name             *string          `json:"Name,omitempty"`
-	Status           *string          `json:"Status,omitempty"`
+	Status           *TokenStatus     `json:"Status,omitempty"`
 	Tags             []AccessTokenTag `json:"Tags,omitempty"`
 	UpdatedAt        *string          `json:"UpdatedAt,omitempty"`
-	Value            *string          `json:"Value,omitempty"`
+	Value            *AccessToken     `json:"Value,omitempty"`
 }
 
 func (AccessToken) CloudControlType() string { return "AWS::Route53GlobalResolver::AccessToken" }
@@ -53,19 +53,19 @@ type DnsViewTag struct {
 }
 
 type DnsView struct {
-	Arn                   *string      `json:"Arn,omitempty"`
-	ClientToken           *string      `json:"ClientToken,omitempty"`
-	CreatedAt             *string      `json:"CreatedAt,omitempty"`
-	Description           *string      `json:"Description,omitempty"`
-	DnsViewId             *string      `json:"DnsViewId,omitempty"`
-	DnssecValidation      *string      `json:"DnssecValidation,omitempty"`
-	EdnsClientSubnet      *string      `json:"EdnsClientSubnet,omitempty"`
-	FirewallRulesFailOpen *string      `json:"FirewallRulesFailOpen,omitempty"`
-	GlobalResolverId      *string      `json:"GlobalResolverId,omitempty"`
-	Name                  *string      `json:"Name,omitempty"`
-	Status                *string      `json:"Status,omitempty"`
-	Tags                  []DnsViewTag `json:"Tags,omitempty"`
-	UpdatedAt             *string      `json:"UpdatedAt,omitempty"`
+	Arn                   *string                    `json:"Arn,omitempty"`
+	ClientToken           *string                    `json:"ClientToken,omitempty"`
+	CreatedAt             *string                    `json:"CreatedAt,omitempty"`
+	Description           *string                    `json:"Description,omitempty"`
+	DnsViewId             *string                    `json:"DnsViewId,omitempty"`
+	DnssecValidation      *DnsSecValidationType      `json:"DnssecValidation,omitempty"`
+	EdnsClientSubnet      *EdnsClientSubnetType      `json:"EdnsClientSubnet,omitempty"`
+	FirewallRulesFailOpen *FirewallRulesFailOpenType `json:"FirewallRulesFailOpen,omitempty"`
+	GlobalResolverId      *string                    `json:"GlobalResolverId,omitempty"`
+	Name                  *string                    `json:"Name,omitempty"`
+	Status                *ProfileResourceStatus     `json:"Status,omitempty"`
+	Tags                  []DnsViewTag               `json:"Tags,omitempty"`
+	UpdatedAt             *string                    `json:"UpdatedAt,omitempty"`
 }
 
 func (DnsView) CloudControlType() string { return "AWS::Route53GlobalResolver::DnsView" }
@@ -76,20 +76,20 @@ type FirewallDomainListTag struct {
 }
 
 type FirewallDomainList struct {
-	Arn                  *string                 `json:"Arn,omitempty"`
-	ClientToken          *string                 `json:"ClientToken,omitempty"`
-	CreatedAt            *string                 `json:"CreatedAt,omitempty"`
-	Description          *string                 `json:"Description,omitempty"`
-	DomainCount          *int                    `json:"DomainCount,omitempty"`
-	DomainFileUrl        *string                 `json:"DomainFileUrl,omitempty"`
-	Domains              []string                `json:"Domains,omitempty"`
-	FirewallDomainListId *string                 `json:"FirewallDomainListId,omitempty"`
-	GlobalResolverId     *string                 `json:"GlobalResolverId,omitempty"`
-	Name                 *string                 `json:"Name,omitempty"`
-	Status               *string                 `json:"Status,omitempty"`
-	StatusMessage        *string                 `json:"StatusMessage,omitempty"`
-	Tags                 []FirewallDomainListTag `json:"Tags,omitempty"`
-	UpdatedAt            *string                 `json:"UpdatedAt,omitempty"`
+	Arn                  *string                             `json:"Arn,omitempty"`
+	ClientToken          *string                             `json:"ClientToken,omitempty"`
+	CreatedAt            *string                             `json:"CreatedAt,omitempty"`
+	Description          *string                             `json:"Description,omitempty"`
+	DomainCount          *int                                `json:"DomainCount,omitempty"`
+	DomainFileUrl        *string                             `json:"DomainFileUrl,omitempty"`
+	Domains              []string                            `json:"Domains,omitempty"`
+	FirewallDomainListId *string                             `json:"FirewallDomainListId,omitempty"`
+	GlobalResolverId     *string                             `json:"GlobalResolverId,omitempty"`
+	Name                 *string                             `json:"Name,omitempty"`
+	Status               *FirewallDomainListCRResourceStatus `json:"Status,omitempty"`
+	StatusMessage        *string                             `json:"StatusMessage,omitempty"`
+	Tags                 []FirewallDomainListTag             `json:"Tags,omitempty"`
+	UpdatedAt            *string                             `json:"UpdatedAt,omitempty"`
 }
 
 func (FirewallDomainList) CloudControlType() string {
@@ -97,25 +97,25 @@ func (FirewallDomainList) CloudControlType() string {
 }
 
 type FirewallRule struct {
-	Action                *string `json:"Action,omitempty"`
-	BlockOverrideDnsType  *string `json:"BlockOverrideDnsType,omitempty"`
-	BlockOverrideDomain   *string `json:"BlockOverrideDomain,omitempty"`
-	BlockOverrideTtl      *int    `json:"BlockOverrideTtl,omitempty"`
-	BlockResponse         *string `json:"BlockResponse,omitempty"`
-	ClientToken           *string `json:"ClientToken,omitempty"`
-	ConfidenceThreshold   *string `json:"ConfidenceThreshold,omitempty"`
-	CreatedAt             *string `json:"CreatedAt,omitempty"`
-	Description           *string `json:"Description,omitempty"`
-	DnsAdvancedProtection *string `json:"DnsAdvancedProtection,omitempty"`
-	DnsViewId             *string `json:"DnsViewId,omitempty"`
-	FirewallDomainListId  *string `json:"FirewallDomainListId,omitempty"`
-	FirewallRuleId        *string `json:"FirewallRuleId,omitempty"`
-	Name                  *string `json:"Name,omitempty"`
-	Priority              *int    `json:"Priority,omitempty"`
-	QType                 *string `json:"QType,omitempty"`
-	QueryType             *string `json:"QueryType,omitempty"`
-	Status                *string `json:"Status,omitempty"`
-	UpdatedAt             *string `json:"UpdatedAt,omitempty"`
+	Action                *FirewallRuleAction           `json:"Action,omitempty"`
+	BlockOverrideDnsType  *BlockOverrideDnsQueryType    `json:"BlockOverrideDnsType,omitempty"`
+	BlockOverrideDomain   *string                       `json:"BlockOverrideDomain,omitempty"`
+	BlockOverrideTtl      *int                          `json:"BlockOverrideTtl,omitempty"`
+	BlockResponse         *FirewallBlockResponse        `json:"BlockResponse,omitempty"`
+	ClientToken           *string                       `json:"ClientToken,omitempty"`
+	ConfidenceThreshold   *ConfidenceThreshold          `json:"ConfidenceThreshold,omitempty"`
+	CreatedAt             *string                       `json:"CreatedAt,omitempty"`
+	Description           *string                       `json:"Description,omitempty"`
+	DnsAdvancedProtection *DnsAdvancedProtection        `json:"DnsAdvancedProtection,omitempty"`
+	DnsViewId             *string                       `json:"DnsViewId,omitempty"`
+	FirewallDomainListId  *string                       `json:"FirewallDomainListId,omitempty"`
+	FirewallRuleId        *string                       `json:"FirewallRuleId,omitempty"`
+	Name                  *string                       `json:"Name,omitempty"`
+	Priority              *int                          `json:"Priority,omitempty"`
+	QType                 *string                       `json:"QType,omitempty"`
+	QueryType             *string                       `json:"QueryType,omitempty"`
+	Status                *FirewallRuleCRResourceStatus `json:"Status,omitempty"`
+	UpdatedAt             *string                       `json:"UpdatedAt,omitempty"`
 }
 
 func (FirewallRule) CloudControlType() string { return "AWS::Route53GlobalResolver::FirewallRule" }
@@ -126,36 +126,181 @@ type GlobalResolverTag struct {
 }
 
 type GlobalResolver struct {
-	Arn                 *string             `json:"Arn,omitempty"`
-	ClientToken         *string             `json:"ClientToken,omitempty"`
-	CreatedAt           *string             `json:"CreatedAt,omitempty"`
-	Description         *string             `json:"Description,omitempty"`
-	DnsName             *string             `json:"DnsName,omitempty"`
-	GlobalResolverId    *string             `json:"GlobalResolverId,omitempty"`
-	IPv4Addresses       []string            `json:"IPv4Addresses,omitempty"`
-	IPv6Addresses       []string            `json:"IPv6Addresses,omitempty"`
-	IpAddressType       *string             `json:"IpAddressType,omitempty"`
-	Name                *string             `json:"Name,omitempty"`
-	ObservabilityRegion *string             `json:"ObservabilityRegion,omitempty"`
-	Regions             []string            `json:"Regions,omitempty"`
-	Status              *string             `json:"Status,omitempty"`
-	Tags                []GlobalResolverTag `json:"Tags,omitempty"`
-	UpdatedAt           *string             `json:"UpdatedAt,omitempty"`
+	Arn                 *string                         `json:"Arn,omitempty"`
+	ClientToken         *string                         `json:"ClientToken,omitempty"`
+	CreatedAt           *string                         `json:"CreatedAt,omitempty"`
+	Description         *string                         `json:"Description,omitempty"`
+	DnsName             *string                         `json:"DnsName,omitempty"`
+	GlobalResolverId    *string                         `json:"GlobalResolverId,omitempty"`
+	IPv4Addresses       []string                        `json:"IPv4Addresses,omitempty"`
+	IPv6Addresses       []string                        `json:"IPv6Addresses,omitempty"`
+	IpAddressType       *GlobalResolverIpAddressType    `json:"IpAddressType,omitempty"`
+	Name                *string                         `json:"Name,omitempty"`
+	ObservabilityRegion *string                         `json:"ObservabilityRegion,omitempty"`
+	Regions             []string                        `json:"Regions,omitempty"`
+	Status              *GlobalResolverCRResourceStatus `json:"Status,omitempty"`
+	Tags                []GlobalResolverTag             `json:"Tags,omitempty"`
+	UpdatedAt           *string                         `json:"UpdatedAt,omitempty"`
 }
 
 func (GlobalResolver) CloudControlType() string { return "AWS::Route53GlobalResolver::GlobalResolver" }
 
 type HostedZoneAssociation struct {
-	CreatedAt               *string `json:"CreatedAt,omitempty"`
-	HostedZoneAssociationId *string `json:"HostedZoneAssociationId,omitempty"`
-	HostedZoneId            *string `json:"HostedZoneId,omitempty"`
-	HostedZoneName          *string `json:"HostedZoneName,omitempty"`
-	Name                    *string `json:"Name,omitempty"`
-	ResourceArn             *string `json:"ResourceArn,omitempty"`
-	Status                  *string `json:"Status,omitempty"`
-	UpdatedAt               *string `json:"UpdatedAt,omitempty"`
+	CreatedAt               *string                      `json:"CreatedAt,omitempty"`
+	HostedZoneAssociationId *string                      `json:"HostedZoneAssociationId,omitempty"`
+	HostedZoneId            *string                      `json:"HostedZoneId,omitempty"`
+	HostedZoneName          *string                      `json:"HostedZoneName,omitempty"`
+	Name                    *string                      `json:"Name,omitempty"`
+	ResourceArn             *string                      `json:"ResourceArn,omitempty"`
+	Status                  *HostedZoneAssociationStatus `json:"Status,omitempty"`
+	UpdatedAt               *string                      `json:"UpdatedAt,omitempty"`
 }
 
 func (HostedZoneAssociation) CloudControlType() string {
 	return "AWS::Route53GlobalResolver::HostedZoneAssociation"
 }
+
+type IpAddressType string
+
+const (
+	IpAddressTypeIPV4 IpAddressType = "IPV4"
+	IpAddressTypeIPV6 IpAddressType = "IPV6"
+)
+
+type DnsProtocol string
+
+const (
+	DnsProtocolDO53 DnsProtocol = "DO53"
+	DnsProtocolDOH  DnsProtocol = "DOH"
+	DnsProtocolDOT  DnsProtocol = "DOT"
+)
+
+type CRResourceStatus string
+
+const (
+	CRResourceStatusCREATING    CRResourceStatus = "CREATING"
+	CRResourceStatusOPERATIONAL CRResourceStatus = "OPERATIONAL"
+	CRResourceStatusUPDATING    CRResourceStatus = "UPDATING"
+	CRResourceStatusDELETING    CRResourceStatus = "DELETING"
+)
+
+type TokenStatus string
+
+const (
+	TokenStatusCREATING    TokenStatus = "CREATING"
+	TokenStatusOPERATIONAL TokenStatus = "OPERATIONAL"
+	TokenStatusDELETING    TokenStatus = "DELETING"
+)
+
+type DnsSecValidationType string
+
+const (
+	DnsSecValidationTypeENABLED  DnsSecValidationType = "ENABLED"
+	DnsSecValidationTypeDISABLED DnsSecValidationType = "DISABLED"
+)
+
+type EdnsClientSubnetType string
+
+const (
+	EdnsClientSubnetTypeENABLED  EdnsClientSubnetType = "ENABLED"
+	EdnsClientSubnetTypeDISABLED EdnsClientSubnetType = "DISABLED"
+)
+
+type FirewallRulesFailOpenType string
+
+const (
+	FirewallRulesFailOpenTypeENABLED  FirewallRulesFailOpenType = "ENABLED"
+	FirewallRulesFailOpenTypeDISABLED FirewallRulesFailOpenType = "DISABLED"
+)
+
+type ProfileResourceStatus string
+
+const (
+	ProfileResourceStatusCREATING    ProfileResourceStatus = "CREATING"
+	ProfileResourceStatusOPERATIONAL ProfileResourceStatus = "OPERATIONAL"
+	ProfileResourceStatusUPDATING    ProfileResourceStatus = "UPDATING"
+	ProfileResourceStatusENABLING    ProfileResourceStatus = "ENABLING"
+	ProfileResourceStatusDISABLING   ProfileResourceStatus = "DISABLING"
+	ProfileResourceStatusDISABLED    ProfileResourceStatus = "DISABLED"
+	ProfileResourceStatusDELETING    ProfileResourceStatus = "DELETING"
+)
+
+type FirewallDomainListCRResourceStatus string
+
+const (
+	FirewallDomainListCRResourceStatusCREATING    FirewallDomainListCRResourceStatus = "CREATING"
+	FirewallDomainListCRResourceStatusOPERATIONAL FirewallDomainListCRResourceStatus = "OPERATIONAL"
+	FirewallDomainListCRResourceStatusUPDATING    FirewallDomainListCRResourceStatus = "UPDATING"
+	FirewallDomainListCRResourceStatusDELETING    FirewallDomainListCRResourceStatus = "DELETING"
+)
+
+type FirewallRuleAction string
+
+const (
+	FirewallRuleActionALLOW FirewallRuleAction = "ALLOW"
+	FirewallRuleActionALERT FirewallRuleAction = "ALERT"
+	FirewallRuleActionBLOCK FirewallRuleAction = "BLOCK"
+)
+
+type BlockOverrideDnsQueryType string
+
+const (
+	BlockOverrideDnsQueryTypeCNAME BlockOverrideDnsQueryType = "CNAME"
+)
+
+type FirewallBlockResponse string
+
+const (
+	FirewallBlockResponseNODATA   FirewallBlockResponse = "NODATA"
+	FirewallBlockResponseNXDOMAIN FirewallBlockResponse = "NXDOMAIN"
+	FirewallBlockResponseOVERRIDE FirewallBlockResponse = "OVERRIDE"
+)
+
+type ConfidenceThreshold string
+
+const (
+	ConfidenceThresholdLOW    ConfidenceThreshold = "LOW"
+	ConfidenceThresholdMEDIUM ConfidenceThreshold = "MEDIUM"
+	ConfidenceThresholdHIGH   ConfidenceThreshold = "HIGH"
+)
+
+type DnsAdvancedProtection string
+
+const (
+	DnsAdvancedProtectionDGA           DnsAdvancedProtection = "DGA"
+	DnsAdvancedProtectionDNSTUNNELING  DnsAdvancedProtection = "DNS_TUNNELING"
+	DnsAdvancedProtectionDICTIONARYDGA DnsAdvancedProtection = "DICTIONARY_DGA"
+)
+
+type FirewallRuleCRResourceStatus string
+
+const (
+	FirewallRuleCRResourceStatusCREATING    FirewallRuleCRResourceStatus = "CREATING"
+	FirewallRuleCRResourceStatusOPERATIONAL FirewallRuleCRResourceStatus = "OPERATIONAL"
+	FirewallRuleCRResourceStatusUPDATING    FirewallRuleCRResourceStatus = "UPDATING"
+	FirewallRuleCRResourceStatusDELETING    FirewallRuleCRResourceStatus = "DELETING"
+)
+
+type GlobalResolverIpAddressType string
+
+const (
+	GlobalResolverIpAddressTypeIPV4      GlobalResolverIpAddressType = "IPV4"
+	GlobalResolverIpAddressTypeDUALSTACK GlobalResolverIpAddressType = "DUAL_STACK"
+)
+
+type GlobalResolverCRResourceStatus string
+
+const (
+	GlobalResolverCRResourceStatusCREATING    GlobalResolverCRResourceStatus = "CREATING"
+	GlobalResolverCRResourceStatusOPERATIONAL GlobalResolverCRResourceStatus = "OPERATIONAL"
+	GlobalResolverCRResourceStatusUPDATING    GlobalResolverCRResourceStatus = "UPDATING"
+	GlobalResolverCRResourceStatusDELETING    GlobalResolverCRResourceStatus = "DELETING"
+)
+
+type HostedZoneAssociationStatus string
+
+const (
+	HostedZoneAssociationStatusCREATING    HostedZoneAssociationStatus = "CREATING"
+	HostedZoneAssociationStatusOPERATIONAL HostedZoneAssociationStatus = "OPERATIONAL"
+	HostedZoneAssociationStatusDELETING    HostedZoneAssociationStatus = "DELETING"
+)

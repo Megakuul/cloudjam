@@ -9,10 +9,10 @@ type DataQuery struct {
 }
 
 type S3OutputConfigurations struct {
-	Compression *string `json:"Compression,omitempty"`
-	Format      *string `json:"Format,omitempty"`
-	OutputType  *string `json:"OutputType,omitempty"`
-	Overwrite   *string `json:"Overwrite,omitempty"`
+	Compression *CompressionOption `json:"Compression,omitempty"`
+	Format      *FormatOption      `json:"Format,omitempty"`
+	OutputType  *S3OutputType      `json:"OutputType,omitempty"`
+	Overwrite   *OverwriteOption   `json:"Overwrite,omitempty"`
 }
 
 type S3Destination struct {
@@ -28,7 +28,7 @@ type DestinationConfigurations struct {
 }
 
 type RefreshCadence struct {
-	Frequency *string `json:"Frequency,omitempty"`
+	Frequency *FrequencyOption `json:"Frequency,omitempty"`
 }
 
 type ExportExport struct {
@@ -52,3 +52,39 @@ type Export struct {
 }
 
 func (Export) CloudControlType() string { return "AWS::BCMDataExports::Export" }
+
+type CompressionOption string
+
+const (
+	CompressionOptionGZIP    CompressionOption = "GZIP"
+	CompressionOptionPARQUET CompressionOption = "PARQUET"
+	CompressionOptionZIP     CompressionOption = "ZIP"
+)
+
+type FormatOption string
+
+const (
+	FormatOptionTEXTORCSV FormatOption = "TEXT_OR_CSV"
+	FormatOptionPARQUET   FormatOption = "PARQUET"
+)
+
+type S3OutputType string
+
+const (
+	S3OutputTypeCUSTOM   S3OutputType = "CUSTOM"
+	S3OutputTypeATHENA   S3OutputType = "ATHENA"
+	S3OutputTypeREDSHIFT S3OutputType = "REDSHIFT"
+)
+
+type OverwriteOption string
+
+const (
+	OverwriteOptionCREATENEWREPORT OverwriteOption = "CREATE_NEW_REPORT"
+	OverwriteOptionOVERWRITEREPORT OverwriteOption = "OVERWRITE_REPORT"
+)
+
+type FrequencyOption string
+
+const (
+	FrequencyOptionSYNCHRONOUS FrequencyOption = "SYNCHRONOUS"
+)

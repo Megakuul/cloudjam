@@ -9,14 +9,14 @@ type Tag struct {
 }
 
 type Accessor struct {
-	AccessorType *string `json:"AccessorType,omitempty"`
-	Arn          *string `json:"Arn,omitempty"`
-	BillingToken *string `json:"BillingToken,omitempty"`
-	CreationDate *string `json:"CreationDate,omitempty"`
-	Id           *string `json:"Id,omitempty"`
-	NetworkType  *string `json:"NetworkType,omitempty"`
-	Status       *string `json:"Status,omitempty"`
-	Tags         []Tag   `json:"Tags,omitempty"`
+	AccessorType *AccessorType        `json:"AccessorType,omitempty"`
+	Arn          *string              `json:"Arn,omitempty"`
+	BillingToken *string              `json:"BillingToken,omitempty"`
+	CreationDate *string              `json:"CreationDate,omitempty"`
+	Id           *string              `json:"Id,omitempty"`
+	NetworkType  *NetworkAccessorType `json:"NetworkType,omitempty"`
+	Status       *AccessorStatus      `json:"Status,omitempty"`
+	Tags         []Tag                `json:"Tags,omitempty"`
 }
 
 func (Accessor) CloudControlType() string { return "AWS::ManagedBlockchain::Accessor" }
@@ -87,3 +87,27 @@ type Node struct {
 }
 
 func (Node) CloudControlType() string { return "AWS::ManagedBlockchain::Node" }
+
+type AccessorType string
+
+const (
+	AccessorTypeBILLINGTOKEN AccessorType = "BILLING_TOKEN"
+)
+
+type NetworkAccessorType string
+
+const (
+	NetworkAccessorTypeETHEREUMGOERLI           NetworkAccessorType = "ETHEREUM_GOERLI"
+	NetworkAccessorTypeETHEREUMMAINNET          NetworkAccessorType = "ETHEREUM_MAINNET"
+	NetworkAccessorTypeETHEREUMMAINNETANDGOERLI NetworkAccessorType = "ETHEREUM_MAINNET_AND_GOERLI"
+	NetworkAccessorTypePOLYGONMAINNET           NetworkAccessorType = "POLYGON_MAINNET"
+	NetworkAccessorTypePOLYGONMUMBAI            NetworkAccessorType = "POLYGON_MUMBAI"
+)
+
+type AccessorStatus string
+
+const (
+	AccessorStatusAVAILABLE       AccessorStatus = "AVAILABLE"
+	AccessorStatusPENDINGDELETION AccessorStatus = "PENDING_DELETION"
+	AccessorStatusDELETED         AccessorStatus = "DELETED"
+)

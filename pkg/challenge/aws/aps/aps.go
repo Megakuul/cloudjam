@@ -105,8 +105,8 @@ type ComponentConfig struct {
 }
 
 type ScraperComponent struct {
-	Config *ComponentConfig `json:"Config,omitempty"`
-	Type   *string          `json:"Type,omitempty"`
+	Config *ComponentConfig      `json:"Config,omitempty"`
+	Type   *ScraperComponentType `json:"Type,omitempty"`
 }
 
 type ScraperLoggingConfiguration struct {
@@ -211,3 +211,11 @@ type Workspace struct {
 }
 
 func (Workspace) CloudControlType() string { return "AWS::APS::Workspace" }
+
+type ScraperComponentType string
+
+const (
+	ScraperComponentTypeSERVICEDISCOVERY ScraperComponentType = "SERVICE_DISCOVERY"
+	ScraperComponentTypeCOLLECTOR        ScraperComponentType = "COLLECTOR"
+	ScraperComponentTypeEXPORTER         ScraperComponentType = "EXPORTER"
+)

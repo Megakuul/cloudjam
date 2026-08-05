@@ -10,7 +10,7 @@ type Application struct {
 	ApplicationId  *string           `json:"ApplicationId,omitempty"`
 	Definition     json.RawMessage   `json:"Definition,omitempty"`
 	Description    *string           `json:"Description,omitempty"`
-	EngineType     *string           `json:"EngineType,omitempty"`
+	EngineType     *EngineType       `json:"EngineType,omitempty"`
 	KmsKeyId       *string           `json:"KmsKeyId,omitempty"`
 	Name           *string           `json:"Name,omitempty"`
 	RoleArn        *string           `json:"RoleArn,omitempty"`
@@ -35,7 +35,7 @@ type HighAvailabilityConfig struct {
 
 type Environment struct {
 	Description                *string                 `json:"Description,omitempty"`
-	EngineType                 *string                 `json:"EngineType,omitempty"`
+	EngineType                 *EnvironmentEngineType  `json:"EngineType,omitempty"`
 	EngineVersion              *string                 `json:"EngineVersion,omitempty"`
 	EnvironmentArn             *string                 `json:"EnvironmentArn,omitempty"`
 	EnvironmentId              *string                 `json:"EnvironmentId,omitempty"`
@@ -43,7 +43,7 @@ type Environment struct {
 	InstanceType               *string                 `json:"InstanceType,omitempty"`
 	KmsKeyId                   *string                 `json:"KmsKeyId,omitempty"`
 	Name                       *string                 `json:"Name,omitempty"`
-	NetworkType                *string                 `json:"NetworkType,omitempty"`
+	NetworkType                *NetworkType            `json:"NetworkType,omitempty"`
 	PreferredMaintenanceWindow *string                 `json:"PreferredMaintenanceWindow,omitempty"`
 	PubliclyAccessible         *bool                   `json:"PubliclyAccessible,omitempty"`
 	SecurityGroupIds           []string                `json:"SecurityGroupIds,omitempty"`
@@ -53,3 +53,24 @@ type Environment struct {
 }
 
 func (Environment) CloudControlType() string { return "AWS::M2::Environment" }
+
+type EngineType string
+
+const (
+	EngineTypeMicrofocus EngineType = "microfocus"
+	EngineTypeBluage     EngineType = "bluage"
+)
+
+type EnvironmentEngineType string
+
+const (
+	EnvironmentEngineTypeMicrofocus EnvironmentEngineType = "microfocus"
+	EnvironmentEngineTypeBluage     EnvironmentEngineType = "bluage"
+)
+
+type NetworkType string
+
+const (
+	NetworkTypeIpv4 NetworkType = "ipv4"
+	NetworkTypeDual NetworkType = "dual"
+)

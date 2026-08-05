@@ -29,23 +29,23 @@ type AlarmIdentifier struct {
 }
 
 type HealthCheckHealthCheckConfig struct {
-	AlarmIdentifier              *AlarmIdentifier `json:"AlarmIdentifier,omitempty"`
-	ChildHealthChecks            []string         `json:"ChildHealthChecks,omitempty"`
-	EnableSNI                    *bool            `json:"EnableSNI,omitempty"`
-	FailureThreshold             *int             `json:"FailureThreshold,omitempty"`
-	FullyQualifiedDomainName     *string          `json:"FullyQualifiedDomainName,omitempty"`
-	HealthThreshold              *int             `json:"HealthThreshold,omitempty"`
-	IPAddress                    *string          `json:"IPAddress,omitempty"`
-	InsufficientDataHealthStatus *string          `json:"InsufficientDataHealthStatus,omitempty"`
-	Inverted                     *bool            `json:"Inverted,omitempty"`
-	MeasureLatency               *bool            `json:"MeasureLatency,omitempty"`
-	Port                         *int             `json:"Port,omitempty"`
-	Regions                      []string         `json:"Regions,omitempty"`
-	RequestInterval              *int             `json:"RequestInterval,omitempty"`
-	ResourcePath                 *string          `json:"ResourcePath,omitempty"`
-	RoutingControlArn            *string          `json:"RoutingControlArn,omitempty"`
-	SearchString                 *string          `json:"SearchString,omitempty"`
-	Type                         *string          `json:"Type,omitempty"`
+	AlarmIdentifier              *AlarmIdentifier                                          `json:"AlarmIdentifier,omitempty"`
+	ChildHealthChecks            []string                                                  `json:"ChildHealthChecks,omitempty"`
+	EnableSNI                    *bool                                                     `json:"EnableSNI,omitempty"`
+	FailureThreshold             *int                                                      `json:"FailureThreshold,omitempty"`
+	FullyQualifiedDomainName     *string                                                   `json:"FullyQualifiedDomainName,omitempty"`
+	HealthThreshold              *int                                                      `json:"HealthThreshold,omitempty"`
+	IPAddress                    *string                                                   `json:"IPAddress,omitempty"`
+	InsufficientDataHealthStatus *HealthCheckHealthCheckConfigInsufficientDataHealthStatus `json:"InsufficientDataHealthStatus,omitempty"`
+	Inverted                     *bool                                                     `json:"Inverted,omitempty"`
+	MeasureLatency               *bool                                                     `json:"MeasureLatency,omitempty"`
+	Port                         *int                                                      `json:"Port,omitempty"`
+	Regions                      []string                                                  `json:"Regions,omitempty"`
+	RequestInterval              *int                                                      `json:"RequestInterval,omitempty"`
+	ResourcePath                 *string                                                   `json:"ResourcePath,omitempty"`
+	RoutingControlArn            *string                                                   `json:"RoutingControlArn,omitempty"`
+	SearchString                 *string                                                   `json:"SearchString,omitempty"`
+	Type                         *HealthCheckHealthCheckConfigType                         `json:"Type,omitempty"`
 }
 
 type HealthCheckTag struct {
@@ -97,10 +97,10 @@ type HostedZone struct {
 func (HostedZone) CloudControlType() string { return "AWS::Route53::HostedZone" }
 
 type KeySigningKey struct {
-	HostedZoneId            *string `json:"HostedZoneId,omitempty"`
-	KeyManagementServiceArn *string `json:"KeyManagementServiceArn,omitempty"`
-	Name                    *string `json:"Name,omitempty"`
-	Status                  *string `json:"Status,omitempty"`
+	HostedZoneId            *string              `json:"HostedZoneId,omitempty"`
+	KeyManagementServiceArn *string              `json:"KeyManagementServiceArn,omitempty"`
+	Name                    *string              `json:"Name,omitempty"`
+	Status                  *KeySigningKeyStatus `json:"Status,omitempty"`
 }
 
 func (KeySigningKey) CloudControlType() string { return "AWS::Route53::KeySigningKey" }
@@ -214,3 +214,31 @@ type RecordSetGroup struct {
 }
 
 func (RecordSetGroup) CloudControlType() string { return "AWS::Route53::RecordSetGroup" }
+
+type HealthCheckHealthCheckConfigInsufficientDataHealthStatus string
+
+const (
+	HealthCheckHealthCheckConfigInsufficientDataHealthStatusHealthy         HealthCheckHealthCheckConfigInsufficientDataHealthStatus = "Healthy"
+	HealthCheckHealthCheckConfigInsufficientDataHealthStatusLastKnownStatus HealthCheckHealthCheckConfigInsufficientDataHealthStatus = "LastKnownStatus"
+	HealthCheckHealthCheckConfigInsufficientDataHealthStatusUnhealthy       HealthCheckHealthCheckConfigInsufficientDataHealthStatus = "Unhealthy"
+)
+
+type HealthCheckHealthCheckConfigType string
+
+const (
+	HealthCheckHealthCheckConfigTypeCALCULATED       HealthCheckHealthCheckConfigType = "CALCULATED"
+	HealthCheckHealthCheckConfigTypeCLOUDWATCHMETRIC HealthCheckHealthCheckConfigType = "CLOUDWATCH_METRIC"
+	HealthCheckHealthCheckConfigTypeHTTP             HealthCheckHealthCheckConfigType = "HTTP"
+	HealthCheckHealthCheckConfigTypeHTTPSTRMATCH     HealthCheckHealthCheckConfigType = "HTTP_STR_MATCH"
+	HealthCheckHealthCheckConfigTypeHTTPS            HealthCheckHealthCheckConfigType = "HTTPS"
+	HealthCheckHealthCheckConfigTypeHTTPSSTRMATCH    HealthCheckHealthCheckConfigType = "HTTPS_STR_MATCH"
+	HealthCheckHealthCheckConfigTypeTCP              HealthCheckHealthCheckConfigType = "TCP"
+	HealthCheckHealthCheckConfigTypeRECOVERYCONTROL  HealthCheckHealthCheckConfigType = "RECOVERY_CONTROL"
+)
+
+type KeySigningKeyStatus string
+
+const (
+	KeySigningKeyStatusACTIVE   KeySigningKeyStatus = "ACTIVE"
+	KeySigningKeyStatusINACTIVE KeySigningKeyStatus = "INACTIVE"
+)

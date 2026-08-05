@@ -9,20 +9,20 @@ type Tag struct {
 }
 
 type CustomDBEngineVersion struct {
-	DBEngineVersionArn                    *string  `json:"DBEngineVersionArn,omitempty"`
-	DatabaseInstallationFiles             []string `json:"DatabaseInstallationFiles,omitempty"`
-	DatabaseInstallationFilesS3BucketName *string  `json:"DatabaseInstallationFilesS3BucketName,omitempty"`
-	DatabaseInstallationFilesS3Prefix     *string  `json:"DatabaseInstallationFilesS3Prefix,omitempty"`
-	Description                           *string  `json:"Description,omitempty"`
-	Engine                                *string  `json:"Engine,omitempty"`
-	EngineVersion                         *string  `json:"EngineVersion,omitempty"`
-	ImageId                               *string  `json:"ImageId,omitempty"`
-	KMSKeyId                              *string  `json:"KMSKeyId,omitempty"`
-	Manifest                              *string  `json:"Manifest,omitempty"`
-	SourceCustomDbEngineVersionIdentifier *string  `json:"SourceCustomDbEngineVersionIdentifier,omitempty"`
-	Status                                *string  `json:"Status,omitempty"`
-	Tags                                  []Tag    `json:"Tags,omitempty"`
-	UseAwsProvidedLatestImage             *bool    `json:"UseAwsProvidedLatestImage,omitempty"`
+	DBEngineVersionArn                    *string                      `json:"DBEngineVersionArn,omitempty"`
+	DatabaseInstallationFiles             []string                     `json:"DatabaseInstallationFiles,omitempty"`
+	DatabaseInstallationFilesS3BucketName *string                      `json:"DatabaseInstallationFilesS3BucketName,omitempty"`
+	DatabaseInstallationFilesS3Prefix     *string                      `json:"DatabaseInstallationFilesS3Prefix,omitempty"`
+	Description                           *string                      `json:"Description,omitempty"`
+	Engine                                *string                      `json:"Engine,omitempty"`
+	EngineVersion                         *string                      `json:"EngineVersion,omitempty"`
+	ImageId                               *string                      `json:"ImageId,omitempty"`
+	KMSKeyId                              *string                      `json:"KMSKeyId,omitempty"`
+	Manifest                              *string                      `json:"Manifest,omitempty"`
+	SourceCustomDbEngineVersionIdentifier *string                      `json:"SourceCustomDbEngineVersionIdentifier,omitempty"`
+	Status                                *CustomDBEngineVersionStatus `json:"Status,omitempty"`
+	Tags                                  []Tag                        `json:"Tags,omitempty"`
+	UseAwsProvidedLatestImage             *bool                        `json:"UseAwsProvidedLatestImage,omitempty"`
 }
 
 func (CustomDBEngineVersion) CloudControlType() string { return "AWS::RDS::CustomDBEngineVersion" }
@@ -184,8 +184,8 @@ type DBInstanceMasterUserSecret struct {
 }
 
 type ProcessorFeature struct {
-	Name  *string `json:"Name,omitempty"`
-	Value *string `json:"Value,omitempty"`
+	Name  *ProcessorFeatureName `json:"Name,omitempty"`
+	Value *string               `json:"Value,omitempty"`
 }
 
 type DBInstanceStatusInfo struct {
@@ -320,11 +320,11 @@ type DBParameterGroup struct {
 func (DBParameterGroup) CloudControlType() string { return "AWS::RDS::DBParameterGroup" }
 
 type AuthFormat struct {
-	AuthScheme             *string `json:"AuthScheme,omitempty"`
-	ClientPasswordAuthType *string `json:"ClientPasswordAuthType,omitempty"`
-	Description            *string `json:"Description,omitempty"`
-	IAMAuth                *string `json:"IAMAuth,omitempty"`
-	SecretArn              *string `json:"SecretArn,omitempty"`
+	AuthScheme             *AuthFormatAuthScheme             `json:"AuthScheme,omitempty"`
+	ClientPasswordAuthType *AuthFormatClientPasswordAuthType `json:"ClientPasswordAuthType,omitempty"`
+	Description            *string                           `json:"Description,omitempty"`
+	IAMAuth                *AuthFormatIAMAuth                `json:"IAMAuth,omitempty"`
+	SecretArn              *string                           `json:"SecretArn,omitempty"`
 }
 
 type TagFormat struct {
@@ -333,22 +333,22 @@ type TagFormat struct {
 }
 
 type DBProxy struct {
-	Auth                        []AuthFormat `json:"Auth,omitempty"`
-	DBProxyArn                  *string      `json:"DBProxyArn,omitempty"`
-	DBProxyName                 *string      `json:"DBProxyName,omitempty"`
-	DebugLogging                *bool        `json:"DebugLogging,omitempty"`
-	DefaultAuthScheme           *string      `json:"DefaultAuthScheme,omitempty"`
-	Endpoint                    *string      `json:"Endpoint,omitempty"`
-	EndpointNetworkType         *string      `json:"EndpointNetworkType,omitempty"`
-	EngineFamily                *string      `json:"EngineFamily,omitempty"`
-	IdleClientTimeout           *int         `json:"IdleClientTimeout,omitempty"`
-	RequireTLS                  *bool        `json:"RequireTLS,omitempty"`
-	RoleArn                     *string      `json:"RoleArn,omitempty"`
-	Tags                        []TagFormat  `json:"Tags,omitempty"`
-	TargetConnectionNetworkType *string      `json:"TargetConnectionNetworkType,omitempty"`
-	VpcId                       *string      `json:"VpcId,omitempty"`
-	VpcSecurityGroupIds         []string     `json:"VpcSecurityGroupIds,omitempty"`
-	VpcSubnetIds                []string     `json:"VpcSubnetIds,omitempty"`
+	Auth                        []AuthFormat                        `json:"Auth,omitempty"`
+	DBProxyArn                  *string                             `json:"DBProxyArn,omitempty"`
+	DBProxyName                 *string                             `json:"DBProxyName,omitempty"`
+	DebugLogging                *bool                               `json:"DebugLogging,omitempty"`
+	DefaultAuthScheme           *DBProxyDefaultAuthScheme           `json:"DefaultAuthScheme,omitempty"`
+	Endpoint                    *string                             `json:"Endpoint,omitempty"`
+	EndpointNetworkType         *DBProxyEndpointNetworkType         `json:"EndpointNetworkType,omitempty"`
+	EngineFamily                *DBProxyEngineFamily                `json:"EngineFamily,omitempty"`
+	IdleClientTimeout           *int                                `json:"IdleClientTimeout,omitempty"`
+	RequireTLS                  *bool                               `json:"RequireTLS,omitempty"`
+	RoleArn                     *string                             `json:"RoleArn,omitempty"`
+	Tags                        []TagFormat                         `json:"Tags,omitempty"`
+	TargetConnectionNetworkType *DBProxyTargetConnectionNetworkType `json:"TargetConnectionNetworkType,omitempty"`
+	VpcId                       *string                             `json:"VpcId,omitempty"`
+	VpcSecurityGroupIds         []string                            `json:"VpcSecurityGroupIds,omitempty"`
+	VpcSubnetIds                []string                            `json:"VpcSubnetIds,omitempty"`
 }
 
 func (DBProxy) CloudControlType() string { return "AWS::RDS::DBProxy" }
@@ -359,17 +359,17 @@ type DBProxyEndpointTagFormat struct {
 }
 
 type DBProxyEndpoint struct {
-	DBProxyEndpointArn  *string                    `json:"DBProxyEndpointArn,omitempty"`
-	DBProxyEndpointName *string                    `json:"DBProxyEndpointName,omitempty"`
-	DBProxyName         *string                    `json:"DBProxyName,omitempty"`
-	Endpoint            *string                    `json:"Endpoint,omitempty"`
-	EndpointNetworkType *string                    `json:"EndpointNetworkType,omitempty"`
-	IsDefault           *bool                      `json:"IsDefault,omitempty"`
-	Tags                []DBProxyEndpointTagFormat `json:"Tags,omitempty"`
-	TargetRole          *string                    `json:"TargetRole,omitempty"`
-	VpcId               *string                    `json:"VpcId,omitempty"`
-	VpcSecurityGroupIds []string                   `json:"VpcSecurityGroupIds,omitempty"`
-	VpcSubnetIds        []string                   `json:"VpcSubnetIds,omitempty"`
+	DBProxyEndpointArn  *string                             `json:"DBProxyEndpointArn,omitempty"`
+	DBProxyEndpointName *string                             `json:"DBProxyEndpointName,omitempty"`
+	DBProxyName         *string                             `json:"DBProxyName,omitempty"`
+	Endpoint            *string                             `json:"Endpoint,omitempty"`
+	EndpointNetworkType *DBProxyEndpointEndpointNetworkType `json:"EndpointNetworkType,omitempty"`
+	IsDefault           *bool                               `json:"IsDefault,omitempty"`
+	Tags                []DBProxyEndpointTagFormat          `json:"Tags,omitempty"`
+	TargetRole          *DBProxyEndpointTargetRole          `json:"TargetRole,omitempty"`
+	VpcId               *string                             `json:"VpcId,omitempty"`
+	VpcSecurityGroupIds []string                            `json:"VpcSecurityGroupIds,omitempty"`
+	VpcSubnetIds        []string                            `json:"VpcSubnetIds,omitempty"`
 }
 
 func (DBProxyEndpoint) CloudControlType() string { return "AWS::RDS::DBProxyEndpoint" }
@@ -388,7 +388,7 @@ type DBProxyTargetGroup struct {
 	DBInstanceIdentifiers           []string                               `json:"DBInstanceIdentifiers,omitempty"`
 	DBProxyName                     *string                                `json:"DBProxyName,omitempty"`
 	TargetGroupArn                  *string                                `json:"TargetGroupArn,omitempty"`
-	TargetGroupName                 *string                                `json:"TargetGroupName,omitempty"`
+	TargetGroupName                 *DBProxyTargetGroupTargetGroupName     `json:"TargetGroupName,omitempty"`
 }
 
 func (DBProxyTargetGroup) CloudControlType() string { return "AWS::RDS::DBProxyTargetGroup" }
@@ -487,15 +487,15 @@ type GlobalClusterTag struct {
 }
 
 type GlobalCluster struct {
-	DeletionProtection        *bool              `json:"DeletionProtection,omitempty"`
-	Engine                    *string            `json:"Engine,omitempty"`
-	EngineLifecycleSupport    *string            `json:"EngineLifecycleSupport,omitempty"`
-	EngineVersion             *string            `json:"EngineVersion,omitempty"`
-	GlobalClusterIdentifier   *string            `json:"GlobalClusterIdentifier,omitempty"`
-	GlobalEndpoint            *GlobalEndpoint    `json:"GlobalEndpoint,omitempty"`
-	SourceDBClusterIdentifier *string            `json:"SourceDBClusterIdentifier,omitempty"`
-	StorageEncrypted          *bool              `json:"StorageEncrypted,omitempty"`
-	Tags                      []GlobalClusterTag `json:"Tags,omitempty"`
+	DeletionProtection        *bool                `json:"DeletionProtection,omitempty"`
+	Engine                    *GlobalClusterEngine `json:"Engine,omitempty"`
+	EngineLifecycleSupport    *string              `json:"EngineLifecycleSupport,omitempty"`
+	EngineVersion             *string              `json:"EngineVersion,omitempty"`
+	GlobalClusterIdentifier   *string              `json:"GlobalClusterIdentifier,omitempty"`
+	GlobalEndpoint            *GlobalEndpoint      `json:"GlobalEndpoint,omitempty"`
+	SourceDBClusterIdentifier *string              `json:"SourceDBClusterIdentifier,omitempty"`
+	StorageEncrypted          *bool                `json:"StorageEncrypted,omitempty"`
+	Tags                      []GlobalClusterTag   `json:"Tags,omitempty"`
 }
 
 func (GlobalCluster) CloudControlType() string { return "AWS::RDS::GlobalCluster" }
@@ -549,3 +549,102 @@ type OptionGroup struct {
 }
 
 func (OptionGroup) CloudControlType() string { return "AWS::RDS::OptionGroup" }
+
+type CustomDBEngineVersionStatus string
+
+const (
+	CustomDBEngineVersionStatusAvailable             CustomDBEngineVersionStatus = "available"
+	CustomDBEngineVersionStatusInactive              CustomDBEngineVersionStatus = "inactive"
+	CustomDBEngineVersionStatusInactiveExceptRestore CustomDBEngineVersionStatus = "inactive-except-restore"
+	CustomDBEngineVersionStatusPendingValidation     CustomDBEngineVersionStatus = "pending-validation"
+)
+
+type ProcessorFeatureName string
+
+const (
+	ProcessorFeatureNameCoreCount      ProcessorFeatureName = "coreCount"
+	ProcessorFeatureNameThreadsPerCore ProcessorFeatureName = "threadsPerCore"
+)
+
+type AuthFormatAuthScheme string
+
+const (
+	AuthFormatAuthSchemeSECRETS AuthFormatAuthScheme = "SECRETS"
+)
+
+type AuthFormatClientPasswordAuthType string
+
+const (
+	AuthFormatClientPasswordAuthTypeMYSQLNATIVEPASSWORD      AuthFormatClientPasswordAuthType = "MYSQL_NATIVE_PASSWORD"
+	AuthFormatClientPasswordAuthTypeMYSQLCACHINGSHA2PASSWORD AuthFormatClientPasswordAuthType = "MYSQL_CACHING_SHA2_PASSWORD"
+	AuthFormatClientPasswordAuthTypePOSTGRESSCRAMSHA256      AuthFormatClientPasswordAuthType = "POSTGRES_SCRAM_SHA_256"
+	AuthFormatClientPasswordAuthTypePOSTGRESMD5              AuthFormatClientPasswordAuthType = "POSTGRES_MD5"
+	AuthFormatClientPasswordAuthTypeSQLSERVERAUTHENTICATION  AuthFormatClientPasswordAuthType = "SQL_SERVER_AUTHENTICATION"
+)
+
+type AuthFormatIAMAuth string
+
+const (
+	AuthFormatIAMAuthDISABLED AuthFormatIAMAuth = "DISABLED"
+	AuthFormatIAMAuthREQUIRED AuthFormatIAMAuth = "REQUIRED"
+	AuthFormatIAMAuthENABLED  AuthFormatIAMAuth = "ENABLED"
+)
+
+type DBProxyDefaultAuthScheme string
+
+const (
+	DBProxyDefaultAuthSchemeIAMAUTH DBProxyDefaultAuthScheme = "IAM_AUTH"
+	DBProxyDefaultAuthSchemeNONE    DBProxyDefaultAuthScheme = "NONE"
+)
+
+type DBProxyEndpointNetworkType string
+
+const (
+	DBProxyEndpointNetworkTypeIPV4 DBProxyEndpointNetworkType = "IPV4"
+	DBProxyEndpointNetworkTypeIPV6 DBProxyEndpointNetworkType = "IPV6"
+	DBProxyEndpointNetworkTypeDUAL DBProxyEndpointNetworkType = "DUAL"
+)
+
+type DBProxyEngineFamily string
+
+const (
+	DBProxyEngineFamilyMYSQL      DBProxyEngineFamily = "MYSQL"
+	DBProxyEngineFamilyPOSTGRESQL DBProxyEngineFamily = "POSTGRESQL"
+	DBProxyEngineFamilySQLSERVER  DBProxyEngineFamily = "SQLSERVER"
+)
+
+type DBProxyTargetConnectionNetworkType string
+
+const (
+	DBProxyTargetConnectionNetworkTypeIPV4 DBProxyTargetConnectionNetworkType = "IPV4"
+	DBProxyTargetConnectionNetworkTypeIPV6 DBProxyTargetConnectionNetworkType = "IPV6"
+)
+
+type DBProxyEndpointEndpointNetworkType string
+
+const (
+	DBProxyEndpointEndpointNetworkTypeIPV4 DBProxyEndpointEndpointNetworkType = "IPV4"
+	DBProxyEndpointEndpointNetworkTypeIPV6 DBProxyEndpointEndpointNetworkType = "IPV6"
+	DBProxyEndpointEndpointNetworkTypeDUAL DBProxyEndpointEndpointNetworkType = "DUAL"
+)
+
+type DBProxyEndpointTargetRole string
+
+const (
+	DBProxyEndpointTargetRoleREADWRITE DBProxyEndpointTargetRole = "READ_WRITE"
+	DBProxyEndpointTargetRoleREADONLY  DBProxyEndpointTargetRole = "READ_ONLY"
+)
+
+type DBProxyTargetGroupTargetGroupName string
+
+const (
+	DBProxyTargetGroupTargetGroupNameDefault DBProxyTargetGroupTargetGroupName = "default"
+)
+
+type GlobalClusterEngine string
+
+const (
+	GlobalClusterEngineAurora           GlobalClusterEngine = "aurora"
+	GlobalClusterEngineAuroraMysql      GlobalClusterEngine = "aurora-mysql"
+	GlobalClusterEngineAuroraPostgresql GlobalClusterEngine = "aurora-postgresql"
+)

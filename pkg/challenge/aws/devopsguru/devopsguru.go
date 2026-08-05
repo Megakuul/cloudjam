@@ -12,8 +12,8 @@ func (LogAnomalyDetectionIntegration) CloudControlType() string {
 }
 
 type NotificationFilterConfig struct {
-	MessageTypes []string `json:"MessageTypes,omitempty"`
-	Severities   []string `json:"Severities,omitempty"`
+	MessageTypes []NotificationMessageType `json:"MessageTypes,omitempty"`
+	Severities   []InsightSeverity         `json:"Severities,omitempty"`
 }
 
 type SnsChannelConfig struct {
@@ -47,8 +47,33 @@ type ResourceCollectionFilter struct {
 }
 
 type ResourceCollection struct {
-	ResourceCollectionFilter *ResourceCollectionFilter `json:"ResourceCollectionFilter,omitempty"`
-	ResourceCollectionType   *string                   `json:"ResourceCollectionType,omitempty"`
+	ResourceCollectionFilter *ResourceCollectionFilter                 `json:"ResourceCollectionFilter,omitempty"`
+	ResourceCollectionType   *ResourceCollectionResourceCollectionType `json:"ResourceCollectionType,omitempty"`
 }
 
 func (ResourceCollection) CloudControlType() string { return "AWS::DevOpsGuru::ResourceCollection" }
+
+type NotificationMessageType string
+
+const (
+	NotificationMessageTypeNEWINSIGHT        NotificationMessageType = "NEW_INSIGHT"
+	NotificationMessageTypeCLOSEDINSIGHT     NotificationMessageType = "CLOSED_INSIGHT"
+	NotificationMessageTypeNEWASSOCIATION    NotificationMessageType = "NEW_ASSOCIATION"
+	NotificationMessageTypeSEVERITYUPGRADED  NotificationMessageType = "SEVERITY_UPGRADED"
+	NotificationMessageTypeNEWRECOMMENDATION NotificationMessageType = "NEW_RECOMMENDATION"
+)
+
+type InsightSeverity string
+
+const (
+	InsightSeverityLOW    InsightSeverity = "LOW"
+	InsightSeverityMEDIUM InsightSeverity = "MEDIUM"
+	InsightSeverityHIGH   InsightSeverity = "HIGH"
+)
+
+type ResourceCollectionResourceCollectionType string
+
+const (
+	ResourceCollectionResourceCollectionTypeAWSCLOUDFORMATION ResourceCollectionResourceCollectionType = "AWS_CLOUD_FORMATION"
+	ResourceCollectionResourceCollectionTypeAWSTAGS           ResourceCollectionResourceCollectionType = "AWS_TAGS"
+)

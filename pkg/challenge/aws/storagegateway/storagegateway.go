@@ -9,13 +9,28 @@ type Tag struct {
 }
 
 type TapePool struct {
-	PoolARN                 *string `json:"PoolARN,omitempty"`
-	PoolId                  *string `json:"PoolId,omitempty"`
-	PoolName                *string `json:"PoolName,omitempty"`
-	RetentionLockTimeInDays *int    `json:"RetentionLockTimeInDays,omitempty"`
-	RetentionLockType       *string `json:"RetentionLockType,omitempty"`
-	StorageClass            *string `json:"StorageClass,omitempty"`
-	Tags                    []Tag   `json:"Tags,omitempty"`
+	PoolARN                 *string                    `json:"PoolARN,omitempty"`
+	PoolId                  *string                    `json:"PoolId,omitempty"`
+	PoolName                *string                    `json:"PoolName,omitempty"`
+	RetentionLockTimeInDays *int                       `json:"RetentionLockTimeInDays,omitempty"`
+	RetentionLockType       *TapePoolRetentionLockType `json:"RetentionLockType,omitempty"`
+	StorageClass            *TapePoolStorageClass      `json:"StorageClass,omitempty"`
+	Tags                    []Tag                      `json:"Tags,omitempty"`
 }
 
 func (TapePool) CloudControlType() string { return "AWS::StorageGateway::TapePool" }
+
+type TapePoolRetentionLockType string
+
+const (
+	TapePoolRetentionLockTypeCOMPLIANCE TapePoolRetentionLockType = "COMPLIANCE"
+	TapePoolRetentionLockTypeGOVERNANCE TapePoolRetentionLockType = "GOVERNANCE"
+	TapePoolRetentionLockTypeNONE       TapePoolRetentionLockType = "NONE"
+)
+
+type TapePoolStorageClass string
+
+const (
+	TapePoolStorageClassDEEPARCHIVE TapePoolStorageClass = "DEEP_ARCHIVE"
+	TapePoolStorageClassGLACIER     TapePoolStorageClass = "GLACIER"
+)

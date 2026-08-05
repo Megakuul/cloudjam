@@ -53,19 +53,19 @@ type RegistryPolicy struct {
 func (RegistryPolicy) CloudControlType() string { return "AWS::ECR::RegistryPolicy" }
 
 type RepositoryFilter struct {
-	Filter     *string `json:"Filter,omitempty"`
-	FilterType *string `json:"FilterType,omitempty"`
+	Filter     *string     `json:"Filter,omitempty"`
+	FilterType *FilterType `json:"FilterType,omitempty"`
 }
 
 type ScanningRule struct {
 	RepositoryFilters []RepositoryFilter `json:"RepositoryFilters,omitempty"`
-	ScanFrequency     *string            `json:"ScanFrequency,omitempty"`
+	ScanFrequency     *ScanFrequency     `json:"ScanFrequency,omitempty"`
 }
 
 type RegistryScanningConfiguration struct {
 	RegistryId *string        `json:"RegistryId,omitempty"`
 	Rules      []ScanningRule `json:"Rules,omitempty"`
-	ScanType   *string        `json:"ScanType,omitempty"`
+	ScanType   *ScanType      `json:"ScanType,omitempty"`
 }
 
 func (RegistryScanningConfiguration) CloudControlType() string {
@@ -78,8 +78,8 @@ type ReplicationDestination struct {
 }
 
 type ReplicationConfigurationRepositoryFilter struct {
-	Filter     *string `json:"Filter,omitempty"`
-	FilterType *string `json:"FilterType,omitempty"`
+	Filter     *string                             `json:"Filter,omitempty"`
+	FilterType *ReplicationConfigurationFilterType `json:"FilterType,omitempty"`
 }
 
 type ReplicationRule struct {
@@ -101,8 +101,8 @@ func (ReplicationConfiguration) CloudControlType() string {
 }
 
 type EncryptionConfiguration struct {
-	EncryptionType *string `json:"EncryptionType,omitempty"`
-	KmsKey         *string `json:"KmsKey,omitempty"`
+	EncryptionType *EncryptionType `json:"EncryptionType,omitempty"`
+	KmsKey         *string         `json:"KmsKey,omitempty"`
 }
 
 type ImageScanningConfiguration struct {
@@ -110,8 +110,8 @@ type ImageScanningConfiguration struct {
 }
 
 type ImageTagMutabilityExclusionFilter struct {
-	ImageTagMutabilityExclusionFilterType  *string `json:"ImageTagMutabilityExclusionFilterType,omitempty"`
-	ImageTagMutabilityExclusionFilterValue *string `json:"ImageTagMutabilityExclusionFilterValue,omitempty"`
+	ImageTagMutabilityExclusionFilterType  *ImageTagMutabilityExclusionFilterType `json:"ImageTagMutabilityExclusionFilterType,omitempty"`
+	ImageTagMutabilityExclusionFilterValue *string                                `json:"ImageTagMutabilityExclusionFilterValue,omitempty"`
 }
 
 type LifecyclePolicy struct {
@@ -129,7 +129,7 @@ type Repository struct {
 	EmptyOnDelete                      *bool                               `json:"EmptyOnDelete,omitempty"`
 	EncryptionConfiguration            *EncryptionConfiguration            `json:"EncryptionConfiguration,omitempty"`
 	ImageScanningConfiguration         *ImageScanningConfiguration         `json:"ImageScanningConfiguration,omitempty"`
-	ImageTagMutability                 *string                             `json:"ImageTagMutability,omitempty"`
+	ImageTagMutability                 *RepositoryImageTagMutability       `json:"ImageTagMutability,omitempty"`
 	ImageTagMutabilityExclusionFilters []ImageTagMutabilityExclusionFilter `json:"ImageTagMutabilityExclusionFilters,omitempty"`
 	LifecyclePolicy                    *LifecyclePolicy                    `json:"LifecyclePolicy,omitempty"`
 	RepositoryName                     *string                             `json:"RepositoryName,omitempty"`
@@ -141,13 +141,13 @@ type Repository struct {
 func (Repository) CloudControlType() string { return "AWS::ECR::Repository" }
 
 type RepositoryCreationTemplateEncryptionConfiguration struct {
-	EncryptionType *string `json:"EncryptionType,omitempty"`
-	KmsKey         *string `json:"KmsKey,omitempty"`
+	EncryptionType *RepositoryCreationTemplateEncryptionType `json:"EncryptionType,omitempty"`
+	KmsKey         *string                                   `json:"KmsKey,omitempty"`
 }
 
 type RepositoryCreationTemplateImageTagMutabilityExclusionFilter struct {
-	ImageTagMutabilityExclusionFilterType  *string `json:"ImageTagMutabilityExclusionFilterType,omitempty"`
-	ImageTagMutabilityExclusionFilterValue *string `json:"ImageTagMutabilityExclusionFilterValue,omitempty"`
+	ImageTagMutabilityExclusionFilterType  *RepositoryCreationTemplateImageTagMutabilityExclusionFilterImageTagMutabilityExclusionFilterType `json:"ImageTagMutabilityExclusionFilterType,omitempty"`
+	ImageTagMutabilityExclusionFilterValue *string                                                                                           `json:"ImageTagMutabilityExclusionFilterValue,omitempty"`
 }
 
 type RepositoryCreationTemplateTag struct {
@@ -156,12 +156,12 @@ type RepositoryCreationTemplateTag struct {
 }
 
 type RepositoryCreationTemplate struct {
-	AppliedFor                         []string                                                      `json:"AppliedFor,omitempty"`
+	AppliedFor                         []AppliedForItem                                              `json:"AppliedFor,omitempty"`
 	CreatedAt                          *string                                                       `json:"CreatedAt,omitempty"`
 	CustomRoleArn                      *string                                                       `json:"CustomRoleArn,omitempty"`
 	Description                        *string                                                       `json:"Description,omitempty"`
 	EncryptionConfiguration            *RepositoryCreationTemplateEncryptionConfiguration            `json:"EncryptionConfiguration,omitempty"`
-	ImageTagMutability                 *string                                                       `json:"ImageTagMutability,omitempty"`
+	ImageTagMutability                 *RepositoryCreationTemplateImageTagMutability                 `json:"ImageTagMutability,omitempty"`
 	ImageTagMutabilityExclusionFilters []RepositoryCreationTemplateImageTagMutabilityExclusionFilter `json:"ImageTagMutabilityExclusionFilters,omitempty"`
 	LifecyclePolicy                    *string                                                       `json:"LifecyclePolicy,omitempty"`
 	Prefix                             *string                                                       `json:"Prefix,omitempty"`
@@ -175,8 +175,8 @@ func (RepositoryCreationTemplate) CloudControlType() string {
 }
 
 type SigningConfigurationRepositoryFilter struct {
-	Filter     *string `json:"Filter,omitempty"`
-	FilterType *string `json:"FilterType,omitempty"`
+	Filter     *string                         `json:"Filter,omitempty"`
+	FilterType *SigningConfigurationFilterType `json:"FilterType,omitempty"`
 }
 
 type Rule struct {
@@ -190,3 +190,89 @@ type SigningConfiguration struct {
 }
 
 func (SigningConfiguration) CloudControlType() string { return "AWS::ECR::SigningConfiguration" }
+
+type FilterType string
+
+const (
+	FilterTypeWILDCARD FilterType = "WILDCARD"
+)
+
+type ScanFrequency string
+
+const (
+	ScanFrequencySCANONPUSH     ScanFrequency = "SCAN_ON_PUSH"
+	ScanFrequencyCONTINUOUSSCAN ScanFrequency = "CONTINUOUS_SCAN"
+)
+
+type ScanType string
+
+const (
+	ScanTypeBASIC    ScanType = "BASIC"
+	ScanTypeENHANCED ScanType = "ENHANCED"
+)
+
+type ReplicationConfigurationFilterType string
+
+const (
+	ReplicationConfigurationFilterTypePREFIXMATCH ReplicationConfigurationFilterType = "PREFIX_MATCH"
+)
+
+type EncryptionType string
+
+const (
+	EncryptionTypeAES256  EncryptionType = "AES256"
+	EncryptionTypeKMS     EncryptionType = "KMS"
+	EncryptionTypeKMSDSSE EncryptionType = "KMS_DSSE"
+)
+
+type RepositoryImageTagMutability string
+
+const (
+	RepositoryImageTagMutabilityMUTABLE                RepositoryImageTagMutability = "MUTABLE"
+	RepositoryImageTagMutabilityIMMUTABLE              RepositoryImageTagMutability = "IMMUTABLE"
+	RepositoryImageTagMutabilityMUTABLEWITHEXCLUSION   RepositoryImageTagMutability = "MUTABLE_WITH_EXCLUSION"
+	RepositoryImageTagMutabilityIMMUTABLEWITHEXCLUSION RepositoryImageTagMutability = "IMMUTABLE_WITH_EXCLUSION"
+)
+
+type ImageTagMutabilityExclusionFilterType string
+
+const (
+	ImageTagMutabilityExclusionFilterTypeWILDCARD ImageTagMutabilityExclusionFilterType = "WILDCARD"
+)
+
+type AppliedForItem string
+
+const (
+	AppliedForItemREPLICATION      AppliedForItem = "REPLICATION"
+	AppliedForItemPULLTHROUGHCACHE AppliedForItem = "PULL_THROUGH_CACHE"
+	AppliedForItemCREATEONPUSH     AppliedForItem = "CREATE_ON_PUSH"
+)
+
+type RepositoryCreationTemplateEncryptionType string
+
+const (
+	RepositoryCreationTemplateEncryptionTypeAES256  RepositoryCreationTemplateEncryptionType = "AES256"
+	RepositoryCreationTemplateEncryptionTypeKMS     RepositoryCreationTemplateEncryptionType = "KMS"
+	RepositoryCreationTemplateEncryptionTypeKMSDSSE RepositoryCreationTemplateEncryptionType = "KMS_DSSE"
+)
+
+type RepositoryCreationTemplateImageTagMutability string
+
+const (
+	RepositoryCreationTemplateImageTagMutabilityMUTABLE                RepositoryCreationTemplateImageTagMutability = "MUTABLE"
+	RepositoryCreationTemplateImageTagMutabilityIMMUTABLE              RepositoryCreationTemplateImageTagMutability = "IMMUTABLE"
+	RepositoryCreationTemplateImageTagMutabilityIMMUTABLEWITHEXCLUSION RepositoryCreationTemplateImageTagMutability = "IMMUTABLE_WITH_EXCLUSION"
+	RepositoryCreationTemplateImageTagMutabilityMUTABLEWITHEXCLUSION   RepositoryCreationTemplateImageTagMutability = "MUTABLE_WITH_EXCLUSION"
+)
+
+type RepositoryCreationTemplateImageTagMutabilityExclusionFilterImageTagMutabilityExclusionFilterType string
+
+const (
+	RepositoryCreationTemplateImageTagMutabilityExclusionFilterImageTagMutabilityExclusionFilterTypeWILDCARD RepositoryCreationTemplateImageTagMutabilityExclusionFilterImageTagMutabilityExclusionFilterType = "WILDCARD"
+)
+
+type SigningConfigurationFilterType string
+
+const (
+	SigningConfigurationFilterTypeWILDCARDMATCH SigningConfigurationFilterType = "WILDCARD_MATCH"
+)

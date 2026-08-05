@@ -6,9 +6,9 @@ package stepfunctions
 import "encoding/json"
 
 type EncryptionConfiguration struct {
-	KmsDataKeyReusePeriodSeconds *int    `json:"KmsDataKeyReusePeriodSeconds,omitempty"`
-	KmsKeyId                     *string `json:"KmsKeyId,omitempty"`
-	Type                         *string `json:"Type,omitempty"`
+	KmsDataKeyReusePeriodSeconds *int                         `json:"KmsDataKeyReusePeriodSeconds,omitempty"`
+	KmsKeyId                     *string                      `json:"KmsKeyId,omitempty"`
+	Type                         *EncryptionConfigurationType `json:"Type,omitempty"`
 }
 
 type TagsEntry struct {
@@ -32,9 +32,9 @@ type S3Location struct {
 }
 
 type StateMachineEncryptionConfiguration struct {
-	KmsDataKeyReusePeriodSeconds *int    `json:"KmsDataKeyReusePeriodSeconds,omitempty"`
-	KmsKeyId                     *string `json:"KmsKeyId,omitempty"`
-	Type                         *string `json:"Type,omitempty"`
+	KmsDataKeyReusePeriodSeconds *int                                     `json:"KmsDataKeyReusePeriodSeconds,omitempty"`
+	KmsKeyId                     *string                                  `json:"KmsKeyId,omitempty"`
+	Type                         *StateMachineEncryptionConfigurationType `json:"Type,omitempty"`
 }
 
 type CloudWatchLogsLogGroup struct {
@@ -46,9 +46,9 @@ type LogDestination struct {
 }
 
 type LoggingConfiguration struct {
-	Destinations         []LogDestination `json:"Destinations,omitempty"`
-	IncludeExecutionData *bool            `json:"IncludeExecutionData,omitempty"`
-	Level                *string          `json:"Level,omitempty"`
+	Destinations         []LogDestination           `json:"Destinations,omitempty"`
+	IncludeExecutionData *bool                      `json:"IncludeExecutionData,omitempty"`
+	Level                *LoggingConfigurationLevel `json:"Level,omitempty"`
 }
 
 type StateMachineTagsEntry struct {
@@ -72,7 +72,7 @@ type StateMachine struct {
 	RoleArn                 *string                              `json:"RoleArn,omitempty"`
 	StateMachineName        *string                              `json:"StateMachineName,omitempty"`
 	StateMachineRevisionId  *string                              `json:"StateMachineRevisionId,omitempty"`
-	StateMachineType        *string                              `json:"StateMachineType,omitempty"`
+	StateMachineType        *StateMachineStateMachineType        `json:"StateMachineType,omitempty"`
 	Tags                    []StateMachineTagsEntry              `json:"Tags,omitempty"`
 	TracingConfiguration    *TracingConfiguration                `json:"TracingConfiguration,omitempty"`
 }
@@ -80,11 +80,11 @@ type StateMachine struct {
 func (StateMachine) CloudControlType() string { return "AWS::StepFunctions::StateMachine" }
 
 type DeploymentPreference struct {
-	Alarms                 []string `json:"Alarms,omitempty"`
-	Interval               *int     `json:"Interval,omitempty"`
-	Percentage             *int     `json:"Percentage,omitempty"`
-	StateMachineVersionArn *string  `json:"StateMachineVersionArn,omitempty"`
-	Type                   *string  `json:"Type,omitempty"`
+	Alarms                 []string                  `json:"Alarms,omitempty"`
+	Interval               *int                      `json:"Interval,omitempty"`
+	Percentage             *int                      `json:"Percentage,omitempty"`
+	StateMachineVersionArn *string                   `json:"StateMachineVersionArn,omitempty"`
+	Type                   *DeploymentPreferenceType `json:"Type,omitempty"`
 }
 
 type RoutingConfigurationVersion struct {
@@ -113,3 +113,41 @@ type StateMachineVersion struct {
 func (StateMachineVersion) CloudControlType() string {
 	return "AWS::StepFunctions::StateMachineVersion"
 }
+
+type EncryptionConfigurationType string
+
+const (
+	EncryptionConfigurationTypeCUSTOMERMANAGEDKMSKEY EncryptionConfigurationType = "CUSTOMER_MANAGED_KMS_KEY"
+	EncryptionConfigurationTypeAWSOWNEDKEY           EncryptionConfigurationType = "AWS_OWNED_KEY"
+)
+
+type StateMachineEncryptionConfigurationType string
+
+const (
+	StateMachineEncryptionConfigurationTypeCUSTOMERMANAGEDKMSKEY StateMachineEncryptionConfigurationType = "CUSTOMER_MANAGED_KMS_KEY"
+	StateMachineEncryptionConfigurationTypeAWSOWNEDKEY           StateMachineEncryptionConfigurationType = "AWS_OWNED_KEY"
+)
+
+type LoggingConfigurationLevel string
+
+const (
+	LoggingConfigurationLevelALL   LoggingConfigurationLevel = "ALL"
+	LoggingConfigurationLevelERROR LoggingConfigurationLevel = "ERROR"
+	LoggingConfigurationLevelFATAL LoggingConfigurationLevel = "FATAL"
+	LoggingConfigurationLevelOFF   LoggingConfigurationLevel = "OFF"
+)
+
+type StateMachineStateMachineType string
+
+const (
+	StateMachineStateMachineTypeSTANDARD StateMachineStateMachineType = "STANDARD"
+	StateMachineStateMachineTypeEXPRESS  StateMachineStateMachineType = "EXPRESS"
+)
+
+type DeploymentPreferenceType string
+
+const (
+	DeploymentPreferenceTypeLINEAR    DeploymentPreferenceType = "LINEAR"
+	DeploymentPreferenceTypeALLATONCE DeploymentPreferenceType = "ALL_AT_ONCE"
+	DeploymentPreferenceTypeCANARY    DeploymentPreferenceType = "CANARY"
+)

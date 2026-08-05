@@ -12,15 +12,15 @@ type DataRecoveryTargets struct {
 }
 
 type MultiAzTargets struct {
-	DisasterRecoveryApproach *string `json:"DisasterRecoveryApproach,omitempty"`
-	RpoInMinutes             *int    `json:"RpoInMinutes,omitempty"`
-	RtoInMinutes             *int    `json:"RtoInMinutes,omitempty"`
+	DisasterRecoveryApproach *MultiAzTargetsDisasterRecoveryApproach `json:"DisasterRecoveryApproach,omitempty"`
+	RpoInMinutes             *int                                    `json:"RpoInMinutes,omitempty"`
+	RtoInMinutes             *int                                    `json:"RtoInMinutes,omitempty"`
 }
 
 type MultiRegionTargets struct {
-	DisasterRecoveryApproach *string `json:"DisasterRecoveryApproach,omitempty"`
-	RpoInMinutes             *int    `json:"RpoInMinutes,omitempty"`
-	RtoInMinutes             *int    `json:"RtoInMinutes,omitempty"`
+	DisasterRecoveryApproach *MultiRegionTargetsDisasterRecoveryApproach `json:"DisasterRecoveryApproach,omitempty"`
+	RpoInMinutes             *int                                        `json:"RpoInMinutes,omitempty"`
+	RtoInMinutes             *int                                        `json:"RtoInMinutes,omitempty"`
 }
 
 type Tag struct {
@@ -133,7 +133,7 @@ type Service struct {
 	Assertions            []AssertionDefinition       `json:"Assertions,omitempty"`
 	AssociatedSystems     []AssociatedSystem          `json:"AssociatedSystems,omitempty"`
 	CreatedAt             *string                     `json:"CreatedAt,omitempty"`
-	DependencyDiscovery   *string                     `json:"DependencyDiscovery,omitempty"`
+	DependencyDiscovery   *ServiceDependencyDiscovery `json:"DependencyDiscovery,omitempty"`
 	Description           *string                     `json:"Description,omitempty"`
 	EffectivePolicyValues *EffectivePolicyValues      `json:"EffectivePolicyValues,omitempty"`
 	InputSources          []InputSourceDefinition     `json:"InputSources,omitempty"`
@@ -151,15 +151,15 @@ type Service struct {
 func (Service) CloudControlType() string { return "AWS::ResilienceHubV2::Service" }
 
 type ServiceFunction struct {
-	CreatedAt         *string `json:"CreatedAt,omitempty"`
-	Criticality       *string `json:"Criticality,omitempty"`
-	Description       *string `json:"Description,omitempty"`
-	Name              *string `json:"Name,omitempty"`
-	ResourceCount     *int    `json:"ResourceCount,omitempty"`
-	ServiceArn        *string `json:"ServiceArn,omitempty"`
-	ServiceFunctionId *string `json:"ServiceFunctionId,omitempty"`
-	Source            *string `json:"Source,omitempty"`
-	UpdatedAt         *string `json:"UpdatedAt,omitempty"`
+	CreatedAt         *string                     `json:"CreatedAt,omitempty"`
+	Criticality       *ServiceFunctionCriticality `json:"Criticality,omitempty"`
+	Description       *string                     `json:"Description,omitempty"`
+	Name              *string                     `json:"Name,omitempty"`
+	ResourceCount     *int                        `json:"ResourceCount,omitempty"`
+	ServiceArn        *string                     `json:"ServiceArn,omitempty"`
+	ServiceFunctionId *string                     `json:"ServiceFunctionId,omitempty"`
+	Source            *ServiceFunctionSource      `json:"Source,omitempty"`
+	UpdatedAt         *string                     `json:"UpdatedAt,omitempty"`
 }
 
 func (ServiceFunction) CloudControlType() string { return "AWS::ResilienceHubV2::ServiceFunction" }
@@ -194,3 +194,45 @@ type UserJourney struct {
 }
 
 func (UserJourney) CloudControlType() string { return "AWS::ResilienceHubV2::UserJourney" }
+
+type MultiAzTargetsDisasterRecoveryApproach string
+
+const (
+	MultiAzTargetsDisasterRecoveryApproachACTIVEACTIVE     MultiAzTargetsDisasterRecoveryApproach = "ACTIVE_ACTIVE"
+	MultiAzTargetsDisasterRecoveryApproachHOTSTANDBY       MultiAzTargetsDisasterRecoveryApproach = "HOT_STANDBY"
+	MultiAzTargetsDisasterRecoveryApproachWARMSTANDBY      MultiAzTargetsDisasterRecoveryApproach = "WARM_STANDBY"
+	MultiAzTargetsDisasterRecoveryApproachPILOTLIGHT       MultiAzTargetsDisasterRecoveryApproach = "PILOT_LIGHT"
+	MultiAzTargetsDisasterRecoveryApproachBACKUPANDRESTORE MultiAzTargetsDisasterRecoveryApproach = "BACKUP_AND_RESTORE"
+)
+
+type MultiRegionTargetsDisasterRecoveryApproach string
+
+const (
+	MultiRegionTargetsDisasterRecoveryApproachACTIVEACTIVE     MultiRegionTargetsDisasterRecoveryApproach = "ACTIVE_ACTIVE"
+	MultiRegionTargetsDisasterRecoveryApproachHOTSTANDBY       MultiRegionTargetsDisasterRecoveryApproach = "HOT_STANDBY"
+	MultiRegionTargetsDisasterRecoveryApproachWARMSTANDBY      MultiRegionTargetsDisasterRecoveryApproach = "WARM_STANDBY"
+	MultiRegionTargetsDisasterRecoveryApproachPILOTLIGHT       MultiRegionTargetsDisasterRecoveryApproach = "PILOT_LIGHT"
+	MultiRegionTargetsDisasterRecoveryApproachBACKUPANDRESTORE MultiRegionTargetsDisasterRecoveryApproach = "BACKUP_AND_RESTORE"
+)
+
+type ServiceDependencyDiscovery string
+
+const (
+	ServiceDependencyDiscoveryENABLED      ServiceDependencyDiscovery = "ENABLED"
+	ServiceDependencyDiscoveryDISABLED     ServiceDependencyDiscovery = "DISABLED"
+	ServiceDependencyDiscoveryINITIALIZING ServiceDependencyDiscovery = "INITIALIZING"
+)
+
+type ServiceFunctionCriticality string
+
+const (
+	ServiceFunctionCriticalityPRIMARY      ServiceFunctionCriticality = "PRIMARY"
+	ServiceFunctionCriticalitySUPPLEMENTAL ServiceFunctionCriticality = "SUPPLEMENTAL"
+)
+
+type ServiceFunctionSource string
+
+const (
+	ServiceFunctionSourceAIGENERATED ServiceFunctionSource = "AI_GENERATED"
+	ServiceFunctionSourceUSER        ServiceFunctionSource = "USER"
+)

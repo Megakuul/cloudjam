@@ -14,12 +14,12 @@ type Tag struct {
 }
 
 type Cluster struct {
-	ClusterArn       *string           `json:"ClusterArn,omitempty"`
-	ClusterEndpoints []ClusterEndpoint `json:"ClusterEndpoints,omitempty"`
-	Name             *string           `json:"Name,omitempty"`
-	NetworkType      *string           `json:"NetworkType,omitempty"`
-	Status           *string           `json:"Status,omitempty"`
-	Tags             []Tag             `json:"Tags,omitempty"`
+	ClusterArn       *string             `json:"ClusterArn,omitempty"`
+	ClusterEndpoints []ClusterEndpoint   `json:"ClusterEndpoints,omitempty"`
+	Name             *string             `json:"Name,omitempty"`
+	NetworkType      *ClusterNetworkType `json:"NetworkType,omitempty"`
+	Status           *ClusterStatus      `json:"Status,omitempty"`
+	Tags             []Tag               `json:"Tags,omitempty"`
 }
 
 func (Cluster) CloudControlType() string { return "AWS::Route53RecoveryControl::Cluster" }
@@ -30,23 +30,23 @@ type ControlPanelTag struct {
 }
 
 type ControlPanel struct {
-	ClusterArn          *string           `json:"ClusterArn,omitempty"`
-	ControlPanelArn     *string           `json:"ControlPanelArn,omitempty"`
-	DefaultControlPanel *bool             `json:"DefaultControlPanel,omitempty"`
-	Name                *string           `json:"Name,omitempty"`
-	RoutingControlCount *int              `json:"RoutingControlCount,omitempty"`
-	Status              *string           `json:"Status,omitempty"`
-	Tags                []ControlPanelTag `json:"Tags,omitempty"`
+	ClusterArn          *string             `json:"ClusterArn,omitempty"`
+	ControlPanelArn     *string             `json:"ControlPanelArn,omitempty"`
+	DefaultControlPanel *bool               `json:"DefaultControlPanel,omitempty"`
+	Name                *string             `json:"Name,omitempty"`
+	RoutingControlCount *int                `json:"RoutingControlCount,omitempty"`
+	Status              *ControlPanelStatus `json:"Status,omitempty"`
+	Tags                []ControlPanelTag   `json:"Tags,omitempty"`
 }
 
 func (ControlPanel) CloudControlType() string { return "AWS::Route53RecoveryControl::ControlPanel" }
 
 type RoutingControl struct {
-	ClusterArn        *string `json:"ClusterArn,omitempty"`
-	ControlPanelArn   *string `json:"ControlPanelArn,omitempty"`
-	Name              *string `json:"Name,omitempty"`
-	RoutingControlArn *string `json:"RoutingControlArn,omitempty"`
-	Status            *string `json:"Status,omitempty"`
+	ClusterArn        *string               `json:"ClusterArn,omitempty"`
+	ControlPanelArn   *string               `json:"ControlPanelArn,omitempty"`
+	Name              *string               `json:"Name,omitempty"`
+	RoutingControlArn *string               `json:"RoutingControlArn,omitempty"`
+	Status            *RoutingControlStatus `json:"Status,omitempty"`
 }
 
 func (RoutingControl) CloudControlType() string { return "AWS::Route53RecoveryControl::RoutingControl" }
@@ -63,9 +63,9 @@ type GatingRule struct {
 }
 
 type RuleConfig struct {
-	Inverted  *bool   `json:"Inverted,omitempty"`
-	Threshold *int    `json:"Threshold,omitempty"`
-	Type      *string `json:"Type,omitempty"`
+	Inverted  *bool     `json:"Inverted,omitempty"`
+	Threshold *int      `json:"Threshold,omitempty"`
+	Type      *RuleType `json:"Type,omitempty"`
 }
 
 type SafetyRuleTag struct {
@@ -74,14 +74,61 @@ type SafetyRuleTag struct {
 }
 
 type SafetyRule struct {
-	AssertionRule   *AssertionRule  `json:"AssertionRule,omitempty"`
-	ControlPanelArn *string         `json:"ControlPanelArn,omitempty"`
-	GatingRule      *GatingRule     `json:"GatingRule,omitempty"`
-	Name            *string         `json:"Name,omitempty"`
-	RuleConfig      *RuleConfig     `json:"RuleConfig,omitempty"`
-	SafetyRuleArn   *string         `json:"SafetyRuleArn,omitempty"`
-	Status          *string         `json:"Status,omitempty"`
-	Tags            []SafetyRuleTag `json:"Tags,omitempty"`
+	AssertionRule   *AssertionRule    `json:"AssertionRule,omitempty"`
+	ControlPanelArn *string           `json:"ControlPanelArn,omitempty"`
+	GatingRule      *GatingRule       `json:"GatingRule,omitempty"`
+	Name            *string           `json:"Name,omitempty"`
+	RuleConfig      *RuleConfig       `json:"RuleConfig,omitempty"`
+	SafetyRuleArn   *string           `json:"SafetyRuleArn,omitempty"`
+	Status          *SafetyRuleStatus `json:"Status,omitempty"`
+	Tags            []SafetyRuleTag   `json:"Tags,omitempty"`
 }
 
 func (SafetyRule) CloudControlType() string { return "AWS::Route53RecoveryControl::SafetyRule" }
+
+type ClusterNetworkType string
+
+const (
+	ClusterNetworkTypeIPV4      ClusterNetworkType = "IPV4"
+	ClusterNetworkTypeDUALSTACK ClusterNetworkType = "DUALSTACK"
+)
+
+type ClusterStatus string
+
+const (
+	ClusterStatusPENDING         ClusterStatus = "PENDING"
+	ClusterStatusDEPLOYED        ClusterStatus = "DEPLOYED"
+	ClusterStatusPENDINGDELETION ClusterStatus = "PENDING_DELETION"
+)
+
+type ControlPanelStatus string
+
+const (
+	ControlPanelStatusPENDING         ControlPanelStatus = "PENDING"
+	ControlPanelStatusDEPLOYED        ControlPanelStatus = "DEPLOYED"
+	ControlPanelStatusPENDINGDELETION ControlPanelStatus = "PENDING_DELETION"
+)
+
+type RoutingControlStatus string
+
+const (
+	RoutingControlStatusPENDING         RoutingControlStatus = "PENDING"
+	RoutingControlStatusDEPLOYED        RoutingControlStatus = "DEPLOYED"
+	RoutingControlStatusPENDINGDELETION RoutingControlStatus = "PENDING_DELETION"
+)
+
+type RuleType string
+
+const (
+	RuleTypeAND     RuleType = "AND"
+	RuleTypeOR      RuleType = "OR"
+	RuleTypeATLEAST RuleType = "ATLEAST"
+)
+
+type SafetyRuleStatus string
+
+const (
+	SafetyRuleStatusPENDING         SafetyRuleStatus = "PENDING"
+	SafetyRuleStatusDEPLOYED        SafetyRuleStatus = "DEPLOYED"
+	SafetyRuleStatusPENDINGDELETION SafetyRuleStatus = "PENDING_DELETION"
+)

@@ -6,8 +6,8 @@ package pcaconnectorad
 import "encoding/json"
 
 type VpcInformation struct {
-	IpAddressType    *string  `json:"IpAddressType,omitempty"`
-	SecurityGroupIds []string `json:"SecurityGroupIds,omitempty"`
+	IpAddressType    *VpcInformationIpAddressType `json:"IpAddressType,omitempty"`
+	SecurityGroupIds []string                     `json:"SecurityGroupIds,omitempty"`
 }
 
 type Connector struct {
@@ -51,8 +51,8 @@ type Template struct {
 func (Template) CloudControlType() string { return "AWS::PCAConnectorAD::Template" }
 
 type AccessRights struct {
-	AutoEnroll *string `json:"AutoEnroll,omitempty"`
-	Enroll     *string `json:"Enroll,omitempty"`
+	AutoEnroll *AccessRight `json:"AutoEnroll,omitempty"`
+	Enroll     *AccessRight `json:"Enroll,omitempty"`
 }
 
 type TemplateGroupAccessControlEntry struct {
@@ -65,3 +65,17 @@ type TemplateGroupAccessControlEntry struct {
 func (TemplateGroupAccessControlEntry) CloudControlType() string {
 	return "AWS::PCAConnectorAD::TemplateGroupAccessControlEntry"
 }
+
+type VpcInformationIpAddressType string
+
+const (
+	VpcInformationIpAddressTypeIPV4      VpcInformationIpAddressType = "IPV4"
+	VpcInformationIpAddressTypeDUALSTACK VpcInformationIpAddressType = "DUALSTACK"
+)
+
+type AccessRight string
+
+const (
+	AccessRightALLOW AccessRight = "ALLOW"
+	AccessRightDENY  AccessRight = "DENY"
+)

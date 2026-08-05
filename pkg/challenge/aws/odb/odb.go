@@ -10,12 +10,12 @@ type IamRole struct {
 }
 
 type MaintenanceWindow struct {
-	DaysOfWeek      []string `json:"DaysOfWeek,omitempty"`
-	HoursOfDay      []int    `json:"HoursOfDay,omitempty"`
-	LeadTimeInWeeks *int     `json:"LeadTimeInWeeks,omitempty"`
-	Months          []string `json:"Months,omitempty"`
-	Preference      *string  `json:"Preference,omitempty"`
-	WeeksOfMonth    []int    `json:"WeeksOfMonth,omitempty"`
+	DaysOfWeek      []MaintenanceWindowDaysOfWeekItem `json:"DaysOfWeek,omitempty"`
+	HoursOfDay      []int                             `json:"HoursOfDay,omitempty"`
+	LeadTimeInWeeks *int                              `json:"LeadTimeInWeeks,omitempty"`
+	Months          []MaintenanceWindowMonthsItem     `json:"Months,omitempty"`
+	Preference      *MaintenanceWindowPreference      `json:"Preference,omitempty"`
+	WeeksOfMonth    []int                             `json:"WeeksOfMonth,omitempty"`
 }
 
 type Tag struct {
@@ -24,51 +24,51 @@ type Tag struct {
 }
 
 type CloudAutonomousVmCluster struct {
-	AutonomousDataStoragePercentage              *float64           `json:"AutonomousDataStoragePercentage,omitempty"`
-	AutonomousDataStorageSizeInTBs               *float64           `json:"AutonomousDataStorageSizeInTBs,omitempty"`
-	AvailableAutonomousDataStorageSizeInTBs      *float64           `json:"AvailableAutonomousDataStorageSizeInTBs,omitempty"`
-	AvailableContainerDatabases                  *int               `json:"AvailableContainerDatabases,omitempty"`
-	AvailableCpus                                *float64           `json:"AvailableCpus,omitempty"`
-	CloudAutonomousVmClusterArn                  *string            `json:"CloudAutonomousVmClusterArn,omitempty"`
-	CloudAutonomousVmClusterId                   *string            `json:"CloudAutonomousVmClusterId,omitempty"`
-	CloudExadataInfrastructureId                 *string            `json:"CloudExadataInfrastructureId,omitempty"`
-	ComputeModel                                 *string            `json:"ComputeModel,omitempty"`
-	CpuCoreCount                                 *int               `json:"CpuCoreCount,omitempty"`
-	CpuCoreCountPerNode                          *int               `json:"CpuCoreCountPerNode,omitempty"`
-	CpuPercentage                                *float64           `json:"CpuPercentage,omitempty"`
-	DataStorageSizeInGBs                         *float64           `json:"DataStorageSizeInGBs,omitempty"`
-	DataStorageSizeInTBs                         *float64           `json:"DataStorageSizeInTBs,omitempty"`
-	DbNodeStorageSizeInGBs                       *int               `json:"DbNodeStorageSizeInGBs,omitempty"`
-	DbServers                                    []string           `json:"DbServers,omitempty"`
-	Description                                  *string            `json:"Description,omitempty"`
-	DisplayName                                  *string            `json:"DisplayName,omitempty"`
-	Domain                                       *string            `json:"Domain,omitempty"`
-	ExadataStorageInTBsLowestScaledValue         *float64           `json:"ExadataStorageInTBsLowestScaledValue,omitempty"`
-	Hostname                                     *string            `json:"Hostname,omitempty"`
-	IamRoles                                     []IamRole          `json:"IamRoles,omitempty"`
-	IsMtlsEnabledVmCluster                       *bool              `json:"IsMtlsEnabledVmCluster,omitempty"`
-	LicenseModel                                 *string            `json:"LicenseModel,omitempty"`
-	MaintenanceWindow                            *MaintenanceWindow `json:"MaintenanceWindow,omitempty"`
-	MaxAcdsLowestScaledValue                     *int               `json:"MaxAcdsLowestScaledValue,omitempty"`
-	MemoryPerOracleComputeUnitInGBs              *int               `json:"MemoryPerOracleComputeUnitInGBs,omitempty"`
-	MemorySizeInGBs                              *int               `json:"MemorySizeInGBs,omitempty"`
-	NodeCount                                    *int               `json:"NodeCount,omitempty"`
-	NonProvisionableAutonomousContainerDatabases *int               `json:"NonProvisionableAutonomousContainerDatabases,omitempty"`
-	OciResourceAnchorName                        *string            `json:"OciResourceAnchorName,omitempty"`
-	OciUrl                                       *string            `json:"OciUrl,omitempty"`
-	Ocid                                         *string            `json:"Ocid,omitempty"`
-	OdbNetworkId                                 *string            `json:"OdbNetworkId,omitempty"`
-	ProvisionableAutonomousContainerDatabases    *int               `json:"ProvisionableAutonomousContainerDatabases,omitempty"`
-	ProvisionedAutonomousContainerDatabases      *int               `json:"ProvisionedAutonomousContainerDatabases,omitempty"`
-	ProvisionedCpus                              *float64           `json:"ProvisionedCpus,omitempty"`
-	ReclaimableCpus                              *float64           `json:"ReclaimableCpus,omitempty"`
-	ReservedCpus                                 *float64           `json:"ReservedCpus,omitempty"`
-	ScanListenerPortNonTls                       *int               `json:"ScanListenerPortNonTls,omitempty"`
-	ScanListenerPortTls                          *int               `json:"ScanListenerPortTls,omitempty"`
-	Shape                                        *string            `json:"Shape,omitempty"`
-	Tags                                         []Tag              `json:"Tags,omitempty"`
-	TimeZone                                     *string            `json:"TimeZone,omitempty"`
-	TotalContainerDatabases                      *int               `json:"TotalContainerDatabases,omitempty"`
+	AutonomousDataStoragePercentage              *float64                              `json:"AutonomousDataStoragePercentage,omitempty"`
+	AutonomousDataStorageSizeInTBs               *float64                              `json:"AutonomousDataStorageSizeInTBs,omitempty"`
+	AvailableAutonomousDataStorageSizeInTBs      *float64                              `json:"AvailableAutonomousDataStorageSizeInTBs,omitempty"`
+	AvailableContainerDatabases                  *int                                  `json:"AvailableContainerDatabases,omitempty"`
+	AvailableCpus                                *float64                              `json:"AvailableCpus,omitempty"`
+	CloudAutonomousVmClusterArn                  *string                               `json:"CloudAutonomousVmClusterArn,omitempty"`
+	CloudAutonomousVmClusterId                   *string                               `json:"CloudAutonomousVmClusterId,omitempty"`
+	CloudExadataInfrastructureId                 *string                               `json:"CloudExadataInfrastructureId,omitempty"`
+	ComputeModel                                 *CloudAutonomousVmClusterComputeModel `json:"ComputeModel,omitempty"`
+	CpuCoreCount                                 *int                                  `json:"CpuCoreCount,omitempty"`
+	CpuCoreCountPerNode                          *int                                  `json:"CpuCoreCountPerNode,omitempty"`
+	CpuPercentage                                *float64                              `json:"CpuPercentage,omitempty"`
+	DataStorageSizeInGBs                         *float64                              `json:"DataStorageSizeInGBs,omitempty"`
+	DataStorageSizeInTBs                         *float64                              `json:"DataStorageSizeInTBs,omitempty"`
+	DbNodeStorageSizeInGBs                       *int                                  `json:"DbNodeStorageSizeInGBs,omitempty"`
+	DbServers                                    []string                              `json:"DbServers,omitempty"`
+	Description                                  *string                               `json:"Description,omitempty"`
+	DisplayName                                  *string                               `json:"DisplayName,omitempty"`
+	Domain                                       *string                               `json:"Domain,omitempty"`
+	ExadataStorageInTBsLowestScaledValue         *float64                              `json:"ExadataStorageInTBsLowestScaledValue,omitempty"`
+	Hostname                                     *string                               `json:"Hostname,omitempty"`
+	IamRoles                                     []IamRole                             `json:"IamRoles,omitempty"`
+	IsMtlsEnabledVmCluster                       *bool                                 `json:"IsMtlsEnabledVmCluster,omitempty"`
+	LicenseModel                                 *CloudAutonomousVmClusterLicenseModel `json:"LicenseModel,omitempty"`
+	MaintenanceWindow                            *MaintenanceWindow                    `json:"MaintenanceWindow,omitempty"`
+	MaxAcdsLowestScaledValue                     *int                                  `json:"MaxAcdsLowestScaledValue,omitempty"`
+	MemoryPerOracleComputeUnitInGBs              *int                                  `json:"MemoryPerOracleComputeUnitInGBs,omitempty"`
+	MemorySizeInGBs                              *int                                  `json:"MemorySizeInGBs,omitempty"`
+	NodeCount                                    *int                                  `json:"NodeCount,omitempty"`
+	NonProvisionableAutonomousContainerDatabases *int                                  `json:"NonProvisionableAutonomousContainerDatabases,omitempty"`
+	OciResourceAnchorName                        *string                               `json:"OciResourceAnchorName,omitempty"`
+	OciUrl                                       *string                               `json:"OciUrl,omitempty"`
+	Ocid                                         *string                               `json:"Ocid,omitempty"`
+	OdbNetworkId                                 *string                               `json:"OdbNetworkId,omitempty"`
+	ProvisionableAutonomousContainerDatabases    *int                                  `json:"ProvisionableAutonomousContainerDatabases,omitempty"`
+	ProvisionedAutonomousContainerDatabases      *int                                  `json:"ProvisionedAutonomousContainerDatabases,omitempty"`
+	ProvisionedCpus                              *float64                              `json:"ProvisionedCpus,omitempty"`
+	ReclaimableCpus                              *float64                              `json:"ReclaimableCpus,omitempty"`
+	ReservedCpus                                 *float64                              `json:"ReservedCpus,omitempty"`
+	ScanListenerPortNonTls                       *int                                  `json:"ScanListenerPortNonTls,omitempty"`
+	ScanListenerPortTls                          *int                                  `json:"ScanListenerPortTls,omitempty"`
+	Shape                                        *string                               `json:"Shape,omitempty"`
+	Tags                                         []Tag                                 `json:"Tags,omitempty"`
+	TimeZone                                     *string                               `json:"TimeZone,omitempty"`
+	TotalContainerDatabases                      *int                                  `json:"TotalContainerDatabases,omitempty"`
 }
 
 func (CloudAutonomousVmCluster) CloudControlType() string {
@@ -80,15 +80,15 @@ type CustomerContact struct {
 }
 
 type CloudExadataInfrastructureMaintenanceWindow struct {
-	CustomActionTimeoutInMins    *int     `json:"CustomActionTimeoutInMins,omitempty"`
-	DaysOfWeek                   []string `json:"DaysOfWeek,omitempty"`
-	HoursOfDay                   []int    `json:"HoursOfDay,omitempty"`
-	IsCustomActionTimeoutEnabled *bool    `json:"IsCustomActionTimeoutEnabled,omitempty"`
-	LeadTimeInWeeks              *int     `json:"LeadTimeInWeeks,omitempty"`
-	Months                       []string `json:"Months,omitempty"`
-	PatchingMode                 *string  `json:"PatchingMode,omitempty"`
-	Preference                   *string  `json:"Preference,omitempty"`
-	WeeksOfMonth                 []int    `json:"WeeksOfMonth,omitempty"`
+	CustomActionTimeoutInMins    *int                                                        `json:"CustomActionTimeoutInMins,omitempty"`
+	DaysOfWeek                   []CloudExadataInfrastructureMaintenanceWindowDaysOfWeekItem `json:"DaysOfWeek,omitempty"`
+	HoursOfDay                   []int                                                       `json:"HoursOfDay,omitempty"`
+	IsCustomActionTimeoutEnabled *bool                                                       `json:"IsCustomActionTimeoutEnabled,omitempty"`
+	LeadTimeInWeeks              *int                                                        `json:"LeadTimeInWeeks,omitempty"`
+	Months                       []CloudExadataInfrastructureMaintenanceWindowMonthsItem     `json:"Months,omitempty"`
+	PatchingMode                 *string                                                     `json:"PatchingMode,omitempty"`
+	Preference                   *string                                                     `json:"Preference,omitempty"`
+	WeeksOfMonth                 []int                                                       `json:"WeeksOfMonth,omitempty"`
 }
 
 type CloudExadataInfrastructureTag struct {
@@ -172,87 +172,87 @@ type CloudVmClusterIamRole struct {
 }
 
 type CloudVmCluster struct {
-	CloudExadataInfrastructureId *string                 `json:"CloudExadataInfrastructureId,omitempty"`
-	CloudVmClusterArn            *string                 `json:"CloudVmClusterArn,omitempty"`
-	CloudVmClusterId             *string                 `json:"CloudVmClusterId,omitempty"`
-	ClusterName                  *string                 `json:"ClusterName,omitempty"`
-	ComputeModel                 *string                 `json:"ComputeModel,omitempty"`
-	CpuCoreCount                 *int                    `json:"CpuCoreCount,omitempty"`
-	DataCollectionOptions        *DataCollectionOptions  `json:"DataCollectionOptions,omitempty"`
-	DataStorageSizeInTBs         *float64                `json:"DataStorageSizeInTBs,omitempty"`
-	DbNodeStorageSizeInGBs       *int                    `json:"DbNodeStorageSizeInGBs,omitempty"`
-	DbNodes                      []DbNode                `json:"DbNodes,omitempty"`
-	DbServers                    []string                `json:"DbServers,omitempty"`
-	DiskRedundancy               *string                 `json:"DiskRedundancy,omitempty"`
-	DisplayName                  *string                 `json:"DisplayName,omitempty"`
-	Domain                       *string                 `json:"Domain,omitempty"`
-	GiVersion                    *string                 `json:"GiVersion,omitempty"`
-	Hostname                     *string                 `json:"Hostname,omitempty"`
-	IamRoles                     []CloudVmClusterIamRole `json:"IamRoles,omitempty"`
-	IsLocalBackupEnabled         *bool                   `json:"IsLocalBackupEnabled,omitempty"`
-	IsSparseDiskgroupEnabled     *bool                   `json:"IsSparseDiskgroupEnabled,omitempty"`
-	LicenseModel                 *string                 `json:"LicenseModel,omitempty"`
-	ListenerPort                 *int                    `json:"ListenerPort,omitempty"`
-	MemorySizeInGBs              *int                    `json:"MemorySizeInGBs,omitempty"`
-	NodeCount                    *int                    `json:"NodeCount,omitempty"`
-	OciResourceAnchorName        *string                 `json:"OciResourceAnchorName,omitempty"`
-	OciUrl                       *string                 `json:"OciUrl,omitempty"`
-	Ocid                         *string                 `json:"Ocid,omitempty"`
-	OdbNetworkId                 *string                 `json:"OdbNetworkId,omitempty"`
-	ScanDnsName                  *string                 `json:"ScanDnsName,omitempty"`
-	ScanIpIds                    []string                `json:"ScanIpIds,omitempty"`
-	ScanListenerPortTcp          *int                    `json:"ScanListenerPortTcp,omitempty"`
-	Shape                        *string                 `json:"Shape,omitempty"`
-	SshPublicKeys                []string                `json:"SshPublicKeys,omitempty"`
-	StorageSizeInGBs             *int                    `json:"StorageSizeInGBs,omitempty"`
-	SystemVersion                *string                 `json:"SystemVersion,omitempty"`
-	Tags                         []CloudVmClusterTag     `json:"Tags,omitempty"`
-	TimeZone                     *string                 `json:"TimeZone,omitempty"`
-	VipIds                       []string                `json:"VipIds,omitempty"`
+	CloudExadataInfrastructureId *string                     `json:"CloudExadataInfrastructureId,omitempty"`
+	CloudVmClusterArn            *string                     `json:"CloudVmClusterArn,omitempty"`
+	CloudVmClusterId             *string                     `json:"CloudVmClusterId,omitempty"`
+	ClusterName                  *string                     `json:"ClusterName,omitempty"`
+	ComputeModel                 *string                     `json:"ComputeModel,omitempty"`
+	CpuCoreCount                 *int                        `json:"CpuCoreCount,omitempty"`
+	DataCollectionOptions        *DataCollectionOptions      `json:"DataCollectionOptions,omitempty"`
+	DataStorageSizeInTBs         *float64                    `json:"DataStorageSizeInTBs,omitempty"`
+	DbNodeStorageSizeInGBs       *int                        `json:"DbNodeStorageSizeInGBs,omitempty"`
+	DbNodes                      []DbNode                    `json:"DbNodes,omitempty"`
+	DbServers                    []string                    `json:"DbServers,omitempty"`
+	DiskRedundancy               *string                     `json:"DiskRedundancy,omitempty"`
+	DisplayName                  *string                     `json:"DisplayName,omitempty"`
+	Domain                       *string                     `json:"Domain,omitempty"`
+	GiVersion                    *string                     `json:"GiVersion,omitempty"`
+	Hostname                     *string                     `json:"Hostname,omitempty"`
+	IamRoles                     []CloudVmClusterIamRole     `json:"IamRoles,omitempty"`
+	IsLocalBackupEnabled         *bool                       `json:"IsLocalBackupEnabled,omitempty"`
+	IsSparseDiskgroupEnabled     *bool                       `json:"IsSparseDiskgroupEnabled,omitempty"`
+	LicenseModel                 *CloudVmClusterLicenseModel `json:"LicenseModel,omitempty"`
+	ListenerPort                 *int                        `json:"ListenerPort,omitempty"`
+	MemorySizeInGBs              *int                        `json:"MemorySizeInGBs,omitempty"`
+	NodeCount                    *int                        `json:"NodeCount,omitempty"`
+	OciResourceAnchorName        *string                     `json:"OciResourceAnchorName,omitempty"`
+	OciUrl                       *string                     `json:"OciUrl,omitempty"`
+	Ocid                         *string                     `json:"Ocid,omitempty"`
+	OdbNetworkId                 *string                     `json:"OdbNetworkId,omitempty"`
+	ScanDnsName                  *string                     `json:"ScanDnsName,omitempty"`
+	ScanIpIds                    []string                    `json:"ScanIpIds,omitempty"`
+	ScanListenerPortTcp          *int                        `json:"ScanListenerPortTcp,omitempty"`
+	Shape                        *string                     `json:"Shape,omitempty"`
+	SshPublicKeys                []string                    `json:"SshPublicKeys,omitempty"`
+	StorageSizeInGBs             *int                        `json:"StorageSizeInGBs,omitempty"`
+	SystemVersion                *string                     `json:"SystemVersion,omitempty"`
+	Tags                         []CloudVmClusterTag         `json:"Tags,omitempty"`
+	TimeZone                     *string                     `json:"TimeZone,omitempty"`
+	VipIds                       []string                    `json:"VipIds,omitempty"`
 }
 
 func (CloudVmCluster) CloudControlType() string { return "AWS::ODB::CloudVmCluster" }
 
 type CrossRegionS3RestoreSourcesAccess struct {
-	Ipv4Addresses []string `json:"Ipv4Addresses,omitempty"`
-	Region        *string  `json:"Region,omitempty"`
-	Status        *string  `json:"Status,omitempty"`
+	Ipv4Addresses []string               `json:"Ipv4Addresses,omitempty"`
+	Region        *string                `json:"Region,omitempty"`
+	Status        *ManagedResourceStatus `json:"Status,omitempty"`
 }
 
 type ManagedServicesKmsAccess struct {
-	DomainName        *string  `json:"DomainName,omitempty"`
-	Ipv4Addresses     []string `json:"Ipv4Addresses,omitempty"`
-	KmsPolicyDocument *string  `json:"KmsPolicyDocument,omitempty"`
-	Status            *string  `json:"Status,omitempty"`
+	DomainName        *string                `json:"DomainName,omitempty"`
+	Ipv4Addresses     []string               `json:"Ipv4Addresses,omitempty"`
+	KmsPolicyDocument *string                `json:"KmsPolicyDocument,omitempty"`
+	Status            *ManagedResourceStatus `json:"Status,omitempty"`
 }
 
 type ManagedServicesManagedS3BackupAccess struct {
-	Ipv4Addresses []string `json:"Ipv4Addresses,omitempty"`
-	Status        *string  `json:"Status,omitempty"`
+	Ipv4Addresses []string               `json:"Ipv4Addresses,omitempty"`
+	Status        *ManagedResourceStatus `json:"Status,omitempty"`
 }
 
 type ManagedServicesS3Access struct {
-	DomainName       *string  `json:"DomainName,omitempty"`
-	Ipv4Addresses    []string `json:"Ipv4Addresses,omitempty"`
-	S3PolicyDocument *string  `json:"S3PolicyDocument,omitempty"`
-	Status           *string  `json:"Status,omitempty"`
+	DomainName       *string                `json:"DomainName,omitempty"`
+	Ipv4Addresses    []string               `json:"Ipv4Addresses,omitempty"`
+	S3PolicyDocument *string                `json:"S3PolicyDocument,omitempty"`
+	Status           *ManagedResourceStatus `json:"Status,omitempty"`
 }
 
 type ManagedServicesServiceNetworkEndpoint struct {
-	VpcEndpointId   *string `json:"VpcEndpointId,omitempty"`
-	VpcEndpointType *string `json:"VpcEndpointType,omitempty"`
+	VpcEndpointId   *string                                               `json:"VpcEndpointId,omitempty"`
+	VpcEndpointType *ManagedServicesServiceNetworkEndpointVpcEndpointType `json:"VpcEndpointType,omitempty"`
 }
 
 type ManagedServicesStsAccess struct {
-	DomainName        *string  `json:"DomainName,omitempty"`
-	Ipv4Addresses     []string `json:"Ipv4Addresses,omitempty"`
-	Status            *string  `json:"Status,omitempty"`
-	StsPolicyDocument *string  `json:"StsPolicyDocument,omitempty"`
+	DomainName        *string                `json:"DomainName,omitempty"`
+	Ipv4Addresses     []string               `json:"Ipv4Addresses,omitempty"`
+	Status            *ManagedResourceStatus `json:"Status,omitempty"`
+	StsPolicyDocument *string                `json:"StsPolicyDocument,omitempty"`
 }
 
 type ManagedServicesZeroEtlAccess struct {
-	Cidr   *string `json:"Cidr,omitempty"`
-	Status *string `json:"Status,omitempty"`
+	Cidr   *string                `json:"Cidr,omitempty"`
+	Status *ManagedResourceStatus `json:"Status,omitempty"`
 }
 
 type ManagedServices struct {
@@ -274,30 +274,30 @@ type OdbNetworkTag struct {
 }
 
 type OdbNetwork struct {
-	AvailabilityZone            *string          `json:"AvailabilityZone,omitempty"`
-	AvailabilityZoneId          *string          `json:"AvailabilityZoneId,omitempty"`
-	BackupSubnetCidr            *string          `json:"BackupSubnetCidr,omitempty"`
-	ClientSubnetCidr            *string          `json:"ClientSubnetCidr,omitempty"`
-	CrossRegionS3RestoreSources []string         `json:"CrossRegionS3RestoreSources,omitempty"`
-	CustomDomainName            *string          `json:"CustomDomainName,omitempty"`
-	DefaultDnsPrefix            *string          `json:"DefaultDnsPrefix,omitempty"`
-	DeleteAssociatedResources   *bool            `json:"DeleteAssociatedResources,omitempty"`
-	DisplayName                 *string          `json:"DisplayName,omitempty"`
-	Ec2PlacementGroupIds        []string         `json:"Ec2PlacementGroupIds,omitempty"`
-	KmsAccess                   *string          `json:"KmsAccess,omitempty"`
-	KmsPolicyDocument           *string          `json:"KmsPolicyDocument,omitempty"`
-	ManagedServices             *ManagedServices `json:"ManagedServices,omitempty"`
-	OciNetworkAnchorId          *string          `json:"OciNetworkAnchorId,omitempty"`
-	OciResourceAnchorName       *string          `json:"OciResourceAnchorName,omitempty"`
-	OciVcnUrl                   *string          `json:"OciVcnUrl,omitempty"`
-	OdbNetworkArn               *string          `json:"OdbNetworkArn,omitempty"`
-	OdbNetworkId                *string          `json:"OdbNetworkId,omitempty"`
-	S3Access                    *string          `json:"S3Access,omitempty"`
-	S3PolicyDocument            *string          `json:"S3PolicyDocument,omitempty"`
-	StsAccess                   *string          `json:"StsAccess,omitempty"`
-	StsPolicyDocument           *string          `json:"StsPolicyDocument,omitempty"`
-	Tags                        []OdbNetworkTag  `json:"Tags,omitempty"`
-	ZeroEtlAccess               *string          `json:"ZeroEtlAccess,omitempty"`
+	AvailabilityZone            *string                  `json:"AvailabilityZone,omitempty"`
+	AvailabilityZoneId          *string                  `json:"AvailabilityZoneId,omitempty"`
+	BackupSubnetCidr            *string                  `json:"BackupSubnetCidr,omitempty"`
+	ClientSubnetCidr            *string                  `json:"ClientSubnetCidr,omitempty"`
+	CrossRegionS3RestoreSources []string                 `json:"CrossRegionS3RestoreSources,omitempty"`
+	CustomDomainName            *string                  `json:"CustomDomainName,omitempty"`
+	DefaultDnsPrefix            *string                  `json:"DefaultDnsPrefix,omitempty"`
+	DeleteAssociatedResources   *bool                    `json:"DeleteAssociatedResources,omitempty"`
+	DisplayName                 *string                  `json:"DisplayName,omitempty"`
+	Ec2PlacementGroupIds        []string                 `json:"Ec2PlacementGroupIds,omitempty"`
+	KmsAccess                   *OdbNetworkKmsAccess     `json:"KmsAccess,omitempty"`
+	KmsPolicyDocument           *string                  `json:"KmsPolicyDocument,omitempty"`
+	ManagedServices             *ManagedServices         `json:"ManagedServices,omitempty"`
+	OciNetworkAnchorId          *string                  `json:"OciNetworkAnchorId,omitempty"`
+	OciResourceAnchorName       *string                  `json:"OciResourceAnchorName,omitempty"`
+	OciVcnUrl                   *string                  `json:"OciVcnUrl,omitempty"`
+	OdbNetworkArn               *string                  `json:"OdbNetworkArn,omitempty"`
+	OdbNetworkId                *string                  `json:"OdbNetworkId,omitempty"`
+	S3Access                    *OdbNetworkS3Access      `json:"S3Access,omitempty"`
+	S3PolicyDocument            *string                  `json:"S3PolicyDocument,omitempty"`
+	StsAccess                   *OdbNetworkStsAccess     `json:"StsAccess,omitempty"`
+	StsPolicyDocument           *string                  `json:"StsPolicyDocument,omitempty"`
+	Tags                        []OdbNetworkTag          `json:"Tags,omitempty"`
+	ZeroEtlAccess               *OdbNetworkZeroEtlAccess `json:"ZeroEtlAccess,omitempty"`
 }
 
 func (OdbNetwork) CloudControlType() string { return "AWS::ODB::OdbNetwork" }
@@ -322,3 +322,132 @@ type OdbPeeringConnection struct {
 }
 
 func (OdbPeeringConnection) CloudControlType() string { return "AWS::ODB::OdbPeeringConnection" }
+
+type CloudAutonomousVmClusterComputeModel string
+
+const (
+	CloudAutonomousVmClusterComputeModelECPU CloudAutonomousVmClusterComputeModel = "ECPU"
+	CloudAutonomousVmClusterComputeModelOCPU CloudAutonomousVmClusterComputeModel = "OCPU"
+)
+
+type CloudAutonomousVmClusterLicenseModel string
+
+const (
+	CloudAutonomousVmClusterLicenseModelBRINGYOUROWNLICENSE CloudAutonomousVmClusterLicenseModel = "BRING_YOUR_OWN_LICENSE"
+	CloudAutonomousVmClusterLicenseModelLICENSEINCLUDED     CloudAutonomousVmClusterLicenseModel = "LICENSE_INCLUDED"
+)
+
+type MaintenanceWindowDaysOfWeekItem string
+
+const (
+	MaintenanceWindowDaysOfWeekItemMONDAY    MaintenanceWindowDaysOfWeekItem = "MONDAY"
+	MaintenanceWindowDaysOfWeekItemTUESDAY   MaintenanceWindowDaysOfWeekItem = "TUESDAY"
+	MaintenanceWindowDaysOfWeekItemWEDNESDAY MaintenanceWindowDaysOfWeekItem = "WEDNESDAY"
+	MaintenanceWindowDaysOfWeekItemTHURSDAY  MaintenanceWindowDaysOfWeekItem = "THURSDAY"
+	MaintenanceWindowDaysOfWeekItemFRIDAY    MaintenanceWindowDaysOfWeekItem = "FRIDAY"
+	MaintenanceWindowDaysOfWeekItemSATURDAY  MaintenanceWindowDaysOfWeekItem = "SATURDAY"
+	MaintenanceWindowDaysOfWeekItemSUNDAY    MaintenanceWindowDaysOfWeekItem = "SUNDAY"
+)
+
+type MaintenanceWindowMonthsItem string
+
+const (
+	MaintenanceWindowMonthsItemJANUARY   MaintenanceWindowMonthsItem = "JANUARY"
+	MaintenanceWindowMonthsItemFEBRUARY  MaintenanceWindowMonthsItem = "FEBRUARY"
+	MaintenanceWindowMonthsItemMARCH     MaintenanceWindowMonthsItem = "MARCH"
+	MaintenanceWindowMonthsItemAPRIL     MaintenanceWindowMonthsItem = "APRIL"
+	MaintenanceWindowMonthsItemMAY       MaintenanceWindowMonthsItem = "MAY"
+	MaintenanceWindowMonthsItemJUNE      MaintenanceWindowMonthsItem = "JUNE"
+	MaintenanceWindowMonthsItemJULY      MaintenanceWindowMonthsItem = "JULY"
+	MaintenanceWindowMonthsItemAUGUST    MaintenanceWindowMonthsItem = "AUGUST"
+	MaintenanceWindowMonthsItemSEPTEMBER MaintenanceWindowMonthsItem = "SEPTEMBER"
+	MaintenanceWindowMonthsItemOCTOBER   MaintenanceWindowMonthsItem = "OCTOBER"
+	MaintenanceWindowMonthsItemNOVEMBER  MaintenanceWindowMonthsItem = "NOVEMBER"
+	MaintenanceWindowMonthsItemDECEMBER  MaintenanceWindowMonthsItem = "DECEMBER"
+)
+
+type MaintenanceWindowPreference string
+
+const (
+	MaintenanceWindowPreferenceNOPREFERENCE     MaintenanceWindowPreference = "NO_PREFERENCE"
+	MaintenanceWindowPreferenceCUSTOMPREFERENCE MaintenanceWindowPreference = "CUSTOM_PREFERENCE"
+)
+
+type CloudExadataInfrastructureMaintenanceWindowDaysOfWeekItem string
+
+const (
+	CloudExadataInfrastructureMaintenanceWindowDaysOfWeekItemMONDAY    CloudExadataInfrastructureMaintenanceWindowDaysOfWeekItem = "MONDAY"
+	CloudExadataInfrastructureMaintenanceWindowDaysOfWeekItemTUESDAY   CloudExadataInfrastructureMaintenanceWindowDaysOfWeekItem = "TUESDAY"
+	CloudExadataInfrastructureMaintenanceWindowDaysOfWeekItemWEDNESDAY CloudExadataInfrastructureMaintenanceWindowDaysOfWeekItem = "WEDNESDAY"
+	CloudExadataInfrastructureMaintenanceWindowDaysOfWeekItemTHURSDAY  CloudExadataInfrastructureMaintenanceWindowDaysOfWeekItem = "THURSDAY"
+	CloudExadataInfrastructureMaintenanceWindowDaysOfWeekItemFRIDAY    CloudExadataInfrastructureMaintenanceWindowDaysOfWeekItem = "FRIDAY"
+	CloudExadataInfrastructureMaintenanceWindowDaysOfWeekItemSATURDAY  CloudExadataInfrastructureMaintenanceWindowDaysOfWeekItem = "SATURDAY"
+	CloudExadataInfrastructureMaintenanceWindowDaysOfWeekItemSUNDAY    CloudExadataInfrastructureMaintenanceWindowDaysOfWeekItem = "SUNDAY"
+)
+
+type CloudExadataInfrastructureMaintenanceWindowMonthsItem string
+
+const (
+	CloudExadataInfrastructureMaintenanceWindowMonthsItemJANUARY   CloudExadataInfrastructureMaintenanceWindowMonthsItem = "JANUARY"
+	CloudExadataInfrastructureMaintenanceWindowMonthsItemFEBRUARY  CloudExadataInfrastructureMaintenanceWindowMonthsItem = "FEBRUARY"
+	CloudExadataInfrastructureMaintenanceWindowMonthsItemMARCH     CloudExadataInfrastructureMaintenanceWindowMonthsItem = "MARCH"
+	CloudExadataInfrastructureMaintenanceWindowMonthsItemAPRIL     CloudExadataInfrastructureMaintenanceWindowMonthsItem = "APRIL"
+	CloudExadataInfrastructureMaintenanceWindowMonthsItemMAY       CloudExadataInfrastructureMaintenanceWindowMonthsItem = "MAY"
+	CloudExadataInfrastructureMaintenanceWindowMonthsItemJUNE      CloudExadataInfrastructureMaintenanceWindowMonthsItem = "JUNE"
+	CloudExadataInfrastructureMaintenanceWindowMonthsItemJULY      CloudExadataInfrastructureMaintenanceWindowMonthsItem = "JULY"
+	CloudExadataInfrastructureMaintenanceWindowMonthsItemAUGUST    CloudExadataInfrastructureMaintenanceWindowMonthsItem = "AUGUST"
+	CloudExadataInfrastructureMaintenanceWindowMonthsItemSEPTEMBER CloudExadataInfrastructureMaintenanceWindowMonthsItem = "SEPTEMBER"
+	CloudExadataInfrastructureMaintenanceWindowMonthsItemOCTOBER   CloudExadataInfrastructureMaintenanceWindowMonthsItem = "OCTOBER"
+	CloudExadataInfrastructureMaintenanceWindowMonthsItemNOVEMBER  CloudExadataInfrastructureMaintenanceWindowMonthsItem = "NOVEMBER"
+	CloudExadataInfrastructureMaintenanceWindowMonthsItemDECEMBER  CloudExadataInfrastructureMaintenanceWindowMonthsItem = "DECEMBER"
+)
+
+type CloudVmClusterLicenseModel string
+
+const (
+	CloudVmClusterLicenseModelBRINGYOUROWNLICENSE CloudVmClusterLicenseModel = "BRING_YOUR_OWN_LICENSE"
+	CloudVmClusterLicenseModelLICENSEINCLUDED     CloudVmClusterLicenseModel = "LICENSE_INCLUDED"
+)
+
+type OdbNetworkKmsAccess string
+
+const (
+	OdbNetworkKmsAccessENABLED  OdbNetworkKmsAccess = "ENABLED"
+	OdbNetworkKmsAccessDISABLED OdbNetworkKmsAccess = "DISABLED"
+)
+
+type ManagedResourceStatus string
+
+const (
+	ManagedResourceStatusENABLED   ManagedResourceStatus = "ENABLED"
+	ManagedResourceStatusENABLING  ManagedResourceStatus = "ENABLING"
+	ManagedResourceStatusDISABLED  ManagedResourceStatus = "DISABLED"
+	ManagedResourceStatusDISABLING ManagedResourceStatus = "DISABLING"
+)
+
+type ManagedServicesServiceNetworkEndpointVpcEndpointType string
+
+const (
+	ManagedServicesServiceNetworkEndpointVpcEndpointTypeSERVICENETWORK ManagedServicesServiceNetworkEndpointVpcEndpointType = "SERVICENETWORK"
+)
+
+type OdbNetworkS3Access string
+
+const (
+	OdbNetworkS3AccessENABLED  OdbNetworkS3Access = "ENABLED"
+	OdbNetworkS3AccessDISABLED OdbNetworkS3Access = "DISABLED"
+)
+
+type OdbNetworkStsAccess string
+
+const (
+	OdbNetworkStsAccessENABLED  OdbNetworkStsAccess = "ENABLED"
+	OdbNetworkStsAccessDISABLED OdbNetworkStsAccess = "DISABLED"
+)
+
+type OdbNetworkZeroEtlAccess string
+
+const (
+	OdbNetworkZeroEtlAccessENABLED  OdbNetworkZeroEtlAccess = "ENABLED"
+	OdbNetworkZeroEtlAccessDISABLED OdbNetworkZeroEtlAccess = "DISABLED"
+)

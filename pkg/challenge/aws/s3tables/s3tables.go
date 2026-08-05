@@ -6,15 +6,15 @@ package s3tables
 import "encoding/json"
 
 type Namespace struct {
-	Namespace      *string `json:"Namespace,omitempty"`
-	TableBucketARN *string `json:"TableBucketARN,omitempty"`
+	Namespace      *Namespace `json:"Namespace,omitempty"`
+	TableBucketARN *string    `json:"TableBucketARN,omitempty"`
 }
 
 func (Namespace) CloudControlType() string { return "AWS::S3Tables::Namespace" }
 
 type Compaction struct {
-	Status           *string `json:"Status,omitempty"`
-	TargetFileSizeMB *int    `json:"TargetFileSizeMB,omitempty"`
+	Status           *CompactionStatus `json:"Status,omitempty"`
+	TargetFileSizeMB *int              `json:"TargetFileSizeMB,omitempty"`
 }
 
 type IcebergPartitionField struct {
@@ -49,17 +49,17 @@ type SchemaV2Field struct {
 }
 
 type IcebergSchemaV2 struct {
-	IdentifierFieldIds []int           `json:"IdentifierFieldIds,omitempty"`
-	SchemaId           *int            `json:"SchemaId,omitempty"`
-	SchemaV2FieldList  []SchemaV2Field `json:"SchemaV2FieldList,omitempty"`
-	SchemaV2FieldType  *string         `json:"SchemaV2FieldType,omitempty"`
+	IdentifierFieldIds []int                             `json:"IdentifierFieldIds,omitempty"`
+	SchemaId           *int                              `json:"SchemaId,omitempty"`
+	SchemaV2FieldList  []SchemaV2Field                   `json:"SchemaV2FieldList,omitempty"`
+	SchemaV2FieldType  *IcebergSchemaV2SchemaV2FieldType `json:"SchemaV2FieldType,omitempty"`
 }
 
 type IcebergSortField struct {
-	Direction *string `json:"Direction,omitempty"`
-	NullOrder *string `json:"NullOrder,omitempty"`
-	SourceId  *int    `json:"SourceId,omitempty"`
-	Transform *string `json:"Transform,omitempty"`
+	Direction *IcebergSortFieldDirection `json:"Direction,omitempty"`
+	NullOrder *IcebergSortFieldNullOrder `json:"NullOrder,omitempty"`
+	SourceId  *int                       `json:"SourceId,omitempty"`
+	Transform *string                    `json:"Transform,omitempty"`
 }
 
 type IcebergSortOrder struct {
@@ -76,13 +76,13 @@ type IcebergMetadata struct {
 }
 
 type SnapshotManagement struct {
-	MaxSnapshotAgeHours *int    `json:"MaxSnapshotAgeHours,omitempty"`
-	MinSnapshotsToKeep  *int    `json:"MinSnapshotsToKeep,omitempty"`
-	Status              *string `json:"Status,omitempty"`
+	MaxSnapshotAgeHours *int                      `json:"MaxSnapshotAgeHours,omitempty"`
+	MinSnapshotsToKeep  *int                      `json:"MinSnapshotsToKeep,omitempty"`
+	Status              *SnapshotManagementStatus `json:"Status,omitempty"`
 }
 
 type StorageClassConfiguration struct {
-	StorageClass *string `json:"StorageClass,omitempty"`
+	StorageClass *StorageClassConfigurationStorageClass `json:"StorageClass,omitempty"`
 }
 
 type Tag struct {
@@ -93,8 +93,8 @@ type Tag struct {
 type Table struct {
 	Compaction                *Compaction                `json:"Compaction,omitempty"`
 	IcebergMetadata           *IcebergMetadata           `json:"IcebergMetadata,omitempty"`
-	Namespace                 *string                    `json:"Namespace,omitempty"`
-	OpenTableFormat           *string                    `json:"OpenTableFormat,omitempty"`
+	Namespace                 *Namespace                 `json:"Namespace,omitempty"`
+	OpenTableFormat           *OpenTableFormat           `json:"OpenTableFormat,omitempty"`
 	SnapshotManagement        *SnapshotManagement        `json:"SnapshotManagement,omitempty"`
 	StorageClassConfiguration *StorageClassConfiguration `json:"StorageClassConfiguration,omitempty"`
 	TableARN                  *string                    `json:"TableARN,omitempty"`
@@ -103,18 +103,18 @@ type Table struct {
 	Tags                      []Tag                      `json:"Tags,omitempty"`
 	VersionToken              *string                    `json:"VersionToken,omitempty"`
 	WarehouseLocation         *string                    `json:"WarehouseLocation,omitempty"`
-	WithoutMetadata           *string                    `json:"WithoutMetadata,omitempty"`
+	WithoutMetadata           *WithoutMetadata           `json:"WithoutMetadata,omitempty"`
 }
 
 func (Table) CloudControlType() string { return "AWS::S3Tables::Table" }
 
 type EncryptionConfiguration struct {
-	KMSKeyArn    *string `json:"KMSKeyArn,omitempty"`
-	SSEAlgorithm *string `json:"SSEAlgorithm,omitempty"`
+	KMSKeyArn    *string                              `json:"KMSKeyArn,omitempty"`
+	SSEAlgorithm *EncryptionConfigurationSSEAlgorithm `json:"SSEAlgorithm,omitempty"`
 }
 
 type MetricsConfiguration struct {
-	Status *string `json:"Status,omitempty"`
+	Status *MetricsConfigurationStatus `json:"Status,omitempty"`
 }
 
 type ReplicationDestination struct {
@@ -131,7 +131,7 @@ type ReplicationConfiguration struct {
 }
 
 type TableBucketStorageClassConfiguration struct {
-	StorageClass *string `json:"StorageClass,omitempty"`
+	StorageClass *TableBucketStorageClassConfigurationStorageClass `json:"StorageClass,omitempty"`
 }
 
 type TableBucketTag struct {
@@ -140,9 +140,9 @@ type TableBucketTag struct {
 }
 
 type UnreferencedFileRemoval struct {
-	NoncurrentDays   *int    `json:"NoncurrentDays,omitempty"`
-	Status           *string `json:"Status,omitempty"`
-	UnreferencedDays *int    `json:"UnreferencedDays,omitempty"`
+	NoncurrentDays   *int                           `json:"NoncurrentDays,omitempty"`
+	Status           *UnreferencedFileRemovalStatus `json:"Status,omitempty"`
+	UnreferencedDays *int                           `json:"UnreferencedDays,omitempty"`
 }
 
 type TableBucket struct {
@@ -166,7 +166,7 @@ type TableBucketPolicy struct {
 func (TableBucketPolicy) CloudControlType() string { return "AWS::S3Tables::TableBucketPolicy" }
 
 type TablePolicy struct {
-	Namespace      *string         `json:"Namespace,omitempty"`
+	Namespace      *Namespace      `json:"Namespace,omitempty"`
 	ResourcePolicy json.RawMessage `json:"ResourcePolicy,omitempty"`
 	TableARN       *string         `json:"TableARN,omitempty"`
 	TableBucketARN *string         `json:"TableBucketARN,omitempty"`
@@ -174,3 +174,84 @@ type TablePolicy struct {
 }
 
 func (TablePolicy) CloudControlType() string { return "AWS::S3Tables::TablePolicy" }
+
+type CompactionStatus string
+
+const (
+	CompactionStatusEnabled  CompactionStatus = "enabled"
+	CompactionStatusDisabled CompactionStatus = "disabled"
+)
+
+type IcebergSchemaV2SchemaV2FieldType string
+
+const (
+	IcebergSchemaV2SchemaV2FieldTypeStruct IcebergSchemaV2SchemaV2FieldType = "struct"
+)
+
+type IcebergSortFieldDirection string
+
+const (
+	IcebergSortFieldDirectionAsc  IcebergSortFieldDirection = "asc"
+	IcebergSortFieldDirectionDesc IcebergSortFieldDirection = "desc"
+)
+
+type IcebergSortFieldNullOrder string
+
+const (
+	IcebergSortFieldNullOrderNullsFirst IcebergSortFieldNullOrder = "nulls-first"
+	IcebergSortFieldNullOrderNullsLast  IcebergSortFieldNullOrder = "nulls-last"
+)
+
+type OpenTableFormat string
+
+const (
+	OpenTableFormatICEBERG OpenTableFormat = "ICEBERG"
+)
+
+type SnapshotManagementStatus string
+
+const (
+	SnapshotManagementStatusEnabled  SnapshotManagementStatus = "enabled"
+	SnapshotManagementStatusDisabled SnapshotManagementStatus = "disabled"
+)
+
+type StorageClassConfigurationStorageClass string
+
+const (
+	StorageClassConfigurationStorageClassSTANDARD           StorageClassConfigurationStorageClass = "STANDARD"
+	StorageClassConfigurationStorageClassINTELLIGENTTIERING StorageClassConfigurationStorageClass = "INTELLIGENT_TIERING"
+)
+
+type WithoutMetadata string
+
+const (
+	WithoutMetadataYes WithoutMetadata = "Yes"
+)
+
+type EncryptionConfigurationSSEAlgorithm string
+
+const (
+	EncryptionConfigurationSSEAlgorithmAES256 EncryptionConfigurationSSEAlgorithm = "AES256"
+	EncryptionConfigurationSSEAlgorithmAwsKms EncryptionConfigurationSSEAlgorithm = "aws:kms"
+)
+
+type MetricsConfigurationStatus string
+
+const (
+	MetricsConfigurationStatusEnabled  MetricsConfigurationStatus = "Enabled"
+	MetricsConfigurationStatusDisabled MetricsConfigurationStatus = "Disabled"
+)
+
+type TableBucketStorageClassConfigurationStorageClass string
+
+const (
+	TableBucketStorageClassConfigurationStorageClassSTANDARD           TableBucketStorageClassConfigurationStorageClass = "STANDARD"
+	TableBucketStorageClassConfigurationStorageClassINTELLIGENTTIERING TableBucketStorageClassConfigurationStorageClass = "INTELLIGENT_TIERING"
+)
+
+type UnreferencedFileRemovalStatus string
+
+const (
+	UnreferencedFileRemovalStatusEnabled  UnreferencedFileRemovalStatus = "Enabled"
+	UnreferencedFileRemovalStatusDisabled UnreferencedFileRemovalStatus = "Disabled"
+)

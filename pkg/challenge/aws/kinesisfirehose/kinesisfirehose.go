@@ -21,7 +21,7 @@ type ProcessorParameter struct {
 
 type Processor struct {
 	Parameters []ProcessorParameter `json:"Parameters,omitempty"`
-	Type       *string              `json:"Type,omitempty"`
+	Type       *ProcessorType       `json:"Type,omitempty"`
 }
 
 type ProcessingConfiguration struct {
@@ -43,19 +43,19 @@ type KMSEncryptionConfig struct {
 }
 
 type EncryptionConfiguration struct {
-	KMSEncryptionConfig *KMSEncryptionConfig `json:"KMSEncryptionConfig,omitempty"`
-	NoEncryptionConfig  *string              `json:"NoEncryptionConfig,omitempty"`
+	KMSEncryptionConfig *KMSEncryptionConfig                       `json:"KMSEncryptionConfig,omitempty"`
+	NoEncryptionConfig  *EncryptionConfigurationNoEncryptionConfig `json:"NoEncryptionConfig,omitempty"`
 }
 
 type S3DestinationConfiguration struct {
-	BucketARN                *string                   `json:"BucketARN,omitempty"`
-	BufferingHints           *BufferingHints           `json:"BufferingHints,omitempty"`
-	CloudWatchLoggingOptions *CloudWatchLoggingOptions `json:"CloudWatchLoggingOptions,omitempty"`
-	CompressionFormat        *string                   `json:"CompressionFormat,omitempty"`
-	EncryptionConfiguration  *EncryptionConfiguration  `json:"EncryptionConfiguration,omitempty"`
-	ErrorOutputPrefix        *string                   `json:"ErrorOutputPrefix,omitempty"`
-	Prefix                   *string                   `json:"Prefix,omitempty"`
-	RoleARN                  *string                   `json:"RoleARN,omitempty"`
+	BucketARN                *string                                      `json:"BucketARN,omitempty"`
+	BufferingHints           *BufferingHints                              `json:"BufferingHints,omitempty"`
+	CloudWatchLoggingOptions *CloudWatchLoggingOptions                    `json:"CloudWatchLoggingOptions,omitempty"`
+	CompressionFormat        *S3DestinationConfigurationCompressionFormat `json:"CompressionFormat,omitempty"`
+	EncryptionConfiguration  *EncryptionConfiguration                     `json:"EncryptionConfiguration,omitempty"`
+	ErrorOutputPrefix        *string                                      `json:"ErrorOutputPrefix,omitempty"`
+	Prefix                   *string                                      `json:"Prefix,omitempty"`
+	RoleARN                  *string                                      `json:"RoleARN,omitempty"`
 }
 
 type VpcConfiguration struct {
@@ -65,16 +65,16 @@ type VpcConfiguration struct {
 }
 
 type AmazonOpenSearchServerlessDestinationConfiguration struct {
-	BufferingHints           *AmazonOpenSearchServerlessBufferingHints `json:"BufferingHints,omitempty"`
-	CloudWatchLoggingOptions *CloudWatchLoggingOptions                 `json:"CloudWatchLoggingOptions,omitempty"`
-	CollectionEndpoint       *string                                   `json:"CollectionEndpoint,omitempty"`
-	IndexName                *string                                   `json:"IndexName,omitempty"`
-	ProcessingConfiguration  *ProcessingConfiguration                  `json:"ProcessingConfiguration,omitempty"`
-	RetryOptions             *AmazonOpenSearchServerlessRetryOptions   `json:"RetryOptions,omitempty"`
-	RoleARN                  *string                                   `json:"RoleARN,omitempty"`
-	S3BackupMode             *string                                   `json:"S3BackupMode,omitempty"`
-	S3Configuration          *S3DestinationConfiguration               `json:"S3Configuration,omitempty"`
-	VpcConfiguration         *VpcConfiguration                         `json:"VpcConfiguration,omitempty"`
+	BufferingHints           *AmazonOpenSearchServerlessBufferingHints                       `json:"BufferingHints,omitempty"`
+	CloudWatchLoggingOptions *CloudWatchLoggingOptions                                       `json:"CloudWatchLoggingOptions,omitempty"`
+	CollectionEndpoint       *string                                                         `json:"CollectionEndpoint,omitempty"`
+	IndexName                *string                                                         `json:"IndexName,omitempty"`
+	ProcessingConfiguration  *ProcessingConfiguration                                        `json:"ProcessingConfiguration,omitempty"`
+	RetryOptions             *AmazonOpenSearchServerlessRetryOptions                         `json:"RetryOptions,omitempty"`
+	RoleARN                  *string                                                         `json:"RoleARN,omitempty"`
+	S3BackupMode             *AmazonOpenSearchServerlessDestinationConfigurationS3BackupMode `json:"S3BackupMode,omitempty"`
+	S3Configuration          *S3DestinationConfiguration                                     `json:"S3Configuration,omitempty"`
+	VpcConfiguration         *VpcConfiguration                                               `json:"VpcConfiguration,omitempty"`
 }
 
 type AmazonopensearchserviceBufferingHints struct {
@@ -83,7 +83,7 @@ type AmazonopensearchserviceBufferingHints struct {
 }
 
 type DocumentIdOptions struct {
-	DefaultDocumentIdFormat *string `json:"DefaultDocumentIdFormat,omitempty"`
+	DefaultDocumentIdFormat *DocumentIdOptionsDefaultDocumentIdFormat `json:"DefaultDocumentIdFormat,omitempty"`
 }
 
 type AmazonopensearchserviceRetryOptions struct {
@@ -91,20 +91,20 @@ type AmazonopensearchserviceRetryOptions struct {
 }
 
 type AmazonopensearchserviceDestinationConfiguration struct {
-	BufferingHints           *AmazonopensearchserviceBufferingHints `json:"BufferingHints,omitempty"`
-	CloudWatchLoggingOptions *CloudWatchLoggingOptions              `json:"CloudWatchLoggingOptions,omitempty"`
-	ClusterEndpoint          *string                                `json:"ClusterEndpoint,omitempty"`
-	DocumentIdOptions        *DocumentIdOptions                     `json:"DocumentIdOptions,omitempty"`
-	DomainARN                *string                                `json:"DomainARN,omitempty"`
-	IndexName                *string                                `json:"IndexName,omitempty"`
-	IndexRotationPeriod      *string                                `json:"IndexRotationPeriod,omitempty"`
-	ProcessingConfiguration  *ProcessingConfiguration               `json:"ProcessingConfiguration,omitempty"`
-	RetryOptions             *AmazonopensearchserviceRetryOptions   `json:"RetryOptions,omitempty"`
-	RoleARN                  *string                                `json:"RoleARN,omitempty"`
-	S3BackupMode             *string                                `json:"S3BackupMode,omitempty"`
-	S3Configuration          *S3DestinationConfiguration            `json:"S3Configuration,omitempty"`
-	TypeName                 *string                                `json:"TypeName,omitempty"`
-	VpcConfiguration         *VpcConfiguration                      `json:"VpcConfiguration,omitempty"`
+	BufferingHints           *AmazonopensearchserviceBufferingHints                              `json:"BufferingHints,omitempty"`
+	CloudWatchLoggingOptions *CloudWatchLoggingOptions                                           `json:"CloudWatchLoggingOptions,omitempty"`
+	ClusterEndpoint          *string                                                             `json:"ClusterEndpoint,omitempty"`
+	DocumentIdOptions        *DocumentIdOptions                                                  `json:"DocumentIdOptions,omitempty"`
+	DomainARN                *string                                                             `json:"DomainARN,omitempty"`
+	IndexName                *string                                                             `json:"IndexName,omitempty"`
+	IndexRotationPeriod      *AmazonopensearchserviceDestinationConfigurationIndexRotationPeriod `json:"IndexRotationPeriod,omitempty"`
+	ProcessingConfiguration  *ProcessingConfiguration                                            `json:"ProcessingConfiguration,omitempty"`
+	RetryOptions             *AmazonopensearchserviceRetryOptions                                `json:"RetryOptions,omitempty"`
+	RoleARN                  *string                                                             `json:"RoleARN,omitempty"`
+	S3BackupMode             *AmazonopensearchserviceDestinationConfigurationS3BackupMode        `json:"S3BackupMode,omitempty"`
+	S3Configuration          *S3DestinationConfiguration                                         `json:"S3Configuration,omitempty"`
+	TypeName                 *string                                                             `json:"TypeName,omitempty"`
+	VpcConfiguration         *VpcConfiguration                                                   `json:"VpcConfiguration,omitempty"`
 }
 
 type DatabaseColumns struct {
@@ -145,16 +145,16 @@ type DatabaseSourceConfiguration struct {
 	Endpoint                                  *string                                    `json:"Endpoint,omitempty"`
 	Port                                      *int                                       `json:"Port,omitempty"`
 	PublicCertificate                         *string                                    `json:"PublicCertificate,omitempty"`
-	SSLMode                                   *string                                    `json:"SSLMode,omitempty"`
+	SSLMode                                   *DatabaseSourceConfigurationSSLMode        `json:"SSLMode,omitempty"`
 	SnapshotWatermarkTable                    *string                                    `json:"SnapshotWatermarkTable,omitempty"`
 	SurrogateKeys                             []string                                   `json:"SurrogateKeys,omitempty"`
 	Tables                                    *DatabaseTables                            `json:"Tables,omitempty"`
-	Type                                      *string                                    `json:"Type,omitempty"`
+	Type                                      *DatabaseSourceConfigurationType           `json:"Type,omitempty"`
 }
 
 type DeliveryStreamEncryptionConfigurationInput struct {
-	KeyARN  *string `json:"KeyARN,omitempty"`
-	KeyType *string `json:"KeyType,omitempty"`
+	KeyARN  *string                                            `json:"KeyARN,omitempty"`
+	KeyType *DeliveryStreamEncryptionConfigurationInputKeyType `json:"KeyType,omitempty"`
 }
 
 type DirectPutSourceConfiguration struct {
@@ -171,20 +171,20 @@ type ElasticsearchRetryOptions struct {
 }
 
 type ElasticsearchDestinationConfiguration struct {
-	BufferingHints           *ElasticsearchBufferingHints `json:"BufferingHints,omitempty"`
-	CloudWatchLoggingOptions *CloudWatchLoggingOptions    `json:"CloudWatchLoggingOptions,omitempty"`
-	ClusterEndpoint          *string                      `json:"ClusterEndpoint,omitempty"`
-	DocumentIdOptions        *DocumentIdOptions           `json:"DocumentIdOptions,omitempty"`
-	DomainARN                *string                      `json:"DomainARN,omitempty"`
-	IndexName                *string                      `json:"IndexName,omitempty"`
-	IndexRotationPeriod      *string                      `json:"IndexRotationPeriod,omitempty"`
-	ProcessingConfiguration  *ProcessingConfiguration     `json:"ProcessingConfiguration,omitempty"`
-	RetryOptions             *ElasticsearchRetryOptions   `json:"RetryOptions,omitempty"`
-	RoleARN                  *string                      `json:"RoleARN,omitempty"`
-	S3BackupMode             *string                      `json:"S3BackupMode,omitempty"`
-	S3Configuration          *S3DestinationConfiguration  `json:"S3Configuration,omitempty"`
-	TypeName                 *string                      `json:"TypeName,omitempty"`
-	VpcConfiguration         *VpcConfiguration            `json:"VpcConfiguration,omitempty"`
+	BufferingHints           *ElasticsearchBufferingHints                              `json:"BufferingHints,omitempty"`
+	CloudWatchLoggingOptions *CloudWatchLoggingOptions                                 `json:"CloudWatchLoggingOptions,omitempty"`
+	ClusterEndpoint          *string                                                   `json:"ClusterEndpoint,omitempty"`
+	DocumentIdOptions        *DocumentIdOptions                                        `json:"DocumentIdOptions,omitempty"`
+	DomainARN                *string                                                   `json:"DomainARN,omitempty"`
+	IndexName                *string                                                   `json:"IndexName,omitempty"`
+	IndexRotationPeriod      *ElasticsearchDestinationConfigurationIndexRotationPeriod `json:"IndexRotationPeriod,omitempty"`
+	ProcessingConfiguration  *ProcessingConfiguration                                  `json:"ProcessingConfiguration,omitempty"`
+	RetryOptions             *ElasticsearchRetryOptions                                `json:"RetryOptions,omitempty"`
+	RoleARN                  *string                                                   `json:"RoleARN,omitempty"`
+	S3BackupMode             *ElasticsearchDestinationConfigurationS3BackupMode        `json:"S3BackupMode,omitempty"`
+	S3Configuration          *S3DestinationConfiguration                               `json:"S3Configuration,omitempty"`
+	TypeName                 *string                                                   `json:"TypeName,omitempty"`
+	VpcConfiguration         *VpcConfiguration                                         `json:"VpcConfiguration,omitempty"`
 }
 
 type HiveJsonSerDe struct {
@@ -263,21 +263,21 @@ type DynamicPartitioningConfiguration struct {
 }
 
 type ExtendedS3DestinationConfiguration struct {
-	BucketARN                         *string                            `json:"BucketARN,omitempty"`
-	BufferingHints                    *BufferingHints                    `json:"BufferingHints,omitempty"`
-	CloudWatchLoggingOptions          *CloudWatchLoggingOptions          `json:"CloudWatchLoggingOptions,omitempty"`
-	CompressionFormat                 *string                            `json:"CompressionFormat,omitempty"`
-	CustomTimeZone                    *string                            `json:"CustomTimeZone,omitempty"`
-	DataFormatConversionConfiguration *DataFormatConversionConfiguration `json:"DataFormatConversionConfiguration,omitempty"`
-	DynamicPartitioningConfiguration  *DynamicPartitioningConfiguration  `json:"DynamicPartitioningConfiguration,omitempty"`
-	EncryptionConfiguration           *EncryptionConfiguration           `json:"EncryptionConfiguration,omitempty"`
-	ErrorOutputPrefix                 *string                            `json:"ErrorOutputPrefix,omitempty"`
-	FileExtension                     *string                            `json:"FileExtension,omitempty"`
-	Prefix                            *string                            `json:"Prefix,omitempty"`
-	ProcessingConfiguration           *ProcessingConfiguration           `json:"ProcessingConfiguration,omitempty"`
-	RoleARN                           *string                            `json:"RoleARN,omitempty"`
-	S3BackupConfiguration             *S3DestinationConfiguration        `json:"S3BackupConfiguration,omitempty"`
-	S3BackupMode                      *string                            `json:"S3BackupMode,omitempty"`
+	BucketARN                         *string                                              `json:"BucketARN,omitempty"`
+	BufferingHints                    *BufferingHints                                      `json:"BufferingHints,omitempty"`
+	CloudWatchLoggingOptions          *CloudWatchLoggingOptions                            `json:"CloudWatchLoggingOptions,omitempty"`
+	CompressionFormat                 *ExtendedS3DestinationConfigurationCompressionFormat `json:"CompressionFormat,omitempty"`
+	CustomTimeZone                    *string                                              `json:"CustomTimeZone,omitempty"`
+	DataFormatConversionConfiguration *DataFormatConversionConfiguration                   `json:"DataFormatConversionConfiguration,omitempty"`
+	DynamicPartitioningConfiguration  *DynamicPartitioningConfiguration                    `json:"DynamicPartitioningConfiguration,omitempty"`
+	EncryptionConfiguration           *EncryptionConfiguration                             `json:"EncryptionConfiguration,omitempty"`
+	ErrorOutputPrefix                 *string                                              `json:"ErrorOutputPrefix,omitempty"`
+	FileExtension                     *string                                              `json:"FileExtension,omitempty"`
+	Prefix                            *string                                              `json:"Prefix,omitempty"`
+	ProcessingConfiguration           *ProcessingConfiguration                             `json:"ProcessingConfiguration,omitempty"`
+	RoleARN                           *string                                              `json:"RoleARN,omitempty"`
+	S3BackupConfiguration             *S3DestinationConfiguration                          `json:"S3BackupConfiguration,omitempty"`
+	S3BackupMode                      *ExtendedS3DestinationConfigurationS3BackupMode      `json:"S3BackupMode,omitempty"`
 }
 
 type HttpEndpointConfiguration struct {
@@ -292,8 +292,8 @@ type HttpEndpointCommonAttribute struct {
 }
 
 type HttpEndpointRequestConfiguration struct {
-	CommonAttributes []HttpEndpointCommonAttribute `json:"CommonAttributes,omitempty"`
-	ContentEncoding  *string                       `json:"ContentEncoding,omitempty"`
+	CommonAttributes []HttpEndpointCommonAttribute                    `json:"CommonAttributes,omitempty"`
+	ContentEncoding  *HttpEndpointRequestConfigurationContentEncoding `json:"ContentEncoding,omitempty"`
 }
 
 type HttpEndpointDestinationConfiguration struct {
@@ -339,18 +339,18 @@ type TableCreationConfiguration struct {
 }
 
 type IcebergDestinationConfiguration struct {
-	AppendOnly                        *bool                           `json:"AppendOnly,omitempty"`
-	BufferingHints                    *BufferingHints                 `json:"BufferingHints,omitempty"`
-	CatalogConfiguration              *CatalogConfiguration           `json:"CatalogConfiguration,omitempty"`
-	CloudWatchLoggingOptions          *CloudWatchLoggingOptions       `json:"CloudWatchLoggingOptions,omitempty"`
-	DestinationTableConfigurationList []DestinationTableConfiguration `json:"DestinationTableConfigurationList,omitempty"`
-	ProcessingConfiguration           *ProcessingConfiguration        `json:"ProcessingConfiguration,omitempty"`
-	RetryOptions                      *RetryOptions                   `json:"RetryOptions,omitempty"`
-	RoleARN                           *string                         `json:"RoleARN,omitempty"`
-	S3Configuration                   *S3DestinationConfiguration     `json:"S3Configuration,omitempty"`
-	SchemaEvolutionConfiguration      *SchemaEvolutionConfiguration   `json:"SchemaEvolutionConfiguration,omitempty"`
-	TableCreationConfiguration        *TableCreationConfiguration     `json:"TableCreationConfiguration,omitempty"`
-	S3BackupMode                      *string                         `json:"s3BackupMode,omitempty"`
+	AppendOnly                        *bool                                        `json:"AppendOnly,omitempty"`
+	BufferingHints                    *BufferingHints                              `json:"BufferingHints,omitempty"`
+	CatalogConfiguration              *CatalogConfiguration                        `json:"CatalogConfiguration,omitempty"`
+	CloudWatchLoggingOptions          *CloudWatchLoggingOptions                    `json:"CloudWatchLoggingOptions,omitempty"`
+	DestinationTableConfigurationList []DestinationTableConfiguration              `json:"DestinationTableConfigurationList,omitempty"`
+	ProcessingConfiguration           *ProcessingConfiguration                     `json:"ProcessingConfiguration,omitempty"`
+	RetryOptions                      *RetryOptions                                `json:"RetryOptions,omitempty"`
+	RoleARN                           *string                                      `json:"RoleARN,omitempty"`
+	S3Configuration                   *S3DestinationConfiguration                  `json:"S3Configuration,omitempty"`
+	SchemaEvolutionConfiguration      *SchemaEvolutionConfiguration                `json:"SchemaEvolutionConfiguration,omitempty"`
+	TableCreationConfiguration        *TableCreationConfiguration                  `json:"TableCreationConfiguration,omitempty"`
+	S3BackupMode                      *IcebergDestinationConfigurationS3BackupMode `json:"s3BackupMode,omitempty"`
 }
 
 type KinesisStreamSourceConfiguration struct {
@@ -359,8 +359,8 @@ type KinesisStreamSourceConfiguration struct {
 }
 
 type AuthenticationConfiguration struct {
-	Connectivity *string `json:"Connectivity,omitempty"`
-	RoleARN      *string `json:"RoleARN,omitempty"`
+	Connectivity *AuthenticationConfigurationConnectivity `json:"Connectivity,omitempty"`
+	RoleARN      *string                                  `json:"RoleARN,omitempty"`
 }
 
 type MSKSourceConfiguration struct {
@@ -381,18 +381,18 @@ type RedshiftRetryOptions struct {
 }
 
 type RedshiftDestinationConfiguration struct {
-	CloudWatchLoggingOptions    *CloudWatchLoggingOptions    `json:"CloudWatchLoggingOptions,omitempty"`
-	ClusterJDBCURL              *string                      `json:"ClusterJDBCURL,omitempty"`
-	CopyCommand                 *CopyCommand                 `json:"CopyCommand,omitempty"`
-	Password                    *string                      `json:"Password,omitempty"`
-	ProcessingConfiguration     *ProcessingConfiguration     `json:"ProcessingConfiguration,omitempty"`
-	RetryOptions                *RedshiftRetryOptions        `json:"RetryOptions,omitempty"`
-	RoleARN                     *string                      `json:"RoleARN,omitempty"`
-	S3BackupConfiguration       *S3DestinationConfiguration  `json:"S3BackupConfiguration,omitempty"`
-	S3BackupMode                *string                      `json:"S3BackupMode,omitempty"`
-	S3Configuration             *S3DestinationConfiguration  `json:"S3Configuration,omitempty"`
-	SecretsManagerConfiguration *SecretsManagerConfiguration `json:"SecretsManagerConfiguration,omitempty"`
-	Username                    *string                      `json:"Username,omitempty"`
+	CloudWatchLoggingOptions    *CloudWatchLoggingOptions                     `json:"CloudWatchLoggingOptions,omitempty"`
+	ClusterJDBCURL              *string                                       `json:"ClusterJDBCURL,omitempty"`
+	CopyCommand                 *CopyCommand                                  `json:"CopyCommand,omitempty"`
+	Password                    *string                                       `json:"Password,omitempty"`
+	ProcessingConfiguration     *ProcessingConfiguration                      `json:"ProcessingConfiguration,omitempty"`
+	RetryOptions                *RedshiftRetryOptions                         `json:"RetryOptions,omitempty"`
+	RoleARN                     *string                                       `json:"RoleARN,omitempty"`
+	S3BackupConfiguration       *S3DestinationConfiguration                   `json:"S3BackupConfiguration,omitempty"`
+	S3BackupMode                *RedshiftDestinationConfigurationS3BackupMode `json:"S3BackupMode,omitempty"`
+	S3Configuration             *S3DestinationConfiguration                   `json:"S3Configuration,omitempty"`
+	SecretsManagerConfiguration *SecretsManagerConfiguration                  `json:"SecretsManagerConfiguration,omitempty"`
+	Username                    *string                                       `json:"Username,omitempty"`
 }
 
 type SnowflakeBufferingHints struct {
@@ -414,26 +414,26 @@ type SnowflakeVpcConfiguration struct {
 }
 
 type SnowflakeDestinationConfiguration struct {
-	AccountUrl                  *string                      `json:"AccountUrl,omitempty"`
-	BufferingHints              *SnowflakeBufferingHints     `json:"BufferingHints,omitempty"`
-	CloudWatchLoggingOptions    *CloudWatchLoggingOptions    `json:"CloudWatchLoggingOptions,omitempty"`
-	ContentColumnName           *string                      `json:"ContentColumnName,omitempty"`
-	DataLoadingOption           *string                      `json:"DataLoadingOption,omitempty"`
-	Database                    *string                      `json:"Database,omitempty"`
-	KeyPassphrase               *string                      `json:"KeyPassphrase,omitempty"`
-	MetaDataColumnName          *string                      `json:"MetaDataColumnName,omitempty"`
-	PrivateKey                  *string                      `json:"PrivateKey,omitempty"`
-	ProcessingConfiguration     *ProcessingConfiguration     `json:"ProcessingConfiguration,omitempty"`
-	RetryOptions                *SnowflakeRetryOptions       `json:"RetryOptions,omitempty"`
-	RoleARN                     *string                      `json:"RoleARN,omitempty"`
-	S3BackupMode                *string                      `json:"S3BackupMode,omitempty"`
-	S3Configuration             *S3DestinationConfiguration  `json:"S3Configuration,omitempty"`
-	Schema                      *string                      `json:"Schema,omitempty"`
-	SecretsManagerConfiguration *SecretsManagerConfiguration `json:"SecretsManagerConfiguration,omitempty"`
-	SnowflakeRoleConfiguration  *SnowflakeRoleConfiguration  `json:"SnowflakeRoleConfiguration,omitempty"`
-	SnowflakeVpcConfiguration   *SnowflakeVpcConfiguration   `json:"SnowflakeVpcConfiguration,omitempty"`
-	Table                       *string                      `json:"Table,omitempty"`
-	User                        *string                      `json:"User,omitempty"`
+	AccountUrl                  *string                                             `json:"AccountUrl,omitempty"`
+	BufferingHints              *SnowflakeBufferingHints                            `json:"BufferingHints,omitempty"`
+	CloudWatchLoggingOptions    *CloudWatchLoggingOptions                           `json:"CloudWatchLoggingOptions,omitempty"`
+	ContentColumnName           *string                                             `json:"ContentColumnName,omitempty"`
+	DataLoadingOption           *SnowflakeDestinationConfigurationDataLoadingOption `json:"DataLoadingOption,omitempty"`
+	Database                    *string                                             `json:"Database,omitempty"`
+	KeyPassphrase               *string                                             `json:"KeyPassphrase,omitempty"`
+	MetaDataColumnName          *string                                             `json:"MetaDataColumnName,omitempty"`
+	PrivateKey                  *string                                             `json:"PrivateKey,omitempty"`
+	ProcessingConfiguration     *ProcessingConfiguration                            `json:"ProcessingConfiguration,omitempty"`
+	RetryOptions                *SnowflakeRetryOptions                              `json:"RetryOptions,omitempty"`
+	RoleARN                     *string                                             `json:"RoleARN,omitempty"`
+	S3BackupMode                *SnowflakeDestinationConfigurationS3BackupMode      `json:"S3BackupMode,omitempty"`
+	S3Configuration             *S3DestinationConfiguration                         `json:"S3Configuration,omitempty"`
+	Schema                      *string                                             `json:"Schema,omitempty"`
+	SecretsManagerConfiguration *SecretsManagerConfiguration                        `json:"SecretsManagerConfiguration,omitempty"`
+	SnowflakeRoleConfiguration  *SnowflakeRoleConfiguration                         `json:"SnowflakeRoleConfiguration,omitempty"`
+	SnowflakeVpcConfiguration   *SnowflakeVpcConfiguration                          `json:"SnowflakeVpcConfiguration,omitempty"`
+	Table                       *string                                             `json:"Table,omitempty"`
+	User                        *string                                             `json:"User,omitempty"`
 }
 
 type SplunkBufferingHints struct {
@@ -446,17 +446,17 @@ type SplunkRetryOptions struct {
 }
 
 type SplunkDestinationConfiguration struct {
-	BufferingHints                    *SplunkBufferingHints        `json:"BufferingHints,omitempty"`
-	CloudWatchLoggingOptions          *CloudWatchLoggingOptions    `json:"CloudWatchLoggingOptions,omitempty"`
-	HECAcknowledgmentTimeoutInSeconds *int                         `json:"HECAcknowledgmentTimeoutInSeconds,omitempty"`
-	HECEndpoint                       *string                      `json:"HECEndpoint,omitempty"`
-	HECEndpointType                   *string                      `json:"HECEndpointType,omitempty"`
-	HECToken                          *string                      `json:"HECToken,omitempty"`
-	ProcessingConfiguration           *ProcessingConfiguration     `json:"ProcessingConfiguration,omitempty"`
-	RetryOptions                      *SplunkRetryOptions          `json:"RetryOptions,omitempty"`
-	S3BackupMode                      *string                      `json:"S3BackupMode,omitempty"`
-	S3Configuration                   *S3DestinationConfiguration  `json:"S3Configuration,omitempty"`
-	SecretsManagerConfiguration       *SecretsManagerConfiguration `json:"SecretsManagerConfiguration,omitempty"`
+	BufferingHints                    *SplunkBufferingHints                          `json:"BufferingHints,omitempty"`
+	CloudWatchLoggingOptions          *CloudWatchLoggingOptions                      `json:"CloudWatchLoggingOptions,omitempty"`
+	HECAcknowledgmentTimeoutInSeconds *int                                           `json:"HECAcknowledgmentTimeoutInSeconds,omitempty"`
+	HECEndpoint                       *string                                        `json:"HECEndpoint,omitempty"`
+	HECEndpointType                   *SplunkDestinationConfigurationHECEndpointType `json:"HECEndpointType,omitempty"`
+	HECToken                          *string                                        `json:"HECToken,omitempty"`
+	ProcessingConfiguration           *ProcessingConfiguration                       `json:"ProcessingConfiguration,omitempty"`
+	RetryOptions                      *SplunkRetryOptions                            `json:"RetryOptions,omitempty"`
+	S3BackupMode                      *string                                        `json:"S3BackupMode,omitempty"`
+	S3Configuration                   *S3DestinationConfiguration                    `json:"S3Configuration,omitempty"`
+	SecretsManagerConfiguration       *SecretsManagerConfiguration                   `json:"SecretsManagerConfiguration,omitempty"`
 }
 
 type Tag struct {
@@ -471,7 +471,7 @@ type DeliveryStream struct {
 	DatabaseSourceConfiguration                        *DatabaseSourceConfiguration                        `json:"DatabaseSourceConfiguration,omitempty"`
 	DeliveryStreamEncryptionConfigurationInput         *DeliveryStreamEncryptionConfigurationInput         `json:"DeliveryStreamEncryptionConfigurationInput,omitempty"`
 	DeliveryStreamName                                 *string                                             `json:"DeliveryStreamName,omitempty"`
-	DeliveryStreamType                                 *string                                             `json:"DeliveryStreamType,omitempty"`
+	DeliveryStreamType                                 *DeliveryStreamDeliveryStreamType                   `json:"DeliveryStreamType,omitempty"`
 	DirectPutSourceConfiguration                       *DirectPutSourceConfiguration                       `json:"DirectPutSourceConfiguration,omitempty"`
 	ElasticsearchDestinationConfiguration              *ElasticsearchDestinationConfiguration              `json:"ElasticsearchDestinationConfiguration,omitempty"`
 	ExtendedS3DestinationConfiguration                 *ExtendedS3DestinationConfiguration                 `json:"ExtendedS3DestinationConfiguration,omitempty"`
@@ -487,3 +487,175 @@ type DeliveryStream struct {
 }
 
 func (DeliveryStream) CloudControlType() string { return "AWS::KinesisFirehose::DeliveryStream" }
+
+type ProcessorType string
+
+const (
+	ProcessorTypeRecordDeAggregation     ProcessorType = "RecordDeAggregation"
+	ProcessorTypeDecompression           ProcessorType = "Decompression"
+	ProcessorTypeCloudWatchLogProcessing ProcessorType = "CloudWatchLogProcessing"
+	ProcessorTypeLambda                  ProcessorType = "Lambda"
+	ProcessorTypeMetadataExtraction      ProcessorType = "MetadataExtraction"
+	ProcessorTypeAppendDelimiterToRecord ProcessorType = "AppendDelimiterToRecord"
+)
+
+type AmazonOpenSearchServerlessDestinationConfigurationS3BackupMode string
+
+const (
+	AmazonOpenSearchServerlessDestinationConfigurationS3BackupModeFailedDocumentsOnly AmazonOpenSearchServerlessDestinationConfigurationS3BackupMode = "FailedDocumentsOnly"
+	AmazonOpenSearchServerlessDestinationConfigurationS3BackupModeAllDocuments        AmazonOpenSearchServerlessDestinationConfigurationS3BackupMode = "AllDocuments"
+)
+
+type S3DestinationConfigurationCompressionFormat string
+
+const (
+	S3DestinationConfigurationCompressionFormatUNCOMPRESSED S3DestinationConfigurationCompressionFormat = "UNCOMPRESSED"
+	S3DestinationConfigurationCompressionFormatGZIP         S3DestinationConfigurationCompressionFormat = "GZIP"
+	S3DestinationConfigurationCompressionFormatZIP          S3DestinationConfigurationCompressionFormat = "ZIP"
+	S3DestinationConfigurationCompressionFormatSnappy       S3DestinationConfigurationCompressionFormat = "Snappy"
+	S3DestinationConfigurationCompressionFormatHADOOPSNAPPY S3DestinationConfigurationCompressionFormat = "HADOOP_SNAPPY"
+)
+
+type EncryptionConfigurationNoEncryptionConfig string
+
+const (
+	EncryptionConfigurationNoEncryptionConfigNoEncryption EncryptionConfigurationNoEncryptionConfig = "NoEncryption"
+)
+
+type DocumentIdOptionsDefaultDocumentIdFormat string
+
+const (
+	DocumentIdOptionsDefaultDocumentIdFormatFIREHOSEDEFAULT DocumentIdOptionsDefaultDocumentIdFormat = "FIREHOSE_DEFAULT"
+	DocumentIdOptionsDefaultDocumentIdFormatNODOCUMENTID    DocumentIdOptionsDefaultDocumentIdFormat = "NO_DOCUMENT_ID"
+)
+
+type AmazonopensearchserviceDestinationConfigurationIndexRotationPeriod string
+
+const (
+	AmazonopensearchserviceDestinationConfigurationIndexRotationPeriodNoRotation AmazonopensearchserviceDestinationConfigurationIndexRotationPeriod = "NoRotation"
+	AmazonopensearchserviceDestinationConfigurationIndexRotationPeriodOneHour    AmazonopensearchserviceDestinationConfigurationIndexRotationPeriod = "OneHour"
+	AmazonopensearchserviceDestinationConfigurationIndexRotationPeriodOneDay     AmazonopensearchserviceDestinationConfigurationIndexRotationPeriod = "OneDay"
+	AmazonopensearchserviceDestinationConfigurationIndexRotationPeriodOneWeek    AmazonopensearchserviceDestinationConfigurationIndexRotationPeriod = "OneWeek"
+	AmazonopensearchserviceDestinationConfigurationIndexRotationPeriodOneMonth   AmazonopensearchserviceDestinationConfigurationIndexRotationPeriod = "OneMonth"
+)
+
+type AmazonopensearchserviceDestinationConfigurationS3BackupMode string
+
+const (
+	AmazonopensearchserviceDestinationConfigurationS3BackupModeFailedDocumentsOnly AmazonopensearchserviceDestinationConfigurationS3BackupMode = "FailedDocumentsOnly"
+	AmazonopensearchserviceDestinationConfigurationS3BackupModeAllDocuments        AmazonopensearchserviceDestinationConfigurationS3BackupMode = "AllDocuments"
+)
+
+type DatabaseSourceConfigurationSSLMode string
+
+const (
+	DatabaseSourceConfigurationSSLModeDisabled DatabaseSourceConfigurationSSLMode = "Disabled"
+	DatabaseSourceConfigurationSSLModeEnabled  DatabaseSourceConfigurationSSLMode = "Enabled"
+)
+
+type DatabaseSourceConfigurationType string
+
+const (
+	DatabaseSourceConfigurationTypeMySQL      DatabaseSourceConfigurationType = "MySQL"
+	DatabaseSourceConfigurationTypePostgreSQL DatabaseSourceConfigurationType = "PostgreSQL"
+)
+
+type DeliveryStreamEncryptionConfigurationInputKeyType string
+
+const (
+	DeliveryStreamEncryptionConfigurationInputKeyTypeAWSOWNEDCMK        DeliveryStreamEncryptionConfigurationInputKeyType = "AWS_OWNED_CMK"
+	DeliveryStreamEncryptionConfigurationInputKeyTypeCUSTOMERMANAGEDCMK DeliveryStreamEncryptionConfigurationInputKeyType = "CUSTOMER_MANAGED_CMK"
+)
+
+type DeliveryStreamDeliveryStreamType string
+
+const (
+	DeliveryStreamDeliveryStreamTypeDatabaseAsSource      DeliveryStreamDeliveryStreamType = "DatabaseAsSource"
+	DeliveryStreamDeliveryStreamTypeDirectPut             DeliveryStreamDeliveryStreamType = "DirectPut"
+	DeliveryStreamDeliveryStreamTypeKinesisStreamAsSource DeliveryStreamDeliveryStreamType = "KinesisStreamAsSource"
+	DeliveryStreamDeliveryStreamTypeMSKAsSource           DeliveryStreamDeliveryStreamType = "MSKAsSource"
+)
+
+type ElasticsearchDestinationConfigurationIndexRotationPeriod string
+
+const (
+	ElasticsearchDestinationConfigurationIndexRotationPeriodNoRotation ElasticsearchDestinationConfigurationIndexRotationPeriod = "NoRotation"
+	ElasticsearchDestinationConfigurationIndexRotationPeriodOneHour    ElasticsearchDestinationConfigurationIndexRotationPeriod = "OneHour"
+	ElasticsearchDestinationConfigurationIndexRotationPeriodOneDay     ElasticsearchDestinationConfigurationIndexRotationPeriod = "OneDay"
+	ElasticsearchDestinationConfigurationIndexRotationPeriodOneWeek    ElasticsearchDestinationConfigurationIndexRotationPeriod = "OneWeek"
+	ElasticsearchDestinationConfigurationIndexRotationPeriodOneMonth   ElasticsearchDestinationConfigurationIndexRotationPeriod = "OneMonth"
+)
+
+type ElasticsearchDestinationConfigurationS3BackupMode string
+
+const (
+	ElasticsearchDestinationConfigurationS3BackupModeFailedDocumentsOnly ElasticsearchDestinationConfigurationS3BackupMode = "FailedDocumentsOnly"
+	ElasticsearchDestinationConfigurationS3BackupModeAllDocuments        ElasticsearchDestinationConfigurationS3BackupMode = "AllDocuments"
+)
+
+type ExtendedS3DestinationConfigurationCompressionFormat string
+
+const (
+	ExtendedS3DestinationConfigurationCompressionFormatUNCOMPRESSED ExtendedS3DestinationConfigurationCompressionFormat = "UNCOMPRESSED"
+	ExtendedS3DestinationConfigurationCompressionFormatGZIP         ExtendedS3DestinationConfigurationCompressionFormat = "GZIP"
+	ExtendedS3DestinationConfigurationCompressionFormatZIP          ExtendedS3DestinationConfigurationCompressionFormat = "ZIP"
+	ExtendedS3DestinationConfigurationCompressionFormatSnappy       ExtendedS3DestinationConfigurationCompressionFormat = "Snappy"
+	ExtendedS3DestinationConfigurationCompressionFormatHADOOPSNAPPY ExtendedS3DestinationConfigurationCompressionFormat = "HADOOP_SNAPPY"
+)
+
+type ExtendedS3DestinationConfigurationS3BackupMode string
+
+const (
+	ExtendedS3DestinationConfigurationS3BackupModeDisabled ExtendedS3DestinationConfigurationS3BackupMode = "Disabled"
+	ExtendedS3DestinationConfigurationS3BackupModeEnabled  ExtendedS3DestinationConfigurationS3BackupMode = "Enabled"
+)
+
+type HttpEndpointRequestConfigurationContentEncoding string
+
+const (
+	HttpEndpointRequestConfigurationContentEncodingNONE HttpEndpointRequestConfigurationContentEncoding = "NONE"
+	HttpEndpointRequestConfigurationContentEncodingGZIP HttpEndpointRequestConfigurationContentEncoding = "GZIP"
+)
+
+type IcebergDestinationConfigurationS3BackupMode string
+
+const (
+	IcebergDestinationConfigurationS3BackupModeAllData        IcebergDestinationConfigurationS3BackupMode = "AllData"
+	IcebergDestinationConfigurationS3BackupModeFailedDataOnly IcebergDestinationConfigurationS3BackupMode = "FailedDataOnly"
+)
+
+type AuthenticationConfigurationConnectivity string
+
+const (
+	AuthenticationConfigurationConnectivityPUBLIC  AuthenticationConfigurationConnectivity = "PUBLIC"
+	AuthenticationConfigurationConnectivityPRIVATE AuthenticationConfigurationConnectivity = "PRIVATE"
+)
+
+type RedshiftDestinationConfigurationS3BackupMode string
+
+const (
+	RedshiftDestinationConfigurationS3BackupModeDisabled RedshiftDestinationConfigurationS3BackupMode = "Disabled"
+	RedshiftDestinationConfigurationS3BackupModeEnabled  RedshiftDestinationConfigurationS3BackupMode = "Enabled"
+)
+
+type SnowflakeDestinationConfigurationDataLoadingOption string
+
+const (
+	SnowflakeDestinationConfigurationDataLoadingOptionJSONMAPPING                      SnowflakeDestinationConfigurationDataLoadingOption = "JSON_MAPPING"
+	SnowflakeDestinationConfigurationDataLoadingOptionVARIANTCONTENTMAPPING            SnowflakeDestinationConfigurationDataLoadingOption = "VARIANT_CONTENT_MAPPING"
+	SnowflakeDestinationConfigurationDataLoadingOptionVARIANTCONTENTANDMETADATAMAPPING SnowflakeDestinationConfigurationDataLoadingOption = "VARIANT_CONTENT_AND_METADATA_MAPPING"
+)
+
+type SnowflakeDestinationConfigurationS3BackupMode string
+
+const (
+	SnowflakeDestinationConfigurationS3BackupModeFailedDataOnly SnowflakeDestinationConfigurationS3BackupMode = "FailedDataOnly"
+	SnowflakeDestinationConfigurationS3BackupModeAllData        SnowflakeDestinationConfigurationS3BackupMode = "AllData"
+)
+
+type SplunkDestinationConfigurationHECEndpointType string
+
+const (
+	SplunkDestinationConfigurationHECEndpointTypeRaw   SplunkDestinationConfigurationHECEndpointType = "Raw"
+	SplunkDestinationConfigurationHECEndpointTypeEvent SplunkDestinationConfigurationHECEndpointType = "Event"
+)

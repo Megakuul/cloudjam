@@ -18,15 +18,15 @@ type Address struct {
 }
 
 type RackPhysicalProperties struct {
-	FiberOpticCableType       *string `json:"FiberOpticCableType,omitempty"`
-	MaximumSupportedWeightLbs *string `json:"MaximumSupportedWeightLbs,omitempty"`
-	OpticalStandard           *string `json:"OpticalStandard,omitempty"`
-	PowerConnector            *string `json:"PowerConnector,omitempty"`
-	PowerDrawKva              *string `json:"PowerDrawKva,omitempty"`
-	PowerFeedDrop             *string `json:"PowerFeedDrop,omitempty"`
-	PowerPhase                *string `json:"PowerPhase,omitempty"`
-	UplinkCount               *string `json:"UplinkCount,omitempty"`
-	UplinkGbps                *string `json:"UplinkGbps,omitempty"`
+	FiberOpticCableType       *RackPhysicalPropertiesFiberOpticCableType       `json:"FiberOpticCableType,omitempty"`
+	MaximumSupportedWeightLbs *RackPhysicalPropertiesMaximumSupportedWeightLbs `json:"MaximumSupportedWeightLbs,omitempty"`
+	OpticalStandard           *RackPhysicalPropertiesOpticalStandard           `json:"OpticalStandard,omitempty"`
+	PowerConnector            *RackPhysicalPropertiesPowerConnector            `json:"PowerConnector,omitempty"`
+	PowerDrawKva              *RackPhysicalPropertiesPowerDrawKva              `json:"PowerDrawKva,omitempty"`
+	PowerFeedDrop             *RackPhysicalPropertiesPowerFeedDrop             `json:"PowerFeedDrop,omitempty"`
+	PowerPhase                *RackPhysicalPropertiesPowerPhase                `json:"PowerPhase,omitempty"`
+	UplinkCount               *RackPhysicalPropertiesUplinkCount               `json:"UplinkCount,omitempty"`
+	UplinkGbps                *RackPhysicalPropertiesUplinkGbps                `json:"UplinkGbps,omitempty"`
 }
 
 type Tag struct {
@@ -47,3 +47,95 @@ type Site struct {
 }
 
 func (Site) CloudControlType() string { return "AWS::Outposts::Site" }
+
+type RackPhysicalPropertiesFiberOpticCableType string
+
+const (
+	RackPhysicalPropertiesFiberOpticCableTypeSINGLEMODE RackPhysicalPropertiesFiberOpticCableType = "SINGLE_MODE"
+	RackPhysicalPropertiesFiberOpticCableTypeMULTIMODE  RackPhysicalPropertiesFiberOpticCableType = "MULTI_MODE"
+)
+
+type RackPhysicalPropertiesMaximumSupportedWeightLbs string
+
+const (
+	RackPhysicalPropertiesMaximumSupportedWeightLbsNOLIMIT    RackPhysicalPropertiesMaximumSupportedWeightLbs = "NO_LIMIT"
+	RackPhysicalPropertiesMaximumSupportedWeightLbsMAX1400LBS RackPhysicalPropertiesMaximumSupportedWeightLbs = "MAX_1400_LBS"
+	RackPhysicalPropertiesMaximumSupportedWeightLbsMAX1600LBS RackPhysicalPropertiesMaximumSupportedWeightLbs = "MAX_1600_LBS"
+	RackPhysicalPropertiesMaximumSupportedWeightLbsMAX1800LBS RackPhysicalPropertiesMaximumSupportedWeightLbs = "MAX_1800_LBS"
+	RackPhysicalPropertiesMaximumSupportedWeightLbsMAX2000LBS RackPhysicalPropertiesMaximumSupportedWeightLbs = "MAX_2000_LBS"
+)
+
+type RackPhysicalPropertiesOpticalStandard string
+
+const (
+	RackPhysicalPropertiesOpticalStandardOPTIC10GBASESR      RackPhysicalPropertiesOpticalStandard = "OPTIC_10GBASE_SR"
+	RackPhysicalPropertiesOpticalStandardOPTIC10GBASEIR      RackPhysicalPropertiesOpticalStandard = "OPTIC_10GBASE_IR"
+	RackPhysicalPropertiesOpticalStandardOPTIC10GBASELR      RackPhysicalPropertiesOpticalStandard = "OPTIC_10GBASE_LR"
+	RackPhysicalPropertiesOpticalStandardOPTIC40GBASESR      RackPhysicalPropertiesOpticalStandard = "OPTIC_40GBASE_SR"
+	RackPhysicalPropertiesOpticalStandardOPTIC40GBASEESR     RackPhysicalPropertiesOpticalStandard = "OPTIC_40GBASE_ESR"
+	RackPhysicalPropertiesOpticalStandardOPTIC40GBASEIR4LR4L RackPhysicalPropertiesOpticalStandard = "OPTIC_40GBASE_IR4_LR4L"
+	RackPhysicalPropertiesOpticalStandardOPTIC40GBASELR4     RackPhysicalPropertiesOpticalStandard = "OPTIC_40GBASE_LR4"
+	RackPhysicalPropertiesOpticalStandardOPTIC100GBASESR4    RackPhysicalPropertiesOpticalStandard = "OPTIC_100GBASE_SR4"
+	RackPhysicalPropertiesOpticalStandardOPTIC100GBASECWDM4  RackPhysicalPropertiesOpticalStandard = "OPTIC_100GBASE_CWDM4"
+	RackPhysicalPropertiesOpticalStandardOPTIC100GBASELR4    RackPhysicalPropertiesOpticalStandard = "OPTIC_100GBASE_LR4"
+	RackPhysicalPropertiesOpticalStandardOPTIC100GPSM4MSA    RackPhysicalPropertiesOpticalStandard = "OPTIC_100G_PSM4_MSA"
+	RackPhysicalPropertiesOpticalStandardOPTIC1000BASELX     RackPhysicalPropertiesOpticalStandard = "OPTIC_1000BASE_LX"
+	RackPhysicalPropertiesOpticalStandardOPTIC1000BASESX     RackPhysicalPropertiesOpticalStandard = "OPTIC_1000BASE_SX"
+)
+
+type RackPhysicalPropertiesPowerConnector string
+
+const (
+	RackPhysicalPropertiesPowerConnectorL630P    RackPhysicalPropertiesPowerConnector = "L6_30P"
+	RackPhysicalPropertiesPowerConnectorIEC309   RackPhysicalPropertiesPowerConnector = "IEC309"
+	RackPhysicalPropertiesPowerConnectorAH530P7W RackPhysicalPropertiesPowerConnector = "AH530P7W"
+	RackPhysicalPropertiesPowerConnectorAH532P6W RackPhysicalPropertiesPowerConnector = "AH532P6W"
+	RackPhysicalPropertiesPowerConnectorCS8365C  RackPhysicalPropertiesPowerConnector = "CS8365C"
+)
+
+type RackPhysicalPropertiesPowerDrawKva string
+
+const (
+	RackPhysicalPropertiesPowerDrawKvaPOWER5KVA  RackPhysicalPropertiesPowerDrawKva = "POWER_5_KVA"
+	RackPhysicalPropertiesPowerDrawKvaPOWER10KVA RackPhysicalPropertiesPowerDrawKva = "POWER_10_KVA"
+	RackPhysicalPropertiesPowerDrawKvaPOWER15KVA RackPhysicalPropertiesPowerDrawKva = "POWER_15_KVA"
+	RackPhysicalPropertiesPowerDrawKvaPOWER30KVA RackPhysicalPropertiesPowerDrawKva = "POWER_30_KVA"
+)
+
+type RackPhysicalPropertiesPowerFeedDrop string
+
+const (
+	RackPhysicalPropertiesPowerFeedDropABOVERACK RackPhysicalPropertiesPowerFeedDrop = "ABOVE_RACK"
+	RackPhysicalPropertiesPowerFeedDropBELOWRACK RackPhysicalPropertiesPowerFeedDrop = "BELOW_RACK"
+)
+
+type RackPhysicalPropertiesPowerPhase string
+
+const (
+	RackPhysicalPropertiesPowerPhaseSINGLEPHASE RackPhysicalPropertiesPowerPhase = "SINGLE_PHASE"
+	RackPhysicalPropertiesPowerPhaseTHREEPHASE  RackPhysicalPropertiesPowerPhase = "THREE_PHASE"
+)
+
+type RackPhysicalPropertiesUplinkCount string
+
+const (
+	RackPhysicalPropertiesUplinkCountUPLINKCOUNT1  RackPhysicalPropertiesUplinkCount = "UPLINK_COUNT_1"
+	RackPhysicalPropertiesUplinkCountUPLINKCOUNT2  RackPhysicalPropertiesUplinkCount = "UPLINK_COUNT_2"
+	RackPhysicalPropertiesUplinkCountUPLINKCOUNT3  RackPhysicalPropertiesUplinkCount = "UPLINK_COUNT_3"
+	RackPhysicalPropertiesUplinkCountUPLINKCOUNT4  RackPhysicalPropertiesUplinkCount = "UPLINK_COUNT_4"
+	RackPhysicalPropertiesUplinkCountUPLINKCOUNT5  RackPhysicalPropertiesUplinkCount = "UPLINK_COUNT_5"
+	RackPhysicalPropertiesUplinkCountUPLINKCOUNT6  RackPhysicalPropertiesUplinkCount = "UPLINK_COUNT_6"
+	RackPhysicalPropertiesUplinkCountUPLINKCOUNT7  RackPhysicalPropertiesUplinkCount = "UPLINK_COUNT_7"
+	RackPhysicalPropertiesUplinkCountUPLINKCOUNT8  RackPhysicalPropertiesUplinkCount = "UPLINK_COUNT_8"
+	RackPhysicalPropertiesUplinkCountUPLINKCOUNT12 RackPhysicalPropertiesUplinkCount = "UPLINK_COUNT_12"
+	RackPhysicalPropertiesUplinkCountUPLINKCOUNT16 RackPhysicalPropertiesUplinkCount = "UPLINK_COUNT_16"
+)
+
+type RackPhysicalPropertiesUplinkGbps string
+
+const (
+	RackPhysicalPropertiesUplinkGbpsUPLINK1G   RackPhysicalPropertiesUplinkGbps = "UPLINK_1G"
+	RackPhysicalPropertiesUplinkGbpsUPLINK10G  RackPhysicalPropertiesUplinkGbps = "UPLINK_10G"
+	RackPhysicalPropertiesUplinkGbpsUPLINK40G  RackPhysicalPropertiesUplinkGbps = "UPLINK_40G"
+	RackPhysicalPropertiesUplinkGbpsUPLINK100G RackPhysicalPropertiesUplinkGbps = "UPLINK_100G"
+)

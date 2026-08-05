@@ -4,9 +4,9 @@
 package chatbot
 
 type CustomActionAttachmentCriteria struct {
-	Operator     *string `json:"Operator,omitempty"`
-	Value        *string `json:"Value,omitempty"`
-	VariableName *string `json:"VariableName,omitempty"`
+	Operator     *CustomActionAttachmentCriteriaOperator `json:"Operator,omitempty"`
+	Value        *string                                 `json:"Value,omitempty"`
+	VariableName *string                                 `json:"VariableName,omitempty"`
 }
 
 type CustomActionAttachment struct {
@@ -83,3 +83,10 @@ type SlackChannelConfiguration struct {
 func (SlackChannelConfiguration) CloudControlType() string {
 	return "AWS::Chatbot::SlackChannelConfiguration"
 }
+
+type CustomActionAttachmentCriteriaOperator string
+
+const (
+	CustomActionAttachmentCriteriaOperatorHASVALUE CustomActionAttachmentCriteriaOperator = "HAS_VALUE"
+	CustomActionAttachmentCriteriaOperatorEQUALS   CustomActionAttachmentCriteriaOperator = "EQUALS"
+)

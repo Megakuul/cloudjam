@@ -9,20 +9,20 @@ type Tag struct {
 }
 
 type IPSet struct {
-	Addresses        []string `json:"Addresses,omitempty"`
-	Arn              *string  `json:"Arn,omitempty"`
-	Description      *string  `json:"Description,omitempty"`
-	IPAddressVersion *string  `json:"IPAddressVersion,omitempty"`
-	Id               *string  `json:"Id,omitempty"`
-	Name             *string  `json:"Name,omitempty"`
-	Scope            *string  `json:"Scope,omitempty"`
-	Tags             []Tag    `json:"Tags,omitempty"`
+	Addresses        []string          `json:"Addresses,omitempty"`
+	Arn              *string           `json:"Arn,omitempty"`
+	Description      *string           `json:"Description,omitempty"`
+	IPAddressVersion *IPAddressVersion `json:"IPAddressVersion,omitempty"`
+	Id               *string           `json:"Id,omitempty"`
+	Name             *string           `json:"Name,omitempty"`
+	Scope            *Scope            `json:"Scope,omitempty"`
+	Tags             []Tag             `json:"Tags,omitempty"`
 }
 
 func (IPSet) CloudControlType() string { return "AWS::WAFv2::IPSet" }
 
 type ConditionActionCondition struct {
-	Action *string `json:"Action,omitempty"`
+	Action *ConditionActionConditionAction `json:"Action,omitempty"`
 }
 
 type ConditionLabelNameCondition struct {
@@ -35,14 +35,14 @@ type Condition struct {
 }
 
 type Filter struct {
-	Behavior    *string     `json:"Behavior,omitempty"`
-	Conditions  []Condition `json:"Conditions,omitempty"`
-	Requirement *string     `json:"Requirement,omitempty"`
+	Behavior    *FilterBehavior    `json:"Behavior,omitempty"`
+	Conditions  []Condition        `json:"Conditions,omitempty"`
+	Requirement *FilterRequirement `json:"Requirement,omitempty"`
 }
 
 type LoggingConfigurationLoggingFilter struct {
-	DefaultBehavior *string  `json:"DefaultBehavior,omitempty"`
-	Filters         []Filter `json:"Filters,omitempty"`
+	DefaultBehavior *LoggingConfigurationLoggingFilterDefaultBehavior `json:"DefaultBehavior,omitempty"`
+	Filters         []Filter                                          `json:"Filters,omitempty"`
 }
 
 type FieldToMatchSingleHeader struct {
@@ -72,13 +72,13 @@ type RegexPatternSetTag struct {
 }
 
 type RegexPatternSet struct {
-	Arn                   *string              `json:"Arn,omitempty"`
-	Description           *string              `json:"Description,omitempty"`
-	Id                    *string              `json:"Id,omitempty"`
-	Name                  *string              `json:"Name,omitempty"`
-	RegularExpressionList []string             `json:"RegularExpressionList,omitempty"`
-	Scope                 *string              `json:"Scope,omitempty"`
-	Tags                  []RegexPatternSetTag `json:"Tags,omitempty"`
+	Arn                   *string               `json:"Arn,omitempty"`
+	Description           *string               `json:"Description,omitempty"`
+	Id                    *string               `json:"Id,omitempty"`
+	Name                  *string               `json:"Name,omitempty"`
+	RegularExpressionList []string              `json:"RegularExpressionList,omitempty"`
+	Scope                 *RegexPatternSetScope `json:"Scope,omitempty"`
+	Tags                  []RegexPatternSetTag  `json:"Tags,omitempty"`
 }
 
 func (RegexPatternSet) CloudControlType() string { return "AWS::WAFv2::RegexPatternSet" }
@@ -88,19 +88,19 @@ type LabelSummary struct {
 }
 
 type CustomResponseBody struct {
-	Content     *string `json:"Content,omitempty"`
-	ContentType *string `json:"ContentType,omitempty"`
+	Content     *string              `json:"Content,omitempty"`
+	ContentType *ResponseContentType `json:"ContentType,omitempty"`
 }
 
 type Price struct {
-	Amount   *string `json:"Amount,omitempty"`
-	Currency *string `json:"Currency,omitempty"`
+	Amount   *string         `json:"Amount,omitempty"`
+	Currency *CryptoCurrency `json:"Currency,omitempty"`
 }
 
 type PaymentNetwork struct {
-	Chain         *string `json:"Chain,omitempty"`
-	Prices        []Price `json:"Prices,omitempty"`
-	WalletAddress *string `json:"WalletAddress,omitempty"`
+	Chain         *BlockchainChain `json:"Chain,omitempty"`
+	Prices        []Price          `json:"Prices,omitempty"`
+	WalletAddress *string          `json:"WalletAddress,omitempty"`
 }
 
 type CryptoConfig struct {
@@ -109,7 +109,7 @@ type CryptoConfig struct {
 
 type MonetizationConfig struct {
 	CryptoConfig *CryptoConfig `json:"CryptoConfig,omitempty"`
-	CurrencyMode *string       `json:"CurrencyMode,omitempty"`
+	CurrencyMode *CurrencyMode `json:"CurrencyMode,omitempty"`
 }
 
 type CustomHTTPHeader struct {
@@ -181,8 +181,8 @@ type AndStatement struct {
 }
 
 type ForwardedIPConfiguration struct {
-	FallbackBehavior *string `json:"FallbackBehavior,omitempty"`
-	HeaderName       *string `json:"HeaderName,omitempty"`
+	FallbackBehavior *ForwardedIPConfigurationFallbackBehavior `json:"FallbackBehavior,omitempty"`
+	HeaderName       *string                                   `json:"HeaderName,omitempty"`
 }
 
 type AsnMatchStatement struct {
@@ -191,7 +191,7 @@ type AsnMatchStatement struct {
 }
 
 type Body struct {
-	OversizeHandling *string `json:"OversizeHandling,omitempty"`
+	OversizeHandling *OversizeHandling `json:"OversizeHandling,omitempty"`
 }
 
 type CookieMatchPattern struct {
@@ -202,12 +202,12 @@ type CookieMatchPattern struct {
 
 type Cookies struct {
 	MatchPattern     *CookieMatchPattern `json:"MatchPattern,omitempty"`
-	MatchScope       *string             `json:"MatchScope,omitempty"`
-	OversizeHandling *string             `json:"OversizeHandling,omitempty"`
+	MatchScope       *MapMatchScope      `json:"MatchScope,omitempty"`
+	OversizeHandling *OversizeHandling   `json:"OversizeHandling,omitempty"`
 }
 
 type HeaderOrder struct {
-	OversizeHandling *string `json:"OversizeHandling,omitempty"`
+	OversizeHandling *OversizeHandling `json:"OversizeHandling,omitempty"`
 }
 
 type HeaderMatchPattern struct {
@@ -218,16 +218,16 @@ type HeaderMatchPattern struct {
 
 type Headers struct {
 	MatchPattern     *HeaderMatchPattern `json:"MatchPattern,omitempty"`
-	MatchScope       *string             `json:"MatchScope,omitempty"`
-	OversizeHandling *string             `json:"OversizeHandling,omitempty"`
+	MatchScope       *MapMatchScope      `json:"MatchScope,omitempty"`
+	OversizeHandling *OversizeHandling   `json:"OversizeHandling,omitempty"`
 }
 
 type JA3Fingerprint struct {
-	FallbackBehavior *string `json:"FallbackBehavior,omitempty"`
+	FallbackBehavior *JA3FingerprintFallbackBehavior `json:"FallbackBehavior,omitempty"`
 }
 
 type JA4Fingerprint struct {
-	FallbackBehavior *string `json:"FallbackBehavior,omitempty"`
+	FallbackBehavior *JA4FingerprintFallbackBehavior `json:"FallbackBehavior,omitempty"`
 }
 
 type JsonMatchPattern struct {
@@ -236,10 +236,10 @@ type JsonMatchPattern struct {
 }
 
 type JsonBody struct {
-	InvalidFallbackBehavior *string           `json:"InvalidFallbackBehavior,omitempty"`
-	MatchPattern            *JsonMatchPattern `json:"MatchPattern,omitempty"`
-	MatchScope              *string           `json:"MatchScope,omitempty"`
-	OversizeHandling        *string           `json:"OversizeHandling,omitempty"`
+	InvalidFallbackBehavior *BodyParsingFallbackBehavior `json:"InvalidFallbackBehavior,omitempty"`
+	MatchPattern            *JsonMatchPattern            `json:"MatchPattern,omitempty"`
+	MatchScope              *JsonMatchScope              `json:"MatchScope,omitempty"`
+	OversizeHandling        *OversizeHandling            `json:"OversizeHandling,omitempty"`
 }
 
 type RuleGroupFieldToMatchSingleHeader struct {
@@ -251,7 +251,7 @@ type RuleGroupFieldToMatchSingleQueryArgument struct {
 }
 
 type UriFragment struct {
-	FallbackBehavior *string `json:"FallbackBehavior,omitempty"`
+	FallbackBehavior *UriFragmentFallbackBehavior `json:"FallbackBehavior,omitempty"`
 }
 
 type RuleGroupFieldToMatch struct {
@@ -272,18 +272,18 @@ type RuleGroupFieldToMatch struct {
 }
 
 type PreParseTextTransformation struct {
-	Priority *int    `json:"Priority,omitempty"`
-	Type     *string `json:"Type,omitempty"`
+	Priority *int                            `json:"Priority,omitempty"`
+	Type     *PreParseTextTransformationType `json:"Type,omitempty"`
 }
 
 type TextTransformation struct {
-	Priority *int    `json:"Priority,omitempty"`
-	Type     *string `json:"Type,omitempty"`
+	Priority *int                    `json:"Priority,omitempty"`
+	Type     *TextTransformationType `json:"Type,omitempty"`
 }
 
 type ByteMatchStatement struct {
 	FieldToMatch                *RuleGroupFieldToMatch       `json:"FieldToMatch,omitempty"`
-	PositionalConstraint        *string                      `json:"PositionalConstraint,omitempty"`
+	PositionalConstraint        *PositionalConstraint        `json:"PositionalConstraint,omitempty"`
 	PreParseTextTransformations []PreParseTextTransformation `json:"PreParseTextTransformations,omitempty"`
 	SearchString                *string                      `json:"SearchString,omitempty"`
 	SearchStringBase64          *string                      `json:"SearchStringBase64,omitempty"`
@@ -296,9 +296,9 @@ type GeoMatchStatement struct {
 }
 
 type IPSetForwardedIPConfiguration struct {
-	FallbackBehavior *string `json:"FallbackBehavior,omitempty"`
-	HeaderName       *string `json:"HeaderName,omitempty"`
-	Position         *string `json:"Position,omitempty"`
+	FallbackBehavior *IPSetForwardedIPConfigurationFallbackBehavior `json:"FallbackBehavior,omitempty"`
+	HeaderName       *string                                        `json:"HeaderName,omitempty"`
+	Position         *IPSetForwardedIPConfigurationPosition         `json:"Position,omitempty"`
 }
 
 type IPSetReferenceStatement struct {
@@ -307,8 +307,8 @@ type IPSetReferenceStatement struct {
 }
 
 type LabelMatchStatement struct {
-	Key   *string `json:"Key,omitempty"`
-	Scope *string `json:"Scope,omitempty"`
+	Key   *string          `json:"Key,omitempty"`
+	Scope *LabelMatchScope `json:"Scope,omitempty"`
 }
 
 type NotStatement struct {
@@ -330,11 +330,11 @@ type RateLimitHeader struct {
 }
 
 type RateLimitJA3Fingerprint struct {
-	FallbackBehavior *string `json:"FallbackBehavior,omitempty"`
+	FallbackBehavior *RateLimitJA3FingerprintFallbackBehavior `json:"FallbackBehavior,omitempty"`
 }
 
 type RateLimitJA4Fingerprint struct {
-	FallbackBehavior *string `json:"FallbackBehavior,omitempty"`
+	FallbackBehavior *RateLimitJA4FingerprintFallbackBehavior `json:"FallbackBehavior,omitempty"`
 }
 
 type RateLimitLabelNamespace struct {
@@ -370,12 +370,12 @@ type RateBasedStatementCustomKey struct {
 }
 
 type RateBasedStatement struct {
-	AggregateKeyType    *string                       `json:"AggregateKeyType,omitempty"`
-	CustomKeys          []RateBasedStatementCustomKey `json:"CustomKeys,omitempty"`
-	EvaluationWindowSec *int                          `json:"EvaluationWindowSec,omitempty"`
-	ForwardedIPConfig   *ForwardedIPConfiguration     `json:"ForwardedIPConfig,omitempty"`
-	Limit               *int                          `json:"Limit,omitempty"`
-	ScopeDownStatement  *Statement                    `json:"ScopeDownStatement,omitempty"`
+	AggregateKeyType    *RateBasedStatementAggregateKeyType `json:"AggregateKeyType,omitempty"`
+	CustomKeys          []RateBasedStatementCustomKey       `json:"CustomKeys,omitempty"`
+	EvaluationWindowSec *int                                `json:"EvaluationWindowSec,omitempty"`
+	ForwardedIPConfig   *ForwardedIPConfiguration           `json:"ForwardedIPConfig,omitempty"`
+	Limit               *int                                `json:"Limit,omitempty"`
+	ScopeDownStatement  *Statement                          `json:"ScopeDownStatement,omitempty"`
 }
 
 type RegexMatchStatement struct {
@@ -393,17 +393,17 @@ type RegexPatternSetReferenceStatement struct {
 }
 
 type SizeConstraintStatement struct {
-	ComparisonOperator          *string                      `json:"ComparisonOperator,omitempty"`
-	FieldToMatch                *RuleGroupFieldToMatch       `json:"FieldToMatch,omitempty"`
-	PreParseTextTransformations []PreParseTextTransformation `json:"PreParseTextTransformations,omitempty"`
-	Size                        *float64                     `json:"Size,omitempty"`
-	TextTransformations         []TextTransformation         `json:"TextTransformations,omitempty"`
+	ComparisonOperator          *SizeConstraintStatementComparisonOperator `json:"ComparisonOperator,omitempty"`
+	FieldToMatch                *RuleGroupFieldToMatch                     `json:"FieldToMatch,omitempty"`
+	PreParseTextTransformations []PreParseTextTransformation               `json:"PreParseTextTransformations,omitempty"`
+	Size                        *float64                                   `json:"Size,omitempty"`
+	TextTransformations         []TextTransformation                       `json:"TextTransformations,omitempty"`
 }
 
 type SqliMatchStatement struct {
 	FieldToMatch                *RuleGroupFieldToMatch       `json:"FieldToMatch,omitempty"`
 	PreParseTextTransformations []PreParseTextTransformation `json:"PreParseTextTransformations,omitempty"`
-	SensitivityLevel            *string                      `json:"SensitivityLevel,omitempty"`
+	SensitivityLevel            *SensitivityLevel            `json:"SensitivityLevel,omitempty"`
 	TextTransformations         []TextTransformation         `json:"TextTransformations,omitempty"`
 }
 
@@ -464,7 +464,7 @@ type RuleGroup struct {
 	MonetizationConfig   *MonetizationConfig           `json:"MonetizationConfig,omitempty"`
 	Name                 *string                       `json:"Name,omitempty"`
 	Rules                []Rule                        `json:"Rules,omitempty"`
-	Scope                *string                       `json:"Scope,omitempty"`
+	Scope                *RuleGroupScope               `json:"Scope,omitempty"`
 	Tags                 []RuleGroupTag                `json:"Tags,omitempty"`
 	VisibilityConfig     *VisibilityConfig             `json:"VisibilityConfig,omitempty"`
 }
@@ -481,7 +481,7 @@ type ApplicationConfig struct {
 }
 
 type RequestBodyAssociatedResourceTypeConfig struct {
-	DefaultSizeInspectionLimit *string `json:"DefaultSizeInspectionLimit,omitempty"`
+	DefaultSizeInspectionLimit *SizeInspectionLimit `json:"DefaultSizeInspectionLimit,omitempty"`
 }
 
 type AssociationConfig struct {
@@ -501,20 +501,20 @@ type WebACLChallengeConfig struct {
 }
 
 type WebACLCustomResponseBody struct {
-	Content     *string `json:"Content,omitempty"`
-	ContentType *string `json:"ContentType,omitempty"`
+	Content     *string                    `json:"Content,omitempty"`
+	ContentType *WebACLResponseContentType `json:"ContentType,omitempty"`
 }
 
 type FieldToProtect struct {
-	FieldKeys []string `json:"FieldKeys,omitempty"`
-	FieldType *string  `json:"FieldType,omitempty"`
+	FieldKeys []string                 `json:"FieldKeys,omitempty"`
+	FieldType *FieldToProtectFieldType `json:"FieldType,omitempty"`
 }
 
 type DataProtect struct {
-	Action                  *string         `json:"Action,omitempty"`
-	ExcludeRateBasedDetails *bool           `json:"ExcludeRateBasedDetails,omitempty"`
-	ExcludeRuleMatchDetails *bool           `json:"ExcludeRuleMatchDetails,omitempty"`
-	Field                   *FieldToProtect `json:"Field,omitempty"`
+	Action                  *DataProtectionAction `json:"Action,omitempty"`
+	ExcludeRateBasedDetails *bool                 `json:"ExcludeRateBasedDetails,omitempty"`
+	ExcludeRuleMatchDetails *bool                 `json:"ExcludeRuleMatchDetails,omitempty"`
+	Field                   *FieldToProtect       `json:"Field,omitempty"`
 }
 
 type DataProtectionConfig struct {
@@ -550,14 +550,14 @@ type DefaultAction struct {
 }
 
 type WebACLPrice struct {
-	Amount   *string `json:"Amount,omitempty"`
-	Currency *string `json:"Currency,omitempty"`
+	Amount   *string               `json:"Amount,omitempty"`
+	Currency *WebACLCryptoCurrency `json:"Currency,omitempty"`
 }
 
 type WebACLPaymentNetwork struct {
-	Chain         *string       `json:"Chain,omitempty"`
-	Prices        []WebACLPrice `json:"Prices,omitempty"`
-	WalletAddress *string       `json:"WalletAddress,omitempty"`
+	Chain         *WebACLBlockchainChain `json:"Chain,omitempty"`
+	Prices        []WebACLPrice          `json:"Prices,omitempty"`
+	WalletAddress *string                `json:"WalletAddress,omitempty"`
 }
 
 type WebACLCryptoConfig struct {
@@ -566,11 +566,11 @@ type WebACLCryptoConfig struct {
 
 type WebACLMonetizationConfig struct {
 	CryptoConfig *WebACLCryptoConfig `json:"CryptoConfig,omitempty"`
-	CurrencyMode *string             `json:"CurrencyMode,omitempty"`
+	CurrencyMode *WebACLCurrencyMode `json:"CurrencyMode,omitempty"`
 }
 
 type OnSourceDDoSProtectionConfig struct {
-	ALBLowReputationMode *string `json:"ALBLowReputationMode,omitempty"`
+	ALBLowReputationMode *OnSourceDDoSProtectionConfigALBLowReputationMode `json:"ALBLowReputationMode,omitempty"`
 }
 
 type WebACLCaptchaAction struct {
@@ -612,8 +612,8 @@ type WebACLAndStatement struct {
 }
 
 type WebACLForwardedIPConfiguration struct {
-	FallbackBehavior *string `json:"FallbackBehavior,omitempty"`
-	HeaderName       *string `json:"HeaderName,omitempty"`
+	FallbackBehavior *WebACLForwardedIPConfigurationFallbackBehavior `json:"FallbackBehavior,omitempty"`
+	HeaderName       *string                                         `json:"HeaderName,omitempty"`
 }
 
 type WebACLAsnMatchStatement struct {
@@ -622,7 +622,7 @@ type WebACLAsnMatchStatement struct {
 }
 
 type WebACLBody struct {
-	OversizeHandling *string `json:"OversizeHandling,omitempty"`
+	OversizeHandling *WebACLOversizeHandling `json:"OversizeHandling,omitempty"`
 }
 
 type WebACLCookieMatchPattern struct {
@@ -633,12 +633,12 @@ type WebACLCookieMatchPattern struct {
 
 type WebACLCookies struct {
 	MatchPattern     *WebACLCookieMatchPattern `json:"MatchPattern,omitempty"`
-	MatchScope       *string                   `json:"MatchScope,omitempty"`
-	OversizeHandling *string                   `json:"OversizeHandling,omitempty"`
+	MatchScope       *WebACLMapMatchScope      `json:"MatchScope,omitempty"`
+	OversizeHandling *WebACLOversizeHandling   `json:"OversizeHandling,omitempty"`
 }
 
 type WebACLHeaderOrder struct {
-	OversizeHandling *string `json:"OversizeHandling,omitempty"`
+	OversizeHandling *WebACLOversizeHandling `json:"OversizeHandling,omitempty"`
 }
 
 type WebACLHeaderMatchPattern struct {
@@ -649,16 +649,16 @@ type WebACLHeaderMatchPattern struct {
 
 type WebACLHeaders struct {
 	MatchPattern     *WebACLHeaderMatchPattern `json:"MatchPattern,omitempty"`
-	MatchScope       *string                   `json:"MatchScope,omitempty"`
-	OversizeHandling *string                   `json:"OversizeHandling,omitempty"`
+	MatchScope       *WebACLMapMatchScope      `json:"MatchScope,omitempty"`
+	OversizeHandling *WebACLOversizeHandling   `json:"OversizeHandling,omitempty"`
 }
 
 type WebACLJA3Fingerprint struct {
-	FallbackBehavior *string `json:"FallbackBehavior,omitempty"`
+	FallbackBehavior *WebACLJA3FingerprintFallbackBehavior `json:"FallbackBehavior,omitempty"`
 }
 
 type WebACLJA4Fingerprint struct {
-	FallbackBehavior *string `json:"FallbackBehavior,omitempty"`
+	FallbackBehavior *WebACLJA4FingerprintFallbackBehavior `json:"FallbackBehavior,omitempty"`
 }
 
 type WebACLJsonMatchPattern struct {
@@ -667,10 +667,10 @@ type WebACLJsonMatchPattern struct {
 }
 
 type WebACLJsonBody struct {
-	InvalidFallbackBehavior *string                 `json:"InvalidFallbackBehavior,omitempty"`
-	MatchPattern            *WebACLJsonMatchPattern `json:"MatchPattern,omitempty"`
-	MatchScope              *string                 `json:"MatchScope,omitempty"`
-	OversizeHandling        *string                 `json:"OversizeHandling,omitempty"`
+	InvalidFallbackBehavior *WebACLBodyParsingFallbackBehavior `json:"InvalidFallbackBehavior,omitempty"`
+	MatchPattern            *WebACLJsonMatchPattern            `json:"MatchPattern,omitempty"`
+	MatchScope              *WebACLJsonMatchScope              `json:"MatchScope,omitempty"`
+	OversizeHandling        *WebACLOversizeHandling            `json:"OversizeHandling,omitempty"`
 }
 
 type WebACLFieldToMatchSingleHeader struct {
@@ -682,7 +682,7 @@ type WebACLFieldToMatchSingleQueryArgument struct {
 }
 
 type WebACLUriFragment struct {
-	FallbackBehavior *string `json:"FallbackBehavior,omitempty"`
+	FallbackBehavior *WebACLUriFragmentFallbackBehavior `json:"FallbackBehavior,omitempty"`
 }
 
 type WebACLFieldToMatch struct {
@@ -703,18 +703,18 @@ type WebACLFieldToMatch struct {
 }
 
 type WebACLPreParseTextTransformation struct {
-	Priority *int    `json:"Priority,omitempty"`
-	Type     *string `json:"Type,omitempty"`
+	Priority *int                                  `json:"Priority,omitempty"`
+	Type     *WebACLPreParseTextTransformationType `json:"Type,omitempty"`
 }
 
 type WebACLTextTransformation struct {
-	Priority *int    `json:"Priority,omitempty"`
-	Type     *string `json:"Type,omitempty"`
+	Priority *int                          `json:"Priority,omitempty"`
+	Type     *WebACLTextTransformationType `json:"Type,omitempty"`
 }
 
 type WebACLByteMatchStatement struct {
 	FieldToMatch                *WebACLFieldToMatch                `json:"FieldToMatch,omitempty"`
-	PositionalConstraint        *string                            `json:"PositionalConstraint,omitempty"`
+	PositionalConstraint        *WebACLPositionalConstraint        `json:"PositionalConstraint,omitempty"`
 	PreParseTextTransformations []WebACLPreParseTextTransformation `json:"PreParseTextTransformations,omitempty"`
 	SearchString                *string                            `json:"SearchString,omitempty"`
 	SearchStringBase64          *string                            `json:"SearchStringBase64,omitempty"`
@@ -727,9 +727,9 @@ type WebACLGeoMatchStatement struct {
 }
 
 type WebACLIPSetForwardedIPConfiguration struct {
-	FallbackBehavior *string `json:"FallbackBehavior,omitempty"`
-	HeaderName       *string `json:"HeaderName,omitempty"`
-	Position         *string `json:"Position,omitempty"`
+	FallbackBehavior *WebACLIPSetForwardedIPConfigurationFallbackBehavior `json:"FallbackBehavior,omitempty"`
+	HeaderName       *string                                              `json:"HeaderName,omitempty"`
+	Position         *WebACLIPSetForwardedIPConfigurationPosition         `json:"Position,omitempty"`
 }
 
 type WebACLIPSetReferenceStatement struct {
@@ -738,8 +738,8 @@ type WebACLIPSetReferenceStatement struct {
 }
 
 type WebACLLabelMatchStatement struct {
-	Key   *string `json:"Key,omitempty"`
-	Scope *string `json:"Scope,omitempty"`
+	Key   *string                `json:"Key,omitempty"`
+	Scope *WebACLLabelMatchScope `json:"Scope,omitempty"`
 }
 
 type ExcludedRule struct {
@@ -751,12 +751,12 @@ type FieldIdentifier struct {
 }
 
 type RequestInspectionACFP struct {
-	AddressFields     []FieldIdentifier `json:"AddressFields,omitempty"`
-	EmailField        *FieldIdentifier  `json:"EmailField,omitempty"`
-	PasswordField     *FieldIdentifier  `json:"PasswordField,omitempty"`
-	PayloadType       *string           `json:"PayloadType,omitempty"`
-	PhoneNumberFields []FieldIdentifier `json:"PhoneNumberFields,omitempty"`
-	UsernameField     *FieldIdentifier  `json:"UsernameField,omitempty"`
+	AddressFields     []FieldIdentifier                 `json:"AddressFields,omitempty"`
+	EmailField        *FieldIdentifier                  `json:"EmailField,omitempty"`
+	PasswordField     *FieldIdentifier                  `json:"PasswordField,omitempty"`
+	PayloadType       *RequestInspectionACFPPayloadType `json:"PayloadType,omitempty"`
+	PhoneNumberFields []FieldIdentifier                 `json:"PhoneNumberFields,omitempty"`
+	UsernameField     *FieldIdentifier                  `json:"UsernameField,omitempty"`
 }
 
 type ResponseInspectionBodyContains struct {
@@ -797,9 +797,9 @@ type AWSManagedRulesACFPRuleSet struct {
 }
 
 type RequestInspection struct {
-	PasswordField *FieldIdentifier `json:"PasswordField,omitempty"`
-	PayloadType   *string          `json:"PayloadType,omitempty"`
-	UsernameField *FieldIdentifier `json:"UsernameField,omitempty"`
+	PasswordField *FieldIdentifier              `json:"PasswordField,omitempty"`
+	PayloadType   *RequestInspectionPayloadType `json:"PayloadType,omitempty"`
+	UsernameField *FieldIdentifier              `json:"UsernameField,omitempty"`
 }
 
 type AWSManagedRulesATPRuleSet struct {
@@ -814,9 +814,9 @@ type Regex struct {
 }
 
 type ClientSideAction struct {
-	ExemptUriRegularExpressions []Regex `json:"ExemptUriRegularExpressions,omitempty"`
-	Sensitivity                 *string `json:"Sensitivity,omitempty"`
-	UsageOfAction               *string `json:"UsageOfAction,omitempty"`
+	ExemptUriRegularExpressions []Regex           `json:"ExemptUriRegularExpressions,omitempty"`
+	Sensitivity                 *SensitivityToAct `json:"Sensitivity,omitempty"`
+	UsageOfAction               *UsageOfAction    `json:"UsageOfAction,omitempty"`
 }
 
 type ClientSideActionConfig struct {
@@ -825,23 +825,23 @@ type ClientSideActionConfig struct {
 
 type AWSManagedRulesAntiDDoSRuleSet struct {
 	ClientSideActionConfig *ClientSideActionConfig `json:"ClientSideActionConfig,omitempty"`
-	SensitivityToBlock     *string                 `json:"SensitivityToBlock,omitempty"`
+	SensitivityToBlock     *SensitivityToAct       `json:"SensitivityToBlock,omitempty"`
 }
 
 type AWSManagedRulesBotControlRuleSet struct {
-	EnableMachineLearning *bool   `json:"EnableMachineLearning,omitempty"`
-	InspectionLevel       *string `json:"InspectionLevel,omitempty"`
+	EnableMachineLearning *bool                                            `json:"EnableMachineLearning,omitempty"`
+	InspectionLevel       *AWSManagedRulesBotControlRuleSetInspectionLevel `json:"InspectionLevel,omitempty"`
 }
 
 type ManagedRuleGroupConfig struct {
-	AWSManagedRulesACFPRuleSet       *AWSManagedRulesACFPRuleSet       `json:"AWSManagedRulesACFPRuleSet,omitempty"`
-	AWSManagedRulesATPRuleSet        *AWSManagedRulesATPRuleSet        `json:"AWSManagedRulesATPRuleSet,omitempty"`
-	AWSManagedRulesAntiDDoSRuleSet   *AWSManagedRulesAntiDDoSRuleSet   `json:"AWSManagedRulesAntiDDoSRuleSet,omitempty"`
-	AWSManagedRulesBotControlRuleSet *AWSManagedRulesBotControlRuleSet `json:"AWSManagedRulesBotControlRuleSet,omitempty"`
-	LoginPath                        *string                           `json:"LoginPath,omitempty"`
-	PasswordField                    *FieldIdentifier                  `json:"PasswordField,omitempty"`
-	PayloadType                      *string                           `json:"PayloadType,omitempty"`
-	UsernameField                    *FieldIdentifier                  `json:"UsernameField,omitempty"`
+	AWSManagedRulesACFPRuleSet       *AWSManagedRulesACFPRuleSet        `json:"AWSManagedRulesACFPRuleSet,omitempty"`
+	AWSManagedRulesATPRuleSet        *AWSManagedRulesATPRuleSet         `json:"AWSManagedRulesATPRuleSet,omitempty"`
+	AWSManagedRulesAntiDDoSRuleSet   *AWSManagedRulesAntiDDoSRuleSet    `json:"AWSManagedRulesAntiDDoSRuleSet,omitempty"`
+	AWSManagedRulesBotControlRuleSet *AWSManagedRulesBotControlRuleSet  `json:"AWSManagedRulesBotControlRuleSet,omitempty"`
+	LoginPath                        *string                            `json:"LoginPath,omitempty"`
+	PasswordField                    *FieldIdentifier                   `json:"PasswordField,omitempty"`
+	PayloadType                      *ManagedRuleGroupConfigPayloadType `json:"PayloadType,omitempty"`
+	UsernameField                    *FieldIdentifier                   `json:"UsernameField,omitempty"`
 }
 
 type RuleActionOverride struct {
@@ -878,11 +878,11 @@ type WebACLRateLimitHeader struct {
 }
 
 type WebACLRateLimitJA3Fingerprint struct {
-	FallbackBehavior *string `json:"FallbackBehavior,omitempty"`
+	FallbackBehavior *WebACLRateLimitJA3FingerprintFallbackBehavior `json:"FallbackBehavior,omitempty"`
 }
 
 type WebACLRateLimitJA4Fingerprint struct {
-	FallbackBehavior *string `json:"FallbackBehavior,omitempty"`
+	FallbackBehavior *WebACLRateLimitJA4FingerprintFallbackBehavior `json:"FallbackBehavior,omitempty"`
 }
 
 type WebACLRateLimitLabelNamespace struct {
@@ -918,12 +918,12 @@ type WebACLRateBasedStatementCustomKey struct {
 }
 
 type WebACLRateBasedStatement struct {
-	AggregateKeyType    *string                             `json:"AggregateKeyType,omitempty"`
-	CustomKeys          []WebACLRateBasedStatementCustomKey `json:"CustomKeys,omitempty"`
-	EvaluationWindowSec *int                                `json:"EvaluationWindowSec,omitempty"`
-	ForwardedIPConfig   *WebACLForwardedIPConfiguration     `json:"ForwardedIPConfig,omitempty"`
-	Limit               *int                                `json:"Limit,omitempty"`
-	ScopeDownStatement  *WebACLStatement                    `json:"ScopeDownStatement,omitempty"`
+	AggregateKeyType    *WebACLRateBasedStatementAggregateKeyType `json:"AggregateKeyType,omitempty"`
+	CustomKeys          []WebACLRateBasedStatementCustomKey       `json:"CustomKeys,omitempty"`
+	EvaluationWindowSec *int                                      `json:"EvaluationWindowSec,omitempty"`
+	ForwardedIPConfig   *WebACLForwardedIPConfiguration           `json:"ForwardedIPConfig,omitempty"`
+	Limit               *int                                      `json:"Limit,omitempty"`
+	ScopeDownStatement  *WebACLStatement                          `json:"ScopeDownStatement,omitempty"`
 }
 
 type WebACLRegexMatchStatement struct {
@@ -947,17 +947,17 @@ type RuleGroupReferenceStatement struct {
 }
 
 type WebACLSizeConstraintStatement struct {
-	ComparisonOperator          *string                            `json:"ComparisonOperator,omitempty"`
-	FieldToMatch                *WebACLFieldToMatch                `json:"FieldToMatch,omitempty"`
-	PreParseTextTransformations []WebACLPreParseTextTransformation `json:"PreParseTextTransformations,omitempty"`
-	Size                        *float64                           `json:"Size,omitempty"`
-	TextTransformations         []WebACLTextTransformation         `json:"TextTransformations,omitempty"`
+	ComparisonOperator          *WebACLSizeConstraintStatementComparisonOperator `json:"ComparisonOperator,omitempty"`
+	FieldToMatch                *WebACLFieldToMatch                              `json:"FieldToMatch,omitempty"`
+	PreParseTextTransformations []WebACLPreParseTextTransformation               `json:"PreParseTextTransformations,omitempty"`
+	Size                        *float64                                         `json:"Size,omitempty"`
+	TextTransformations         []WebACLTextTransformation                       `json:"TextTransformations,omitempty"`
 }
 
 type WebACLSqliMatchStatement struct {
 	FieldToMatch                *WebACLFieldToMatch                `json:"FieldToMatch,omitempty"`
 	PreParseTextTransformations []WebACLPreParseTextTransformation `json:"PreParseTextTransformations,omitempty"`
-	SensitivityLevel            *string                            `json:"SensitivityLevel,omitempty"`
+	SensitivityLevel            *WebACLSensitivityLevel            `json:"SensitivityLevel,omitempty"`
 	TextTransformations         []WebACLTextTransformation         `json:"TextTransformations,omitempty"`
 }
 
@@ -1026,7 +1026,7 @@ type WebACL struct {
 	Name                         *string                             `json:"Name,omitempty"`
 	OnSourceDDoSProtectionConfig *OnSourceDDoSProtectionConfig       `json:"OnSourceDDoSProtectionConfig,omitempty"`
 	Rules                        []WebACLRule                        `json:"Rules,omitempty"`
-	Scope                        *string                             `json:"Scope,omitempty"`
+	Scope                        *WebACLScope                        `json:"Scope,omitempty"`
 	Tags                         []WebACLTag                         `json:"Tags,omitempty"`
 	TokenDomains                 []string                            `json:"TokenDomains,omitempty"`
 	VisibilityConfig             *WebACLVisibilityConfig             `json:"VisibilityConfig,omitempty"`
@@ -1040,3 +1040,565 @@ type WebACLAssociation struct {
 }
 
 func (WebACLAssociation) CloudControlType() string { return "AWS::WAFv2::WebACLAssociation" }
+
+type IPAddressVersion string
+
+const (
+	IPAddressVersionIPV4 IPAddressVersion = "IPV4"
+	IPAddressVersionIPV6 IPAddressVersion = "IPV6"
+)
+
+type Scope string
+
+const (
+	ScopeCLOUDFRONT Scope = "CLOUDFRONT"
+	ScopeREGIONAL   Scope = "REGIONAL"
+)
+
+type LoggingConfigurationLoggingFilterDefaultBehavior string
+
+const (
+	LoggingConfigurationLoggingFilterDefaultBehaviorKEEP LoggingConfigurationLoggingFilterDefaultBehavior = "KEEP"
+	LoggingConfigurationLoggingFilterDefaultBehaviorDROP LoggingConfigurationLoggingFilterDefaultBehavior = "DROP"
+)
+
+type FilterBehavior string
+
+const (
+	FilterBehaviorKEEP FilterBehavior = "KEEP"
+	FilterBehaviorDROP FilterBehavior = "DROP"
+)
+
+type ConditionActionConditionAction string
+
+const (
+	ConditionActionConditionActionALLOW           ConditionActionConditionAction = "ALLOW"
+	ConditionActionConditionActionBLOCK           ConditionActionConditionAction = "BLOCK"
+	ConditionActionConditionActionCOUNT           ConditionActionConditionAction = "COUNT"
+	ConditionActionConditionActionCAPTCHA         ConditionActionConditionAction = "CAPTCHA"
+	ConditionActionConditionActionCHALLENGE       ConditionActionConditionAction = "CHALLENGE"
+	ConditionActionConditionActionMONETIZE        ConditionActionConditionAction = "MONETIZE"
+	ConditionActionConditionActionEXCLUDEDASCOUNT ConditionActionConditionAction = "EXCLUDED_AS_COUNT"
+)
+
+type FilterRequirement string
+
+const (
+	FilterRequirementMEETSALL FilterRequirement = "MEETS_ALL"
+	FilterRequirementMEETSANY FilterRequirement = "MEETS_ANY"
+)
+
+type RegexPatternSetScope string
+
+const (
+	RegexPatternSetScopeCLOUDFRONT RegexPatternSetScope = "CLOUDFRONT"
+	RegexPatternSetScopeREGIONAL   RegexPatternSetScope = "REGIONAL"
+)
+
+type ResponseContentType string
+
+const (
+	ResponseContentTypeTEXTPLAIN       ResponseContentType = "TEXT_PLAIN"
+	ResponseContentTypeTEXTHTML        ResponseContentType = "TEXT_HTML"
+	ResponseContentTypeAPPLICATIONJSON ResponseContentType = "APPLICATION_JSON"
+)
+
+type BlockchainChain string
+
+const (
+	BlockchainChainBASE         BlockchainChain = "BASE"
+	BlockchainChainSOLANA       BlockchainChain = "SOLANA"
+	BlockchainChainBASESEPOLIA  BlockchainChain = "BASE_SEPOLIA"
+	BlockchainChainSOLANADEVNET BlockchainChain = "SOLANA_DEVNET"
+)
+
+type CryptoCurrency string
+
+const (
+	CryptoCurrencyUSDC CryptoCurrency = "USDC"
+)
+
+type CurrencyMode string
+
+const (
+	CurrencyModeREAL CurrencyMode = "REAL"
+	CurrencyModeTEST CurrencyMode = "TEST"
+)
+
+type ForwardedIPConfigurationFallbackBehavior string
+
+const (
+	ForwardedIPConfigurationFallbackBehaviorMATCH   ForwardedIPConfigurationFallbackBehavior = "MATCH"
+	ForwardedIPConfigurationFallbackBehaviorNOMATCH ForwardedIPConfigurationFallbackBehavior = "NO_MATCH"
+)
+
+type OversizeHandling string
+
+const (
+	OversizeHandlingCONTINUE OversizeHandling = "CONTINUE"
+	OversizeHandlingMATCH    OversizeHandling = "MATCH"
+	OversizeHandlingNOMATCH  OversizeHandling = "NO_MATCH"
+)
+
+type MapMatchScope string
+
+const (
+	MapMatchScopeALL   MapMatchScope = "ALL"
+	MapMatchScopeKEY   MapMatchScope = "KEY"
+	MapMatchScopeVALUE MapMatchScope = "VALUE"
+)
+
+type JA3FingerprintFallbackBehavior string
+
+const (
+	JA3FingerprintFallbackBehaviorMATCH   JA3FingerprintFallbackBehavior = "MATCH"
+	JA3FingerprintFallbackBehaviorNOMATCH JA3FingerprintFallbackBehavior = "NO_MATCH"
+)
+
+type JA4FingerprintFallbackBehavior string
+
+const (
+	JA4FingerprintFallbackBehaviorMATCH   JA4FingerprintFallbackBehavior = "MATCH"
+	JA4FingerprintFallbackBehaviorNOMATCH JA4FingerprintFallbackBehavior = "NO_MATCH"
+)
+
+type BodyParsingFallbackBehavior string
+
+const (
+	BodyParsingFallbackBehaviorMATCH            BodyParsingFallbackBehavior = "MATCH"
+	BodyParsingFallbackBehaviorNOMATCH          BodyParsingFallbackBehavior = "NO_MATCH"
+	BodyParsingFallbackBehaviorEVALUATEASSTRING BodyParsingFallbackBehavior = "EVALUATE_AS_STRING"
+)
+
+type JsonMatchScope string
+
+const (
+	JsonMatchScopeALL   JsonMatchScope = "ALL"
+	JsonMatchScopeKEY   JsonMatchScope = "KEY"
+	JsonMatchScopeVALUE JsonMatchScope = "VALUE"
+)
+
+type UriFragmentFallbackBehavior string
+
+const (
+	UriFragmentFallbackBehaviorMATCH   UriFragmentFallbackBehavior = "MATCH"
+	UriFragmentFallbackBehaviorNOMATCH UriFragmentFallbackBehavior = "NO_MATCH"
+)
+
+type PositionalConstraint string
+
+const (
+	PositionalConstraintEXACTLY      PositionalConstraint = "EXACTLY"
+	PositionalConstraintSTARTSWITH   PositionalConstraint = "STARTS_WITH"
+	PositionalConstraintENDSWITH     PositionalConstraint = "ENDS_WITH"
+	PositionalConstraintCONTAINS     PositionalConstraint = "CONTAINS"
+	PositionalConstraintCONTAINSWORD PositionalConstraint = "CONTAINS_WORD"
+)
+
+type PreParseTextTransformationType string
+
+const (
+	PreParseTextTransformationTypeNONE                             PreParseTextTransformationType = "NONE"
+	PreParseTextTransformationTypeURLDECODE                        PreParseTextTransformationType = "URL_DECODE"
+	PreParseTextTransformationTypeURLDECODEUNI                     PreParseTextTransformationType = "URL_DECODE_UNI"
+	PreParseTextTransformationTypeCOMBINEDUPLICATEQUERYARGSBYCOMMA PreParseTextTransformationType = "COMBINE_DUPLICATE_QUERY_ARGS_BY_COMMA"
+	PreParseTextTransformationTypeREPLACESEMICOLONSWITHAMPERSANDS  PreParseTextTransformationType = "REPLACE_SEMICOLONS_WITH_AMPERSANDS"
+)
+
+type TextTransformationType string
+
+const (
+	TextTransformationTypeNONE               TextTransformationType = "NONE"
+	TextTransformationTypeCOMPRESSWHITESPACE TextTransformationType = "COMPRESS_WHITE_SPACE"
+	TextTransformationTypeHTMLENTITYDECODE   TextTransformationType = "HTML_ENTITY_DECODE"
+	TextTransformationTypeLOWERCASE          TextTransformationType = "LOWERCASE"
+	TextTransformationTypeCMDLINE            TextTransformationType = "CMD_LINE"
+	TextTransformationTypeURLDECODE          TextTransformationType = "URL_DECODE"
+	TextTransformationTypeBASE64DECODE       TextTransformationType = "BASE64_DECODE"
+	TextTransformationTypeHEXDECODE          TextTransformationType = "HEX_DECODE"
+	TextTransformationTypeMD5                TextTransformationType = "MD5"
+	TextTransformationTypeREPLACECOMMENTS    TextTransformationType = "REPLACE_COMMENTS"
+	TextTransformationTypeESCAPESEQDECODE    TextTransformationType = "ESCAPE_SEQ_DECODE"
+	TextTransformationTypeSQLHEXDECODE       TextTransformationType = "SQL_HEX_DECODE"
+	TextTransformationTypeCSSDECODE          TextTransformationType = "CSS_DECODE"
+	TextTransformationTypeJSDECODE           TextTransformationType = "JS_DECODE"
+	TextTransformationTypeNORMALIZEPATH      TextTransformationType = "NORMALIZE_PATH"
+	TextTransformationTypeNORMALIZEPATHWIN   TextTransformationType = "NORMALIZE_PATH_WIN"
+	TextTransformationTypeREMOVENULLS        TextTransformationType = "REMOVE_NULLS"
+	TextTransformationTypeREPLACENULLS       TextTransformationType = "REPLACE_NULLS"
+	TextTransformationTypeBASE64DECODEEXT    TextTransformationType = "BASE64_DECODE_EXT"
+	TextTransformationTypeURLDECODEUNI       TextTransformationType = "URL_DECODE_UNI"
+	TextTransformationTypeUTF8TOUNICODE      TextTransformationType = "UTF8_TO_UNICODE"
+	TextTransformationTypeREMOVEWHITESPACE   TextTransformationType = "REMOVE_WHITESPACE"
+	TextTransformationTypeTRIM               TextTransformationType = "TRIM"
+	TextTransformationTypeTRIMLEFT           TextTransformationType = "TRIM_LEFT"
+	TextTransformationTypeTRIMRIGHT          TextTransformationType = "TRIM_RIGHT"
+	TextTransformationTypeREMOVECOMMENTSCHAR TextTransformationType = "REMOVE_COMMENTS_CHAR"
+	TextTransformationTypeUPPERCASE          TextTransformationType = "UPPERCASE"
+	TextTransformationTypeCMDLINEWIN         TextTransformationType = "CMD_LINE_WIN"
+	TextTransformationTypeCMDLINEUNIX        TextTransformationType = "CMD_LINE_UNIX"
+	TextTransformationTypeJSDECODEEXT        TextTransformationType = "JS_DECODE_EXT"
+	TextTransformationTypeSHA256             TextTransformationType = "SHA256"
+)
+
+type IPSetForwardedIPConfigurationFallbackBehavior string
+
+const (
+	IPSetForwardedIPConfigurationFallbackBehaviorMATCH   IPSetForwardedIPConfigurationFallbackBehavior = "MATCH"
+	IPSetForwardedIPConfigurationFallbackBehaviorNOMATCH IPSetForwardedIPConfigurationFallbackBehavior = "NO_MATCH"
+)
+
+type IPSetForwardedIPConfigurationPosition string
+
+const (
+	IPSetForwardedIPConfigurationPositionFIRST IPSetForwardedIPConfigurationPosition = "FIRST"
+	IPSetForwardedIPConfigurationPositionLAST  IPSetForwardedIPConfigurationPosition = "LAST"
+	IPSetForwardedIPConfigurationPositionANY   IPSetForwardedIPConfigurationPosition = "ANY"
+)
+
+type LabelMatchScope string
+
+const (
+	LabelMatchScopeLABEL     LabelMatchScope = "LABEL"
+	LabelMatchScopeNAMESPACE LabelMatchScope = "NAMESPACE"
+)
+
+type RateBasedStatementAggregateKeyType string
+
+const (
+	RateBasedStatementAggregateKeyTypeIP          RateBasedStatementAggregateKeyType = "IP"
+	RateBasedStatementAggregateKeyTypeFORWARDEDIP RateBasedStatementAggregateKeyType = "FORWARDED_IP"
+	RateBasedStatementAggregateKeyTypeCONSTANT    RateBasedStatementAggregateKeyType = "CONSTANT"
+	RateBasedStatementAggregateKeyTypeCUSTOMKEYS  RateBasedStatementAggregateKeyType = "CUSTOM_KEYS"
+)
+
+type RateLimitJA3FingerprintFallbackBehavior string
+
+const (
+	RateLimitJA3FingerprintFallbackBehaviorMATCH   RateLimitJA3FingerprintFallbackBehavior = "MATCH"
+	RateLimitJA3FingerprintFallbackBehaviorNOMATCH RateLimitJA3FingerprintFallbackBehavior = "NO_MATCH"
+)
+
+type RateLimitJA4FingerprintFallbackBehavior string
+
+const (
+	RateLimitJA4FingerprintFallbackBehaviorMATCH   RateLimitJA4FingerprintFallbackBehavior = "MATCH"
+	RateLimitJA4FingerprintFallbackBehaviorNOMATCH RateLimitJA4FingerprintFallbackBehavior = "NO_MATCH"
+)
+
+type SizeConstraintStatementComparisonOperator string
+
+const (
+	SizeConstraintStatementComparisonOperatorEQ SizeConstraintStatementComparisonOperator = "EQ"
+	SizeConstraintStatementComparisonOperatorNE SizeConstraintStatementComparisonOperator = "NE"
+	SizeConstraintStatementComparisonOperatorLE SizeConstraintStatementComparisonOperator = "LE"
+	SizeConstraintStatementComparisonOperatorLT SizeConstraintStatementComparisonOperator = "LT"
+	SizeConstraintStatementComparisonOperatorGE SizeConstraintStatementComparisonOperator = "GE"
+	SizeConstraintStatementComparisonOperatorGT SizeConstraintStatementComparisonOperator = "GT"
+)
+
+type SensitivityLevel string
+
+const (
+	SensitivityLevelLOW  SensitivityLevel = "LOW"
+	SensitivityLevelHIGH SensitivityLevel = "HIGH"
+)
+
+type RuleGroupScope string
+
+const (
+	RuleGroupScopeCLOUDFRONT RuleGroupScope = "CLOUDFRONT"
+	RuleGroupScopeREGIONAL   RuleGroupScope = "REGIONAL"
+)
+
+type SizeInspectionLimit string
+
+const (
+	SizeInspectionLimitKB16 SizeInspectionLimit = "KB_16"
+	SizeInspectionLimitKB32 SizeInspectionLimit = "KB_32"
+	SizeInspectionLimitKB48 SizeInspectionLimit = "KB_48"
+	SizeInspectionLimitKB64 SizeInspectionLimit = "KB_64"
+)
+
+type WebACLResponseContentType string
+
+const (
+	WebACLResponseContentTypeTEXTPLAIN       WebACLResponseContentType = "TEXT_PLAIN"
+	WebACLResponseContentTypeTEXTHTML        WebACLResponseContentType = "TEXT_HTML"
+	WebACLResponseContentTypeAPPLICATIONJSON WebACLResponseContentType = "APPLICATION_JSON"
+)
+
+type DataProtectionAction string
+
+const (
+	DataProtectionActionSUBSTITUTION DataProtectionAction = "SUBSTITUTION"
+	DataProtectionActionHASH         DataProtectionAction = "HASH"
+)
+
+type FieldToProtectFieldType string
+
+const (
+	FieldToProtectFieldTypeSINGLEHEADER        FieldToProtectFieldType = "SINGLE_HEADER"
+	FieldToProtectFieldTypeSINGLECOOKIE        FieldToProtectFieldType = "SINGLE_COOKIE"
+	FieldToProtectFieldTypeSINGLEQUERYARGUMENT FieldToProtectFieldType = "SINGLE_QUERY_ARGUMENT"
+	FieldToProtectFieldTypeQUERYSTRING         FieldToProtectFieldType = "QUERY_STRING"
+	FieldToProtectFieldTypeBODY                FieldToProtectFieldType = "BODY"
+)
+
+type WebACLBlockchainChain string
+
+const (
+	WebACLBlockchainChainBASE         WebACLBlockchainChain = "BASE"
+	WebACLBlockchainChainSOLANA       WebACLBlockchainChain = "SOLANA"
+	WebACLBlockchainChainBASESEPOLIA  WebACLBlockchainChain = "BASE_SEPOLIA"
+	WebACLBlockchainChainSOLANADEVNET WebACLBlockchainChain = "SOLANA_DEVNET"
+)
+
+type WebACLCryptoCurrency string
+
+const (
+	WebACLCryptoCurrencyUSDC WebACLCryptoCurrency = "USDC"
+)
+
+type WebACLCurrencyMode string
+
+const (
+	WebACLCurrencyModeREAL WebACLCurrencyMode = "REAL"
+	WebACLCurrencyModeTEST WebACLCurrencyMode = "TEST"
+)
+
+type OnSourceDDoSProtectionConfigALBLowReputationMode string
+
+const (
+	OnSourceDDoSProtectionConfigALBLowReputationModeACTIVEUNDERDDOS OnSourceDDoSProtectionConfigALBLowReputationMode = "ACTIVE_UNDER_DDOS"
+	OnSourceDDoSProtectionConfigALBLowReputationModeALWAYSON        OnSourceDDoSProtectionConfigALBLowReputationMode = "ALWAYS_ON"
+)
+
+type WebACLForwardedIPConfigurationFallbackBehavior string
+
+const (
+	WebACLForwardedIPConfigurationFallbackBehaviorMATCH   WebACLForwardedIPConfigurationFallbackBehavior = "MATCH"
+	WebACLForwardedIPConfigurationFallbackBehaviorNOMATCH WebACLForwardedIPConfigurationFallbackBehavior = "NO_MATCH"
+)
+
+type WebACLOversizeHandling string
+
+const (
+	WebACLOversizeHandlingCONTINUE WebACLOversizeHandling = "CONTINUE"
+	WebACLOversizeHandlingMATCH    WebACLOversizeHandling = "MATCH"
+	WebACLOversizeHandlingNOMATCH  WebACLOversizeHandling = "NO_MATCH"
+)
+
+type WebACLMapMatchScope string
+
+const (
+	WebACLMapMatchScopeALL   WebACLMapMatchScope = "ALL"
+	WebACLMapMatchScopeKEY   WebACLMapMatchScope = "KEY"
+	WebACLMapMatchScopeVALUE WebACLMapMatchScope = "VALUE"
+)
+
+type WebACLJA3FingerprintFallbackBehavior string
+
+const (
+	WebACLJA3FingerprintFallbackBehaviorMATCH   WebACLJA3FingerprintFallbackBehavior = "MATCH"
+	WebACLJA3FingerprintFallbackBehaviorNOMATCH WebACLJA3FingerprintFallbackBehavior = "NO_MATCH"
+)
+
+type WebACLJA4FingerprintFallbackBehavior string
+
+const (
+	WebACLJA4FingerprintFallbackBehaviorMATCH   WebACLJA4FingerprintFallbackBehavior = "MATCH"
+	WebACLJA4FingerprintFallbackBehaviorNOMATCH WebACLJA4FingerprintFallbackBehavior = "NO_MATCH"
+)
+
+type WebACLBodyParsingFallbackBehavior string
+
+const (
+	WebACLBodyParsingFallbackBehaviorMATCH            WebACLBodyParsingFallbackBehavior = "MATCH"
+	WebACLBodyParsingFallbackBehaviorNOMATCH          WebACLBodyParsingFallbackBehavior = "NO_MATCH"
+	WebACLBodyParsingFallbackBehaviorEVALUATEASSTRING WebACLBodyParsingFallbackBehavior = "EVALUATE_AS_STRING"
+)
+
+type WebACLJsonMatchScope string
+
+const (
+	WebACLJsonMatchScopeALL   WebACLJsonMatchScope = "ALL"
+	WebACLJsonMatchScopeKEY   WebACLJsonMatchScope = "KEY"
+	WebACLJsonMatchScopeVALUE WebACLJsonMatchScope = "VALUE"
+)
+
+type WebACLUriFragmentFallbackBehavior string
+
+const (
+	WebACLUriFragmentFallbackBehaviorMATCH   WebACLUriFragmentFallbackBehavior = "MATCH"
+	WebACLUriFragmentFallbackBehaviorNOMATCH WebACLUriFragmentFallbackBehavior = "NO_MATCH"
+)
+
+type WebACLPositionalConstraint string
+
+const (
+	WebACLPositionalConstraintEXACTLY      WebACLPositionalConstraint = "EXACTLY"
+	WebACLPositionalConstraintSTARTSWITH   WebACLPositionalConstraint = "STARTS_WITH"
+	WebACLPositionalConstraintENDSWITH     WebACLPositionalConstraint = "ENDS_WITH"
+	WebACLPositionalConstraintCONTAINS     WebACLPositionalConstraint = "CONTAINS"
+	WebACLPositionalConstraintCONTAINSWORD WebACLPositionalConstraint = "CONTAINS_WORD"
+)
+
+type WebACLPreParseTextTransformationType string
+
+const (
+	WebACLPreParseTextTransformationTypeNONE                             WebACLPreParseTextTransformationType = "NONE"
+	WebACLPreParseTextTransformationTypeURLDECODE                        WebACLPreParseTextTransformationType = "URL_DECODE"
+	WebACLPreParseTextTransformationTypeURLDECODEUNI                     WebACLPreParseTextTransformationType = "URL_DECODE_UNI"
+	WebACLPreParseTextTransformationTypeCOMBINEDUPLICATEQUERYARGSBYCOMMA WebACLPreParseTextTransformationType = "COMBINE_DUPLICATE_QUERY_ARGS_BY_COMMA"
+	WebACLPreParseTextTransformationTypeREPLACESEMICOLONSWITHAMPERSANDS  WebACLPreParseTextTransformationType = "REPLACE_SEMICOLONS_WITH_AMPERSANDS"
+)
+
+type WebACLTextTransformationType string
+
+const (
+	WebACLTextTransformationTypeNONE               WebACLTextTransformationType = "NONE"
+	WebACLTextTransformationTypeCOMPRESSWHITESPACE WebACLTextTransformationType = "COMPRESS_WHITE_SPACE"
+	WebACLTextTransformationTypeHTMLENTITYDECODE   WebACLTextTransformationType = "HTML_ENTITY_DECODE"
+	WebACLTextTransformationTypeLOWERCASE          WebACLTextTransformationType = "LOWERCASE"
+	WebACLTextTransformationTypeCMDLINE            WebACLTextTransformationType = "CMD_LINE"
+	WebACLTextTransformationTypeURLDECODE          WebACLTextTransformationType = "URL_DECODE"
+	WebACLTextTransformationTypeBASE64DECODE       WebACLTextTransformationType = "BASE64_DECODE"
+	WebACLTextTransformationTypeHEXDECODE          WebACLTextTransformationType = "HEX_DECODE"
+	WebACLTextTransformationTypeMD5                WebACLTextTransformationType = "MD5"
+	WebACLTextTransformationTypeREPLACECOMMENTS    WebACLTextTransformationType = "REPLACE_COMMENTS"
+	WebACLTextTransformationTypeESCAPESEQDECODE    WebACLTextTransformationType = "ESCAPE_SEQ_DECODE"
+	WebACLTextTransformationTypeSQLHEXDECODE       WebACLTextTransformationType = "SQL_HEX_DECODE"
+	WebACLTextTransformationTypeCSSDECODE          WebACLTextTransformationType = "CSS_DECODE"
+	WebACLTextTransformationTypeJSDECODE           WebACLTextTransformationType = "JS_DECODE"
+	WebACLTextTransformationTypeNORMALIZEPATH      WebACLTextTransformationType = "NORMALIZE_PATH"
+	WebACLTextTransformationTypeNORMALIZEPATHWIN   WebACLTextTransformationType = "NORMALIZE_PATH_WIN"
+	WebACLTextTransformationTypeREMOVENULLS        WebACLTextTransformationType = "REMOVE_NULLS"
+	WebACLTextTransformationTypeREPLACENULLS       WebACLTextTransformationType = "REPLACE_NULLS"
+	WebACLTextTransformationTypeBASE64DECODEEXT    WebACLTextTransformationType = "BASE64_DECODE_EXT"
+	WebACLTextTransformationTypeURLDECODEUNI       WebACLTextTransformationType = "URL_DECODE_UNI"
+	WebACLTextTransformationTypeUTF8TOUNICODE      WebACLTextTransformationType = "UTF8_TO_UNICODE"
+	WebACLTextTransformationTypeREMOVEWHITESPACE   WebACLTextTransformationType = "REMOVE_WHITESPACE"
+	WebACLTextTransformationTypeTRIM               WebACLTextTransformationType = "TRIM"
+	WebACLTextTransformationTypeTRIMLEFT           WebACLTextTransformationType = "TRIM_LEFT"
+	WebACLTextTransformationTypeTRIMRIGHT          WebACLTextTransformationType = "TRIM_RIGHT"
+	WebACLTextTransformationTypeREMOVECOMMENTSCHAR WebACLTextTransformationType = "REMOVE_COMMENTS_CHAR"
+	WebACLTextTransformationTypeUPPERCASE          WebACLTextTransformationType = "UPPERCASE"
+	WebACLTextTransformationTypeCMDLINEWIN         WebACLTextTransformationType = "CMD_LINE_WIN"
+	WebACLTextTransformationTypeCMDLINEUNIX        WebACLTextTransformationType = "CMD_LINE_UNIX"
+	WebACLTextTransformationTypeJSDECODEEXT        WebACLTextTransformationType = "JS_DECODE_EXT"
+	WebACLTextTransformationTypeSHA256             WebACLTextTransformationType = "SHA256"
+)
+
+type WebACLIPSetForwardedIPConfigurationFallbackBehavior string
+
+const (
+	WebACLIPSetForwardedIPConfigurationFallbackBehaviorMATCH   WebACLIPSetForwardedIPConfigurationFallbackBehavior = "MATCH"
+	WebACLIPSetForwardedIPConfigurationFallbackBehaviorNOMATCH WebACLIPSetForwardedIPConfigurationFallbackBehavior = "NO_MATCH"
+)
+
+type WebACLIPSetForwardedIPConfigurationPosition string
+
+const (
+	WebACLIPSetForwardedIPConfigurationPositionFIRST WebACLIPSetForwardedIPConfigurationPosition = "FIRST"
+	WebACLIPSetForwardedIPConfigurationPositionLAST  WebACLIPSetForwardedIPConfigurationPosition = "LAST"
+	WebACLIPSetForwardedIPConfigurationPositionANY   WebACLIPSetForwardedIPConfigurationPosition = "ANY"
+)
+
+type WebACLLabelMatchScope string
+
+const (
+	WebACLLabelMatchScopeLABEL     WebACLLabelMatchScope = "LABEL"
+	WebACLLabelMatchScopeNAMESPACE WebACLLabelMatchScope = "NAMESPACE"
+)
+
+type RequestInspectionACFPPayloadType string
+
+const (
+	RequestInspectionACFPPayloadTypeJSON        RequestInspectionACFPPayloadType = "JSON"
+	RequestInspectionACFPPayloadTypeFORMENCODED RequestInspectionACFPPayloadType = "FORM_ENCODED"
+)
+
+type RequestInspectionPayloadType string
+
+const (
+	RequestInspectionPayloadTypeJSON        RequestInspectionPayloadType = "JSON"
+	RequestInspectionPayloadTypeFORMENCODED RequestInspectionPayloadType = "FORM_ENCODED"
+)
+
+type SensitivityToAct string
+
+const (
+	SensitivityToActLOW    SensitivityToAct = "LOW"
+	SensitivityToActMEDIUM SensitivityToAct = "MEDIUM"
+	SensitivityToActHIGH   SensitivityToAct = "HIGH"
+)
+
+type UsageOfAction string
+
+const (
+	UsageOfActionENABLED  UsageOfAction = "ENABLED"
+	UsageOfActionDISABLED UsageOfAction = "DISABLED"
+)
+
+type AWSManagedRulesBotControlRuleSetInspectionLevel string
+
+const (
+	AWSManagedRulesBotControlRuleSetInspectionLevelCOMMON   AWSManagedRulesBotControlRuleSetInspectionLevel = "COMMON"
+	AWSManagedRulesBotControlRuleSetInspectionLevelTARGETED AWSManagedRulesBotControlRuleSetInspectionLevel = "TARGETED"
+)
+
+type ManagedRuleGroupConfigPayloadType string
+
+const (
+	ManagedRuleGroupConfigPayloadTypeJSON        ManagedRuleGroupConfigPayloadType = "JSON"
+	ManagedRuleGroupConfigPayloadTypeFORMENCODED ManagedRuleGroupConfigPayloadType = "FORM_ENCODED"
+)
+
+type WebACLRateBasedStatementAggregateKeyType string
+
+const (
+	WebACLRateBasedStatementAggregateKeyTypeCONSTANT    WebACLRateBasedStatementAggregateKeyType = "CONSTANT"
+	WebACLRateBasedStatementAggregateKeyTypeIP          WebACLRateBasedStatementAggregateKeyType = "IP"
+	WebACLRateBasedStatementAggregateKeyTypeFORWARDEDIP WebACLRateBasedStatementAggregateKeyType = "FORWARDED_IP"
+	WebACLRateBasedStatementAggregateKeyTypeCUSTOMKEYS  WebACLRateBasedStatementAggregateKeyType = "CUSTOM_KEYS"
+)
+
+type WebACLRateLimitJA3FingerprintFallbackBehavior string
+
+const (
+	WebACLRateLimitJA3FingerprintFallbackBehaviorMATCH   WebACLRateLimitJA3FingerprintFallbackBehavior = "MATCH"
+	WebACLRateLimitJA3FingerprintFallbackBehaviorNOMATCH WebACLRateLimitJA3FingerprintFallbackBehavior = "NO_MATCH"
+)
+
+type WebACLRateLimitJA4FingerprintFallbackBehavior string
+
+const (
+	WebACLRateLimitJA4FingerprintFallbackBehaviorMATCH   WebACLRateLimitJA4FingerprintFallbackBehavior = "MATCH"
+	WebACLRateLimitJA4FingerprintFallbackBehaviorNOMATCH WebACLRateLimitJA4FingerprintFallbackBehavior = "NO_MATCH"
+)
+
+type WebACLSizeConstraintStatementComparisonOperator string
+
+const (
+	WebACLSizeConstraintStatementComparisonOperatorEQ WebACLSizeConstraintStatementComparisonOperator = "EQ"
+	WebACLSizeConstraintStatementComparisonOperatorNE WebACLSizeConstraintStatementComparisonOperator = "NE"
+	WebACLSizeConstraintStatementComparisonOperatorLE WebACLSizeConstraintStatementComparisonOperator = "LE"
+	WebACLSizeConstraintStatementComparisonOperatorLT WebACLSizeConstraintStatementComparisonOperator = "LT"
+	WebACLSizeConstraintStatementComparisonOperatorGE WebACLSizeConstraintStatementComparisonOperator = "GE"
+	WebACLSizeConstraintStatementComparisonOperatorGT WebACLSizeConstraintStatementComparisonOperator = "GT"
+)
+
+type WebACLSensitivityLevel string
+
+const (
+	WebACLSensitivityLevelLOW  WebACLSensitivityLevel = "LOW"
+	WebACLSensitivityLevelHIGH WebACLSensitivityLevel = "HIGH"
+)
+
+type WebACLScope string
+
+const (
+	WebACLScopeCLOUDFRONT WebACLScope = "CLOUDFRONT"
+	WebACLScopeREGIONAL   WebACLScope = "REGIONAL"
+)

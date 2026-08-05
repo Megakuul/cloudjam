@@ -6,12 +6,12 @@ package elementalinference
 import "encoding/json"
 
 type Dictionary struct {
-	Arn      *string           `json:"Arn,omitempty"`
-	Entries  *string           `json:"Entries,omitempty"`
-	Id       *string           `json:"Id,omitempty"`
-	Language *string           `json:"Language,omitempty"`
-	Name     *string           `json:"Name,omitempty"`
-	Tags     map[string]string `json:"Tags,omitempty"`
+	Arn      *string             `json:"Arn,omitempty"`
+	Entries  *string             `json:"Entries,omitempty"`
+	Id       *string             `json:"Id,omitempty"`
+	Language *DictionaryLanguage `json:"Language,omitempty"`
+	Name     *string             `json:"Name,omitempty"`
+	Tags     map[string]string   `json:"Tags,omitempty"`
 }
 
 func (Dictionary) CloudControlType() string { return "AWS::ElementalInference::Dictionary" }
@@ -20,7 +20,7 @@ type GetOutput struct {
 	Description  *string         `json:"Description,omitempty"`
 	Name         *string         `json:"Name,omitempty"`
 	OutputConfig json.RawMessage `json:"OutputConfig,omitempty"`
-	Status       *string         `json:"Status,omitempty"`
+	Status       *OutputStatus   `json:"Status,omitempty"`
 }
 
 type Feed struct {
@@ -33,3 +33,21 @@ type Feed struct {
 }
 
 func (Feed) CloudControlType() string { return "AWS::ElementalInference::Feed" }
+
+type DictionaryLanguage string
+
+const (
+	DictionaryLanguageEng DictionaryLanguage = "eng"
+	DictionaryLanguageFra DictionaryLanguage = "fra"
+	DictionaryLanguageIta DictionaryLanguage = "ita"
+	DictionaryLanguageDeu DictionaryLanguage = "deu"
+	DictionaryLanguageSpa DictionaryLanguage = "spa"
+	DictionaryLanguagePor DictionaryLanguage = "por"
+)
+
+type OutputStatus string
+
+const (
+	OutputStatusENABLED  OutputStatus = "ENABLED"
+	OutputStatusDISABLED OutputStatus = "DISABLED"
+)

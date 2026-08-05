@@ -22,7 +22,7 @@ type ProvisioningArtifactProperties struct {
 	DisableTemplateValidation *bool                               `json:"DisableTemplateValidation,omitempty"`
 	Info                      *ProvisioningArtifactPropertiesInfo `json:"Info,omitempty"`
 	Name                      *string                             `json:"Name,omitempty"`
-	Type                      *string                             `json:"Type,omitempty"`
+	Type                      *ProvisioningArtifactPropertiesType `json:"Type,omitempty"`
 }
 
 type CodeStarParameters struct {
@@ -47,23 +47,23 @@ type Tag struct {
 }
 
 type CloudFormationProduct struct {
-	AcceptLanguage                 *string                          `json:"AcceptLanguage,omitempty"`
-	Description                    *string                          `json:"Description,omitempty"`
-	Distributor                    *string                          `json:"Distributor,omitempty"`
-	Id                             *string                          `json:"Id,omitempty"`
-	Name                           *string                          `json:"Name,omitempty"`
-	Owner                          *string                          `json:"Owner,omitempty"`
-	ProductName                    *string                          `json:"ProductName,omitempty"`
-	ProductType                    *string                          `json:"ProductType,omitempty"`
-	ProvisioningArtifactIds        *string                          `json:"ProvisioningArtifactIds,omitempty"`
-	ProvisioningArtifactNames      *string                          `json:"ProvisioningArtifactNames,omitempty"`
-	ProvisioningArtifactParameters []ProvisioningArtifactProperties `json:"ProvisioningArtifactParameters,omitempty"`
-	ReplaceProvisioningArtifacts   *bool                            `json:"ReplaceProvisioningArtifacts,omitempty"`
-	SourceConnection               *SourceConnection                `json:"SourceConnection,omitempty"`
-	SupportDescription             *string                          `json:"SupportDescription,omitempty"`
-	SupportEmail                   *string                          `json:"SupportEmail,omitempty"`
-	SupportUrl                     *string                          `json:"SupportUrl,omitempty"`
-	Tags                           []Tag                            `json:"Tags,omitempty"`
+	AcceptLanguage                 *string                           `json:"AcceptLanguage,omitempty"`
+	Description                    *string                           `json:"Description,omitempty"`
+	Distributor                    *string                           `json:"Distributor,omitempty"`
+	Id                             *string                           `json:"Id,omitempty"`
+	Name                           *string                           `json:"Name,omitempty"`
+	Owner                          *string                           `json:"Owner,omitempty"`
+	ProductName                    *string                           `json:"ProductName,omitempty"`
+	ProductType                    *CloudFormationProductProductType `json:"ProductType,omitempty"`
+	ProvisioningArtifactIds        *string                           `json:"ProvisioningArtifactIds,omitempty"`
+	ProvisioningArtifactNames      *string                           `json:"ProvisioningArtifactNames,omitempty"`
+	ProvisioningArtifactParameters []ProvisioningArtifactProperties  `json:"ProvisioningArtifactParameters,omitempty"`
+	ReplaceProvisioningArtifacts   *bool                             `json:"ReplaceProvisioningArtifacts,omitempty"`
+	SourceConnection               *SourceConnection                 `json:"SourceConnection,omitempty"`
+	SupportDescription             *string                           `json:"SupportDescription,omitempty"`
+	SupportEmail                   *string                           `json:"SupportEmail,omitempty"`
+	SupportUrl                     *string                           `json:"SupportUrl,omitempty"`
+	Tags                           []Tag                             `json:"Tags,omitempty"`
 }
 
 func (CloudFormationProduct) CloudControlType() string {
@@ -76,13 +76,13 @@ type ProvisioningParameter struct {
 }
 
 type ProvisioningPreferences struct {
-	StackSetAccounts                   []string `json:"StackSetAccounts,omitempty"`
-	StackSetFailureToleranceCount      *int     `json:"StackSetFailureToleranceCount,omitempty"`
-	StackSetFailureTolerancePercentage *int     `json:"StackSetFailureTolerancePercentage,omitempty"`
-	StackSetMaxConcurrencyCount        *int     `json:"StackSetMaxConcurrencyCount,omitempty"`
-	StackSetMaxConcurrencyPercentage   *int     `json:"StackSetMaxConcurrencyPercentage,omitempty"`
-	StackSetOperationType              *string  `json:"StackSetOperationType,omitempty"`
-	StackSetRegions                    []string `json:"StackSetRegions,omitempty"`
+	StackSetAccounts                   []string                                      `json:"StackSetAccounts,omitempty"`
+	StackSetFailureToleranceCount      *int                                          `json:"StackSetFailureToleranceCount,omitempty"`
+	StackSetFailureTolerancePercentage *int                                          `json:"StackSetFailureTolerancePercentage,omitempty"`
+	StackSetMaxConcurrencyCount        *int                                          `json:"StackSetMaxConcurrencyCount,omitempty"`
+	StackSetMaxConcurrencyPercentage   *int                                          `json:"StackSetMaxConcurrencyPercentage,omitempty"`
+	StackSetOperationType              *ProvisioningPreferencesStackSetOperationType `json:"StackSetOperationType,omitempty"`
+	StackSetRegions                    []string                                      `json:"StackSetRegions,omitempty"`
 }
 
 type CloudFormationProvisionedProductTag struct {
@@ -91,22 +91,22 @@ type CloudFormationProvisionedProductTag struct {
 }
 
 type CloudFormationProvisionedProduct struct {
-	AcceptLanguage           *string                               `json:"AcceptLanguage,omitempty"`
-	CloudformationStackArn   *string                               `json:"CloudformationStackArn,omitempty"`
-	NotificationArns         []string                              `json:"NotificationArns,omitempty"`
-	Outputs                  map[string]string                     `json:"Outputs,omitempty"`
-	PathId                   *string                               `json:"PathId,omitempty"`
-	PathName                 *string                               `json:"PathName,omitempty"`
-	ProductId                *string                               `json:"ProductId,omitempty"`
-	ProductName              *string                               `json:"ProductName,omitempty"`
-	ProvisionedProductId     *string                               `json:"ProvisionedProductId,omitempty"`
-	ProvisionedProductName   *string                               `json:"ProvisionedProductName,omitempty"`
-	ProvisioningArtifactId   *string                               `json:"ProvisioningArtifactId,omitempty"`
-	ProvisioningArtifactName *string                               `json:"ProvisioningArtifactName,omitempty"`
-	ProvisioningParameters   []ProvisioningParameter               `json:"ProvisioningParameters,omitempty"`
-	ProvisioningPreferences  *ProvisioningPreferences              `json:"ProvisioningPreferences,omitempty"`
-	RecordId                 *string                               `json:"RecordId,omitempty"`
-	Tags                     []CloudFormationProvisionedProductTag `json:"Tags,omitempty"`
+	AcceptLanguage           *CloudFormationProvisionedProductAcceptLanguage `json:"AcceptLanguage,omitempty"`
+	CloudformationStackArn   *string                                         `json:"CloudformationStackArn,omitempty"`
+	NotificationArns         []string                                        `json:"NotificationArns,omitempty"`
+	Outputs                  map[string]string                               `json:"Outputs,omitempty"`
+	PathId                   *string                                         `json:"PathId,omitempty"`
+	PathName                 *string                                         `json:"PathName,omitempty"`
+	ProductId                *string                                         `json:"ProductId,omitempty"`
+	ProductName              *string                                         `json:"ProductName,omitempty"`
+	ProvisionedProductId     *string                                         `json:"ProvisionedProductId,omitempty"`
+	ProvisionedProductName   *string                                         `json:"ProvisionedProductName,omitempty"`
+	ProvisioningArtifactId   *string                                         `json:"ProvisioningArtifactId,omitempty"`
+	ProvisioningArtifactName *string                                         `json:"ProvisioningArtifactName,omitempty"`
+	ProvisioningParameters   []ProvisioningParameter                         `json:"ProvisioningParameters,omitempty"`
+	ProvisioningPreferences  *ProvisioningPreferences                        `json:"ProvisioningPreferences,omitempty"`
+	RecordId                 *string                                         `json:"RecordId,omitempty"`
+	Tags                     []CloudFormationProvisionedProductTag           `json:"Tags,omitempty"`
 }
 
 func (CloudFormationProvisionedProduct) CloudControlType() string {
@@ -220,12 +220,12 @@ type DefinitionParameter struct {
 }
 
 type ServiceAction struct {
-	AcceptLanguage *string               `json:"AcceptLanguage,omitempty"`
-	Definition     []DefinitionParameter `json:"Definition,omitempty"`
-	DefinitionType *string               `json:"DefinitionType,omitempty"`
-	Description    *string               `json:"Description,omitempty"`
-	Id             *string               `json:"Id,omitempty"`
-	Name           *string               `json:"Name,omitempty"`
+	AcceptLanguage *ServiceActionAcceptLanguage `json:"AcceptLanguage,omitempty"`
+	Definition     []DefinitionParameter        `json:"Definition,omitempty"`
+	DefinitionType *ServiceActionDefinitionType `json:"DefinitionType,omitempty"`
+	Description    *string                      `json:"Description,omitempty"`
+	Id             *string                      `json:"Id,omitempty"`
+	Name           *string                      `json:"Name,omitempty"`
 }
 
 func (ServiceAction) CloudControlType() string { return "AWS::ServiceCatalog::ServiceAction" }
@@ -272,3 +272,55 @@ type TagOptionAssociation struct {
 func (TagOptionAssociation) CloudControlType() string {
 	return "AWS::ServiceCatalog::TagOptionAssociation"
 }
+
+type CloudFormationProductProductType string
+
+const (
+	CloudFormationProductProductTypeCLOUDFORMATIONTEMPLATE CloudFormationProductProductType = "CLOUD_FORMATION_TEMPLATE"
+	CloudFormationProductProductTypeMARKETPLACEAMI         CloudFormationProductProductType = "MARKETPLACE_AMI"
+	CloudFormationProductProductTypeMARKETPLACECAR         CloudFormationProductProductType = "MARKETPLACE_CAR"
+	CloudFormationProductProductTypeTERRAFORMOPENSOURCE    CloudFormationProductProductType = "TERRAFORM_OPEN_SOURCE"
+	CloudFormationProductProductTypeTERRAFORMCLOUD         CloudFormationProductProductType = "TERRAFORM_CLOUD"
+	CloudFormationProductProductTypeEXTERNAL               CloudFormationProductProductType = "EXTERNAL"
+)
+
+type ProvisioningArtifactPropertiesType string
+
+const (
+	ProvisioningArtifactPropertiesTypeCLOUDFORMATIONTEMPLATE ProvisioningArtifactPropertiesType = "CLOUD_FORMATION_TEMPLATE"
+	ProvisioningArtifactPropertiesTypeMARKETPLACEAMI         ProvisioningArtifactPropertiesType = "MARKETPLACE_AMI"
+	ProvisioningArtifactPropertiesTypeMARKETPLACECAR         ProvisioningArtifactPropertiesType = "MARKETPLACE_CAR"
+	ProvisioningArtifactPropertiesTypeTERRAFORMOPENSOURCE    ProvisioningArtifactPropertiesType = "TERRAFORM_OPEN_SOURCE"
+	ProvisioningArtifactPropertiesTypeTERRAFORMCLOUD         ProvisioningArtifactPropertiesType = "TERRAFORM_CLOUD"
+	ProvisioningArtifactPropertiesTypeEXTERNAL               ProvisioningArtifactPropertiesType = "EXTERNAL"
+)
+
+type CloudFormationProvisionedProductAcceptLanguage string
+
+const (
+	CloudFormationProvisionedProductAcceptLanguageEn CloudFormationProvisionedProductAcceptLanguage = "en"
+	CloudFormationProvisionedProductAcceptLanguageJp CloudFormationProvisionedProductAcceptLanguage = "jp"
+	CloudFormationProvisionedProductAcceptLanguageZh CloudFormationProvisionedProductAcceptLanguage = "zh"
+)
+
+type ProvisioningPreferencesStackSetOperationType string
+
+const (
+	ProvisioningPreferencesStackSetOperationTypeCREATE ProvisioningPreferencesStackSetOperationType = "CREATE"
+	ProvisioningPreferencesStackSetOperationTypeUPDATE ProvisioningPreferencesStackSetOperationType = "UPDATE"
+	ProvisioningPreferencesStackSetOperationTypeDELETE ProvisioningPreferencesStackSetOperationType = "DELETE"
+)
+
+type ServiceActionAcceptLanguage string
+
+const (
+	ServiceActionAcceptLanguageEn ServiceActionAcceptLanguage = "en"
+	ServiceActionAcceptLanguageJp ServiceActionAcceptLanguage = "jp"
+	ServiceActionAcceptLanguageZh ServiceActionAcceptLanguage = "zh"
+)
+
+type ServiceActionDefinitionType string
+
+const (
+	ServiceActionDefinitionTypeSSMAUTOMATION ServiceActionDefinitionType = "SSM_AUTOMATION"
+)

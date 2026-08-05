@@ -15,12 +15,12 @@ type IngressGatewayBridge struct {
 }
 
 type BridgeNetworkOutput struct {
-	IpAddress   *string `json:"IpAddress,omitempty"`
-	Name        *string `json:"Name,omitempty"`
-	NetworkName *string `json:"NetworkName,omitempty"`
-	Port        *int    `json:"Port,omitempty"`
-	Protocol    *string `json:"Protocol,omitempty"`
-	Ttl         *int    `json:"Ttl,omitempty"`
+	IpAddress   *string       `json:"IpAddress,omitempty"`
+	Name        *string       `json:"Name,omitempty"`
+	NetworkName *string       `json:"NetworkName,omitempty"`
+	Port        *int          `json:"Port,omitempty"`
+	Protocol    *ProtocolEnum `json:"Protocol,omitempty"`
+	Ttl         *int          `json:"Ttl,omitempty"`
 }
 
 type BridgeOutput struct {
@@ -32,9 +32,9 @@ type SourcePriority struct {
 }
 
 type FailoverConfig struct {
-	FailoverMode   *string         `json:"FailoverMode,omitempty"`
-	SourcePriority *SourcePriority `json:"SourcePriority,omitempty"`
-	State          *string         `json:"State,omitempty"`
+	FailoverMode   *FailoverModeEnum        `json:"FailoverMode,omitempty"`
+	SourcePriority *SourcePriority          `json:"SourcePriority,omitempty"`
+	State          *FailoverConfigStateEnum `json:"State,omitempty"`
 }
 
 type VpcInterfaceAttachment struct {
@@ -57,7 +57,7 @@ type BridgeNetworkSource struct {
 	Name                    *string                  `json:"Name,omitempty"`
 	NetworkName             *string                  `json:"NetworkName,omitempty"`
 	Port                    *int                     `json:"Port,omitempty"`
-	Protocol                *string                  `json:"Protocol,omitempty"`
+	Protocol                *ProtocolEnum            `json:"Protocol,omitempty"`
 }
 
 type BridgeSource struct {
@@ -67,7 +67,7 @@ type BridgeSource struct {
 
 type Bridge struct {
 	BridgeArn            *string               `json:"BridgeArn,omitempty"`
-	BridgeState          *string               `json:"BridgeState,omitempty"`
+	BridgeState          *BridgeStateEnum      `json:"BridgeState,omitempty"`
 	EgressGatewayBridge  *EgressGatewayBridge  `json:"EgressGatewayBridge,omitempty"`
 	IngressGatewayBridge *IngressGatewayBridge `json:"IngressGatewayBridge,omitempty"`
 	Name                 *string               `json:"Name,omitempty"`
@@ -80,11 +80,11 @@ type Bridge struct {
 func (Bridge) CloudControlType() string { return "AWS::MediaConnect::Bridge" }
 
 type BridgeOutputBridgeNetworkOutput struct {
-	IpAddress   *string `json:"IpAddress,omitempty"`
-	NetworkName *string `json:"NetworkName,omitempty"`
-	Port        *int    `json:"Port,omitempty"`
-	Protocol    *string `json:"Protocol,omitempty"`
-	Ttl         *int    `json:"Ttl,omitempty"`
+	IpAddress   *string                                  `json:"IpAddress,omitempty"`
+	NetworkName *string                                  `json:"NetworkName,omitempty"`
+	Port        *int                                     `json:"Port,omitempty"`
+	Protocol    *BridgeOutputBridgeNetworkOutputProtocol `json:"Protocol,omitempty"`
+	Ttl         *int                                     `json:"Ttl,omitempty"`
 }
 
 type BridgeOutputBridgeOutput struct {
@@ -113,7 +113,7 @@ type BridgeSourceBridgeNetworkSource struct {
 	MulticastSourceSettings *BridgeSourceMulticastSourceSettings `json:"MulticastSourceSettings,omitempty"`
 	NetworkName             *string                              `json:"NetworkName,omitempty"`
 	Port                    *int                                 `json:"Port,omitempty"`
-	Protocol                *string                              `json:"Protocol,omitempty"`
+	Protocol                *BridgeSourceProtocolEnum            `json:"Protocol,omitempty"`
 }
 
 type BridgeSourceBridgeSource struct {
@@ -126,23 +126,23 @@ type BridgeSourceBridgeSource struct {
 func (BridgeSourceBridgeSource) CloudControlType() string { return "AWS::MediaConnect::BridgeSource" }
 
 type EncodingConfig struct {
-	EncodingProfile *string `json:"EncodingProfile,omitempty"`
-	VideoMaxBitrate *int    `json:"VideoMaxBitrate,omitempty"`
+	EncodingProfile *EncodingProfile `json:"EncodingProfile,omitempty"`
+	VideoMaxBitrate *int             `json:"VideoMaxBitrate,omitempty"`
 }
 
 type Maintenance struct {
-	MaintenanceDay       *string `json:"MaintenanceDay,omitempty"`
-	MaintenanceStartHour *string `json:"MaintenanceStartHour,omitempty"`
+	MaintenanceDay       *MaintenanceMaintenanceDay `json:"MaintenanceDay,omitempty"`
+	MaintenanceStartHour *string                    `json:"MaintenanceStartHour,omitempty"`
 }
 
 type Fmtp struct {
-	ChannelOrder   *string `json:"ChannelOrder,omitempty"`
-	Colorimetry    *string `json:"Colorimetry,omitempty"`
-	ExactFramerate *string `json:"ExactFramerate,omitempty"`
-	Par            *string `json:"Par,omitempty"`
-	Range          *string `json:"Range,omitempty"`
-	ScanMode       *string `json:"ScanMode,omitempty"`
-	Tcs            *string `json:"Tcs,omitempty"`
+	ChannelOrder   *string          `json:"ChannelOrder,omitempty"`
+	Colorimetry    *FmtpColorimetry `json:"Colorimetry,omitempty"`
+	ExactFramerate *string          `json:"ExactFramerate,omitempty"`
+	Par            *string          `json:"Par,omitempty"`
+	Range          *FmtpRange       `json:"Range,omitempty"`
+	ScanMode       *FmtpScanMode    `json:"ScanMode,omitempty"`
+	Tcs            *FmtpTcs         `json:"Tcs,omitempty"`
 }
 
 type MediaStreamAttributes struct {
@@ -156,15 +156,15 @@ type Tag struct {
 }
 
 type MediaStream struct {
-	Attributes      *MediaStreamAttributes `json:"Attributes,omitempty"`
-	ClockRate       *int                   `json:"ClockRate,omitempty"`
-	Description     *string                `json:"Description,omitempty"`
-	Fmt             *int                   `json:"Fmt,omitempty"`
-	MediaStreamId   *int                   `json:"MediaStreamId,omitempty"`
-	MediaStreamName *string                `json:"MediaStreamName,omitempty"`
-	MediaStreamType *string                `json:"MediaStreamType,omitempty"`
-	Tags            []Tag                  `json:"Tags,omitempty"`
-	VideoFormat     *string                `json:"VideoFormat,omitempty"`
+	Attributes      *MediaStreamAttributes      `json:"Attributes,omitempty"`
+	ClockRate       *int                        `json:"ClockRate,omitempty"`
+	Description     *string                     `json:"Description,omitempty"`
+	Fmt             *int                        `json:"Fmt,omitempty"`
+	MediaStreamId   *int                        `json:"MediaStreamId,omitempty"`
+	MediaStreamName *string                     `json:"MediaStreamName,omitempty"`
+	MediaStreamType *MediaStreamMediaStreamType `json:"MediaStreamType,omitempty"`
+	Tags            []Tag                       `json:"Tags,omitempty"`
+	VideoFormat     *MediaStreamVideoFormat     `json:"VideoFormat,omitempty"`
 }
 
 type NdiDiscoveryServerConfig struct {
@@ -176,19 +176,19 @@ type NdiDiscoveryServerConfig struct {
 type NdiConfig struct {
 	MachineName         *string                    `json:"MachineName,omitempty"`
 	NdiDiscoveryServers []NdiDiscoveryServerConfig `json:"NdiDiscoveryServers,omitempty"`
-	NdiState            *string                    `json:"NdiState,omitempty"`
+	NdiState            *NdiState                  `json:"NdiState,omitempty"`
 }
 
 type Encryption struct {
-	Algorithm                    *string `json:"Algorithm,omitempty"`
-	ConstantInitializationVector *string `json:"ConstantInitializationVector,omitempty"`
-	DeviceId                     *string `json:"DeviceId,omitempty"`
-	KeyType                      *string `json:"KeyType,omitempty"`
-	Region                       *string `json:"Region,omitempty"`
-	ResourceId                   *string `json:"ResourceId,omitempty"`
-	RoleArn                      *string `json:"RoleArn,omitempty"`
-	SecretArn                    *string `json:"SecretArn,omitempty"`
-	Url                          *string `json:"Url,omitempty"`
+	Algorithm                    *EncryptionAlgorithm `json:"Algorithm,omitempty"`
+	ConstantInitializationVector *string              `json:"ConstantInitializationVector,omitempty"`
+	DeviceId                     *string              `json:"DeviceId,omitempty"`
+	KeyType                      *EncryptionKeyType   `json:"KeyType,omitempty"`
+	Region                       *string              `json:"Region,omitempty"`
+	ResourceId                   *string              `json:"ResourceId,omitempty"`
+	RoleArn                      *string              `json:"RoleArn,omitempty"`
+	SecretArn                    *string              `json:"SecretArn,omitempty"`
+	Url                          *string              `json:"Url,omitempty"`
 }
 
 type FlowVpcInterfaceAttachment struct {
@@ -210,9 +210,9 @@ type InputConfiguration struct {
 }
 
 type MediaStreamSourceConfiguration struct {
-	EncodingName        *string              `json:"EncodingName,omitempty"`
-	InputConfigurations []InputConfiguration `json:"InputConfigurations,omitempty"`
-	MediaStreamName     *string              `json:"MediaStreamName,omitempty"`
+	EncodingName        *MediaStreamSourceConfigurationEncodingName `json:"EncodingName,omitempty"`
+	InputConfigurations []InputConfiguration                        `json:"InputConfigurations,omitempty"`
+	MediaStreamName     *string                                     `json:"MediaStreamName,omitempty"`
 }
 
 type NdiSourceSettings struct {
@@ -220,8 +220,8 @@ type NdiSourceSettings struct {
 }
 
 type FlowTransitEncryption struct {
-	EncryptionKeyConfiguration json.RawMessage `json:"EncryptionKeyConfiguration,omitempty"`
-	EncryptionKeyType          *string         `json:"EncryptionKeyType,omitempty"`
+	EncryptionKeyConfiguration json.RawMessage               `json:"EncryptionKeyConfiguration,omitempty"`
+	EncryptionKeyType          *FlowTransitEncryptionKeyType `json:"EncryptionKeyType,omitempty"`
 }
 
 type Source struct {
@@ -238,8 +238,8 @@ type Source struct {
 	MinLatency                         *int                             `json:"MinLatency,omitempty"`
 	Name                               *string                          `json:"Name,omitempty"`
 	NdiSourceSettings                  *NdiSourceSettings               `json:"NdiSourceSettings,omitempty"`
-	Protocol                           *string                          `json:"Protocol,omitempty"`
-	RouterIntegrationState             *string                          `json:"RouterIntegrationState,omitempty"`
+	Protocol                           *SourceProtocol                  `json:"Protocol,omitempty"`
+	RouterIntegrationState             *SourceRouterIntegrationState    `json:"RouterIntegrationState,omitempty"`
 	RouterIntegrationTransitDecryption *FlowTransitEncryption           `json:"RouterIntegrationTransitDecryption,omitempty"`
 	SenderControlPort                  *int                             `json:"SenderControlPort,omitempty"`
 	SenderIpAddress                    *string                          `json:"SenderIpAddress,omitempty"`
@@ -258,15 +258,15 @@ type FlowFailoverConfigSourcePriority struct {
 }
 
 type FlowFailoverConfig struct {
-	FailoverMode   *string                           `json:"FailoverMode,omitempty"`
+	FailoverMode   *FlowFailoverConfigFailoverMode   `json:"FailoverMode,omitempty"`
 	RecoveryWindow *int                              `json:"RecoveryWindow,omitempty"`
 	SourcePriority *FlowFailoverConfigSourcePriority `json:"SourcePriority,omitempty"`
-	State          *string                           `json:"State,omitempty"`
+	State          *FlowFailoverConfigState          `json:"State,omitempty"`
 }
 
 type SilentAudio struct {
-	State            *string `json:"State,omitempty"`
-	ThresholdSeconds *int    `json:"ThresholdSeconds,omitempty"`
+	State            *SilentAudioState `json:"State,omitempty"`
+	ThresholdSeconds *int              `json:"ThresholdSeconds,omitempty"`
 }
 
 type AudioMonitoringSetting struct {
@@ -274,13 +274,13 @@ type AudioMonitoringSetting struct {
 }
 
 type BlackFrames struct {
-	State            *string `json:"State,omitempty"`
-	ThresholdSeconds *int    `json:"ThresholdSeconds,omitempty"`
+	State            *BlackFramesState `json:"State,omitempty"`
+	ThresholdSeconds *int              `json:"ThresholdSeconds,omitempty"`
 }
 
 type FrozenFrames struct {
-	State            *string `json:"State,omitempty"`
-	ThresholdSeconds *int    `json:"ThresholdSeconds,omitempty"`
+	State            *FrozenFramesState `json:"State,omitempty"`
+	ThresholdSeconds *int               `json:"ThresholdSeconds,omitempty"`
 }
 
 type VideoMonitoringSetting struct {
@@ -289,20 +289,20 @@ type VideoMonitoringSetting struct {
 }
 
 type SourceMonitoringConfig struct {
-	AudioMonitoringSettings     []AudioMonitoringSetting `json:"AudioMonitoringSettings,omitempty"`
-	ContentQualityAnalysisState *string                  `json:"ContentQualityAnalysisState,omitempty"`
-	ThumbnailState              *string                  `json:"ThumbnailState,omitempty"`
-	VideoMonitoringSettings     []VideoMonitoringSetting `json:"VideoMonitoringSettings,omitempty"`
+	AudioMonitoringSettings     []AudioMonitoringSetting                           `json:"AudioMonitoringSettings,omitempty"`
+	ContentQualityAnalysisState *SourceMonitoringConfigContentQualityAnalysisState `json:"ContentQualityAnalysisState,omitempty"`
+	ThumbnailState              *SourceMonitoringConfigThumbnailState              `json:"ThumbnailState,omitempty"`
+	VideoMonitoringSettings     []VideoMonitoringSetting                           `json:"VideoMonitoringSettings,omitempty"`
 }
 
 type VpcInterface struct {
-	Name                 *string  `json:"Name,omitempty"`
-	NetworkInterfaceIds  []string `json:"NetworkInterfaceIds,omitempty"`
-	NetworkInterfaceType *string  `json:"NetworkInterfaceType,omitempty"`
-	RoleArn              *string  `json:"RoleArn,omitempty"`
-	SecurityGroupIds     []string `json:"SecurityGroupIds,omitempty"`
-	SubnetId             *string  `json:"SubnetId,omitempty"`
-	Tags                 []Tag    `json:"Tags,omitempty"`
+	Name                 *string                           `json:"Name,omitempty"`
+	NetworkInterfaceIds  []string                          `json:"NetworkInterfaceIds,omitempty"`
+	NetworkInterfaceType *VpcInterfaceNetworkInterfaceType `json:"NetworkInterfaceType,omitempty"`
+	RoleArn              *string                           `json:"RoleArn,omitempty"`
+	SecurityGroupIds     []string                          `json:"SecurityGroupIds,omitempty"`
+	SubnetId             *string                           `json:"SubnetId,omitempty"`
+	Tags                 []Tag                             `json:"Tags,omitempty"`
 }
 
 type Flow struct {
@@ -312,7 +312,7 @@ type Flow struct {
 	FlowArn                *string                 `json:"FlowArn,omitempty"`
 	FlowAvailabilityZone   *string                 `json:"FlowAvailabilityZone,omitempty"`
 	FlowNdiMachineName     *string                 `json:"FlowNdiMachineName,omitempty"`
-	FlowSize               *string                 `json:"FlowSize,omitempty"`
+	FlowSize               *FlowFlowSize           `json:"FlowSize,omitempty"`
 	Maintenance            *Maintenance            `json:"Maintenance,omitempty"`
 	MediaStreams           []MediaStream           `json:"MediaStreams,omitempty"`
 	Name                   *string                 `json:"Name,omitempty"`
@@ -327,15 +327,15 @@ type Flow struct {
 func (Flow) CloudControlType() string { return "AWS::MediaConnect::Flow" }
 
 type FlowEntitlementEncryption struct {
-	Algorithm                    *string `json:"Algorithm,omitempty"`
-	ConstantInitializationVector *string `json:"ConstantInitializationVector,omitempty"`
-	DeviceId                     *string `json:"DeviceId,omitempty"`
-	KeyType                      *string `json:"KeyType,omitempty"`
-	Region                       *string `json:"Region,omitempty"`
-	ResourceId                   *string `json:"ResourceId,omitempty"`
-	RoleArn                      *string `json:"RoleArn,omitempty"`
-	SecretArn                    *string `json:"SecretArn,omitempty"`
-	Url                          *string `json:"Url,omitempty"`
+	Algorithm                    *FlowEntitlementEncryptionAlgorithm `json:"Algorithm,omitempty"`
+	ConstantInitializationVector *string                             `json:"ConstantInitializationVector,omitempty"`
+	DeviceId                     *string                             `json:"DeviceId,omitempty"`
+	KeyType                      *FlowEntitlementEncryptionKeyType   `json:"KeyType,omitempty"`
+	Region                       *string                             `json:"Region,omitempty"`
+	ResourceId                   *string                             `json:"ResourceId,omitempty"`
+	RoleArn                      *string                             `json:"RoleArn,omitempty"`
+	SecretArn                    *string                             `json:"SecretArn,omitempty"`
+	Url                          *string                             `json:"Url,omitempty"`
 }
 
 type FlowEntitlementTag struct {
@@ -344,24 +344,24 @@ type FlowEntitlementTag struct {
 }
 
 type FlowEntitlement struct {
-	DataTransferSubscriberFeePercent *int                       `json:"DataTransferSubscriberFeePercent,omitempty"`
-	Description                      *string                    `json:"Description,omitempty"`
-	Encryption                       *FlowEntitlementEncryption `json:"Encryption,omitempty"`
-	EntitlementArn                   *string                    `json:"EntitlementArn,omitempty"`
-	EntitlementStatus                *string                    `json:"EntitlementStatus,omitempty"`
-	FlowArn                          *string                    `json:"FlowArn,omitempty"`
-	Name                             *string                    `json:"Name,omitempty"`
-	Subscribers                      []string                   `json:"Subscribers,omitempty"`
-	Tags                             []FlowEntitlementTag       `json:"Tags,omitempty"`
+	DataTransferSubscriberFeePercent *int                              `json:"DataTransferSubscriberFeePercent,omitempty"`
+	Description                      *string                           `json:"Description,omitempty"`
+	Encryption                       *FlowEntitlementEncryption        `json:"Encryption,omitempty"`
+	EntitlementArn                   *string                           `json:"EntitlementArn,omitempty"`
+	EntitlementStatus                *FlowEntitlementEntitlementStatus `json:"EntitlementStatus,omitempty"`
+	FlowArn                          *string                           `json:"FlowArn,omitempty"`
+	Name                             *string                           `json:"Name,omitempty"`
+	Subscribers                      []string                          `json:"Subscribers,omitempty"`
+	Tags                             []FlowEntitlementTag              `json:"Tags,omitempty"`
 }
 
 func (FlowEntitlement) CloudControlType() string { return "AWS::MediaConnect::FlowEntitlement" }
 
 type FlowOutputEncryption struct {
-	Algorithm *string `json:"Algorithm,omitempty"`
-	KeyType   *string `json:"KeyType,omitempty"`
-	RoleArn   *string `json:"RoleArn,omitempty"`
-	SecretArn *string `json:"SecretArn,omitempty"`
+	Algorithm *FlowOutputEncryptionAlgorithm `json:"Algorithm,omitempty"`
+	KeyType   *FlowOutputEncryptionKeyType   `json:"KeyType,omitempty"`
+	RoleArn   *string                        `json:"RoleArn,omitempty"`
+	SecretArn *string                        `json:"SecretArn,omitempty"`
 }
 
 type FlowOutputInterface struct {
@@ -375,20 +375,20 @@ type DestinationConfiguration struct {
 }
 
 type EncodingParameters struct {
-	CompressionFactor *float64 `json:"CompressionFactor,omitempty"`
-	EncoderProfile    *string  `json:"EncoderProfile,omitempty"`
+	CompressionFactor *float64                          `json:"CompressionFactor,omitempty"`
+	EncoderProfile    *EncodingParametersEncoderProfile `json:"EncoderProfile,omitempty"`
 }
 
 type MediaStreamOutputConfiguration struct {
-	DestinationConfigurations []DestinationConfiguration `json:"DestinationConfigurations,omitempty"`
-	EncodingName              *string                    `json:"EncodingName,omitempty"`
-	EncodingParameters        *EncodingParameters        `json:"EncodingParameters,omitempty"`
-	MediaStreamName           *string                    `json:"MediaStreamName,omitempty"`
+	DestinationConfigurations []DestinationConfiguration                  `json:"DestinationConfigurations,omitempty"`
+	EncodingName              *MediaStreamOutputConfigurationEncodingName `json:"EncodingName,omitempty"`
+	EncodingParameters        *EncodingParameters                         `json:"EncodingParameters,omitempty"`
+	MediaStreamName           *string                                     `json:"MediaStreamName,omitempty"`
 }
 
 type FlowOutputFlowTransitEncryption struct {
-	EncryptionKeyConfiguration json.RawMessage `json:"EncryptionKeyConfiguration,omitempty"`
-	EncryptionKeyType          *string         `json:"EncryptionKeyType,omitempty"`
+	EncryptionKeyConfiguration json.RawMessage                         `json:"EncryptionKeyConfiguration,omitempty"`
+	EncryptionKeyType          *FlowOutputFlowTransitEncryptionKeyType `json:"EncryptionKeyType,omitempty"`
 }
 
 type FlowOutputTag struct {
@@ -401,43 +401,43 @@ type FlowOutputVpcInterfaceAttachment struct {
 }
 
 type FlowOutput struct {
-	CidrAllowList                      []string                          `json:"CidrAllowList,omitempty"`
-	Description                        *string                           `json:"Description,omitempty"`
-	Destination                        *string                           `json:"Destination,omitempty"`
-	Encryption                         *FlowOutputEncryption             `json:"Encryption,omitempty"`
-	FlowArn                            *string                           `json:"FlowArn,omitempty"`
-	MaxLatency                         *int                              `json:"MaxLatency,omitempty"`
-	MediaStreamOutputConfigurations    []MediaStreamOutputConfiguration  `json:"MediaStreamOutputConfigurations,omitempty"`
-	MinLatency                         *int                              `json:"MinLatency,omitempty"`
-	Name                               *string                           `json:"Name,omitempty"`
-	NdiOutputTimecodeSource            *string                           `json:"NdiOutputTimecodeSource,omitempty"`
-	NdiProgramName                     *string                           `json:"NdiProgramName,omitempty"`
-	NdiSpeedHqQuality                  *int                              `json:"NdiSpeedHqQuality,omitempty"`
-	OutputArn                          *string                           `json:"OutputArn,omitempty"`
-	OutputStatus                       *string                           `json:"OutputStatus,omitempty"`
-	Port                               *int                              `json:"Port,omitempty"`
-	Protocol                           *string                           `json:"Protocol,omitempty"`
-	RemoteId                           *string                           `json:"RemoteId,omitempty"`
-	RouterIntegrationState             *string                           `json:"RouterIntegrationState,omitempty"`
-	RouterIntegrationTransitEncryption *FlowOutputFlowTransitEncryption  `json:"RouterIntegrationTransitEncryption,omitempty"`
-	SmoothingLatency                   *int                              `json:"SmoothingLatency,omitempty"`
-	StreamId                           *string                           `json:"StreamId,omitempty"`
-	Tags                               []FlowOutputTag                   `json:"Tags,omitempty"`
-	VpcInterfaceAttachment             *FlowOutputVpcInterfaceAttachment `json:"VpcInterfaceAttachment,omitempty"`
+	CidrAllowList                      []string                           `json:"CidrAllowList,omitempty"`
+	Description                        *string                            `json:"Description,omitempty"`
+	Destination                        *string                            `json:"Destination,omitempty"`
+	Encryption                         *FlowOutputEncryption              `json:"Encryption,omitempty"`
+	FlowArn                            *string                            `json:"FlowArn,omitempty"`
+	MaxLatency                         *int                               `json:"MaxLatency,omitempty"`
+	MediaStreamOutputConfigurations    []MediaStreamOutputConfiguration   `json:"MediaStreamOutputConfigurations,omitempty"`
+	MinLatency                         *int                               `json:"MinLatency,omitempty"`
+	Name                               *string                            `json:"Name,omitempty"`
+	NdiOutputTimecodeSource            *FlowOutputNdiOutputTimecodeSource `json:"NdiOutputTimecodeSource,omitempty"`
+	NdiProgramName                     *string                            `json:"NdiProgramName,omitempty"`
+	NdiSpeedHqQuality                  *int                               `json:"NdiSpeedHqQuality,omitempty"`
+	OutputArn                          *string                            `json:"OutputArn,omitempty"`
+	OutputStatus                       *FlowOutputOutputStatus            `json:"OutputStatus,omitempty"`
+	Port                               *int                               `json:"Port,omitempty"`
+	Protocol                           *FlowOutputProtocol                `json:"Protocol,omitempty"`
+	RemoteId                           *string                            `json:"RemoteId,omitempty"`
+	RouterIntegrationState             *FlowOutputRouterIntegrationState  `json:"RouterIntegrationState,omitempty"`
+	RouterIntegrationTransitEncryption *FlowOutputFlowTransitEncryption   `json:"RouterIntegrationTransitEncryption,omitempty"`
+	SmoothingLatency                   *int                               `json:"SmoothingLatency,omitempty"`
+	StreamId                           *string                            `json:"StreamId,omitempty"`
+	Tags                               []FlowOutputTag                    `json:"Tags,omitempty"`
+	VpcInterfaceAttachment             *FlowOutputVpcInterfaceAttachment  `json:"VpcInterfaceAttachment,omitempty"`
 }
 
 func (FlowOutput) CloudControlType() string { return "AWS::MediaConnect::FlowOutput" }
 
 type FlowSourceEncryption struct {
-	Algorithm                    *string `json:"Algorithm,omitempty"`
-	ConstantInitializationVector *string `json:"ConstantInitializationVector,omitempty"`
-	DeviceId                     *string `json:"DeviceId,omitempty"`
-	KeyType                      *string `json:"KeyType,omitempty"`
-	Region                       *string `json:"Region,omitempty"`
-	ResourceId                   *string `json:"ResourceId,omitempty"`
-	RoleArn                      *string `json:"RoleArn,omitempty"`
-	SecretArn                    *string `json:"SecretArn,omitempty"`
-	Url                          *string `json:"Url,omitempty"`
+	Algorithm                    *FlowSourceEncryptionAlgorithm `json:"Algorithm,omitempty"`
+	ConstantInitializationVector *string                        `json:"ConstantInitializationVector,omitempty"`
+	DeviceId                     *string                        `json:"DeviceId,omitempty"`
+	KeyType                      *FlowSourceEncryptionKeyType   `json:"KeyType,omitempty"`
+	Region                       *string                        `json:"Region,omitempty"`
+	ResourceId                   *string                        `json:"ResourceId,omitempty"`
+	RoleArn                      *string                        `json:"RoleArn,omitempty"`
+	SecretArn                    *string                        `json:"SecretArn,omitempty"`
+	Url                          *string                        `json:"Url,omitempty"`
 }
 
 type FlowSourceVpcInterfaceAttachment struct {
@@ -466,7 +466,7 @@ type FlowSource struct {
 	MaxLatency            *int                           `json:"MaxLatency,omitempty"`
 	MinLatency            *int                           `json:"MinLatency,omitempty"`
 	Name                  *string                        `json:"Name,omitempty"`
-	Protocol              *string                        `json:"Protocol,omitempty"`
+	Protocol              *FlowSourceProtocol            `json:"Protocol,omitempty"`
 	SenderControlPort     *int                           `json:"SenderControlPort,omitempty"`
 	SenderIpAddress       *string                        `json:"SenderIpAddress,omitempty"`
 	SourceArn             *string                        `json:"SourceArn,omitempty"`
@@ -504,11 +504,11 @@ type GatewayNetwork struct {
 }
 
 type Gateway struct {
-	EgressCidrBlocks []string         `json:"EgressCidrBlocks,omitempty"`
-	GatewayArn       *string          `json:"GatewayArn,omitempty"`
-	GatewayState     *string          `json:"GatewayState,omitempty"`
-	Name             *string          `json:"Name,omitempty"`
-	Networks         []GatewayNetwork `json:"Networks,omitempty"`
+	EgressCidrBlocks []string             `json:"EgressCidrBlocks,omitempty"`
+	GatewayArn       *string              `json:"GatewayArn,omitempty"`
+	GatewayState     *GatewayGatewayState `json:"GatewayState,omitempty"`
+	Name             *string              `json:"Name,omitempty"`
+	Networks         []GatewayNetwork     `json:"Networks,omitempty"`
 }
 
 func (Gateway) CloudControlType() string { return "AWS::MediaConnect::Gateway" }
@@ -519,32 +519,32 @@ type RouterInputTag struct {
 }
 
 type RouterInputTransitEncryption struct {
-	EncryptionKeyConfiguration json.RawMessage `json:"EncryptionKeyConfiguration,omitempty"`
-	EncryptionKeyType          *string         `json:"EncryptionKeyType,omitempty"`
+	EncryptionKeyConfiguration json.RawMessage                      `json:"EncryptionKeyConfiguration,omitempty"`
+	EncryptionKeyType          *RouterInputTransitEncryptionKeyType `json:"EncryptionKeyType,omitempty"`
 }
 
 type RouterInput struct {
-	Arn                                 *string                       `json:"Arn,omitempty"`
-	AvailabilityZone                    *string                       `json:"AvailabilityZone,omitempty"`
-	Configuration                       json.RawMessage               `json:"Configuration,omitempty"`
-	ContentQualityAnalysisConfiguration json.RawMessage               `json:"ContentQualityAnalysisConfiguration,omitempty"`
-	ContentQualityAnalysisType          *string                       `json:"ContentQualityAnalysisType,omitempty"`
-	CreatedAt                           *string                       `json:"CreatedAt,omitempty"`
-	Id                                  *string                       `json:"Id,omitempty"`
-	InputType                           *string                       `json:"InputType,omitempty"`
-	IpAddress                           *string                       `json:"IpAddress,omitempty"`
-	MaintenanceConfiguration            json.RawMessage               `json:"MaintenanceConfiguration,omitempty"`
-	MaintenanceType                     *string                       `json:"MaintenanceType,omitempty"`
-	MaximumBitrate                      *int                          `json:"MaximumBitrate,omitempty"`
-	Name                                *string                       `json:"Name,omitempty"`
-	RegionName                          *string                       `json:"RegionName,omitempty"`
-	RoutedOutputs                       *int                          `json:"RoutedOutputs,omitempty"`
-	RoutingScope                        *string                       `json:"RoutingScope,omitempty"`
-	State                               *string                       `json:"State,omitempty"`
-	Tags                                []RouterInputTag              `json:"Tags,omitempty"`
-	Tier                                *string                       `json:"Tier,omitempty"`
-	TransitEncryption                   *RouterInputTransitEncryption `json:"TransitEncryption,omitempty"`
-	UpdatedAt                           *string                       `json:"UpdatedAt,omitempty"`
+	Arn                                 *string                           `json:"Arn,omitempty"`
+	AvailabilityZone                    *string                           `json:"AvailabilityZone,omitempty"`
+	Configuration                       json.RawMessage                   `json:"Configuration,omitempty"`
+	ContentQualityAnalysisConfiguration json.RawMessage                   `json:"ContentQualityAnalysisConfiguration,omitempty"`
+	ContentQualityAnalysisType          *RouterContentQualityAnalysisType `json:"ContentQualityAnalysisType,omitempty"`
+	CreatedAt                           *string                           `json:"CreatedAt,omitempty"`
+	Id                                  *string                           `json:"Id,omitempty"`
+	InputType                           *RouterInputType                  `json:"InputType,omitempty"`
+	IpAddress                           *string                           `json:"IpAddress,omitempty"`
+	MaintenanceConfiguration            json.RawMessage                   `json:"MaintenanceConfiguration,omitempty"`
+	MaintenanceType                     *MaintenanceType                  `json:"MaintenanceType,omitempty"`
+	MaximumBitrate                      *int                              `json:"MaximumBitrate,omitempty"`
+	Name                                *string                           `json:"Name,omitempty"`
+	RegionName                          *string                           `json:"RegionName,omitempty"`
+	RoutedOutputs                       *int                              `json:"RoutedOutputs,omitempty"`
+	RoutingScope                        *RoutingScope                     `json:"RoutingScope,omitempty"`
+	State                               *RouterInputState                 `json:"State,omitempty"`
+	Tags                                []RouterInputTag                  `json:"Tags,omitempty"`
+	Tier                                *RouterInputTier                  `json:"Tier,omitempty"`
+	TransitEncryption                   *RouterInputTransitEncryption     `json:"TransitEncryption,omitempty"`
+	UpdatedAt                           *string                           `json:"UpdatedAt,omitempty"`
 }
 
 func (RouterInput) CloudControlType() string { return "AWS::MediaConnect::RouterInput" }
@@ -555,18 +555,18 @@ type RouterNetworkInterfaceTag struct {
 }
 
 type RouterNetworkInterface struct {
-	Arn                   *string                     `json:"Arn,omitempty"`
-	AssociatedInputCount  *int                        `json:"AssociatedInputCount,omitempty"`
-	AssociatedOutputCount *int                        `json:"AssociatedOutputCount,omitempty"`
-	Configuration         json.RawMessage             `json:"Configuration,omitempty"`
-	CreatedAt             *string                     `json:"CreatedAt,omitempty"`
-	Id                    *string                     `json:"Id,omitempty"`
-	Name                  *string                     `json:"Name,omitempty"`
-	NetworkInterfaceType  *string                     `json:"NetworkInterfaceType,omitempty"`
-	RegionName            *string                     `json:"RegionName,omitempty"`
-	State                 *string                     `json:"State,omitempty"`
-	Tags                  []RouterNetworkInterfaceTag `json:"Tags,omitempty"`
-	UpdatedAt             *string                     `json:"UpdatedAt,omitempty"`
+	Arn                   *string                      `json:"Arn,omitempty"`
+	AssociatedInputCount  *int                         `json:"AssociatedInputCount,omitempty"`
+	AssociatedOutputCount *int                         `json:"AssociatedOutputCount,omitempty"`
+	Configuration         json.RawMessage              `json:"Configuration,omitempty"`
+	CreatedAt             *string                      `json:"CreatedAt,omitempty"`
+	Id                    *string                      `json:"Id,omitempty"`
+	Name                  *string                      `json:"Name,omitempty"`
+	NetworkInterfaceType  *RouterNetworkInterfaceType  `json:"NetworkInterfaceType,omitempty"`
+	RegionName            *string                      `json:"RegionName,omitempty"`
+	State                 *RouterNetworkInterfaceState `json:"State,omitempty"`
+	Tags                  []RouterNetworkInterfaceTag  `json:"Tags,omitempty"`
+	UpdatedAt             *string                      `json:"UpdatedAt,omitempty"`
 }
 
 func (RouterNetworkInterface) CloudControlType() string {
@@ -579,24 +579,545 @@ type RouterOutputTag struct {
 }
 
 type RouterOutput struct {
-	Arn                      *string           `json:"Arn,omitempty"`
-	AvailabilityZone         *string           `json:"AvailabilityZone,omitempty"`
-	Configuration            json.RawMessage   `json:"Configuration,omitempty"`
-	CreatedAt                *string           `json:"CreatedAt,omitempty"`
-	Id                       *string           `json:"Id,omitempty"`
-	IpAddress                *string           `json:"IpAddress,omitempty"`
-	MaintenanceConfiguration json.RawMessage   `json:"MaintenanceConfiguration,omitempty"`
-	MaintenanceType          *string           `json:"MaintenanceType,omitempty"`
-	MaximumBitrate           *int              `json:"MaximumBitrate,omitempty"`
-	Name                     *string           `json:"Name,omitempty"`
-	OutputType               *string           `json:"OutputType,omitempty"`
-	RegionName               *string           `json:"RegionName,omitempty"`
-	RoutedState              *string           `json:"RoutedState,omitempty"`
-	RoutingScope             *string           `json:"RoutingScope,omitempty"`
-	State                    *string           `json:"State,omitempty"`
-	Tags                     []RouterOutputTag `json:"Tags,omitempty"`
-	Tier                     *string           `json:"Tier,omitempty"`
-	UpdatedAt                *string           `json:"UpdatedAt,omitempty"`
+	Arn                      *string                      `json:"Arn,omitempty"`
+	AvailabilityZone         *string                      `json:"AvailabilityZone,omitempty"`
+	Configuration            json.RawMessage              `json:"Configuration,omitempty"`
+	CreatedAt                *string                      `json:"CreatedAt,omitempty"`
+	Id                       *string                      `json:"Id,omitempty"`
+	IpAddress                *string                      `json:"IpAddress,omitempty"`
+	MaintenanceConfiguration json.RawMessage              `json:"MaintenanceConfiguration,omitempty"`
+	MaintenanceType          *RouterOutputMaintenanceType `json:"MaintenanceType,omitempty"`
+	MaximumBitrate           *int                         `json:"MaximumBitrate,omitempty"`
+	Name                     *string                      `json:"Name,omitempty"`
+	OutputType               *RouterOutputType            `json:"OutputType,omitempty"`
+	RegionName               *string                      `json:"RegionName,omitempty"`
+	RoutedState              *RouterOutputRoutedState     `json:"RoutedState,omitempty"`
+	RoutingScope             *RouterOutputRoutingScope    `json:"RoutingScope,omitempty"`
+	State                    *RouterOutputState           `json:"State,omitempty"`
+	Tags                     []RouterOutputTag            `json:"Tags,omitempty"`
+	Tier                     *RouterOutputTier            `json:"Tier,omitempty"`
+	UpdatedAt                *string                      `json:"UpdatedAt,omitempty"`
 }
 
 func (RouterOutput) CloudControlType() string { return "AWS::MediaConnect::RouterOutput" }
+
+type BridgeStateEnum string
+
+const (
+	BridgeStateEnumCREATING     BridgeStateEnum = "CREATING"
+	BridgeStateEnumSTANDBY      BridgeStateEnum = "STANDBY"
+	BridgeStateEnumSTARTING     BridgeStateEnum = "STARTING"
+	BridgeStateEnumDEPLOYING    BridgeStateEnum = "DEPLOYING"
+	BridgeStateEnumACTIVE       BridgeStateEnum = "ACTIVE"
+	BridgeStateEnumSTOPPING     BridgeStateEnum = "STOPPING"
+	BridgeStateEnumDELETING     BridgeStateEnum = "DELETING"
+	BridgeStateEnumDELETED      BridgeStateEnum = "DELETED"
+	BridgeStateEnumSTARTFAILED  BridgeStateEnum = "START_FAILED"
+	BridgeStateEnumSTARTPENDING BridgeStateEnum = "START_PENDING"
+	BridgeStateEnumUPDATING     BridgeStateEnum = "UPDATING"
+)
+
+type ProtocolEnum string
+
+const (
+	ProtocolEnumRtpFec ProtocolEnum = "rtp-fec"
+	ProtocolEnumRtp    ProtocolEnum = "rtp"
+	ProtocolEnumUdp    ProtocolEnum = "udp"
+)
+
+type FailoverModeEnum string
+
+const (
+	FailoverModeEnumFAILOVER FailoverModeEnum = "FAILOVER"
+)
+
+type FailoverConfigStateEnum string
+
+const (
+	FailoverConfigStateEnumENABLED  FailoverConfigStateEnum = "ENABLED"
+	FailoverConfigStateEnumDISABLED FailoverConfigStateEnum = "DISABLED"
+)
+
+type BridgeOutputBridgeNetworkOutputProtocol string
+
+const (
+	BridgeOutputBridgeNetworkOutputProtocolRtpFec BridgeOutputBridgeNetworkOutputProtocol = "rtp-fec"
+	BridgeOutputBridgeNetworkOutputProtocolRtp    BridgeOutputBridgeNetworkOutputProtocol = "rtp"
+	BridgeOutputBridgeNetworkOutputProtocolUdp    BridgeOutputBridgeNetworkOutputProtocol = "udp"
+)
+
+type BridgeSourceProtocolEnum string
+
+const (
+	BridgeSourceProtocolEnumRtpFec BridgeSourceProtocolEnum = "rtp-fec"
+	BridgeSourceProtocolEnumRtp    BridgeSourceProtocolEnum = "rtp"
+	BridgeSourceProtocolEnumUdp    BridgeSourceProtocolEnum = "udp"
+)
+
+type EncodingProfile string
+
+const (
+	EncodingProfileDISTRIBUTIONH264DEFAULT EncodingProfile = "DISTRIBUTION_H264_DEFAULT"
+	EncodingProfileCONTRIBUTIONH264DEFAULT EncodingProfile = "CONTRIBUTION_H264_DEFAULT"
+)
+
+type FlowFlowSize string
+
+const (
+	FlowFlowSizeMEDIUM  FlowFlowSize = "MEDIUM"
+	FlowFlowSizeLARGE   FlowFlowSize = "LARGE"
+	FlowFlowSizeLARGE4X FlowFlowSize = "LARGE_4X"
+)
+
+type MaintenanceMaintenanceDay string
+
+const (
+	MaintenanceMaintenanceDayMonday    MaintenanceMaintenanceDay = "Monday"
+	MaintenanceMaintenanceDayTuesday   MaintenanceMaintenanceDay = "Tuesday"
+	MaintenanceMaintenanceDayWednesday MaintenanceMaintenanceDay = "Wednesday"
+	MaintenanceMaintenanceDayThursday  MaintenanceMaintenanceDay = "Thursday"
+	MaintenanceMaintenanceDayFriday    MaintenanceMaintenanceDay = "Friday"
+	MaintenanceMaintenanceDaySaturday  MaintenanceMaintenanceDay = "Saturday"
+	MaintenanceMaintenanceDaySunday    MaintenanceMaintenanceDay = "Sunday"
+)
+
+type FmtpColorimetry string
+
+const (
+	FmtpColorimetryBT601   FmtpColorimetry = "BT601"
+	FmtpColorimetryBT709   FmtpColorimetry = "BT709"
+	FmtpColorimetryBT2020  FmtpColorimetry = "BT2020"
+	FmtpColorimetryBT2100  FmtpColorimetry = "BT2100"
+	FmtpColorimetryST20651 FmtpColorimetry = "ST2065-1"
+	FmtpColorimetryST20653 FmtpColorimetry = "ST2065-3"
+	FmtpColorimetryXYZ     FmtpColorimetry = "XYZ"
+)
+
+type FmtpRange string
+
+const (
+	FmtpRangeNARROW      FmtpRange = "NARROW"
+	FmtpRangeFULL        FmtpRange = "FULL"
+	FmtpRangeFULLPROTECT FmtpRange = "FULLPROTECT"
+)
+
+type FmtpScanMode string
+
+const (
+	FmtpScanModeProgressive               FmtpScanMode = "progressive"
+	FmtpScanModeInterlace                 FmtpScanMode = "interlace"
+	FmtpScanModeProgressiveSegmentedFrame FmtpScanMode = "progressive-segmented-frame"
+)
+
+type FmtpTcs string
+
+const (
+	FmtpTcsSDR          FmtpTcs = "SDR"
+	FmtpTcsPQ           FmtpTcs = "PQ"
+	FmtpTcsHLG          FmtpTcs = "HLG"
+	FmtpTcsLINEAR       FmtpTcs = "LINEAR"
+	FmtpTcsBT2100LINPQ  FmtpTcs = "BT2100LINPQ"
+	FmtpTcsBT2100LINHLG FmtpTcs = "BT2100LINHLG"
+	FmtpTcsST20651      FmtpTcs = "ST2065-1"
+	FmtpTcsST4281       FmtpTcs = "ST428-1"
+	FmtpTcsDENSITY      FmtpTcs = "DENSITY"
+)
+
+type MediaStreamMediaStreamType string
+
+const (
+	MediaStreamMediaStreamTypeVideo         MediaStreamMediaStreamType = "video"
+	MediaStreamMediaStreamTypeAudio         MediaStreamMediaStreamType = "audio"
+	MediaStreamMediaStreamTypeAncillaryData MediaStreamMediaStreamType = "ancillary-data"
+)
+
+type MediaStreamVideoFormat string
+
+const (
+	MediaStreamVideoFormatX2160p MediaStreamVideoFormat = "2160p"
+	MediaStreamVideoFormatX1080p MediaStreamVideoFormat = "1080p"
+	MediaStreamVideoFormatX1080i MediaStreamVideoFormat = "1080i"
+	MediaStreamVideoFormatX720p  MediaStreamVideoFormat = "720p"
+	MediaStreamVideoFormatX480p  MediaStreamVideoFormat = "480p"
+)
+
+type NdiState string
+
+const (
+	NdiStateENABLED  NdiState = "ENABLED"
+	NdiStateDISABLED NdiState = "DISABLED"
+)
+
+type EncryptionAlgorithm string
+
+const (
+	EncryptionAlgorithmAes128 EncryptionAlgorithm = "aes128"
+	EncryptionAlgorithmAes192 EncryptionAlgorithm = "aes192"
+	EncryptionAlgorithmAes256 EncryptionAlgorithm = "aes256"
+)
+
+type EncryptionKeyType string
+
+const (
+	EncryptionKeyTypeSpeke       EncryptionKeyType = "speke"
+	EncryptionKeyTypeStaticKey   EncryptionKeyType = "static-key"
+	EncryptionKeyTypeSrtPassword EncryptionKeyType = "srt-password"
+)
+
+type MediaStreamSourceConfigurationEncodingName string
+
+const (
+	MediaStreamSourceConfigurationEncodingNameJxsv     MediaStreamSourceConfigurationEncodingName = "jxsv"
+	MediaStreamSourceConfigurationEncodingNameRaw      MediaStreamSourceConfigurationEncodingName = "raw"
+	MediaStreamSourceConfigurationEncodingNameSmpte291 MediaStreamSourceConfigurationEncodingName = "smpte291"
+	MediaStreamSourceConfigurationEncodingNamePcm      MediaStreamSourceConfigurationEncodingName = "pcm"
+)
+
+type SourceProtocol string
+
+const (
+	SourceProtocolZixiPush     SourceProtocol = "zixi-push"
+	SourceProtocolRtpFec       SourceProtocol = "rtp-fec"
+	SourceProtocolRtp          SourceProtocol = "rtp"
+	SourceProtocolRist         SourceProtocol = "rist"
+	SourceProtocolSrtListener  SourceProtocol = "srt-listener"
+	SourceProtocolSrtCaller    SourceProtocol = "srt-caller"
+	SourceProtocolSt2110Jpegxs SourceProtocol = "st2110-jpegxs"
+	SourceProtocolCdi          SourceProtocol = "cdi"
+	SourceProtocolNdiSpeedHq   SourceProtocol = "ndi-speed-hq"
+)
+
+type SourceRouterIntegrationState string
+
+const (
+	SourceRouterIntegrationStateENABLED  SourceRouterIntegrationState = "ENABLED"
+	SourceRouterIntegrationStateDISABLED SourceRouterIntegrationState = "DISABLED"
+)
+
+type FlowTransitEncryptionKeyType string
+
+const (
+	FlowTransitEncryptionKeyTypeSECRETSMANAGER FlowTransitEncryptionKeyType = "SECRETS_MANAGER"
+	FlowTransitEncryptionKeyTypeAUTOMATIC      FlowTransitEncryptionKeyType = "AUTOMATIC"
+)
+
+type FlowFailoverConfigFailoverMode string
+
+const (
+	FlowFailoverConfigFailoverModeMERGE    FlowFailoverConfigFailoverMode = "MERGE"
+	FlowFailoverConfigFailoverModeFAILOVER FlowFailoverConfigFailoverMode = "FAILOVER"
+)
+
+type FlowFailoverConfigState string
+
+const (
+	FlowFailoverConfigStateENABLED  FlowFailoverConfigState = "ENABLED"
+	FlowFailoverConfigStateDISABLED FlowFailoverConfigState = "DISABLED"
+)
+
+type SilentAudioState string
+
+const (
+	SilentAudioStateENABLED  SilentAudioState = "ENABLED"
+	SilentAudioStateDISABLED SilentAudioState = "DISABLED"
+)
+
+type SourceMonitoringConfigContentQualityAnalysisState string
+
+const (
+	SourceMonitoringConfigContentQualityAnalysisStateENABLED  SourceMonitoringConfigContentQualityAnalysisState = "ENABLED"
+	SourceMonitoringConfigContentQualityAnalysisStateDISABLED SourceMonitoringConfigContentQualityAnalysisState = "DISABLED"
+)
+
+type SourceMonitoringConfigThumbnailState string
+
+const (
+	SourceMonitoringConfigThumbnailStateENABLED  SourceMonitoringConfigThumbnailState = "ENABLED"
+	SourceMonitoringConfigThumbnailStateDISABLED SourceMonitoringConfigThumbnailState = "DISABLED"
+)
+
+type BlackFramesState string
+
+const (
+	BlackFramesStateENABLED  BlackFramesState = "ENABLED"
+	BlackFramesStateDISABLED BlackFramesState = "DISABLED"
+)
+
+type FrozenFramesState string
+
+const (
+	FrozenFramesStateENABLED  FrozenFramesState = "ENABLED"
+	FrozenFramesStateDISABLED FrozenFramesState = "DISABLED"
+)
+
+type VpcInterfaceNetworkInterfaceType string
+
+const (
+	VpcInterfaceNetworkInterfaceTypeEna VpcInterfaceNetworkInterfaceType = "ena"
+	VpcInterfaceNetworkInterfaceTypeEfa VpcInterfaceNetworkInterfaceType = "efa"
+)
+
+type FlowEntitlementEncryptionAlgorithm string
+
+const (
+	FlowEntitlementEncryptionAlgorithmAes128 FlowEntitlementEncryptionAlgorithm = "aes128"
+	FlowEntitlementEncryptionAlgorithmAes192 FlowEntitlementEncryptionAlgorithm = "aes192"
+	FlowEntitlementEncryptionAlgorithmAes256 FlowEntitlementEncryptionAlgorithm = "aes256"
+)
+
+type FlowEntitlementEncryptionKeyType string
+
+const (
+	FlowEntitlementEncryptionKeyTypeSpeke     FlowEntitlementEncryptionKeyType = "speke"
+	FlowEntitlementEncryptionKeyTypeStaticKey FlowEntitlementEncryptionKeyType = "static-key"
+)
+
+type FlowEntitlementEntitlementStatus string
+
+const (
+	FlowEntitlementEntitlementStatusENABLED  FlowEntitlementEntitlementStatus = "ENABLED"
+	FlowEntitlementEntitlementStatusDISABLED FlowEntitlementEntitlementStatus = "DISABLED"
+)
+
+type FlowOutputEncryptionAlgorithm string
+
+const (
+	FlowOutputEncryptionAlgorithmAes128 FlowOutputEncryptionAlgorithm = "aes128"
+	FlowOutputEncryptionAlgorithmAes192 FlowOutputEncryptionAlgorithm = "aes192"
+	FlowOutputEncryptionAlgorithmAes256 FlowOutputEncryptionAlgorithm = "aes256"
+)
+
+type FlowOutputEncryptionKeyType string
+
+const (
+	FlowOutputEncryptionKeyTypeStaticKey   FlowOutputEncryptionKeyType = "static-key"
+	FlowOutputEncryptionKeyTypeSrtPassword FlowOutputEncryptionKeyType = "srt-password"
+)
+
+type MediaStreamOutputConfigurationEncodingName string
+
+const (
+	MediaStreamOutputConfigurationEncodingNameJxsv     MediaStreamOutputConfigurationEncodingName = "jxsv"
+	MediaStreamOutputConfigurationEncodingNameRaw      MediaStreamOutputConfigurationEncodingName = "raw"
+	MediaStreamOutputConfigurationEncodingNameSmpte291 MediaStreamOutputConfigurationEncodingName = "smpte291"
+	MediaStreamOutputConfigurationEncodingNamePcm      MediaStreamOutputConfigurationEncodingName = "pcm"
+)
+
+type EncodingParametersEncoderProfile string
+
+const (
+	EncodingParametersEncoderProfileMain EncodingParametersEncoderProfile = "main"
+	EncodingParametersEncoderProfileHigh EncodingParametersEncoderProfile = "high"
+)
+
+type FlowOutputNdiOutputTimecodeSource string
+
+const (
+	FlowOutputNdiOutputTimecodeSourceEMBEDDEDTIMECODE FlowOutputNdiOutputTimecodeSource = "EMBEDDED_TIMECODE"
+	FlowOutputNdiOutputTimecodeSourceUTCSYSTEMTIME    FlowOutputNdiOutputTimecodeSource = "UTC_SYSTEM_TIME"
+)
+
+type FlowOutputOutputStatus string
+
+const (
+	FlowOutputOutputStatusENABLED  FlowOutputOutputStatus = "ENABLED"
+	FlowOutputOutputStatusDISABLED FlowOutputOutputStatus = "DISABLED"
+)
+
+type FlowOutputProtocol string
+
+const (
+	FlowOutputProtocolZixiPush     FlowOutputProtocol = "zixi-push"
+	FlowOutputProtocolRtpFec       FlowOutputProtocol = "rtp-fec"
+	FlowOutputProtocolRtp          FlowOutputProtocol = "rtp"
+	FlowOutputProtocolZixiPull     FlowOutputProtocol = "zixi-pull"
+	FlowOutputProtocolRist         FlowOutputProtocol = "rist"
+	FlowOutputProtocolSrtListener  FlowOutputProtocol = "srt-listener"
+	FlowOutputProtocolSrtCaller    FlowOutputProtocol = "srt-caller"
+	FlowOutputProtocolSt2110Jpegxs FlowOutputProtocol = "st2110-jpegxs"
+	FlowOutputProtocolCdi          FlowOutputProtocol = "cdi"
+	FlowOutputProtocolNdiSpeedHq   FlowOutputProtocol = "ndi-speed-hq"
+)
+
+type FlowOutputRouterIntegrationState string
+
+const (
+	FlowOutputRouterIntegrationStateENABLED  FlowOutputRouterIntegrationState = "ENABLED"
+	FlowOutputRouterIntegrationStateDISABLED FlowOutputRouterIntegrationState = "DISABLED"
+)
+
+type FlowOutputFlowTransitEncryptionKeyType string
+
+const (
+	FlowOutputFlowTransitEncryptionKeyTypeSECRETSMANAGER FlowOutputFlowTransitEncryptionKeyType = "SECRETS_MANAGER"
+	FlowOutputFlowTransitEncryptionKeyTypeAUTOMATIC      FlowOutputFlowTransitEncryptionKeyType = "AUTOMATIC"
+)
+
+type FlowSourceEncryptionAlgorithm string
+
+const (
+	FlowSourceEncryptionAlgorithmAes128 FlowSourceEncryptionAlgorithm = "aes128"
+	FlowSourceEncryptionAlgorithmAes192 FlowSourceEncryptionAlgorithm = "aes192"
+	FlowSourceEncryptionAlgorithmAes256 FlowSourceEncryptionAlgorithm = "aes256"
+)
+
+type FlowSourceEncryptionKeyType string
+
+const (
+	FlowSourceEncryptionKeyTypeSpeke       FlowSourceEncryptionKeyType = "speke"
+	FlowSourceEncryptionKeyTypeStaticKey   FlowSourceEncryptionKeyType = "static-key"
+	FlowSourceEncryptionKeyTypeSrtPassword FlowSourceEncryptionKeyType = "srt-password"
+)
+
+type FlowSourceProtocol string
+
+const (
+	FlowSourceProtocolZixiPush    FlowSourceProtocol = "zixi-push"
+	FlowSourceProtocolRtpFec      FlowSourceProtocol = "rtp-fec"
+	FlowSourceProtocolRtp         FlowSourceProtocol = "rtp"
+	FlowSourceProtocolRist        FlowSourceProtocol = "rist"
+	FlowSourceProtocolSrtListener FlowSourceProtocol = "srt-listener"
+	FlowSourceProtocolSrtCaller   FlowSourceProtocol = "srt-caller"
+)
+
+type GatewayGatewayState string
+
+const (
+	GatewayGatewayStateCREATING GatewayGatewayState = "CREATING"
+	GatewayGatewayStateACTIVE   GatewayGatewayState = "ACTIVE"
+	GatewayGatewayStateUPDATING GatewayGatewayState = "UPDATING"
+	GatewayGatewayStateERROR    GatewayGatewayState = "ERROR"
+	GatewayGatewayStateDELETING GatewayGatewayState = "DELETING"
+	GatewayGatewayStateDELETED  GatewayGatewayState = "DELETED"
+)
+
+type RouterContentQualityAnalysisType string
+
+const (
+	RouterContentQualityAnalysisTypeCONTENTLEVEL RouterContentQualityAnalysisType = "CONTENT_LEVEL"
+)
+
+type RouterInputType string
+
+const (
+	RouterInputTypeSTANDARD         RouterInputType = "STANDARD"
+	RouterInputTypeFAILOVER         RouterInputType = "FAILOVER"
+	RouterInputTypeMERGE            RouterInputType = "MERGE"
+	RouterInputTypeMEDIACONNECTFLOW RouterInputType = "MEDIACONNECT_FLOW"
+	RouterInputTypeMEDIALIVECHANNEL RouterInputType = "MEDIALIVE_CHANNEL"
+)
+
+type MaintenanceType string
+
+const (
+	MaintenanceTypePREFERREDDAYTIME MaintenanceType = "PREFERRED_DAY_TIME"
+	MaintenanceTypeDEFAULT          MaintenanceType = "DEFAULT"
+)
+
+type RoutingScope string
+
+const (
+	RoutingScopeREGIONAL RoutingScope = "REGIONAL"
+	RoutingScopeGLOBAL   RoutingScope = "GLOBAL"
+)
+
+type RouterInputState string
+
+const (
+	RouterInputStateCREATING   RouterInputState = "CREATING"
+	RouterInputStateSTANDBY    RouterInputState = "STANDBY"
+	RouterInputStateSTARTING   RouterInputState = "STARTING"
+	RouterInputStateACTIVE     RouterInputState = "ACTIVE"
+	RouterInputStateSTOPPING   RouterInputState = "STOPPING"
+	RouterInputStateDELETING   RouterInputState = "DELETING"
+	RouterInputStateUPDATING   RouterInputState = "UPDATING"
+	RouterInputStateERROR      RouterInputState = "ERROR"
+	RouterInputStateRECOVERING RouterInputState = "RECOVERING"
+	RouterInputStateMIGRATING  RouterInputState = "MIGRATING"
+)
+
+type RouterInputTier string
+
+const (
+	RouterInputTierINPUT100 RouterInputTier = "INPUT_100"
+	RouterInputTierINPUT50  RouterInputTier = "INPUT_50"
+	RouterInputTierINPUT20  RouterInputTier = "INPUT_20"
+)
+
+type RouterInputTransitEncryptionKeyType string
+
+const (
+	RouterInputTransitEncryptionKeyTypeSECRETSMANAGER RouterInputTransitEncryptionKeyType = "SECRETS_MANAGER"
+	RouterInputTransitEncryptionKeyTypeAUTOMATIC      RouterInputTransitEncryptionKeyType = "AUTOMATIC"
+)
+
+type RouterNetworkInterfaceType string
+
+const (
+	RouterNetworkInterfaceTypePUBLIC RouterNetworkInterfaceType = "PUBLIC"
+	RouterNetworkInterfaceTypeVPC    RouterNetworkInterfaceType = "VPC"
+)
+
+type RouterNetworkInterfaceState string
+
+const (
+	RouterNetworkInterfaceStateCREATING   RouterNetworkInterfaceState = "CREATING"
+	RouterNetworkInterfaceStateACTIVE     RouterNetworkInterfaceState = "ACTIVE"
+	RouterNetworkInterfaceStateUPDATING   RouterNetworkInterfaceState = "UPDATING"
+	RouterNetworkInterfaceStateDELETING   RouterNetworkInterfaceState = "DELETING"
+	RouterNetworkInterfaceStateERROR      RouterNetworkInterfaceState = "ERROR"
+	RouterNetworkInterfaceStateRECOVERING RouterNetworkInterfaceState = "RECOVERING"
+)
+
+type RouterOutputMaintenanceType string
+
+const (
+	RouterOutputMaintenanceTypePREFERREDDAYTIME RouterOutputMaintenanceType = "PREFERRED_DAY_TIME"
+	RouterOutputMaintenanceTypeDEFAULT          RouterOutputMaintenanceType = "DEFAULT"
+)
+
+type RouterOutputType string
+
+const (
+	RouterOutputTypeSTANDARD         RouterOutputType = "STANDARD"
+	RouterOutputTypeMEDIACONNECTFLOW RouterOutputType = "MEDIACONNECT_FLOW"
+	RouterOutputTypeMEDIALIVEINPUT   RouterOutputType = "MEDIALIVE_INPUT"
+)
+
+type RouterOutputRoutedState string
+
+const (
+	RouterOutputRoutedStateROUTED   RouterOutputRoutedState = "ROUTED"
+	RouterOutputRoutedStateROUTING  RouterOutputRoutedState = "ROUTING"
+	RouterOutputRoutedStateUNROUTED RouterOutputRoutedState = "UNROUTED"
+)
+
+type RouterOutputRoutingScope string
+
+const (
+	RouterOutputRoutingScopeREGIONAL RouterOutputRoutingScope = "REGIONAL"
+	RouterOutputRoutingScopeGLOBAL   RouterOutputRoutingScope = "GLOBAL"
+)
+
+type RouterOutputState string
+
+const (
+	RouterOutputStateCREATING   RouterOutputState = "CREATING"
+	RouterOutputStateSTANDBY    RouterOutputState = "STANDBY"
+	RouterOutputStateSTARTING   RouterOutputState = "STARTING"
+	RouterOutputStateACTIVE     RouterOutputState = "ACTIVE"
+	RouterOutputStateSTOPPING   RouterOutputState = "STOPPING"
+	RouterOutputStateDELETING   RouterOutputState = "DELETING"
+	RouterOutputStateUPDATING   RouterOutputState = "UPDATING"
+	RouterOutputStateERROR      RouterOutputState = "ERROR"
+	RouterOutputStateRECOVERING RouterOutputState = "RECOVERING"
+	RouterOutputStateMIGRATING  RouterOutputState = "MIGRATING"
+)
+
+type RouterOutputTier string
+
+const (
+	RouterOutputTierOUTPUT100 RouterOutputTier = "OUTPUT_100"
+	RouterOutputTierOUTPUT50  RouterOutputTier = "OUTPUT_50"
+	RouterOutputTierOUTPUT20  RouterOutputTier = "OUTPUT_20"
+)

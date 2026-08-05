@@ -8,10 +8,20 @@ type Datastore struct {
 	DatastoreArn    *string           `json:"DatastoreArn,omitempty"`
 	DatastoreId     *string           `json:"DatastoreId,omitempty"`
 	DatastoreName   *string           `json:"DatastoreName,omitempty"`
-	DatastoreStatus *string           `json:"DatastoreStatus,omitempty"`
+	DatastoreStatus *DatastoreStatus  `json:"DatastoreStatus,omitempty"`
 	KmsKeyArn       *string           `json:"KmsKeyArn,omitempty"`
 	Tags            map[string]string `json:"Tags,omitempty"`
 	UpdatedAt       *string           `json:"UpdatedAt,omitempty"`
 }
 
 func (Datastore) CloudControlType() string { return "AWS::HealthImaging::Datastore" }
+
+type DatastoreStatus string
+
+const (
+	DatastoreStatusCREATING     DatastoreStatus = "CREATING"
+	DatastoreStatusCREATEFAILED DatastoreStatus = "CREATE_FAILED"
+	DatastoreStatusACTIVE       DatastoreStatus = "ACTIVE"
+	DatastoreStatusDELETING     DatastoreStatus = "DELETING"
+	DatastoreStatusDELETED      DatastoreStatus = "DELETED"
+)

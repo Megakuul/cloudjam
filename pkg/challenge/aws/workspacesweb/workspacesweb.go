@@ -11,9 +11,9 @@ type Tag struct {
 }
 
 type WebContentFilteringPolicy struct {
-	AllowedUrls       []string `json:"AllowedUrls,omitempty"`
-	BlockedCategories []string `json:"BlockedCategories,omitempty"`
-	BlockedUrls       []string `json:"BlockedUrls,omitempty"`
+	AllowedUrls       []string   `json:"AllowedUrls,omitempty"`
+	BlockedCategories []Category `json:"BlockedCategories,omitempty"`
+	BlockedUrls       []string   `json:"BlockedUrls,omitempty"`
 }
 
 type BrowserSettings struct {
@@ -36,8 +36,8 @@ type CustomPattern struct {
 }
 
 type RedactionPlaceHolder struct {
-	RedactionPlaceHolderText *string `json:"RedactionPlaceHolderText,omitempty"`
-	RedactionPlaceHolderType *string `json:"RedactionPlaceHolderType,omitempty"`
+	RedactionPlaceHolderText *string                   `json:"RedactionPlaceHolderText,omitempty"`
+	RedactionPlaceHolderType *RedactionPlaceHolderType `json:"RedactionPlaceHolderType,omitempty"`
 }
 
 type InlineRedactionPattern struct {
@@ -86,7 +86,7 @@ type IdentityProvider struct {
 	IdentityProviderArn     *string               `json:"IdentityProviderArn,omitempty"`
 	IdentityProviderDetails map[string]string     `json:"IdentityProviderDetails,omitempty"`
 	IdentityProviderName    *string               `json:"IdentityProviderName,omitempty"`
-	IdentityProviderType    *string               `json:"IdentityProviderType,omitempty"`
+	IdentityProviderType    *IdentityProviderType `json:"IdentityProviderType,omitempty"`
 	PortalArn               *string               `json:"PortalArn,omitempty"`
 	Tags                    []IdentityProviderTag `json:"Tags,omitempty"`
 }
@@ -139,40 +139,40 @@ type PortalTag struct {
 }
 
 type Portal struct {
-	AdditionalEncryptionContext  map[string]string `json:"AdditionalEncryptionContext,omitempty"`
-	AuthenticationType           *string           `json:"AuthenticationType,omitempty"`
-	BrowserSettingsArn           *string           `json:"BrowserSettingsArn,omitempty"`
-	BrowserType                  *string           `json:"BrowserType,omitempty"`
-	CreationDate                 *string           `json:"CreationDate,omitempty"`
-	CustomerManagedKey           *string           `json:"CustomerManagedKey,omitempty"`
-	DataProtectionSettingsArn    *string           `json:"DataProtectionSettingsArn,omitempty"`
-	DisplayName                  *string           `json:"DisplayName,omitempty"`
-	InstanceType                 *string           `json:"InstanceType,omitempty"`
-	IpAccessSettingsArn          *string           `json:"IpAccessSettingsArn,omitempty"`
-	MaxConcurrentSessions        *float64          `json:"MaxConcurrentSessions,omitempty"`
-	NetworkSettingsArn           *string           `json:"NetworkSettingsArn,omitempty"`
-	PortalArn                    *string           `json:"PortalArn,omitempty"`
-	PortalCustomDomain           *string           `json:"PortalCustomDomain,omitempty"`
-	PortalEndpoint               *string           `json:"PortalEndpoint,omitempty"`
-	PortalStatus                 *string           `json:"PortalStatus,omitempty"`
-	RendererType                 *string           `json:"RendererType,omitempty"`
-	ServiceProviderSamlMetadata  *string           `json:"ServiceProviderSamlMetadata,omitempty"`
-	SessionLoggerArn             *string           `json:"SessionLoggerArn,omitempty"`
-	StatusReason                 *string           `json:"StatusReason,omitempty"`
-	Tags                         []PortalTag       `json:"Tags,omitempty"`
-	TrustStoreArn                *string           `json:"TrustStoreArn,omitempty"`
-	UserAccessLoggingSettingsArn *string           `json:"UserAccessLoggingSettingsArn,omitempty"`
-	UserSettingsArn              *string           `json:"UserSettingsArn,omitempty"`
+	AdditionalEncryptionContext  map[string]string   `json:"AdditionalEncryptionContext,omitempty"`
+	AuthenticationType           *AuthenticationType `json:"AuthenticationType,omitempty"`
+	BrowserSettingsArn           *string             `json:"BrowserSettingsArn,omitempty"`
+	BrowserType                  *BrowserType        `json:"BrowserType,omitempty"`
+	CreationDate                 *string             `json:"CreationDate,omitempty"`
+	CustomerManagedKey           *string             `json:"CustomerManagedKey,omitempty"`
+	DataProtectionSettingsArn    *string             `json:"DataProtectionSettingsArn,omitempty"`
+	DisplayName                  *string             `json:"DisplayName,omitempty"`
+	InstanceType                 *InstanceType       `json:"InstanceType,omitempty"`
+	IpAccessSettingsArn          *string             `json:"IpAccessSettingsArn,omitempty"`
+	MaxConcurrentSessions        *float64            `json:"MaxConcurrentSessions,omitempty"`
+	NetworkSettingsArn           *string             `json:"NetworkSettingsArn,omitempty"`
+	PortalArn                    *string             `json:"PortalArn,omitempty"`
+	PortalCustomDomain           *string             `json:"PortalCustomDomain,omitempty"`
+	PortalEndpoint               *string             `json:"PortalEndpoint,omitempty"`
+	PortalStatus                 *PortalStatus       `json:"PortalStatus,omitempty"`
+	RendererType                 *RendererType       `json:"RendererType,omitempty"`
+	ServiceProviderSamlMetadata  *string             `json:"ServiceProviderSamlMetadata,omitempty"`
+	SessionLoggerArn             *string             `json:"SessionLoggerArn,omitempty"`
+	StatusReason                 *string             `json:"StatusReason,omitempty"`
+	Tags                         []PortalTag         `json:"Tags,omitempty"`
+	TrustStoreArn                *string             `json:"TrustStoreArn,omitempty"`
+	UserAccessLoggingSettingsArn *string             `json:"UserAccessLoggingSettingsArn,omitempty"`
+	UserSettingsArn              *string             `json:"UserSettingsArn,omitempty"`
 }
 
 func (Portal) CloudControlType() string { return "AWS::WorkSpacesWeb::Portal" }
 
 type S3LogConfiguration struct {
-	Bucket          *string `json:"Bucket,omitempty"`
-	BucketOwner     *string `json:"BucketOwner,omitempty"`
-	FolderStructure *string `json:"FolderStructure,omitempty"`
-	KeyPrefix       *string `json:"KeyPrefix,omitempty"`
-	LogFileFormat   *string `json:"LogFileFormat,omitempty"`
+	Bucket          *string          `json:"Bucket,omitempty"`
+	BucketOwner     *string          `json:"BucketOwner,omitempty"`
+	FolderStructure *FolderStructure `json:"FolderStructure,omitempty"`
+	KeyPrefix       *string          `json:"KeyPrefix,omitempty"`
+	LogFileFormat   *LogFileFormat   `json:"LogFileFormat,omitempty"`
 }
 
 type LogConfiguration struct {
@@ -229,9 +229,9 @@ func (UserAccessLoggingSettings) CloudControlType() string {
 }
 
 type ImageMetadata struct {
-	FileExtension       *string `json:"FileExtension,omitempty"`
-	LastUploadTimestamp *string `json:"LastUploadTimestamp,omitempty"`
-	MimeType            *string `json:"MimeType,omitempty"`
+	FileExtension       *string   `json:"FileExtension,omitempty"`
+	LastUploadTimestamp *string   `json:"LastUploadTimestamp,omitempty"`
+	MimeType            *MimeType `json:"MimeType,omitempty"`
 }
 
 type LocalizedBrandingStrings struct {
@@ -246,7 +246,7 @@ type LocalizedBrandingStrings struct {
 }
 
 type BrandingConfiguration struct {
-	ColorTheme        *string                             `json:"ColorTheme,omitempty"`
+	ColorTheme        *ColorTheme                         `json:"ColorTheme,omitempty"`
 	Favicon           *string                             `json:"Favicon,omitempty"`
 	FaviconMetadata   *ImageMetadata                      `json:"FaviconMetadata,omitempty"`
 	LocalizedStrings  map[string]LocalizedBrandingStrings `json:"LocalizedStrings,omitempty"`
@@ -274,10 +274,10 @@ type UserSettingsTag struct {
 }
 
 type ToolbarConfiguration struct {
-	HiddenToolbarItems   []string `json:"HiddenToolbarItems,omitempty"`
-	MaxDisplayResolution *string  `json:"MaxDisplayResolution,omitempty"`
-	ToolbarType          *string  `json:"ToolbarType,omitempty"`
-	VisualMode           *string  `json:"VisualMode,omitempty"`
+	HiddenToolbarItems   []ToolbarItem         `json:"HiddenToolbarItems,omitempty"`
+	MaxDisplayResolution *MaxDisplayResolution `json:"MaxDisplayResolution,omitempty"`
+	ToolbarType          *ToolbarType          `json:"ToolbarType,omitempty"`
+	VisualMode           *VisualMode           `json:"VisualMode,omitempty"`
 }
 
 type UserSettings struct {
@@ -285,19 +285,176 @@ type UserSettings struct {
 	AssociatedPortalArns               []string                            `json:"AssociatedPortalArns,omitempty"`
 	BrandingConfiguration              *BrandingConfiguration              `json:"BrandingConfiguration,omitempty"`
 	CookieSynchronizationConfiguration *CookieSynchronizationConfiguration `json:"CookieSynchronizationConfiguration,omitempty"`
-	CopyAllowed                        *string                             `json:"CopyAllowed,omitempty"`
+	CopyAllowed                        *EnabledType                        `json:"CopyAllowed,omitempty"`
 	CustomerManagedKey                 *string                             `json:"CustomerManagedKey,omitempty"`
-	DeepLinkAllowed                    *string                             `json:"DeepLinkAllowed,omitempty"`
+	DeepLinkAllowed                    *EnabledType                        `json:"DeepLinkAllowed,omitempty"`
 	DisconnectTimeoutInMinutes         *float64                            `json:"DisconnectTimeoutInMinutes,omitempty"`
-	DownloadAllowed                    *string                             `json:"DownloadAllowed,omitempty"`
+	DownloadAllowed                    *EnabledType                        `json:"DownloadAllowed,omitempty"`
 	IdleDisconnectTimeoutInMinutes     *float64                            `json:"IdleDisconnectTimeoutInMinutes,omitempty"`
-	PasteAllowed                       *string                             `json:"PasteAllowed,omitempty"`
-	PrintAllowed                       *string                             `json:"PrintAllowed,omitempty"`
+	PasteAllowed                       *EnabledType                        `json:"PasteAllowed,omitempty"`
+	PrintAllowed                       *EnabledType                        `json:"PrintAllowed,omitempty"`
 	Tags                               []UserSettingsTag                   `json:"Tags,omitempty"`
 	ToolbarConfiguration               *ToolbarConfiguration               `json:"ToolbarConfiguration,omitempty"`
-	UploadAllowed                      *string                             `json:"UploadAllowed,omitempty"`
+	UploadAllowed                      *EnabledType                        `json:"UploadAllowed,omitempty"`
 	UserSettingsArn                    *string                             `json:"UserSettingsArn,omitempty"`
-	WebAuthnAllowed                    *string                             `json:"WebAuthnAllowed,omitempty"`
+	WebAuthnAllowed                    *EnabledType                        `json:"WebAuthnAllowed,omitempty"`
 }
 
 func (UserSettings) CloudControlType() string { return "AWS::WorkSpacesWeb::UserSettings" }
+
+type Category string
+
+const (
+	CategoryCults                      Category = "Cults"
+	CategoryGambling                   Category = "Gambling"
+	CategoryNudity                     Category = "Nudity"
+	CategoryPornography                Category = "Pornography"
+	CategorySexEducation               Category = "SexEducation"
+	CategoryTasteless                  Category = "Tasteless"
+	CategoryViolence                   Category = "Violence"
+	CategoryDownloadSites              Category = "DownloadSites"
+	CategoryImageSharing               Category = "ImageSharing"
+	CategoryPeerToPeer                 Category = "PeerToPeer"
+	CategoryStreamingMediaAndDownloads Category = "StreamingMediaAndDownloads"
+	CategoryGenerativeAI               Category = "GenerativeAI"
+	CategoryCriminalActivity           Category = "CriminalActivity"
+	CategoryHacking                    Category = "Hacking"
+	CategoryHateAndIntolerance         Category = "HateAndIntolerance"
+	CategoryIllegalDrug                Category = "IllegalDrug"
+	CategoryIllegalSoftware            Category = "IllegalSoftware"
+	CategorySchoolCheating             Category = "SchoolCheating"
+	CategorySelfHarm                   Category = "SelfHarm"
+	CategoryWeapons                    Category = "Weapons"
+	CategoryChat                       Category = "Chat"
+	CategoryGames                      Category = "Games"
+	CategoryInstantMessaging           Category = "InstantMessaging"
+	CategoryProfessionalNetwork        Category = "ProfessionalNetwork"
+	CategorySocialNetworking           Category = "SocialNetworking"
+	CategoryWebBasedEmail              Category = "WebBasedEmail"
+	CategoryParkedDomains              Category = "ParkedDomains"
+)
+
+type RedactionPlaceHolderType string
+
+const (
+	RedactionPlaceHolderTypeCustomText RedactionPlaceHolderType = "CustomText"
+)
+
+type IdentityProviderType string
+
+const (
+	IdentityProviderTypeSAML            IdentityProviderType = "SAML"
+	IdentityProviderTypeFacebook        IdentityProviderType = "Facebook"
+	IdentityProviderTypeGoogle          IdentityProviderType = "Google"
+	IdentityProviderTypeLoginWithAmazon IdentityProviderType = "LoginWithAmazon"
+	IdentityProviderTypeSignInWithApple IdentityProviderType = "SignInWithApple"
+	IdentityProviderTypeOIDC            IdentityProviderType = "OIDC"
+)
+
+type AuthenticationType string
+
+const (
+	AuthenticationTypeStandard          AuthenticationType = "Standard"
+	AuthenticationTypeIAMIdentityCenter AuthenticationType = "IAM_Identity_Center"
+)
+
+type BrowserType string
+
+const (
+	BrowserTypeChrome BrowserType = "Chrome"
+)
+
+type InstanceType string
+
+const (
+	InstanceTypeStandardRegular InstanceType = "standard.regular"
+	InstanceTypeStandardLarge   InstanceType = "standard.large"
+	InstanceTypeStandardXlarge  InstanceType = "standard.xlarge"
+)
+
+type PortalStatus string
+
+const (
+	PortalStatusIncomplete PortalStatus = "Incomplete"
+	PortalStatusPending    PortalStatus = "Pending"
+	PortalStatusActive     PortalStatus = "Active"
+)
+
+type RendererType string
+
+const (
+	RendererTypeAppStream RendererType = "AppStream"
+)
+
+type FolderStructure string
+
+const (
+	FolderStructureFlat         FolderStructure = "Flat"
+	FolderStructureNestedByDate FolderStructure = "NestedByDate"
+)
+
+type LogFileFormat string
+
+const (
+	LogFileFormatJSONLines LogFileFormat = "JSONLines"
+	LogFileFormatJson      LogFileFormat = "Json"
+)
+
+type ColorTheme string
+
+const (
+	ColorThemeLight ColorTheme = "Light"
+	ColorThemeDark  ColorTheme = "Dark"
+)
+
+type MimeType string
+
+const (
+	MimeTypeImagePng   MimeType = "image/png"
+	MimeTypeImageJpeg  MimeType = "image/jpeg"
+	MimeTypeImageXIcon MimeType = "image/x-icon"
+)
+
+type EnabledType string
+
+const (
+	EnabledTypeDisabled EnabledType = "Disabled"
+	EnabledTypeEnabled  EnabledType = "Enabled"
+)
+
+type ToolbarItem string
+
+const (
+	ToolbarItemWindows     ToolbarItem = "Windows"
+	ToolbarItemDualMonitor ToolbarItem = "DualMonitor"
+	ToolbarItemFullScreen  ToolbarItem = "FullScreen"
+	ToolbarItemWebcam      ToolbarItem = "Webcam"
+	ToolbarItemMicrophone  ToolbarItem = "Microphone"
+)
+
+type MaxDisplayResolution string
+
+const (
+	MaxDisplayResolutionSize4096X2160 MaxDisplayResolution = "size4096X2160"
+	MaxDisplayResolutionSize3840X2160 MaxDisplayResolution = "size3840X2160"
+	MaxDisplayResolutionSize3440X1440 MaxDisplayResolution = "size3440X1440"
+	MaxDisplayResolutionSize2560X1440 MaxDisplayResolution = "size2560X1440"
+	MaxDisplayResolutionSize1920X1080 MaxDisplayResolution = "size1920X1080"
+	MaxDisplayResolutionSize1280X720  MaxDisplayResolution = "size1280X720"
+	MaxDisplayResolutionSize1024X768  MaxDisplayResolution = "size1024X768"
+	MaxDisplayResolutionSize800X600   MaxDisplayResolution = "size800X600"
+)
+
+type ToolbarType string
+
+const (
+	ToolbarTypeFloating ToolbarType = "Floating"
+	ToolbarTypeDocked   ToolbarType = "Docked"
+)
+
+type VisualMode string
+
+const (
+	VisualModeDark  VisualMode = "Dark"
+	VisualModeLight VisualMode = "Light"
+)

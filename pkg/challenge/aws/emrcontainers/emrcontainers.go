@@ -29,10 +29,10 @@ type S3MonitoringConfiguration struct {
 }
 
 type MonitoringConfiguration struct {
-	CloudWatchMonitoringConfiguration *CloudWatchMonitoringConfiguration `json:"CloudWatchMonitoringConfiguration,omitempty"`
-	ContainerLogRotationConfiguration *ContainerLogRotationConfiguration `json:"ContainerLogRotationConfiguration,omitempty"`
-	PersistentAppUI                   *string                            `json:"PersistentAppUI,omitempty"`
-	S3MonitoringConfiguration         *S3MonitoringConfiguration         `json:"S3MonitoringConfiguration,omitempty"`
+	CloudWatchMonitoringConfiguration *CloudWatchMonitoringConfiguration      `json:"CloudWatchMonitoringConfiguration,omitempty"`
+	ContainerLogRotationConfiguration *ContainerLogRotationConfiguration      `json:"ContainerLogRotationConfiguration,omitempty"`
+	PersistentAppUI                   *MonitoringConfigurationPersistentAppUI `json:"PersistentAppUI,omitempty"`
+	S3MonitoringConfiguration         *S3MonitoringConfiguration              `json:"S3MonitoringConfiguration,omitempty"`
 }
 
 type ConfigurationOverrides struct {
@@ -77,9 +77,9 @@ type ContainerInfo struct {
 }
 
 type ContainerProvider struct {
-	Id   *string        `json:"Id,omitempty"`
-	Info *ContainerInfo `json:"Info,omitempty"`
-	Type *string        `json:"Type,omitempty"`
+	Id   *string                `json:"Id,omitempty"`
+	Info *ContainerInfo         `json:"Info,omitempty"`
+	Type *ContainerProviderType `json:"Type,omitempty"`
 }
 
 type IAMConfiguration struct {
@@ -114,13 +114,13 @@ type AuthorizationConfiguration struct {
 }
 
 type LocalDiskEncryptionConfiguration struct {
-	AwsKmsKeyId               *string `json:"AwsKmsKeyId,omitempty"`
-	EncryptionKeyProviderType *string `json:"EncryptionKeyProviderType,omitempty"`
+	AwsKmsKeyId               *string                                                    `json:"AwsKmsKeyId,omitempty"`
+	EncryptionKeyProviderType *LocalDiskEncryptionConfigurationEncryptionKeyProviderType `json:"EncryptionKeyProviderType,omitempty"`
 }
 
 type S3EncryptionConfiguration struct {
-	EncryptionOption *string `json:"EncryptionOption,omitempty"`
-	KMSKeyId         *string `json:"KMSKeyId,omitempty"`
+	EncryptionOption *S3EncryptionConfigurationEncryptionOption `json:"EncryptionOption,omitempty"`
+	KMSKeyId         *string                                    `json:"KMSKeyId,omitempty"`
 }
 
 type AtRestEncryptionConfiguration struct {
@@ -129,9 +129,9 @@ type AtRestEncryptionConfiguration struct {
 }
 
 type TLSCertificateConfiguration struct {
-	CertificateProviderType *string `json:"CertificateProviderType,omitempty"`
-	PrivateKeySecretArn     *string `json:"PrivateKeySecretArn,omitempty"`
-	PublicKeySecretArn      *string `json:"PublicKeySecretArn,omitempty"`
+	CertificateProviderType *TLSCertificateConfigurationCertificateProviderType `json:"CertificateProviderType,omitempty"`
+	PrivateKeySecretArn     *string                                             `json:"PrivateKeySecretArn,omitempty"`
+	PublicKeySecretArn      *string                                             `json:"PublicKeySecretArn,omitempty"`
 }
 
 type InTransitEncryptionConfiguration struct {
@@ -197,3 +197,36 @@ type VirtualCluster struct {
 }
 
 func (VirtualCluster) CloudControlType() string { return "AWS::EMRContainers::VirtualCluster" }
+
+type MonitoringConfigurationPersistentAppUI string
+
+const (
+	MonitoringConfigurationPersistentAppUIENABLED  MonitoringConfigurationPersistentAppUI = "ENABLED"
+	MonitoringConfigurationPersistentAppUIDISABLED MonitoringConfigurationPersistentAppUI = "DISABLED"
+)
+
+type ContainerProviderType string
+
+const (
+	ContainerProviderTypeEKS ContainerProviderType = "EKS"
+)
+
+type LocalDiskEncryptionConfigurationEncryptionKeyProviderType string
+
+const (
+	LocalDiskEncryptionConfigurationEncryptionKeyProviderTypeAwsKms LocalDiskEncryptionConfigurationEncryptionKeyProviderType = "AwsKms"
+)
+
+type S3EncryptionConfigurationEncryptionOption string
+
+const (
+	S3EncryptionConfigurationEncryptionOptionSSES3  S3EncryptionConfigurationEncryptionOption = "SSE-S3"
+	S3EncryptionConfigurationEncryptionOptionSSEKMS S3EncryptionConfigurationEncryptionOption = "SSE-KMS"
+	S3EncryptionConfigurationEncryptionOptionCSEKMS S3EncryptionConfigurationEncryptionOption = "CSE-KMS"
+)
+
+type TLSCertificateConfigurationCertificateProviderType string
+
+const (
+	TLSCertificateConfigurationCertificateProviderTypePEM TLSCertificateConfigurationCertificateProviderType = "PEM"
+)

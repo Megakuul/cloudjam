@@ -38,7 +38,7 @@ type InferenceScheduler struct {
 	DataDelayOffsetInMinutes *int                                       `json:"DataDelayOffsetInMinutes,omitempty"`
 	DataInputConfiguration   *InferenceSchedulerDataInputConfiguration  `json:"DataInputConfiguration,omitempty"`
 	DataOutputConfiguration  *InferenceSchedulerDataOutputConfiguration `json:"DataOutputConfiguration,omitempty"`
-	DataUploadFrequency      *string                                    `json:"DataUploadFrequency,omitempty"`
+	DataUploadFrequency      *InferenceSchedulerDataUploadFrequency     `json:"DataUploadFrequency,omitempty"`
 	InferenceSchedulerArn    *string                                    `json:"InferenceSchedulerArn,omitempty"`
 	InferenceSchedulerName   *string                                    `json:"InferenceSchedulerName,omitempty"`
 	ModelName                *string                                    `json:"ModelName,omitempty"`
@@ -50,3 +50,13 @@ type InferenceScheduler struct {
 func (InferenceScheduler) CloudControlType() string {
 	return "AWS::LookoutEquipment::InferenceScheduler"
 }
+
+type InferenceSchedulerDataUploadFrequency string
+
+const (
+	InferenceSchedulerDataUploadFrequencyPT5M  InferenceSchedulerDataUploadFrequency = "PT5M"
+	InferenceSchedulerDataUploadFrequencyPT10M InferenceSchedulerDataUploadFrequency = "PT10M"
+	InferenceSchedulerDataUploadFrequencyPT15M InferenceSchedulerDataUploadFrequency = "PT15M"
+	InferenceSchedulerDataUploadFrequencyPT30M InferenceSchedulerDataUploadFrequency = "PT30M"
+	InferenceSchedulerDataUploadFrequencyPT1H  InferenceSchedulerDataUploadFrequency = "PT1H"
+)

@@ -4,9 +4,9 @@
 package gamelift
 
 type RoutingStrategy struct {
-	FleetId *string `json:"FleetId,omitempty"`
-	Message *string `json:"Message,omitempty"`
-	Type    *string `json:"Type,omitempty"`
+	FleetId *string              `json:"FleetId,omitempty"`
+	Message *string              `json:"Message,omitempty"`
+	Type    *RoutingStrategyType `json:"Type,omitempty"`
 }
 
 type Tag struct {
@@ -38,22 +38,22 @@ type BuildTag struct {
 }
 
 type Build struct {
-	BuildArn         *string          `json:"BuildArn,omitempty"`
-	BuildId          *string          `json:"BuildId,omitempty"`
-	Name             *string          `json:"Name,omitempty"`
-	OperatingSystem  *string          `json:"OperatingSystem,omitempty"`
-	ServerSdkVersion *string          `json:"ServerSdkVersion,omitempty"`
-	StorageLocation  *StorageLocation `json:"StorageLocation,omitempty"`
-	Tags             []BuildTag       `json:"Tags,omitempty"`
-	Version          *string          `json:"Version,omitempty"`
+	BuildArn         *string               `json:"BuildArn,omitempty"`
+	BuildId          *string               `json:"BuildId,omitempty"`
+	Name             *string               `json:"Name,omitempty"`
+	OperatingSystem  *BuildOperatingSystem `json:"OperatingSystem,omitempty"`
+	ServerSdkVersion *string               `json:"ServerSdkVersion,omitempty"`
+	StorageLocation  *StorageLocation      `json:"StorageLocation,omitempty"`
+	Tags             []BuildTag            `json:"Tags,omitempty"`
+	Version          *string               `json:"Version,omitempty"`
 }
 
 func (Build) CloudControlType() string { return "AWS::GameLift::Build" }
 
 type DeploymentConfiguration struct {
-	ImpairmentStrategy       *string `json:"ImpairmentStrategy,omitempty"`
-	MinimumHealthyPercentage *int    `json:"MinimumHealthyPercentage,omitempty"`
-	ProtectionStrategy       *string `json:"ProtectionStrategy,omitempty"`
+	ImpairmentStrategy       *DeploymentConfigurationImpairmentStrategy `json:"ImpairmentStrategy,omitempty"`
+	MinimumHealthyPercentage *int                                       `json:"MinimumHealthyPercentage,omitempty"`
+	ProtectionStrategy       *DeploymentConfigurationProtectionStrategy `json:"ProtectionStrategy,omitempty"`
 }
 
 type DeploymentDetails struct {
@@ -71,15 +71,15 @@ type ConnectionPortRange struct {
 }
 
 type IpPermission struct {
-	FromPort *int    `json:"FromPort,omitempty"`
-	IpRange  *string `json:"IpRange,omitempty"`
-	Protocol *string `json:"Protocol,omitempty"`
-	ToPort   *int    `json:"ToPort,omitempty"`
+	FromPort *int                  `json:"FromPort,omitempty"`
+	IpRange  *string               `json:"IpRange,omitempty"`
+	Protocol *IpPermissionProtocol `json:"Protocol,omitempty"`
+	ToPort   *int                  `json:"ToPort,omitempty"`
 }
 
 type ManagedCapacityConfiguration struct {
-	ScaleInAfterInactivityMinutes *int    `json:"ScaleInAfterInactivityMinutes,omitempty"`
-	ZeroCapacityStrategy          *string `json:"ZeroCapacityStrategy,omitempty"`
+	ScaleInAfterInactivityMinutes *int                                              `json:"ScaleInAfterInactivityMinutes,omitempty"`
+	ZeroCapacityStrategy          *ManagedCapacityConfigurationZeroCapacityStrategy `json:"ZeroCapacityStrategy,omitempty"`
 }
 
 type LocationCapacity struct {
@@ -90,16 +90,16 @@ type LocationCapacity struct {
 }
 
 type LocationConfiguration struct {
-	Location            *string           `json:"Location,omitempty"`
-	LocationCapacity    *LocationCapacity `json:"LocationCapacity,omitempty"`
-	PlayerGatewayStatus *string           `json:"PlayerGatewayStatus,omitempty"`
-	StoppedActions      []string          `json:"StoppedActions,omitempty"`
+	Location            *string                                   `json:"Location,omitempty"`
+	LocationCapacity    *LocationCapacity                         `json:"LocationCapacity,omitempty"`
+	PlayerGatewayStatus *LocationConfigurationPlayerGatewayStatus `json:"PlayerGatewayStatus,omitempty"`
+	StoppedActions      []StoppedActionsItem                      `json:"StoppedActions,omitempty"`
 }
 
 type LogConfiguration struct {
-	LogDestination *string `json:"LogDestination,omitempty"`
-	LogGroupArn    *string `json:"LogGroupArn,omitempty"`
-	S3BucketName   *string `json:"S3BucketName,omitempty"`
+	LogDestination *LogDestination `json:"LogDestination,omitempty"`
+	LogGroupArn    *string         `json:"LogGroupArn,omitempty"`
+	S3BucketName   *string         `json:"S3BucketName,omitempty"`
 }
 
 type TargetConfiguration struct {
@@ -107,15 +107,15 @@ type TargetConfiguration struct {
 }
 
 type ScalingPolicy struct {
-	ComparisonOperator    *string              `json:"ComparisonOperator,omitempty"`
-	EvaluationPeriods     *int                 `json:"EvaluationPeriods,omitempty"`
-	MetricName            *string              `json:"MetricName,omitempty"`
-	Name                  *string              `json:"Name,omitempty"`
-	PolicyType            *string              `json:"PolicyType,omitempty"`
-	ScalingAdjustment     *int                 `json:"ScalingAdjustment,omitempty"`
-	ScalingAdjustmentType *string              `json:"ScalingAdjustmentType,omitempty"`
-	TargetConfiguration   *TargetConfiguration `json:"TargetConfiguration,omitempty"`
-	Threshold             *float64             `json:"Threshold,omitempty"`
+	ComparisonOperator    *ScalingPolicyComparisonOperator    `json:"ComparisonOperator,omitempty"`
+	EvaluationPeriods     *int                                `json:"EvaluationPeriods,omitempty"`
+	MetricName            *ScalingPolicyMetricName            `json:"MetricName,omitempty"`
+	Name                  *string                             `json:"Name,omitempty"`
+	PolicyType            *ScalingPolicyPolicyType            `json:"PolicyType,omitempty"`
+	ScalingAdjustment     *int                                `json:"ScalingAdjustment,omitempty"`
+	ScalingAdjustmentType *ScalingPolicyScalingAdjustmentType `json:"ScalingAdjustmentType,omitempty"`
+	TargetConfiguration   *TargetConfiguration                `json:"TargetConfiguration,omitempty"`
+	Threshold             *float64                            `json:"Threshold,omitempty"`
 }
 
 type ContainerFleetTag struct {
@@ -124,39 +124,39 @@ type ContainerFleetTag struct {
 }
 
 type ContainerFleet struct {
-	BillingType                                 *string                         `json:"BillingType,omitempty"`
-	CreationTime                                *string                         `json:"CreationTime,omitempty"`
-	DeploymentConfiguration                     *DeploymentConfiguration        `json:"DeploymentConfiguration,omitempty"`
-	DeploymentDetails                           *DeploymentDetails              `json:"DeploymentDetails,omitempty"`
-	Description                                 *string                         `json:"Description,omitempty"`
-	FleetArn                                    *string                         `json:"FleetArn,omitempty"`
-	FleetId                                     *string                         `json:"FleetId,omitempty"`
-	FleetRoleArn                                *string                         `json:"FleetRoleArn,omitempty"`
-	GameServerContainerGroupDefinitionArn       *string                         `json:"GameServerContainerGroupDefinitionArn,omitempty"`
-	GameServerContainerGroupDefinitionName      *string                         `json:"GameServerContainerGroupDefinitionName,omitempty"`
-	GameServerContainerGroupsPerInstance        *int                            `json:"GameServerContainerGroupsPerInstance,omitempty"`
-	GameSessionCreationLimitPolicy              *GameSessionCreationLimitPolicy `json:"GameSessionCreationLimitPolicy,omitempty"`
-	InstanceConnectionPortRange                 *ConnectionPortRange            `json:"InstanceConnectionPortRange,omitempty"`
-	InstanceInboundPermissions                  []IpPermission                  `json:"InstanceInboundPermissions,omitempty"`
-	InstanceType                                *string                         `json:"InstanceType,omitempty"`
-	Locations                                   []LocationConfiguration         `json:"Locations,omitempty"`
-	LogConfiguration                            *LogConfiguration               `json:"LogConfiguration,omitempty"`
-	MaximumGameServerContainerGroupsPerInstance *int                            `json:"MaximumGameServerContainerGroupsPerInstance,omitempty"`
-	MetricGroups                                []string                        `json:"MetricGroups,omitempty"`
-	NewGameSessionProtectionPolicy              *string                         `json:"NewGameSessionProtectionPolicy,omitempty"`
-	PerInstanceContainerGroupDefinitionArn      *string                         `json:"PerInstanceContainerGroupDefinitionArn,omitempty"`
-	PerInstanceContainerGroupDefinitionName     *string                         `json:"PerInstanceContainerGroupDefinitionName,omitempty"`
-	PlayerGatewayMode                           *string                         `json:"PlayerGatewayMode,omitempty"`
-	ScalingPolicies                             []ScalingPolicy                 `json:"ScalingPolicies,omitempty"`
-	Status                                      *string                         `json:"Status,omitempty"`
-	Tags                                        []ContainerFleetTag             `json:"Tags,omitempty"`
+	BillingType                                 *ContainerFleetBillingType                    `json:"BillingType,omitempty"`
+	CreationTime                                *string                                       `json:"CreationTime,omitempty"`
+	DeploymentConfiguration                     *DeploymentConfiguration                      `json:"DeploymentConfiguration,omitempty"`
+	DeploymentDetails                           *DeploymentDetails                            `json:"DeploymentDetails,omitempty"`
+	Description                                 *string                                       `json:"Description,omitempty"`
+	FleetArn                                    *string                                       `json:"FleetArn,omitempty"`
+	FleetId                                     *string                                       `json:"FleetId,omitempty"`
+	FleetRoleArn                                *string                                       `json:"FleetRoleArn,omitempty"`
+	GameServerContainerGroupDefinitionArn       *string                                       `json:"GameServerContainerGroupDefinitionArn,omitempty"`
+	GameServerContainerGroupDefinitionName      *string                                       `json:"GameServerContainerGroupDefinitionName,omitempty"`
+	GameServerContainerGroupsPerInstance        *int                                          `json:"GameServerContainerGroupsPerInstance,omitempty"`
+	GameSessionCreationLimitPolicy              *GameSessionCreationLimitPolicy               `json:"GameSessionCreationLimitPolicy,omitempty"`
+	InstanceConnectionPortRange                 *ConnectionPortRange                          `json:"InstanceConnectionPortRange,omitempty"`
+	InstanceInboundPermissions                  []IpPermission                                `json:"InstanceInboundPermissions,omitempty"`
+	InstanceType                                *string                                       `json:"InstanceType,omitempty"`
+	Locations                                   []LocationConfiguration                       `json:"Locations,omitempty"`
+	LogConfiguration                            *LogConfiguration                             `json:"LogConfiguration,omitempty"`
+	MaximumGameServerContainerGroupsPerInstance *int                                          `json:"MaximumGameServerContainerGroupsPerInstance,omitempty"`
+	MetricGroups                                []string                                      `json:"MetricGroups,omitempty"`
+	NewGameSessionProtectionPolicy              *ContainerFleetNewGameSessionProtectionPolicy `json:"NewGameSessionProtectionPolicy,omitempty"`
+	PerInstanceContainerGroupDefinitionArn      *string                                       `json:"PerInstanceContainerGroupDefinitionArn,omitempty"`
+	PerInstanceContainerGroupDefinitionName     *string                                       `json:"PerInstanceContainerGroupDefinitionName,omitempty"`
+	PlayerGatewayMode                           *ContainerFleetPlayerGatewayMode              `json:"PlayerGatewayMode,omitempty"`
+	ScalingPolicies                             []ScalingPolicy                               `json:"ScalingPolicies,omitempty"`
+	Status                                      *ContainerFleetStatus                         `json:"Status,omitempty"`
+	Tags                                        []ContainerFleetTag                           `json:"Tags,omitempty"`
 }
 
 func (ContainerFleet) CloudControlType() string { return "AWS::GameLift::ContainerFleet" }
 
 type ContainerDependency struct {
-	Condition     *string `json:"Condition,omitempty"`
-	ContainerName *string `json:"ContainerName,omitempty"`
+	Condition     *ContainerDependencyCondition `json:"Condition,omitempty"`
+	ContainerName *string                       `json:"ContainerName,omitempty"`
 }
 
 type ContainerEnvironment struct {
@@ -165,19 +165,19 @@ type ContainerEnvironment struct {
 }
 
 type LinuxCapabilities struct {
-	Include []string `json:"Include,omitempty"`
+	Include []LinuxCapabilitiesIncludeItem `json:"Include,omitempty"`
 }
 
 type ContainerMountPoint struct {
-	AccessLevel   *string `json:"AccessLevel,omitempty"`
-	ContainerPath *string `json:"ContainerPath,omitempty"`
-	InstancePath  *string `json:"InstancePath,omitempty"`
+	AccessLevel   *ContainerMountPointAccessLevel `json:"AccessLevel,omitempty"`
+	ContainerPath *string                         `json:"ContainerPath,omitempty"`
+	InstancePath  *string                         `json:"InstancePath,omitempty"`
 }
 
 type ContainerPortRange struct {
-	FromPort *int    `json:"FromPort,omitempty"`
-	Protocol *string `json:"Protocol,omitempty"`
-	ToPort   *int    `json:"ToPort,omitempty"`
+	FromPort *int                        `json:"FromPort,omitempty"`
+	Protocol *ContainerPortRangeProtocol `json:"Protocol,omitempty"`
+	ToPort   *int                        `json:"ToPort,omitempty"`
 }
 
 type PortConfiguration struct {
@@ -225,21 +225,21 @@ type ContainerGroupDefinitionTag struct {
 }
 
 type ContainerGroupDefinition struct {
-	ContainerGroupDefinitionArn   *string                        `json:"ContainerGroupDefinitionArn,omitempty"`
-	ContainerGroupType            *string                        `json:"ContainerGroupType,omitempty"`
-	CreationTime                  *string                        `json:"CreationTime,omitempty"`
-	GameServerContainerDefinition *GameServerContainerDefinition `json:"GameServerContainerDefinition,omitempty"`
-	Name                          *string                        `json:"Name,omitempty"`
-	OperatingSystem               *string                        `json:"OperatingSystem,omitempty"`
-	SourceVersionNumber           *int                           `json:"SourceVersionNumber,omitempty"`
-	Status                        *string                        `json:"Status,omitempty"`
-	StatusReason                  *string                        `json:"StatusReason,omitempty"`
-	SupportContainerDefinitions   []SupportContainerDefinition   `json:"SupportContainerDefinitions,omitempty"`
-	Tags                          []ContainerGroupDefinitionTag  `json:"Tags,omitempty"`
-	TotalMemoryLimitMebibytes     *int                           `json:"TotalMemoryLimitMebibytes,omitempty"`
-	TotalVcpuLimit                *float64                       `json:"TotalVcpuLimit,omitempty"`
-	VersionDescription            *string                        `json:"VersionDescription,omitempty"`
-	VersionNumber                 *int                           `json:"VersionNumber,omitempty"`
+	ContainerGroupDefinitionArn   *string                                     `json:"ContainerGroupDefinitionArn,omitempty"`
+	ContainerGroupType            *ContainerGroupDefinitionContainerGroupType `json:"ContainerGroupType,omitempty"`
+	CreationTime                  *string                                     `json:"CreationTime,omitempty"`
+	GameServerContainerDefinition *GameServerContainerDefinition              `json:"GameServerContainerDefinition,omitempty"`
+	Name                          *string                                     `json:"Name,omitempty"`
+	OperatingSystem               *ContainerGroupDefinitionOperatingSystem    `json:"OperatingSystem,omitempty"`
+	SourceVersionNumber           *int                                        `json:"SourceVersionNumber,omitempty"`
+	Status                        *ContainerGroupDefinitionStatus             `json:"Status,omitempty"`
+	StatusReason                  *string                                     `json:"StatusReason,omitempty"`
+	SupportContainerDefinitions   []SupportContainerDefinition                `json:"SupportContainerDefinitions,omitempty"`
+	Tags                          []ContainerGroupDefinitionTag               `json:"Tags,omitempty"`
+	TotalMemoryLimitMebibytes     *int                                        `json:"TotalMemoryLimitMebibytes,omitempty"`
+	TotalVcpuLimit                *float64                                    `json:"TotalVcpuLimit,omitempty"`
+	VersionDescription            *string                                     `json:"VersionDescription,omitempty"`
+	VersionNumber                 *int                                        `json:"VersionNumber,omitempty"`
 }
 
 func (ContainerGroupDefinition) CloudControlType() string {
@@ -251,19 +251,19 @@ type AnywhereConfiguration struct {
 }
 
 type CertificateConfiguration struct {
-	CertificateType *string `json:"CertificateType,omitempty"`
+	CertificateType *CertificateConfigurationCertificateType `json:"CertificateType,omitempty"`
 }
 
 type FleetIpPermission struct {
-	FromPort *int    `json:"FromPort,omitempty"`
-	IpRange  *string `json:"IpRange,omitempty"`
-	Protocol *string `json:"Protocol,omitempty"`
-	ToPort   *int    `json:"ToPort,omitempty"`
+	FromPort *int                       `json:"FromPort,omitempty"`
+	IpRange  *string                    `json:"IpRange,omitempty"`
+	Protocol *FleetIpPermissionProtocol `json:"Protocol,omitempty"`
+	ToPort   *int                       `json:"ToPort,omitempty"`
 }
 
 type FleetManagedCapacityConfiguration struct {
-	ScaleInAfterInactivityMinutes *int    `json:"ScaleInAfterInactivityMinutes,omitempty"`
-	ZeroCapacityStrategy          *string `json:"ZeroCapacityStrategy,omitempty"`
+	ScaleInAfterInactivityMinutes *int                                                   `json:"ScaleInAfterInactivityMinutes,omitempty"`
+	ZeroCapacityStrategy          *FleetManagedCapacityConfigurationZeroCapacityStrategy `json:"ZeroCapacityStrategy,omitempty"`
 }
 
 type FleetLocationCapacity struct {
@@ -274,13 +274,13 @@ type FleetLocationCapacity struct {
 }
 
 type FleetLocationConfiguration struct {
-	Location            *string                `json:"Location,omitempty"`
-	LocationCapacity    *FleetLocationCapacity `json:"LocationCapacity,omitempty"`
-	PlayerGatewayStatus *string                `json:"PlayerGatewayStatus,omitempty"`
+	Location            *string                                        `json:"Location,omitempty"`
+	LocationCapacity    *FleetLocationCapacity                         `json:"LocationCapacity,omitempty"`
+	PlayerGatewayStatus *FleetLocationConfigurationPlayerGatewayStatus `json:"PlayerGatewayStatus,omitempty"`
 }
 
 type PlayerGatewayConfiguration struct {
-	GameServerIpProtocolSupported *string `json:"GameServerIpProtocolSupported,omitempty"`
+	GameServerIpProtocolSupported *PlayerGatewayConfigurationGameServerIpProtocolSupported `json:"GameServerIpProtocolSupported,omitempty"`
 }
 
 type ResourceCreationLimitPolicy struct {
@@ -305,18 +305,18 @@ type FleetTargetConfiguration struct {
 }
 
 type FleetScalingPolicy struct {
-	ComparisonOperator    *string                   `json:"ComparisonOperator,omitempty"`
-	EvaluationPeriods     *int                      `json:"EvaluationPeriods,omitempty"`
-	Location              *string                   `json:"Location,omitempty"`
-	MetricName            *string                   `json:"MetricName,omitempty"`
-	Name                  *string                   `json:"Name,omitempty"`
-	PolicyType            *string                   `json:"PolicyType,omitempty"`
-	ScalingAdjustment     *int                      `json:"ScalingAdjustment,omitempty"`
-	ScalingAdjustmentType *string                   `json:"ScalingAdjustmentType,omitempty"`
-	Status                *string                   `json:"Status,omitempty"`
-	TargetConfiguration   *FleetTargetConfiguration `json:"TargetConfiguration,omitempty"`
-	Threshold             *float64                  `json:"Threshold,omitempty"`
-	UpdateStatus          *string                   `json:"UpdateStatus,omitempty"`
+	ComparisonOperator    *FleetScalingPolicyComparisonOperator    `json:"ComparisonOperator,omitempty"`
+	EvaluationPeriods     *int                                     `json:"EvaluationPeriods,omitempty"`
+	Location              *string                                  `json:"Location,omitempty"`
+	MetricName            *FleetScalingPolicyMetricName            `json:"MetricName,omitempty"`
+	Name                  *string                                  `json:"Name,omitempty"`
+	PolicyType            *FleetScalingPolicyPolicyType            `json:"PolicyType,omitempty"`
+	ScalingAdjustment     *int                                     `json:"ScalingAdjustment,omitempty"`
+	ScalingAdjustmentType *FleetScalingPolicyScalingAdjustmentType `json:"ScalingAdjustmentType,omitempty"`
+	Status                *FleetScalingPolicyStatus                `json:"Status,omitempty"`
+	TargetConfiguration   *FleetTargetConfiguration                `json:"TargetConfiguration,omitempty"`
+	Threshold             *float64                                 `json:"Threshold,omitempty"`
+	UpdateStatus          *FleetScalingPolicyUpdateStatus          `json:"UpdateStatus,omitempty"`
 }
 
 type FleetTag struct {
@@ -325,38 +325,38 @@ type FleetTag struct {
 }
 
 type Fleet struct {
-	AnywhereConfiguration           *AnywhereConfiguration       `json:"AnywhereConfiguration,omitempty"`
-	ApplyCapacity                   *string                      `json:"ApplyCapacity,omitempty"`
-	BuildId                         *string                      `json:"BuildId,omitempty"`
-	CertificateConfiguration        *CertificateConfiguration    `json:"CertificateConfiguration,omitempty"`
-	ComputeType                     *string                      `json:"ComputeType,omitempty"`
-	Description                     *string                      `json:"Description,omitempty"`
-	DesiredEC2Instances             *int                         `json:"DesiredEC2Instances,omitempty"`
-	EC2InboundPermissions           []FleetIpPermission          `json:"EC2InboundPermissions,omitempty"`
-	EC2InstanceType                 *string                      `json:"EC2InstanceType,omitempty"`
-	FleetArn                        *string                      `json:"FleetArn,omitempty"`
-	FleetId                         *string                      `json:"FleetId,omitempty"`
-	FleetType                       *string                      `json:"FleetType,omitempty"`
-	InstanceRoleARN                 *string                      `json:"InstanceRoleARN,omitempty"`
-	InstanceRoleCredentialsProvider *string                      `json:"InstanceRoleCredentialsProvider,omitempty"`
-	Locations                       []FleetLocationConfiguration `json:"Locations,omitempty"`
-	LogPaths                        []string                     `json:"LogPaths,omitempty"`
-	MaxSize                         *int                         `json:"MaxSize,omitempty"`
-	MetricGroups                    []string                     `json:"MetricGroups,omitempty"`
-	MinSize                         *int                         `json:"MinSize,omitempty"`
-	Name                            *string                      `json:"Name,omitempty"`
-	NewGameSessionProtectionPolicy  *string                      `json:"NewGameSessionProtectionPolicy,omitempty"`
-	PeerVpcAwsAccountId             *string                      `json:"PeerVpcAwsAccountId,omitempty"`
-	PeerVpcId                       *string                      `json:"PeerVpcId,omitempty"`
-	PlayerGatewayConfiguration      *PlayerGatewayConfiguration  `json:"PlayerGatewayConfiguration,omitempty"`
-	PlayerGatewayMode               *string                      `json:"PlayerGatewayMode,omitempty"`
-	ResourceCreationLimitPolicy     *ResourceCreationLimitPolicy `json:"ResourceCreationLimitPolicy,omitempty"`
-	RuntimeConfiguration            *RuntimeConfiguration        `json:"RuntimeConfiguration,omitempty"`
-	ScalingPolicies                 []FleetScalingPolicy         `json:"ScalingPolicies,omitempty"`
-	ScriptId                        *string                      `json:"ScriptId,omitempty"`
-	ServerLaunchParameters          *string                      `json:"ServerLaunchParameters,omitempty"`
-	ServerLaunchPath                *string                      `json:"ServerLaunchPath,omitempty"`
-	Tags                            []FleetTag                   `json:"Tags,omitempty"`
+	AnywhereConfiguration           *AnywhereConfiguration                `json:"AnywhereConfiguration,omitempty"`
+	ApplyCapacity                   *FleetApplyCapacity                   `json:"ApplyCapacity,omitempty"`
+	BuildId                         *string                               `json:"BuildId,omitempty"`
+	CertificateConfiguration        *CertificateConfiguration             `json:"CertificateConfiguration,omitempty"`
+	ComputeType                     *FleetComputeType                     `json:"ComputeType,omitempty"`
+	Description                     *string                               `json:"Description,omitempty"`
+	DesiredEC2Instances             *int                                  `json:"DesiredEC2Instances,omitempty"`
+	EC2InboundPermissions           []FleetIpPermission                   `json:"EC2InboundPermissions,omitempty"`
+	EC2InstanceType                 *string                               `json:"EC2InstanceType,omitempty"`
+	FleetArn                        *string                               `json:"FleetArn,omitempty"`
+	FleetId                         *string                               `json:"FleetId,omitempty"`
+	FleetType                       *FleetFleetType                       `json:"FleetType,omitempty"`
+	InstanceRoleARN                 *string                               `json:"InstanceRoleARN,omitempty"`
+	InstanceRoleCredentialsProvider *FleetInstanceRoleCredentialsProvider `json:"InstanceRoleCredentialsProvider,omitempty"`
+	Locations                       []FleetLocationConfiguration          `json:"Locations,omitempty"`
+	LogPaths                        []string                              `json:"LogPaths,omitempty"`
+	MaxSize                         *int                                  `json:"MaxSize,omitempty"`
+	MetricGroups                    []string                              `json:"MetricGroups,omitempty"`
+	MinSize                         *int                                  `json:"MinSize,omitempty"`
+	Name                            *string                               `json:"Name,omitempty"`
+	NewGameSessionProtectionPolicy  *FleetNewGameSessionProtectionPolicy  `json:"NewGameSessionProtectionPolicy,omitempty"`
+	PeerVpcAwsAccountId             *string                               `json:"PeerVpcAwsAccountId,omitempty"`
+	PeerVpcId                       *string                               `json:"PeerVpcId,omitempty"`
+	PlayerGatewayConfiguration      *PlayerGatewayConfiguration           `json:"PlayerGatewayConfiguration,omitempty"`
+	PlayerGatewayMode               *FleetPlayerGatewayMode               `json:"PlayerGatewayMode,omitempty"`
+	ResourceCreationLimitPolicy     *ResourceCreationLimitPolicy          `json:"ResourceCreationLimitPolicy,omitempty"`
+	RuntimeConfiguration            *RuntimeConfiguration                 `json:"RuntimeConfiguration,omitempty"`
+	ScalingPolicies                 []FleetScalingPolicy                  `json:"ScalingPolicies,omitempty"`
+	ScriptId                        *string                               `json:"ScriptId,omitempty"`
+	ServerLaunchParameters          *string                               `json:"ServerLaunchParameters,omitempty"`
+	ServerLaunchPath                *string                               `json:"ServerLaunchPath,omitempty"`
+	Tags                            []FleetTag                            `json:"Tags,omitempty"`
 }
 
 func (Fleet) CloudControlType() string { return "AWS::GameLift::Fleet" }
@@ -387,20 +387,20 @@ type GameServerGroupTag struct {
 }
 
 type GameServerGroup struct {
-	AutoScalingGroupArn        *string              `json:"AutoScalingGroupArn,omitempty"`
-	AutoScalingPolicy          *AutoScalingPolicy   `json:"AutoScalingPolicy,omitempty"`
-	BalancingStrategy          *string              `json:"BalancingStrategy,omitempty"`
-	DeleteOption               *string              `json:"DeleteOption,omitempty"`
-	GameServerGroupArn         *string              `json:"GameServerGroupArn,omitempty"`
-	GameServerGroupName        *string              `json:"GameServerGroupName,omitempty"`
-	GameServerProtectionPolicy *string              `json:"GameServerProtectionPolicy,omitempty"`
-	InstanceDefinitions        []InstanceDefinition `json:"InstanceDefinitions,omitempty"`
-	LaunchTemplate             *LaunchTemplate      `json:"LaunchTemplate,omitempty"`
-	MaxSize                    *float64             `json:"MaxSize,omitempty"`
-	MinSize                    *float64             `json:"MinSize,omitempty"`
-	RoleArn                    *string              `json:"RoleArn,omitempty"`
-	Tags                       []GameServerGroupTag `json:"Tags,omitempty"`
-	VpcSubnets                 []string             `json:"VpcSubnets,omitempty"`
+	AutoScalingGroupArn        *string                     `json:"AutoScalingGroupArn,omitempty"`
+	AutoScalingPolicy          *AutoScalingPolicy          `json:"AutoScalingPolicy,omitempty"`
+	BalancingStrategy          *BalancingStrategy          `json:"BalancingStrategy,omitempty"`
+	DeleteOption               *DeleteOption               `json:"DeleteOption,omitempty"`
+	GameServerGroupArn         *string                     `json:"GameServerGroupArn,omitempty"`
+	GameServerGroupName        *string                     `json:"GameServerGroupName,omitempty"`
+	GameServerProtectionPolicy *GameServerProtectionPolicy `json:"GameServerProtectionPolicy,omitempty"`
+	InstanceDefinitions        []InstanceDefinition        `json:"InstanceDefinitions,omitempty"`
+	LaunchTemplate             *LaunchTemplate             `json:"LaunchTemplate,omitempty"`
+	MaxSize                    *float64                    `json:"MaxSize,omitempty"`
+	MinSize                    *float64                    `json:"MinSize,omitempty"`
+	RoleArn                    *string                     `json:"RoleArn,omitempty"`
+	Tags                       []GameServerGroupTag        `json:"Tags,omitempty"`
+	VpcSubnets                 []string                    `json:"VpcSubnets,omitempty"`
 }
 
 func (GameServerGroup) CloudControlType() string { return "AWS::GameLift::GameServerGroup" }
@@ -419,8 +419,8 @@ type PlayerLatencyPolicy struct {
 }
 
 type PriorityConfiguration struct {
-	LocationOrder []string `json:"LocationOrder,omitempty"`
-	PriorityOrder []string `json:"PriorityOrder,omitempty"`
+	LocationOrder []string            `json:"LocationOrder,omitempty"`
+	PriorityOrder []PriorityOrderItem `json:"PriorityOrder,omitempty"`
 }
 
 type GameSessionQueueTag struct {
@@ -467,24 +467,24 @@ type MatchmakingConfigurationTag struct {
 }
 
 type MatchmakingConfiguration struct {
-	AcceptanceRequired       *bool                         `json:"AcceptanceRequired,omitempty"`
-	AcceptanceTimeoutSeconds *int                          `json:"AcceptanceTimeoutSeconds,omitempty"`
-	AdditionalPlayerCount    *int                          `json:"AdditionalPlayerCount,omitempty"`
-	Arn                      *string                       `json:"Arn,omitempty"`
-	BackfillMode             *string                       `json:"BackfillMode,omitempty"`
-	CreationTime             *string                       `json:"CreationTime,omitempty"`
-	CustomEventData          *string                       `json:"CustomEventData,omitempty"`
-	Description              *string                       `json:"Description,omitempty"`
-	FlexMatchMode            *string                       `json:"FlexMatchMode,omitempty"`
-	GameProperties           []GameProperty                `json:"GameProperties,omitempty"`
-	GameSessionData          *string                       `json:"GameSessionData,omitempty"`
-	GameSessionQueueArns     []string                      `json:"GameSessionQueueArns,omitempty"`
-	Name                     *string                       `json:"Name,omitempty"`
-	NotificationTarget       *string                       `json:"NotificationTarget,omitempty"`
-	RequestTimeoutSeconds    *int                          `json:"RequestTimeoutSeconds,omitempty"`
-	RuleSetArn               *string                       `json:"RuleSetArn,omitempty"`
-	RuleSetName              *string                       `json:"RuleSetName,omitempty"`
-	Tags                     []MatchmakingConfigurationTag `json:"Tags,omitempty"`
+	AcceptanceRequired       *bool                                  `json:"AcceptanceRequired,omitempty"`
+	AcceptanceTimeoutSeconds *int                                   `json:"AcceptanceTimeoutSeconds,omitempty"`
+	AdditionalPlayerCount    *int                                   `json:"AdditionalPlayerCount,omitempty"`
+	Arn                      *string                                `json:"Arn,omitempty"`
+	BackfillMode             *MatchmakingConfigurationBackfillMode  `json:"BackfillMode,omitempty"`
+	CreationTime             *string                                `json:"CreationTime,omitempty"`
+	CustomEventData          *string                                `json:"CustomEventData,omitempty"`
+	Description              *string                                `json:"Description,omitempty"`
+	FlexMatchMode            *MatchmakingConfigurationFlexMatchMode `json:"FlexMatchMode,omitempty"`
+	GameProperties           []GameProperty                         `json:"GameProperties,omitempty"`
+	GameSessionData          *string                                `json:"GameSessionData,omitempty"`
+	GameSessionQueueArns     []string                               `json:"GameSessionQueueArns,omitempty"`
+	Name                     *string                                `json:"Name,omitempty"`
+	NotificationTarget       *string                                `json:"NotificationTarget,omitempty"`
+	RequestTimeoutSeconds    *int                                   `json:"RequestTimeoutSeconds,omitempty"`
+	RuleSetArn               *string                                `json:"RuleSetArn,omitempty"`
+	RuleSetName              *string                                `json:"RuleSetName,omitempty"`
+	Tags                     []MatchmakingConfigurationTag          `json:"Tags,omitempty"`
 }
 
 func (MatchmakingConfiguration) CloudControlType() string {
@@ -531,3 +531,414 @@ type Script struct {
 }
 
 func (Script) CloudControlType() string { return "AWS::GameLift::Script" }
+
+type RoutingStrategyType string
+
+const (
+	RoutingStrategyTypeSIMPLE   RoutingStrategyType = "SIMPLE"
+	RoutingStrategyTypeTERMINAL RoutingStrategyType = "TERMINAL"
+)
+
+type BuildOperatingSystem string
+
+const (
+	BuildOperatingSystemAMAZONLINUX     BuildOperatingSystem = "AMAZON_LINUX"
+	BuildOperatingSystemAMAZONLINUX2    BuildOperatingSystem = "AMAZON_LINUX_2"
+	BuildOperatingSystemAMAZONLINUX2023 BuildOperatingSystem = "AMAZON_LINUX_2023"
+	BuildOperatingSystemWINDOWS2012     BuildOperatingSystem = "WINDOWS_2012"
+	BuildOperatingSystemWINDOWS2016     BuildOperatingSystem = "WINDOWS_2016"
+	BuildOperatingSystemWINDOWS2022     BuildOperatingSystem = "WINDOWS_2022"
+)
+
+type ContainerFleetBillingType string
+
+const (
+	ContainerFleetBillingTypeONDEMAND ContainerFleetBillingType = "ON_DEMAND"
+	ContainerFleetBillingTypeSPOT     ContainerFleetBillingType = "SPOT"
+)
+
+type DeploymentConfigurationImpairmentStrategy string
+
+const (
+	DeploymentConfigurationImpairmentStrategyMAINTAIN DeploymentConfigurationImpairmentStrategy = "MAINTAIN"
+	DeploymentConfigurationImpairmentStrategyROLLBACK DeploymentConfigurationImpairmentStrategy = "ROLLBACK"
+)
+
+type DeploymentConfigurationProtectionStrategy string
+
+const (
+	DeploymentConfigurationProtectionStrategyWITHPROTECTION   DeploymentConfigurationProtectionStrategy = "WITH_PROTECTION"
+	DeploymentConfigurationProtectionStrategyIGNOREPROTECTION DeploymentConfigurationProtectionStrategy = "IGNORE_PROTECTION"
+)
+
+type IpPermissionProtocol string
+
+const (
+	IpPermissionProtocolTCP IpPermissionProtocol = "TCP"
+	IpPermissionProtocolUDP IpPermissionProtocol = "UDP"
+)
+
+type ManagedCapacityConfigurationZeroCapacityStrategy string
+
+const (
+	ManagedCapacityConfigurationZeroCapacityStrategySCALETOANDFROMZERO ManagedCapacityConfigurationZeroCapacityStrategy = "SCALE_TO_AND_FROM_ZERO"
+	ManagedCapacityConfigurationZeroCapacityStrategyMANUAL             ManagedCapacityConfigurationZeroCapacityStrategy = "MANUAL"
+)
+
+type LocationConfigurationPlayerGatewayStatus string
+
+const (
+	LocationConfigurationPlayerGatewayStatusDISABLED LocationConfigurationPlayerGatewayStatus = "DISABLED"
+	LocationConfigurationPlayerGatewayStatusENABLED  LocationConfigurationPlayerGatewayStatus = "ENABLED"
+)
+
+type StoppedActionsItem string
+
+const (
+	StoppedActionsItemAUTOSCALING StoppedActionsItem = "AUTO_SCALING"
+)
+
+type LogDestination string
+
+const (
+	LogDestinationNONE       LogDestination = "NONE"
+	LogDestinationCLOUDWATCH LogDestination = "CLOUDWATCH"
+	LogDestinationS3         LogDestination = "S3"
+)
+
+type ContainerFleetNewGameSessionProtectionPolicy string
+
+const (
+	ContainerFleetNewGameSessionProtectionPolicyFullProtection ContainerFleetNewGameSessionProtectionPolicy = "FullProtection"
+	ContainerFleetNewGameSessionProtectionPolicyNoProtection   ContainerFleetNewGameSessionProtectionPolicy = "NoProtection"
+)
+
+type ContainerFleetPlayerGatewayMode string
+
+const (
+	ContainerFleetPlayerGatewayModeDISABLED ContainerFleetPlayerGatewayMode = "DISABLED"
+	ContainerFleetPlayerGatewayModeENABLED  ContainerFleetPlayerGatewayMode = "ENABLED"
+	ContainerFleetPlayerGatewayModeREQUIRED ContainerFleetPlayerGatewayMode = "REQUIRED"
+)
+
+type ScalingPolicyComparisonOperator string
+
+const (
+	ScalingPolicyComparisonOperatorGreaterThanOrEqualToThreshold ScalingPolicyComparisonOperator = "GreaterThanOrEqualToThreshold"
+	ScalingPolicyComparisonOperatorGreaterThanThreshold          ScalingPolicyComparisonOperator = "GreaterThanThreshold"
+	ScalingPolicyComparisonOperatorLessThanThreshold             ScalingPolicyComparisonOperator = "LessThanThreshold"
+	ScalingPolicyComparisonOperatorLessThanOrEqualToThreshold    ScalingPolicyComparisonOperator = "LessThanOrEqualToThreshold"
+)
+
+type ScalingPolicyMetricName string
+
+const (
+	ScalingPolicyMetricNameActivatingGameSessions            ScalingPolicyMetricName = "ActivatingGameSessions"
+	ScalingPolicyMetricNameActiveGameSessions                ScalingPolicyMetricName = "ActiveGameSessions"
+	ScalingPolicyMetricNameActiveInstances                   ScalingPolicyMetricName = "ActiveInstances"
+	ScalingPolicyMetricNameAvailableGameSessions             ScalingPolicyMetricName = "AvailableGameSessions"
+	ScalingPolicyMetricNameAvailablePlayerSessions           ScalingPolicyMetricName = "AvailablePlayerSessions"
+	ScalingPolicyMetricNameCurrentPlayerSessions             ScalingPolicyMetricName = "CurrentPlayerSessions"
+	ScalingPolicyMetricNameIdleInstances                     ScalingPolicyMetricName = "IdleInstances"
+	ScalingPolicyMetricNamePercentAvailableGameSessions      ScalingPolicyMetricName = "PercentAvailableGameSessions"
+	ScalingPolicyMetricNamePercentIdleInstances              ScalingPolicyMetricName = "PercentIdleInstances"
+	ScalingPolicyMetricNameQueueDepth                        ScalingPolicyMetricName = "QueueDepth"
+	ScalingPolicyMetricNameWaitTime                          ScalingPolicyMetricName = "WaitTime"
+	ScalingPolicyMetricNameConcurrentActivatableGameSessions ScalingPolicyMetricName = "ConcurrentActivatableGameSessions"
+)
+
+type ScalingPolicyPolicyType string
+
+const (
+	ScalingPolicyPolicyTypeRuleBased   ScalingPolicyPolicyType = "RuleBased"
+	ScalingPolicyPolicyTypeTargetBased ScalingPolicyPolicyType = "TargetBased"
+)
+
+type ScalingPolicyScalingAdjustmentType string
+
+const (
+	ScalingPolicyScalingAdjustmentTypeChangeInCapacity        ScalingPolicyScalingAdjustmentType = "ChangeInCapacity"
+	ScalingPolicyScalingAdjustmentTypeExactCapacity           ScalingPolicyScalingAdjustmentType = "ExactCapacity"
+	ScalingPolicyScalingAdjustmentTypePercentChangeInCapacity ScalingPolicyScalingAdjustmentType = "PercentChangeInCapacity"
+)
+
+type ContainerFleetStatus string
+
+const (
+	ContainerFleetStatusPENDING    ContainerFleetStatus = "PENDING"
+	ContainerFleetStatusCREATING   ContainerFleetStatus = "CREATING"
+	ContainerFleetStatusCREATED    ContainerFleetStatus = "CREATED"
+	ContainerFleetStatusACTIVATING ContainerFleetStatus = "ACTIVATING"
+	ContainerFleetStatusACTIVE     ContainerFleetStatus = "ACTIVE"
+	ContainerFleetStatusUPDATING   ContainerFleetStatus = "UPDATING"
+	ContainerFleetStatusDELETING   ContainerFleetStatus = "DELETING"
+)
+
+type ContainerGroupDefinitionContainerGroupType string
+
+const (
+	ContainerGroupDefinitionContainerGroupTypeGAMESERVER  ContainerGroupDefinitionContainerGroupType = "GAME_SERVER"
+	ContainerGroupDefinitionContainerGroupTypePERINSTANCE ContainerGroupDefinitionContainerGroupType = "PER_INSTANCE"
+)
+
+type ContainerDependencyCondition string
+
+const (
+	ContainerDependencyConditionSTART    ContainerDependencyCondition = "START"
+	ContainerDependencyConditionCOMPLETE ContainerDependencyCondition = "COMPLETE"
+	ContainerDependencyConditionSUCCESS  ContainerDependencyCondition = "SUCCESS"
+	ContainerDependencyConditionHEALTHY  ContainerDependencyCondition = "HEALTHY"
+)
+
+type LinuxCapabilitiesIncludeItem string
+
+const (
+	LinuxCapabilitiesIncludeItemAUDITCONTROL   LinuxCapabilitiesIncludeItem = "AUDIT_CONTROL"
+	LinuxCapabilitiesIncludeItemAUDITWRITE     LinuxCapabilitiesIncludeItem = "AUDIT_WRITE"
+	LinuxCapabilitiesIncludeItemBLOCKSUSPEND   LinuxCapabilitiesIncludeItem = "BLOCK_SUSPEND"
+	LinuxCapabilitiesIncludeItemCHOWN          LinuxCapabilitiesIncludeItem = "CHOWN"
+	LinuxCapabilitiesIncludeItemDACOVERRIDE    LinuxCapabilitiesIncludeItem = "DAC_OVERRIDE"
+	LinuxCapabilitiesIncludeItemDACREADSEARCH  LinuxCapabilitiesIncludeItem = "DAC_READ_SEARCH"
+	LinuxCapabilitiesIncludeItemFOWNER         LinuxCapabilitiesIncludeItem = "FOWNER"
+	LinuxCapabilitiesIncludeItemFSETID         LinuxCapabilitiesIncludeItem = "FSETID"
+	LinuxCapabilitiesIncludeItemIPCLOCK        LinuxCapabilitiesIncludeItem = "IPC_LOCK"
+	LinuxCapabilitiesIncludeItemIPCOWNER       LinuxCapabilitiesIncludeItem = "IPC_OWNER"
+	LinuxCapabilitiesIncludeItemKILL           LinuxCapabilitiesIncludeItem = "KILL"
+	LinuxCapabilitiesIncludeItemLEASE          LinuxCapabilitiesIncludeItem = "LEASE"
+	LinuxCapabilitiesIncludeItemLINUXIMMUTABLE LinuxCapabilitiesIncludeItem = "LINUX_IMMUTABLE"
+	LinuxCapabilitiesIncludeItemMACADMIN       LinuxCapabilitiesIncludeItem = "MAC_ADMIN"
+	LinuxCapabilitiesIncludeItemMACOVERRIDE    LinuxCapabilitiesIncludeItem = "MAC_OVERRIDE"
+	LinuxCapabilitiesIncludeItemMKNOD          LinuxCapabilitiesIncludeItem = "MKNOD"
+	LinuxCapabilitiesIncludeItemNETADMIN       LinuxCapabilitiesIncludeItem = "NET_ADMIN"
+	LinuxCapabilitiesIncludeItemNETBINDSERVICE LinuxCapabilitiesIncludeItem = "NET_BIND_SERVICE"
+	LinuxCapabilitiesIncludeItemNETBROADCAST   LinuxCapabilitiesIncludeItem = "NET_BROADCAST"
+	LinuxCapabilitiesIncludeItemNETRAW         LinuxCapabilitiesIncludeItem = "NET_RAW"
+	LinuxCapabilitiesIncludeItemSETFCAP        LinuxCapabilitiesIncludeItem = "SETFCAP"
+	LinuxCapabilitiesIncludeItemSETGID         LinuxCapabilitiesIncludeItem = "SETGID"
+	LinuxCapabilitiesIncludeItemSETPCAP        LinuxCapabilitiesIncludeItem = "SETPCAP"
+	LinuxCapabilitiesIncludeItemSETUID         LinuxCapabilitiesIncludeItem = "SETUID"
+	LinuxCapabilitiesIncludeItemSYSADMIN       LinuxCapabilitiesIncludeItem = "SYS_ADMIN"
+	LinuxCapabilitiesIncludeItemSYSBOOT        LinuxCapabilitiesIncludeItem = "SYS_BOOT"
+	LinuxCapabilitiesIncludeItemSYSCHROOT      LinuxCapabilitiesIncludeItem = "SYS_CHROOT"
+	LinuxCapabilitiesIncludeItemSYSMODULE      LinuxCapabilitiesIncludeItem = "SYS_MODULE"
+	LinuxCapabilitiesIncludeItemSYSNICE        LinuxCapabilitiesIncludeItem = "SYS_NICE"
+	LinuxCapabilitiesIncludeItemSYSPACCT       LinuxCapabilitiesIncludeItem = "SYS_PACCT"
+	LinuxCapabilitiesIncludeItemSYSPTRACE      LinuxCapabilitiesIncludeItem = "SYS_PTRACE"
+	LinuxCapabilitiesIncludeItemSYSRAWIO       LinuxCapabilitiesIncludeItem = "SYS_RAWIO"
+	LinuxCapabilitiesIncludeItemSYSRESOURCE    LinuxCapabilitiesIncludeItem = "SYS_RESOURCE"
+	LinuxCapabilitiesIncludeItemSYSTIME        LinuxCapabilitiesIncludeItem = "SYS_TIME"
+	LinuxCapabilitiesIncludeItemSYSTTYCONFIG   LinuxCapabilitiesIncludeItem = "SYS_TTY_CONFIG"
+	LinuxCapabilitiesIncludeItemSYSLOG         LinuxCapabilitiesIncludeItem = "SYSLOG"
+	LinuxCapabilitiesIncludeItemWAKEALARM      LinuxCapabilitiesIncludeItem = "WAKE_ALARM"
+)
+
+type ContainerMountPointAccessLevel string
+
+const (
+	ContainerMountPointAccessLevelREADONLY     ContainerMountPointAccessLevel = "READ_ONLY"
+	ContainerMountPointAccessLevelREADANDWRITE ContainerMountPointAccessLevel = "READ_AND_WRITE"
+)
+
+type ContainerPortRangeProtocol string
+
+const (
+	ContainerPortRangeProtocolTCP ContainerPortRangeProtocol = "TCP"
+	ContainerPortRangeProtocolUDP ContainerPortRangeProtocol = "UDP"
+)
+
+type ContainerGroupDefinitionOperatingSystem string
+
+const (
+	ContainerGroupDefinitionOperatingSystemAMAZONLINUX2023 ContainerGroupDefinitionOperatingSystem = "AMAZON_LINUX_2023"
+)
+
+type ContainerGroupDefinitionStatus string
+
+const (
+	ContainerGroupDefinitionStatusREADY   ContainerGroupDefinitionStatus = "READY"
+	ContainerGroupDefinitionStatusCOPYING ContainerGroupDefinitionStatus = "COPYING"
+	ContainerGroupDefinitionStatusFAILED  ContainerGroupDefinitionStatus = "FAILED"
+)
+
+type FleetApplyCapacity string
+
+const (
+	FleetApplyCapacityONUPDATE                         FleetApplyCapacity = "ON_UPDATE"
+	FleetApplyCapacityONCREATEANDUPDATE                FleetApplyCapacity = "ON_CREATE_AND_UPDATE"
+	FleetApplyCapacityONCREATEANDUPDATEWITHAUTOSCALING FleetApplyCapacity = "ON_CREATE_AND_UPDATE_WITH_AUTOSCALING"
+)
+
+type CertificateConfigurationCertificateType string
+
+const (
+	CertificateConfigurationCertificateTypeDISABLED  CertificateConfigurationCertificateType = "DISABLED"
+	CertificateConfigurationCertificateTypeGENERATED CertificateConfigurationCertificateType = "GENERATED"
+)
+
+type FleetComputeType string
+
+const (
+	FleetComputeTypeEC2      FleetComputeType = "EC2"
+	FleetComputeTypeANYWHERE FleetComputeType = "ANYWHERE"
+)
+
+type FleetIpPermissionProtocol string
+
+const (
+	FleetIpPermissionProtocolTCP FleetIpPermissionProtocol = "TCP"
+	FleetIpPermissionProtocolUDP FleetIpPermissionProtocol = "UDP"
+)
+
+type FleetFleetType string
+
+const (
+	FleetFleetTypeONDEMAND FleetFleetType = "ON_DEMAND"
+	FleetFleetTypeSPOT     FleetFleetType = "SPOT"
+)
+
+type FleetInstanceRoleCredentialsProvider string
+
+const (
+	FleetInstanceRoleCredentialsProviderSHAREDCREDENTIALFILE FleetInstanceRoleCredentialsProvider = "SHARED_CREDENTIAL_FILE"
+)
+
+type FleetManagedCapacityConfigurationZeroCapacityStrategy string
+
+const (
+	FleetManagedCapacityConfigurationZeroCapacityStrategySCALETOANDFROMZERO FleetManagedCapacityConfigurationZeroCapacityStrategy = "SCALE_TO_AND_FROM_ZERO"
+	FleetManagedCapacityConfigurationZeroCapacityStrategyMANUAL             FleetManagedCapacityConfigurationZeroCapacityStrategy = "MANUAL"
+)
+
+type FleetLocationConfigurationPlayerGatewayStatus string
+
+const (
+	FleetLocationConfigurationPlayerGatewayStatusDISABLED FleetLocationConfigurationPlayerGatewayStatus = "DISABLED"
+	FleetLocationConfigurationPlayerGatewayStatusENABLED  FleetLocationConfigurationPlayerGatewayStatus = "ENABLED"
+)
+
+type FleetNewGameSessionProtectionPolicy string
+
+const (
+	FleetNewGameSessionProtectionPolicyFullProtection FleetNewGameSessionProtectionPolicy = "FullProtection"
+	FleetNewGameSessionProtectionPolicyNoProtection   FleetNewGameSessionProtectionPolicy = "NoProtection"
+)
+
+type PlayerGatewayConfigurationGameServerIpProtocolSupported string
+
+const (
+	PlayerGatewayConfigurationGameServerIpProtocolSupportedIPv4      PlayerGatewayConfigurationGameServerIpProtocolSupported = "IPv4"
+	PlayerGatewayConfigurationGameServerIpProtocolSupportedDUALSTACK PlayerGatewayConfigurationGameServerIpProtocolSupported = "DUAL_STACK"
+)
+
+type FleetPlayerGatewayMode string
+
+const (
+	FleetPlayerGatewayModeDISABLED FleetPlayerGatewayMode = "DISABLED"
+	FleetPlayerGatewayModeENABLED  FleetPlayerGatewayMode = "ENABLED"
+	FleetPlayerGatewayModeREQUIRED FleetPlayerGatewayMode = "REQUIRED"
+)
+
+type FleetScalingPolicyComparisonOperator string
+
+const (
+	FleetScalingPolicyComparisonOperatorGreaterThanOrEqualToThreshold FleetScalingPolicyComparisonOperator = "GreaterThanOrEqualToThreshold"
+	FleetScalingPolicyComparisonOperatorGreaterThanThreshold          FleetScalingPolicyComparisonOperator = "GreaterThanThreshold"
+	FleetScalingPolicyComparisonOperatorLessThanThreshold             FleetScalingPolicyComparisonOperator = "LessThanThreshold"
+	FleetScalingPolicyComparisonOperatorLessThanOrEqualToThreshold    FleetScalingPolicyComparisonOperator = "LessThanOrEqualToThreshold"
+)
+
+type FleetScalingPolicyMetricName string
+
+const (
+	FleetScalingPolicyMetricNameActivatingGameSessions            FleetScalingPolicyMetricName = "ActivatingGameSessions"
+	FleetScalingPolicyMetricNameActiveGameSessions                FleetScalingPolicyMetricName = "ActiveGameSessions"
+	FleetScalingPolicyMetricNameActiveInstances                   FleetScalingPolicyMetricName = "ActiveInstances"
+	FleetScalingPolicyMetricNameAvailableGameSessions             FleetScalingPolicyMetricName = "AvailableGameSessions"
+	FleetScalingPolicyMetricNameAvailablePlayerSessions           FleetScalingPolicyMetricName = "AvailablePlayerSessions"
+	FleetScalingPolicyMetricNameCurrentPlayerSessions             FleetScalingPolicyMetricName = "CurrentPlayerSessions"
+	FleetScalingPolicyMetricNameIdleInstances                     FleetScalingPolicyMetricName = "IdleInstances"
+	FleetScalingPolicyMetricNamePercentAvailableGameSessions      FleetScalingPolicyMetricName = "PercentAvailableGameSessions"
+	FleetScalingPolicyMetricNamePercentIdleInstances              FleetScalingPolicyMetricName = "PercentIdleInstances"
+	FleetScalingPolicyMetricNameQueueDepth                        FleetScalingPolicyMetricName = "QueueDepth"
+	FleetScalingPolicyMetricNameWaitTime                          FleetScalingPolicyMetricName = "WaitTime"
+	FleetScalingPolicyMetricNameConcurrentActivatableGameSessions FleetScalingPolicyMetricName = "ConcurrentActivatableGameSessions"
+)
+
+type FleetScalingPolicyPolicyType string
+
+const (
+	FleetScalingPolicyPolicyTypeRuleBased   FleetScalingPolicyPolicyType = "RuleBased"
+	FleetScalingPolicyPolicyTypeTargetBased FleetScalingPolicyPolicyType = "TargetBased"
+)
+
+type FleetScalingPolicyScalingAdjustmentType string
+
+const (
+	FleetScalingPolicyScalingAdjustmentTypeChangeInCapacity        FleetScalingPolicyScalingAdjustmentType = "ChangeInCapacity"
+	FleetScalingPolicyScalingAdjustmentTypeExactCapacity           FleetScalingPolicyScalingAdjustmentType = "ExactCapacity"
+	FleetScalingPolicyScalingAdjustmentTypePercentChangeInCapacity FleetScalingPolicyScalingAdjustmentType = "PercentChangeInCapacity"
+)
+
+type FleetScalingPolicyStatus string
+
+const (
+	FleetScalingPolicyStatusACTIVE          FleetScalingPolicyStatus = "ACTIVE"
+	FleetScalingPolicyStatusUPDATEREQUESTED FleetScalingPolicyStatus = "UPDATE_REQUESTED"
+	FleetScalingPolicyStatusUPDATING        FleetScalingPolicyStatus = "UPDATING"
+	FleetScalingPolicyStatusDELETEREQUESTED FleetScalingPolicyStatus = "DELETE_REQUESTED"
+	FleetScalingPolicyStatusDELETING        FleetScalingPolicyStatus = "DELETING"
+	FleetScalingPolicyStatusDELETED         FleetScalingPolicyStatus = "DELETED"
+	FleetScalingPolicyStatusERROR           FleetScalingPolicyStatus = "ERROR"
+)
+
+type FleetScalingPolicyUpdateStatus string
+
+const (
+	FleetScalingPolicyUpdateStatusPENDINGUPDATE FleetScalingPolicyUpdateStatus = "PENDING_UPDATE"
+)
+
+type BalancingStrategy string
+
+const (
+	BalancingStrategySPOTONLY      BalancingStrategy = "SPOT_ONLY"
+	BalancingStrategySPOTPREFERRED BalancingStrategy = "SPOT_PREFERRED"
+	BalancingStrategyONDEMANDONLY  BalancingStrategy = "ON_DEMAND_ONLY"
+)
+
+type DeleteOption string
+
+const (
+	DeleteOptionSAFEDELETE  DeleteOption = "SAFE_DELETE"
+	DeleteOptionFORCEDELETE DeleteOption = "FORCE_DELETE"
+	DeleteOptionRETAIN      DeleteOption = "RETAIN"
+)
+
+type GameServerProtectionPolicy string
+
+const (
+	GameServerProtectionPolicyNOPROTECTION   GameServerProtectionPolicy = "NO_PROTECTION"
+	GameServerProtectionPolicyFULLPROTECTION GameServerProtectionPolicy = "FULL_PROTECTION"
+)
+
+type PriorityOrderItem string
+
+const (
+	PriorityOrderItemLATENCY     PriorityOrderItem = "LATENCY"
+	PriorityOrderItemCOST        PriorityOrderItem = "COST"
+	PriorityOrderItemDESTINATION PriorityOrderItem = "DESTINATION"
+	PriorityOrderItemLOCATION    PriorityOrderItem = "LOCATION"
+)
+
+type MatchmakingConfigurationBackfillMode string
+
+const (
+	MatchmakingConfigurationBackfillModeAUTOMATIC MatchmakingConfigurationBackfillMode = "AUTOMATIC"
+	MatchmakingConfigurationBackfillModeMANUAL    MatchmakingConfigurationBackfillMode = "MANUAL"
+)
+
+type MatchmakingConfigurationFlexMatchMode string
+
+const (
+	MatchmakingConfigurationFlexMatchModeSTANDALONE MatchmakingConfigurationFlexMatchMode = "STANDALONE"
+	MatchmakingConfigurationFlexMatchModeWITHQUEUE  MatchmakingConfigurationFlexMatchMode = "WITH_QUEUE"
+)

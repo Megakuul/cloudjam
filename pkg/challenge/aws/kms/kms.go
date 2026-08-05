@@ -25,10 +25,10 @@ type Key struct {
 	Enabled                        *bool           `json:"Enabled,omitempty"`
 	KeyId                          *string         `json:"KeyId,omitempty"`
 	KeyPolicy                      json.RawMessage `json:"KeyPolicy,omitempty"`
-	KeySpec                        *string         `json:"KeySpec,omitempty"`
-	KeyUsage                       *string         `json:"KeyUsage,omitempty"`
+	KeySpec                        *KeyKeySpec     `json:"KeySpec,omitempty"`
+	KeyUsage                       *KeyKeyUsage    `json:"KeyUsage,omitempty"`
 	MultiRegion                    *bool           `json:"MultiRegion,omitempty"`
-	Origin                         *string         `json:"Origin,omitempty"`
+	Origin                         *KeyOrigin      `json:"Origin,omitempty"`
 	PendingWindowInDays            *int            `json:"PendingWindowInDays,omitempty"`
 	RotationPeriodInDays           *int            `json:"RotationPeriodInDays,omitempty"`
 	Tags                           []Tag           `json:"Tags,omitempty"`
@@ -53,3 +53,41 @@ type ReplicaKey struct {
 }
 
 func (ReplicaKey) CloudControlType() string { return "AWS::KMS::ReplicaKey" }
+
+type KeyKeySpec string
+
+const (
+	KeyKeySpecSYMMETRICDEFAULT    KeyKeySpec = "SYMMETRIC_DEFAULT"
+	KeyKeySpecRSA2048             KeyKeySpec = "RSA_2048"
+	KeyKeySpecRSA3072             KeyKeySpec = "RSA_3072"
+	KeyKeySpecRSA4096             KeyKeySpec = "RSA_4096"
+	KeyKeySpecECCNISTP256         KeyKeySpec = "ECC_NIST_P256"
+	KeyKeySpecECCNISTP384         KeyKeySpec = "ECC_NIST_P384"
+	KeyKeySpecECCNISTP521         KeyKeySpec = "ECC_NIST_P521"
+	KeyKeySpecECCSECGP256K1       KeyKeySpec = "ECC_SECG_P256K1"
+	KeyKeySpecHMAC224             KeyKeySpec = "HMAC_224"
+	KeyKeySpecHMAC256             KeyKeySpec = "HMAC_256"
+	KeyKeySpecHMAC384             KeyKeySpec = "HMAC_384"
+	KeyKeySpecHMAC512             KeyKeySpec = "HMAC_512"
+	KeyKeySpecSM2                 KeyKeySpec = "SM2"
+	KeyKeySpecMLDSA44             KeyKeySpec = "ML_DSA_44"
+	KeyKeySpecMLDSA65             KeyKeySpec = "ML_DSA_65"
+	KeyKeySpecMLDSA87             KeyKeySpec = "ML_DSA_87"
+	KeyKeySpecECCNISTEDWARDS25519 KeyKeySpec = "ECC_NIST_EDWARDS25519"
+)
+
+type KeyKeyUsage string
+
+const (
+	KeyKeyUsageENCRYPTDECRYPT    KeyKeyUsage = "ENCRYPT_DECRYPT"
+	KeyKeyUsageSIGNVERIFY        KeyKeyUsage = "SIGN_VERIFY"
+	KeyKeyUsageGENERATEVERIFYMAC KeyKeyUsage = "GENERATE_VERIFY_MAC"
+	KeyKeyUsageKEYAGREEMENT      KeyKeyUsage = "KEY_AGREEMENT"
+)
+
+type KeyOrigin string
+
+const (
+	KeyOriginAWSKMS   KeyOrigin = "AWS_KMS"
+	KeyOriginEXTERNAL KeyOrigin = "EXTERNAL"
+)

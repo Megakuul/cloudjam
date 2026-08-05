@@ -9,15 +9,24 @@ type Tag struct {
 }
 
 type RepositoryAssociation struct {
-	AssociationArn *string `json:"AssociationArn,omitempty"`
-	BucketName     *string `json:"BucketName,omitempty"`
-	ConnectionArn  *string `json:"ConnectionArn,omitempty"`
-	Name           *string `json:"Name,omitempty"`
-	Owner          *string `json:"Owner,omitempty"`
-	Tags           []Tag   `json:"Tags,omitempty"`
-	Type           *string `json:"Type,omitempty"`
+	AssociationArn *string                    `json:"AssociationArn,omitempty"`
+	BucketName     *string                    `json:"BucketName,omitempty"`
+	ConnectionArn  *string                    `json:"ConnectionArn,omitempty"`
+	Name           *string                    `json:"Name,omitempty"`
+	Owner          *string                    `json:"Owner,omitempty"`
+	Tags           []Tag                      `json:"Tags,omitempty"`
+	Type           *RepositoryAssociationType `json:"Type,omitempty"`
 }
 
 func (RepositoryAssociation) CloudControlType() string {
 	return "AWS::CodeGuruReviewer::RepositoryAssociation"
 }
+
+type RepositoryAssociationType string
+
+const (
+	RepositoryAssociationTypeCodeCommit             RepositoryAssociationType = "CodeCommit"
+	RepositoryAssociationTypeBitbucket              RepositoryAssociationType = "Bitbucket"
+	RepositoryAssociationTypeGitHubEnterpriseServer RepositoryAssociationType = "GitHubEnterpriseServer"
+	RepositoryAssociationTypeS3Bucket               RepositoryAssociationType = "S3Bucket"
+)

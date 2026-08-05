@@ -35,24 +35,24 @@ type InfluxDBCluster struct {
 	AllocatedStorage              *int                                     `json:"AllocatedStorage,omitempty"`
 	Arn                           *string                                  `json:"Arn,omitempty"`
 	Bucket                        *string                                  `json:"Bucket,omitempty"`
-	DbInstanceType                *string                                  `json:"DbInstanceType,omitempty"`
+	DbInstanceType                *InfluxDBClusterDbInstanceType           `json:"DbInstanceType,omitempty"`
 	DbParameterGroupIdentifier    *string                                  `json:"DbParameterGroupIdentifier,omitempty"`
-	DbStorageType                 *string                                  `json:"DbStorageType,omitempty"`
-	DeploymentType                *string                                  `json:"DeploymentType,omitempty"`
+	DbStorageType                 *InfluxDBClusterDbStorageType            `json:"DbStorageType,omitempty"`
+	DeploymentType                *InfluxDBClusterDeploymentType           `json:"DeploymentType,omitempty"`
 	Endpoint                      *string                                  `json:"Endpoint,omitempty"`
-	EngineType                    *string                                  `json:"EngineType,omitempty"`
-	FailoverMode                  *string                                  `json:"FailoverMode,omitempty"`
+	EngineType                    *InfluxDBClusterEngineType               `json:"EngineType,omitempty"`
+	FailoverMode                  *InfluxDBClusterFailoverMode             `json:"FailoverMode,omitempty"`
 	Id                            *string                                  `json:"Id,omitempty"`
 	InfluxAuthParametersSecretArn *string                                  `json:"InfluxAuthParametersSecretArn,omitempty"`
 	LogDeliveryConfiguration      *InfluxDBClusterLogDeliveryConfiguration `json:"LogDeliveryConfiguration,omitempty"`
 	Name                          *string                                  `json:"Name,omitempty"`
-	NetworkType                   *string                                  `json:"NetworkType,omitempty"`
+	NetworkType                   *InfluxDBClusterNetworkType              `json:"NetworkType,omitempty"`
 	Organization                  *string                                  `json:"Organization,omitempty"`
 	Password                      *string                                  `json:"Password,omitempty"`
 	Port                          *int                                     `json:"Port,omitempty"`
 	PubliclyAccessible            *bool                                    `json:"PubliclyAccessible,omitempty"`
 	ReaderEndpoint                *string                                  `json:"ReaderEndpoint,omitempty"`
-	Status                        *string                                  `json:"Status,omitempty"`
+	Status                        *InfluxDBClusterStatus                   `json:"Status,omitempty"`
 	Tags                          []InfluxDBClusterTag                     `json:"Tags,omitempty"`
 	Username                      *string                                  `json:"Username,omitempty"`
 	VpcSecurityGroupIds           []string                                 `json:"VpcSecurityGroupIds,omitempty"`
@@ -85,24 +85,24 @@ type InfluxDBInstance struct {
 	Arn                           *string                                   `json:"Arn,omitempty"`
 	AvailabilityZone              *string                                   `json:"AvailabilityZone,omitempty"`
 	Bucket                        *string                                   `json:"Bucket,omitempty"`
-	DbInstanceType                *string                                   `json:"DbInstanceType,omitempty"`
+	DbInstanceType                *InfluxDBInstanceDbInstanceType           `json:"DbInstanceType,omitempty"`
 	DbParameterGroupIdentifier    *string                                   `json:"DbParameterGroupIdentifier,omitempty"`
-	DbStorageType                 *string                                   `json:"DbStorageType,omitempty"`
-	DeploymentType                *string                                   `json:"DeploymentType,omitempty"`
+	DbStorageType                 *InfluxDBInstanceDbStorageType            `json:"DbStorageType,omitempty"`
+	DeploymentType                *InfluxDBInstanceDeploymentType           `json:"DeploymentType,omitempty"`
 	Endpoint                      *string                                   `json:"Endpoint,omitempty"`
 	Id                            *string                                   `json:"Id,omitempty"`
 	InfluxAuthParametersSecretArn *string                                   `json:"InfluxAuthParametersSecretArn,omitempty"`
 	LogDeliveryConfiguration      *InfluxDBInstanceLogDeliveryConfiguration `json:"LogDeliveryConfiguration,omitempty"`
 	MaintenanceSchedule           *MaintenanceSchedule                      `json:"MaintenanceSchedule,omitempty"`
 	Name                          *string                                   `json:"Name,omitempty"`
-	NetworkType                   *string                                   `json:"NetworkType,omitempty"`
+	NetworkType                   *InfluxDBInstanceNetworkType              `json:"NetworkType,omitempty"`
 	NextMaintenanceTime           *string                                   `json:"NextMaintenanceTime,omitempty"`
 	Organization                  *string                                   `json:"Organization,omitempty"`
 	Password                      *string                                   `json:"Password,omitempty"`
 	Port                          *int                                      `json:"Port,omitempty"`
 	PubliclyAccessible            *bool                                     `json:"PubliclyAccessible,omitempty"`
 	SecondaryAvailabilityZone     *string                                   `json:"SecondaryAvailabilityZone,omitempty"`
-	Status                        *string                                   `json:"Status,omitempty"`
+	Status                        *InfluxDBInstanceStatus                   `json:"Status,omitempty"`
 	Tags                          []InfluxDBInstanceTag                     `json:"Tags,omitempty"`
 	Username                      *string                                   `json:"Username,omitempty"`
 	VpcSecurityGroupIds           []string                                  `json:"VpcSecurityGroupIds,omitempty"`
@@ -112,9 +112,9 @@ type InfluxDBInstance struct {
 func (InfluxDBInstance) CloudControlType() string { return "AWS::Timestream::InfluxDBInstance" }
 
 type S3Configuration struct {
-	BucketName       *string `json:"BucketName,omitempty"`
-	EncryptionOption *string `json:"EncryptionOption,omitempty"`
-	ObjectKeyPrefix  *string `json:"ObjectKeyPrefix,omitempty"`
+	BucketName       *string           `json:"BucketName,omitempty"`
+	EncryptionOption *EncryptionOption `json:"EncryptionOption,omitempty"`
+	ObjectKeyPrefix  *string           `json:"ObjectKeyPrefix,omitempty"`
 }
 
 type ErrorReportConfiguration struct {
@@ -139,22 +139,22 @@ type ScheduledQueryTag struct {
 }
 
 type DimensionMapping struct {
-	DimensionValueType *string `json:"DimensionValueType,omitempty"`
-	Name               *string `json:"Name,omitempty"`
+	DimensionValueType *DimensionValueType `json:"DimensionValueType,omitempty"`
+	Name               *string             `json:"Name,omitempty"`
 }
 
 type MultiMeasureAttributeMapping struct {
-	MeasureValueType                *string `json:"MeasureValueType,omitempty"`
-	SourceColumn                    *string `json:"SourceColumn,omitempty"`
-	TargetMultiMeasureAttributeName *string `json:"TargetMultiMeasureAttributeName,omitempty"`
+	MeasureValueType                *MultiMeasureAttributeMappingMeasureValueType `json:"MeasureValueType,omitempty"`
+	SourceColumn                    *string                                       `json:"SourceColumn,omitempty"`
+	TargetMultiMeasureAttributeName *string                                       `json:"TargetMultiMeasureAttributeName,omitempty"`
 }
 
 type MixedMeasureMapping struct {
-	MeasureName                   *string                        `json:"MeasureName,omitempty"`
-	MeasureValueType              *string                        `json:"MeasureValueType,omitempty"`
-	MultiMeasureAttributeMappings []MultiMeasureAttributeMapping `json:"MultiMeasureAttributeMappings,omitempty"`
-	SourceColumn                  *string                        `json:"SourceColumn,omitempty"`
-	TargetMeasureName             *string                        `json:"TargetMeasureName,omitempty"`
+	MeasureName                   *string                              `json:"MeasureName,omitempty"`
+	MeasureValueType              *MixedMeasureMappingMeasureValueType `json:"MeasureValueType,omitempty"`
+	MultiMeasureAttributeMappings []MultiMeasureAttributeMapping       `json:"MultiMeasureAttributeMappings,omitempty"`
+	SourceColumn                  *string                              `json:"SourceColumn,omitempty"`
+	TargetMeasureName             *string                              `json:"TargetMeasureName,omitempty"`
 }
 
 type MultiMeasureMappings struct {
@@ -222,9 +222,9 @@ type TableRetentionProperties struct {
 }
 
 type PartitionKey struct {
-	EnforcementInRecord *string `json:"EnforcementInRecord,omitempty"`
-	Name                *string `json:"Name,omitempty"`
-	Type                *string `json:"Type,omitempty"`
+	EnforcementInRecord *PartitionKeyEnforcementLevel `json:"EnforcementInRecord,omitempty"`
+	Name                *string                       `json:"Name,omitempty"`
+	Type                *PartitionKeyType             `json:"Type,omitempty"`
 }
 
 type TableSchema struct {
@@ -248,3 +248,169 @@ type Table struct {
 }
 
 func (Table) CloudControlType() string { return "AWS::Timestream::Table" }
+
+type InfluxDBClusterDbInstanceType string
+
+const (
+	InfluxDBClusterDbInstanceTypeDbInfluxMedium   InfluxDBClusterDbInstanceType = "db.influx.medium"
+	InfluxDBClusterDbInstanceTypeDbInfluxLarge    InfluxDBClusterDbInstanceType = "db.influx.large"
+	InfluxDBClusterDbInstanceTypeDbInfluxXlarge   InfluxDBClusterDbInstanceType = "db.influx.xlarge"
+	InfluxDBClusterDbInstanceTypeDbInflux2xlarge  InfluxDBClusterDbInstanceType = "db.influx.2xlarge"
+	InfluxDBClusterDbInstanceTypeDbInflux4xlarge  InfluxDBClusterDbInstanceType = "db.influx.4xlarge"
+	InfluxDBClusterDbInstanceTypeDbInflux8xlarge  InfluxDBClusterDbInstanceType = "db.influx.8xlarge"
+	InfluxDBClusterDbInstanceTypeDbInflux12xlarge InfluxDBClusterDbInstanceType = "db.influx.12xlarge"
+	InfluxDBClusterDbInstanceTypeDbInflux16xlarge InfluxDBClusterDbInstanceType = "db.influx.16xlarge"
+	InfluxDBClusterDbInstanceTypeDbInflux24xlarge InfluxDBClusterDbInstanceType = "db.influx.24xlarge"
+)
+
+type InfluxDBClusterDbStorageType string
+
+const (
+	InfluxDBClusterDbStorageTypeInfluxIOIncludedT1 InfluxDBClusterDbStorageType = "InfluxIOIncludedT1"
+	InfluxDBClusterDbStorageTypeInfluxIOIncludedT2 InfluxDBClusterDbStorageType = "InfluxIOIncludedT2"
+	InfluxDBClusterDbStorageTypeInfluxIOIncludedT3 InfluxDBClusterDbStorageType = "InfluxIOIncludedT3"
+)
+
+type InfluxDBClusterDeploymentType string
+
+const (
+	InfluxDBClusterDeploymentTypeMULTINODEREADREPLICAS InfluxDBClusterDeploymentType = "MULTI_NODE_READ_REPLICAS"
+)
+
+type InfluxDBClusterEngineType string
+
+const (
+	InfluxDBClusterEngineTypeINFLUXDBV2           InfluxDBClusterEngineType = "INFLUXDB_V2"
+	InfluxDBClusterEngineTypeINFLUXDBV3CORE       InfluxDBClusterEngineType = "INFLUXDB_V3_CORE"
+	InfluxDBClusterEngineTypeINFLUXDBV3ENTERPRISE InfluxDBClusterEngineType = "INFLUXDB_V3_ENTERPRISE"
+)
+
+type InfluxDBClusterFailoverMode string
+
+const (
+	InfluxDBClusterFailoverModeAUTOMATIC  InfluxDBClusterFailoverMode = "AUTOMATIC"
+	InfluxDBClusterFailoverModeNOFAILOVER InfluxDBClusterFailoverMode = "NO_FAILOVER"
+)
+
+type InfluxDBClusterNetworkType string
+
+const (
+	InfluxDBClusterNetworkTypeIPV4 InfluxDBClusterNetworkType = "IPV4"
+	InfluxDBClusterNetworkTypeDUAL InfluxDBClusterNetworkType = "DUAL"
+)
+
+type InfluxDBClusterStatus string
+
+const (
+	InfluxDBClusterStatusCREATING             InfluxDBClusterStatus = "CREATING"
+	InfluxDBClusterStatusUPDATING             InfluxDBClusterStatus = "UPDATING"
+	InfluxDBClusterStatusUPDATINGINSTANCETYPE InfluxDBClusterStatus = "UPDATING_INSTANCE_TYPE"
+	InfluxDBClusterStatusMAINTENANCE          InfluxDBClusterStatus = "MAINTENANCE"
+	InfluxDBClusterStatusDELETING             InfluxDBClusterStatus = "DELETING"
+	InfluxDBClusterStatusAVAILABLE            InfluxDBClusterStatus = "AVAILABLE"
+	InfluxDBClusterStatusREBOOTING            InfluxDBClusterStatus = "REBOOTING"
+	InfluxDBClusterStatusREBOOTFAILED         InfluxDBClusterStatus = "REBOOT_FAILED"
+	InfluxDBClusterStatusPARTIALLYAVAILABLE   InfluxDBClusterStatus = "PARTIALLY_AVAILABLE"
+	InfluxDBClusterStatusFAILED               InfluxDBClusterStatus = "FAILED"
+	InfluxDBClusterStatusDELETED              InfluxDBClusterStatus = "DELETED"
+)
+
+type InfluxDBInstanceDbInstanceType string
+
+const (
+	InfluxDBInstanceDbInstanceTypeDbInfluxMedium   InfluxDBInstanceDbInstanceType = "db.influx.medium"
+	InfluxDBInstanceDbInstanceTypeDbInfluxLarge    InfluxDBInstanceDbInstanceType = "db.influx.large"
+	InfluxDBInstanceDbInstanceTypeDbInfluxXlarge   InfluxDBInstanceDbInstanceType = "db.influx.xlarge"
+	InfluxDBInstanceDbInstanceTypeDbInflux2xlarge  InfluxDBInstanceDbInstanceType = "db.influx.2xlarge"
+	InfluxDBInstanceDbInstanceTypeDbInflux4xlarge  InfluxDBInstanceDbInstanceType = "db.influx.4xlarge"
+	InfluxDBInstanceDbInstanceTypeDbInflux8xlarge  InfluxDBInstanceDbInstanceType = "db.influx.8xlarge"
+	InfluxDBInstanceDbInstanceTypeDbInflux12xlarge InfluxDBInstanceDbInstanceType = "db.influx.12xlarge"
+	InfluxDBInstanceDbInstanceTypeDbInflux16xlarge InfluxDBInstanceDbInstanceType = "db.influx.16xlarge"
+	InfluxDBInstanceDbInstanceTypeDbInflux24xlarge InfluxDBInstanceDbInstanceType = "db.influx.24xlarge"
+)
+
+type InfluxDBInstanceDbStorageType string
+
+const (
+	InfluxDBInstanceDbStorageTypeInfluxIOIncludedT1 InfluxDBInstanceDbStorageType = "InfluxIOIncludedT1"
+	InfluxDBInstanceDbStorageTypeInfluxIOIncludedT2 InfluxDBInstanceDbStorageType = "InfluxIOIncludedT2"
+	InfluxDBInstanceDbStorageTypeInfluxIOIncludedT3 InfluxDBInstanceDbStorageType = "InfluxIOIncludedT3"
+)
+
+type InfluxDBInstanceDeploymentType string
+
+const (
+	InfluxDBInstanceDeploymentTypeSINGLEAZ           InfluxDBInstanceDeploymentType = "SINGLE_AZ"
+	InfluxDBInstanceDeploymentTypeWITHMULTIAZSTANDBY InfluxDBInstanceDeploymentType = "WITH_MULTIAZ_STANDBY"
+)
+
+type InfluxDBInstanceNetworkType string
+
+const (
+	InfluxDBInstanceNetworkTypeIPV4 InfluxDBInstanceNetworkType = "IPV4"
+	InfluxDBInstanceNetworkTypeDUAL InfluxDBInstanceNetworkType = "DUAL"
+)
+
+type InfluxDBInstanceStatus string
+
+const (
+	InfluxDBInstanceStatusCREATING               InfluxDBInstanceStatus = "CREATING"
+	InfluxDBInstanceStatusAVAILABLE              InfluxDBInstanceStatus = "AVAILABLE"
+	InfluxDBInstanceStatusDELETING               InfluxDBInstanceStatus = "DELETING"
+	InfluxDBInstanceStatusMODIFYING              InfluxDBInstanceStatus = "MODIFYING"
+	InfluxDBInstanceStatusMAINTENANCE            InfluxDBInstanceStatus = "MAINTENANCE"
+	InfluxDBInstanceStatusUPDATING               InfluxDBInstanceStatus = "UPDATING"
+	InfluxDBInstanceStatusUPDATINGDEPLOYMENTTYPE InfluxDBInstanceStatus = "UPDATING_DEPLOYMENT_TYPE"
+	InfluxDBInstanceStatusUPDATINGINSTANCETYPE   InfluxDBInstanceStatus = "UPDATING_INSTANCE_TYPE"
+	InfluxDBInstanceStatusREBOOTING              InfluxDBInstanceStatus = "REBOOTING"
+	InfluxDBInstanceStatusREBOOTFAILED           InfluxDBInstanceStatus = "REBOOT_FAILED"
+	InfluxDBInstanceStatusDELETED                InfluxDBInstanceStatus = "DELETED"
+	InfluxDBInstanceStatusFAILED                 InfluxDBInstanceStatus = "FAILED"
+)
+
+type EncryptionOption string
+
+const (
+	EncryptionOptionSSES3  EncryptionOption = "SSE_S3"
+	EncryptionOptionSSEKMS EncryptionOption = "SSE_KMS"
+)
+
+type DimensionValueType string
+
+const (
+	DimensionValueTypeVARCHAR DimensionValueType = "VARCHAR"
+)
+
+type MixedMeasureMappingMeasureValueType string
+
+const (
+	MixedMeasureMappingMeasureValueTypeBIGINT  MixedMeasureMappingMeasureValueType = "BIGINT"
+	MixedMeasureMappingMeasureValueTypeBOOLEAN MixedMeasureMappingMeasureValueType = "BOOLEAN"
+	MixedMeasureMappingMeasureValueTypeDOUBLE  MixedMeasureMappingMeasureValueType = "DOUBLE"
+	MixedMeasureMappingMeasureValueTypeVARCHAR MixedMeasureMappingMeasureValueType = "VARCHAR"
+	MixedMeasureMappingMeasureValueTypeMULTI   MixedMeasureMappingMeasureValueType = "MULTI"
+)
+
+type MultiMeasureAttributeMappingMeasureValueType string
+
+const (
+	MultiMeasureAttributeMappingMeasureValueTypeBIGINT    MultiMeasureAttributeMappingMeasureValueType = "BIGINT"
+	MultiMeasureAttributeMappingMeasureValueTypeBOOLEAN   MultiMeasureAttributeMappingMeasureValueType = "BOOLEAN"
+	MultiMeasureAttributeMappingMeasureValueTypeDOUBLE    MultiMeasureAttributeMappingMeasureValueType = "DOUBLE"
+	MultiMeasureAttributeMappingMeasureValueTypeVARCHAR   MultiMeasureAttributeMappingMeasureValueType = "VARCHAR"
+	MultiMeasureAttributeMappingMeasureValueTypeTIMESTAMP MultiMeasureAttributeMappingMeasureValueType = "TIMESTAMP"
+)
+
+type PartitionKeyEnforcementLevel string
+
+const (
+	PartitionKeyEnforcementLevelREQUIRED PartitionKeyEnforcementLevel = "REQUIRED"
+	PartitionKeyEnforcementLevelOPTIONAL PartitionKeyEnforcementLevel = "OPTIONAL"
+)
+
+type PartitionKeyType string
+
+const (
+	PartitionKeyTypeDIMENSION PartitionKeyType = "DIMENSION"
+	PartitionKeyTypeMEASURE   PartitionKeyType = "MEASURE"
+)

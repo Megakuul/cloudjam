@@ -31,96 +31,96 @@ type Tag struct {
 }
 
 type DataMigration struct {
-	DataMigrationArn           *string                `json:"DataMigrationArn,omitempty"`
-	DataMigrationCreateTime    *string                `json:"DataMigrationCreateTime,omitempty"`
-	DataMigrationIdentifier    *string                `json:"DataMigrationIdentifier,omitempty"`
-	DataMigrationName          *string                `json:"DataMigrationName,omitempty"`
-	DataMigrationSettings      *DataMigrationSettings `json:"DataMigrationSettings,omitempty"`
-	DataMigrationType          *string                `json:"DataMigrationType,omitempty"`
-	MigrationProjectIdentifier *string                `json:"MigrationProjectIdentifier,omitempty"`
-	ServiceAccessRoleArn       *string                `json:"ServiceAccessRoleArn,omitempty"`
-	SourceDataSettings         []SourceDataSettings   `json:"SourceDataSettings,omitempty"`
-	Tags                       []Tag                  `json:"Tags,omitempty"`
+	DataMigrationArn           *string                         `json:"DataMigrationArn,omitempty"`
+	DataMigrationCreateTime    *string                         `json:"DataMigrationCreateTime,omitempty"`
+	DataMigrationIdentifier    *string                         `json:"DataMigrationIdentifier,omitempty"`
+	DataMigrationName          *string                         `json:"DataMigrationName,omitempty"`
+	DataMigrationSettings      *DataMigrationSettings          `json:"DataMigrationSettings,omitempty"`
+	DataMigrationType          *DataMigrationDataMigrationType `json:"DataMigrationType,omitempty"`
+	MigrationProjectIdentifier *string                         `json:"MigrationProjectIdentifier,omitempty"`
+	ServiceAccessRoleArn       *string                         `json:"ServiceAccessRoleArn,omitempty"`
+	SourceDataSettings         []SourceDataSettings            `json:"SourceDataSettings,omitempty"`
+	Tags                       []Tag                           `json:"Tags,omitempty"`
 }
 
 func (DataMigration) CloudControlType() string { return "AWS::DMS::DataMigration" }
 
 type DataProviderSettingsDocDbSettings struct {
-	CertificateArn *string `json:"CertificateArn,omitempty"`
-	DatabaseName   *string `json:"DatabaseName,omitempty"`
-	Port           *int    `json:"Port,omitempty"`
-	ServerName     *string `json:"ServerName,omitempty"`
-	SslMode        *string `json:"SslMode,omitempty"`
+	CertificateArn *string              `json:"CertificateArn,omitempty"`
+	DatabaseName   *string              `json:"DatabaseName,omitempty"`
+	Port           *int                 `json:"Port,omitempty"`
+	ServerName     *string              `json:"ServerName,omitempty"`
+	SslMode        *MongoDbSslModeValue `json:"SslMode,omitempty"`
 }
 
 type DataProviderSettingsIbmDb2LuwSettings struct {
-	CertificateArn *string `json:"CertificateArn,omitempty"`
-	DatabaseName   *string `json:"DatabaseName,omitempty"`
-	Port           *int    `json:"Port,omitempty"`
-	ServerName     *string `json:"ServerName,omitempty"`
-	SslMode        *string `json:"SslMode,omitempty"`
+	CertificateArn *string          `json:"CertificateArn,omitempty"`
+	DatabaseName   *string          `json:"DatabaseName,omitempty"`
+	Port           *int             `json:"Port,omitempty"`
+	ServerName     *string          `json:"ServerName,omitempty"`
+	SslMode        *Db2SslModeValue `json:"SslMode,omitempty"`
 }
 
 type DataProviderSettingsIbmDb2zOsSettings struct {
-	CertificateArn *string `json:"CertificateArn,omitempty"`
-	DatabaseName   *string `json:"DatabaseName,omitempty"`
-	Port           *int    `json:"Port,omitempty"`
-	ServerName     *string `json:"ServerName,omitempty"`
-	SslMode        *string `json:"SslMode,omitempty"`
+	CertificateArn *string          `json:"CertificateArn,omitempty"`
+	DatabaseName   *string          `json:"DatabaseName,omitempty"`
+	Port           *int             `json:"Port,omitempty"`
+	ServerName     *string          `json:"ServerName,omitempty"`
+	SslMode        *Db2SslModeValue `json:"SslMode,omitempty"`
 }
 
 type DataProviderSettingsMariaDbSettings struct {
-	CertificateArn *string `json:"CertificateArn,omitempty"`
-	Port           *int    `json:"Port,omitempty"`
-	ServerName     *string `json:"ServerName,omitempty"`
-	SslMode        *string `json:"SslMode,omitempty"`
+	CertificateArn *string          `json:"CertificateArn,omitempty"`
+	Port           *int             `json:"Port,omitempty"`
+	ServerName     *string          `json:"ServerName,omitempty"`
+	SslMode        *DmsSslModeValue `json:"SslMode,omitempty"`
 }
 
 type DataProviderSettingsMicrosoftSqlServerSettings struct {
-	CertificateArn *string `json:"CertificateArn,omitempty"`
-	DatabaseName   *string `json:"DatabaseName,omitempty"`
-	Port           *int    `json:"Port,omitempty"`
-	ServerName     *string `json:"ServerName,omitempty"`
-	SslMode        *string `json:"SslMode,omitempty"`
+	CertificateArn *string          `json:"CertificateArn,omitempty"`
+	DatabaseName   *string          `json:"DatabaseName,omitempty"`
+	Port           *int             `json:"Port,omitempty"`
+	ServerName     *string          `json:"ServerName,omitempty"`
+	SslMode        *DmsSslModeValue `json:"SslMode,omitempty"`
 }
 
 type DataProviderSettingsMongoDbSettings struct {
-	AuthMechanism  *string `json:"AuthMechanism,omitempty"`
-	AuthSource     *string `json:"AuthSource,omitempty"`
-	AuthType       *string `json:"AuthType,omitempty"`
-	CertificateArn *string `json:"CertificateArn,omitempty"`
-	DatabaseName   *string `json:"DatabaseName,omitempty"`
-	Port           *int    `json:"Port,omitempty"`
-	ServerName     *string `json:"ServerName,omitempty"`
-	SslMode        *string `json:"SslMode,omitempty"`
+	AuthMechanism  *MongoDbAuthMechanism `json:"AuthMechanism,omitempty"`
+	AuthSource     *string               `json:"AuthSource,omitempty"`
+	AuthType       *MongoDbAuthType      `json:"AuthType,omitempty"`
+	CertificateArn *string               `json:"CertificateArn,omitempty"`
+	DatabaseName   *string               `json:"DatabaseName,omitempty"`
+	Port           *int                  `json:"Port,omitempty"`
+	ServerName     *string               `json:"ServerName,omitempty"`
+	SslMode        *MongoDbSslModeValue  `json:"SslMode,omitempty"`
 }
 
 type DataProviderSettingsMySqlSettings struct {
-	CertificateArn *string `json:"CertificateArn,omitempty"`
-	Port           *int    `json:"Port,omitempty"`
-	ServerName     *string `json:"ServerName,omitempty"`
-	SslMode        *string `json:"SslMode,omitempty"`
+	CertificateArn *string          `json:"CertificateArn,omitempty"`
+	Port           *int             `json:"Port,omitempty"`
+	ServerName     *string          `json:"ServerName,omitempty"`
+	SslMode        *DmsSslModeValue `json:"SslMode,omitempty"`
 }
 
 type DataProviderSettingsOracleSettings struct {
-	AsmServer                                       *string `json:"AsmServer,omitempty"`
-	CertificateArn                                  *string `json:"CertificateArn,omitempty"`
-	DatabaseName                                    *string `json:"DatabaseName,omitempty"`
-	Port                                            *int    `json:"Port,omitempty"`
-	SecretsManagerOracleAsmAccessRoleArn            *string `json:"SecretsManagerOracleAsmAccessRoleArn,omitempty"`
-	SecretsManagerOracleAsmSecretId                 *string `json:"SecretsManagerOracleAsmSecretId,omitempty"`
-	SecretsManagerSecurityDbEncryptionAccessRoleArn *string `json:"SecretsManagerSecurityDbEncryptionAccessRoleArn,omitempty"`
-	SecretsManagerSecurityDbEncryptionSecretId      *string `json:"SecretsManagerSecurityDbEncryptionSecretId,omitempty"`
-	ServerName                                      *string `json:"ServerName,omitempty"`
-	SslMode                                         *string `json:"SslMode,omitempty"`
+	AsmServer                                       *string          `json:"AsmServer,omitempty"`
+	CertificateArn                                  *string          `json:"CertificateArn,omitempty"`
+	DatabaseName                                    *string          `json:"DatabaseName,omitempty"`
+	Port                                            *int             `json:"Port,omitempty"`
+	SecretsManagerOracleAsmAccessRoleArn            *string          `json:"SecretsManagerOracleAsmAccessRoleArn,omitempty"`
+	SecretsManagerOracleAsmSecretId                 *string          `json:"SecretsManagerOracleAsmSecretId,omitempty"`
+	SecretsManagerSecurityDbEncryptionAccessRoleArn *string          `json:"SecretsManagerSecurityDbEncryptionAccessRoleArn,omitempty"`
+	SecretsManagerSecurityDbEncryptionSecretId      *string          `json:"SecretsManagerSecurityDbEncryptionSecretId,omitempty"`
+	ServerName                                      *string          `json:"ServerName,omitempty"`
+	SslMode                                         *DmsSslModeValue `json:"SslMode,omitempty"`
 }
 
 type DataProviderSettingsPostgreSqlSettings struct {
-	CertificateArn *string `json:"CertificateArn,omitempty"`
-	DatabaseName   *string `json:"DatabaseName,omitempty"`
-	Port           *int    `json:"Port,omitempty"`
-	ServerName     *string `json:"ServerName,omitempty"`
-	SslMode        *string `json:"SslMode,omitempty"`
+	CertificateArn *string          `json:"CertificateArn,omitempty"`
+	DatabaseName   *string          `json:"DatabaseName,omitempty"`
+	Port           *int             `json:"Port,omitempty"`
+	ServerName     *string          `json:"ServerName,omitempty"`
+	SslMode        *DmsSslModeValue `json:"SslMode,omitempty"`
 }
 
 type DataProviderSettingsRedshiftSettings struct {
@@ -130,12 +130,12 @@ type DataProviderSettingsRedshiftSettings struct {
 }
 
 type DataProviderSettingsSybaseAseSettings struct {
-	CertificateArn  *string `json:"CertificateArn,omitempty"`
-	DatabaseName    *string `json:"DatabaseName,omitempty"`
-	EncryptPassword *bool   `json:"EncryptPassword,omitempty"`
-	Port            *int    `json:"Port,omitempty"`
-	ServerName      *string `json:"ServerName,omitempty"`
-	SslMode         *string `json:"SslMode,omitempty"`
+	CertificateArn  *string             `json:"CertificateArn,omitempty"`
+	DatabaseName    *string             `json:"DatabaseName,omitempty"`
+	EncryptPassword *bool               `json:"EncryptPassword,omitempty"`
+	Port            *int                `json:"Port,omitempty"`
+	ServerName      *string             `json:"ServerName,omitempty"`
+	SslMode         *SybaseSslModeValue `json:"SslMode,omitempty"`
 }
 
 type DataProviderSettings struct {
@@ -163,7 +163,7 @@ type DataProvider struct {
 	DataProviderIdentifier   *string               `json:"DataProviderIdentifier,omitempty"`
 	DataProviderName         *string               `json:"DataProviderName,omitempty"`
 	Description              *string               `json:"Description,omitempty"`
-	Engine                   *string               `json:"Engine,omitempty"`
+	Engine                   *DataProviderEngine   `json:"Engine,omitempty"`
 	ExactSettings            *bool                 `json:"ExactSettings,omitempty"`
 	Settings                 *DataProviderSettings `json:"Settings,omitempty"`
 	Tags                     []DataProviderTag     `json:"Tags,omitempty"`
@@ -521,18 +521,18 @@ type InstanceProfileTag struct {
 }
 
 type InstanceProfile struct {
-	AvailabilityZone            *string              `json:"AvailabilityZone,omitempty"`
-	Description                 *string              `json:"Description,omitempty"`
-	InstanceProfileArn          *string              `json:"InstanceProfileArn,omitempty"`
-	InstanceProfileCreationTime *string              `json:"InstanceProfileCreationTime,omitempty"`
-	InstanceProfileIdentifier   *string              `json:"InstanceProfileIdentifier,omitempty"`
-	InstanceProfileName         *string              `json:"InstanceProfileName,omitempty"`
-	KmsKeyArn                   *string              `json:"KmsKeyArn,omitempty"`
-	NetworkType                 *string              `json:"NetworkType,omitempty"`
-	PubliclyAccessible          *bool                `json:"PubliclyAccessible,omitempty"`
-	SubnetGroupIdentifier       *string              `json:"SubnetGroupIdentifier,omitempty"`
-	Tags                        []InstanceProfileTag `json:"Tags,omitempty"`
-	VpcSecurityGroups           []string             `json:"VpcSecurityGroups,omitempty"`
+	AvailabilityZone            *string                     `json:"AvailabilityZone,omitempty"`
+	Description                 *string                     `json:"Description,omitempty"`
+	InstanceProfileArn          *string                     `json:"InstanceProfileArn,omitempty"`
+	InstanceProfileCreationTime *string                     `json:"InstanceProfileCreationTime,omitempty"`
+	InstanceProfileIdentifier   *string                     `json:"InstanceProfileIdentifier,omitempty"`
+	InstanceProfileName         *string                     `json:"InstanceProfileName,omitempty"`
+	KmsKeyArn                   *string                     `json:"KmsKeyArn,omitempty"`
+	NetworkType                 *InstanceProfileNetworkType `json:"NetworkType,omitempty"`
+	PubliclyAccessible          *bool                       `json:"PubliclyAccessible,omitempty"`
+	SubnetGroupIdentifier       *string                     `json:"SubnetGroupIdentifier,omitempty"`
+	Tags                        []InstanceProfileTag        `json:"Tags,omitempty"`
+	VpcSecurityGroups           []string                    `json:"VpcSecurityGroups,omitempty"`
 }
 
 func (InstanceProfile) CloudControlType() string { return "AWS::DMS::InstanceProfile" }
@@ -591,17 +591,17 @@ type ReplicationConfigTag struct {
 }
 
 type ReplicationConfig struct {
-	ComputeConfig               *ComputeConfig         `json:"ComputeConfig,omitempty"`
-	ReplicationConfigArn        *string                `json:"ReplicationConfigArn,omitempty"`
-	ReplicationConfigIdentifier *string                `json:"ReplicationConfigIdentifier,omitempty"`
-	ReplicationSettings         map[string]any         `json:"ReplicationSettings,omitempty"`
-	ReplicationType             *string                `json:"ReplicationType,omitempty"`
-	ResourceIdentifier          *string                `json:"ResourceIdentifier,omitempty"`
-	SourceEndpointArn           *string                `json:"SourceEndpointArn,omitempty"`
-	SupplementalSettings        map[string]any         `json:"SupplementalSettings,omitempty"`
-	TableMappings               map[string]any         `json:"TableMappings,omitempty"`
-	Tags                        []ReplicationConfigTag `json:"Tags,omitempty"`
-	TargetEndpointArn           *string                `json:"TargetEndpointArn,omitempty"`
+	ComputeConfig               *ComputeConfig                    `json:"ComputeConfig,omitempty"`
+	ReplicationConfigArn        *string                           `json:"ReplicationConfigArn,omitempty"`
+	ReplicationConfigIdentifier *string                           `json:"ReplicationConfigIdentifier,omitempty"`
+	ReplicationSettings         map[string]any                    `json:"ReplicationSettings,omitempty"`
+	ReplicationType             *ReplicationConfigReplicationType `json:"ReplicationType,omitempty"`
+	ResourceIdentifier          *string                           `json:"ResourceIdentifier,omitempty"`
+	SourceEndpointArn           *string                           `json:"SourceEndpointArn,omitempty"`
+	SupplementalSettings        map[string]any                    `json:"SupplementalSettings,omitempty"`
+	TableMappings               map[string]any                    `json:"TableMappings,omitempty"`
+	Tags                        []ReplicationConfigTag            `json:"Tags,omitempty"`
+	TargetEndpointArn           *string                           `json:"TargetEndpointArn,omitempty"`
 }
 
 func (ReplicationConfig) CloudControlType() string { return "AWS::DMS::ReplicationConfig" }
@@ -674,3 +674,91 @@ type ReplicationTask struct {
 }
 
 func (ReplicationTask) CloudControlType() string { return "AWS::DMS::ReplicationTask" }
+
+type DataMigrationDataMigrationType string
+
+const (
+	DataMigrationDataMigrationTypeFullLoad       DataMigrationDataMigrationType = "full-load"
+	DataMigrationDataMigrationTypeCdc            DataMigrationDataMigrationType = "cdc"
+	DataMigrationDataMigrationTypeFullLoadAndCdc DataMigrationDataMigrationType = "full-load-and-cdc"
+)
+
+type DataProviderEngine string
+
+const (
+	DataProviderEngineAurora           DataProviderEngine = "aurora"
+	DataProviderEngineAuroraPostgresql DataProviderEngine = "aurora_postgresql"
+	DataProviderEngineMysql            DataProviderEngine = "mysql"
+	DataProviderEngineOracle           DataProviderEngine = "oracle"
+	DataProviderEnginePostgres         DataProviderEngine = "postgres"
+	DataProviderEngineSqlserver        DataProviderEngine = "sqlserver"
+	DataProviderEngineRedshift         DataProviderEngine = "redshift"
+	DataProviderEngineMariadb          DataProviderEngine = "mariadb"
+	DataProviderEngineMongodb          DataProviderEngine = "mongodb"
+	DataProviderEngineDocdb            DataProviderEngine = "docdb"
+	DataProviderEngineDb2              DataProviderEngine = "db2"
+	DataProviderEngineDb2Zos           DataProviderEngine = "db2_zos"
+	DataProviderEngineSybase           DataProviderEngine = "sybase"
+)
+
+type MongoDbSslModeValue string
+
+const (
+	MongoDbSslModeValueNone       MongoDbSslModeValue = "none"
+	MongoDbSslModeValueRequire    MongoDbSslModeValue = "require"
+	MongoDbSslModeValueVerifyFull MongoDbSslModeValue = "verify-full"
+)
+
+type Db2SslModeValue string
+
+const (
+	Db2SslModeValueNone     Db2SslModeValue = "none"
+	Db2SslModeValueVerifyCa Db2SslModeValue = "verify-ca"
+)
+
+type DmsSslModeValue string
+
+const (
+	DmsSslModeValueNone       DmsSslModeValue = "none"
+	DmsSslModeValueRequire    DmsSslModeValue = "require"
+	DmsSslModeValueVerifyCa   DmsSslModeValue = "verify-ca"
+	DmsSslModeValueVerifyFull DmsSslModeValue = "verify-full"
+)
+
+type MongoDbAuthMechanism string
+
+const (
+	MongoDbAuthMechanismDefault   MongoDbAuthMechanism = "default"
+	MongoDbAuthMechanismMongodbCr MongoDbAuthMechanism = "mongodb_cr"
+	MongoDbAuthMechanismScramSha1 MongoDbAuthMechanism = "scram_sha_1"
+)
+
+type MongoDbAuthType string
+
+const (
+	MongoDbAuthTypeNo       MongoDbAuthType = "no"
+	MongoDbAuthTypePassword MongoDbAuthType = "password"
+)
+
+type SybaseSslModeValue string
+
+const (
+	SybaseSslModeValueNone     SybaseSslModeValue = "none"
+	SybaseSslModeValueRequire  SybaseSslModeValue = "require"
+	SybaseSslModeValueVerifyCa SybaseSslModeValue = "verify-ca"
+)
+
+type InstanceProfileNetworkType string
+
+const (
+	InstanceProfileNetworkTypeIPV4 InstanceProfileNetworkType = "IPV4"
+	InstanceProfileNetworkTypeDUAL InstanceProfileNetworkType = "DUAL"
+)
+
+type ReplicationConfigReplicationType string
+
+const (
+	ReplicationConfigReplicationTypeFullLoad       ReplicationConfigReplicationType = "full-load"
+	ReplicationConfigReplicationTypeFullLoadAndCdc ReplicationConfigReplicationType = "full-load-and-cdc"
+	ReplicationConfigReplicationTypeCdc            ReplicationConfigReplicationType = "cdc"
+)

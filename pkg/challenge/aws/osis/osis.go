@@ -35,10 +35,10 @@ type VpcOptionsVpcAttachmentOptions struct {
 }
 
 type VpcOptions struct {
-	SecurityGroupIds      []string                        `json:"SecurityGroupIds,omitempty"`
-	SubnetIds             []string                        `json:"SubnetIds,omitempty"`
-	VpcAttachmentOptions  *VpcOptionsVpcAttachmentOptions `json:"VpcAttachmentOptions,omitempty"`
-	VpcEndpointManagement *string                         `json:"VpcEndpointManagement,omitempty"`
+	SecurityGroupIds      []string                         `json:"SecurityGroupIds,omitempty"`
+	SubnetIds             []string                         `json:"SubnetIds,omitempty"`
+	VpcAttachmentOptions  *VpcOptionsVpcAttachmentOptions  `json:"VpcAttachmentOptions,omitempty"`
+	VpcEndpointManagement *VpcOptionsVpcEndpointManagement `json:"VpcEndpointManagement,omitempty"`
 }
 
 type VpcEndpoint struct {
@@ -66,3 +66,10 @@ type Pipeline struct {
 }
 
 func (Pipeline) CloudControlType() string { return "AWS::OSIS::Pipeline" }
+
+type VpcOptionsVpcEndpointManagement string
+
+const (
+	VpcOptionsVpcEndpointManagementCUSTOMER VpcOptionsVpcEndpointManagement = "CUSTOMER"
+	VpcOptionsVpcEndpointManagementSERVICE  VpcOptionsVpcEndpointManagement = "SERVICE"
+)

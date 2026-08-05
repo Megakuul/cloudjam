@@ -9,16 +9,16 @@ type ResourceTag struct {
 }
 
 type AnomalyMonitor struct {
-	CreationDate          *string       `json:"CreationDate,omitempty"`
-	DimensionalValueCount *int          `json:"DimensionalValueCount,omitempty"`
-	LastEvaluatedDate     *string       `json:"LastEvaluatedDate,omitempty"`
-	LastUpdatedDate       *string       `json:"LastUpdatedDate,omitempty"`
-	MonitorArn            *string       `json:"MonitorArn,omitempty"`
-	MonitorDimension      *string       `json:"MonitorDimension,omitempty"`
-	MonitorName           *string       `json:"MonitorName,omitempty"`
-	MonitorSpecification  *string       `json:"MonitorSpecification,omitempty"`
-	MonitorType           *string       `json:"MonitorType,omitempty"`
-	ResourceTags          []ResourceTag `json:"ResourceTags,omitempty"`
+	CreationDate          *string                         `json:"CreationDate,omitempty"`
+	DimensionalValueCount *int                            `json:"DimensionalValueCount,omitempty"`
+	LastEvaluatedDate     *string                         `json:"LastEvaluatedDate,omitempty"`
+	LastUpdatedDate       *string                         `json:"LastUpdatedDate,omitempty"`
+	MonitorArn            *string                         `json:"MonitorArn,omitempty"`
+	MonitorDimension      *AnomalyMonitorMonitorDimension `json:"MonitorDimension,omitempty"`
+	MonitorName           *string                         `json:"MonitorName,omitempty"`
+	MonitorSpecification  *string                         `json:"MonitorSpecification,omitempty"`
+	MonitorType           *AnomalyMonitorMonitorType      `json:"MonitorType,omitempty"`
+	ResourceTags          []ResourceTag                   `json:"ResourceTags,omitempty"`
 }
 
 func (AnomalyMonitor) CloudControlType() string { return "AWS::CE::AnomalyMonitor" }
@@ -29,14 +29,14 @@ type AnomalySubscriptionResourceTag struct {
 }
 
 type Subscriber struct {
-	Address *string `json:"Address,omitempty"`
-	Status  *string `json:"Status,omitempty"`
-	Type    *string `json:"Type,omitempty"`
+	Address *string           `json:"Address,omitempty"`
+	Status  *SubscriberStatus `json:"Status,omitempty"`
+	Type    *SubscriberType   `json:"Type,omitempty"`
 }
 
 type AnomalySubscription struct {
 	AccountId           *string                          `json:"AccountId,omitempty"`
-	Frequency           *string                          `json:"Frequency,omitempty"`
+	Frequency           *AnomalySubscriptionFrequency    `json:"Frequency,omitempty"`
 	MonitorArnList      []string                         `json:"MonitorArnList,omitempty"`
 	ResourceTags        []AnomalySubscriptionResourceTag `json:"ResourceTags,omitempty"`
 	Subscribers         []Subscriber                     `json:"Subscribers,omitempty"`
@@ -58,10 +58,54 @@ type CostCategory struct {
 	DefaultValue     *string                   `json:"DefaultValue,omitempty"`
 	EffectiveStart   *string                   `json:"EffectiveStart,omitempty"`
 	Name             *string                   `json:"Name,omitempty"`
-	RuleVersion      *string                   `json:"RuleVersion,omitempty"`
+	RuleVersion      *CostCategoryRuleVersion  `json:"RuleVersion,omitempty"`
 	Rules            *string                   `json:"Rules,omitempty"`
 	SplitChargeRules *string                   `json:"SplitChargeRules,omitempty"`
 	Tags             []CostCategoryResourceTag `json:"Tags,omitempty"`
 }
 
 func (CostCategory) CloudControlType() string { return "AWS::CE::CostCategory" }
+
+type AnomalyMonitorMonitorDimension string
+
+const (
+	AnomalyMonitorMonitorDimensionSERVICE       AnomalyMonitorMonitorDimension = "SERVICE"
+	AnomalyMonitorMonitorDimensionLINKEDACCOUNT AnomalyMonitorMonitorDimension = "LINKED_ACCOUNT"
+	AnomalyMonitorMonitorDimensionTAG           AnomalyMonitorMonitorDimension = "TAG"
+	AnomalyMonitorMonitorDimensionCOSTCATEGORY  AnomalyMonitorMonitorDimension = "COST_CATEGORY"
+)
+
+type AnomalyMonitorMonitorType string
+
+const (
+	AnomalyMonitorMonitorTypeDIMENSIONAL AnomalyMonitorMonitorType = "DIMENSIONAL"
+	AnomalyMonitorMonitorTypeCUSTOM      AnomalyMonitorMonitorType = "CUSTOM"
+)
+
+type AnomalySubscriptionFrequency string
+
+const (
+	AnomalySubscriptionFrequencyDAILY     AnomalySubscriptionFrequency = "DAILY"
+	AnomalySubscriptionFrequencyIMMEDIATE AnomalySubscriptionFrequency = "IMMEDIATE"
+	AnomalySubscriptionFrequencyWEEKLY    AnomalySubscriptionFrequency = "WEEKLY"
+)
+
+type SubscriberStatus string
+
+const (
+	SubscriberStatusCONFIRMED SubscriberStatus = "CONFIRMED"
+	SubscriberStatusDECLINED  SubscriberStatus = "DECLINED"
+)
+
+type SubscriberType string
+
+const (
+	SubscriberTypeEMAIL SubscriberType = "EMAIL"
+	SubscriberTypeSNS   SubscriberType = "SNS"
+)
+
+type CostCategoryRuleVersion string
+
+const (
+	CostCategoryRuleVersionCostCategoryExpressionV1 CostCategoryRuleVersion = "CostCategoryExpression.v1"
+)

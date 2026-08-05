@@ -9,14 +9,14 @@ type Tag struct {
 }
 
 type AccessLogSubscription struct {
-	Arn                   *string `json:"Arn,omitempty"`
-	DestinationArn        *string `json:"DestinationArn,omitempty"`
-	Id                    *string `json:"Id,omitempty"`
-	ResourceArn           *string `json:"ResourceArn,omitempty"`
-	ResourceId            *string `json:"ResourceId,omitempty"`
-	ResourceIdentifier    *string `json:"ResourceIdentifier,omitempty"`
-	ServiceNetworkLogType *string `json:"ServiceNetworkLogType,omitempty"`
-	Tags                  []Tag   `json:"Tags,omitempty"`
+	Arn                   *string                                     `json:"Arn,omitempty"`
+	DestinationArn        *string                                     `json:"DestinationArn,omitempty"`
+	Id                    *string                                     `json:"Id,omitempty"`
+	ResourceArn           *string                                     `json:"ResourceArn,omitempty"`
+	ResourceId            *string                                     `json:"ResourceId,omitempty"`
+	ResourceIdentifier    *string                                     `json:"ResourceIdentifier,omitempty"`
+	ServiceNetworkLogType *AccessLogSubscriptionServiceNetworkLogType `json:"ServiceNetworkLogType,omitempty"`
+	Tags                  []Tag                                       `json:"Tags,omitempty"`
 }
 
 func (AccessLogSubscription) CloudControlType() string {
@@ -24,9 +24,9 @@ func (AccessLogSubscription) CloudControlType() string {
 }
 
 type AuthPolicy struct {
-	Policy             map[string]any `json:"Policy,omitempty"`
-	ResourceIdentifier *string        `json:"ResourceIdentifier,omitempty"`
-	State              *string        `json:"State,omitempty"`
+	Policy             map[string]any   `json:"Policy,omitempty"`
+	ResourceIdentifier *string          `json:"ResourceIdentifier,omitempty"`
+	State              *AuthPolicyState `json:"State,omitempty"`
 }
 
 func (AuthPolicy) CloudControlType() string { return "AWS::VpcLattice::AuthPolicy" }
@@ -45,7 +45,7 @@ type DomainVerification struct {
 	Arn             *string                            `json:"Arn,omitempty"`
 	DomainName      *string                            `json:"DomainName,omitempty"`
 	Id              *string                            `json:"Id,omitempty"`
-	Status          *string                            `json:"Status,omitempty"`
+	Status          *DomainVerificationStatus          `json:"Status,omitempty"`
 	Tags            []DomainVerificationTag            `json:"Tags,omitempty"`
 	TxtMethodConfig *DomainVerificationTxtMethodConfig `json:"TxtMethodConfig,omitempty"`
 }
@@ -76,16 +76,16 @@ type ListenerTag struct {
 }
 
 type Listener struct {
-	Arn               *string        `json:"Arn,omitempty"`
-	DefaultAction     *DefaultAction `json:"DefaultAction,omitempty"`
-	Id                *string        `json:"Id,omitempty"`
-	Name              *string        `json:"Name,omitempty"`
-	Port              *int           `json:"Port,omitempty"`
-	Protocol          *string        `json:"Protocol,omitempty"`
-	ServiceArn        *string        `json:"ServiceArn,omitempty"`
-	ServiceId         *string        `json:"ServiceId,omitempty"`
-	ServiceIdentifier *string        `json:"ServiceIdentifier,omitempty"`
-	Tags              []ListenerTag  `json:"Tags,omitempty"`
+	Arn               *string           `json:"Arn,omitempty"`
+	DefaultAction     *DefaultAction    `json:"DefaultAction,omitempty"`
+	Id                *string           `json:"Id,omitempty"`
+	Name              *string           `json:"Name,omitempty"`
+	Port              *int              `json:"Port,omitempty"`
+	Protocol          *ListenerProtocol `json:"Protocol,omitempty"`
+	ServiceArn        *string           `json:"ServiceArn,omitempty"`
+	ServiceId         *string           `json:"ServiceId,omitempty"`
+	ServiceIdentifier *string           `json:"ServiceIdentifier,omitempty"`
+	Tags              []ListenerTag     `json:"Tags,omitempty"`
 }
 
 func (Listener) CloudControlType() string { return "AWS::VpcLattice::Listener" }
@@ -96,21 +96,21 @@ type ResourceConfigurationTag struct {
 }
 
 type ResourceConfiguration struct {
-	AllowAssociationToSharableServiceNetwork *bool                      `json:"AllowAssociationToSharableServiceNetwork,omitempty"`
-	Arn                                      *string                    `json:"Arn,omitempty"`
-	CustomDomainName                         *string                    `json:"CustomDomainName,omitempty"`
-	DomainVerificationId                     *string                    `json:"DomainVerificationId,omitempty"`
-	GroupDomain                              *string                    `json:"GroupDomain,omitempty"`
-	Id                                       *string                    `json:"Id,omitempty"`
-	Name                                     *string                    `json:"Name,omitempty"`
-	PortRanges                               []string                   `json:"PortRanges,omitempty"`
-	ProtocolType                             *string                    `json:"ProtocolType,omitempty"`
-	ResourceConfigurationAuthType            *string                    `json:"ResourceConfigurationAuthType,omitempty"`
-	ResourceConfigurationDefinition          map[string]any             `json:"ResourceConfigurationDefinition,omitempty"`
-	ResourceConfigurationGroupId             *string                    `json:"ResourceConfigurationGroupId,omitempty"`
-	ResourceConfigurationType                *string                    `json:"ResourceConfigurationType,omitempty"`
-	ResourceGatewayId                        *string                    `json:"ResourceGatewayId,omitempty"`
-	Tags                                     []ResourceConfigurationTag `json:"Tags,omitempty"`
+	AllowAssociationToSharableServiceNetwork *bool                                               `json:"AllowAssociationToSharableServiceNetwork,omitempty"`
+	Arn                                      *string                                             `json:"Arn,omitempty"`
+	CustomDomainName                         *string                                             `json:"CustomDomainName,omitempty"`
+	DomainVerificationId                     *string                                             `json:"DomainVerificationId,omitempty"`
+	GroupDomain                              *string                                             `json:"GroupDomain,omitempty"`
+	Id                                       *string                                             `json:"Id,omitempty"`
+	Name                                     *string                                             `json:"Name,omitempty"`
+	PortRanges                               []string                                            `json:"PortRanges,omitempty"`
+	ProtocolType                             *ResourceConfigurationProtocolType                  `json:"ProtocolType,omitempty"`
+	ResourceConfigurationAuthType            *ResourceConfigurationResourceConfigurationAuthType `json:"ResourceConfigurationAuthType,omitempty"`
+	ResourceConfigurationDefinition          map[string]any                                      `json:"ResourceConfigurationDefinition,omitempty"`
+	ResourceConfigurationGroupId             *string                                             `json:"ResourceConfigurationGroupId,omitempty"`
+	ResourceConfigurationType                *ResourceConfigurationResourceConfigurationType     `json:"ResourceConfigurationType,omitempty"`
+	ResourceGatewayId                        *string                                             `json:"ResourceGatewayId,omitempty"`
+	Tags                                     []ResourceConfigurationTag                          `json:"Tags,omitempty"`
 }
 
 func (ResourceConfiguration) CloudControlType() string {
@@ -123,16 +123,16 @@ type ResourceGatewayTag struct {
 }
 
 type ResourceGateway struct {
-	Arn                         *string              `json:"Arn,omitempty"`
-	Id                          *string              `json:"Id,omitempty"`
-	IpAddressType               *string              `json:"IpAddressType,omitempty"`
-	Ipv4AddressesPerEni         *int                 `json:"Ipv4AddressesPerEni,omitempty"`
-	Name                        *string              `json:"Name,omitempty"`
-	ResourceConfigDnsResolution *string              `json:"ResourceConfigDnsResolution,omitempty"`
-	SecurityGroupIds            []string             `json:"SecurityGroupIds,omitempty"`
-	SubnetIds                   []string             `json:"SubnetIds,omitempty"`
-	Tags                        []ResourceGatewayTag `json:"Tags,omitempty"`
-	VpcIdentifier               *string              `json:"VpcIdentifier,omitempty"`
+	Arn                         *string                                     `json:"Arn,omitempty"`
+	Id                          *string                                     `json:"Id,omitempty"`
+	IpAddressType               *ResourceGatewayIpAddressType               `json:"IpAddressType,omitempty"`
+	Ipv4AddressesPerEni         *int                                        `json:"Ipv4AddressesPerEni,omitempty"`
+	Name                        *string                                     `json:"Name,omitempty"`
+	ResourceConfigDnsResolution *ResourceGatewayResourceConfigDnsResolution `json:"ResourceConfigDnsResolution,omitempty"`
+	SecurityGroupIds            []string                                    `json:"SecurityGroupIds,omitempty"`
+	SubnetIds                   []string                                    `json:"SubnetIds,omitempty"`
+	Tags                        []ResourceGatewayTag                        `json:"Tags,omitempty"`
+	VpcIdentifier               *string                                     `json:"VpcIdentifier,omitempty"`
 }
 
 func (ResourceGateway) CloudControlType() string { return "AWS::VpcLattice::ResourceGateway" }
@@ -185,9 +185,9 @@ type PathMatch struct {
 }
 
 type HttpMatch struct {
-	HeaderMatches []HeaderMatch `json:"HeaderMatches,omitempty"`
-	Method        *string       `json:"Method,omitempty"`
-	PathMatch     *PathMatch    `json:"PathMatch,omitempty"`
+	HeaderMatches []HeaderMatch    `json:"HeaderMatches,omitempty"`
+	Method        *HttpMatchMethod `json:"Method,omitempty"`
+	PathMatch     *PathMatch       `json:"PathMatch,omitempty"`
 }
 
 type Match struct {
@@ -224,18 +224,18 @@ type ServiceTag struct {
 }
 
 type Service struct {
-	Arn                *string      `json:"Arn,omitempty"`
-	AuthType           *string      `json:"AuthType,omitempty"`
-	CertificateArn     *string      `json:"CertificateArn,omitempty"`
-	CreatedAt          *string      `json:"CreatedAt,omitempty"`
-	CustomDomainName   *string      `json:"CustomDomainName,omitempty"`
-	DnsEntry           *DnsEntry    `json:"DnsEntry,omitempty"`
-	Id                 *string      `json:"Id,omitempty"`
-	IdleTimeoutSeconds *int         `json:"IdleTimeoutSeconds,omitempty"`
-	LastUpdatedAt      *string      `json:"LastUpdatedAt,omitempty"`
-	Name               *string      `json:"Name,omitempty"`
-	Status             *string      `json:"Status,omitempty"`
-	Tags               []ServiceTag `json:"Tags,omitempty"`
+	Arn                *string          `json:"Arn,omitempty"`
+	AuthType           *ServiceAuthType `json:"AuthType,omitempty"`
+	CertificateArn     *string          `json:"CertificateArn,omitempty"`
+	CreatedAt          *string          `json:"CreatedAt,omitempty"`
+	CustomDomainName   *string          `json:"CustomDomainName,omitempty"`
+	DnsEntry           *DnsEntry        `json:"DnsEntry,omitempty"`
+	Id                 *string          `json:"Id,omitempty"`
+	IdleTimeoutSeconds *int             `json:"IdleTimeoutSeconds,omitempty"`
+	LastUpdatedAt      *string          `json:"LastUpdatedAt,omitempty"`
+	Name               *string          `json:"Name,omitempty"`
+	Status             *ServiceStatus   `json:"Status,omitempty"`
+	Tags               []ServiceTag     `json:"Tags,omitempty"`
 }
 
 func (Service) CloudControlType() string { return "AWS::VpcLattice::Service" }
@@ -250,14 +250,14 @@ type ServiceNetworkTag struct {
 }
 
 type ServiceNetwork struct {
-	Arn           *string             `json:"Arn,omitempty"`
-	AuthType      *string             `json:"AuthType,omitempty"`
-	CreatedAt     *string             `json:"CreatedAt,omitempty"`
-	Id            *string             `json:"Id,omitempty"`
-	LastUpdatedAt *string             `json:"LastUpdatedAt,omitempty"`
-	Name          *string             `json:"Name,omitempty"`
-	SharingConfig *SharingConfig      `json:"SharingConfig,omitempty"`
-	Tags          []ServiceNetworkTag `json:"Tags,omitempty"`
+	Arn           *string                 `json:"Arn,omitempty"`
+	AuthType      *ServiceNetworkAuthType `json:"AuthType,omitempty"`
+	CreatedAt     *string                 `json:"CreatedAt,omitempty"`
+	Id            *string                 `json:"Id,omitempty"`
+	LastUpdatedAt *string                 `json:"LastUpdatedAt,omitempty"`
+	Name          *string                 `json:"Name,omitempty"`
+	SharingConfig *SharingConfig          `json:"SharingConfig,omitempty"`
+	Tags          []ServiceNetworkTag     `json:"Tags,omitempty"`
 }
 
 func (ServiceNetwork) CloudControlType() string { return "AWS::VpcLattice::ServiceNetwork" }
@@ -303,7 +303,7 @@ type ServiceNetworkServiceAssociation struct {
 	ServiceNetworkId         *string                                   `json:"ServiceNetworkId,omitempty"`
 	ServiceNetworkIdentifier *string                                   `json:"ServiceNetworkIdentifier,omitempty"`
 	ServiceNetworkName       *string                                   `json:"ServiceNetworkName,omitempty"`
-	Status                   *string                                   `json:"Status,omitempty"`
+	Status                   *ServiceNetworkServiceAssociationStatus   `json:"Status,omitempty"`
 	Tags                     []ServiceNetworkServiceAssociationTag     `json:"Tags,omitempty"`
 }
 
@@ -312,8 +312,8 @@ func (ServiceNetworkServiceAssociation) CloudControlType() string {
 }
 
 type DnsOptions struct {
-	PrivateDnsPreference       *string  `json:"PrivateDnsPreference,omitempty"`
-	PrivateDnsSpecifiedDomains []string `json:"PrivateDnsSpecifiedDomains,omitempty"`
+	PrivateDnsPreference       *DnsOptionsPrivateDnsPreference `json:"PrivateDnsPreference,omitempty"`
+	PrivateDnsSpecifiedDomains []string                        `json:"PrivateDnsSpecifiedDomains,omitempty"`
 }
 
 type ServiceNetworkVpcAssociationTag struct {
@@ -322,20 +322,20 @@ type ServiceNetworkVpcAssociationTag struct {
 }
 
 type ServiceNetworkVpcAssociation struct {
-	Arn                      *string                           `json:"Arn,omitempty"`
-	CreatedAt                *string                           `json:"CreatedAt,omitempty"`
-	DnsOptions               *DnsOptions                       `json:"DnsOptions,omitempty"`
-	Id                       *string                           `json:"Id,omitempty"`
-	PrivateDnsEnabled        *bool                             `json:"PrivateDnsEnabled,omitempty"`
-	SecurityGroupIds         []string                          `json:"SecurityGroupIds,omitempty"`
-	ServiceNetworkArn        *string                           `json:"ServiceNetworkArn,omitempty"`
-	ServiceNetworkId         *string                           `json:"ServiceNetworkId,omitempty"`
-	ServiceNetworkIdentifier *string                           `json:"ServiceNetworkIdentifier,omitempty"`
-	ServiceNetworkName       *string                           `json:"ServiceNetworkName,omitempty"`
-	Status                   *string                           `json:"Status,omitempty"`
-	Tags                     []ServiceNetworkVpcAssociationTag `json:"Tags,omitempty"`
-	VpcId                    *string                           `json:"VpcId,omitempty"`
-	VpcIdentifier            *string                           `json:"VpcIdentifier,omitempty"`
+	Arn                      *string                             `json:"Arn,omitempty"`
+	CreatedAt                *string                             `json:"CreatedAt,omitempty"`
+	DnsOptions               *DnsOptions                         `json:"DnsOptions,omitempty"`
+	Id                       *string                             `json:"Id,omitempty"`
+	PrivateDnsEnabled        *bool                               `json:"PrivateDnsEnabled,omitempty"`
+	SecurityGroupIds         []string                            `json:"SecurityGroupIds,omitempty"`
+	ServiceNetworkArn        *string                             `json:"ServiceNetworkArn,omitempty"`
+	ServiceNetworkId         *string                             `json:"ServiceNetworkId,omitempty"`
+	ServiceNetworkIdentifier *string                             `json:"ServiceNetworkIdentifier,omitempty"`
+	ServiceNetworkName       *string                             `json:"ServiceNetworkName,omitempty"`
+	Status                   *ServiceNetworkVpcAssociationStatus `json:"Status,omitempty"`
+	Tags                     []ServiceNetworkVpcAssociationTag   `json:"Tags,omitempty"`
+	VpcId                    *string                             `json:"VpcId,omitempty"`
+	VpcIdentifier            *string                             `json:"VpcIdentifier,omitempty"`
 }
 
 func (ServiceNetworkVpcAssociation) CloudControlType() string {
@@ -347,26 +347,26 @@ type Matcher struct {
 }
 
 type HealthCheckConfig struct {
-	Enabled                    *bool    `json:"Enabled,omitempty"`
-	HealthCheckIntervalSeconds *int     `json:"HealthCheckIntervalSeconds,omitempty"`
-	HealthCheckTimeoutSeconds  *int     `json:"HealthCheckTimeoutSeconds,omitempty"`
-	HealthyThresholdCount      *int     `json:"HealthyThresholdCount,omitempty"`
-	Matcher                    *Matcher `json:"Matcher,omitempty"`
-	Path                       *string  `json:"Path,omitempty"`
-	Port                       *int     `json:"Port,omitempty"`
-	Protocol                   *string  `json:"Protocol,omitempty"`
-	ProtocolVersion            *string  `json:"ProtocolVersion,omitempty"`
-	UnhealthyThresholdCount    *int     `json:"UnhealthyThresholdCount,omitempty"`
+	Enabled                    *bool                             `json:"Enabled,omitempty"`
+	HealthCheckIntervalSeconds *int                              `json:"HealthCheckIntervalSeconds,omitempty"`
+	HealthCheckTimeoutSeconds  *int                              `json:"HealthCheckTimeoutSeconds,omitempty"`
+	HealthyThresholdCount      *int                              `json:"HealthyThresholdCount,omitempty"`
+	Matcher                    *Matcher                          `json:"Matcher,omitempty"`
+	Path                       *string                           `json:"Path,omitempty"`
+	Port                       *int                              `json:"Port,omitempty"`
+	Protocol                   *HealthCheckConfigProtocol        `json:"Protocol,omitempty"`
+	ProtocolVersion            *HealthCheckConfigProtocolVersion `json:"ProtocolVersion,omitempty"`
+	UnhealthyThresholdCount    *int                              `json:"UnhealthyThresholdCount,omitempty"`
 }
 
 type TargetGroupConfig struct {
-	HealthCheck                 *HealthCheckConfig `json:"HealthCheck,omitempty"`
-	IpAddressType               *string            `json:"IpAddressType,omitempty"`
-	LambdaEventStructureVersion *string            `json:"LambdaEventStructureVersion,omitempty"`
-	Port                        *int               `json:"Port,omitempty"`
-	Protocol                    *string            `json:"Protocol,omitempty"`
-	ProtocolVersion             *string            `json:"ProtocolVersion,omitempty"`
-	VpcIdentifier               *string            `json:"VpcIdentifier,omitempty"`
+	HealthCheck                 *HealthCheckConfig                            `json:"HealthCheck,omitempty"`
+	IpAddressType               *TargetGroupConfigIpAddressType               `json:"IpAddressType,omitempty"`
+	LambdaEventStructureVersion *TargetGroupConfigLambdaEventStructureVersion `json:"LambdaEventStructureVersion,omitempty"`
+	Port                        *int                                          `json:"Port,omitempty"`
+	Protocol                    *TargetGroupConfigProtocol                    `json:"Protocol,omitempty"`
+	ProtocolVersion             *TargetGroupConfigProtocolVersion             `json:"ProtocolVersion,omitempty"`
+	VpcIdentifier               *string                                       `json:"VpcIdentifier,omitempty"`
 }
 
 type TargetGroupTag struct {
@@ -386,10 +386,207 @@ type TargetGroup struct {
 	Id            *string            `json:"Id,omitempty"`
 	LastUpdatedAt *string            `json:"LastUpdatedAt,omitempty"`
 	Name          *string            `json:"Name,omitempty"`
-	Status        *string            `json:"Status,omitempty"`
+	Status        *TargetGroupStatus `json:"Status,omitempty"`
 	Tags          []TargetGroupTag   `json:"Tags,omitempty"`
 	Targets       []Target           `json:"Targets,omitempty"`
-	Type          *string            `json:"Type,omitempty"`
+	Type          *TargetGroupType   `json:"Type,omitempty"`
 }
 
 func (TargetGroup) CloudControlType() string { return "AWS::VpcLattice::TargetGroup" }
+
+type AccessLogSubscriptionServiceNetworkLogType string
+
+const (
+	AccessLogSubscriptionServiceNetworkLogTypeSERVICE  AccessLogSubscriptionServiceNetworkLogType = "SERVICE"
+	AccessLogSubscriptionServiceNetworkLogTypeRESOURCE AccessLogSubscriptionServiceNetworkLogType = "RESOURCE"
+)
+
+type AuthPolicyState string
+
+const (
+	AuthPolicyStateActive   AuthPolicyState = "Active"
+	AuthPolicyStateInactive AuthPolicyState = "Inactive"
+)
+
+type DomainVerificationStatus string
+
+const (
+	DomainVerificationStatusVERIFIED             DomainVerificationStatus = "VERIFIED"
+	DomainVerificationStatusPENDING              DomainVerificationStatus = "PENDING"
+	DomainVerificationStatusVERIFICATIONTIMEDOUT DomainVerificationStatus = "VERIFICATION_TIMED_OUT"
+)
+
+type ListenerProtocol string
+
+const (
+	ListenerProtocolHTTP           ListenerProtocol = "HTTP"
+	ListenerProtocolHTTPS          ListenerProtocol = "HTTPS"
+	ListenerProtocolTLSPASSTHROUGH ListenerProtocol = "TLS_PASSTHROUGH"
+)
+
+type ResourceConfigurationProtocolType string
+
+const (
+	ResourceConfigurationProtocolTypeTCP ResourceConfigurationProtocolType = "TCP"
+)
+
+type ResourceConfigurationResourceConfigurationAuthType string
+
+const (
+	ResourceConfigurationResourceConfigurationAuthTypeNONE   ResourceConfigurationResourceConfigurationAuthType = "NONE"
+	ResourceConfigurationResourceConfigurationAuthTypeAWSIAM ResourceConfigurationResourceConfigurationAuthType = "AWS_IAM"
+)
+
+type ResourceConfigurationResourceConfigurationType string
+
+const (
+	ResourceConfigurationResourceConfigurationTypeGROUP  ResourceConfigurationResourceConfigurationType = "GROUP"
+	ResourceConfigurationResourceConfigurationTypeCHILD  ResourceConfigurationResourceConfigurationType = "CHILD"
+	ResourceConfigurationResourceConfigurationTypeSINGLE ResourceConfigurationResourceConfigurationType = "SINGLE"
+	ResourceConfigurationResourceConfigurationTypeARN    ResourceConfigurationResourceConfigurationType = "ARN"
+)
+
+type ResourceGatewayIpAddressType string
+
+const (
+	ResourceGatewayIpAddressTypeIPV4      ResourceGatewayIpAddressType = "IPV4"
+	ResourceGatewayIpAddressTypeIPV6      ResourceGatewayIpAddressType = "IPV6"
+	ResourceGatewayIpAddressTypeDUALSTACK ResourceGatewayIpAddressType = "DUALSTACK"
+)
+
+type ResourceGatewayResourceConfigDnsResolution string
+
+const (
+	ResourceGatewayResourceConfigDnsResolutionINVPC  ResourceGatewayResourceConfigDnsResolution = "IN_VPC"
+	ResourceGatewayResourceConfigDnsResolutionPUBLIC ResourceGatewayResourceConfigDnsResolution = "PUBLIC"
+)
+
+type HttpMatchMethod string
+
+const (
+	HttpMatchMethodCONNECT HttpMatchMethod = "CONNECT"
+	HttpMatchMethodDELETE  HttpMatchMethod = "DELETE"
+	HttpMatchMethodGET     HttpMatchMethod = "GET"
+	HttpMatchMethodHEAD    HttpMatchMethod = "HEAD"
+	HttpMatchMethodOPTIONS HttpMatchMethod = "OPTIONS"
+	HttpMatchMethodPOST    HttpMatchMethod = "POST"
+	HttpMatchMethodPUT     HttpMatchMethod = "PUT"
+	HttpMatchMethodTRACE   HttpMatchMethod = "TRACE"
+)
+
+type ServiceAuthType string
+
+const (
+	ServiceAuthTypeNONE   ServiceAuthType = "NONE"
+	ServiceAuthTypeAWSIAM ServiceAuthType = "AWS_IAM"
+)
+
+type ServiceStatus string
+
+const (
+	ServiceStatusACTIVE           ServiceStatus = "ACTIVE"
+	ServiceStatusCREATEINPROGRESS ServiceStatus = "CREATE_IN_PROGRESS"
+	ServiceStatusDELETEINPROGRESS ServiceStatus = "DELETE_IN_PROGRESS"
+	ServiceStatusCREATEFAILED     ServiceStatus = "CREATE_FAILED"
+	ServiceStatusDELETEFAILED     ServiceStatus = "DELETE_FAILED"
+)
+
+type ServiceNetworkAuthType string
+
+const (
+	ServiceNetworkAuthTypeNONE   ServiceNetworkAuthType = "NONE"
+	ServiceNetworkAuthTypeAWSIAM ServiceNetworkAuthType = "AWS_IAM"
+)
+
+type ServiceNetworkServiceAssociationStatus string
+
+const (
+	ServiceNetworkServiceAssociationStatusCREATEINPROGRESS ServiceNetworkServiceAssociationStatus = "CREATE_IN_PROGRESS"
+	ServiceNetworkServiceAssociationStatusACTIVE           ServiceNetworkServiceAssociationStatus = "ACTIVE"
+	ServiceNetworkServiceAssociationStatusDELETEINPROGRESS ServiceNetworkServiceAssociationStatus = "DELETE_IN_PROGRESS"
+	ServiceNetworkServiceAssociationStatusCREATEFAILED     ServiceNetworkServiceAssociationStatus = "CREATE_FAILED"
+	ServiceNetworkServiceAssociationStatusDELETEFAILED     ServiceNetworkServiceAssociationStatus = "DELETE_FAILED"
+)
+
+type DnsOptionsPrivateDnsPreference string
+
+const (
+	DnsOptionsPrivateDnsPreferenceVERIFIEDDOMAINSONLY                DnsOptionsPrivateDnsPreference = "VERIFIED_DOMAINS_ONLY"
+	DnsOptionsPrivateDnsPreferenceALLDOMAINS                         DnsOptionsPrivateDnsPreference = "ALL_DOMAINS"
+	DnsOptionsPrivateDnsPreferenceVERIFIEDDOMAINSANDSPECIFIEDDOMAINS DnsOptionsPrivateDnsPreference = "VERIFIED_DOMAINS_AND_SPECIFIED_DOMAINS"
+	DnsOptionsPrivateDnsPreferenceSPECIFIEDDOMAINSONLY               DnsOptionsPrivateDnsPreference = "SPECIFIED_DOMAINS_ONLY"
+)
+
+type ServiceNetworkVpcAssociationStatus string
+
+const (
+	ServiceNetworkVpcAssociationStatusCREATEINPROGRESS ServiceNetworkVpcAssociationStatus = "CREATE_IN_PROGRESS"
+	ServiceNetworkVpcAssociationStatusACTIVE           ServiceNetworkVpcAssociationStatus = "ACTIVE"
+	ServiceNetworkVpcAssociationStatusUPDATEINPROGRESS ServiceNetworkVpcAssociationStatus = "UPDATE_IN_PROGRESS"
+	ServiceNetworkVpcAssociationStatusDELETEINPROGRESS ServiceNetworkVpcAssociationStatus = "DELETE_IN_PROGRESS"
+	ServiceNetworkVpcAssociationStatusCREATEFAILED     ServiceNetworkVpcAssociationStatus = "CREATE_FAILED"
+	ServiceNetworkVpcAssociationStatusDELETEFAILED     ServiceNetworkVpcAssociationStatus = "DELETE_FAILED"
+)
+
+type HealthCheckConfigProtocol string
+
+const (
+	HealthCheckConfigProtocolHTTP  HealthCheckConfigProtocol = "HTTP"
+	HealthCheckConfigProtocolHTTPS HealthCheckConfigProtocol = "HTTPS"
+)
+
+type HealthCheckConfigProtocolVersion string
+
+const (
+	HealthCheckConfigProtocolVersionHTTP1 HealthCheckConfigProtocolVersion = "HTTP1"
+	HealthCheckConfigProtocolVersionHTTP2 HealthCheckConfigProtocolVersion = "HTTP2"
+)
+
+type TargetGroupConfigIpAddressType string
+
+const (
+	TargetGroupConfigIpAddressTypeIPV4 TargetGroupConfigIpAddressType = "IPV4"
+	TargetGroupConfigIpAddressTypeIPV6 TargetGroupConfigIpAddressType = "IPV6"
+)
+
+type TargetGroupConfigLambdaEventStructureVersion string
+
+const (
+	TargetGroupConfigLambdaEventStructureVersionV1 TargetGroupConfigLambdaEventStructureVersion = "V1"
+	TargetGroupConfigLambdaEventStructureVersionV2 TargetGroupConfigLambdaEventStructureVersion = "V2"
+)
+
+type TargetGroupConfigProtocol string
+
+const (
+	TargetGroupConfigProtocolHTTP  TargetGroupConfigProtocol = "HTTP"
+	TargetGroupConfigProtocolHTTPS TargetGroupConfigProtocol = "HTTPS"
+	TargetGroupConfigProtocolTCP   TargetGroupConfigProtocol = "TCP"
+)
+
+type TargetGroupConfigProtocolVersion string
+
+const (
+	TargetGroupConfigProtocolVersionHTTP1 TargetGroupConfigProtocolVersion = "HTTP1"
+	TargetGroupConfigProtocolVersionHTTP2 TargetGroupConfigProtocolVersion = "HTTP2"
+	TargetGroupConfigProtocolVersionGRPC  TargetGroupConfigProtocolVersion = "GRPC"
+)
+
+type TargetGroupStatus string
+
+const (
+	TargetGroupStatusCREATEINPROGRESS TargetGroupStatus = "CREATE_IN_PROGRESS"
+	TargetGroupStatusACTIVE           TargetGroupStatus = "ACTIVE"
+	TargetGroupStatusDELETEINPROGRESS TargetGroupStatus = "DELETE_IN_PROGRESS"
+	TargetGroupStatusCREATEFAILED     TargetGroupStatus = "CREATE_FAILED"
+	TargetGroupStatusDELETEFAILED     TargetGroupStatus = "DELETE_FAILED"
+)
+
+type TargetGroupType string
+
+const (
+	TargetGroupTypeIP       TargetGroupType = "IP"
+	TargetGroupTypeLAMBDA   TargetGroupType = "LAMBDA"
+	TargetGroupTypeINSTANCE TargetGroupType = "INSTANCE"
+	TargetGroupTypeALB      TargetGroupType = "ALB"
+)

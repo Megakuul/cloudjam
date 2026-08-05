@@ -9,13 +9,13 @@ type ResourceTag struct {
 }
 
 type UnlockDelay struct {
-	UnlockDelayUnit  *string `json:"UnlockDelayUnit,omitempty"`
-	UnlockDelayValue *int    `json:"UnlockDelayValue,omitempty"`
+	UnlockDelayUnit  *UnlockDelayUnlockDelayUnit `json:"UnlockDelayUnit,omitempty"`
+	UnlockDelayValue *int                        `json:"UnlockDelayValue,omitempty"`
 }
 
 type RetentionPeriod struct {
-	RetentionPeriodUnit  *string `json:"RetentionPeriodUnit,omitempty"`
-	RetentionPeriodValue *int    `json:"RetentionPeriodValue,omitempty"`
+	RetentionPeriodUnit  *RetentionPeriodRetentionPeriodUnit `json:"RetentionPeriodUnit,omitempty"`
+	RetentionPeriodValue *int                                `json:"RetentionPeriodValue,omitempty"`
 }
 
 type Tag struct {
@@ -24,17 +24,37 @@ type Tag struct {
 }
 
 type Rule struct {
-	Arn                 *string          `json:"Arn,omitempty"`
-	Description         *string          `json:"Description,omitempty"`
-	ExcludeResourceTags []ResourceTag    `json:"ExcludeResourceTags,omitempty"`
-	Identifier          *string          `json:"Identifier,omitempty"`
-	LockConfiguration   *UnlockDelay     `json:"LockConfiguration,omitempty"`
-	LockState           *string          `json:"LockState,omitempty"`
-	ResourceTags        []ResourceTag    `json:"ResourceTags,omitempty"`
-	ResourceType        *string          `json:"ResourceType,omitempty"`
-	RetentionPeriod     *RetentionPeriod `json:"RetentionPeriod,omitempty"`
-	Status              *string          `json:"Status,omitempty"`
-	Tags                []Tag            `json:"Tags,omitempty"`
+	Arn                 *string           `json:"Arn,omitempty"`
+	Description         *string           `json:"Description,omitempty"`
+	ExcludeResourceTags []ResourceTag     `json:"ExcludeResourceTags,omitempty"`
+	Identifier          *string           `json:"Identifier,omitempty"`
+	LockConfiguration   *UnlockDelay      `json:"LockConfiguration,omitempty"`
+	LockState           *string           `json:"LockState,omitempty"`
+	ResourceTags        []ResourceTag     `json:"ResourceTags,omitempty"`
+	ResourceType        *RuleResourceType `json:"ResourceType,omitempty"`
+	RetentionPeriod     *RetentionPeriod  `json:"RetentionPeriod,omitempty"`
+	Status              *string           `json:"Status,omitempty"`
+	Tags                []Tag             `json:"Tags,omitempty"`
 }
 
 func (Rule) CloudControlType() string { return "AWS::Rbin::Rule" }
+
+type UnlockDelayUnlockDelayUnit string
+
+const (
+	UnlockDelayUnlockDelayUnitDAYS UnlockDelayUnlockDelayUnit = "DAYS"
+)
+
+type RuleResourceType string
+
+const (
+	RuleResourceTypeEBSSNAPSHOT RuleResourceType = "EBS_SNAPSHOT"
+	RuleResourceTypeEC2IMAGE    RuleResourceType = "EC2_IMAGE"
+	RuleResourceTypeEBSVOLUME   RuleResourceType = "EBS_VOLUME"
+)
+
+type RetentionPeriodRetentionPeriodUnit string
+
+const (
+	RetentionPeriodRetentionPeriodUnitDAYS RetentionPeriodRetentionPeriodUnit = "DAYS"
+)

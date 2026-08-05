@@ -16,13 +16,13 @@ type CodeContent struct {
 }
 
 type ApplicationCodeConfiguration struct {
-	CodeContent     *CodeContent `json:"CodeContent,omitempty"`
-	CodeContentType *string      `json:"CodeContentType,omitempty"`
+	CodeContent     *CodeContent                                 `json:"CodeContent,omitempty"`
+	CodeContentType *ApplicationCodeConfigurationCodeContentType `json:"CodeContentType,omitempty"`
 }
 
 type ApplicationEncryptionConfiguration struct {
-	KeyId   *string `json:"KeyId,omitempty"`
-	KeyType *string `json:"KeyType,omitempty"`
+	KeyId   *string                                    `json:"KeyId,omitempty"`
+	KeyType *ApplicationEncryptionConfigurationKeyType `json:"KeyType,omitempty"`
 }
 
 type ApplicationSnapshotConfiguration struct {
@@ -43,23 +43,23 @@ type EnvironmentProperties struct {
 }
 
 type CheckpointConfiguration struct {
-	CheckpointInterval         *int    `json:"CheckpointInterval,omitempty"`
-	CheckpointingEnabled       *bool   `json:"CheckpointingEnabled,omitempty"`
-	ConfigurationType          *string `json:"ConfigurationType,omitempty"`
-	MinPauseBetweenCheckpoints *int    `json:"MinPauseBetweenCheckpoints,omitempty"`
+	CheckpointInterval         *int                                      `json:"CheckpointInterval,omitempty"`
+	CheckpointingEnabled       *bool                                     `json:"CheckpointingEnabled,omitempty"`
+	ConfigurationType          *CheckpointConfigurationConfigurationType `json:"ConfigurationType,omitempty"`
+	MinPauseBetweenCheckpoints *int                                      `json:"MinPauseBetweenCheckpoints,omitempty"`
 }
 
 type MonitoringConfiguration struct {
-	ConfigurationType *string `json:"ConfigurationType,omitempty"`
-	LogLevel          *string `json:"LogLevel,omitempty"`
-	MetricsLevel      *string `json:"MetricsLevel,omitempty"`
+	ConfigurationType *MonitoringConfigurationConfigurationType `json:"ConfigurationType,omitempty"`
+	LogLevel          *MonitoringConfigurationLogLevel          `json:"LogLevel,omitempty"`
+	MetricsLevel      *MonitoringConfigurationMetricsLevel      `json:"MetricsLevel,omitempty"`
 }
 
 type ParallelismConfiguration struct {
-	AutoScalingEnabled *bool   `json:"AutoScalingEnabled,omitempty"`
-	ConfigurationType  *string `json:"ConfigurationType,omitempty"`
-	Parallelism        *int    `json:"Parallelism,omitempty"`
-	ParallelismPerKPU  *int    `json:"ParallelismPerKPU,omitempty"`
+	AutoScalingEnabled *bool                                      `json:"AutoScalingEnabled,omitempty"`
+	ConfigurationType  *ParallelismConfigurationConfigurationType `json:"ConfigurationType,omitempty"`
+	Parallelism        *int                                       `json:"Parallelism,omitempty"`
+	ParallelismPerKPU  *int                                       `json:"ParallelismPerKPU,omitempty"`
 }
 
 type FlinkApplicationConfiguration struct {
@@ -101,14 +101,14 @@ type MappingParameters struct {
 }
 
 type RecordFormat struct {
-	MappingParameters *MappingParameters `json:"MappingParameters,omitempty"`
-	RecordFormatType  *string            `json:"RecordFormatType,omitempty"`
+	MappingParameters *MappingParameters            `json:"MappingParameters,omitempty"`
+	RecordFormatType  *RecordFormatRecordFormatType `json:"RecordFormatType,omitempty"`
 }
 
 type InputSchema struct {
-	RecordColumns  []RecordColumn `json:"RecordColumns,omitempty"`
-	RecordEncoding *string        `json:"RecordEncoding,omitempty"`
-	RecordFormat   *RecordFormat  `json:"RecordFormat,omitempty"`
+	RecordColumns  []RecordColumn             `json:"RecordColumns,omitempty"`
+	RecordEncoding *InputSchemaRecordEncoding `json:"RecordEncoding,omitempty"`
+	RecordFormat   *RecordFormat              `json:"RecordFormat,omitempty"`
 }
 
 type KinesisFirehoseInput struct {
@@ -152,9 +152,9 @@ type MavenReference struct {
 }
 
 type CustomArtifactConfiguration struct {
-	ArtifactType      *string            `json:"ArtifactType,omitempty"`
-	MavenReference    *MavenReference    `json:"MavenReference,omitempty"`
-	S3ContentLocation *S3ContentLocation `json:"S3ContentLocation,omitempty"`
+	ArtifactType      *CustomArtifactConfigurationArtifactType `json:"ArtifactType,omitempty"`
+	MavenReference    *MavenReference                          `json:"MavenReference,omitempty"`
+	S3ContentLocation *S3ContentLocation                       `json:"S3ContentLocation,omitempty"`
 }
 
 type S3ContentBaseLocation struct {
@@ -167,7 +167,7 @@ type DeployAsApplicationConfiguration struct {
 }
 
 type ZeppelinMonitoringConfiguration struct {
-	LogLevel *string `json:"LogLevel,omitempty"`
+	LogLevel *ZeppelinMonitoringConfigurationLogLevel `json:"LogLevel,omitempty"`
 }
 
 type ZeppelinApplicationConfiguration struct {
@@ -194,8 +194,8 @@ type ApplicationMaintenanceConfiguration struct {
 }
 
 type ApplicationRestoreConfiguration struct {
-	ApplicationRestoreType *string `json:"ApplicationRestoreType,omitempty"`
-	SnapshotName           *string `json:"SnapshotName,omitempty"`
+	ApplicationRestoreType *ApplicationRestoreConfigurationApplicationRestoreType `json:"ApplicationRestoreType,omitempty"`
+	SnapshotName           *string                                                `json:"SnapshotName,omitempty"`
 }
 
 type FlinkRunConfiguration struct {
@@ -216,7 +216,7 @@ type Application struct {
 	ApplicationConfiguration            *ApplicationConfiguration            `json:"ApplicationConfiguration,omitempty"`
 	ApplicationDescription              *string                              `json:"ApplicationDescription,omitempty"`
 	ApplicationMaintenanceConfiguration *ApplicationMaintenanceConfiguration `json:"ApplicationMaintenanceConfiguration,omitempty"`
-	ApplicationMode                     *string                              `json:"ApplicationMode,omitempty"`
+	ApplicationMode                     *ApplicationApplicationMode          `json:"ApplicationMode,omitempty"`
 	ApplicationName                     *string                              `json:"ApplicationName,omitempty"`
 	RunConfiguration                    *RunConfiguration                    `json:"RunConfiguration,omitempty"`
 	RuntimeEnvironment                  *string                              `json:"RuntimeEnvironment,omitempty"`
@@ -325,3 +325,100 @@ type ApplicationReferenceDataSource struct {
 func (ApplicationReferenceDataSource) CloudControlType() string {
 	return "AWS::KinesisAnalyticsV2::ApplicationReferenceDataSource"
 }
+
+type ApplicationCodeConfigurationCodeContentType string
+
+const (
+	ApplicationCodeConfigurationCodeContentTypePLAINTEXT ApplicationCodeConfigurationCodeContentType = "PLAINTEXT"
+	ApplicationCodeConfigurationCodeContentTypeZIPFILE   ApplicationCodeConfigurationCodeContentType = "ZIPFILE"
+)
+
+type ApplicationEncryptionConfigurationKeyType string
+
+const (
+	ApplicationEncryptionConfigurationKeyTypeAWSOWNEDKEY        ApplicationEncryptionConfigurationKeyType = "AWS_OWNED_KEY"
+	ApplicationEncryptionConfigurationKeyTypeCUSTOMERMANAGEDKEY ApplicationEncryptionConfigurationKeyType = "CUSTOMER_MANAGED_KEY"
+)
+
+type CheckpointConfigurationConfigurationType string
+
+const (
+	CheckpointConfigurationConfigurationTypeDEFAULT CheckpointConfigurationConfigurationType = "DEFAULT"
+	CheckpointConfigurationConfigurationTypeCUSTOM  CheckpointConfigurationConfigurationType = "CUSTOM"
+)
+
+type MonitoringConfigurationConfigurationType string
+
+const (
+	MonitoringConfigurationConfigurationTypeDEFAULT MonitoringConfigurationConfigurationType = "DEFAULT"
+	MonitoringConfigurationConfigurationTypeCUSTOM  MonitoringConfigurationConfigurationType = "CUSTOM"
+)
+
+type MonitoringConfigurationLogLevel string
+
+const (
+	MonitoringConfigurationLogLevelDEBUG MonitoringConfigurationLogLevel = "DEBUG"
+	MonitoringConfigurationLogLevelINFO  MonitoringConfigurationLogLevel = "INFO"
+	MonitoringConfigurationLogLevelWARN  MonitoringConfigurationLogLevel = "WARN"
+	MonitoringConfigurationLogLevelERROR MonitoringConfigurationLogLevel = "ERROR"
+)
+
+type MonitoringConfigurationMetricsLevel string
+
+const (
+	MonitoringConfigurationMetricsLevelAPPLICATION MonitoringConfigurationMetricsLevel = "APPLICATION"
+	MonitoringConfigurationMetricsLevelOPERATOR    MonitoringConfigurationMetricsLevel = "OPERATOR"
+	MonitoringConfigurationMetricsLevelPARALLELISM MonitoringConfigurationMetricsLevel = "PARALLELISM"
+	MonitoringConfigurationMetricsLevelTASK        MonitoringConfigurationMetricsLevel = "TASK"
+)
+
+type ParallelismConfigurationConfigurationType string
+
+const (
+	ParallelismConfigurationConfigurationTypeCUSTOM  ParallelismConfigurationConfigurationType = "CUSTOM"
+	ParallelismConfigurationConfigurationTypeDEFAULT ParallelismConfigurationConfigurationType = "DEFAULT"
+)
+
+type InputSchemaRecordEncoding string
+
+const (
+	InputSchemaRecordEncodingUTF8 InputSchemaRecordEncoding = "UTF-8"
+)
+
+type RecordFormatRecordFormatType string
+
+const (
+	RecordFormatRecordFormatTypeCSV  RecordFormatRecordFormatType = "CSV"
+	RecordFormatRecordFormatTypeJSON RecordFormatRecordFormatType = "JSON"
+)
+
+type CustomArtifactConfigurationArtifactType string
+
+const (
+	CustomArtifactConfigurationArtifactTypeDEPENDENCYJAR CustomArtifactConfigurationArtifactType = "DEPENDENCY_JAR"
+	CustomArtifactConfigurationArtifactTypeUDF           CustomArtifactConfigurationArtifactType = "UDF"
+)
+
+type ZeppelinMonitoringConfigurationLogLevel string
+
+const (
+	ZeppelinMonitoringConfigurationLogLevelDEBUG ZeppelinMonitoringConfigurationLogLevel = "DEBUG"
+	ZeppelinMonitoringConfigurationLogLevelINFO  ZeppelinMonitoringConfigurationLogLevel = "INFO"
+	ZeppelinMonitoringConfigurationLogLevelWARN  ZeppelinMonitoringConfigurationLogLevel = "WARN"
+	ZeppelinMonitoringConfigurationLogLevelERROR ZeppelinMonitoringConfigurationLogLevel = "ERROR"
+)
+
+type ApplicationApplicationMode string
+
+const (
+	ApplicationApplicationModeINTERACTIVE ApplicationApplicationMode = "INTERACTIVE"
+	ApplicationApplicationModeSTREAMING   ApplicationApplicationMode = "STREAMING"
+)
+
+type ApplicationRestoreConfigurationApplicationRestoreType string
+
+const (
+	ApplicationRestoreConfigurationApplicationRestoreTypeSKIPRESTOREFROMSNAPSHOT   ApplicationRestoreConfigurationApplicationRestoreType = "SKIP_RESTORE_FROM_SNAPSHOT"
+	ApplicationRestoreConfigurationApplicationRestoreTypeRESTOREFROMLATESTSNAPSHOT ApplicationRestoreConfigurationApplicationRestoreType = "RESTORE_FROM_LATEST_SNAPSHOT"
+	ApplicationRestoreConfigurationApplicationRestoreTypeRESTOREFROMCUSTOMSNAPSHOT ApplicationRestoreConfigurationApplicationRestoreType = "RESTORE_FROM_CUSTOM_SNAPSHOT"
+)

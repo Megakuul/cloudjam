@@ -363,29 +363,29 @@ type GCMChannel struct {
 func (GCMChannel) CloudControlType() string { return "AWS::Pinpoint::GCMChannel" }
 
 type BodyConfig struct {
-	Alignment *string `json:"Alignment,omitempty"`
-	Body      *string `json:"Body,omitempty"`
-	TextColor *string `json:"TextColor,omitempty"`
+	Alignment *Alignment `json:"Alignment,omitempty"`
+	Body      *string    `json:"Body,omitempty"`
+	TextColor *string    `json:"TextColor,omitempty"`
 }
 
 type HeaderConfig struct {
-	Alignment *string `json:"Alignment,omitempty"`
-	Header    *string `json:"Header,omitempty"`
-	TextColor *string `json:"TextColor,omitempty"`
+	Alignment *Alignment `json:"Alignment,omitempty"`
+	Header    *string    `json:"Header,omitempty"`
+	TextColor *string    `json:"TextColor,omitempty"`
 }
 
 type InAppTemplateOverrideButtonConfiguration struct {
-	ButtonAction *string `json:"ButtonAction,omitempty"`
-	Link         *string `json:"Link,omitempty"`
+	ButtonAction *ButtonAction `json:"ButtonAction,omitempty"`
+	Link         *string       `json:"Link,omitempty"`
 }
 
 type InAppTemplateDefaultButtonConfiguration struct {
-	BackgroundColor *string `json:"BackgroundColor,omitempty"`
-	BorderRadius    *int    `json:"BorderRadius,omitempty"`
-	ButtonAction    *string `json:"ButtonAction,omitempty"`
-	Link            *string `json:"Link,omitempty"`
-	Text            *string `json:"Text,omitempty"`
-	TextColor       *string `json:"TextColor,omitempty"`
+	BackgroundColor *string       `json:"BackgroundColor,omitempty"`
+	BorderRadius    *int          `json:"BorderRadius,omitempty"`
+	ButtonAction    *ButtonAction `json:"ButtonAction,omitempty"`
+	Link            *string       `json:"Link,omitempty"`
+	Text            *string       `json:"Text,omitempty"`
+	TextColor       *string       `json:"TextColor,omitempty"`
 }
 
 type ButtonConfig struct {
@@ -408,7 +408,7 @@ type InAppTemplate struct {
 	Arn                 *string                            `json:"Arn,omitempty"`
 	Content             []InAppTemplateInAppMessageContent `json:"Content,omitempty"`
 	CustomConfig        map[string]any                     `json:"CustomConfig,omitempty"`
-	Layout              *string                            `json:"Layout,omitempty"`
+	Layout              *InAppTemplateLayout               `json:"Layout,omitempty"`
 	Tags                map[string]any                     `json:"Tags,omitempty"`
 	TemplateDescription *string                            `json:"TemplateDescription,omitempty"`
 	TemplateName        *string                            `json:"TemplateName,omitempty"`
@@ -565,3 +565,30 @@ type VoiceChannel struct {
 }
 
 func (VoiceChannel) CloudControlType() string { return "AWS::Pinpoint::VoiceChannel" }
+
+type Alignment string
+
+const (
+	AlignmentLEFT   Alignment = "LEFT"
+	AlignmentCENTER Alignment = "CENTER"
+	AlignmentRIGHT  Alignment = "RIGHT"
+)
+
+type ButtonAction string
+
+const (
+	ButtonActionLINK     ButtonAction = "LINK"
+	ButtonActionDEEPLINK ButtonAction = "DEEP_LINK"
+	ButtonActionCLOSE    ButtonAction = "CLOSE"
+)
+
+type InAppTemplateLayout string
+
+const (
+	InAppTemplateLayoutBOTTOMBANNER InAppTemplateLayout = "BOTTOM_BANNER"
+	InAppTemplateLayoutTOPBANNER    InAppTemplateLayout = "TOP_BANNER"
+	InAppTemplateLayoutOVERLAYS     InAppTemplateLayout = "OVERLAYS"
+	InAppTemplateLayoutMOBILEFEED   InAppTemplateLayout = "MOBILE_FEED"
+	InAppTemplateLayoutMIDDLEBANNER InAppTemplateLayout = "MIDDLE_BANNER"
+	InAppTemplateLayoutCAROUSEL     InAppTemplateLayout = "CAROUSEL"
+)

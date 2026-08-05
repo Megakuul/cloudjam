@@ -33,10 +33,10 @@ type Channel struct {
 	IngestEndpointUrls        []string                   `json:"IngestEndpointUrls,omitempty"`
 	IngestEndpoints           []IngestEndpoint           `json:"IngestEndpoints,omitempty"`
 	InputSwitchConfiguration  *InputSwitchConfiguration  `json:"InputSwitchConfiguration,omitempty"`
-	InputType                 *string                    `json:"InputType,omitempty"`
+	InputType                 *InputType                 `json:"InputType,omitempty"`
 	ModifiedAt                *string                    `json:"ModifiedAt,omitempty"`
 	OutputHeaderConfiguration *OutputHeaderConfiguration `json:"OutputHeaderConfiguration,omitempty"`
-	OutputLockingMode         *string                    `json:"OutputLockingMode,omitempty"`
+	OutputLockingMode         *OutputLockingMode         `json:"OutputLockingMode,omitempty"`
 	Tags                      []Tag                      `json:"Tags,omitempty"`
 }
 
@@ -108,12 +108,12 @@ type DashProgramInformation struct {
 }
 
 type ScteDash struct {
-	AdMarkerDash    *string `json:"AdMarkerDash,omitempty"`
-	ScteInManifests *string `json:"ScteInManifests,omitempty"`
+	AdMarkerDash    *AdMarkerDash    `json:"AdMarkerDash,omitempty"`
+	ScteInManifests *ScteInManifests `json:"ScteInManifests,omitempty"`
 }
 
 type DashTtmlConfiguration struct {
-	TtmlProfile *string `json:"TtmlProfile,omitempty"`
+	TtmlProfile *DashTtmlProfile `json:"TtmlProfile,omitempty"`
 }
 
 type DashSubtitleConfiguration struct {
@@ -121,40 +121,40 @@ type DashSubtitleConfiguration struct {
 }
 
 type DashUtcTiming struct {
-	TimingMode   *string `json:"TimingMode,omitempty"`
-	TimingSource *string `json:"TimingSource,omitempty"`
+	TimingMode   *DashUtcTimingMode `json:"TimingMode,omitempty"`
+	TimingSource *string            `json:"TimingSource,omitempty"`
 }
 
 type DashManifestConfiguration struct {
-	AudioTimelinePattern               *string                    `json:"AudioTimelinePattern,omitempty"`
+	AudioTimelinePattern               *DashAudioTimelinePattern  `json:"AudioTimelinePattern,omitempty"`
 	AvailabilityStartTimeConfiguration json.RawMessage            `json:"AvailabilityStartTimeConfiguration,omitempty"`
 	BaseUrls                           []DashBaseUrl              `json:"BaseUrls,omitempty"`
-	Compactness                        *string                    `json:"Compactness,omitempty"`
-	DrmSignaling                       *string                    `json:"DrmSignaling,omitempty"`
+	Compactness                        *DashCompactness           `json:"Compactness,omitempty"`
+	DrmSignaling                       *DashDrmSignaling          `json:"DrmSignaling,omitempty"`
 	DvbSettings                        *DashDvbSettings           `json:"DvbSettings,omitempty"`
 	FilterConfiguration                *FilterConfiguration       `json:"FilterConfiguration,omitempty"`
 	ManifestName                       *string                    `json:"ManifestName,omitempty"`
 	ManifestWindowSeconds              *int                       `json:"ManifestWindowSeconds,omitempty"`
 	MinBufferTimeSeconds               *int                       `json:"MinBufferTimeSeconds,omitempty"`
 	MinUpdatePeriodSeconds             *int                       `json:"MinUpdatePeriodSeconds,omitempty"`
-	PeriodTriggers                     []string                   `json:"PeriodTriggers,omitempty"`
-	Profiles                           []string                   `json:"Profiles,omitempty"`
+	PeriodTriggers                     []DashPeriodTrigger        `json:"PeriodTriggers,omitempty"`
+	Profiles                           []DashProfile              `json:"Profiles,omitempty"`
 	ProgramInformation                 *DashProgramInformation    `json:"ProgramInformation,omitempty"`
 	ScteDash                           *ScteDash                  `json:"ScteDash,omitempty"`
-	SegmentTemplateFormat              *string                    `json:"SegmentTemplateFormat,omitempty"`
+	SegmentTemplateFormat              *DashSegmentTemplateFormat `json:"SegmentTemplateFormat,omitempty"`
 	SubtitleConfiguration              *DashSubtitleConfiguration `json:"SubtitleConfiguration,omitempty"`
 	SuggestedPresentationDelaySeconds  *int                       `json:"SuggestedPresentationDelaySeconds,omitempty"`
-	UriPathType                        *string                    `json:"UriPathType,omitempty"`
+	UriPathType                        *UriPathType               `json:"UriPathType,omitempty"`
 	UtcTiming                          *DashUtcTiming             `json:"UtcTiming,omitempty"`
 }
 
 type ForceEndpointErrorConfiguration struct {
-	EndpointErrorConditions []string `json:"EndpointErrorConditions,omitempty"`
+	EndpointErrorConditions []EndpointErrorCondition `json:"EndpointErrorConditions,omitempty"`
 }
 
 type ScteHls struct {
-	AdMarkerHls     *string `json:"AdMarkerHls,omitempty"`
-	ScteInManifests *string `json:"ScteInManifests,omitempty"`
+	AdMarkerHls     *AdMarkerHls     `json:"AdMarkerHls,omitempty"`
+	ScteInManifests *ScteInManifests `json:"ScteInManifests,omitempty"`
 }
 
 type StartTag struct {
@@ -170,7 +170,7 @@ type HlsManifestConfiguration struct {
 	ProgramDateTimeIntervalSeconds *int                 `json:"ProgramDateTimeIntervalSeconds,omitempty"`
 	ScteHls                        *ScteHls             `json:"ScteHls,omitempty"`
 	StartTag                       *StartTag            `json:"StartTag,omitempty"`
-	UriPathType                    *string              `json:"UriPathType,omitempty"`
+	UriPathType                    *UriPathType         `json:"UriPathType,omitempty"`
 	Url                            *string              `json:"Url,omitempty"`
 	UrlEncodeChildManifest         *bool                `json:"UrlEncodeChildManifest,omitempty"`
 }
@@ -183,32 +183,32 @@ type LowLatencyHlsManifestConfiguration struct {
 	ProgramDateTimeIntervalSeconds *int                 `json:"ProgramDateTimeIntervalSeconds,omitempty"`
 	ScteHls                        *ScteHls             `json:"ScteHls,omitempty"`
 	StartTag                       *StartTag            `json:"StartTag,omitempty"`
-	UriPathType                    *string              `json:"UriPathType,omitempty"`
+	UriPathType                    *UriPathType         `json:"UriPathType,omitempty"`
 	Url                            *string              `json:"Url,omitempty"`
 	UrlEncodeChildManifest         *bool                `json:"UrlEncodeChildManifest,omitempty"`
 }
 
 type MssManifestConfiguration struct {
 	FilterConfiguration   *FilterConfiguration `json:"FilterConfiguration,omitempty"`
-	ManifestLayout        *string              `json:"ManifestLayout,omitempty"`
+	ManifestLayout        *MssManifestLayout   `json:"ManifestLayout,omitempty"`
 	ManifestName          *string              `json:"ManifestName,omitempty"`
 	ManifestWindowSeconds *int                 `json:"ManifestWindowSeconds,omitempty"`
 }
 
 type EncryptionMethod struct {
-	CmafEncryptionMethod *string `json:"CmafEncryptionMethod,omitempty"`
-	IsmEncryptionMethod  *string `json:"IsmEncryptionMethod,omitempty"`
-	TsEncryptionMethod   *string `json:"TsEncryptionMethod,omitempty"`
+	CmafEncryptionMethod *CmafEncryptionMethod `json:"CmafEncryptionMethod,omitempty"`
+	IsmEncryptionMethod  *IsmEncryptionMethod  `json:"IsmEncryptionMethod,omitempty"`
+	TsEncryptionMethod   *TsEncryptionMethod   `json:"TsEncryptionMethod,omitempty"`
 }
 
 type EncryptionContractConfiguration struct {
-	PresetSpeke20Audio *string `json:"PresetSpeke20Audio,omitempty"`
-	PresetSpeke20Video *string `json:"PresetSpeke20Video,omitempty"`
+	PresetSpeke20Audio *PresetSpeke20Audio `json:"PresetSpeke20Audio,omitempty"`
+	PresetSpeke20Video *PresetSpeke20Video `json:"PresetSpeke20Video,omitempty"`
 }
 
 type SpekeKeyProvider struct {
 	CertificateArn                  *string                          `json:"CertificateArn,omitempty"`
-	DrmSystems                      []string                         `json:"DrmSystems,omitempty"`
+	DrmSystems                      []DrmSystem                      `json:"DrmSystems,omitempty"`
 	EncryptionContractConfiguration *EncryptionContractConfiguration `json:"EncryptionContractConfiguration,omitempty"`
 	ResourceId                      *string                          `json:"ResourceId,omitempty"`
 	RoleArn                         *string                          `json:"RoleArn,omitempty"`
@@ -224,20 +224,20 @@ type Encryption struct {
 }
 
 type Scte struct {
-	CustomAdTypes  []string `json:"CustomAdTypes,omitempty"`
-	ScteFilter     []string `json:"ScteFilter,omitempty"`
-	ScteInSegments *string  `json:"ScteInSegments,omitempty"`
+	CustomAdTypes  []CustomAdType  `json:"CustomAdTypes,omitempty"`
+	ScteFilter     []ScteFilter    `json:"ScteFilter,omitempty"`
+	ScteInSegments *ScteInSegments `json:"ScteInSegments,omitempty"`
 }
 
 type Segment struct {
-	Encryption               *Encryption `json:"Encryption,omitempty"`
-	IncludeIframeOnlyStreams *bool       `json:"IncludeIframeOnlyStreams,omitempty"`
-	OutputTimestampMode      *string     `json:"OutputTimestampMode,omitempty"`
-	Scte                     *Scte       `json:"Scte,omitempty"`
-	SegmentDurationSeconds   *int        `json:"SegmentDurationSeconds,omitempty"`
-	SegmentName              *string     `json:"SegmentName,omitempty"`
-	TsIncludeDvbSubtitles    *bool       `json:"TsIncludeDvbSubtitles,omitempty"`
-	TsUseAudioRenditionGroup *bool       `json:"TsUseAudioRenditionGroup,omitempty"`
+	Encryption               *Encryption          `json:"Encryption,omitempty"`
+	IncludeIframeOnlyStreams *bool                `json:"IncludeIframeOnlyStreams,omitempty"`
+	OutputTimestampMode      *OutputTimestampMode `json:"OutputTimestampMode,omitempty"`
+	Scte                     *Scte                `json:"Scte,omitempty"`
+	SegmentDurationSeconds   *int                 `json:"SegmentDurationSeconds,omitempty"`
+	SegmentName              *string              `json:"SegmentName,omitempty"`
+	TsIncludeDvbSubtitles    *bool                `json:"TsIncludeDvbSubtitles,omitempty"`
+	TsUseAudioRenditionGroup *bool                `json:"TsUseAudioRenditionGroup,omitempty"`
 }
 
 type OriginEndpointTag struct {
@@ -249,7 +249,7 @@ type OriginEndpoint struct {
 	Arn                             *string                              `json:"Arn,omitempty"`
 	ChannelGroupName                *string                              `json:"ChannelGroupName,omitempty"`
 	ChannelName                     *string                              `json:"ChannelName,omitempty"`
-	ContainerType                   *string                              `json:"ContainerType,omitempty"`
+	ContainerType                   *ContainerType                       `json:"ContainerType,omitempty"`
 	CreatedAt                       *string                              `json:"CreatedAt,omitempty"`
 	DashManifestUrls                []string                             `json:"DashManifestUrls,omitempty"`
 	DashManifests                   []DashManifestConfiguration          `json:"DashManifests,omitempty"`
@@ -266,7 +266,7 @@ type OriginEndpoint struct {
 	Segment                         *Segment                             `json:"Segment,omitempty"`
 	StartoverWindowSeconds          *int                                 `json:"StartoverWindowSeconds,omitempty"`
 	Tags                            []OriginEndpointTag                  `json:"Tags,omitempty"`
-	UriSeparator                    *string                              `json:"UriSeparator,omitempty"`
+	UriSeparator                    *UriSeparator                        `json:"UriSeparator,omitempty"`
 }
 
 func (OriginEndpoint) CloudControlType() string { return "AWS::MediaPackageV2::OriginEndpoint" }
@@ -287,3 +287,239 @@ type OriginEndpointPolicy struct {
 func (OriginEndpointPolicy) CloudControlType() string {
 	return "AWS::MediaPackageV2::OriginEndpointPolicy"
 }
+
+type InputType string
+
+const (
+	InputTypeHLS  InputType = "HLS"
+	InputTypeCMAF InputType = "CMAF"
+)
+
+type OutputLockingMode string
+
+const (
+	OutputLockingModeEPOCHLOCKED    OutputLockingMode = "EPOCH_LOCKED"
+	OutputLockingModeNONEPOCHLOCKED OutputLockingMode = "NON_EPOCH_LOCKED"
+)
+
+type ContainerType string
+
+const (
+	ContainerTypeTS   ContainerType = "TS"
+	ContainerTypeCMAF ContainerType = "CMAF"
+	ContainerTypeISM  ContainerType = "ISM"
+)
+
+type DashAudioTimelinePattern string
+
+const (
+	DashAudioTimelinePatternNONE      DashAudioTimelinePattern = "NONE"
+	DashAudioTimelinePatternPATTERNED DashAudioTimelinePattern = "PATTERNED"
+)
+
+type DashCompactness string
+
+const (
+	DashCompactnessSTANDARD DashCompactness = "STANDARD"
+	DashCompactnessNONE     DashCompactness = "NONE"
+)
+
+type DashDrmSignaling string
+
+const (
+	DashDrmSignalingINDIVIDUAL DashDrmSignaling = "INDIVIDUAL"
+	DashDrmSignalingREFERENCED DashDrmSignaling = "REFERENCED"
+)
+
+type DashPeriodTrigger string
+
+const (
+	DashPeriodTriggerAVAILS            DashPeriodTrigger = "AVAILS"
+	DashPeriodTriggerDRMKEYROTATION    DashPeriodTrigger = "DRM_KEY_ROTATION"
+	DashPeriodTriggerSOURCECHANGES     DashPeriodTrigger = "SOURCE_CHANGES"
+	DashPeriodTriggerSOURCEDISRUPTIONS DashPeriodTrigger = "SOURCE_DISRUPTIONS"
+	DashPeriodTriggerNONE              DashPeriodTrigger = "NONE"
+)
+
+type DashProfile string
+
+const (
+	DashProfileDVBDASH DashProfile = "DVB_DASH"
+)
+
+type AdMarkerDash string
+
+const (
+	AdMarkerDashBINARY AdMarkerDash = "BINARY"
+	AdMarkerDashXML    AdMarkerDash = "XML"
+)
+
+type ScteInManifests string
+
+const (
+	ScteInManifestsALL           ScteInManifests = "ALL"
+	ScteInManifestsMATCHESFILTER ScteInManifests = "MATCHES_FILTER"
+)
+
+type DashSegmentTemplateFormat string
+
+const (
+	DashSegmentTemplateFormatNUMBERWITHTIMELINE DashSegmentTemplateFormat = "NUMBER_WITH_TIMELINE"
+)
+
+type DashTtmlProfile string
+
+const (
+	DashTtmlProfileIMSC1     DashTtmlProfile = "IMSC_1"
+	DashTtmlProfileEBUTTD101 DashTtmlProfile = "EBU_TT_D_101"
+)
+
+type UriPathType string
+
+const (
+	UriPathTypeLEAF UriPathType = "LEAF"
+	UriPathTypeROOT UriPathType = "ROOT"
+)
+
+type DashUtcTimingMode string
+
+const (
+	DashUtcTimingModeHTTPHEAD   DashUtcTimingMode = "HTTP_HEAD"
+	DashUtcTimingModeHTTPISO    DashUtcTimingMode = "HTTP_ISO"
+	DashUtcTimingModeHTTPXSDATE DashUtcTimingMode = "HTTP_XSDATE"
+	DashUtcTimingModeUTCDIRECT  DashUtcTimingMode = "UTC_DIRECT"
+)
+
+type EndpointErrorCondition string
+
+const (
+	EndpointErrorConditionSTALEMANIFEST      EndpointErrorCondition = "STALE_MANIFEST"
+	EndpointErrorConditionINCOMPLETEMANIFEST EndpointErrorCondition = "INCOMPLETE_MANIFEST"
+	EndpointErrorConditionMISSINGDRMKEY      EndpointErrorCondition = "MISSING_DRM_KEY"
+	EndpointErrorConditionSLATEINPUT         EndpointErrorCondition = "SLATE_INPUT"
+)
+
+type AdMarkerHls string
+
+const (
+	AdMarkerHlsDATERANGE      AdMarkerHls = "DATERANGE"
+	AdMarkerHlsSCTE35ENHANCED AdMarkerHls = "SCTE35_ENHANCED"
+)
+
+type MssManifestLayout string
+
+const (
+	MssManifestLayoutFULL    MssManifestLayout = "FULL"
+	MssManifestLayoutCOMPACT MssManifestLayout = "COMPACT"
+)
+
+type CmafEncryptionMethod string
+
+const (
+	CmafEncryptionMethodCENC CmafEncryptionMethod = "CENC"
+	CmafEncryptionMethodCBCS CmafEncryptionMethod = "CBCS"
+)
+
+type IsmEncryptionMethod string
+
+const (
+	IsmEncryptionMethodCENC IsmEncryptionMethod = "CENC"
+)
+
+type TsEncryptionMethod string
+
+const (
+	TsEncryptionMethodAES128    TsEncryptionMethod = "AES_128"
+	TsEncryptionMethodSAMPLEAES TsEncryptionMethod = "SAMPLE_AES"
+)
+
+type DrmSystem string
+
+const (
+	DrmSystemCLEARKEYAES128 DrmSystem = "CLEAR_KEY_AES_128"
+	DrmSystemFAIRPLAY       DrmSystem = "FAIRPLAY"
+	DrmSystemPLAYREADY      DrmSystem = "PLAYREADY"
+	DrmSystemWIDEVINE       DrmSystem = "WIDEVINE"
+	DrmSystemIRDETO         DrmSystem = "IRDETO"
+)
+
+type PresetSpeke20Audio string
+
+const (
+	PresetSpeke20AudioPRESETAUDIO1 PresetSpeke20Audio = "PRESET_AUDIO_1"
+	PresetSpeke20AudioPRESETAUDIO2 PresetSpeke20Audio = "PRESET_AUDIO_2"
+	PresetSpeke20AudioPRESETAUDIO3 PresetSpeke20Audio = "PRESET_AUDIO_3"
+	PresetSpeke20AudioSHARED       PresetSpeke20Audio = "SHARED"
+	PresetSpeke20AudioUNENCRYPTED  PresetSpeke20Audio = "UNENCRYPTED"
+)
+
+type PresetSpeke20Video string
+
+const (
+	PresetSpeke20VideoPRESETVIDEO1 PresetSpeke20Video = "PRESET_VIDEO_1"
+	PresetSpeke20VideoPRESETVIDEO2 PresetSpeke20Video = "PRESET_VIDEO_2"
+	PresetSpeke20VideoPRESETVIDEO3 PresetSpeke20Video = "PRESET_VIDEO_3"
+	PresetSpeke20VideoPRESETVIDEO4 PresetSpeke20Video = "PRESET_VIDEO_4"
+	PresetSpeke20VideoPRESETVIDEO5 PresetSpeke20Video = "PRESET_VIDEO_5"
+	PresetSpeke20VideoPRESETVIDEO6 PresetSpeke20Video = "PRESET_VIDEO_6"
+	PresetSpeke20VideoPRESETVIDEO7 PresetSpeke20Video = "PRESET_VIDEO_7"
+	PresetSpeke20VideoPRESETVIDEO8 PresetSpeke20Video = "PRESET_VIDEO_8"
+	PresetSpeke20VideoSHARED       PresetSpeke20Video = "SHARED"
+	PresetSpeke20VideoUNENCRYPTED  PresetSpeke20Video = "UNENCRYPTED"
+)
+
+type OutputTimestampMode string
+
+const (
+	OutputTimestampModePASSTHROUGH           OutputTimestampMode = "PASSTHROUGH"
+	OutputTimestampModeREBASEDTOCHANNELSTART OutputTimestampMode = "REBASED_TO_CHANNEL_START"
+)
+
+type CustomAdType string
+
+const (
+	CustomAdTypePROGRAM                     CustomAdType = "PROGRAM"
+	CustomAdTypeCHAPTER                     CustomAdType = "CHAPTER"
+	CustomAdTypeUNSCHEDULEDEVENT            CustomAdType = "UNSCHEDULED_EVENT"
+	CustomAdTypeALTERNATECONTENTOPPORTUNITY CustomAdType = "ALTERNATE_CONTENT_OPPORTUNITY"
+	CustomAdTypeNETWORK                     CustomAdType = "NETWORK"
+)
+
+type ScteFilter string
+
+const (
+	ScteFilterSPLICEINSERT                           ScteFilter = "SPLICE_INSERT"
+	ScteFilterBREAK                                  ScteFilter = "BREAK"
+	ScteFilterPROVIDERADVERTISEMENT                  ScteFilter = "PROVIDER_ADVERTISEMENT"
+	ScteFilterDISTRIBUTORADVERTISEMENT               ScteFilter = "DISTRIBUTOR_ADVERTISEMENT"
+	ScteFilterPROVIDERPLACEMENTOPPORTUNITY           ScteFilter = "PROVIDER_PLACEMENT_OPPORTUNITY"
+	ScteFilterDISTRIBUTORPLACEMENTOPPORTUNITY        ScteFilter = "DISTRIBUTOR_PLACEMENT_OPPORTUNITY"
+	ScteFilterPROVIDEROVERLAYPLACEMENTOPPORTUNITY    ScteFilter = "PROVIDER_OVERLAY_PLACEMENT_OPPORTUNITY"
+	ScteFilterDISTRIBUTOROVERLAYPLACEMENTOPPORTUNITY ScteFilter = "DISTRIBUTOR_OVERLAY_PLACEMENT_OPPORTUNITY"
+	ScteFilterPROGRAM                                ScteFilter = "PROGRAM"
+	ScteFilterCHAPTER                                ScteFilter = "CHAPTER"
+	ScteFilterUNSCHEDULEDEVENT                       ScteFilter = "UNSCHEDULED_EVENT"
+	ScteFilterALTERNATECONTENTOPPORTUNITY            ScteFilter = "ALTERNATE_CONTENT_OPPORTUNITY"
+	ScteFilterNETWORK                                ScteFilter = "NETWORK"
+	ScteFilterPROVIDERPROMO                          ScteFilter = "PROVIDER_PROMO"
+	ScteFilterDISTRIBUTORPROMO                       ScteFilter = "DISTRIBUTOR_PROMO"
+	ScteFilterPROVIDERADBLOCK                        ScteFilter = "PROVIDER_AD_BLOCK"
+	ScteFilterDISTRIBUTORADBLOCK                     ScteFilter = "DISTRIBUTOR_AD_BLOCK"
+	ScteFilterCONTENTIDENTIFICATION                  ScteFilter = "CONTENT_IDENTIFICATION"
+	ScteFilterCALLADSERVER                           ScteFilter = "CALL_AD_SERVER"
+)
+
+type ScteInSegments string
+
+const (
+	ScteInSegmentsNONE          ScteInSegments = "NONE"
+	ScteInSegmentsALL           ScteInSegments = "ALL"
+	ScteInSegmentsMATCHESFILTER ScteInSegments = "MATCHES_FILTER"
+)
+
+type UriSeparator string
+
+const (
+	UriSeparatorUNDERSCORE UriSeparator = "UNDERSCORE"
+	UriSeparatorHYPHEN     UriSeparator = "HYPHEN"
+)

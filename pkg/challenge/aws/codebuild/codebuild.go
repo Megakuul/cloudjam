@@ -4,22 +4,22 @@
 package codebuild
 
 type ComputeConfiguration struct {
-	Disk         *int    `json:"disk,omitempty"`
-	InstanceType *string `json:"instanceType,omitempty"`
-	MachineType  *string `json:"machineType,omitempty"`
-	Memory       *int    `json:"memory,omitempty"`
-	VCpu         *int    `json:"vCpu,omitempty"`
+	Disk         *int                             `json:"disk,omitempty"`
+	InstanceType *string                          `json:"instanceType,omitempty"`
+	MachineType  *ComputeConfigurationMachineType `json:"machineType,omitempty"`
+	Memory       *int                             `json:"memory,omitempty"`
+	VCpu         *int                             `json:"vCpu,omitempty"`
 }
 
 type FleetProxyRule struct {
-	Effect   *string  `json:"Effect,omitempty"`
-	Entities []string `json:"Entities,omitempty"`
-	Type     *string  `json:"Type,omitempty"`
+	Effect   *FleetProxyRuleEffect `json:"Effect,omitempty"`
+	Entities []string              `json:"Entities,omitempty"`
+	Type     *FleetProxyRuleType   `json:"Type,omitempty"`
 }
 
 type ProxyConfiguration struct {
-	DefaultBehavior   *string          `json:"DefaultBehavior,omitempty"`
-	OrderedProxyRules []FleetProxyRule `json:"OrderedProxyRules,omitempty"`
+	DefaultBehavior   *ProxyConfigurationDefaultBehavior `json:"DefaultBehavior,omitempty"`
+	OrderedProxyRules []FleetProxyRule                   `json:"OrderedProxyRules,omitempty"`
 }
 
 type VpcConfig struct {
@@ -29,14 +29,14 @@ type VpcConfig struct {
 }
 
 type TargetTrackingScalingConfiguration struct {
-	MetricType  *string  `json:"MetricType,omitempty"`
-	TargetValue *float64 `json:"TargetValue,omitempty"`
+	MetricType  *TargetTrackingScalingConfigurationMetricType `json:"MetricType,omitempty"`
+	TargetValue *float64                                      `json:"TargetValue,omitempty"`
 }
 
 type ScalingConfigurationInput struct {
-	MaxCapacity                  *int                                 `json:"MaxCapacity,omitempty"`
-	ScalingType                  *string                              `json:"ScalingType,omitempty"`
-	TargetTrackingScalingConfigs []TargetTrackingScalingConfiguration `json:"TargetTrackingScalingConfigs,omitempty"`
+	MaxCapacity                  *int                                  `json:"MaxCapacity,omitempty"`
+	ScalingType                  *ScalingConfigurationInputScalingType `json:"ScalingType,omitempty"`
+	TargetTrackingScalingConfigs []TargetTrackingScalingConfiguration  `json:"TargetTrackingScalingConfigs,omitempty"`
 }
 
 type Tag struct {
@@ -48,14 +48,14 @@ type Fleet struct {
 	Arn                     *string                    `json:"Arn,omitempty"`
 	BaseCapacity            *int                       `json:"BaseCapacity,omitempty"`
 	ComputeConfiguration    *ComputeConfiguration      `json:"ComputeConfiguration,omitempty"`
-	ComputeType             *string                    `json:"ComputeType,omitempty"`
-	EnvironmentType         *string                    `json:"EnvironmentType,omitempty"`
+	ComputeType             *FleetComputeType          `json:"ComputeType,omitempty"`
+	EnvironmentType         *FleetEnvironmentType      `json:"EnvironmentType,omitempty"`
 	FleetProxyConfiguration *ProxyConfiguration        `json:"FleetProxyConfiguration,omitempty"`
 	FleetServiceRole        *string                    `json:"FleetServiceRole,omitempty"`
 	FleetVpcConfig          *VpcConfig                 `json:"FleetVpcConfig,omitempty"`
 	ImageId                 *string                    `json:"ImageId,omitempty"`
 	Name                    *string                    `json:"Name,omitempty"`
-	OverflowBehavior        *string                    `json:"OverflowBehavior,omitempty"`
+	OverflowBehavior        *FleetOverflowBehavior     `json:"OverflowBehavior,omitempty"`
 	ScalingConfiguration    *ScalingConfigurationInput `json:"ScalingConfiguration,omitempty"`
 	Tags                    []Tag                      `json:"Tags,omitempty"`
 }
@@ -287,3 +287,76 @@ type SourceCredential struct {
 }
 
 func (SourceCredential) CloudControlType() string { return "AWS::CodeBuild::SourceCredential" }
+
+type ComputeConfigurationMachineType string
+
+const (
+	ComputeConfigurationMachineTypeGENERAL ComputeConfigurationMachineType = "GENERAL"
+	ComputeConfigurationMachineTypeNVME    ComputeConfigurationMachineType = "NVME"
+)
+
+type FleetComputeType string
+
+const (
+	FleetComputeTypeBUILDGENERAL1SMALL    FleetComputeType = "BUILD_GENERAL1_SMALL"
+	FleetComputeTypeBUILDGENERAL1MEDIUM   FleetComputeType = "BUILD_GENERAL1_MEDIUM"
+	FleetComputeTypeBUILDGENERAL1LARGE    FleetComputeType = "BUILD_GENERAL1_LARGE"
+	FleetComputeTypeBUILDGENERAL1XLARGE   FleetComputeType = "BUILD_GENERAL1_XLARGE"
+	FleetComputeTypeBUILDGENERAL12XLARGE  FleetComputeType = "BUILD_GENERAL1_2XLARGE"
+	FleetComputeTypeATTRIBUTEBASEDCOMPUTE FleetComputeType = "ATTRIBUTE_BASED_COMPUTE"
+	FleetComputeTypeCUSTOMINSTANCETYPE    FleetComputeType = "CUSTOM_INSTANCE_TYPE"
+)
+
+type FleetEnvironmentType string
+
+const (
+	FleetEnvironmentTypeWINDOWSSERVER2019CONTAINER FleetEnvironmentType = "WINDOWS_SERVER_2019_CONTAINER"
+	FleetEnvironmentTypeWINDOWSSERVER2022CONTAINER FleetEnvironmentType = "WINDOWS_SERVER_2022_CONTAINER"
+	FleetEnvironmentTypeLINUXCONTAINER             FleetEnvironmentType = "LINUX_CONTAINER"
+	FleetEnvironmentTypeLINUXGPUCONTAINER          FleetEnvironmentType = "LINUX_GPU_CONTAINER"
+	FleetEnvironmentTypeARMCONTAINER               FleetEnvironmentType = "ARM_CONTAINER"
+	FleetEnvironmentTypeMACARM                     FleetEnvironmentType = "MAC_ARM"
+	FleetEnvironmentTypeLINUXEC2                   FleetEnvironmentType = "LINUX_EC2"
+	FleetEnvironmentTypeARMEC2                     FleetEnvironmentType = "ARM_EC2"
+	FleetEnvironmentTypeWINDOWSEC2                 FleetEnvironmentType = "WINDOWS_EC2"
+)
+
+type ProxyConfigurationDefaultBehavior string
+
+const (
+	ProxyConfigurationDefaultBehaviorALLOWALL ProxyConfigurationDefaultBehavior = "ALLOW_ALL"
+	ProxyConfigurationDefaultBehaviorDENYALL  ProxyConfigurationDefaultBehavior = "DENY_ALL"
+)
+
+type FleetProxyRuleEffect string
+
+const (
+	FleetProxyRuleEffectALLOW FleetProxyRuleEffect = "ALLOW"
+	FleetProxyRuleEffectDENY  FleetProxyRuleEffect = "DENY"
+)
+
+type FleetProxyRuleType string
+
+const (
+	FleetProxyRuleTypeDOMAIN FleetProxyRuleType = "DOMAIN"
+	FleetProxyRuleTypeIP     FleetProxyRuleType = "IP"
+)
+
+type FleetOverflowBehavior string
+
+const (
+	FleetOverflowBehaviorQUEUE    FleetOverflowBehavior = "QUEUE"
+	FleetOverflowBehaviorONDEMAND FleetOverflowBehavior = "ON_DEMAND"
+)
+
+type ScalingConfigurationInputScalingType string
+
+const (
+	ScalingConfigurationInputScalingTypeTARGETTRACKINGSCALING ScalingConfigurationInputScalingType = "TARGET_TRACKING_SCALING"
+)
+
+type TargetTrackingScalingConfigurationMetricType string
+
+const (
+	TargetTrackingScalingConfigurationMetricTypeFLEETUTILIZATIONRATE TargetTrackingScalingConfigurationMetricType = "FLEET_UTILIZATION_RATE"
+)

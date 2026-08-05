@@ -17,7 +17,7 @@ type Link struct {
 	Label             *string            `json:"Label,omitempty"`
 	LabelTemplate     *string            `json:"LabelTemplate,omitempty"`
 	LinkConfiguration *LinkConfiguration `json:"LinkConfiguration,omitempty"`
-	ResourceTypes     []string           `json:"ResourceTypes,omitempty"`
+	ResourceTypes     []ResourceType     `json:"ResourceTypes,omitempty"`
 	SinkIdentifier    *string            `json:"SinkIdentifier,omitempty"`
 	Tags              map[string]string  `json:"Tags,omitempty"`
 }
@@ -32,3 +32,15 @@ type Sink struct {
 }
 
 func (Sink) CloudControlType() string { return "AWS::Oam::Sink" }
+
+type ResourceType string
+
+const (
+	ResourceTypeAWSCloudWatchMetric                        ResourceType = "AWS::CloudWatch::Metric"
+	ResourceTypeAWSLogsLogGroup                            ResourceType = "AWS::Logs::LogGroup"
+	ResourceTypeAWSXRayTrace                               ResourceType = "AWS::XRay::Trace"
+	ResourceTypeAWSApplicationInsightsApplication          ResourceType = "AWS::ApplicationInsights::Application"
+	ResourceTypeAWSInternetMonitorMonitor                  ResourceType = "AWS::InternetMonitor::Monitor"
+	ResourceTypeAWSApplicationSignalsService               ResourceType = "AWS::ApplicationSignals::Service"
+	ResourceTypeAWSApplicationSignalsServiceLevelObjective ResourceType = "AWS::ApplicationSignals::ServiceLevelObjective"
+)

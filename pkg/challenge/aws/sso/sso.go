@@ -6,13 +6,13 @@ package sso
 import "encoding/json"
 
 type SignInOptions struct {
-	ApplicationUrl *string `json:"ApplicationUrl,omitempty"`
-	Origin         *string `json:"Origin,omitempty"`
+	ApplicationUrl *string              `json:"ApplicationUrl,omitempty"`
+	Origin         *SignInOptionsOrigin `json:"Origin,omitempty"`
 }
 
 type PortalOptionsConfiguration struct {
-	SignInOptions *SignInOptions `json:"SignInOptions,omitempty"`
-	Visibility    *string        `json:"Visibility,omitempty"`
+	SignInOptions *SignInOptions                        `json:"SignInOptions,omitempty"`
+	Visibility    *PortalOptionsConfigurationVisibility `json:"Visibility,omitempty"`
 }
 
 type Tag struct {
@@ -28,27 +28,27 @@ type Application struct {
 	InstanceArn            *string                     `json:"InstanceArn,omitempty"`
 	Name                   *string                     `json:"Name,omitempty"`
 	PortalOptions          *PortalOptionsConfiguration `json:"PortalOptions,omitempty"`
-	Status                 *string                     `json:"Status,omitempty"`
+	Status                 *ApplicationStatus          `json:"Status,omitempty"`
 	Tags                   []Tag                       `json:"Tags,omitempty"`
 }
 
 func (Application) CloudControlType() string { return "AWS::SSO::Application" }
 
 type ApplicationAssignment struct {
-	ApplicationArn *string `json:"ApplicationArn,omitempty"`
-	PrincipalId    *string `json:"PrincipalId,omitempty"`
-	PrincipalType  *string `json:"PrincipalType,omitempty"`
+	ApplicationArn *string                             `json:"ApplicationArn,omitempty"`
+	PrincipalId    *string                             `json:"PrincipalId,omitempty"`
+	PrincipalType  *ApplicationAssignmentPrincipalType `json:"PrincipalType,omitempty"`
 }
 
 func (ApplicationAssignment) CloudControlType() string { return "AWS::SSO::ApplicationAssignment" }
 
 type Assignment struct {
-	InstanceArn      *string `json:"InstanceArn,omitempty"`
-	PermissionSetArn *string `json:"PermissionSetArn,omitempty"`
-	PrincipalId      *string `json:"PrincipalId,omitempty"`
-	PrincipalType    *string `json:"PrincipalType,omitempty"`
-	TargetId         *string `json:"TargetId,omitempty"`
-	TargetType       *string `json:"TargetType,omitempty"`
+	InstanceArn      *string                  `json:"InstanceArn,omitempty"`
+	PermissionSetArn *string                  `json:"PermissionSetArn,omitempty"`
+	PrincipalId      *string                  `json:"PrincipalId,omitempty"`
+	PrincipalType    *AssignmentPrincipalType `json:"PrincipalType,omitempty"`
+	TargetId         *string                  `json:"TargetId,omitempty"`
+	TargetType       *AssignmentTargetType    `json:"TargetType,omitempty"`
 }
 
 func (Assignment) CloudControlType() string { return "AWS::SSO::Assignment" }
@@ -59,12 +59,12 @@ type InstanceTag struct {
 }
 
 type Instance struct {
-	IdentityStoreId *string       `json:"IdentityStoreId,omitempty"`
-	InstanceArn     *string       `json:"InstanceArn,omitempty"`
-	Name            *string       `json:"Name,omitempty"`
-	OwnerAccountId  *string       `json:"OwnerAccountId,omitempty"`
-	Status          *string       `json:"Status,omitempty"`
-	Tags            []InstanceTag `json:"Tags,omitempty"`
+	IdentityStoreId *string         `json:"IdentityStoreId,omitempty"`
+	InstanceArn     *string         `json:"InstanceArn,omitempty"`
+	Name            *string         `json:"Name,omitempty"`
+	OwnerAccountId  *string         `json:"OwnerAccountId,omitempty"`
+	Status          *InstanceStatus `json:"Status,omitempty"`
+	Tags            []InstanceTag   `json:"Tags,omitempty"`
 }
 
 func (Instance) CloudControlType() string { return "AWS::SSO::Instance" }
@@ -122,3 +122,52 @@ type PermissionSet struct {
 }
 
 func (PermissionSet) CloudControlType() string { return "AWS::SSO::PermissionSet" }
+
+type SignInOptionsOrigin string
+
+const (
+	SignInOptionsOriginIDENTITYCENTER SignInOptionsOrigin = "IDENTITY_CENTER"
+	SignInOptionsOriginAPPLICATION    SignInOptionsOrigin = "APPLICATION"
+)
+
+type PortalOptionsConfigurationVisibility string
+
+const (
+	PortalOptionsConfigurationVisibilityENABLED  PortalOptionsConfigurationVisibility = "ENABLED"
+	PortalOptionsConfigurationVisibilityDISABLED PortalOptionsConfigurationVisibility = "DISABLED"
+)
+
+type ApplicationStatus string
+
+const (
+	ApplicationStatusENABLED  ApplicationStatus = "ENABLED"
+	ApplicationStatusDISABLED ApplicationStatus = "DISABLED"
+)
+
+type ApplicationAssignmentPrincipalType string
+
+const (
+	ApplicationAssignmentPrincipalTypeUSER  ApplicationAssignmentPrincipalType = "USER"
+	ApplicationAssignmentPrincipalTypeGROUP ApplicationAssignmentPrincipalType = "GROUP"
+)
+
+type AssignmentPrincipalType string
+
+const (
+	AssignmentPrincipalTypeUSER  AssignmentPrincipalType = "USER"
+	AssignmentPrincipalTypeGROUP AssignmentPrincipalType = "GROUP"
+)
+
+type AssignmentTargetType string
+
+const (
+	AssignmentTargetTypeAWSACCOUNT AssignmentTargetType = "AWS_ACCOUNT"
+)
+
+type InstanceStatus string
+
+const (
+	InstanceStatusCREATEINPROGRESS InstanceStatus = "CREATE_IN_PROGRESS"
+	InstanceStatusDELETEINPROGRESS InstanceStatus = "DELETE_IN_PROGRESS"
+	InstanceStatusACTIVE           InstanceStatus = "ACTIVE"
+)

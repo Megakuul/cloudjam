@@ -6,13 +6,13 @@ package cleanrooms
 import "encoding/json"
 
 type AnalysisParameter struct {
-	DefaultValue *string `json:"DefaultValue,omitempty"`
-	Name         *string `json:"Name,omitempty"`
-	Type         *string `json:"Type,omitempty"`
+	DefaultValue *string                `json:"DefaultValue,omitempty"`
+	Name         *string                `json:"Name,omitempty"`
+	Type         *AnalysisParameterType `json:"Type,omitempty"`
 }
 
 type ErrorMessageConfiguration struct {
-	Type *string `json:"Type,omitempty"`
+	Type *ErrorMessageConfigurationType `json:"Type,omitempty"`
 }
 
 type AnalysisSchema struct {
@@ -32,7 +32,7 @@ type AnalysisTemplate struct {
 	CollaborationIdentifier    *string                    `json:"CollaborationIdentifier,omitempty"`
 	Description                *string                    `json:"Description,omitempty"`
 	ErrorMessageConfiguration  *ErrorMessageConfiguration `json:"ErrorMessageConfiguration,omitempty"`
-	Format                     *string                    `json:"Format,omitempty"`
+	Format                     *AnalysisTemplateFormat    `json:"Format,omitempty"`
 	MembershipArn              *string                    `json:"MembershipArn,omitempty"`
 	MembershipIdentifier       *string                    `json:"MembershipIdentifier,omitempty"`
 	Name                       *string                    `json:"Name,omitempty"`
@@ -46,7 +46,7 @@ type AnalysisTemplate struct {
 func (AnalysisTemplate) CloudControlType() string { return "AWS::CleanRooms::AnalysisTemplate" }
 
 type MLMemberAbilities struct {
-	CustomMLMemberAbilities []string `json:"CustomMLMemberAbilities,omitempty"`
+	CustomMLMemberAbilities []CustomMLMemberAbility `json:"CustomMLMemberAbilities,omitempty"`
 }
 
 type JobComputePaymentConfig struct {
@@ -92,7 +92,7 @@ type MemberSpecification struct {
 	AccountId            *string               `json:"AccountId,omitempty"`
 	DisplayName          *string               `json:"DisplayName,omitempty"`
 	MLMemberAbilities    *MLMemberAbilities    `json:"MLMemberAbilities,omitempty"`
-	MemberAbilities      []string              `json:"MemberAbilities,omitempty"`
+	MemberAbilities      []MemberAbility       `json:"MemberAbilities,omitempty"`
 	PaymentConfiguration *PaymentConfiguration `json:"PaymentConfiguration,omitempty"`
 }
 
@@ -102,23 +102,23 @@ type CollaborationTag struct {
 }
 
 type Collaboration struct {
-	AllowedResultRegions        []string                `json:"AllowedResultRegions,omitempty"`
-	AnalyticsEngine             *string                 `json:"AnalyticsEngine,omitempty"`
-	Arn                         *string                 `json:"Arn,omitempty"`
-	AutoApprovedChangeTypes     []string                `json:"AutoApprovedChangeTypes,omitempty"`
-	CollaborationIdentifier     *string                 `json:"CollaborationIdentifier,omitempty"`
-	CreatorDisplayName          *string                 `json:"CreatorDisplayName,omitempty"`
-	CreatorMLMemberAbilities    *MLMemberAbilities      `json:"CreatorMLMemberAbilities,omitempty"`
-	CreatorMemberAbilities      []string                `json:"CreatorMemberAbilities,omitempty"`
-	CreatorPaymentConfiguration *PaymentConfiguration   `json:"CreatorPaymentConfiguration,omitempty"`
-	DataEncryptionMetadata      *DataEncryptionMetadata `json:"DataEncryptionMetadata,omitempty"`
-	Description                 *string                 `json:"Description,omitempty"`
-	IsMetricsEnabled            *bool                   `json:"IsMetricsEnabled,omitempty"`
-	JobLogStatus                *string                 `json:"JobLogStatus,omitempty"`
-	Members                     []MemberSpecification   `json:"Members,omitempty"`
-	Name                        *string                 `json:"Name,omitempty"`
-	QueryLogStatus              *string                 `json:"QueryLogStatus,omitempty"`
-	Tags                        []CollaborationTag      `json:"Tags,omitempty"`
+	AllowedResultRegions        []SupportedS3Region          `json:"AllowedResultRegions,omitempty"`
+	AnalyticsEngine             *AnalyticsEngine             `json:"AnalyticsEngine,omitempty"`
+	Arn                         *string                      `json:"Arn,omitempty"`
+	AutoApprovedChangeTypes     []AutoApprovedChangeType     `json:"AutoApprovedChangeTypes,omitempty"`
+	CollaborationIdentifier     *string                      `json:"CollaborationIdentifier,omitempty"`
+	CreatorDisplayName          *string                      `json:"CreatorDisplayName,omitempty"`
+	CreatorMLMemberAbilities    *MLMemberAbilities           `json:"CreatorMLMemberAbilities,omitempty"`
+	CreatorMemberAbilities      []MemberAbility              `json:"CreatorMemberAbilities,omitempty"`
+	CreatorPaymentConfiguration *PaymentConfiguration        `json:"CreatorPaymentConfiguration,omitempty"`
+	DataEncryptionMetadata      *DataEncryptionMetadata      `json:"DataEncryptionMetadata,omitempty"`
+	Description                 *string                      `json:"Description,omitempty"`
+	IsMetricsEnabled            *bool                        `json:"IsMetricsEnabled,omitempty"`
+	JobLogStatus                *CollaborationJobLogStatus   `json:"JobLogStatus,omitempty"`
+	Members                     []MemberSpecification        `json:"Members,omitempty"`
+	Name                        *string                      `json:"Name,omitempty"`
+	QueryLogStatus              *CollaborationQueryLogStatus `json:"QueryLogStatus,omitempty"`
+	Tags                        []CollaborationTag           `json:"Tags,omitempty"`
 }
 
 func (Collaboration) CloudControlType() string { return "AWS::CleanRooms::Collaboration" }
@@ -129,7 +129,7 @@ type ConfiguredTableAnalysisRulePolicy struct {
 
 type AnalysisRule struct {
 	Policy *ConfiguredTableAnalysisRulePolicy `json:"Policy,omitempty"`
-	Type   *string                            `json:"Type,omitempty"`
+	Type   *ConfiguredTableAnalysisRuleType   `json:"Type,omitempty"`
 }
 
 type ConfiguredTableTag struct {
@@ -138,16 +138,16 @@ type ConfiguredTableTag struct {
 }
 
 type ConfiguredTable struct {
-	AllowedColumns            []string             `json:"AllowedColumns,omitempty"`
-	AnalysisMethod            *string              `json:"AnalysisMethod,omitempty"`
-	AnalysisRules             []AnalysisRule       `json:"AnalysisRules,omitempty"`
-	Arn                       *string              `json:"Arn,omitempty"`
-	ConfiguredTableIdentifier *string              `json:"ConfiguredTableIdentifier,omitempty"`
-	Description               *string              `json:"Description,omitempty"`
-	Name                      *string              `json:"Name,omitempty"`
-	SelectedAnalysisMethods   []string             `json:"SelectedAnalysisMethods,omitempty"`
-	TableReference            json.RawMessage      `json:"TableReference,omitempty"`
-	Tags                      []ConfiguredTableTag `json:"Tags,omitempty"`
+	AllowedColumns            []string                 `json:"AllowedColumns,omitempty"`
+	AnalysisMethod            *AnalysisMethod          `json:"AnalysisMethod,omitempty"`
+	AnalysisRules             []AnalysisRule           `json:"AnalysisRules,omitempty"`
+	Arn                       *string                  `json:"Arn,omitempty"`
+	ConfiguredTableIdentifier *string                  `json:"ConfiguredTableIdentifier,omitempty"`
+	Description               *string                  `json:"Description,omitempty"`
+	Name                      *string                  `json:"Name,omitempty"`
+	SelectedAnalysisMethods   []SelectedAnalysisMethod `json:"SelectedAnalysisMethods,omitempty"`
+	TableReference            json.RawMessage          `json:"TableReference,omitempty"`
+	Tags                      []ConfiguredTableTag     `json:"Tags,omitempty"`
 }
 
 func (ConfiguredTable) CloudControlType() string { return "AWS::CleanRooms::ConfiguredTable" }
@@ -158,7 +158,7 @@ type ConfiguredTableAssociationAnalysisRulePolicy struct {
 
 type ConfiguredTableAssociationAnalysisRule struct {
 	Policy *ConfiguredTableAssociationAnalysisRulePolicy `json:"Policy,omitempty"`
-	Type   *string                                       `json:"Type,omitempty"`
+	Type   *ConfiguredTableAssociationAnalysisRuleType   `json:"Type,omitempty"`
 }
 
 type ConfiguredTableAssociationTag struct {
@@ -188,8 +188,8 @@ type IdMappingTableInputReferenceConfig struct {
 }
 
 type IdMappingTableInputSource struct {
-	IdNamespaceAssociationId *string `json:"IdNamespaceAssociationId,omitempty"`
-	Type                     *string `json:"Type,omitempty"`
+	IdNamespaceAssociationId *string                        `json:"IdNamespaceAssociationId,omitempty"`
+	Type                     *IdMappingTableInputSourceType `json:"Type,omitempty"`
 }
 
 type IdMappingTableInputReferenceProperties struct {
@@ -228,8 +228,8 @@ type IdNamespaceAssociationInputReferenceConfig struct {
 }
 
 type IdNamespaceAssociationInputReferenceProperties struct {
-	IdMappingWorkflowsSupported []map[string]any `json:"IdMappingWorkflowsSupported,omitempty"`
-	IdNamespaceType             *string          `json:"IdNamespaceType,omitempty"`
+	IdMappingWorkflowsSupported []map[string]any                                               `json:"IdMappingWorkflowsSupported,omitempty"`
+	IdNamespaceType             *IdNamespaceAssociationInputReferencePropertiesIdNamespaceType `json:"IdNamespaceType,omitempty"`
 }
 
 type IdNamespaceAssociationTag struct {
@@ -262,7 +262,7 @@ type IntermediateTableAnalysisRulePolicy struct {
 
 type IntermediateTableAnalysisRule struct {
 	Policy *IntermediateTableAnalysisRulePolicy `json:"Policy,omitempty"`
-	Type   *string                              `json:"Type,omitempty"`
+	Type   *IntermediateTableAnalysisRuleType   `json:"Type,omitempty"`
 }
 
 type PopulationAnalysisSqlParameters struct {
@@ -291,7 +291,7 @@ type IntermediateTable struct {
 	MembershipIdentifier            *string                          `json:"MembershipIdentifier,omitempty"`
 	Name                            *string                          `json:"Name,omitempty"`
 	PopulationAnalysisConfiguration *PopulationAnalysisConfiguration `json:"PopulationAnalysisConfiguration,omitempty"`
-	Status                          *string                          `json:"Status,omitempty"`
+	Status                          *IntermediateTableStatus         `json:"Status,omitempty"`
 	Tags                            []IntermediateTableTag           `json:"Tags,omitempty"`
 }
 
@@ -312,10 +312,10 @@ type MembershipProtectedJobResultConfiguration struct {
 }
 
 type ProtectedQueryS3OutputConfiguration struct {
-	Bucket           *string `json:"Bucket,omitempty"`
-	KeyPrefix        *string `json:"KeyPrefix,omitempty"`
-	ResultFormat     *string `json:"ResultFormat,omitempty"`
-	SingleFileOutput *bool   `json:"SingleFileOutput,omitempty"`
+	Bucket           *string       `json:"Bucket,omitempty"`
+	KeyPrefix        *string       `json:"KeyPrefix,omitempty"`
+	ResultFormat     *ResultFormat `json:"ResultFormat,omitempty"`
+	SingleFileOutput *bool         `json:"SingleFileOutput,omitempty"`
 }
 
 type MembershipProtectedQueryOutputConfiguration struct {
@@ -372,19 +372,19 @@ type Membership struct {
 	DefaultJobResultConfiguration *MembershipProtectedJobResultConfiguration   `json:"DefaultJobResultConfiguration,omitempty"`
 	DefaultResultConfiguration    *MembershipProtectedQueryResultConfiguration `json:"DefaultResultConfiguration,omitempty"`
 	IsMetricsEnabled              *bool                                        `json:"IsMetricsEnabled,omitempty"`
-	JobLogStatus                  *string                                      `json:"JobLogStatus,omitempty"`
+	JobLogStatus                  *MembershipJobLogStatus                      `json:"JobLogStatus,omitempty"`
 	MembershipIdentifier          *string                                      `json:"MembershipIdentifier,omitempty"`
 	PaymentConfiguration          *MembershipPaymentConfiguration              `json:"PaymentConfiguration,omitempty"`
-	QueryLogStatus                *string                                      `json:"QueryLogStatus,omitempty"`
+	QueryLogStatus                *MembershipQueryLogStatus                    `json:"QueryLogStatus,omitempty"`
 	Tags                          []MembershipTag                              `json:"Tags,omitempty"`
 }
 
 func (Membership) CloudControlType() string { return "AWS::CleanRooms::Membership" }
 
 type BudgetParameter struct {
-	AutoRefresh *string `json:"AutoRefresh,omitempty"`
-	Budget      *int    `json:"Budget,omitempty"`
-	Type        *string `json:"Type,omitempty"`
+	AutoRefresh *BudgetParameterAutoRefresh `json:"AutoRefresh,omitempty"`
+	Budget      *int                        `json:"Budget,omitempty"`
+	Type        *BudgetParameterType        `json:"Type,omitempty"`
 }
 
 type PrivacyBudgetTemplateParameters struct {
@@ -400,18 +400,259 @@ type PrivacyBudgetTemplateTag struct {
 }
 
 type PrivacyBudgetTemplate struct {
-	Arn                             *string                          `json:"Arn,omitempty"`
-	AutoRefresh                     *string                          `json:"AutoRefresh,omitempty"`
-	CollaborationArn                *string                          `json:"CollaborationArn,omitempty"`
-	CollaborationIdentifier         *string                          `json:"CollaborationIdentifier,omitempty"`
-	MembershipArn                   *string                          `json:"MembershipArn,omitempty"`
-	MembershipIdentifier            *string                          `json:"MembershipIdentifier,omitempty"`
-	Parameters                      *PrivacyBudgetTemplateParameters `json:"Parameters,omitempty"`
-	PrivacyBudgetTemplateIdentifier *string                          `json:"PrivacyBudgetTemplateIdentifier,omitempty"`
-	PrivacyBudgetType               *string                          `json:"PrivacyBudgetType,omitempty"`
-	Tags                            []PrivacyBudgetTemplateTag       `json:"Tags,omitempty"`
+	Arn                             *string                                 `json:"Arn,omitempty"`
+	AutoRefresh                     *PrivacyBudgetTemplateAutoRefresh       `json:"AutoRefresh,omitempty"`
+	CollaborationArn                *string                                 `json:"CollaborationArn,omitempty"`
+	CollaborationIdentifier         *string                                 `json:"CollaborationIdentifier,omitempty"`
+	MembershipArn                   *string                                 `json:"MembershipArn,omitempty"`
+	MembershipIdentifier            *string                                 `json:"MembershipIdentifier,omitempty"`
+	Parameters                      *PrivacyBudgetTemplateParameters        `json:"Parameters,omitempty"`
+	PrivacyBudgetTemplateIdentifier *string                                 `json:"PrivacyBudgetTemplateIdentifier,omitempty"`
+	PrivacyBudgetType               *PrivacyBudgetTemplatePrivacyBudgetType `json:"PrivacyBudgetType,omitempty"`
+	Tags                            []PrivacyBudgetTemplateTag              `json:"Tags,omitempty"`
 }
 
 func (PrivacyBudgetTemplate) CloudControlType() string {
 	return "AWS::CleanRooms::PrivacyBudgetTemplate"
 }
+
+type AnalysisParameterType string
+
+const (
+	AnalysisParameterTypeSMALLINT        AnalysisParameterType = "SMALLINT"
+	AnalysisParameterTypeINTEGER         AnalysisParameterType = "INTEGER"
+	AnalysisParameterTypeBIGINT          AnalysisParameterType = "BIGINT"
+	AnalysisParameterTypeDECIMAL         AnalysisParameterType = "DECIMAL"
+	AnalysisParameterTypeREAL            AnalysisParameterType = "REAL"
+	AnalysisParameterTypeDOUBLEPRECISION AnalysisParameterType = "DOUBLE_PRECISION"
+	AnalysisParameterTypeBOOLEAN         AnalysisParameterType = "BOOLEAN"
+	AnalysisParameterTypeCHAR            AnalysisParameterType = "CHAR"
+	AnalysisParameterTypeVARCHAR         AnalysisParameterType = "VARCHAR"
+	AnalysisParameterTypeDATE            AnalysisParameterType = "DATE"
+	AnalysisParameterTypeTIMESTAMP       AnalysisParameterType = "TIMESTAMP"
+	AnalysisParameterTypeTIMESTAMPTZ     AnalysisParameterType = "TIMESTAMPTZ"
+	AnalysisParameterTypeTIME            AnalysisParameterType = "TIME"
+	AnalysisParameterTypeTIMETZ          AnalysisParameterType = "TIMETZ"
+	AnalysisParameterTypeVARBYTE         AnalysisParameterType = "VARBYTE"
+	AnalysisParameterTypeBINARY          AnalysisParameterType = "BINARY"
+	AnalysisParameterTypeBYTE            AnalysisParameterType = "BYTE"
+	AnalysisParameterTypeCHARACTER       AnalysisParameterType = "CHARACTER"
+	AnalysisParameterTypeDOUBLE          AnalysisParameterType = "DOUBLE"
+	AnalysisParameterTypeFLOAT           AnalysisParameterType = "FLOAT"
+	AnalysisParameterTypeINT             AnalysisParameterType = "INT"
+	AnalysisParameterTypeLONG            AnalysisParameterType = "LONG"
+	AnalysisParameterTypeNUMERIC         AnalysisParameterType = "NUMERIC"
+	AnalysisParameterTypeSHORT           AnalysisParameterType = "SHORT"
+	AnalysisParameterTypeSTRING          AnalysisParameterType = "STRING"
+	AnalysisParameterTypeTIMESTAMPLTZ    AnalysisParameterType = "TIMESTAMP_LTZ"
+	AnalysisParameterTypeTIMESTAMPNTZ    AnalysisParameterType = "TIMESTAMP_NTZ"
+	AnalysisParameterTypeTINYINT         AnalysisParameterType = "TINYINT"
+)
+
+type ErrorMessageConfigurationType string
+
+const (
+	ErrorMessageConfigurationTypeDETAILED ErrorMessageConfigurationType = "DETAILED"
+)
+
+type AnalysisTemplateFormat string
+
+const (
+	AnalysisTemplateFormatSQL       AnalysisTemplateFormat = "SQL"
+	AnalysisTemplateFormatPYSPARK10 AnalysisTemplateFormat = "PYSPARK_1_0"
+)
+
+type SupportedS3Region string
+
+const (
+	SupportedS3RegionUsWest1      SupportedS3Region = "us-west-1"
+	SupportedS3RegionUsWest2      SupportedS3Region = "us-west-2"
+	SupportedS3RegionUsEast1      SupportedS3Region = "us-east-1"
+	SupportedS3RegionUsEast2      SupportedS3Region = "us-east-2"
+	SupportedS3RegionAfSouth1     SupportedS3Region = "af-south-1"
+	SupportedS3RegionApEast1      SupportedS3Region = "ap-east-1"
+	SupportedS3RegionApEast2      SupportedS3Region = "ap-east-2"
+	SupportedS3RegionApSouth2     SupportedS3Region = "ap-south-2"
+	SupportedS3RegionApSoutheast1 SupportedS3Region = "ap-southeast-1"
+	SupportedS3RegionApSoutheast2 SupportedS3Region = "ap-southeast-2"
+	SupportedS3RegionApSoutheast3 SupportedS3Region = "ap-southeast-3"
+	SupportedS3RegionApSoutheast5 SupportedS3Region = "ap-southeast-5"
+	SupportedS3RegionApSoutheast4 SupportedS3Region = "ap-southeast-4"
+	SupportedS3RegionApSoutheast7 SupportedS3Region = "ap-southeast-7"
+	SupportedS3RegionApSouth1     SupportedS3Region = "ap-south-1"
+	SupportedS3RegionApNortheast3 SupportedS3Region = "ap-northeast-3"
+	SupportedS3RegionApNortheast1 SupportedS3Region = "ap-northeast-1"
+	SupportedS3RegionApNortheast2 SupportedS3Region = "ap-northeast-2"
+	SupportedS3RegionCaCentral1   SupportedS3Region = "ca-central-1"
+	SupportedS3RegionCaWest1      SupportedS3Region = "ca-west-1"
+	SupportedS3RegionEuSouth1     SupportedS3Region = "eu-south-1"
+	SupportedS3RegionEuWest3      SupportedS3Region = "eu-west-3"
+	SupportedS3RegionEuSouth2     SupportedS3Region = "eu-south-2"
+	SupportedS3RegionEuCentral2   SupportedS3Region = "eu-central-2"
+	SupportedS3RegionEuCentral1   SupportedS3Region = "eu-central-1"
+	SupportedS3RegionEuNorth1     SupportedS3Region = "eu-north-1"
+	SupportedS3RegionEuWest1      SupportedS3Region = "eu-west-1"
+	SupportedS3RegionEuWest2      SupportedS3Region = "eu-west-2"
+	SupportedS3RegionMeSouth1     SupportedS3Region = "me-south-1"
+	SupportedS3RegionMeCentral1   SupportedS3Region = "me-central-1"
+	SupportedS3RegionIlCentral1   SupportedS3Region = "il-central-1"
+	SupportedS3RegionSaEast1      SupportedS3Region = "sa-east-1"
+	SupportedS3RegionMxCentral1   SupportedS3Region = "mx-central-1"
+)
+
+type AnalyticsEngine string
+
+const (
+	AnalyticsEngineCLEANROOMSSQL AnalyticsEngine = "CLEAN_ROOMS_SQL"
+	AnalyticsEngineSPARK         AnalyticsEngine = "SPARK"
+)
+
+type AutoApprovedChangeType string
+
+const (
+	AutoApprovedChangeTypeADDMEMBER                   AutoApprovedChangeType = "ADD_MEMBER"
+	AutoApprovedChangeTypeGRANTRECEIVERESULTSABILITY  AutoApprovedChangeType = "GRANT_RECEIVE_RESULTS_ABILITY"
+	AutoApprovedChangeTypeREVOKERECEIVERESULTSABILITY AutoApprovedChangeType = "REVOKE_RECEIVE_RESULTS_ABILITY"
+)
+
+type CustomMLMemberAbility string
+
+const (
+	CustomMLMemberAbilityCANRECEIVEMODELOUTPUT     CustomMLMemberAbility = "CAN_RECEIVE_MODEL_OUTPUT"
+	CustomMLMemberAbilityCANRECEIVEINFERENCEOUTPUT CustomMLMemberAbility = "CAN_RECEIVE_INFERENCE_OUTPUT"
+)
+
+type MemberAbility string
+
+const (
+	MemberAbilityCANQUERY          MemberAbility = "CAN_QUERY"
+	MemberAbilityCANRUNJOB         MemberAbility = "CAN_RUN_JOB"
+	MemberAbilityCANRECEIVERESULTS MemberAbility = "CAN_RECEIVE_RESULTS"
+)
+
+type CollaborationJobLogStatus string
+
+const (
+	CollaborationJobLogStatusENABLED  CollaborationJobLogStatus = "ENABLED"
+	CollaborationJobLogStatusDISABLED CollaborationJobLogStatus = "DISABLED"
+)
+
+type CollaborationQueryLogStatus string
+
+const (
+	CollaborationQueryLogStatusENABLED  CollaborationQueryLogStatus = "ENABLED"
+	CollaborationQueryLogStatusDISABLED CollaborationQueryLogStatus = "DISABLED"
+)
+
+type AnalysisMethod string
+
+const (
+	AnalysisMethodDIRECTQUERY AnalysisMethod = "DIRECT_QUERY"
+	AnalysisMethodDIRECTJOB   AnalysisMethod = "DIRECT_JOB"
+	AnalysisMethodMULTIPLE    AnalysisMethod = "MULTIPLE"
+)
+
+type ConfiguredTableAnalysisRuleType string
+
+const (
+	ConfiguredTableAnalysisRuleTypeAGGREGATION ConfiguredTableAnalysisRuleType = "AGGREGATION"
+	ConfiguredTableAnalysisRuleTypeLIST        ConfiguredTableAnalysisRuleType = "LIST"
+	ConfiguredTableAnalysisRuleTypeCUSTOM      ConfiguredTableAnalysisRuleType = "CUSTOM"
+)
+
+type SelectedAnalysisMethod string
+
+const (
+	SelectedAnalysisMethodDIRECTQUERY SelectedAnalysisMethod = "DIRECT_QUERY"
+	SelectedAnalysisMethodDIRECTJOB   SelectedAnalysisMethod = "DIRECT_JOB"
+)
+
+type ConfiguredTableAssociationAnalysisRuleType string
+
+const (
+	ConfiguredTableAssociationAnalysisRuleTypeAGGREGATION ConfiguredTableAssociationAnalysisRuleType = "AGGREGATION"
+	ConfiguredTableAssociationAnalysisRuleTypeLIST        ConfiguredTableAssociationAnalysisRuleType = "LIST"
+	ConfiguredTableAssociationAnalysisRuleTypeCUSTOM      ConfiguredTableAssociationAnalysisRuleType = "CUSTOM"
+)
+
+type IdMappingTableInputSourceType string
+
+const (
+	IdMappingTableInputSourceTypeSOURCE IdMappingTableInputSourceType = "SOURCE"
+	IdMappingTableInputSourceTypeTARGET IdMappingTableInputSourceType = "TARGET"
+)
+
+type IdNamespaceAssociationInputReferencePropertiesIdNamespaceType string
+
+const (
+	IdNamespaceAssociationInputReferencePropertiesIdNamespaceTypeSOURCE IdNamespaceAssociationInputReferencePropertiesIdNamespaceType = "SOURCE"
+	IdNamespaceAssociationInputReferencePropertiesIdNamespaceTypeTARGET IdNamespaceAssociationInputReferencePropertiesIdNamespaceType = "TARGET"
+)
+
+type IntermediateTableAnalysisRuleType string
+
+const (
+	IntermediateTableAnalysisRuleTypeCUSTOM IntermediateTableAnalysisRuleType = "CUSTOM"
+)
+
+type IntermediateTableStatus string
+
+const (
+	IntermediateTableStatusCREATED                  IntermediateTableStatus = "CREATED"
+	IntermediateTableStatusPOPULATESTARTED          IntermediateTableStatus = "POPULATE_STARTED"
+	IntermediateTableStatusPOPULATESUCCESS          IntermediateTableStatus = "POPULATE_SUCCESS"
+	IntermediateTableStatusPOPULATEFAILED           IntermediateTableStatus = "POPULATE_FAILED"
+	IntermediateTableStatusDISALLOWEDBYDATAPROVIDER IntermediateTableStatus = "DISALLOWED_BY_DATA_PROVIDER"
+	IntermediateTableStatusBASETABLEREMOVED         IntermediateTableStatus = "BASE_TABLE_REMOVED"
+)
+
+type ResultFormat string
+
+const (
+	ResultFormatCSV     ResultFormat = "CSV"
+	ResultFormatPARQUET ResultFormat = "PARQUET"
+)
+
+type MembershipJobLogStatus string
+
+const (
+	MembershipJobLogStatusENABLED  MembershipJobLogStatus = "ENABLED"
+	MembershipJobLogStatusDISABLED MembershipJobLogStatus = "DISABLED"
+)
+
+type MembershipQueryLogStatus string
+
+const (
+	MembershipQueryLogStatusENABLED  MembershipQueryLogStatus = "ENABLED"
+	MembershipQueryLogStatusDISABLED MembershipQueryLogStatus = "DISABLED"
+)
+
+type PrivacyBudgetTemplateAutoRefresh string
+
+const (
+	PrivacyBudgetTemplateAutoRefreshCALENDARMONTH PrivacyBudgetTemplateAutoRefresh = "CALENDAR_MONTH"
+	PrivacyBudgetTemplateAutoRefreshNONE          PrivacyBudgetTemplateAutoRefresh = "NONE"
+)
+
+type BudgetParameterAutoRefresh string
+
+const (
+	BudgetParameterAutoRefreshENABLED  BudgetParameterAutoRefresh = "ENABLED"
+	BudgetParameterAutoRefreshDISABLED BudgetParameterAutoRefresh = "DISABLED"
+)
+
+type BudgetParameterType string
+
+const (
+	BudgetParameterTypeCALENDARDAY   BudgetParameterType = "CALENDAR_DAY"
+	BudgetParameterTypeCALENDARMONTH BudgetParameterType = "CALENDAR_MONTH"
+	BudgetParameterTypeCALENDARWEEK  BudgetParameterType = "CALENDAR_WEEK"
+	BudgetParameterTypeLIFETIME      BudgetParameterType = "LIFETIME"
+)
+
+type PrivacyBudgetTemplatePrivacyBudgetType string
+
+const (
+	PrivacyBudgetTemplatePrivacyBudgetTypeDIFFERENTIALPRIVACY PrivacyBudgetTemplatePrivacyBudgetType = "DIFFERENTIAL_PRIVACY"
+	PrivacyBudgetTemplatePrivacyBudgetTypeACCESSBUDGET        PrivacyBudgetTemplatePrivacyBudgetType = "ACCESS_BUDGET"
+)

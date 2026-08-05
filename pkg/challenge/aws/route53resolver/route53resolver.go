@@ -9,19 +9,19 @@ type Tag struct {
 }
 
 type FirewallDomainList struct {
-	Arn              *string  `json:"Arn,omitempty"`
-	CreationTime     *string  `json:"CreationTime,omitempty"`
-	CreatorRequestId *string  `json:"CreatorRequestId,omitempty"`
-	DomainCount      *int     `json:"DomainCount,omitempty"`
-	DomainFileUrl    *string  `json:"DomainFileUrl,omitempty"`
-	Domains          []string `json:"Domains,omitempty"`
-	Id               *string  `json:"Id,omitempty"`
-	ManagedOwnerName *string  `json:"ManagedOwnerName,omitempty"`
-	ModificationTime *string  `json:"ModificationTime,omitempty"`
-	Name             *string  `json:"Name,omitempty"`
-	Status           *string  `json:"Status,omitempty"`
-	StatusMessage    *string  `json:"StatusMessage,omitempty"`
-	Tags             []Tag    `json:"Tags,omitempty"`
+	Arn              *string                   `json:"Arn,omitempty"`
+	CreationTime     *string                   `json:"CreationTime,omitempty"`
+	CreatorRequestId *string                   `json:"CreatorRequestId,omitempty"`
+	DomainCount      *int                      `json:"DomainCount,omitempty"`
+	DomainFileUrl    *string                   `json:"DomainFileUrl,omitempty"`
+	Domains          []string                  `json:"Domains,omitempty"`
+	Id               *string                   `json:"Id,omitempty"`
+	ManagedOwnerName *string                   `json:"ManagedOwnerName,omitempty"`
+	ModificationTime *string                   `json:"ModificationTime,omitempty"`
+	Name             *string                   `json:"Name,omitempty"`
+	Status           *FirewallDomainListStatus `json:"Status,omitempty"`
+	StatusMessage    *string                   `json:"StatusMessage,omitempty"`
+	Tags             []Tag                     `json:"Tags,omitempty"`
 }
 
 func (FirewallDomainList) CloudControlType() string {
@@ -47,20 +47,20 @@ type FirewallRuleType struct {
 }
 
 type FirewallRule struct {
-	Action                          *string           `json:"Action,omitempty"`
-	BlockOverrideDnsType            *string           `json:"BlockOverrideDnsType,omitempty"`
-	BlockOverrideDomain             *string           `json:"BlockOverrideDomain,omitempty"`
-	BlockOverrideTtl                *int              `json:"BlockOverrideTtl,omitempty"`
-	BlockResponse                   *string           `json:"BlockResponse,omitempty"`
-	ConfidenceThreshold             *string           `json:"ConfidenceThreshold,omitempty"`
-	DnsThreatProtection             *string           `json:"DnsThreatProtection,omitempty"`
-	FirewallDomainListId            *string           `json:"FirewallDomainListId,omitempty"`
-	FirewallDomainRedirectionAction *string           `json:"FirewallDomainRedirectionAction,omitempty"`
-	FirewallRuleType                *FirewallRuleType `json:"FirewallRuleType,omitempty"`
-	FirewallThreatProtectionId      *string           `json:"FirewallThreatProtectionId,omitempty"`
-	Priority                        *int              `json:"Priority,omitempty"`
-	Qtype                           *string           `json:"Qtype,omitempty"`
-	Status                          *string           `json:"Status,omitempty"`
+	Action                          *FirewallRuleAction                          `json:"Action,omitempty"`
+	BlockOverrideDnsType            *FirewallRuleBlockOverrideDnsType            `json:"BlockOverrideDnsType,omitempty"`
+	BlockOverrideDomain             *string                                      `json:"BlockOverrideDomain,omitempty"`
+	BlockOverrideTtl                *int                                         `json:"BlockOverrideTtl,omitempty"`
+	BlockResponse                   *FirewallRuleBlockResponse                   `json:"BlockResponse,omitempty"`
+	ConfidenceThreshold             *FirewallRuleConfidenceThreshold             `json:"ConfidenceThreshold,omitempty"`
+	DnsThreatProtection             *FirewallRuleDnsThreatProtection             `json:"DnsThreatProtection,omitempty"`
+	FirewallDomainListId            *string                                      `json:"FirewallDomainListId,omitempty"`
+	FirewallDomainRedirectionAction *FirewallRuleFirewallDomainRedirectionAction `json:"FirewallDomainRedirectionAction,omitempty"`
+	FirewallRuleType                *FirewallRuleType                            `json:"FirewallRuleType,omitempty"`
+	FirewallThreatProtectionId      *string                                      `json:"FirewallThreatProtectionId,omitempty"`
+	Priority                        *int                                         `json:"Priority,omitempty"`
+	Qtype                           *string                                      `json:"Qtype,omitempty"`
+	Status                          *FirewallRuleStatus                          `json:"Status,omitempty"`
 }
 
 type FirewallRuleGroupTag struct {
@@ -69,19 +69,19 @@ type FirewallRuleGroupTag struct {
 }
 
 type FirewallRuleGroup struct {
-	Arn              *string                `json:"Arn,omitempty"`
-	CreationTime     *string                `json:"CreationTime,omitempty"`
-	CreatorRequestId *string                `json:"CreatorRequestId,omitempty"`
-	FirewallRules    []FirewallRule         `json:"FirewallRules,omitempty"`
-	Id               *string                `json:"Id,omitempty"`
-	ModificationTime *string                `json:"ModificationTime,omitempty"`
-	Name             *string                `json:"Name,omitempty"`
-	OwnerId          *string                `json:"OwnerId,omitempty"`
-	RuleCount        *int                   `json:"RuleCount,omitempty"`
-	ShareStatus      *string                `json:"ShareStatus,omitempty"`
-	Status           *string                `json:"Status,omitempty"`
-	StatusMessage    *string                `json:"StatusMessage,omitempty"`
-	Tags             []FirewallRuleGroupTag `json:"Tags,omitempty"`
+	Arn              *string                       `json:"Arn,omitempty"`
+	CreationTime     *string                       `json:"CreationTime,omitempty"`
+	CreatorRequestId *string                       `json:"CreatorRequestId,omitempty"`
+	FirewallRules    []FirewallRule                `json:"FirewallRules,omitempty"`
+	Id               *string                       `json:"Id,omitempty"`
+	ModificationTime *string                       `json:"ModificationTime,omitempty"`
+	Name             *string                       `json:"Name,omitempty"`
+	OwnerId          *string                       `json:"OwnerId,omitempty"`
+	RuleCount        *int                          `json:"RuleCount,omitempty"`
+	ShareStatus      *FirewallRuleGroupShareStatus `json:"ShareStatus,omitempty"`
+	Status           *FirewallRuleGroupStatus      `json:"Status,omitempty"`
+	StatusMessage    *string                       `json:"StatusMessage,omitempty"`
+	Tags             []FirewallRuleGroupTag        `json:"Tags,omitempty"`
 }
 
 func (FirewallRuleGroup) CloudControlType() string { return "AWS::Route53Resolver::FirewallRuleGroup" }
@@ -92,20 +92,20 @@ type FirewallRuleGroupAssociationTag struct {
 }
 
 type FirewallRuleGroupAssociation struct {
-	Arn                 *string                           `json:"Arn,omitempty"`
-	CreationTime        *string                           `json:"CreationTime,omitempty"`
-	CreatorRequestId    *string                           `json:"CreatorRequestId,omitempty"`
-	FirewallRuleGroupId *string                           `json:"FirewallRuleGroupId,omitempty"`
-	Id                  *string                           `json:"Id,omitempty"`
-	ManagedOwnerName    *string                           `json:"ManagedOwnerName,omitempty"`
-	ModificationTime    *string                           `json:"ModificationTime,omitempty"`
-	MutationProtection  *string                           `json:"MutationProtection,omitempty"`
-	Name                *string                           `json:"Name,omitempty"`
-	Priority            *int                              `json:"Priority,omitempty"`
-	Status              *string                           `json:"Status,omitempty"`
-	StatusMessage       *string                           `json:"StatusMessage,omitempty"`
-	Tags                []FirewallRuleGroupAssociationTag `json:"Tags,omitempty"`
-	VpcId               *string                           `json:"VpcId,omitempty"`
+	Arn                 *string                                         `json:"Arn,omitempty"`
+	CreationTime        *string                                         `json:"CreationTime,omitempty"`
+	CreatorRequestId    *string                                         `json:"CreatorRequestId,omitempty"`
+	FirewallRuleGroupId *string                                         `json:"FirewallRuleGroupId,omitempty"`
+	Id                  *string                                         `json:"Id,omitempty"`
+	ManagedOwnerName    *string                                         `json:"ManagedOwnerName,omitempty"`
+	ModificationTime    *string                                         `json:"ModificationTime,omitempty"`
+	MutationProtection  *FirewallRuleGroupAssociationMutationProtection `json:"MutationProtection,omitempty"`
+	Name                *string                                         `json:"Name,omitempty"`
+	Priority            *int                                            `json:"Priority,omitempty"`
+	Status              *FirewallRuleGroupAssociationStatus             `json:"Status,omitempty"`
+	StatusMessage       *string                                         `json:"StatusMessage,omitempty"`
+	Tags                []FirewallRuleGroupAssociationTag               `json:"Tags,omitempty"`
+	VpcId               *string                                         `json:"VpcId,omitempty"`
 }
 
 func (FirewallRuleGroupAssociation) CloudControlType() string {
@@ -118,37 +118,37 @@ type OutpostResolverTag struct {
 }
 
 type OutpostResolver struct {
-	Arn                   *string              `json:"Arn,omitempty"`
-	CreationTime          *string              `json:"CreationTime,omitempty"`
-	CreatorRequestId      *string              `json:"CreatorRequestId,omitempty"`
-	Id                    *string              `json:"Id,omitempty"`
-	InstanceCount         *int                 `json:"InstanceCount,omitempty"`
-	ModificationTime      *string              `json:"ModificationTime,omitempty"`
-	Name                  *string              `json:"Name,omitempty"`
-	OutpostArn            *string              `json:"OutpostArn,omitempty"`
-	PreferredInstanceType *string              `json:"PreferredInstanceType,omitempty"`
-	Status                *string              `json:"Status,omitempty"`
-	StatusMessage         *string              `json:"StatusMessage,omitempty"`
-	Tags                  []OutpostResolverTag `json:"Tags,omitempty"`
+	Arn                   *string                `json:"Arn,omitempty"`
+	CreationTime          *string                `json:"CreationTime,omitempty"`
+	CreatorRequestId      *string                `json:"CreatorRequestId,omitempty"`
+	Id                    *string                `json:"Id,omitempty"`
+	InstanceCount         *int                   `json:"InstanceCount,omitempty"`
+	ModificationTime      *string                `json:"ModificationTime,omitempty"`
+	Name                  *string                `json:"Name,omitempty"`
+	OutpostArn            *string                `json:"OutpostArn,omitempty"`
+	PreferredInstanceType *string                `json:"PreferredInstanceType,omitempty"`
+	Status                *OutpostResolverStatus `json:"Status,omitempty"`
+	StatusMessage         *string                `json:"StatusMessage,omitempty"`
+	Tags                  []OutpostResolverTag   `json:"Tags,omitempty"`
 }
 
 func (OutpostResolver) CloudControlType() string { return "AWS::Route53Resolver::OutpostResolver" }
 
 type ResolverConfig struct {
-	AutodefinedReverse     *string `json:"AutodefinedReverse,omitempty"`
-	AutodefinedReverseFlag *string `json:"AutodefinedReverseFlag,omitempty"`
-	Id                     *string `json:"Id,omitempty"`
-	OwnerId                *string `json:"OwnerId,omitempty"`
-	ResourceId             *string `json:"ResourceId,omitempty"`
+	AutodefinedReverse     *ResolverConfigAutodefinedReverse     `json:"AutodefinedReverse,omitempty"`
+	AutodefinedReverseFlag *ResolverConfigAutodefinedReverseFlag `json:"AutodefinedReverseFlag,omitempty"`
+	Id                     *string                               `json:"Id,omitempty"`
+	OwnerId                *string                               `json:"OwnerId,omitempty"`
+	ResourceId             *string                               `json:"ResourceId,omitempty"`
 }
 
 func (ResolverConfig) CloudControlType() string { return "AWS::Route53Resolver::ResolverConfig" }
 
 type ResolverDNSSECConfig struct {
-	Id               *string `json:"Id,omitempty"`
-	OwnerId          *string `json:"OwnerId,omitempty"`
-	ResourceId       *string `json:"ResourceId,omitempty"`
-	ValidationStatus *string `json:"ValidationStatus,omitempty"`
+	Id               *string                               `json:"Id,omitempty"`
+	OwnerId          *string                               `json:"OwnerId,omitempty"`
+	ResourceId       *string                               `json:"ResourceId,omitempty"`
+	ValidationStatus *ResolverDNSSECConfigValidationStatus `json:"ValidationStatus,omitempty"`
 }
 
 func (ResolverDNSSECConfig) CloudControlType() string {
@@ -167,23 +167,23 @@ type ResolverEndpointTag struct {
 }
 
 type ResolverEndpoint struct {
-	Arn                            *string               `json:"Arn,omitempty"`
-	Direction                      *string               `json:"Direction,omitempty"`
-	Dns64Enabled                   *bool                 `json:"Dns64Enabled,omitempty"`
-	HostVPCId                      *string               `json:"HostVPCId,omitempty"`
-	IpAddressCount                 *string               `json:"IpAddressCount,omitempty"`
-	IpAddresses                    []IpAddressRequest    `json:"IpAddresses,omitempty"`
-	Ipv6InternetAccessEnabled      *bool                 `json:"Ipv6InternetAccessEnabled,omitempty"`
-	Name                           *string               `json:"Name,omitempty"`
-	OutpostArn                     *string               `json:"OutpostArn,omitempty"`
-	PreferredInstanceType          *string               `json:"PreferredInstanceType,omitempty"`
-	Protocols                      []string              `json:"Protocols,omitempty"`
-	ResolverEndpointId             *string               `json:"ResolverEndpointId,omitempty"`
-	ResolverEndpointType           *string               `json:"ResolverEndpointType,omitempty"`
-	RniEnhancedMetricsEnabled      *bool                 `json:"RniEnhancedMetricsEnabled,omitempty"`
-	SecurityGroupIds               []string              `json:"SecurityGroupIds,omitempty"`
-	Tags                           []ResolverEndpointTag `json:"Tags,omitempty"`
-	TargetNameServerMetricsEnabled *bool                 `json:"TargetNameServerMetricsEnabled,omitempty"`
+	Arn                            *string                               `json:"Arn,omitempty"`
+	Direction                      *string                               `json:"Direction,omitempty"`
+	Dns64Enabled                   *bool                                 `json:"Dns64Enabled,omitempty"`
+	HostVPCId                      *string                               `json:"HostVPCId,omitempty"`
+	IpAddressCount                 *string                               `json:"IpAddressCount,omitempty"`
+	IpAddresses                    []IpAddressRequest                    `json:"IpAddresses,omitempty"`
+	Ipv6InternetAccessEnabled      *bool                                 `json:"Ipv6InternetAccessEnabled,omitempty"`
+	Name                           *string                               `json:"Name,omitempty"`
+	OutpostArn                     *string                               `json:"OutpostArn,omitempty"`
+	PreferredInstanceType          *string                               `json:"PreferredInstanceType,omitempty"`
+	Protocols                      []string                              `json:"Protocols,omitempty"`
+	ResolverEndpointId             *string                               `json:"ResolverEndpointId,omitempty"`
+	ResolverEndpointType           *ResolverEndpointResolverEndpointType `json:"ResolverEndpointType,omitempty"`
+	RniEnhancedMetricsEnabled      *bool                                 `json:"RniEnhancedMetricsEnabled,omitempty"`
+	SecurityGroupIds               []string                              `json:"SecurityGroupIds,omitempty"`
+	Tags                           []ResolverEndpointTag                 `json:"Tags,omitempty"`
+	TargetNameServerMetricsEnabled *bool                                 `json:"TargetNameServerMetricsEnabled,omitempty"`
 }
 
 func (ResolverEndpoint) CloudControlType() string { return "AWS::Route53Resolver::ResolverEndpoint" }
@@ -194,17 +194,17 @@ type ResolverQueryLoggingConfigTag struct {
 }
 
 type ResolverQueryLoggingConfig struct {
-	Arn              *string                         `json:"Arn,omitempty"`
-	AssociationCount *int                            `json:"AssociationCount,omitempty"`
-	CreationTime     *string                         `json:"CreationTime,omitempty"`
-	CreatorRequestId *string                         `json:"CreatorRequestId,omitempty"`
-	DestinationArn   *string                         `json:"DestinationArn,omitempty"`
-	Id               *string                         `json:"Id,omitempty"`
-	Name             *string                         `json:"Name,omitempty"`
-	OwnerId          *string                         `json:"OwnerId,omitempty"`
-	ShareStatus      *string                         `json:"ShareStatus,omitempty"`
-	Status           *string                         `json:"Status,omitempty"`
-	Tags             []ResolverQueryLoggingConfigTag `json:"Tags,omitempty"`
+	Arn              *string                                `json:"Arn,omitempty"`
+	AssociationCount *int                                   `json:"AssociationCount,omitempty"`
+	CreationTime     *string                                `json:"CreationTime,omitempty"`
+	CreatorRequestId *string                                `json:"CreatorRequestId,omitempty"`
+	DestinationArn   *string                                `json:"DestinationArn,omitempty"`
+	Id               *string                                `json:"Id,omitempty"`
+	Name             *string                                `json:"Name,omitempty"`
+	OwnerId          *string                                `json:"OwnerId,omitempty"`
+	ShareStatus      *ResolverQueryLoggingConfigShareStatus `json:"ShareStatus,omitempty"`
+	Status           *ResolverQueryLoggingConfigStatus      `json:"Status,omitempty"`
+	Tags             []ResolverQueryLoggingConfigTag        `json:"Tags,omitempty"`
 }
 
 func (ResolverQueryLoggingConfig) CloudControlType() string {
@@ -212,13 +212,13 @@ func (ResolverQueryLoggingConfig) CloudControlType() string {
 }
 
 type ResolverQueryLoggingConfigAssociation struct {
-	CreationTime             *string `json:"CreationTime,omitempty"`
-	Error                    *string `json:"Error,omitempty"`
-	ErrorMessage             *string `json:"ErrorMessage,omitempty"`
-	Id                       *string `json:"Id,omitempty"`
-	ResolverQueryLogConfigId *string `json:"ResolverQueryLogConfigId,omitempty"`
-	ResourceId               *string `json:"ResourceId,omitempty"`
-	Status                   *string `json:"Status,omitempty"`
+	CreationTime             *string                                      `json:"CreationTime,omitempty"`
+	Error                    *ResolverQueryLoggingConfigAssociationError  `json:"Error,omitempty"`
+	ErrorMessage             *string                                      `json:"ErrorMessage,omitempty"`
+	Id                       *string                                      `json:"Id,omitempty"`
+	ResolverQueryLogConfigId *string                                      `json:"ResolverQueryLogConfigId,omitempty"`
+	ResourceId               *string                                      `json:"ResourceId,omitempty"`
+	Status                   *ResolverQueryLoggingConfigAssociationStatus `json:"Status,omitempty"`
 }
 
 func (ResolverQueryLoggingConfigAssociation) CloudControlType() string {
@@ -231,23 +231,23 @@ type ResolverRuleTag struct {
 }
 
 type TargetAddress struct {
-	Ip                   *string `json:"Ip,omitempty"`
-	Ipv6                 *string `json:"Ipv6,omitempty"`
-	Port                 *string `json:"Port,omitempty"`
-	Protocol             *string `json:"Protocol,omitempty"`
-	ServerNameIndication *string `json:"ServerNameIndication,omitempty"`
+	Ip                   *string                `json:"Ip,omitempty"`
+	Ipv6                 *string                `json:"Ipv6,omitempty"`
+	Port                 *string                `json:"Port,omitempty"`
+	Protocol             *TargetAddressProtocol `json:"Protocol,omitempty"`
+	ServerNameIndication *string                `json:"ServerNameIndication,omitempty"`
 }
 
 type ResolverRule struct {
-	Arn                *string           `json:"Arn,omitempty"`
-	DelegationRecord   *string           `json:"DelegationRecord,omitempty"`
-	DomainName         *string           `json:"DomainName,omitempty"`
-	Name               *string           `json:"Name,omitempty"`
-	ResolverEndpointId *string           `json:"ResolverEndpointId,omitempty"`
-	ResolverRuleId     *string           `json:"ResolverRuleId,omitempty"`
-	RuleType           *string           `json:"RuleType,omitempty"`
-	Tags               []ResolverRuleTag `json:"Tags,omitempty"`
-	TargetIps          []TargetAddress   `json:"TargetIps,omitempty"`
+	Arn                *string               `json:"Arn,omitempty"`
+	DelegationRecord   *string               `json:"DelegationRecord,omitempty"`
+	DomainName         *string               `json:"DomainName,omitempty"`
+	Name               *string               `json:"Name,omitempty"`
+	ResolverEndpointId *string               `json:"ResolverEndpointId,omitempty"`
+	ResolverRuleId     *string               `json:"ResolverRuleId,omitempty"`
+	RuleType           *ResolverRuleRuleType `json:"RuleType,omitempty"`
+	Tags               []ResolverRuleTag     `json:"Tags,omitempty"`
+	TargetIps          []TargetAddress       `json:"TargetIps,omitempty"`
 }
 
 func (ResolverRule) CloudControlType() string { return "AWS::Route53Resolver::ResolverRule" }
@@ -262,3 +262,196 @@ type ResolverRuleAssociation struct {
 func (ResolverRuleAssociation) CloudControlType() string {
 	return "AWS::Route53Resolver::ResolverRuleAssociation"
 }
+
+type FirewallDomainListStatus string
+
+const (
+	FirewallDomainListStatusCOMPLETE                   FirewallDomainListStatus = "COMPLETE"
+	FirewallDomainListStatusDELETING                   FirewallDomainListStatus = "DELETING"
+	FirewallDomainListStatusUPDATING                   FirewallDomainListStatus = "UPDATING"
+	FirewallDomainListStatusCOMPLETEIMPORTFAILED       FirewallDomainListStatus = "COMPLETE_IMPORT_FAILED"
+	FirewallDomainListStatusIMPORTING                  FirewallDomainListStatus = "IMPORTING"
+	FirewallDomainListStatusINACTIVEOWNERACCOUNTCLOSED FirewallDomainListStatus = "INACTIVE_OWNER_ACCOUNT_CLOSED"
+)
+
+type FirewallRuleAction string
+
+const (
+	FirewallRuleActionALLOW FirewallRuleAction = "ALLOW"
+	FirewallRuleActionBLOCK FirewallRuleAction = "BLOCK"
+	FirewallRuleActionALERT FirewallRuleAction = "ALERT"
+)
+
+type FirewallRuleBlockOverrideDnsType string
+
+const (
+	FirewallRuleBlockOverrideDnsTypeCNAME FirewallRuleBlockOverrideDnsType = "CNAME"
+)
+
+type FirewallRuleBlockResponse string
+
+const (
+	FirewallRuleBlockResponseNODATA   FirewallRuleBlockResponse = "NODATA"
+	FirewallRuleBlockResponseNXDOMAIN FirewallRuleBlockResponse = "NXDOMAIN"
+	FirewallRuleBlockResponseOVERRIDE FirewallRuleBlockResponse = "OVERRIDE"
+)
+
+type FirewallRuleConfidenceThreshold string
+
+const (
+	FirewallRuleConfidenceThresholdLOW    FirewallRuleConfidenceThreshold = "LOW"
+	FirewallRuleConfidenceThresholdMEDIUM FirewallRuleConfidenceThreshold = "MEDIUM"
+	FirewallRuleConfidenceThresholdHIGH   FirewallRuleConfidenceThreshold = "HIGH"
+)
+
+type FirewallRuleDnsThreatProtection string
+
+const (
+	FirewallRuleDnsThreatProtectionDGA           FirewallRuleDnsThreatProtection = "DGA"
+	FirewallRuleDnsThreatProtectionDNSTUNNELING  FirewallRuleDnsThreatProtection = "DNS_TUNNELING"
+	FirewallRuleDnsThreatProtectionDICTIONARYDGA FirewallRuleDnsThreatProtection = "DICTIONARY_DGA"
+)
+
+type FirewallRuleFirewallDomainRedirectionAction string
+
+const (
+	FirewallRuleFirewallDomainRedirectionActionINSPECTREDIRECTIONDOMAIN FirewallRuleFirewallDomainRedirectionAction = "INSPECT_REDIRECTION_DOMAIN"
+	FirewallRuleFirewallDomainRedirectionActionTRUSTREDIRECTIONDOMAIN   FirewallRuleFirewallDomainRedirectionAction = "TRUST_REDIRECTION_DOMAIN"
+)
+
+type FirewallRuleStatus string
+
+const (
+	FirewallRuleStatusCOMPLETE       FirewallRuleStatus = "COMPLETE"
+	FirewallRuleStatusCREATING       FirewallRuleStatus = "CREATING"
+	FirewallRuleStatusCREATIONFAILED FirewallRuleStatus = "CREATION_FAILED"
+)
+
+type FirewallRuleGroupShareStatus string
+
+const (
+	FirewallRuleGroupShareStatusNOTSHARED    FirewallRuleGroupShareStatus = "NOT_SHARED"
+	FirewallRuleGroupShareStatusSHAREDWITHME FirewallRuleGroupShareStatus = "SHARED_WITH_ME"
+	FirewallRuleGroupShareStatusSHAREDBYME   FirewallRuleGroupShareStatus = "SHARED_BY_ME"
+)
+
+type FirewallRuleGroupStatus string
+
+const (
+	FirewallRuleGroupStatusCOMPLETE                   FirewallRuleGroupStatus = "COMPLETE"
+	FirewallRuleGroupStatusDELETING                   FirewallRuleGroupStatus = "DELETING"
+	FirewallRuleGroupStatusUPDATING                   FirewallRuleGroupStatus = "UPDATING"
+	FirewallRuleGroupStatusINACTIVEOWNERACCOUNTCLOSED FirewallRuleGroupStatus = "INACTIVE_OWNER_ACCOUNT_CLOSED"
+)
+
+type FirewallRuleGroupAssociationMutationProtection string
+
+const (
+	FirewallRuleGroupAssociationMutationProtectionENABLED  FirewallRuleGroupAssociationMutationProtection = "ENABLED"
+	FirewallRuleGroupAssociationMutationProtectionDISABLED FirewallRuleGroupAssociationMutationProtection = "DISABLED"
+)
+
+type FirewallRuleGroupAssociationStatus string
+
+const (
+	FirewallRuleGroupAssociationStatusCOMPLETE                   FirewallRuleGroupAssociationStatus = "COMPLETE"
+	FirewallRuleGroupAssociationStatusDELETING                   FirewallRuleGroupAssociationStatus = "DELETING"
+	FirewallRuleGroupAssociationStatusUPDATING                   FirewallRuleGroupAssociationStatus = "UPDATING"
+	FirewallRuleGroupAssociationStatusINACTIVEOWNERACCOUNTCLOSED FirewallRuleGroupAssociationStatus = "INACTIVE_OWNER_ACCOUNT_CLOSED"
+)
+
+type OutpostResolverStatus string
+
+const (
+	OutpostResolverStatusCREATING       OutpostResolverStatus = "CREATING"
+	OutpostResolverStatusOPERATIONAL    OutpostResolverStatus = "OPERATIONAL"
+	OutpostResolverStatusDELETING       OutpostResolverStatus = "DELETING"
+	OutpostResolverStatusUPDATING       OutpostResolverStatus = "UPDATING"
+	OutpostResolverStatusACTIONNEEDED   OutpostResolverStatus = "ACTION_NEEDED"
+	OutpostResolverStatusFAILEDCREATION OutpostResolverStatus = "FAILED_CREATION"
+	OutpostResolverStatusFAILEDDELETION OutpostResolverStatus = "FAILED_DELETION"
+)
+
+type ResolverConfigAutodefinedReverse string
+
+const (
+	ResolverConfigAutodefinedReverseENABLING  ResolverConfigAutodefinedReverse = "ENABLING"
+	ResolverConfigAutodefinedReverseENABLED   ResolverConfigAutodefinedReverse = "ENABLED"
+	ResolverConfigAutodefinedReverseDISABLING ResolverConfigAutodefinedReverse = "DISABLING"
+	ResolverConfigAutodefinedReverseDISABLED  ResolverConfigAutodefinedReverse = "DISABLED"
+)
+
+type ResolverConfigAutodefinedReverseFlag string
+
+const (
+	ResolverConfigAutodefinedReverseFlagDISABLE ResolverConfigAutodefinedReverseFlag = "DISABLE"
+)
+
+type ResolverDNSSECConfigValidationStatus string
+
+const (
+	ResolverDNSSECConfigValidationStatusENABLING  ResolverDNSSECConfigValidationStatus = "ENABLING"
+	ResolverDNSSECConfigValidationStatusENABLED   ResolverDNSSECConfigValidationStatus = "ENABLED"
+	ResolverDNSSECConfigValidationStatusDISABLING ResolverDNSSECConfigValidationStatus = "DISABLING"
+	ResolverDNSSECConfigValidationStatusDISABLED  ResolverDNSSECConfigValidationStatus = "DISABLED"
+)
+
+type ResolverEndpointResolverEndpointType string
+
+const (
+	ResolverEndpointResolverEndpointTypeIPV6      ResolverEndpointResolverEndpointType = "IPV6"
+	ResolverEndpointResolverEndpointTypeIPV4      ResolverEndpointResolverEndpointType = "IPV4"
+	ResolverEndpointResolverEndpointTypeDUALSTACK ResolverEndpointResolverEndpointType = "DUALSTACK"
+)
+
+type ResolverQueryLoggingConfigShareStatus string
+
+const (
+	ResolverQueryLoggingConfigShareStatusNOTSHARED    ResolverQueryLoggingConfigShareStatus = "NOT_SHARED"
+	ResolverQueryLoggingConfigShareStatusSHAREDWITHME ResolverQueryLoggingConfigShareStatus = "SHARED_WITH_ME"
+	ResolverQueryLoggingConfigShareStatusSHAREDBYME   ResolverQueryLoggingConfigShareStatus = "SHARED_BY_ME"
+)
+
+type ResolverQueryLoggingConfigStatus string
+
+const (
+	ResolverQueryLoggingConfigStatusCREATING ResolverQueryLoggingConfigStatus = "CREATING"
+	ResolverQueryLoggingConfigStatusCREATED  ResolverQueryLoggingConfigStatus = "CREATED"
+	ResolverQueryLoggingConfigStatusDELETING ResolverQueryLoggingConfigStatus = "DELETING"
+	ResolverQueryLoggingConfigStatusFAILED   ResolverQueryLoggingConfigStatus = "FAILED"
+)
+
+type ResolverQueryLoggingConfigAssociationError string
+
+const (
+	ResolverQueryLoggingConfigAssociationErrorNONE                ResolverQueryLoggingConfigAssociationError = "NONE"
+	ResolverQueryLoggingConfigAssociationErrorDESTINATIONNOTFOUND ResolverQueryLoggingConfigAssociationError = "DESTINATION_NOT_FOUND"
+	ResolverQueryLoggingConfigAssociationErrorACCESSDENIED        ResolverQueryLoggingConfigAssociationError = "ACCESS_DENIED"
+)
+
+type ResolverQueryLoggingConfigAssociationStatus string
+
+const (
+	ResolverQueryLoggingConfigAssociationStatusCREATING     ResolverQueryLoggingConfigAssociationStatus = "CREATING"
+	ResolverQueryLoggingConfigAssociationStatusACTIVE       ResolverQueryLoggingConfigAssociationStatus = "ACTIVE"
+	ResolverQueryLoggingConfigAssociationStatusACTIONNEEDED ResolverQueryLoggingConfigAssociationStatus = "ACTION_NEEDED"
+	ResolverQueryLoggingConfigAssociationStatusDELETING     ResolverQueryLoggingConfigAssociationStatus = "DELETING"
+	ResolverQueryLoggingConfigAssociationStatusFAILED       ResolverQueryLoggingConfigAssociationStatus = "FAILED"
+	ResolverQueryLoggingConfigAssociationStatusOVERRIDDEN   ResolverQueryLoggingConfigAssociationStatus = "OVERRIDDEN"
+)
+
+type ResolverRuleRuleType string
+
+const (
+	ResolverRuleRuleTypeFORWARD   ResolverRuleRuleType = "FORWARD"
+	ResolverRuleRuleTypeSYSTEM    ResolverRuleRuleType = "SYSTEM"
+	ResolverRuleRuleTypeRECURSIVE ResolverRuleRuleType = "RECURSIVE"
+	ResolverRuleRuleTypeDELEGATE  ResolverRuleRuleType = "DELEGATE"
+)
+
+type TargetAddressProtocol string
+
+const (
+	TargetAddressProtocolDo53 TargetAddressProtocol = "Do53"
+	TargetAddressProtocolDoH  TargetAddressProtocol = "DoH"
+)

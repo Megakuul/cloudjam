@@ -109,12 +109,12 @@ type DBSubnetGroup struct {
 func (DBSubnetGroup) CloudControlType() string { return "AWS::DocDB::DBSubnetGroup" }
 
 type EventSubscription struct {
-	Enabled          *bool    `json:"Enabled,omitempty"`
-	EventCategories  []string `json:"EventCategories,omitempty"`
-	SnsTopicArn      *string  `json:"SnsTopicArn,omitempty"`
-	SourceIds        []string `json:"SourceIds,omitempty"`
-	SourceType       *string  `json:"SourceType,omitempty"`
-	SubscriptionName *string  `json:"SubscriptionName,omitempty"`
+	Enabled          *bool                        `json:"Enabled,omitempty"`
+	EventCategories  []string                     `json:"EventCategories,omitempty"`
+	SnsTopicArn      *string                      `json:"SnsTopicArn,omitempty"`
+	SourceIds        []string                     `json:"SourceIds,omitempty"`
+	SourceType       *EventSubscriptionSourceType `json:"SourceType,omitempty"`
+	SubscriptionName *string                      `json:"SubscriptionName,omitempty"`
 }
 
 func (EventSubscription) CloudControlType() string { return "AWS::DocDB::EventSubscription" }
@@ -125,15 +125,31 @@ type GlobalClusterTag struct {
 }
 
 type GlobalCluster struct {
-	DeletionProtection        *bool              `json:"DeletionProtection,omitempty"`
-	Engine                    *string            `json:"Engine,omitempty"`
-	EngineVersion             *string            `json:"EngineVersion,omitempty"`
-	GlobalClusterArn          *string            `json:"GlobalClusterArn,omitempty"`
-	GlobalClusterIdentifier   *string            `json:"GlobalClusterIdentifier,omitempty"`
-	GlobalClusterResourceId   *string            `json:"GlobalClusterResourceId,omitempty"`
-	SourceDBClusterIdentifier *string            `json:"SourceDBClusterIdentifier,omitempty"`
-	StorageEncrypted          *bool              `json:"StorageEncrypted,omitempty"`
-	Tags                      []GlobalClusterTag `json:"Tags,omitempty"`
+	DeletionProtection        *bool                `json:"DeletionProtection,omitempty"`
+	Engine                    *GlobalClusterEngine `json:"Engine,omitempty"`
+	EngineVersion             *string              `json:"EngineVersion,omitempty"`
+	GlobalClusterArn          *string              `json:"GlobalClusterArn,omitempty"`
+	GlobalClusterIdentifier   *string              `json:"GlobalClusterIdentifier,omitempty"`
+	GlobalClusterResourceId   *string              `json:"GlobalClusterResourceId,omitempty"`
+	SourceDBClusterIdentifier *string              `json:"SourceDBClusterIdentifier,omitempty"`
+	StorageEncrypted          *bool                `json:"StorageEncrypted,omitempty"`
+	Tags                      []GlobalClusterTag   `json:"Tags,omitempty"`
 }
 
 func (GlobalCluster) CloudControlType() string { return "AWS::DocDB::GlobalCluster" }
+
+type EventSubscriptionSourceType string
+
+const (
+	EventSubscriptionSourceTypeDbInstance        EventSubscriptionSourceType = "db-instance"
+	EventSubscriptionSourceTypeDbCluster         EventSubscriptionSourceType = "db-cluster"
+	EventSubscriptionSourceTypeDbParameterGroup  EventSubscriptionSourceType = "db-parameter-group"
+	EventSubscriptionSourceTypeDbSecurityGroup   EventSubscriptionSourceType = "db-security-group"
+	EventSubscriptionSourceTypeDbClusterSnapshot EventSubscriptionSourceType = "db-cluster-snapshot"
+)
+
+type GlobalClusterEngine string
+
+const (
+	GlobalClusterEngineDocdb GlobalClusterEngine = "docdb"
+)

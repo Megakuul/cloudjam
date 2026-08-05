@@ -6,8 +6,8 @@ package s3vectors
 import "encoding/json"
 
 type EncryptionConfiguration struct {
-	KmsKeyArn *string `json:"KmsKeyArn,omitempty"`
-	SseType   *string `json:"SseType,omitempty"`
+	KmsKeyArn *string                         `json:"KmsKeyArn,omitempty"`
+	SseType   *EncryptionConfigurationSseType `json:"SseType,omitempty"`
 }
 
 type MetadataConfiguration struct {
@@ -21,9 +21,9 @@ type Tag struct {
 
 type Index struct {
 	CreationTime            *string                  `json:"CreationTime,omitempty"`
-	DataType                *string                  `json:"DataType,omitempty"`
+	DataType                *DataType                `json:"DataType,omitempty"`
 	Dimension               *int                     `json:"Dimension,omitempty"`
-	DistanceMetric          *string                  `json:"DistanceMetric,omitempty"`
+	DistanceMetric          *DistanceMetric          `json:"DistanceMetric,omitempty"`
 	EncryptionConfiguration *EncryptionConfiguration `json:"EncryptionConfiguration,omitempty"`
 	IndexArn                *string                  `json:"IndexArn,omitempty"`
 	IndexName               *string                  `json:"IndexName,omitempty"`
@@ -36,8 +36,8 @@ type Index struct {
 func (Index) CloudControlType() string { return "AWS::S3Vectors::Index" }
 
 type VectorBucketEncryptionConfiguration struct {
-	KmsKeyArn *string `json:"KmsKeyArn,omitempty"`
-	SseType   *string `json:"SseType,omitempty"`
+	KmsKeyArn *string                                     `json:"KmsKeyArn,omitempty"`
+	SseType   *VectorBucketEncryptionConfigurationSseType `json:"SseType,omitempty"`
 }
 
 type VectorBucketTag struct {
@@ -62,3 +62,30 @@ type VectorBucketPolicy struct {
 }
 
 func (VectorBucketPolicy) CloudControlType() string { return "AWS::S3Vectors::VectorBucketPolicy" }
+
+type DataType string
+
+const (
+	DataTypeFloat32 DataType = "float32"
+)
+
+type DistanceMetric string
+
+const (
+	DistanceMetricCosine    DistanceMetric = "cosine"
+	DistanceMetricEuclidean DistanceMetric = "euclidean"
+)
+
+type EncryptionConfigurationSseType string
+
+const (
+	EncryptionConfigurationSseTypeAES256 EncryptionConfigurationSseType = "AES256"
+	EncryptionConfigurationSseTypeAwsKms EncryptionConfigurationSseType = "aws:kms"
+)
+
+type VectorBucketEncryptionConfigurationSseType string
+
+const (
+	VectorBucketEncryptionConfigurationSseTypeAES256 VectorBucketEncryptionConfigurationSseType = "AES256"
+	VectorBucketEncryptionConfigurationSseTypeAwsKms VectorBucketEncryptionConfigurationSseType = "aws:kms"
+)

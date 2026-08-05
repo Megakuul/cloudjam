@@ -11,30 +11,30 @@ type Tag struct {
 }
 
 type Account struct {
-	AccountId       *string  `json:"AccountId,omitempty"`
-	AccountName     *string  `json:"AccountName,omitempty"`
-	Arn             *string  `json:"Arn,omitempty"`
-	Email           *string  `json:"Email,omitempty"`
-	JoinedMethod    *string  `json:"JoinedMethod,omitempty"`
-	JoinedTimestamp *string  `json:"JoinedTimestamp,omitempty"`
-	ParentIds       []string `json:"ParentIds,omitempty"`
-	Paths           []string `json:"Paths,omitempty"`
-	RoleName        *string  `json:"RoleName,omitempty"`
-	State           *string  `json:"State,omitempty"`
-	Status          *string  `json:"Status,omitempty"`
-	Tags            []Tag    `json:"Tags,omitempty"`
+	AccountId       *string              `json:"AccountId,omitempty"`
+	AccountName     *string              `json:"AccountName,omitempty"`
+	Arn             *string              `json:"Arn,omitempty"`
+	Email           *string              `json:"Email,omitempty"`
+	JoinedMethod    *AccountJoinedMethod `json:"JoinedMethod,omitempty"`
+	JoinedTimestamp *string              `json:"JoinedTimestamp,omitempty"`
+	ParentIds       []string             `json:"ParentIds,omitempty"`
+	Paths           []string             `json:"Paths,omitempty"`
+	RoleName        *string              `json:"RoleName,omitempty"`
+	State           *AccountState        `json:"State,omitempty"`
+	Status          *AccountStatus       `json:"Status,omitempty"`
+	Tags            []Tag                `json:"Tags,omitempty"`
 }
 
 func (Account) CloudControlType() string { return "AWS::Organizations::Account" }
 
 type Organization struct {
-	Arn                    *string `json:"Arn,omitempty"`
-	FeatureSet             *string `json:"FeatureSet,omitempty"`
-	Id                     *string `json:"Id,omitempty"`
-	ManagementAccountArn   *string `json:"ManagementAccountArn,omitempty"`
-	ManagementAccountEmail *string `json:"ManagementAccountEmail,omitempty"`
-	ManagementAccountId    *string `json:"ManagementAccountId,omitempty"`
-	RootId                 *string `json:"RootId,omitempty"`
+	Arn                    *string                 `json:"Arn,omitempty"`
+	FeatureSet             *OrganizationFeatureSet `json:"FeatureSet,omitempty"`
+	Id                     *string                 `json:"Id,omitempty"`
+	ManagementAccountArn   *string                 `json:"ManagementAccountArn,omitempty"`
+	ManagementAccountEmail *string                 `json:"ManagementAccountEmail,omitempty"`
+	ManagementAccountId    *string                 `json:"ManagementAccountId,omitempty"`
+	RootId                 *string                 `json:"RootId,omitempty"`
 }
 
 func (Organization) CloudControlType() string { return "AWS::Organizations::Organization" }
@@ -69,7 +69,7 @@ type Policy struct {
 	Name        *string         `json:"Name,omitempty"`
 	Tags        []PolicyTag     `json:"Tags,omitempty"`
 	TargetIds   []string        `json:"TargetIds,omitempty"`
-	Type        *string         `json:"Type,omitempty"`
+	Type        *PolicyType     `json:"Type,omitempty"`
 }
 
 func (Policy) CloudControlType() string { return "AWS::Organizations::Policy" }
@@ -87,3 +87,53 @@ type ResourcePolicy struct {
 }
 
 func (ResourcePolicy) CloudControlType() string { return "AWS::Organizations::ResourcePolicy" }
+
+type AccountJoinedMethod string
+
+const (
+	AccountJoinedMethodINVITED AccountJoinedMethod = "INVITED"
+	AccountJoinedMethodCREATED AccountJoinedMethod = "CREATED"
+)
+
+type AccountState string
+
+const (
+	AccountStatePENDINGACTIVATION AccountState = "PENDING_ACTIVATION"
+	AccountStateACTIVE            AccountState = "ACTIVE"
+	AccountStateSUSPENDED         AccountState = "SUSPENDED"
+	AccountStatePENDINGCLOSURE    AccountState = "PENDING_CLOSURE"
+	AccountStateCLOSED            AccountState = "CLOSED"
+)
+
+type AccountStatus string
+
+const (
+	AccountStatusACTIVE         AccountStatus = "ACTIVE"
+	AccountStatusSUSPENDED      AccountStatus = "SUSPENDED"
+	AccountStatusPENDINGCLOSURE AccountStatus = "PENDING_CLOSURE"
+)
+
+type OrganizationFeatureSet string
+
+const (
+	OrganizationFeatureSetALL                 OrganizationFeatureSet = "ALL"
+	OrganizationFeatureSetCONSOLIDATEDBILLING OrganizationFeatureSet = "CONSOLIDATED_BILLING"
+)
+
+type PolicyType string
+
+const (
+	PolicyTypeAISERVICESOPTOUTPOLICY        PolicyType = "AISERVICES_OPT_OUT_POLICY"
+	PolicyTypeBACKUPPOLICY                  PolicyType = "BACKUP_POLICY"
+	PolicyTypeBEDROCKPOLICY                 PolicyType = "BEDROCK_POLICY"
+	PolicyTypeCHATBOTPOLICY                 PolicyType = "CHATBOT_POLICY"
+	PolicyTypeDECLARATIVEPOLICYEC2          PolicyType = "DECLARATIVE_POLICY_EC2"
+	PolicyTypeINSPECTORPOLICY               PolicyType = "INSPECTOR_POLICY"
+	PolicyTypeNETWORKSECURITYDIRECTORPOLICY PolicyType = "NETWORK_SECURITY_DIRECTOR_POLICY"
+	PolicyTypeRESOURCECONTROLPOLICY         PolicyType = "RESOURCE_CONTROL_POLICY"
+	PolicyTypeS3POLICY                      PolicyType = "S3_POLICY"
+	PolicyTypeSECURITYHUBPOLICY             PolicyType = "SECURITYHUB_POLICY"
+	PolicyTypeSERVICECONTROLPOLICY          PolicyType = "SERVICE_CONTROL_POLICY"
+	PolicyTypeTAGPOLICY                     PolicyType = "TAG_POLICY"
+	PolicyTypeUPGRADEROLLOUTPOLICY          PolicyType = "UPGRADE_ROLLOUT_POLICY"
+)

@@ -30,8 +30,8 @@ type PartitionSource struct {
 }
 
 type PartitionSpec struct {
-	PartitionStrategy *string           `json:"PartitionStrategy,omitempty"`
-	SourceList        []PartitionSource `json:"SourceList,omitempty"`
+	PartitionStrategy *PartitionStrategy `json:"PartitionStrategy,omitempty"`
+	SourceList        []PartitionSource  `json:"SourceList,omitempty"`
 }
 
 type DestinationTable struct {
@@ -49,15 +49,15 @@ type TableCreation struct {
 }
 
 type IcebergDestinationConfiguration struct {
-	AppendOnly              *bool              `json:"AppendOnly,omitempty"`
-	Catalog                 *Catalog           `json:"Catalog,omitempty"`
-	CompressionType         *string            `json:"CompressionType,omitempty"`
-	DataFreshnessInSeconds  *int               `json:"DataFreshnessInSeconds,omitempty"`
-	DeadLetterQueueS3       *DeadLetterQueueS3 `json:"DeadLetterQueueS3,omitempty"`
-	DestinationTableList    []DestinationTable `json:"DestinationTableList,omitempty"`
-	SchemaEvolution         *SchemaEvolution   `json:"SchemaEvolution,omitempty"`
-	ServiceExecutionRoleArn *string            `json:"ServiceExecutionRoleArn,omitempty"`
-	TableCreation           *TableCreation     `json:"TableCreation,omitempty"`
+	AppendOnly              *bool                   `json:"AppendOnly,omitempty"`
+	Catalog                 *Catalog                `json:"Catalog,omitempty"`
+	CompressionType         *IcebergCompressionType `json:"CompressionType,omitempty"`
+	DataFreshnessInSeconds  *int                    `json:"DataFreshnessInSeconds,omitempty"`
+	DeadLetterQueueS3       *DeadLetterQueueS3      `json:"DeadLetterQueueS3,omitempty"`
+	DestinationTableList    []DestinationTable      `json:"DestinationTableList,omitempty"`
+	SchemaEvolution         *SchemaEvolution        `json:"SchemaEvolution,omitempty"`
+	ServiceExecutionRoleArn *string                 `json:"ServiceExecutionRoleArn,omitempty"`
+	TableCreation           *TableCreation          `json:"TableCreation,omitempty"`
 }
 
 type CloudWatchLogsLogDestination struct {
@@ -83,12 +83,12 @@ type ChannelLoggingInfo struct {
 }
 
 type S3Storage struct {
-	BucketArn           *string `json:"BucketArn,omitempty"`
-	CompressionType     *string `json:"CompressionType,omitempty"`
-	ExpectedBucketOwner *string `json:"ExpectedBucketOwner,omitempty"`
-	OutputKeyTemplate   *string `json:"OutputKeyTemplate,omitempty"`
-	OutputPrefix        *string `json:"OutputPrefix,omitempty"`
-	StorageClass        *string `json:"StorageClass,omitempty"`
+	BucketArn           *string            `json:"BucketArn,omitempty"`
+	CompressionType     *S3CompressionType `json:"CompressionType,omitempty"`
+	ExpectedBucketOwner *string            `json:"ExpectedBucketOwner,omitempty"`
+	OutputKeyTemplate   *string            `json:"OutputKeyTemplate,omitempty"`
+	OutputPrefix        *string            `json:"OutputPrefix,omitempty"`
+	StorageClass        *S3StorageClass    `json:"StorageClass,omitempty"`
 }
 
 type S3DestinationConfiguration struct {
@@ -104,7 +104,7 @@ type ChannelStateInfo struct {
 }
 
 type RecordConverter struct {
-	ValueConverter *string `json:"ValueConverter,omitempty"`
+	ValueConverter *ValueConverter `json:"ValueConverter,omitempty"`
 }
 
 type RecordSchema struct {
@@ -126,7 +126,7 @@ type Channel struct {
 	LoggingInfo                     *ChannelLoggingInfo              `json:"LoggingInfo,omitempty"`
 	S3DestinationConfiguration      *S3DestinationConfiguration      `json:"S3DestinationConfiguration,omitempty"`
 	StateInfo                       *ChannelStateInfo                `json:"StateInfo,omitempty"`
-	Status                          *string                          `json:"Status,omitempty"`
+	Status                          *ChannelStatus                   `json:"Status,omitempty"`
 	Tags                            map[string]string                `json:"Tags,omitempty"`
 	TopicConfigurationList          []TopicConfiguration             `json:"TopicConfigurationList,omitempty"`
 }
@@ -164,7 +164,7 @@ type VpcConnectivity struct {
 }
 
 type ConnectivityInfo struct {
-	NetworkType     *string          `json:"NetworkType,omitempty"`
+	NetworkType     *NetworkType     `json:"NetworkType,omitempty"`
 	PublicAccess    *PublicAccess    `json:"PublicAccess,omitempty"`
 	VpcConnectivity *VpcConnectivity `json:"VpcConnectivity,omitempty"`
 }
@@ -230,8 +230,8 @@ type EncryptionAtRest struct {
 }
 
 type EncryptionInTransit struct {
-	ClientBroker *string `json:"ClientBroker,omitempty"`
-	InCluster    *bool   `json:"InCluster,omitempty"`
+	ClientBroker *EncryptionInTransitClientBroker `json:"ClientBroker,omitempty"`
+	InCluster    *bool                            `json:"InCluster,omitempty"`
 }
 
 type EncryptionInfo struct {
@@ -283,7 +283,7 @@ type OpenMonitoring struct {
 }
 
 type Rebalancing struct {
-	Status *string `json:"Status,omitempty"`
+	Status *RebalancingStatus `json:"Status,omitempty"`
 }
 
 type ZookeeperAccess struct {
@@ -291,22 +291,22 @@ type ZookeeperAccess struct {
 }
 
 type Cluster struct {
-	Arn                  *string               `json:"Arn,omitempty"`
-	BrokerNodeGroupInfo  *BrokerNodeGroupInfo  `json:"BrokerNodeGroupInfo,omitempty"`
-	ClientAuthentication *ClientAuthentication `json:"ClientAuthentication,omitempty"`
-	ClusterName          *string               `json:"ClusterName,omitempty"`
-	ConfigurationInfo    *ConfigurationInfo    `json:"ConfigurationInfo,omitempty"`
-	CurrentVersion       *string               `json:"CurrentVersion,omitempty"`
-	EncryptionInfo       *EncryptionInfo       `json:"EncryptionInfo,omitempty"`
-	EnhancedMonitoring   *string               `json:"EnhancedMonitoring,omitempty"`
-	KafkaVersion         *string               `json:"KafkaVersion,omitempty"`
-	LoggingInfo          *LoggingInfo          `json:"LoggingInfo,omitempty"`
-	NumberOfBrokerNodes  *int                  `json:"NumberOfBrokerNodes,omitempty"`
-	OpenMonitoring       *OpenMonitoring       `json:"OpenMonitoring,omitempty"`
-	Rebalancing          *Rebalancing          `json:"Rebalancing,omitempty"`
-	StorageMode          *string               `json:"StorageMode,omitempty"`
-	Tags                 map[string]string     `json:"Tags,omitempty"`
-	ZookeeperAccess      *ZookeeperAccess      `json:"ZookeeperAccess,omitempty"`
+	Arn                  *string                    `json:"Arn,omitempty"`
+	BrokerNodeGroupInfo  *BrokerNodeGroupInfo       `json:"BrokerNodeGroupInfo,omitempty"`
+	ClientAuthentication *ClientAuthentication      `json:"ClientAuthentication,omitempty"`
+	ClusterName          *string                    `json:"ClusterName,omitempty"`
+	ConfigurationInfo    *ConfigurationInfo         `json:"ConfigurationInfo,omitempty"`
+	CurrentVersion       *string                    `json:"CurrentVersion,omitempty"`
+	EncryptionInfo       *EncryptionInfo            `json:"EncryptionInfo,omitempty"`
+	EnhancedMonitoring   *ClusterEnhancedMonitoring `json:"EnhancedMonitoring,omitempty"`
+	KafkaVersion         *string                    `json:"KafkaVersion,omitempty"`
+	LoggingInfo          *LoggingInfo               `json:"LoggingInfo,omitempty"`
+	NumberOfBrokerNodes  *int                       `json:"NumberOfBrokerNodes,omitempty"`
+	OpenMonitoring       *OpenMonitoring            `json:"OpenMonitoring,omitempty"`
+	Rebalancing          *Rebalancing               `json:"Rebalancing,omitempty"`
+	StorageMode          *ClusterStorageMode        `json:"StorageMode,omitempty"`
+	Tags                 map[string]string          `json:"Tags,omitempty"`
+	ZookeeperAccess      *ZookeeperAccess           `json:"ZookeeperAccess,omitempty"`
 }
 
 func (Cluster) CloudControlType() string { return "AWS::MSK::Cluster" }
@@ -350,8 +350,8 @@ type KafkaClusterMtlsAuthentication struct {
 }
 
 type KafkaClusterSaslScramAuthentication struct {
-	Mechanism *string `json:"Mechanism,omitempty"`
-	SecretArn *string `json:"SecretArn,omitempty"`
+	Mechanism *KafkaClusterSaslScramMechanism `json:"Mechanism,omitempty"`
+	SecretArn *string                         `json:"SecretArn,omitempty"`
 }
 
 type KafkaClusterClientAuthentication struct {
@@ -360,8 +360,8 @@ type KafkaClusterClientAuthentication struct {
 }
 
 type KafkaClusterEncryptionInTransit struct {
-	EncryptionType    *string `json:"EncryptionType,omitempty"`
-	RootCaCertificate *string `json:"RootCaCertificate,omitempty"`
+	EncryptionType    *KafkaClusterEncryptionInTransitType `json:"EncryptionType,omitempty"`
+	RootCaCertificate *string                              `json:"RootCaCertificate,omitempty"`
 }
 
 type KafkaClusterClientVpcConfig struct {
@@ -404,19 +404,19 @@ type LogDelivery struct {
 }
 
 type ConsumerGroupReplication struct {
-	ConsumerGroupOffsetSyncMode     *string  `json:"ConsumerGroupOffsetSyncMode,omitempty"`
-	ConsumerGroupsToExclude         []string `json:"ConsumerGroupsToExclude,omitempty"`
-	ConsumerGroupsToReplicate       []string `json:"ConsumerGroupsToReplicate,omitempty"`
-	DetectAndCopyNewConsumerGroups  *bool    `json:"DetectAndCopyNewConsumerGroups,omitempty"`
-	SynchroniseConsumerGroupOffsets *bool    `json:"SynchroniseConsumerGroupOffsets,omitempty"`
+	ConsumerGroupOffsetSyncMode     *ConsumerGroupOffsetSyncMode `json:"ConsumerGroupOffsetSyncMode,omitempty"`
+	ConsumerGroupsToExclude         []string                     `json:"ConsumerGroupsToExclude,omitempty"`
+	ConsumerGroupsToReplicate       []string                     `json:"ConsumerGroupsToReplicate,omitempty"`
+	DetectAndCopyNewConsumerGroups  *bool                        `json:"DetectAndCopyNewConsumerGroups,omitempty"`
+	SynchroniseConsumerGroupOffsets *bool                        `json:"SynchroniseConsumerGroupOffsets,omitempty"`
 }
 
 type ReplicationStartingPosition struct {
-	Type *string `json:"Type,omitempty"`
+	Type *ReplicationStartingPositionType `json:"Type,omitempty"`
 }
 
 type ReplicationTopicNameConfiguration struct {
-	Type *string `json:"Type,omitempty"`
+	Type *ReplicationTopicNameConfigurationType `json:"Type,omitempty"`
 }
 
 type TopicReplication struct {
@@ -430,13 +430,13 @@ type TopicReplication struct {
 }
 
 type ReplicationInfo struct {
-	ConsumerGroupReplication *ConsumerGroupReplication `json:"ConsumerGroupReplication,omitempty"`
-	SourceKafkaClusterArn    *string                   `json:"SourceKafkaClusterArn,omitempty"`
-	SourceKafkaClusterId     *string                   `json:"SourceKafkaClusterId,omitempty"`
-	TargetCompressionType    *string                   `json:"TargetCompressionType,omitempty"`
-	TargetKafkaClusterArn    *string                   `json:"TargetKafkaClusterArn,omitempty"`
-	TargetKafkaClusterId     *string                   `json:"TargetKafkaClusterId,omitempty"`
-	TopicReplication         *TopicReplication         `json:"TopicReplication,omitempty"`
+	ConsumerGroupReplication *ConsumerGroupReplication             `json:"ConsumerGroupReplication,omitempty"`
+	SourceKafkaClusterArn    *string                               `json:"SourceKafkaClusterArn,omitempty"`
+	SourceKafkaClusterId     *string                               `json:"SourceKafkaClusterId,omitempty"`
+	TargetCompressionType    *ReplicationInfoTargetCompressionType `json:"TargetCompressionType,omitempty"`
+	TargetKafkaClusterArn    *string                               `json:"TargetKafkaClusterArn,omitempty"`
+	TargetKafkaClusterId     *string                               `json:"TargetKafkaClusterId,omitempty"`
+	TopicReplication         *TopicReplication                     `json:"TopicReplication,omitempty"`
 }
 
 type Tag struct {
@@ -498,7 +498,7 @@ func (Topic) CloudControlType() string { return "AWS::MSK::Topic" }
 
 type VpcConnection struct {
 	Arn              *string           `json:"Arn,omitempty"`
-	Authentication   *string           `json:"Authentication,omitempty"`
+	Authentication   *Authentication   `json:"Authentication,omitempty"`
 	ClientSubnets    []string          `json:"ClientSubnets,omitempty"`
 	SecurityGroups   []string          `json:"SecurityGroups,omitempty"`
 	Tags             map[string]string `json:"Tags,omitempty"`
@@ -507,3 +507,143 @@ type VpcConnection struct {
 }
 
 func (VpcConnection) CloudControlType() string { return "AWS::MSK::VpcConnection" }
+
+type IcebergCompressionType string
+
+const (
+	IcebergCompressionTypeZSTD   IcebergCompressionType = "ZSTD"
+	IcebergCompressionTypeSNAPPY IcebergCompressionType = "SNAPPY"
+)
+
+type PartitionStrategy string
+
+const (
+	PartitionStrategyTIMEHOUR PartitionStrategy = "TIME_HOUR"
+)
+
+type S3CompressionType string
+
+const (
+	S3CompressionTypeNONE S3CompressionType = "NONE"
+	S3CompressionTypeGZIP S3CompressionType = "GZIP"
+	S3CompressionTypeZSTD S3CompressionType = "ZSTD"
+)
+
+type S3StorageClass string
+
+const (
+	S3StorageClassSTANDARD           S3StorageClass = "STANDARD"
+	S3StorageClassINTELLIGENTTIERING S3StorageClass = "INTELLIGENT_TIERING"
+	S3StorageClassGLACIERIR          S3StorageClass = "GLACIER_IR"
+)
+
+type ChannelStatus string
+
+const (
+	ChannelStatusCREATING   ChannelStatus = "CREATING"
+	ChannelStatusACTIVE     ChannelStatus = "ACTIVE"
+	ChannelStatusUPDATING   ChannelStatus = "UPDATING"
+	ChannelStatusDELETING   ChannelStatus = "DELETING"
+	ChannelStatusFAILED     ChannelStatus = "FAILED"
+	ChannelStatusSUSPENDING ChannelStatus = "SUSPENDING"
+	ChannelStatusSUSPENDED  ChannelStatus = "SUSPENDED"
+)
+
+type ValueConverter string
+
+const (
+	ValueConverterBYTEARRAY     ValueConverter = "BYTE_ARRAY"
+	ValueConverterJSON          ValueConverter = "JSON"
+	ValueConverterJSONSCHEMAGSR ValueConverter = "JSON_SCHEMA_GSR"
+	ValueConverterSTRING        ValueConverter = "STRING"
+)
+
+type NetworkType string
+
+const (
+	NetworkTypeIPV4 NetworkType = "IPV4"
+	NetworkTypeDUAL NetworkType = "DUAL"
+)
+
+type EncryptionInTransitClientBroker string
+
+const (
+	EncryptionInTransitClientBrokerTLS          EncryptionInTransitClientBroker = "TLS"
+	EncryptionInTransitClientBrokerTLSPLAINTEXT EncryptionInTransitClientBroker = "TLS_PLAINTEXT"
+	EncryptionInTransitClientBrokerPLAINTEXT    EncryptionInTransitClientBroker = "PLAINTEXT"
+)
+
+type ClusterEnhancedMonitoring string
+
+const (
+	ClusterEnhancedMonitoringDEFAULT              ClusterEnhancedMonitoring = "DEFAULT"
+	ClusterEnhancedMonitoringPERBROKER            ClusterEnhancedMonitoring = "PER_BROKER"
+	ClusterEnhancedMonitoringPERTOPICPERBROKER    ClusterEnhancedMonitoring = "PER_TOPIC_PER_BROKER"
+	ClusterEnhancedMonitoringPERTOPICPERPARTITION ClusterEnhancedMonitoring = "PER_TOPIC_PER_PARTITION"
+)
+
+type RebalancingStatus string
+
+const (
+	RebalancingStatusPAUSED RebalancingStatus = "PAUSED"
+	RebalancingStatusACTIVE RebalancingStatus = "ACTIVE"
+)
+
+type ClusterStorageMode string
+
+const (
+	ClusterStorageModeLOCAL  ClusterStorageMode = "LOCAL"
+	ClusterStorageModeTIERED ClusterStorageMode = "TIERED"
+)
+
+type KafkaClusterSaslScramMechanism string
+
+const (
+	KafkaClusterSaslScramMechanismSHA256 KafkaClusterSaslScramMechanism = "SHA256"
+	KafkaClusterSaslScramMechanismSHA512 KafkaClusterSaslScramMechanism = "SHA512"
+)
+
+type KafkaClusterEncryptionInTransitType string
+
+const (
+	KafkaClusterEncryptionInTransitTypeTLS KafkaClusterEncryptionInTransitType = "TLS"
+)
+
+type ConsumerGroupOffsetSyncMode string
+
+const (
+	ConsumerGroupOffsetSyncModeLEGACY   ConsumerGroupOffsetSyncMode = "LEGACY"
+	ConsumerGroupOffsetSyncModeENHANCED ConsumerGroupOffsetSyncMode = "ENHANCED"
+)
+
+type ReplicationInfoTargetCompressionType string
+
+const (
+	ReplicationInfoTargetCompressionTypeNONE   ReplicationInfoTargetCompressionType = "NONE"
+	ReplicationInfoTargetCompressionTypeGZIP   ReplicationInfoTargetCompressionType = "GZIP"
+	ReplicationInfoTargetCompressionTypeSNAPPY ReplicationInfoTargetCompressionType = "SNAPPY"
+	ReplicationInfoTargetCompressionTypeLZ4    ReplicationInfoTargetCompressionType = "LZ4"
+	ReplicationInfoTargetCompressionTypeZSTD   ReplicationInfoTargetCompressionType = "ZSTD"
+)
+
+type ReplicationStartingPositionType string
+
+const (
+	ReplicationStartingPositionTypeLATEST   ReplicationStartingPositionType = "LATEST"
+	ReplicationStartingPositionTypeEARLIEST ReplicationStartingPositionType = "EARLIEST"
+)
+
+type ReplicationTopicNameConfigurationType string
+
+const (
+	ReplicationTopicNameConfigurationTypePREFIXEDWITHSOURCECLUSTERALIAS ReplicationTopicNameConfigurationType = "PREFIXED_WITH_SOURCE_CLUSTER_ALIAS"
+	ReplicationTopicNameConfigurationTypeIDENTICAL                      ReplicationTopicNameConfigurationType = "IDENTICAL"
+)
+
+type Authentication string
+
+const (
+	AuthenticationSASLIAM   Authentication = "SASL_IAM"
+	AuthenticationSASLSCRAM Authentication = "SASL_SCRAM"
+	AuthenticationTLS       Authentication = "TLS"
+)

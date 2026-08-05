@@ -46,31 +46,96 @@ type VpcConfiguration struct {
 }
 
 type Workspace struct {
-	AccountAccessType        *string               `json:"AccountAccessType,omitempty"`
-	AuthenticationProviders  []string              `json:"AuthenticationProviders,omitempty"`
-	ClientToken              *string               `json:"ClientToken,omitempty"`
-	CreationTimestamp        *string               `json:"CreationTimestamp,omitempty"`
-	DataSources              []string              `json:"DataSources,omitempty"`
-	Description              *string               `json:"Description,omitempty"`
-	Endpoint                 *string               `json:"Endpoint,omitempty"`
-	GrafanaVersion           *string               `json:"GrafanaVersion,omitempty"`
-	Id                       *string               `json:"Id,omitempty"`
-	ModificationTimestamp    *string               `json:"ModificationTimestamp,omitempty"`
-	Name                     *string               `json:"Name,omitempty"`
-	NetworkAccessControl     *NetworkAccessControl `json:"NetworkAccessControl,omitempty"`
-	NotificationDestinations []string              `json:"NotificationDestinations,omitempty"`
-	OrganizationRoleName     *string               `json:"OrganizationRoleName,omitempty"`
-	OrganizationalUnits      []string              `json:"OrganizationalUnits,omitempty"`
-	PermissionType           *string               `json:"PermissionType,omitempty"`
-	PluginAdminEnabled       *bool                 `json:"PluginAdminEnabled,omitempty"`
-	RoleArn                  *string               `json:"RoleArn,omitempty"`
-	SamlConfiguration        *SamlConfiguration    `json:"SamlConfiguration,omitempty"`
-	SamlConfigurationStatus  *string               `json:"SamlConfigurationStatus,omitempty"`
-	SsoClientId              *string               `json:"SsoClientId,omitempty"`
-	StackSetName             *string               `json:"StackSetName,omitempty"`
-	Status                   *string               `json:"Status,omitempty"`
-	Tags                     []WorkspaceTagsItem   `json:"Tags,omitempty"`
-	VpcConfiguration         *VpcConfiguration     `json:"VpcConfiguration,omitempty"`
+	AccountAccessType        *AccountAccessType            `json:"AccountAccessType,omitempty"`
+	AuthenticationProviders  []AuthenticationProviderTypes `json:"AuthenticationProviders,omitempty"`
+	ClientToken              *string                       `json:"ClientToken,omitempty"`
+	CreationTimestamp        *string                       `json:"CreationTimestamp,omitempty"`
+	DataSources              []DataSourceType              `json:"DataSources,omitempty"`
+	Description              *string                       `json:"Description,omitempty"`
+	Endpoint                 *string                       `json:"Endpoint,omitempty"`
+	GrafanaVersion           *string                       `json:"GrafanaVersion,omitempty"`
+	Id                       *string                       `json:"Id,omitempty"`
+	ModificationTimestamp    *string                       `json:"ModificationTimestamp,omitempty"`
+	Name                     *string                       `json:"Name,omitempty"`
+	NetworkAccessControl     *NetworkAccessControl         `json:"NetworkAccessControl,omitempty"`
+	NotificationDestinations []NotificationDestinationType `json:"NotificationDestinations,omitempty"`
+	OrganizationRoleName     *string                       `json:"OrganizationRoleName,omitempty"`
+	OrganizationalUnits      []string                      `json:"OrganizationalUnits,omitempty"`
+	PermissionType           *PermissionType               `json:"PermissionType,omitempty"`
+	PluginAdminEnabled       *bool                         `json:"PluginAdminEnabled,omitempty"`
+	RoleArn                  *string                       `json:"RoleArn,omitempty"`
+	SamlConfiguration        *SamlConfiguration            `json:"SamlConfiguration,omitempty"`
+	SamlConfigurationStatus  *SamlConfigurationStatus      `json:"SamlConfigurationStatus,omitempty"`
+	SsoClientId              *string                       `json:"SsoClientId,omitempty"`
+	StackSetName             *string                       `json:"StackSetName,omitempty"`
+	Status                   *WorkspaceStatus              `json:"Status,omitempty"`
+	Tags                     []WorkspaceTagsItem           `json:"Tags,omitempty"`
+	VpcConfiguration         *VpcConfiguration             `json:"VpcConfiguration,omitempty"`
 }
 
 func (Workspace) CloudControlType() string { return "AWS::Grafana::Workspace" }
+
+type AccountAccessType string
+
+const (
+	AccountAccessTypeCURRENTACCOUNT AccountAccessType = "CURRENT_ACCOUNT"
+	AccountAccessTypeORGANIZATION   AccountAccessType = "ORGANIZATION"
+)
+
+type AuthenticationProviderTypes string
+
+const (
+	AuthenticationProviderTypesAWSSSO AuthenticationProviderTypes = "AWS_SSO"
+	AuthenticationProviderTypesSAML   AuthenticationProviderTypes = "SAML"
+)
+
+type DataSourceType string
+
+const (
+	DataSourceTypeAMAZONOPENSEARCHSERVICE DataSourceType = "AMAZON_OPENSEARCH_SERVICE"
+	DataSourceTypeCLOUDWATCH              DataSourceType = "CLOUDWATCH"
+	DataSourceTypePROMETHEUS              DataSourceType = "PROMETHEUS"
+	DataSourceTypeXRAY                    DataSourceType = "XRAY"
+	DataSourceTypeTIMESTREAM              DataSourceType = "TIMESTREAM"
+	DataSourceTypeSITEWISE                DataSourceType = "SITEWISE"
+	DataSourceTypeATHENA                  DataSourceType = "ATHENA"
+	DataSourceTypeREDSHIFT                DataSourceType = "REDSHIFT"
+)
+
+type NotificationDestinationType string
+
+const (
+	NotificationDestinationTypeSNS NotificationDestinationType = "SNS"
+)
+
+type PermissionType string
+
+const (
+	PermissionTypeCUSTOMERMANAGED PermissionType = "CUSTOMER_MANAGED"
+	PermissionTypeSERVICEMANAGED  PermissionType = "SERVICE_MANAGED"
+)
+
+type SamlConfigurationStatus string
+
+const (
+	SamlConfigurationStatusCONFIGURED    SamlConfigurationStatus = "CONFIGURED"
+	SamlConfigurationStatusNOTCONFIGURED SamlConfigurationStatus = "NOT_CONFIGURED"
+)
+
+type WorkspaceStatus string
+
+const (
+	WorkspaceStatusACTIVE               WorkspaceStatus = "ACTIVE"
+	WorkspaceStatusCREATING             WorkspaceStatus = "CREATING"
+	WorkspaceStatusDELETING             WorkspaceStatus = "DELETING"
+	WorkspaceStatusFAILED               WorkspaceStatus = "FAILED"
+	WorkspaceStatusUPDATING             WorkspaceStatus = "UPDATING"
+	WorkspaceStatusUPGRADING            WorkspaceStatus = "UPGRADING"
+	WorkspaceStatusVERSIONUPDATING      WorkspaceStatus = "VERSION_UPDATING"
+	WorkspaceStatusDELETIONFAILED       WorkspaceStatus = "DELETION_FAILED"
+	WorkspaceStatusCREATIONFAILED       WorkspaceStatus = "CREATION_FAILED"
+	WorkspaceStatusUPDATEFAILED         WorkspaceStatus = "UPDATE_FAILED"
+	WorkspaceStatusUPGRADEFAILED        WorkspaceStatus = "UPGRADE_FAILED"
+	WorkspaceStatusLICENSEREMOVALFAILED WorkspaceStatus = "LICENSE_REMOVAL_FAILED"
+	WorkspaceStatusVERSIONUPDATEFAILED  WorkspaceStatus = "VERSION_UPDATE_FAILED"
+)

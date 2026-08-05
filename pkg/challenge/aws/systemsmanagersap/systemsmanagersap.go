@@ -4,15 +4,15 @@
 package systemsmanagersap
 
 type ComponentInfo struct {
-	ComponentType *string `json:"ComponentType,omitempty"`
-	Ec2InstanceId *string `json:"Ec2InstanceId,omitempty"`
-	Sid           *string `json:"Sid,omitempty"`
+	ComponentType *ComponentInfoComponentType `json:"ComponentType,omitempty"`
+	Ec2InstanceId *string                     `json:"Ec2InstanceId,omitempty"`
+	Sid           *string                     `json:"Sid,omitempty"`
 }
 
 type Credential struct {
-	CredentialType *string `json:"CredentialType,omitempty"`
-	DatabaseName   *string `json:"DatabaseName,omitempty"`
-	SecretId       *string `json:"SecretId,omitempty"`
+	CredentialType *CredentialCredentialType `json:"CredentialType,omitempty"`
+	DatabaseName   *string                   `json:"DatabaseName,omitempty"`
+	SecretId       *string                   `json:"SecretId,omitempty"`
 }
 
 type Tag struct {
@@ -21,16 +21,42 @@ type Tag struct {
 }
 
 type Application struct {
-	ApplicationId     *string         `json:"ApplicationId,omitempty"`
-	ApplicationType   *string         `json:"ApplicationType,omitempty"`
-	Arn               *string         `json:"Arn,omitempty"`
-	ComponentsInfo    []ComponentInfo `json:"ComponentsInfo,omitempty"`
-	Credentials       []Credential    `json:"Credentials,omitempty"`
-	DatabaseArn       *string         `json:"DatabaseArn,omitempty"`
-	Instances         []string        `json:"Instances,omitempty"`
-	SapInstanceNumber *string         `json:"SapInstanceNumber,omitempty"`
-	Sid               *string         `json:"Sid,omitempty"`
-	Tags              []Tag           `json:"Tags,omitempty"`
+	ApplicationId     *string                     `json:"ApplicationId,omitempty"`
+	ApplicationType   *ApplicationApplicationType `json:"ApplicationType,omitempty"`
+	Arn               *string                     `json:"Arn,omitempty"`
+	ComponentsInfo    []ComponentInfo             `json:"ComponentsInfo,omitempty"`
+	Credentials       []Credential                `json:"Credentials,omitempty"`
+	DatabaseArn       *string                     `json:"DatabaseArn,omitempty"`
+	Instances         []string                    `json:"Instances,omitempty"`
+	SapInstanceNumber *string                     `json:"SapInstanceNumber,omitempty"`
+	Sid               *string                     `json:"Sid,omitempty"`
+	Tags              []Tag                       `json:"Tags,omitempty"`
 }
 
 func (Application) CloudControlType() string { return "AWS::SystemsManagerSAP::Application" }
+
+type ApplicationApplicationType string
+
+const (
+	ApplicationApplicationTypeHANA    ApplicationApplicationType = "HANA"
+	ApplicationApplicationTypeSAPABAP ApplicationApplicationType = "SAP_ABAP"
+)
+
+type ComponentInfoComponentType string
+
+const (
+	ComponentInfoComponentTypeHANA     ComponentInfoComponentType = "HANA"
+	ComponentInfoComponentTypeHANANODE ComponentInfoComponentType = "HANA_NODE"
+	ComponentInfoComponentTypeABAP     ComponentInfoComponentType = "ABAP"
+	ComponentInfoComponentTypeASCS     ComponentInfoComponentType = "ASCS"
+	ComponentInfoComponentTypeDIALOG   ComponentInfoComponentType = "DIALOG"
+	ComponentInfoComponentTypeWEBDISP  ComponentInfoComponentType = "WEBDISP"
+	ComponentInfoComponentTypeWD       ComponentInfoComponentType = "WD"
+	ComponentInfoComponentTypeERS      ComponentInfoComponentType = "ERS"
+)
+
+type CredentialCredentialType string
+
+const (
+	CredentialCredentialTypeADMIN CredentialCredentialType = "ADMIN"
+)

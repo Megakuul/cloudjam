@@ -60,7 +60,7 @@ type Fleet struct {
 	MaxWorkerCount    *int               `json:"MaxWorkerCount,omitempty"`
 	MinWorkerCount    *int               `json:"MinWorkerCount,omitempty"`
 	RoleArn           *string            `json:"RoleArn,omitempty"`
-	Status            *string            `json:"Status,omitempty"`
+	Status            *FleetStatus       `json:"Status,omitempty"`
 	StatusMessage     *string            `json:"StatusMessage,omitempty"`
 	Tags              []FleetTag         `json:"Tags,omitempty"`
 	WorkerCount       *int               `json:"WorkerCount,omitempty"`
@@ -74,15 +74,15 @@ type LicenseEndpointTag struct {
 }
 
 type LicenseEndpoint struct {
-	Arn               *string              `json:"Arn,omitempty"`
-	DnsName           *string              `json:"DnsName,omitempty"`
-	LicenseEndpointId *string              `json:"LicenseEndpointId,omitempty"`
-	SecurityGroupIds  []string             `json:"SecurityGroupIds,omitempty"`
-	Status            *string              `json:"Status,omitempty"`
-	StatusMessage     *string              `json:"StatusMessage,omitempty"`
-	SubnetIds         []string             `json:"SubnetIds,omitempty"`
-	Tags              []LicenseEndpointTag `json:"Tags,omitempty"`
-	VpcId             *string              `json:"VpcId,omitempty"`
+	Arn               *string                `json:"Arn,omitempty"`
+	DnsName           *string                `json:"DnsName,omitempty"`
+	LicenseEndpointId *string                `json:"LicenseEndpointId,omitempty"`
+	SecurityGroupIds  []string               `json:"SecurityGroupIds,omitempty"`
+	Status            *LicenseEndpointStatus `json:"Status,omitempty"`
+	StatusMessage     *string                `json:"StatusMessage,omitempty"`
+	SubnetIds         []string               `json:"SubnetIds,omitempty"`
+	Tags              []LicenseEndpointTag   `json:"Tags,omitempty"`
+	VpcId             *string                `json:"VpcId,omitempty"`
 }
 
 func (LicenseEndpoint) CloudControlType() string { return "AWS::Deadline::LicenseEndpoint" }
@@ -147,7 +147,7 @@ type WindowsUser struct {
 
 type JobRunAsUser struct {
 	Posix   *PosixUser   `json:"Posix,omitempty"`
-	RunAs   *string      `json:"RunAs,omitempty"`
+	RunAs   *RunAs       `json:"RunAs,omitempty"`
 	Windows *WindowsUser `json:"Windows,omitempty"`
 }
 
@@ -157,31 +157,31 @@ type QueueTag struct {
 }
 
 type Queue struct {
-	AllowedStorageProfileIds        []string               `json:"AllowedStorageProfileIds,omitempty"`
-	Arn                             *string                `json:"Arn,omitempty"`
-	DefaultBudgetAction             *string                `json:"DefaultBudgetAction,omitempty"`
-	Description                     *string                `json:"Description,omitempty"`
-	DisplayName                     *string                `json:"DisplayName,omitempty"`
-	FarmId                          *string                `json:"FarmId,omitempty"`
-	JobAttachmentSettings           *JobAttachmentSettings `json:"JobAttachmentSettings,omitempty"`
-	JobRunAsUser                    *JobRunAsUser          `json:"JobRunAsUser,omitempty"`
-	QueueId                         *string                `json:"QueueId,omitempty"`
-	RequiredFileSystemLocationNames []string               `json:"RequiredFileSystemLocationNames,omitempty"`
-	RoleArn                         *string                `json:"RoleArn,omitempty"`
-	SchedulingConfiguration         map[string]any         `json:"SchedulingConfiguration,omitempty"`
-	Tags                            []QueueTag             `json:"Tags,omitempty"`
+	AllowedStorageProfileIds        []string                  `json:"AllowedStorageProfileIds,omitempty"`
+	Arn                             *string                   `json:"Arn,omitempty"`
+	DefaultBudgetAction             *DefaultQueueBudgetAction `json:"DefaultBudgetAction,omitempty"`
+	Description                     *string                   `json:"Description,omitempty"`
+	DisplayName                     *string                   `json:"DisplayName,omitempty"`
+	FarmId                          *string                   `json:"FarmId,omitempty"`
+	JobAttachmentSettings           *JobAttachmentSettings    `json:"JobAttachmentSettings,omitempty"`
+	JobRunAsUser                    *JobRunAsUser             `json:"JobRunAsUser,omitempty"`
+	QueueId                         *string                   `json:"QueueId,omitempty"`
+	RequiredFileSystemLocationNames []string                  `json:"RequiredFileSystemLocationNames,omitempty"`
+	RoleArn                         *string                   `json:"RoleArn,omitempty"`
+	SchedulingConfiguration         map[string]any            `json:"SchedulingConfiguration,omitempty"`
+	Tags                            []QueueTag                `json:"Tags,omitempty"`
 }
 
 func (Queue) CloudControlType() string { return "AWS::Deadline::Queue" }
 
 type QueueEnvironment struct {
-	FarmId             *string `json:"FarmId,omitempty"`
-	Name               *string `json:"Name,omitempty"`
-	Priority           *int    `json:"Priority,omitempty"`
-	QueueEnvironmentId *string `json:"QueueEnvironmentId,omitempty"`
-	QueueId            *string `json:"QueueId,omitempty"`
-	Template           *string `json:"Template,omitempty"`
-	TemplateType       *string `json:"TemplateType,omitempty"`
+	FarmId             *string                  `json:"FarmId,omitempty"`
+	Name               *string                  `json:"Name,omitempty"`
+	Priority           *int                     `json:"Priority,omitempty"`
+	QueueEnvironmentId *string                  `json:"QueueEnvironmentId,omitempty"`
+	QueueId            *string                  `json:"QueueId,omitempty"`
+	Template           *string                  `json:"Template,omitempty"`
+	TemplateType       *EnvironmentTemplateType `json:"TemplateType,omitempty"`
 }
 
 func (QueueEnvironment) CloudControlType() string { return "AWS::Deadline::QueueEnvironment" }
@@ -203,17 +203,74 @@ type QueueLimitAssociation struct {
 func (QueueLimitAssociation) CloudControlType() string { return "AWS::Deadline::QueueLimitAssociation" }
 
 type FileSystemLocation struct {
-	Name *string `json:"Name,omitempty"`
-	Path *string `json:"Path,omitempty"`
-	Type *string `json:"Type,omitempty"`
+	Name *string                 `json:"Name,omitempty"`
+	Path *string                 `json:"Path,omitempty"`
+	Type *FileSystemLocationType `json:"Type,omitempty"`
 }
 
 type StorageProfile struct {
-	DisplayName         *string              `json:"DisplayName,omitempty"`
-	FarmId              *string              `json:"FarmId,omitempty"`
-	FileSystemLocations []FileSystemLocation `json:"FileSystemLocations,omitempty"`
-	OsFamily            *string              `json:"OsFamily,omitempty"`
-	StorageProfileId    *string              `json:"StorageProfileId,omitempty"`
+	DisplayName         *string                              `json:"DisplayName,omitempty"`
+	FarmId              *string                              `json:"FarmId,omitempty"`
+	FileSystemLocations []FileSystemLocation                 `json:"FileSystemLocations,omitempty"`
+	OsFamily            *StorageProfileOperatingSystemFamily `json:"OsFamily,omitempty"`
+	StorageProfileId    *string                              `json:"StorageProfileId,omitempty"`
 }
 
 func (StorageProfile) CloudControlType() string { return "AWS::Deadline::StorageProfile" }
+
+type FleetStatus string
+
+const (
+	FleetStatusACTIVE           FleetStatus = "ACTIVE"
+	FleetStatusCREATEINPROGRESS FleetStatus = "CREATE_IN_PROGRESS"
+	FleetStatusUPDATEINPROGRESS FleetStatus = "UPDATE_IN_PROGRESS"
+	FleetStatusCREATEFAILED     FleetStatus = "CREATE_FAILED"
+	FleetStatusUPDATEFAILED     FleetStatus = "UPDATE_FAILED"
+	FleetStatusSUSPENDED        FleetStatus = "SUSPENDED"
+)
+
+type LicenseEndpointStatus string
+
+const (
+	LicenseEndpointStatusCREATEINPROGRESS LicenseEndpointStatus = "CREATE_IN_PROGRESS"
+	LicenseEndpointStatusDELETEINPROGRESS LicenseEndpointStatus = "DELETE_IN_PROGRESS"
+	LicenseEndpointStatusREADY            LicenseEndpointStatus = "READY"
+	LicenseEndpointStatusNOTREADY         LicenseEndpointStatus = "NOT_READY"
+)
+
+type DefaultQueueBudgetAction string
+
+const (
+	DefaultQueueBudgetActionNONE                           DefaultQueueBudgetAction = "NONE"
+	DefaultQueueBudgetActionSTOPSCHEDULINGANDCOMPLETETASKS DefaultQueueBudgetAction = "STOP_SCHEDULING_AND_COMPLETE_TASKS"
+	DefaultQueueBudgetActionSTOPSCHEDULINGANDCANCELTASKS   DefaultQueueBudgetAction = "STOP_SCHEDULING_AND_CANCEL_TASKS"
+)
+
+type RunAs string
+
+const (
+	RunAsQUEUECONFIGUREDUSER RunAs = "QUEUE_CONFIGURED_USER"
+	RunAsWORKERAGENTUSER     RunAs = "WORKER_AGENT_USER"
+)
+
+type EnvironmentTemplateType string
+
+const (
+	EnvironmentTemplateTypeJSON EnvironmentTemplateType = "JSON"
+	EnvironmentTemplateTypeYAML EnvironmentTemplateType = "YAML"
+)
+
+type FileSystemLocationType string
+
+const (
+	FileSystemLocationTypeSHARED FileSystemLocationType = "SHARED"
+	FileSystemLocationTypeLOCAL  FileSystemLocationType = "LOCAL"
+)
+
+type StorageProfileOperatingSystemFamily string
+
+const (
+	StorageProfileOperatingSystemFamilyWINDOWS StorageProfileOperatingSystemFamily = "WINDOWS"
+	StorageProfileOperatingSystemFamilyLINUX   StorageProfileOperatingSystemFamily = "LINUX"
+	StorageProfileOperatingSystemFamilyMACOS   StorageProfileOperatingSystemFamily = "MACOS"
+)

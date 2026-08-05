@@ -56,7 +56,7 @@ type OAuth2Credentials struct {
 
 type CustomConnectorProfileCredentials struct {
 	ApiKey             *ApiKeyCredentials     `json:"ApiKey,omitempty"`
-	AuthenticationType *string                `json:"AuthenticationType,omitempty"`
+	AuthenticationType *AuthenticationType    `json:"AuthenticationType,omitempty"`
 	Basic              *BasicAuthCredentials  `json:"Basic,omitempty"`
 	Custom             *CustomAuthCredentials `json:"Custom,omitempty"`
 	Oauth2             *OAuth2Credentials     `json:"Oauth2,omitempty"`
@@ -123,7 +123,7 @@ type SalesforceConnectorProfileCredentials struct {
 	ClientCredentialsArn  *string                `json:"ClientCredentialsArn,omitempty"`
 	ConnectorOAuthRequest *ConnectorOAuthRequest `json:"ConnectorOAuthRequest,omitempty"`
 	JwtToken              *string                `json:"JwtToken,omitempty"`
-	OAuth2GrantType       *string                `json:"OAuth2GrantType,omitempty"`
+	OAuth2GrantType       *OAuth2GrantType       `json:"OAuth2GrantType,omitempty"`
 	RefreshToken          *string                `json:"RefreshToken,omitempty"`
 }
 
@@ -187,7 +187,7 @@ type ConnectorProfileCredentials struct {
 }
 
 type OAuth2Properties struct {
-	OAuth2GrantType          *string           `json:"OAuth2GrantType,omitempty"`
+	OAuth2GrantType          *OAuth2GrantType  `json:"OAuth2GrantType,omitempty"`
 	TokenUrl                 *string           `json:"TokenUrl,omitempty"`
 	TokenUrlCustomProperties map[string]string `json:"TokenUrlCustomProperties,omitempty"`
 }
@@ -303,14 +303,14 @@ type ConnectorProfileConfig struct {
 }
 
 type ConnectorProfile struct {
-	ConnectionMode         *string                 `json:"ConnectionMode,omitempty"`
-	ConnectorLabel         *string                 `json:"ConnectorLabel,omitempty"`
-	ConnectorProfileArn    *string                 `json:"ConnectorProfileArn,omitempty"`
-	ConnectorProfileConfig *ConnectorProfileConfig `json:"ConnectorProfileConfig,omitempty"`
-	ConnectorProfileName   *string                 `json:"ConnectorProfileName,omitempty"`
-	ConnectorType          *string                 `json:"ConnectorType,omitempty"`
-	CredentialsArn         *string                 `json:"CredentialsArn,omitempty"`
-	KMSArn                 *string                 `json:"KMSArn,omitempty"`
+	ConnectionMode         *ConnectorProfileConnectionMode `json:"ConnectionMode,omitempty"`
+	ConnectorLabel         *string                         `json:"ConnectorLabel,omitempty"`
+	ConnectorProfileArn    *string                         `json:"ConnectorProfileArn,omitempty"`
+	ConnectorProfileConfig *ConnectorProfileConfig         `json:"ConnectorProfileConfig,omitempty"`
+	ConnectorProfileName   *string                         `json:"ConnectorProfileName,omitempty"`
+	ConnectorType          *ConnectorType                  `json:"ConnectorType,omitempty"`
+	CredentialsArn         *string                         `json:"CredentialsArn,omitempty"`
+	KMSArn                 *string                         `json:"KMSArn,omitempty"`
 }
 
 func (ConnectorProfile) CloudControlType() string { return "AWS::AppFlow::ConnectorProfile" }
@@ -326,7 +326,7 @@ type CustomConnectorDestinationProperties struct {
 	EntityName          *string              `json:"EntityName,omitempty"`
 	ErrorHandlingConfig *ErrorHandlingConfig `json:"ErrorHandlingConfig,omitempty"`
 	IdFieldNames        []string             `json:"IdFieldNames,omitempty"`
-	WriteOperationType  *string              `json:"WriteOperationType,omitempty"`
+	WriteOperationType  *WriteOperationType  `json:"WriteOperationType,omitempty"`
 }
 
 type EventBridgeDestinationProperties struct {
@@ -351,19 +351,19 @@ type RedshiftDestinationProperties struct {
 }
 
 type AggregationConfig struct {
-	AggregationType *string `json:"AggregationType,omitempty"`
-	TargetFileSize  *int    `json:"TargetFileSize,omitempty"`
+	AggregationType *AggregationType `json:"AggregationType,omitempty"`
+	TargetFileSize  *int             `json:"TargetFileSize,omitempty"`
 }
 
 type PrefixConfig struct {
-	PathPrefixHierarchy []string `json:"PathPrefixHierarchy,omitempty"`
-	PrefixFormat        *string  `json:"PrefixFormat,omitempty"`
-	PrefixType          *string  `json:"PrefixType,omitempty"`
+	PathPrefixHierarchy []PathPrefix  `json:"PathPrefixHierarchy,omitempty"`
+	PrefixFormat        *PrefixFormat `json:"PrefixFormat,omitempty"`
+	PrefixType          *PrefixType   `json:"PrefixType,omitempty"`
 }
 
 type S3OutputFormatConfig struct {
 	AggregationConfig        *AggregationConfig `json:"AggregationConfig,omitempty"`
-	FileType                 *string            `json:"FileType,omitempty"`
+	FileType                 *FileType          `json:"FileType,omitempty"`
 	PrefixConfig             *PrefixConfig      `json:"PrefixConfig,omitempty"`
 	PreserveSourceDataTyping *bool              `json:"PreserveSourceDataTyping,omitempty"`
 }
@@ -384,15 +384,15 @@ type SAPODataDestinationProperties struct {
 	IdFieldNames                  []string                       `json:"IdFieldNames,omitempty"`
 	ObjectPath                    *string                        `json:"ObjectPath,omitempty"`
 	SuccessResponseHandlingConfig *SuccessResponseHandlingConfig `json:"SuccessResponseHandlingConfig,omitempty"`
-	WriteOperationType            *string                        `json:"WriteOperationType,omitempty"`
+	WriteOperationType            *WriteOperationType            `json:"WriteOperationType,omitempty"`
 }
 
 type SalesforceDestinationProperties struct {
-	DataTransferApi     *string              `json:"DataTransferApi,omitempty"`
+	DataTransferApi     *DataTransferApi     `json:"DataTransferApi,omitempty"`
 	ErrorHandlingConfig *ErrorHandlingConfig `json:"ErrorHandlingConfig,omitempty"`
 	IdFieldNames        []string             `json:"IdFieldNames,omitempty"`
 	Object              *string              `json:"Object,omitempty"`
-	WriteOperationType  *string              `json:"WriteOperationType,omitempty"`
+	WriteOperationType  *WriteOperationType  `json:"WriteOperationType,omitempty"`
 }
 
 type SnowflakeDestinationProperties struct {
@@ -404,7 +404,7 @@ type SnowflakeDestinationProperties struct {
 
 type UpsolverS3OutputFormatConfig struct {
 	AggregationConfig *AggregationConfig `json:"AggregationConfig,omitempty"`
-	FileType          *string            `json:"FileType,omitempty"`
+	FileType          *FileType          `json:"FileType,omitempty"`
 	PrefixConfig      *PrefixConfig      `json:"PrefixConfig,omitempty"`
 }
 
@@ -418,7 +418,7 @@ type ZendeskDestinationProperties struct {
 	ErrorHandlingConfig *ErrorHandlingConfig `json:"ErrorHandlingConfig,omitempty"`
 	IdFieldNames        []string             `json:"IdFieldNames,omitempty"`
 	Object              *string              `json:"Object,omitempty"`
-	WriteOperationType  *string              `json:"WriteOperationType,omitempty"`
+	WriteOperationType  *WriteOperationType  `json:"WriteOperationType,omitempty"`
 }
 
 type DestinationConnectorProperties struct {
@@ -438,7 +438,7 @@ type DestinationConnectorProperties struct {
 type DestinationFlowConfig struct {
 	ApiVersion                     *string                         `json:"ApiVersion,omitempty"`
 	ConnectorProfileName           *string                         `json:"ConnectorProfileName,omitempty"`
-	ConnectorType                  *string                         `json:"ConnectorType,omitempty"`
+	ConnectorType                  *FlowConnectorType              `json:"ConnectorType,omitempty"`
 	DestinationConnectorProperties *DestinationConnectorProperties `json:"DestinationConnectorProperties,omitempty"`
 }
 
@@ -461,8 +461,8 @@ type AmplitudeSourceProperties struct {
 }
 
 type CustomConnectorSourcePropertiesDataTransferApi struct {
-	Name *string `json:"Name,omitempty"`
-	Type *string `json:"Type,omitempty"`
+	Name *string                                             `json:"Name,omitempty"`
+	Type *CustomConnectorSourcePropertiesDataTransferApiType `json:"Type,omitempty"`
 }
 
 type CustomConnectorSourceProperties struct {
@@ -496,7 +496,7 @@ type PardotSourceProperties struct {
 }
 
 type S3InputFormatConfig struct {
-	S3InputFileType *string `json:"S3InputFileType,omitempty"`
+	S3InputFileType *S3InputFormatConfigS3InputFileType `json:"S3InputFileType,omitempty"`
 }
 
 type S3SourceProperties struct {
@@ -520,10 +520,10 @@ type SAPODataSourceProperties struct {
 }
 
 type SalesforceSourceProperties struct {
-	DataTransferApi          *string `json:"DataTransferApi,omitempty"`
-	EnableDynamicFieldUpdate *bool   `json:"EnableDynamicFieldUpdate,omitempty"`
-	IncludeDeletedRecords    *bool   `json:"IncludeDeletedRecords,omitempty"`
-	Object                   *string `json:"Object,omitempty"`
+	DataTransferApi          *DataTransferApi `json:"DataTransferApi,omitempty"`
+	EnableDynamicFieldUpdate *bool            `json:"EnableDynamicFieldUpdate,omitempty"`
+	IncludeDeletedRecords    *bool            `json:"IncludeDeletedRecords,omitempty"`
+	Object                   *string          `json:"Object,omitempty"`
 }
 
 type ServiceNowSourceProperties struct {
@@ -577,7 +577,7 @@ type SourceConnectorProperties struct {
 type SourceFlowConfig struct {
 	ApiVersion                *string                    `json:"ApiVersion,omitempty"`
 	ConnectorProfileName      *string                    `json:"ConnectorProfileName,omitempty"`
-	ConnectorType             *string                    `json:"ConnectorType,omitempty"`
+	ConnectorType             *FlowConnectorType         `json:"ConnectorType,omitempty"`
 	IncrementalPullConfig     *IncrementalPullConfig     `json:"IncrementalPullConfig,omitempty"`
 	SourceConnectorProperties *SourceConnectorProperties `json:"SourceConnectorProperties,omitempty"`
 }
@@ -588,28 +588,28 @@ type Tag struct {
 }
 
 type ConnectorOperator struct {
-	Amplitude       *string `json:"Amplitude,omitempty"`
-	CustomConnector *string `json:"CustomConnector,omitempty"`
-	Datadog         *string `json:"Datadog,omitempty"`
-	Dynatrace       *string `json:"Dynatrace,omitempty"`
-	GoogleAnalytics *string `json:"GoogleAnalytics,omitempty"`
-	InforNexus      *string `json:"InforNexus,omitempty"`
-	Marketo         *string `json:"Marketo,omitempty"`
-	Pardot          *string `json:"Pardot,omitempty"`
-	S3              *string `json:"S3,omitempty"`
-	SAPOData        *string `json:"SAPOData,omitempty"`
-	Salesforce      *string `json:"Salesforce,omitempty"`
-	ServiceNow      *string `json:"ServiceNow,omitempty"`
-	Singular        *string `json:"Singular,omitempty"`
-	Slack           *string `json:"Slack,omitempty"`
-	Trendmicro      *string `json:"Trendmicro,omitempty"`
-	Veeva           *string `json:"Veeva,omitempty"`
-	Zendesk         *string `json:"Zendesk,omitempty"`
+	Amplitude       *AmplitudeConnectorOperator       `json:"Amplitude,omitempty"`
+	CustomConnector *Operator                         `json:"CustomConnector,omitempty"`
+	Datadog         *DatadogConnectorOperator         `json:"Datadog,omitempty"`
+	Dynatrace       *DynatraceConnectorOperator       `json:"Dynatrace,omitempty"`
+	GoogleAnalytics *GoogleAnalyticsConnectorOperator `json:"GoogleAnalytics,omitempty"`
+	InforNexus      *InforNexusConnectorOperator      `json:"InforNexus,omitempty"`
+	Marketo         *MarketoConnectorOperator         `json:"Marketo,omitempty"`
+	Pardot          *PardotConnectorOperator          `json:"Pardot,omitempty"`
+	S3              *S3ConnectorOperator              `json:"S3,omitempty"`
+	SAPOData        *SAPODataConnectorOperator        `json:"SAPOData,omitempty"`
+	Salesforce      *SalesforceConnectorOperator      `json:"Salesforce,omitempty"`
+	ServiceNow      *ServiceNowConnectorOperator      `json:"ServiceNow,omitempty"`
+	Singular        *SingularConnectorOperator        `json:"Singular,omitempty"`
+	Slack           *SlackConnectorOperator           `json:"Slack,omitempty"`
+	Trendmicro      *TrendmicroConnectorOperator      `json:"Trendmicro,omitempty"`
+	Veeva           *VeevaConnectorOperator           `json:"Veeva,omitempty"`
+	Zendesk         *ZendeskConnectorOperator         `json:"Zendesk,omitempty"`
 }
 
 type TaskPropertiesObject struct {
-	Key   *string `json:"Key,omitempty"`
-	Value *string `json:"Value,omitempty"`
+	Key   *OperatorPropertiesKeys `json:"Key,omitempty"`
+	Value *string                 `json:"Value,omitempty"`
 }
 
 type Task struct {
@@ -617,23 +617,23 @@ type Task struct {
 	DestinationField  *string                `json:"DestinationField,omitempty"`
 	SourceFields      []string               `json:"SourceFields,omitempty"`
 	TaskProperties    []TaskPropertiesObject `json:"TaskProperties,omitempty"`
-	TaskType          *string                `json:"TaskType,omitempty"`
+	TaskType          *TaskType              `json:"TaskType,omitempty"`
 }
 
 type ScheduledTriggerProperties struct {
-	DataPullMode                   *string  `json:"DataPullMode,omitempty"`
-	FirstExecutionFrom             *float64 `json:"FirstExecutionFrom,omitempty"`
-	FlowErrorDeactivationThreshold *int     `json:"FlowErrorDeactivationThreshold,omitempty"`
-	ScheduleEndTime                *float64 `json:"ScheduleEndTime,omitempty"`
-	ScheduleExpression             *string  `json:"ScheduleExpression,omitempty"`
-	ScheduleOffset                 *float64 `json:"ScheduleOffset,omitempty"`
-	ScheduleStartTime              *float64 `json:"ScheduleStartTime,omitempty"`
-	TimeZone                       *string  `json:"TimeZone,omitempty"`
+	DataPullMode                   *ScheduledTriggerPropertiesDataPullMode `json:"DataPullMode,omitempty"`
+	FirstExecutionFrom             *float64                                `json:"FirstExecutionFrom,omitempty"`
+	FlowErrorDeactivationThreshold *int                                    `json:"FlowErrorDeactivationThreshold,omitempty"`
+	ScheduleEndTime                *float64                                `json:"ScheduleEndTime,omitempty"`
+	ScheduleExpression             *string                                 `json:"ScheduleExpression,omitempty"`
+	ScheduleOffset                 *float64                                `json:"ScheduleOffset,omitempty"`
+	ScheduleStartTime              *float64                                `json:"ScheduleStartTime,omitempty"`
+	TimeZone                       *string                                 `json:"TimeZone,omitempty"`
 }
 
 type TriggerConfig struct {
 	TriggerProperties *ScheduledTriggerProperties `json:"TriggerProperties,omitempty"`
-	TriggerType       *string                     `json:"TriggerType,omitempty"`
+	TriggerType       *TriggerType                `json:"TriggerType,omitempty"`
 }
 
 type Flow struct {
@@ -641,7 +641,7 @@ type Flow struct {
 	DestinationFlowConfigList []DestinationFlowConfig `json:"DestinationFlowConfigList,omitempty"`
 	FlowArn                   *string                 `json:"FlowArn,omitempty"`
 	FlowName                  *string                 `json:"FlowName,omitempty"`
-	FlowStatus                *string                 `json:"FlowStatus,omitempty"`
+	FlowStatus                *FlowFlowStatus         `json:"FlowStatus,omitempty"`
 	KMSArn                    *string                 `json:"KMSArn,omitempty"`
 	MetadataCatalogConfig     *MetadataCatalogConfig  `json:"MetadataCatalogConfig,omitempty"`
 	SourceFlowConfig          *SourceFlowConfig       `json:"SourceFlowConfig,omitempty"`
@@ -651,3 +651,553 @@ type Flow struct {
 }
 
 func (Flow) CloudControlType() string { return "AWS::AppFlow::Flow" }
+
+type ConnectorProfileConnectionMode string
+
+const (
+	ConnectorProfileConnectionModePublic  ConnectorProfileConnectionMode = "Public"
+	ConnectorProfileConnectionModePrivate ConnectorProfileConnectionMode = "Private"
+)
+
+type AuthenticationType string
+
+const (
+	AuthenticationTypeOAUTH2 AuthenticationType = "OAUTH2"
+	AuthenticationTypeAPIKEY AuthenticationType = "APIKEY"
+	AuthenticationTypeBASIC  AuthenticationType = "BASIC"
+	AuthenticationTypeCUSTOM AuthenticationType = "CUSTOM"
+)
+
+type OAuth2GrantType string
+
+const (
+	OAuth2GrantTypeCLIENTCREDENTIALS OAuth2GrantType = "CLIENT_CREDENTIALS"
+	OAuth2GrantTypeAUTHORIZATIONCODE OAuth2GrantType = "AUTHORIZATION_CODE"
+	OAuth2GrantTypeJWTBEARER         OAuth2GrantType = "JWT_BEARER"
+)
+
+type ConnectorType string
+
+const (
+	ConnectorTypeSalesforce      ConnectorType = "Salesforce"
+	ConnectorTypePardot          ConnectorType = "Pardot"
+	ConnectorTypeSingular        ConnectorType = "Singular"
+	ConnectorTypeSlack           ConnectorType = "Slack"
+	ConnectorTypeRedshift        ConnectorType = "Redshift"
+	ConnectorTypeMarketo         ConnectorType = "Marketo"
+	ConnectorTypeGoogleanalytics ConnectorType = "Googleanalytics"
+	ConnectorTypeZendesk         ConnectorType = "Zendesk"
+	ConnectorTypeServicenow      ConnectorType = "Servicenow"
+	ConnectorTypeSAPOData        ConnectorType = "SAPOData"
+	ConnectorTypeDatadog         ConnectorType = "Datadog"
+	ConnectorTypeTrendmicro      ConnectorType = "Trendmicro"
+	ConnectorTypeSnowflake       ConnectorType = "Snowflake"
+	ConnectorTypeDynatrace       ConnectorType = "Dynatrace"
+	ConnectorTypeInfornexus      ConnectorType = "Infornexus"
+	ConnectorTypeAmplitude       ConnectorType = "Amplitude"
+	ConnectorTypeVeeva           ConnectorType = "Veeva"
+	ConnectorTypeCustomConnector ConnectorType = "CustomConnector"
+)
+
+type FlowConnectorType string
+
+const (
+	FlowConnectorTypeSAPOData        FlowConnectorType = "SAPOData"
+	FlowConnectorTypeSalesforce      FlowConnectorType = "Salesforce"
+	FlowConnectorTypePardot          FlowConnectorType = "Pardot"
+	FlowConnectorTypeSingular        FlowConnectorType = "Singular"
+	FlowConnectorTypeSlack           FlowConnectorType = "Slack"
+	FlowConnectorTypeRedshift        FlowConnectorType = "Redshift"
+	FlowConnectorTypeS3              FlowConnectorType = "S3"
+	FlowConnectorTypeMarketo         FlowConnectorType = "Marketo"
+	FlowConnectorTypeGoogleanalytics FlowConnectorType = "Googleanalytics"
+	FlowConnectorTypeZendesk         FlowConnectorType = "Zendesk"
+	FlowConnectorTypeServicenow      FlowConnectorType = "Servicenow"
+	FlowConnectorTypeDatadog         FlowConnectorType = "Datadog"
+	FlowConnectorTypeTrendmicro      FlowConnectorType = "Trendmicro"
+	FlowConnectorTypeSnowflake       FlowConnectorType = "Snowflake"
+	FlowConnectorTypeDynatrace       FlowConnectorType = "Dynatrace"
+	FlowConnectorTypeInfornexus      FlowConnectorType = "Infornexus"
+	FlowConnectorTypeAmplitude       FlowConnectorType = "Amplitude"
+	FlowConnectorTypeVeeva           FlowConnectorType = "Veeva"
+	FlowConnectorTypeCustomConnector FlowConnectorType = "CustomConnector"
+	FlowConnectorTypeEventBridge     FlowConnectorType = "EventBridge"
+	FlowConnectorTypeUpsolver        FlowConnectorType = "Upsolver"
+	FlowConnectorTypeLookoutMetrics  FlowConnectorType = "LookoutMetrics"
+)
+
+type WriteOperationType string
+
+const (
+	WriteOperationTypeINSERT WriteOperationType = "INSERT"
+	WriteOperationTypeUPSERT WriteOperationType = "UPSERT"
+	WriteOperationTypeUPDATE WriteOperationType = "UPDATE"
+	WriteOperationTypeDELETE WriteOperationType = "DELETE"
+)
+
+type AggregationType string
+
+const (
+	AggregationTypeNone       AggregationType = "None"
+	AggregationTypeSingleFile AggregationType = "SingleFile"
+)
+
+type FileType string
+
+const (
+	FileTypeCSV     FileType = "CSV"
+	FileTypeJSON    FileType = "JSON"
+	FileTypePARQUET FileType = "PARQUET"
+)
+
+type PathPrefix string
+
+const (
+	PathPrefixEXECUTIONID   PathPrefix = "EXECUTION_ID"
+	PathPrefixSCHEMAVERSION PathPrefix = "SCHEMA_VERSION"
+)
+
+type PrefixFormat string
+
+const (
+	PrefixFormatYEAR   PrefixFormat = "YEAR"
+	PrefixFormatMONTH  PrefixFormat = "MONTH"
+	PrefixFormatDAY    PrefixFormat = "DAY"
+	PrefixFormatHOUR   PrefixFormat = "HOUR"
+	PrefixFormatMINUTE PrefixFormat = "MINUTE"
+)
+
+type PrefixType string
+
+const (
+	PrefixTypeFILENAME        PrefixType = "FILENAME"
+	PrefixTypePATH            PrefixType = "PATH"
+	PrefixTypePATHANDFILENAME PrefixType = "PATH_AND_FILENAME"
+)
+
+type DataTransferApi string
+
+const (
+	DataTransferApiAUTOMATIC DataTransferApi = "AUTOMATIC"
+	DataTransferApiBULKV2    DataTransferApi = "BULKV2"
+	DataTransferApiRESTSYNC  DataTransferApi = "REST_SYNC"
+)
+
+type FlowFlowStatus string
+
+const (
+	FlowFlowStatusActive    FlowFlowStatus = "Active"
+	FlowFlowStatusSuspended FlowFlowStatus = "Suspended"
+	FlowFlowStatusDraft     FlowFlowStatus = "Draft"
+)
+
+type CustomConnectorSourcePropertiesDataTransferApiType string
+
+const (
+	CustomConnectorSourcePropertiesDataTransferApiTypeSYNC      CustomConnectorSourcePropertiesDataTransferApiType = "SYNC"
+	CustomConnectorSourcePropertiesDataTransferApiTypeASYNC     CustomConnectorSourcePropertiesDataTransferApiType = "ASYNC"
+	CustomConnectorSourcePropertiesDataTransferApiTypeAUTOMATIC CustomConnectorSourcePropertiesDataTransferApiType = "AUTOMATIC"
+)
+
+type S3InputFormatConfigS3InputFileType string
+
+const (
+	S3InputFormatConfigS3InputFileTypeCSV  S3InputFormatConfigS3InputFileType = "CSV"
+	S3InputFormatConfigS3InputFileTypeJSON S3InputFormatConfigS3InputFileType = "JSON"
+)
+
+type AmplitudeConnectorOperator string
+
+const (
+	AmplitudeConnectorOperatorBETWEEN AmplitudeConnectorOperator = "BETWEEN"
+)
+
+type Operator string
+
+const (
+	OperatorPROJECTION           Operator = "PROJECTION"
+	OperatorLESSTHAN             Operator = "LESS_THAN"
+	OperatorGREATERTHAN          Operator = "GREATER_THAN"
+	OperatorCONTAINS             Operator = "CONTAINS"
+	OperatorBETWEEN              Operator = "BETWEEN"
+	OperatorLESSTHANOREQUALTO    Operator = "LESS_THAN_OR_EQUAL_TO"
+	OperatorGREATERTHANOREQUALTO Operator = "GREATER_THAN_OR_EQUAL_TO"
+	OperatorEQUALTO              Operator = "EQUAL_TO"
+	OperatorNOTEQUALTO           Operator = "NOT_EQUAL_TO"
+	OperatorADDITION             Operator = "ADDITION"
+	OperatorMULTIPLICATION       Operator = "MULTIPLICATION"
+	OperatorDIVISION             Operator = "DIVISION"
+	OperatorSUBTRACTION          Operator = "SUBTRACTION"
+	OperatorMASKALL              Operator = "MASK_ALL"
+	OperatorMASKFIRSTN           Operator = "MASK_FIRST_N"
+	OperatorMASKLASTN            Operator = "MASK_LAST_N"
+	OperatorVALIDATENONNULL      Operator = "VALIDATE_NON_NULL"
+	OperatorVALIDATENONZERO      Operator = "VALIDATE_NON_ZERO"
+	OperatorVALIDATENONNEGATIVE  Operator = "VALIDATE_NON_NEGATIVE"
+	OperatorVALIDATENUMERIC      Operator = "VALIDATE_NUMERIC"
+	OperatorNOOP                 Operator = "NO_OP"
+)
+
+type DatadogConnectorOperator string
+
+const (
+	DatadogConnectorOperatorPROJECTION          DatadogConnectorOperator = "PROJECTION"
+	DatadogConnectorOperatorBETWEEN             DatadogConnectorOperator = "BETWEEN"
+	DatadogConnectorOperatorEQUALTO             DatadogConnectorOperator = "EQUAL_TO"
+	DatadogConnectorOperatorADDITION            DatadogConnectorOperator = "ADDITION"
+	DatadogConnectorOperatorMULTIPLICATION      DatadogConnectorOperator = "MULTIPLICATION"
+	DatadogConnectorOperatorDIVISION            DatadogConnectorOperator = "DIVISION"
+	DatadogConnectorOperatorSUBTRACTION         DatadogConnectorOperator = "SUBTRACTION"
+	DatadogConnectorOperatorMASKALL             DatadogConnectorOperator = "MASK_ALL"
+	DatadogConnectorOperatorMASKFIRSTN          DatadogConnectorOperator = "MASK_FIRST_N"
+	DatadogConnectorOperatorMASKLASTN           DatadogConnectorOperator = "MASK_LAST_N"
+	DatadogConnectorOperatorVALIDATENONNULL     DatadogConnectorOperator = "VALIDATE_NON_NULL"
+	DatadogConnectorOperatorVALIDATENONZERO     DatadogConnectorOperator = "VALIDATE_NON_ZERO"
+	DatadogConnectorOperatorVALIDATENONNEGATIVE DatadogConnectorOperator = "VALIDATE_NON_NEGATIVE"
+	DatadogConnectorOperatorVALIDATENUMERIC     DatadogConnectorOperator = "VALIDATE_NUMERIC"
+	DatadogConnectorOperatorNOOP                DatadogConnectorOperator = "NO_OP"
+)
+
+type DynatraceConnectorOperator string
+
+const (
+	DynatraceConnectorOperatorPROJECTION          DynatraceConnectorOperator = "PROJECTION"
+	DynatraceConnectorOperatorBETWEEN             DynatraceConnectorOperator = "BETWEEN"
+	DynatraceConnectorOperatorEQUALTO             DynatraceConnectorOperator = "EQUAL_TO"
+	DynatraceConnectorOperatorADDITION            DynatraceConnectorOperator = "ADDITION"
+	DynatraceConnectorOperatorMULTIPLICATION      DynatraceConnectorOperator = "MULTIPLICATION"
+	DynatraceConnectorOperatorDIVISION            DynatraceConnectorOperator = "DIVISION"
+	DynatraceConnectorOperatorSUBTRACTION         DynatraceConnectorOperator = "SUBTRACTION"
+	DynatraceConnectorOperatorMASKALL             DynatraceConnectorOperator = "MASK_ALL"
+	DynatraceConnectorOperatorMASKFIRSTN          DynatraceConnectorOperator = "MASK_FIRST_N"
+	DynatraceConnectorOperatorMASKLASTN           DynatraceConnectorOperator = "MASK_LAST_N"
+	DynatraceConnectorOperatorVALIDATENONNULL     DynatraceConnectorOperator = "VALIDATE_NON_NULL"
+	DynatraceConnectorOperatorVALIDATENONZERO     DynatraceConnectorOperator = "VALIDATE_NON_ZERO"
+	DynatraceConnectorOperatorVALIDATENONNEGATIVE DynatraceConnectorOperator = "VALIDATE_NON_NEGATIVE"
+	DynatraceConnectorOperatorVALIDATENUMERIC     DynatraceConnectorOperator = "VALIDATE_NUMERIC"
+	DynatraceConnectorOperatorNOOP                DynatraceConnectorOperator = "NO_OP"
+)
+
+type GoogleAnalyticsConnectorOperator string
+
+const (
+	GoogleAnalyticsConnectorOperatorPROJECTION GoogleAnalyticsConnectorOperator = "PROJECTION"
+	GoogleAnalyticsConnectorOperatorBETWEEN    GoogleAnalyticsConnectorOperator = "BETWEEN"
+)
+
+type InforNexusConnectorOperator string
+
+const (
+	InforNexusConnectorOperatorPROJECTION          InforNexusConnectorOperator = "PROJECTION"
+	InforNexusConnectorOperatorBETWEEN             InforNexusConnectorOperator = "BETWEEN"
+	InforNexusConnectorOperatorEQUALTO             InforNexusConnectorOperator = "EQUAL_TO"
+	InforNexusConnectorOperatorADDITION            InforNexusConnectorOperator = "ADDITION"
+	InforNexusConnectorOperatorMULTIPLICATION      InforNexusConnectorOperator = "MULTIPLICATION"
+	InforNexusConnectorOperatorDIVISION            InforNexusConnectorOperator = "DIVISION"
+	InforNexusConnectorOperatorSUBTRACTION         InforNexusConnectorOperator = "SUBTRACTION"
+	InforNexusConnectorOperatorMASKALL             InforNexusConnectorOperator = "MASK_ALL"
+	InforNexusConnectorOperatorMASKFIRSTN          InforNexusConnectorOperator = "MASK_FIRST_N"
+	InforNexusConnectorOperatorMASKLASTN           InforNexusConnectorOperator = "MASK_LAST_N"
+	InforNexusConnectorOperatorVALIDATENONNULL     InforNexusConnectorOperator = "VALIDATE_NON_NULL"
+	InforNexusConnectorOperatorVALIDATENONZERO     InforNexusConnectorOperator = "VALIDATE_NON_ZERO"
+	InforNexusConnectorOperatorVALIDATENONNEGATIVE InforNexusConnectorOperator = "VALIDATE_NON_NEGATIVE"
+	InforNexusConnectorOperatorVALIDATENUMERIC     InforNexusConnectorOperator = "VALIDATE_NUMERIC"
+	InforNexusConnectorOperatorNOOP                InforNexusConnectorOperator = "NO_OP"
+)
+
+type MarketoConnectorOperator string
+
+const (
+	MarketoConnectorOperatorPROJECTION          MarketoConnectorOperator = "PROJECTION"
+	MarketoConnectorOperatorLESSTHAN            MarketoConnectorOperator = "LESS_THAN"
+	MarketoConnectorOperatorGREATERTHAN         MarketoConnectorOperator = "GREATER_THAN"
+	MarketoConnectorOperatorBETWEEN             MarketoConnectorOperator = "BETWEEN"
+	MarketoConnectorOperatorADDITION            MarketoConnectorOperator = "ADDITION"
+	MarketoConnectorOperatorMULTIPLICATION      MarketoConnectorOperator = "MULTIPLICATION"
+	MarketoConnectorOperatorDIVISION            MarketoConnectorOperator = "DIVISION"
+	MarketoConnectorOperatorSUBTRACTION         MarketoConnectorOperator = "SUBTRACTION"
+	MarketoConnectorOperatorMASKALL             MarketoConnectorOperator = "MASK_ALL"
+	MarketoConnectorOperatorMASKFIRSTN          MarketoConnectorOperator = "MASK_FIRST_N"
+	MarketoConnectorOperatorMASKLASTN           MarketoConnectorOperator = "MASK_LAST_N"
+	MarketoConnectorOperatorVALIDATENONNULL     MarketoConnectorOperator = "VALIDATE_NON_NULL"
+	MarketoConnectorOperatorVALIDATENONZERO     MarketoConnectorOperator = "VALIDATE_NON_ZERO"
+	MarketoConnectorOperatorVALIDATENONNEGATIVE MarketoConnectorOperator = "VALIDATE_NON_NEGATIVE"
+	MarketoConnectorOperatorVALIDATENUMERIC     MarketoConnectorOperator = "VALIDATE_NUMERIC"
+	MarketoConnectorOperatorNOOP                MarketoConnectorOperator = "NO_OP"
+)
+
+type PardotConnectorOperator string
+
+const (
+	PardotConnectorOperatorPROJECTION          PardotConnectorOperator = "PROJECTION"
+	PardotConnectorOperatorEQUALTO             PardotConnectorOperator = "EQUAL_TO"
+	PardotConnectorOperatorNOOP                PardotConnectorOperator = "NO_OP"
+	PardotConnectorOperatorADDITION            PardotConnectorOperator = "ADDITION"
+	PardotConnectorOperatorMULTIPLICATION      PardotConnectorOperator = "MULTIPLICATION"
+	PardotConnectorOperatorDIVISION            PardotConnectorOperator = "DIVISION"
+	PardotConnectorOperatorSUBTRACTION         PardotConnectorOperator = "SUBTRACTION"
+	PardotConnectorOperatorMASKALL             PardotConnectorOperator = "MASK_ALL"
+	PardotConnectorOperatorMASKFIRSTN          PardotConnectorOperator = "MASK_FIRST_N"
+	PardotConnectorOperatorMASKLASTN           PardotConnectorOperator = "MASK_LAST_N"
+	PardotConnectorOperatorVALIDATENONNULL     PardotConnectorOperator = "VALIDATE_NON_NULL"
+	PardotConnectorOperatorVALIDATENONZERO     PardotConnectorOperator = "VALIDATE_NON_ZERO"
+	PardotConnectorOperatorVALIDATENONNEGATIVE PardotConnectorOperator = "VALIDATE_NON_NEGATIVE"
+	PardotConnectorOperatorVALIDATENUMERIC     PardotConnectorOperator = "VALIDATE_NUMERIC"
+)
+
+type S3ConnectorOperator string
+
+const (
+	S3ConnectorOperatorPROJECTION           S3ConnectorOperator = "PROJECTION"
+	S3ConnectorOperatorLESSTHAN             S3ConnectorOperator = "LESS_THAN"
+	S3ConnectorOperatorGREATERTHAN          S3ConnectorOperator = "GREATER_THAN"
+	S3ConnectorOperatorBETWEEN              S3ConnectorOperator = "BETWEEN"
+	S3ConnectorOperatorLESSTHANOREQUALTO    S3ConnectorOperator = "LESS_THAN_OR_EQUAL_TO"
+	S3ConnectorOperatorGREATERTHANOREQUALTO S3ConnectorOperator = "GREATER_THAN_OR_EQUAL_TO"
+	S3ConnectorOperatorEQUALTO              S3ConnectorOperator = "EQUAL_TO"
+	S3ConnectorOperatorNOTEQUALTO           S3ConnectorOperator = "NOT_EQUAL_TO"
+	S3ConnectorOperatorADDITION             S3ConnectorOperator = "ADDITION"
+	S3ConnectorOperatorMULTIPLICATION       S3ConnectorOperator = "MULTIPLICATION"
+	S3ConnectorOperatorDIVISION             S3ConnectorOperator = "DIVISION"
+	S3ConnectorOperatorSUBTRACTION          S3ConnectorOperator = "SUBTRACTION"
+	S3ConnectorOperatorMASKALL              S3ConnectorOperator = "MASK_ALL"
+	S3ConnectorOperatorMASKFIRSTN           S3ConnectorOperator = "MASK_FIRST_N"
+	S3ConnectorOperatorMASKLASTN            S3ConnectorOperator = "MASK_LAST_N"
+	S3ConnectorOperatorVALIDATENONNULL      S3ConnectorOperator = "VALIDATE_NON_NULL"
+	S3ConnectorOperatorVALIDATENONZERO      S3ConnectorOperator = "VALIDATE_NON_ZERO"
+	S3ConnectorOperatorVALIDATENONNEGATIVE  S3ConnectorOperator = "VALIDATE_NON_NEGATIVE"
+	S3ConnectorOperatorVALIDATENUMERIC      S3ConnectorOperator = "VALIDATE_NUMERIC"
+	S3ConnectorOperatorNOOP                 S3ConnectorOperator = "NO_OP"
+)
+
+type SAPODataConnectorOperator string
+
+const (
+	SAPODataConnectorOperatorPROJECTION           SAPODataConnectorOperator = "PROJECTION"
+	SAPODataConnectorOperatorLESSTHAN             SAPODataConnectorOperator = "LESS_THAN"
+	SAPODataConnectorOperatorCONTAINS             SAPODataConnectorOperator = "CONTAINS"
+	SAPODataConnectorOperatorGREATERTHAN          SAPODataConnectorOperator = "GREATER_THAN"
+	SAPODataConnectorOperatorBETWEEN              SAPODataConnectorOperator = "BETWEEN"
+	SAPODataConnectorOperatorLESSTHANOREQUALTO    SAPODataConnectorOperator = "LESS_THAN_OR_EQUAL_TO"
+	SAPODataConnectorOperatorGREATERTHANOREQUALTO SAPODataConnectorOperator = "GREATER_THAN_OR_EQUAL_TO"
+	SAPODataConnectorOperatorEQUALTO              SAPODataConnectorOperator = "EQUAL_TO"
+	SAPODataConnectorOperatorNOTEQUALTO           SAPODataConnectorOperator = "NOT_EQUAL_TO"
+	SAPODataConnectorOperatorADDITION             SAPODataConnectorOperator = "ADDITION"
+	SAPODataConnectorOperatorMULTIPLICATION       SAPODataConnectorOperator = "MULTIPLICATION"
+	SAPODataConnectorOperatorDIVISION             SAPODataConnectorOperator = "DIVISION"
+	SAPODataConnectorOperatorSUBTRACTION          SAPODataConnectorOperator = "SUBTRACTION"
+	SAPODataConnectorOperatorMASKALL              SAPODataConnectorOperator = "MASK_ALL"
+	SAPODataConnectorOperatorMASKFIRSTN           SAPODataConnectorOperator = "MASK_FIRST_N"
+	SAPODataConnectorOperatorMASKLASTN            SAPODataConnectorOperator = "MASK_LAST_N"
+	SAPODataConnectorOperatorVALIDATENONNULL      SAPODataConnectorOperator = "VALIDATE_NON_NULL"
+	SAPODataConnectorOperatorVALIDATENONZERO      SAPODataConnectorOperator = "VALIDATE_NON_ZERO"
+	SAPODataConnectorOperatorVALIDATENONNEGATIVE  SAPODataConnectorOperator = "VALIDATE_NON_NEGATIVE"
+	SAPODataConnectorOperatorVALIDATENUMERIC      SAPODataConnectorOperator = "VALIDATE_NUMERIC"
+	SAPODataConnectorOperatorNOOP                 SAPODataConnectorOperator = "NO_OP"
+)
+
+type SalesforceConnectorOperator string
+
+const (
+	SalesforceConnectorOperatorPROJECTION           SalesforceConnectorOperator = "PROJECTION"
+	SalesforceConnectorOperatorLESSTHAN             SalesforceConnectorOperator = "LESS_THAN"
+	SalesforceConnectorOperatorCONTAINS             SalesforceConnectorOperator = "CONTAINS"
+	SalesforceConnectorOperatorGREATERTHAN          SalesforceConnectorOperator = "GREATER_THAN"
+	SalesforceConnectorOperatorBETWEEN              SalesforceConnectorOperator = "BETWEEN"
+	SalesforceConnectorOperatorLESSTHANOREQUALTO    SalesforceConnectorOperator = "LESS_THAN_OR_EQUAL_TO"
+	SalesforceConnectorOperatorGREATERTHANOREQUALTO SalesforceConnectorOperator = "GREATER_THAN_OR_EQUAL_TO"
+	SalesforceConnectorOperatorEQUALTO              SalesforceConnectorOperator = "EQUAL_TO"
+	SalesforceConnectorOperatorNOTEQUALTO           SalesforceConnectorOperator = "NOT_EQUAL_TO"
+	SalesforceConnectorOperatorADDITION             SalesforceConnectorOperator = "ADDITION"
+	SalesforceConnectorOperatorMULTIPLICATION       SalesforceConnectorOperator = "MULTIPLICATION"
+	SalesforceConnectorOperatorDIVISION             SalesforceConnectorOperator = "DIVISION"
+	SalesforceConnectorOperatorSUBTRACTION          SalesforceConnectorOperator = "SUBTRACTION"
+	SalesforceConnectorOperatorMASKALL              SalesforceConnectorOperator = "MASK_ALL"
+	SalesforceConnectorOperatorMASKFIRSTN           SalesforceConnectorOperator = "MASK_FIRST_N"
+	SalesforceConnectorOperatorMASKLASTN            SalesforceConnectorOperator = "MASK_LAST_N"
+	SalesforceConnectorOperatorVALIDATENONNULL      SalesforceConnectorOperator = "VALIDATE_NON_NULL"
+	SalesforceConnectorOperatorVALIDATENONZERO      SalesforceConnectorOperator = "VALIDATE_NON_ZERO"
+	SalesforceConnectorOperatorVALIDATENONNEGATIVE  SalesforceConnectorOperator = "VALIDATE_NON_NEGATIVE"
+	SalesforceConnectorOperatorVALIDATENUMERIC      SalesforceConnectorOperator = "VALIDATE_NUMERIC"
+	SalesforceConnectorOperatorNOOP                 SalesforceConnectorOperator = "NO_OP"
+)
+
+type ServiceNowConnectorOperator string
+
+const (
+	ServiceNowConnectorOperatorPROJECTION           ServiceNowConnectorOperator = "PROJECTION"
+	ServiceNowConnectorOperatorLESSTHAN             ServiceNowConnectorOperator = "LESS_THAN"
+	ServiceNowConnectorOperatorCONTAINS             ServiceNowConnectorOperator = "CONTAINS"
+	ServiceNowConnectorOperatorGREATERTHAN          ServiceNowConnectorOperator = "GREATER_THAN"
+	ServiceNowConnectorOperatorBETWEEN              ServiceNowConnectorOperator = "BETWEEN"
+	ServiceNowConnectorOperatorLESSTHANOREQUALTO    ServiceNowConnectorOperator = "LESS_THAN_OR_EQUAL_TO"
+	ServiceNowConnectorOperatorGREATERTHANOREQUALTO ServiceNowConnectorOperator = "GREATER_THAN_OR_EQUAL_TO"
+	ServiceNowConnectorOperatorEQUALTO              ServiceNowConnectorOperator = "EQUAL_TO"
+	ServiceNowConnectorOperatorNOTEQUALTO           ServiceNowConnectorOperator = "NOT_EQUAL_TO"
+	ServiceNowConnectorOperatorADDITION             ServiceNowConnectorOperator = "ADDITION"
+	ServiceNowConnectorOperatorMULTIPLICATION       ServiceNowConnectorOperator = "MULTIPLICATION"
+	ServiceNowConnectorOperatorDIVISION             ServiceNowConnectorOperator = "DIVISION"
+	ServiceNowConnectorOperatorSUBTRACTION          ServiceNowConnectorOperator = "SUBTRACTION"
+	ServiceNowConnectorOperatorMASKALL              ServiceNowConnectorOperator = "MASK_ALL"
+	ServiceNowConnectorOperatorMASKFIRSTN           ServiceNowConnectorOperator = "MASK_FIRST_N"
+	ServiceNowConnectorOperatorMASKLASTN            ServiceNowConnectorOperator = "MASK_LAST_N"
+	ServiceNowConnectorOperatorVALIDATENONNULL      ServiceNowConnectorOperator = "VALIDATE_NON_NULL"
+	ServiceNowConnectorOperatorVALIDATENONZERO      ServiceNowConnectorOperator = "VALIDATE_NON_ZERO"
+	ServiceNowConnectorOperatorVALIDATENONNEGATIVE  ServiceNowConnectorOperator = "VALIDATE_NON_NEGATIVE"
+	ServiceNowConnectorOperatorVALIDATENUMERIC      ServiceNowConnectorOperator = "VALIDATE_NUMERIC"
+	ServiceNowConnectorOperatorNOOP                 ServiceNowConnectorOperator = "NO_OP"
+)
+
+type SingularConnectorOperator string
+
+const (
+	SingularConnectorOperatorPROJECTION          SingularConnectorOperator = "PROJECTION"
+	SingularConnectorOperatorEQUALTO             SingularConnectorOperator = "EQUAL_TO"
+	SingularConnectorOperatorADDITION            SingularConnectorOperator = "ADDITION"
+	SingularConnectorOperatorMULTIPLICATION      SingularConnectorOperator = "MULTIPLICATION"
+	SingularConnectorOperatorDIVISION            SingularConnectorOperator = "DIVISION"
+	SingularConnectorOperatorSUBTRACTION         SingularConnectorOperator = "SUBTRACTION"
+	SingularConnectorOperatorMASKALL             SingularConnectorOperator = "MASK_ALL"
+	SingularConnectorOperatorMASKFIRSTN          SingularConnectorOperator = "MASK_FIRST_N"
+	SingularConnectorOperatorMASKLASTN           SingularConnectorOperator = "MASK_LAST_N"
+	SingularConnectorOperatorVALIDATENONNULL     SingularConnectorOperator = "VALIDATE_NON_NULL"
+	SingularConnectorOperatorVALIDATENONZERO     SingularConnectorOperator = "VALIDATE_NON_ZERO"
+	SingularConnectorOperatorVALIDATENONNEGATIVE SingularConnectorOperator = "VALIDATE_NON_NEGATIVE"
+	SingularConnectorOperatorVALIDATENUMERIC     SingularConnectorOperator = "VALIDATE_NUMERIC"
+	SingularConnectorOperatorNOOP                SingularConnectorOperator = "NO_OP"
+)
+
+type SlackConnectorOperator string
+
+const (
+	SlackConnectorOperatorPROJECTION          SlackConnectorOperator = "PROJECTION"
+	SlackConnectorOperatorBETWEEN             SlackConnectorOperator = "BETWEEN"
+	SlackConnectorOperatorEQUALTO             SlackConnectorOperator = "EQUAL_TO"
+	SlackConnectorOperatorADDITION            SlackConnectorOperator = "ADDITION"
+	SlackConnectorOperatorMULTIPLICATION      SlackConnectorOperator = "MULTIPLICATION"
+	SlackConnectorOperatorDIVISION            SlackConnectorOperator = "DIVISION"
+	SlackConnectorOperatorSUBTRACTION         SlackConnectorOperator = "SUBTRACTION"
+	SlackConnectorOperatorMASKALL             SlackConnectorOperator = "MASK_ALL"
+	SlackConnectorOperatorMASKFIRSTN          SlackConnectorOperator = "MASK_FIRST_N"
+	SlackConnectorOperatorMASKLASTN           SlackConnectorOperator = "MASK_LAST_N"
+	SlackConnectorOperatorVALIDATENONNULL     SlackConnectorOperator = "VALIDATE_NON_NULL"
+	SlackConnectorOperatorVALIDATENONZERO     SlackConnectorOperator = "VALIDATE_NON_ZERO"
+	SlackConnectorOperatorVALIDATENONNEGATIVE SlackConnectorOperator = "VALIDATE_NON_NEGATIVE"
+	SlackConnectorOperatorVALIDATENUMERIC     SlackConnectorOperator = "VALIDATE_NUMERIC"
+	SlackConnectorOperatorNOOP                SlackConnectorOperator = "NO_OP"
+)
+
+type TrendmicroConnectorOperator string
+
+const (
+	TrendmicroConnectorOperatorPROJECTION          TrendmicroConnectorOperator = "PROJECTION"
+	TrendmicroConnectorOperatorEQUALTO             TrendmicroConnectorOperator = "EQUAL_TO"
+	TrendmicroConnectorOperatorADDITION            TrendmicroConnectorOperator = "ADDITION"
+	TrendmicroConnectorOperatorMULTIPLICATION      TrendmicroConnectorOperator = "MULTIPLICATION"
+	TrendmicroConnectorOperatorDIVISION            TrendmicroConnectorOperator = "DIVISION"
+	TrendmicroConnectorOperatorSUBTRACTION         TrendmicroConnectorOperator = "SUBTRACTION"
+	TrendmicroConnectorOperatorMASKALL             TrendmicroConnectorOperator = "MASK_ALL"
+	TrendmicroConnectorOperatorMASKFIRSTN          TrendmicroConnectorOperator = "MASK_FIRST_N"
+	TrendmicroConnectorOperatorMASKLASTN           TrendmicroConnectorOperator = "MASK_LAST_N"
+	TrendmicroConnectorOperatorVALIDATENONNULL     TrendmicroConnectorOperator = "VALIDATE_NON_NULL"
+	TrendmicroConnectorOperatorVALIDATENONZERO     TrendmicroConnectorOperator = "VALIDATE_NON_ZERO"
+	TrendmicroConnectorOperatorVALIDATENONNEGATIVE TrendmicroConnectorOperator = "VALIDATE_NON_NEGATIVE"
+	TrendmicroConnectorOperatorVALIDATENUMERIC     TrendmicroConnectorOperator = "VALIDATE_NUMERIC"
+	TrendmicroConnectorOperatorNOOP                TrendmicroConnectorOperator = "NO_OP"
+)
+
+type VeevaConnectorOperator string
+
+const (
+	VeevaConnectorOperatorPROJECTION           VeevaConnectorOperator = "PROJECTION"
+	VeevaConnectorOperatorLESSTHAN             VeevaConnectorOperator = "LESS_THAN"
+	VeevaConnectorOperatorGREATERTHAN          VeevaConnectorOperator = "GREATER_THAN"
+	VeevaConnectorOperatorBETWEEN              VeevaConnectorOperator = "BETWEEN"
+	VeevaConnectorOperatorLESSTHANOREQUALTO    VeevaConnectorOperator = "LESS_THAN_OR_EQUAL_TO"
+	VeevaConnectorOperatorGREATERTHANOREQUALTO VeevaConnectorOperator = "GREATER_THAN_OR_EQUAL_TO"
+	VeevaConnectorOperatorEQUALTO              VeevaConnectorOperator = "EQUAL_TO"
+	VeevaConnectorOperatorNOTEQUALTO           VeevaConnectorOperator = "NOT_EQUAL_TO"
+	VeevaConnectorOperatorADDITION             VeevaConnectorOperator = "ADDITION"
+	VeevaConnectorOperatorMULTIPLICATION       VeevaConnectorOperator = "MULTIPLICATION"
+	VeevaConnectorOperatorDIVISION             VeevaConnectorOperator = "DIVISION"
+	VeevaConnectorOperatorSUBTRACTION          VeevaConnectorOperator = "SUBTRACTION"
+	VeevaConnectorOperatorMASKALL              VeevaConnectorOperator = "MASK_ALL"
+	VeevaConnectorOperatorMASKFIRSTN           VeevaConnectorOperator = "MASK_FIRST_N"
+	VeevaConnectorOperatorMASKLASTN            VeevaConnectorOperator = "MASK_LAST_N"
+	VeevaConnectorOperatorVALIDATENONNULL      VeevaConnectorOperator = "VALIDATE_NON_NULL"
+	VeevaConnectorOperatorVALIDATENONZERO      VeevaConnectorOperator = "VALIDATE_NON_ZERO"
+	VeevaConnectorOperatorVALIDATENONNEGATIVE  VeevaConnectorOperator = "VALIDATE_NON_NEGATIVE"
+	VeevaConnectorOperatorVALIDATENUMERIC      VeevaConnectorOperator = "VALIDATE_NUMERIC"
+	VeevaConnectorOperatorNOOP                 VeevaConnectorOperator = "NO_OP"
+)
+
+type ZendeskConnectorOperator string
+
+const (
+	ZendeskConnectorOperatorPROJECTION          ZendeskConnectorOperator = "PROJECTION"
+	ZendeskConnectorOperatorGREATERTHAN         ZendeskConnectorOperator = "GREATER_THAN"
+	ZendeskConnectorOperatorADDITION            ZendeskConnectorOperator = "ADDITION"
+	ZendeskConnectorOperatorMULTIPLICATION      ZendeskConnectorOperator = "MULTIPLICATION"
+	ZendeskConnectorOperatorDIVISION            ZendeskConnectorOperator = "DIVISION"
+	ZendeskConnectorOperatorSUBTRACTION         ZendeskConnectorOperator = "SUBTRACTION"
+	ZendeskConnectorOperatorMASKALL             ZendeskConnectorOperator = "MASK_ALL"
+	ZendeskConnectorOperatorMASKFIRSTN          ZendeskConnectorOperator = "MASK_FIRST_N"
+	ZendeskConnectorOperatorMASKLASTN           ZendeskConnectorOperator = "MASK_LAST_N"
+	ZendeskConnectorOperatorVALIDATENONNULL     ZendeskConnectorOperator = "VALIDATE_NON_NULL"
+	ZendeskConnectorOperatorVALIDATENONZERO     ZendeskConnectorOperator = "VALIDATE_NON_ZERO"
+	ZendeskConnectorOperatorVALIDATENONNEGATIVE ZendeskConnectorOperator = "VALIDATE_NON_NEGATIVE"
+	ZendeskConnectorOperatorVALIDATENUMERIC     ZendeskConnectorOperator = "VALIDATE_NUMERIC"
+	ZendeskConnectorOperatorNOOP                ZendeskConnectorOperator = "NO_OP"
+)
+
+type OperatorPropertiesKeys string
+
+const (
+	OperatorPropertiesKeysVALUE                    OperatorPropertiesKeys = "VALUE"
+	OperatorPropertiesKeysVALUES                   OperatorPropertiesKeys = "VALUES"
+	OperatorPropertiesKeysDATATYPE                 OperatorPropertiesKeys = "DATA_TYPE"
+	OperatorPropertiesKeysUPPERBOUND               OperatorPropertiesKeys = "UPPER_BOUND"
+	OperatorPropertiesKeysLOWERBOUND               OperatorPropertiesKeys = "LOWER_BOUND"
+	OperatorPropertiesKeysSOURCEDATATYPE           OperatorPropertiesKeys = "SOURCE_DATA_TYPE"
+	OperatorPropertiesKeysDESTINATIONDATATYPE      OperatorPropertiesKeys = "DESTINATION_DATA_TYPE"
+	OperatorPropertiesKeysVALIDATIONACTION         OperatorPropertiesKeys = "VALIDATION_ACTION"
+	OperatorPropertiesKeysMASKVALUE                OperatorPropertiesKeys = "MASK_VALUE"
+	OperatorPropertiesKeysMASKLENGTH               OperatorPropertiesKeys = "MASK_LENGTH"
+	OperatorPropertiesKeysTRUNCATELENGTH           OperatorPropertiesKeys = "TRUNCATE_LENGTH"
+	OperatorPropertiesKeysMATHOPERATIONFIELDSORDER OperatorPropertiesKeys = "MATH_OPERATION_FIELDS_ORDER"
+	OperatorPropertiesKeysCONCATFORMAT             OperatorPropertiesKeys = "CONCAT_FORMAT"
+	OperatorPropertiesKeysSUBFIELDCATEGORYMAP      OperatorPropertiesKeys = "SUBFIELD_CATEGORY_MAP"
+	OperatorPropertiesKeysEXCLUDESOURCEFIELDSLIST  OperatorPropertiesKeys = "EXCLUDE_SOURCE_FIELDS_LIST"
+	OperatorPropertiesKeysINCLUDENEWFIELDS         OperatorPropertiesKeys = "INCLUDE_NEW_FIELDS"
+	OperatorPropertiesKeysORDEREDPARTITIONKEYSLIST OperatorPropertiesKeys = "ORDERED_PARTITION_KEYS_LIST"
+)
+
+type TaskType string
+
+const (
+	TaskTypeArithmetic  TaskType = "Arithmetic"
+	TaskTypeFilter      TaskType = "Filter"
+	TaskTypeMap         TaskType = "Map"
+	TaskTypeMapAll      TaskType = "Map_all"
+	TaskTypeMask        TaskType = "Mask"
+	TaskTypeMerge       TaskType = "Merge"
+	TaskTypePassthrough TaskType = "Passthrough"
+	TaskTypeTruncate    TaskType = "Truncate"
+	TaskTypeValidate    TaskType = "Validate"
+	TaskTypePartition   TaskType = "Partition"
+)
+
+type ScheduledTriggerPropertiesDataPullMode string
+
+const (
+	ScheduledTriggerPropertiesDataPullModeIncremental ScheduledTriggerPropertiesDataPullMode = "Incremental"
+	ScheduledTriggerPropertiesDataPullModeComplete    ScheduledTriggerPropertiesDataPullMode = "Complete"
+)
+
+type TriggerType string
+
+const (
+	TriggerTypeScheduled TriggerType = "Scheduled"
+	TriggerTypeEvent     TriggerType = "Event"
+	TriggerTypeOnDemand  TriggerType = "OnDemand"
+)

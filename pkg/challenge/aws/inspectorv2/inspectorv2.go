@@ -15,13 +15,13 @@ type DailySchedule struct {
 }
 
 type MonthlySchedule struct {
-	Day       *string `json:"Day,omitempty"`
-	StartTime *Time   `json:"StartTime,omitempty"`
+	Day       *Day  `json:"Day,omitempty"`
+	StartTime *Time `json:"StartTime,omitempty"`
 }
 
 type WeeklySchedule struct {
-	Days      []string `json:"Days,omitempty"`
-	StartTime *Time    `json:"StartTime,omitempty"`
+	Days      []Day `json:"Days,omitempty"`
+	StartTime *Time `json:"StartTime,omitempty"`
 }
 
 type Schedule struct {
@@ -40,7 +40,7 @@ type CisScanConfiguration struct {
 	Arn           *string           `json:"Arn,omitempty"`
 	ScanName      *string           `json:"ScanName,omitempty"`
 	Schedule      *Schedule         `json:"Schedule,omitempty"`
-	SecurityLevel *string           `json:"SecurityLevel,omitempty"`
+	SecurityLevel *CisSecurityLevel `json:"SecurityLevel,omitempty"`
 	Tags          map[string]string `json:"Tags,omitempty"`
 	Targets       *CisTargets       `json:"Targets,omitempty"`
 }
@@ -73,17 +73,17 @@ type UpdateDetails struct {
 }
 
 type CodeSecurityIntegration struct {
-	Arn                      *string           `json:"Arn,omitempty"`
-	AuthorizationUrl         *string           `json:"AuthorizationUrl,omitempty"`
-	CreateIntegrationDetails *CreateDetails    `json:"CreateIntegrationDetails,omitempty"`
-	CreatedAt                *string           `json:"CreatedAt,omitempty"`
-	LastUpdatedAt            *string           `json:"LastUpdatedAt,omitempty"`
-	Name                     *string           `json:"Name,omitempty"`
-	Status                   *string           `json:"Status,omitempty"`
-	StatusReason             *string           `json:"StatusReason,omitempty"`
-	Tags                     map[string]string `json:"Tags,omitempty"`
-	Type                     *string           `json:"Type,omitempty"`
-	UpdateIntegrationDetails *UpdateDetails    `json:"UpdateIntegrationDetails,omitempty"`
+	Arn                      *string            `json:"Arn,omitempty"`
+	AuthorizationUrl         *string            `json:"AuthorizationUrl,omitempty"`
+	CreateIntegrationDetails *CreateDetails     `json:"CreateIntegrationDetails,omitempty"`
+	CreatedAt                *string            `json:"CreatedAt,omitempty"`
+	LastUpdatedAt            *string            `json:"LastUpdatedAt,omitempty"`
+	Name                     *string            `json:"Name,omitempty"`
+	Status                   *IntegrationStatus `json:"Status,omitempty"`
+	StatusReason             *string            `json:"StatusReason,omitempty"`
+	Tags                     map[string]string  `json:"Tags,omitempty"`
+	Type                     *IntegrationType   `json:"Type,omitempty"`
+	UpdateIntegrationDetails *UpdateDetails     `json:"UpdateIntegrationDetails,omitempty"`
 }
 
 func (CodeSecurityIntegration) CloudControlType() string {
@@ -91,28 +91,28 @@ func (CodeSecurityIntegration) CloudControlType() string {
 }
 
 type ContinuousIntegrationScanConfiguration struct {
-	SupportedEvents []string `json:"supportedEvents,omitempty"`
+	SupportedEvents []ContinuousIntegrationScanEvent `json:"supportedEvents,omitempty"`
 }
 
 type PeriodicScanConfiguration struct {
-	Frequency           *string `json:"frequency,omitempty"`
-	FrequencyExpression *string `json:"frequencyExpression,omitempty"`
+	Frequency           *PeriodicScanFrequency `json:"frequency,omitempty"`
+	FrequencyExpression *string                `json:"frequencyExpression,omitempty"`
 }
 
 type CodeSecurityScanConfigurationCodeSecurityScanConfiguration struct {
 	ContinuousIntegrationScanConfiguration *ContinuousIntegrationScanConfiguration `json:"continuousIntegrationScanConfiguration,omitempty"`
 	PeriodicScanConfiguration              *PeriodicScanConfiguration              `json:"periodicScanConfiguration,omitempty"`
-	RuleSetCategories                      []string                                `json:"ruleSetCategories,omitempty"`
+	RuleSetCategories                      []RuleSetCategory                       `json:"ruleSetCategories,omitempty"`
 }
 
 type ScopeSettings struct {
-	ProjectSelectionScope *string `json:"projectSelectionScope,omitempty"`
+	ProjectSelectionScope *ProjectSelectionScope `json:"projectSelectionScope,omitempty"`
 }
 
 type CodeSecurityScanConfiguration struct {
 	Arn           *string                                                     `json:"Arn,omitempty"`
 	Configuration *CodeSecurityScanConfigurationCodeSecurityScanConfiguration `json:"Configuration,omitempty"`
-	Level         *string                                                     `json:"Level,omitempty"`
+	Level         *ConfigurationLevel                                         `json:"Level,omitempty"`
 	Name          *string                                                     `json:"Name,omitempty"`
 	ScopeSettings *ScopeSettings                                              `json:"ScopeSettings,omitempty"`
 	Tags          map[string]string                                           `json:"Tags,omitempty"`
@@ -123,8 +123,8 @@ func (CodeSecurityScanConfiguration) CloudControlType() string {
 }
 
 type StringFilter struct {
-	Comparison *string `json:"Comparison,omitempty"`
-	Value      *string `json:"Value,omitempty"`
+	Comparison *StringComparison `json:"Comparison,omitempty"`
+	Value      *string           `json:"Value,omitempty"`
 }
 
 type DateFilter struct {
@@ -143,9 +143,9 @@ type PortRangeFilter struct {
 }
 
 type MapFilter struct {
-	Comparison *string `json:"Comparison,omitempty"`
-	Key        *string `json:"Key,omitempty"`
-	Value      *string `json:"Value,omitempty"`
+	Comparison *MapComparison `json:"Comparison,omitempty"`
+	Key        *string        `json:"Key,omitempty"`
+	Value      *string        `json:"Value,omitempty"`
 }
 
 type PackageFilter struct {
@@ -207,10 +207,103 @@ type FilterCriteria struct {
 type Filter struct {
 	Arn            *string           `json:"Arn,omitempty"`
 	Description    *string           `json:"Description,omitempty"`
-	FilterAction   *string           `json:"FilterAction,omitempty"`
+	FilterAction   *FilterAction     `json:"FilterAction,omitempty"`
 	FilterCriteria *FilterCriteria   `json:"FilterCriteria,omitempty"`
 	Name           *string           `json:"Name,omitempty"`
 	Tags           map[string]string `json:"Tags,omitempty"`
 }
 
 func (Filter) CloudControlType() string { return "AWS::InspectorV2::Filter" }
+
+type Day string
+
+const (
+	DayMON Day = "MON"
+	DayTUE Day = "TUE"
+	DayWED Day = "WED"
+	DayTHU Day = "THU"
+	DayFRI Day = "FRI"
+	DaySAT Day = "SAT"
+	DaySUN Day = "SUN"
+)
+
+type CisSecurityLevel string
+
+const (
+	CisSecurityLevelLEVEL1 CisSecurityLevel = "LEVEL_1"
+	CisSecurityLevelLEVEL2 CisSecurityLevel = "LEVEL_2"
+)
+
+type IntegrationStatus string
+
+const (
+	IntegrationStatusPENDING    IntegrationStatus = "PENDING"
+	IntegrationStatusINPROGRESS IntegrationStatus = "IN_PROGRESS"
+	IntegrationStatusACTIVE     IntegrationStatus = "ACTIVE"
+	IntegrationStatusINACTIVE   IntegrationStatus = "INACTIVE"
+	IntegrationStatusDISABLING  IntegrationStatus = "DISABLING"
+)
+
+type IntegrationType string
+
+const (
+	IntegrationTypeGITLABSELFMANAGED IntegrationType = "GITLAB_SELF_MANAGED"
+	IntegrationTypeGITHUB            IntegrationType = "GITHUB"
+)
+
+type ContinuousIntegrationScanEvent string
+
+const (
+	ContinuousIntegrationScanEventPULLREQUEST ContinuousIntegrationScanEvent = "PULL_REQUEST"
+	ContinuousIntegrationScanEventPUSH        ContinuousIntegrationScanEvent = "PUSH"
+)
+
+type PeriodicScanFrequency string
+
+const (
+	PeriodicScanFrequencyWEEKLY  PeriodicScanFrequency = "WEEKLY"
+	PeriodicScanFrequencyMONTHLY PeriodicScanFrequency = "MONTHLY"
+	PeriodicScanFrequencyNEVER   PeriodicScanFrequency = "NEVER"
+)
+
+type RuleSetCategory string
+
+const (
+	RuleSetCategorySAST RuleSetCategory = "SAST"
+	RuleSetCategoryIAC  RuleSetCategory = "IAC"
+	RuleSetCategorySCA  RuleSetCategory = "SCA"
+)
+
+type ConfigurationLevel string
+
+const (
+	ConfigurationLevelORGANIZATION ConfigurationLevel = "ORGANIZATION"
+	ConfigurationLevelACCOUNT      ConfigurationLevel = "ACCOUNT"
+)
+
+type ProjectSelectionScope string
+
+const (
+	ProjectSelectionScopeALL ProjectSelectionScope = "ALL"
+)
+
+type FilterAction string
+
+const (
+	FilterActionNONE     FilterAction = "NONE"
+	FilterActionSUPPRESS FilterAction = "SUPPRESS"
+)
+
+type StringComparison string
+
+const (
+	StringComparisonEQUALS    StringComparison = "EQUALS"
+	StringComparisonPREFIX    StringComparison = "PREFIX"
+	StringComparisonNOTEQUALS StringComparison = "NOT_EQUALS"
+)
+
+type MapComparison string
+
+const (
+	MapComparisonEQUALS MapComparison = "EQUALS"
+)

@@ -110,7 +110,7 @@ type WorkerTypeSpecificationInput struct {
 
 type Application struct {
 	ApplicationId               *string                                 `json:"ApplicationId,omitempty"`
-	Architecture                *string                                 `json:"Architecture,omitempty"`
+	Architecture                *Architecture                           `json:"Architecture,omitempty"`
 	Arn                         *string                                 `json:"Arn,omitempty"`
 	AutoStartConfiguration      *AutoStartConfiguration                 `json:"AutoStartConfiguration,omitempty"`
 	AutoStopConfiguration       *AutoStopConfiguration                  `json:"AutoStopConfiguration,omitempty"`
@@ -131,3 +131,10 @@ type Application struct {
 }
 
 func (Application) CloudControlType() string { return "AWS::EMRServerless::Application" }
+
+type Architecture string
+
+const (
+	ArchitectureARM64 Architecture = "ARM64"
+	ArchitectureX8664 Architecture = "X86_64"
+)

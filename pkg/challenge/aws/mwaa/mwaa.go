@@ -4,9 +4,9 @@
 package mwaa
 
 type ModuleLoggingConfiguration struct {
-	CloudWatchLogGroupArn *string `json:"CloudWatchLogGroupArn,omitempty"`
-	Enabled               *bool   `json:"Enabled,omitempty"`
-	LogLevel              *string `json:"LogLevel,omitempty"`
+	CloudWatchLogGroupArn *string       `json:"CloudWatchLogGroupArn,omitempty"`
+	Enabled               *bool         `json:"Enabled,omitempty"`
+	LogLevel              *LoggingLevel `json:"LogLevel,omitempty"`
 }
 
 type LoggingConfiguration struct {
@@ -23,37 +23,69 @@ type NetworkConfiguration struct {
 }
 
 type Environment struct {
-	AirflowConfigurationOptions  map[string]any        `json:"AirflowConfigurationOptions,omitempty"`
-	AirflowVersion               *string               `json:"AirflowVersion,omitempty"`
-	Arn                          *string               `json:"Arn,omitempty"`
-	CeleryExecutorQueue          *string               `json:"CeleryExecutorQueue,omitempty"`
-	DagS3Path                    *string               `json:"DagS3Path,omitempty"`
-	DatabaseVpcEndpointService   *string               `json:"DatabaseVpcEndpointService,omitempty"`
-	EndpointManagement           *string               `json:"EndpointManagement,omitempty"`
-	EnvironmentClass             *string               `json:"EnvironmentClass,omitempty"`
-	ExecutionRoleArn             *string               `json:"ExecutionRoleArn,omitempty"`
-	KmsKey                       *string               `json:"KmsKey,omitempty"`
-	LoggingConfiguration         *LoggingConfiguration `json:"LoggingConfiguration,omitempty"`
-	MaxWebservers                *int                  `json:"MaxWebservers,omitempty"`
-	MaxWorkers                   *int                  `json:"MaxWorkers,omitempty"`
-	MinWebservers                *int                  `json:"MinWebservers,omitempty"`
-	MinWorkers                   *int                  `json:"MinWorkers,omitempty"`
-	Name                         *string               `json:"Name,omitempty"`
-	NetworkConfiguration         *NetworkConfiguration `json:"NetworkConfiguration,omitempty"`
-	PluginsS3ObjectVersion       *string               `json:"PluginsS3ObjectVersion,omitempty"`
-	PluginsS3Path                *string               `json:"PluginsS3Path,omitempty"`
-	RequirementsS3ObjectVersion  *string               `json:"RequirementsS3ObjectVersion,omitempty"`
-	RequirementsS3Path           *string               `json:"RequirementsS3Path,omitempty"`
-	Schedulers                   *int                  `json:"Schedulers,omitempty"`
-	SourceBucketArn              *string               `json:"SourceBucketArn,omitempty"`
-	StartupScriptS3ObjectVersion *string               `json:"StartupScriptS3ObjectVersion,omitempty"`
-	StartupScriptS3Path          *string               `json:"StartupScriptS3Path,omitempty"`
-	Tags                         map[string]any        `json:"Tags,omitempty"`
-	WebserverAccessMode          *string               `json:"WebserverAccessMode,omitempty"`
-	WebserverUrl                 *string               `json:"WebserverUrl,omitempty"`
-	WebserverVpcEndpointService  *string               `json:"WebserverVpcEndpointService,omitempty"`
-	WeeklyMaintenanceWindowStart *string               `json:"WeeklyMaintenanceWindowStart,omitempty"`
-	WorkerReplacementStrategy    *string               `json:"WorkerReplacementStrategy,omitempty"`
+	AirflowConfigurationOptions  map[string]any             `json:"AirflowConfigurationOptions,omitempty"`
+	AirflowVersion               *string                    `json:"AirflowVersion,omitempty"`
+	Arn                          *string                    `json:"Arn,omitempty"`
+	CeleryExecutorQueue          *string                    `json:"CeleryExecutorQueue,omitempty"`
+	DagS3Path                    *string                    `json:"DagS3Path,omitempty"`
+	DatabaseVpcEndpointService   *string                    `json:"DatabaseVpcEndpointService,omitempty"`
+	EndpointManagement           *EndpointManagement        `json:"EndpointManagement,omitempty"`
+	EnvironmentClass             *string                    `json:"EnvironmentClass,omitempty"`
+	ExecutionRoleArn             *string                    `json:"ExecutionRoleArn,omitempty"`
+	KmsKey                       *string                    `json:"KmsKey,omitempty"`
+	LoggingConfiguration         *LoggingConfiguration      `json:"LoggingConfiguration,omitempty"`
+	MaxWebservers                *int                       `json:"MaxWebservers,omitempty"`
+	MaxWorkers                   *int                       `json:"MaxWorkers,omitempty"`
+	MinWebservers                *int                       `json:"MinWebservers,omitempty"`
+	MinWorkers                   *int                       `json:"MinWorkers,omitempty"`
+	Name                         *string                    `json:"Name,omitempty"`
+	NetworkConfiguration         *NetworkConfiguration      `json:"NetworkConfiguration,omitempty"`
+	PluginsS3ObjectVersion       *string                    `json:"PluginsS3ObjectVersion,omitempty"`
+	PluginsS3Path                *string                    `json:"PluginsS3Path,omitempty"`
+	RequirementsS3ObjectVersion  *string                    `json:"RequirementsS3ObjectVersion,omitempty"`
+	RequirementsS3Path           *string                    `json:"RequirementsS3Path,omitempty"`
+	Schedulers                   *int                       `json:"Schedulers,omitempty"`
+	SourceBucketArn              *string                    `json:"SourceBucketArn,omitempty"`
+	StartupScriptS3ObjectVersion *string                    `json:"StartupScriptS3ObjectVersion,omitempty"`
+	StartupScriptS3Path          *string                    `json:"StartupScriptS3Path,omitempty"`
+	Tags                         map[string]any             `json:"Tags,omitempty"`
+	WebserverAccessMode          *WebserverAccessMode       `json:"WebserverAccessMode,omitempty"`
+	WebserverUrl                 *string                    `json:"WebserverUrl,omitempty"`
+	WebserverVpcEndpointService  *string                    `json:"WebserverVpcEndpointService,omitempty"`
+	WeeklyMaintenanceWindowStart *string                    `json:"WeeklyMaintenanceWindowStart,omitempty"`
+	WorkerReplacementStrategy    *WorkerReplacementStrategy `json:"WorkerReplacementStrategy,omitempty"`
 }
 
 func (Environment) CloudControlType() string { return "AWS::MWAA::Environment" }
+
+type EndpointManagement string
+
+const (
+	EndpointManagementCUSTOMER EndpointManagement = "CUSTOMER"
+	EndpointManagementSERVICE  EndpointManagement = "SERVICE"
+)
+
+type LoggingLevel string
+
+const (
+	LoggingLevelCRITICAL LoggingLevel = "CRITICAL"
+	LoggingLevelERROR    LoggingLevel = "ERROR"
+	LoggingLevelWARNING  LoggingLevel = "WARNING"
+	LoggingLevelINFO     LoggingLevel = "INFO"
+	LoggingLevelDEBUG    LoggingLevel = "DEBUG"
+)
+
+type WebserverAccessMode string
+
+const (
+	WebserverAccessModePRIVATEONLY      WebserverAccessMode = "PRIVATE_ONLY"
+	WebserverAccessModePUBLICONLY       WebserverAccessMode = "PUBLIC_ONLY"
+	WebserverAccessModePUBLICANDPRIVATE WebserverAccessMode = "PUBLIC_AND_PRIVATE"
+)
+
+type WorkerReplacementStrategy string
+
+const (
+	WorkerReplacementStrategyFORCED   WorkerReplacementStrategy = "FORCED"
+	WorkerReplacementStrategyGRACEFUL WorkerReplacementStrategy = "GRACEFUL"
+)

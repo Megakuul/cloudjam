@@ -4,9 +4,9 @@
 package internetmonitor
 
 type LocalHealthEventsConfig struct {
-	HealthScoreThreshold *float64 `json:"HealthScoreThreshold,omitempty"`
-	MinTrafficImpact     *float64 `json:"MinTrafficImpact,omitempty"`
-	Status               *string  `json:"Status,omitempty"`
+	HealthScoreThreshold *float64                       `json:"HealthScoreThreshold,omitempty"`
+	MinTrafficImpact     *float64                       `json:"MinTrafficImpact,omitempty"`
+	Status               *LocalHealthEventsConfigStatus `json:"Status,omitempty"`
 }
 
 type HealthEventsConfig struct {
@@ -17,9 +17,9 @@ type HealthEventsConfig struct {
 }
 
 type S3Config struct {
-	BucketName        *string `json:"BucketName,omitempty"`
-	BucketPrefix      *string `json:"BucketPrefix,omitempty"`
-	LogDeliveryStatus *string `json:"LogDeliveryStatus,omitempty"`
+	BucketName        *string                    `json:"BucketName,omitempty"`
+	BucketPrefix      *string                    `json:"BucketPrefix,omitempty"`
+	LogDeliveryStatus *S3ConfigLogDeliveryStatus `json:"LogDeliveryStatus,omitempty"`
 }
 
 type InternetMeasurementsLogDelivery struct {
@@ -41,14 +41,48 @@ type Monitor struct {
 	ModifiedAt                      *string                          `json:"ModifiedAt,omitempty"`
 	MonitorArn                      *string                          `json:"MonitorArn,omitempty"`
 	MonitorName                     *string                          `json:"MonitorName,omitempty"`
-	ProcessingStatus                *string                          `json:"ProcessingStatus,omitempty"`
+	ProcessingStatus                *MonitorProcessingStatusCode     `json:"ProcessingStatus,omitempty"`
 	ProcessingStatusInfo            *string                          `json:"ProcessingStatusInfo,omitempty"`
 	Resources                       []string                         `json:"Resources,omitempty"`
 	ResourcesToAdd                  []string                         `json:"ResourcesToAdd,omitempty"`
 	ResourcesToRemove               []string                         `json:"ResourcesToRemove,omitempty"`
-	Status                          *string                          `json:"Status,omitempty"`
+	Status                          *MonitorConfigState              `json:"Status,omitempty"`
 	Tags                            []Tag                            `json:"Tags,omitempty"`
 	TrafficPercentageToMonitor      *int                             `json:"TrafficPercentageToMonitor,omitempty"`
 }
 
 func (Monitor) CloudControlType() string { return "AWS::InternetMonitor::Monitor" }
+
+type LocalHealthEventsConfigStatus string
+
+const (
+	LocalHealthEventsConfigStatusENABLED  LocalHealthEventsConfigStatus = "ENABLED"
+	LocalHealthEventsConfigStatusDISABLED LocalHealthEventsConfigStatus = "DISABLED"
+)
+
+type S3ConfigLogDeliveryStatus string
+
+const (
+	S3ConfigLogDeliveryStatusENABLED  S3ConfigLogDeliveryStatus = "ENABLED"
+	S3ConfigLogDeliveryStatusDISABLED S3ConfigLogDeliveryStatus = "DISABLED"
+)
+
+type MonitorProcessingStatusCode string
+
+const (
+	MonitorProcessingStatusCodeOK                    MonitorProcessingStatusCode = "OK"
+	MonitorProcessingStatusCodeINACTIVE              MonitorProcessingStatusCode = "INACTIVE"
+	MonitorProcessingStatusCodeCOLLECTINGDATA        MonitorProcessingStatusCode = "COLLECTING_DATA"
+	MonitorProcessingStatusCodeINSUFFICIENTDATA      MonitorProcessingStatusCode = "INSUFFICIENT_DATA"
+	MonitorProcessingStatusCodeFAULTSERVICE          MonitorProcessingStatusCode = "FAULT_SERVICE"
+	MonitorProcessingStatusCodeFAULTACCESSCLOUDWATCH MonitorProcessingStatusCode = "FAULT_ACCESS_CLOUDWATCH"
+)
+
+type MonitorConfigState string
+
+const (
+	MonitorConfigStatePENDING  MonitorConfigState = "PENDING"
+	MonitorConfigStateACTIVE   MonitorConfigState = "ACTIVE"
+	MonitorConfigStateINACTIVE MonitorConfigState = "INACTIVE"
+	MonitorConfigStateERROR    MonitorConfigState = "ERROR"
+)

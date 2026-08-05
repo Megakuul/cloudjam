@@ -4,10 +4,10 @@
 package opensearchserverless
 
 type AccessPolicy struct {
-	Description *string `json:"Description,omitempty"`
-	Name        *string `json:"Name,omitempty"`
-	Policy      *string `json:"Policy,omitempty"`
-	Type        *string `json:"Type,omitempty"`
+	Description *string           `json:"Description,omitempty"`
+	Name        *string           `json:"Name,omitempty"`
+	Policy      *string           `json:"Policy,omitempty"`
+	Type        *AccessPolicyType `json:"Type,omitempty"`
 }
 
 func (AccessPolicy) CloudControlType() string { return "AWS::OpenSearchServerless::AccessPolicy" }
@@ -28,25 +28,25 @@ type Tag struct {
 }
 
 type VectorOptions struct {
-	ServerlessVectorAcceleration *string `json:"ServerlessVectorAcceleration,omitempty"`
+	ServerlessVectorAcceleration *ServerlessVectorAcceleration `json:"ServerlessVectorAcceleration,omitempty"`
 }
 
 type Collection struct {
-	Arn                 *string           `json:"Arn,omitempty"`
-	CollectionEndpoint  *string           `json:"CollectionEndpoint,omitempty"`
-	CollectionGroupName *string           `json:"CollectionGroupName,omitempty"`
-	DashboardEndpoint   *string           `json:"DashboardEndpoint,omitempty"`
-	DeletionProtection  *string           `json:"DeletionProtection,omitempty"`
-	Description         *string           `json:"Description,omitempty"`
-	EncryptionConfig    *EncryptionConfig `json:"EncryptionConfig,omitempty"`
-	FipsEndpoints       *FipsEndpoints    `json:"FipsEndpoints,omitempty"`
-	Id                  *string           `json:"Id,omitempty"`
-	KmsKeyArn           *string           `json:"KmsKeyArn,omitempty"`
-	Name                *string           `json:"Name,omitempty"`
-	StandbyReplicas     *string           `json:"StandbyReplicas,omitempty"`
-	Tags                []Tag             `json:"Tags,omitempty"`
-	Type                *string           `json:"Type,omitempty"`
-	VectorOptions       *VectorOptions    `json:"VectorOptions,omitempty"`
+	Arn                 *string             `json:"Arn,omitempty"`
+	CollectionEndpoint  *string             `json:"CollectionEndpoint,omitempty"`
+	CollectionGroupName *string             `json:"CollectionGroupName,omitempty"`
+	DashboardEndpoint   *string             `json:"DashboardEndpoint,omitempty"`
+	DeletionProtection  *DeletionProtection `json:"DeletionProtection,omitempty"`
+	Description         *string             `json:"Description,omitempty"`
+	EncryptionConfig    *EncryptionConfig   `json:"EncryptionConfig,omitempty"`
+	FipsEndpoints       *FipsEndpoints      `json:"FipsEndpoints,omitempty"`
+	Id                  *string             `json:"Id,omitempty"`
+	KmsKeyArn           *string             `json:"KmsKeyArn,omitempty"`
+	Name                *string             `json:"Name,omitempty"`
+	StandbyReplicas     *StandbyReplicas    `json:"StandbyReplicas,omitempty"`
+	Tags                []Tag               `json:"Tags,omitempty"`
+	Type                *CollectionType     `json:"Type,omitempty"`
+	VectorOptions       *VectorOptions      `json:"VectorOptions,omitempty"`
 }
 
 func (Collection) CloudControlType() string { return "AWS::OpenSearchServerless::Collection" }
@@ -64,14 +64,14 @@ type CollectionGroupTag struct {
 }
 
 type CollectionGroup struct {
-	Arn             *string              `json:"Arn,omitempty"`
-	CapacityLimits  *CapacityLimits      `json:"CapacityLimits,omitempty"`
-	Description     *string              `json:"Description,omitempty"`
-	Generation      *string              `json:"Generation,omitempty"`
-	Id              *string              `json:"Id,omitempty"`
-	Name            *string              `json:"Name,omitempty"`
-	StandbyReplicas *string              `json:"StandbyReplicas,omitempty"`
-	Tags            []CollectionGroupTag `json:"Tags,omitempty"`
+	Arn             *string                         `json:"Arn,omitempty"`
+	CapacityLimits  *CapacityLimits                 `json:"CapacityLimits,omitempty"`
+	Description     *string                         `json:"Description,omitempty"`
+	Generation      *CollectionGroupGeneration      `json:"Generation,omitempty"`
+	Id              *string                         `json:"Id,omitempty"`
+	Name            *string                         `json:"Name,omitempty"`
+	StandbyReplicas *CollectionGroupStandbyReplicas `json:"StandbyReplicas,omitempty"`
+	Tags            []CollectionGroupTag            `json:"Tags,omitempty"`
 }
 
 func (CollectionGroup) CloudControlType() string { return "AWS::OpenSearchServerless::CollectionGroup" }
@@ -90,23 +90,23 @@ type PropertyMappingMethodParameters struct {
 }
 
 type PropertyMappingMethod struct {
-	Engine     *string                          `json:"Engine,omitempty"`
-	Name       *string                          `json:"Name,omitempty"`
+	Engine     *PropertyMappingMethodEngine     `json:"Engine,omitempty"`
+	Name       *PropertyMappingMethodName       `json:"Name,omitempty"`
 	Parameters *PropertyMappingMethodParameters `json:"Parameters,omitempty"`
-	SpaceType  *string                          `json:"SpaceType,omitempty"`
+	SpaceType  *PropertyMappingMethodSpaceType  `json:"SpaceType,omitempty"`
 }
 
 type PropertyMapping struct {
-	Analyzer         *string                    `json:"Analyzer,omitempty"`
-	CompressionLevel *string                    `json:"CompressionLevel,omitempty"`
-	DataType         *string                    `json:"DataType,omitempty"`
-	Dimension        *int                       `json:"Dimension,omitempty"`
-	Index            *bool                      `json:"Index,omitempty"`
-	Method           *PropertyMappingMethod     `json:"Method,omitempty"`
-	Properties       map[string]PropertyMapping `json:"Properties,omitempty"`
-	SpaceType        *string                    `json:"SpaceType,omitempty"`
-	Type             *string                    `json:"Type,omitempty"`
-	Value            *string                    `json:"Value,omitempty"`
+	Analyzer         *string                          `json:"Analyzer,omitempty"`
+	CompressionLevel *PropertyMappingCompressionLevel `json:"CompressionLevel,omitempty"`
+	DataType         *PropertyMappingDataType         `json:"DataType,omitempty"`
+	Dimension        *int                             `json:"Dimension,omitempty"`
+	Index            *bool                            `json:"Index,omitempty"`
+	Method           *PropertyMappingMethod           `json:"Method,omitempty"`
+	Properties       map[string]PropertyMapping       `json:"Properties,omitempty"`
+	SpaceType        *PropertyMappingSpaceType        `json:"SpaceType,omitempty"`
+	Type             *PropertyMappingType             `json:"Type,omitempty"`
+	Value            *string                          `json:"Value,omitempty"`
 }
 
 type IndexMappings struct {
@@ -146,10 +146,10 @@ type Index struct {
 func (Index) CloudControlType() string { return "AWS::OpenSearchServerless::Index" }
 
 type LifecyclePolicy struct {
-	Description *string `json:"Description,omitempty"`
-	Name        *string `json:"Name,omitempty"`
-	Policy      *string `json:"Policy,omitempty"`
-	Type        *string `json:"Type,omitempty"`
+	Description *string              `json:"Description,omitempty"`
+	Name        *string              `json:"Name,omitempty"`
+	Policy      *string              `json:"Policy,omitempty"`
+	Type        *LifecyclePolicyType `json:"Type,omitempty"`
 }
 
 func (LifecyclePolicy) CloudControlType() string { return "AWS::OpenSearchServerless::LifecyclePolicy" }
@@ -183,16 +183,16 @@ type SecurityConfig struct {
 	Id                       *string                         `json:"Id,omitempty"`
 	Name                     *string                         `json:"Name,omitempty"`
 	SamlOptions              *SamlConfigOptions              `json:"SamlOptions,omitempty"`
-	Type                     *string                         `json:"Type,omitempty"`
+	Type                     *SecurityConfigType             `json:"Type,omitempty"`
 }
 
 func (SecurityConfig) CloudControlType() string { return "AWS::OpenSearchServerless::SecurityConfig" }
 
 type SecurityPolicy struct {
-	Description *string `json:"Description,omitempty"`
-	Name        *string `json:"Name,omitempty"`
-	Policy      *string `json:"Policy,omitempty"`
-	Type        *string `json:"Type,omitempty"`
+	Description *string             `json:"Description,omitempty"`
+	Name        *string             `json:"Name,omitempty"`
+	Policy      *string             `json:"Policy,omitempty"`
+	Type        *SecurityPolicyType `json:"Type,omitempty"`
 }
 
 func (SecurityPolicy) CloudControlType() string { return "AWS::OpenSearchServerless::SecurityPolicy" }
@@ -206,3 +206,138 @@ type VpcEndpoint struct {
 }
 
 func (VpcEndpoint) CloudControlType() string { return "AWS::OpenSearchServerless::VpcEndpoint" }
+
+type AccessPolicyType string
+
+const (
+	AccessPolicyTypeData AccessPolicyType = "data"
+)
+
+type DeletionProtection string
+
+const (
+	DeletionProtectionENABLED  DeletionProtection = "ENABLED"
+	DeletionProtectionDISABLED DeletionProtection = "DISABLED"
+)
+
+type StandbyReplicas string
+
+const (
+	StandbyReplicasENABLED  StandbyReplicas = "ENABLED"
+	StandbyReplicasDISABLED StandbyReplicas = "DISABLED"
+)
+
+type CollectionType string
+
+const (
+	CollectionTypeSEARCH       CollectionType = "SEARCH"
+	CollectionTypeTIMESERIES   CollectionType = "TIMESERIES"
+	CollectionTypeVECTORSEARCH CollectionType = "VECTORSEARCH"
+)
+
+type ServerlessVectorAcceleration string
+
+const (
+	ServerlessVectorAccelerationENABLED  ServerlessVectorAcceleration = "ENABLED"
+	ServerlessVectorAccelerationDISABLED ServerlessVectorAcceleration = "DISABLED"
+	ServerlessVectorAccelerationALLOWED  ServerlessVectorAcceleration = "ALLOWED"
+)
+
+type CollectionGroupGeneration string
+
+const (
+	CollectionGroupGenerationCLASSIC CollectionGroupGeneration = "CLASSIC"
+	CollectionGroupGenerationNEXTGEN CollectionGroupGeneration = "NEXTGEN"
+)
+
+type CollectionGroupStandbyReplicas string
+
+const (
+	CollectionGroupStandbyReplicasENABLED  CollectionGroupStandbyReplicas = "ENABLED"
+	CollectionGroupStandbyReplicasDISABLED CollectionGroupStandbyReplicas = "DISABLED"
+)
+
+type PropertyMappingCompressionLevel string
+
+const (
+	PropertyMappingCompressionLevelX16x PropertyMappingCompressionLevel = "16x"
+	PropertyMappingCompressionLevelX32x PropertyMappingCompressionLevel = "32x"
+	PropertyMappingCompressionLevelX8x  PropertyMappingCompressionLevel = "8x"
+	PropertyMappingCompressionLevelX4x  PropertyMappingCompressionLevel = "4x"
+	PropertyMappingCompressionLevelX2x  PropertyMappingCompressionLevel = "2x"
+	PropertyMappingCompressionLevelX1x  PropertyMappingCompressionLevel = "1x"
+)
+
+type PropertyMappingDataType string
+
+const (
+	PropertyMappingDataTypeFloat PropertyMappingDataType = "float"
+	PropertyMappingDataTypeByte  PropertyMappingDataType = "byte"
+)
+
+type PropertyMappingMethodEngine string
+
+const (
+	PropertyMappingMethodEngineNmslib PropertyMappingMethodEngine = "nmslib"
+	PropertyMappingMethodEngineFaiss  PropertyMappingMethodEngine = "faiss"
+	PropertyMappingMethodEngineLucene PropertyMappingMethodEngine = "lucene"
+)
+
+type PropertyMappingMethodName string
+
+const (
+	PropertyMappingMethodNameHnsw PropertyMappingMethodName = "hnsw"
+	PropertyMappingMethodNameIvf  PropertyMappingMethodName = "ivf"
+)
+
+type PropertyMappingMethodSpaceType string
+
+const (
+	PropertyMappingMethodSpaceTypeL2           PropertyMappingMethodSpaceType = "l2"
+	PropertyMappingMethodSpaceTypeL1           PropertyMappingMethodSpaceType = "l1"
+	PropertyMappingMethodSpaceTypeLinf         PropertyMappingMethodSpaceType = "linf"
+	PropertyMappingMethodSpaceTypeCosinesimil  PropertyMappingMethodSpaceType = "cosinesimil"
+	PropertyMappingMethodSpaceTypeInnerproduct PropertyMappingMethodSpaceType = "innerproduct"
+	PropertyMappingMethodSpaceTypeHamming      PropertyMappingMethodSpaceType = "hamming"
+)
+
+type PropertyMappingSpaceType string
+
+const (
+	PropertyMappingSpaceTypeL2           PropertyMappingSpaceType = "l2"
+	PropertyMappingSpaceTypeL1           PropertyMappingSpaceType = "l1"
+	PropertyMappingSpaceTypeLinf         PropertyMappingSpaceType = "linf"
+	PropertyMappingSpaceTypeCosinesimil  PropertyMappingSpaceType = "cosinesimil"
+	PropertyMappingSpaceTypeInnerproduct PropertyMappingSpaceType = "innerproduct"
+	PropertyMappingSpaceTypeHamming      PropertyMappingSpaceType = "hamming"
+)
+
+type PropertyMappingType string
+
+const (
+	PropertyMappingTypeText      PropertyMappingType = "text"
+	PropertyMappingTypeKnnVector PropertyMappingType = "knn_vector"
+	PropertyMappingTypeKeyword   PropertyMappingType = "keyword"
+	PropertyMappingTypeInteger   PropertyMappingType = "integer"
+)
+
+type LifecyclePolicyType string
+
+const (
+	LifecyclePolicyTypeRetention LifecyclePolicyType = "retention"
+)
+
+type SecurityConfigType string
+
+const (
+	SecurityConfigTypeSaml              SecurityConfigType = "saml"
+	SecurityConfigTypeIamidentitycenter SecurityConfigType = "iamidentitycenter"
+	SecurityConfigTypeIamfederation     SecurityConfigType = "iamfederation"
+)
+
+type SecurityPolicyType string
+
+const (
+	SecurityPolicyTypeEncryption SecurityPolicyType = "encryption"
+	SecurityPolicyTypeNetwork    SecurityPolicyType = "network"
+)

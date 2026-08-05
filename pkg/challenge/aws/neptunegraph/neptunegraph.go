@@ -34,14 +34,14 @@ type GraphSnapshotTag struct {
 }
 
 type GraphSnapshot struct {
-	Arn                *string            `json:"Arn,omitempty"`
-	GraphIdentifier    *string            `json:"GraphIdentifier,omitempty"`
-	Id                 *string            `json:"Id,omitempty"`
-	KmsKeyIdentifier   *string            `json:"KmsKeyIdentifier,omitempty"`
-	SnapshotCreateTime *string            `json:"SnapshotCreateTime,omitempty"`
-	SnapshotName       *string            `json:"SnapshotName,omitempty"`
-	Status             *string            `json:"Status,omitempty"`
-	Tags               []GraphSnapshotTag `json:"Tags,omitempty"`
+	Arn                *string              `json:"Arn,omitempty"`
+	GraphIdentifier    *string              `json:"GraphIdentifier,omitempty"`
+	Id                 *string              `json:"Id,omitempty"`
+	KmsKeyIdentifier   *string              `json:"KmsKeyIdentifier,omitempty"`
+	SnapshotCreateTime *string              `json:"SnapshotCreateTime,omitempty"`
+	SnapshotName       *string              `json:"SnapshotName,omitempty"`
+	Status             *GraphSnapshotStatus `json:"Status,omitempty"`
+	Tags               []GraphSnapshotTag   `json:"Tags,omitempty"`
 }
 
 func (GraphSnapshot) CloudControlType() string { return "AWS::NeptuneGraph::GraphSnapshot" }
@@ -58,3 +58,12 @@ type PrivateGraphEndpoint struct {
 func (PrivateGraphEndpoint) CloudControlType() string {
 	return "AWS::NeptuneGraph::PrivateGraphEndpoint"
 }
+
+type GraphSnapshotStatus string
+
+const (
+	GraphSnapshotStatusCREATING  GraphSnapshotStatus = "CREATING"
+	GraphSnapshotStatusAVAILABLE GraphSnapshotStatus = "AVAILABLE"
+	GraphSnapshotStatusDELETING  GraphSnapshotStatus = "DELETING"
+	GraphSnapshotStatusFAILED    GraphSnapshotStatus = "FAILED"
+)

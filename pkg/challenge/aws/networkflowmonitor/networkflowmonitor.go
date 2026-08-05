@@ -4,13 +4,13 @@
 package networkflowmonitor
 
 type MonitorLocalResource struct {
-	Identifier *string `json:"Identifier,omitempty"`
-	Type       *string `json:"Type,omitempty"`
+	Identifier *string                   `json:"Identifier,omitempty"`
+	Type       *MonitorLocalResourceType `json:"Type,omitempty"`
 }
 
 type MonitorRemoteResource struct {
-	Identifier *string `json:"Identifier,omitempty"`
-	Type       *string `json:"Type,omitempty"`
+	Identifier *string                    `json:"Identifier,omitempty"`
+	Type       *MonitorRemoteResourceType `json:"Type,omitempty"`
 }
 
 type Tag struct {
@@ -24,10 +24,40 @@ type Monitor struct {
 	LocalResources  []MonitorLocalResource  `json:"LocalResources,omitempty"`
 	ModifiedAt      *string                 `json:"ModifiedAt,omitempty"`
 	MonitorName     *string                 `json:"MonitorName,omitempty"`
-	MonitorStatus   *string                 `json:"MonitorStatus,omitempty"`
+	MonitorStatus   *MonitorMonitorStatus   `json:"MonitorStatus,omitempty"`
 	RemoteResources []MonitorRemoteResource `json:"RemoteResources,omitempty"`
 	ScopeArn        *string                 `json:"ScopeArn,omitempty"`
 	Tags            []Tag                   `json:"Tags,omitempty"`
 }
 
 func (Monitor) CloudControlType() string { return "AWS::NetworkFlowMonitor::Monitor" }
+
+type MonitorLocalResourceType string
+
+const (
+	MonitorLocalResourceTypeAWSEC2VPC           MonitorLocalResourceType = "AWS::EC2::VPC"
+	MonitorLocalResourceTypeAWSAvailabilityZone MonitorLocalResourceType = "AWS::AvailabilityZone"
+	MonitorLocalResourceTypeAWSEC2Subnet        MonitorLocalResourceType = "AWS::EC2::Subnet"
+	MonitorLocalResourceTypeAWSRegion           MonitorLocalResourceType = "AWS::Region"
+	MonitorLocalResourceTypeAWSEKSCluster       MonitorLocalResourceType = "AWS::EKS::Cluster"
+)
+
+type MonitorMonitorStatus string
+
+const (
+	MonitorMonitorStatusPENDING  MonitorMonitorStatus = "PENDING"
+	MonitorMonitorStatusACTIVE   MonitorMonitorStatus = "ACTIVE"
+	MonitorMonitorStatusINACTIVE MonitorMonitorStatus = "INACTIVE"
+	MonitorMonitorStatusERROR    MonitorMonitorStatus = "ERROR"
+	MonitorMonitorStatusDELETING MonitorMonitorStatus = "DELETING"
+)
+
+type MonitorRemoteResourceType string
+
+const (
+	MonitorRemoteResourceTypeAWSEC2VPC           MonitorRemoteResourceType = "AWS::EC2::VPC"
+	MonitorRemoteResourceTypeAWSAvailabilityZone MonitorRemoteResourceType = "AWS::AvailabilityZone"
+	MonitorRemoteResourceTypeAWSEC2Subnet        MonitorRemoteResourceType = "AWS::EC2::Subnet"
+	MonitorRemoteResourceTypeAWSAWSService       MonitorRemoteResourceType = "AWS::AWSService"
+	MonitorRemoteResourceTypeAWSRegion           MonitorRemoteResourceType = "AWS::Region"
+)

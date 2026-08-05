@@ -9,17 +9,17 @@ type Tag struct {
 }
 
 type SignalingChannel struct {
-	Arn               *string `json:"Arn,omitempty"`
-	MessageTtlSeconds *int    `json:"MessageTtlSeconds,omitempty"`
-	Name              *string `json:"Name,omitempty"`
-	Tags              []Tag   `json:"Tags,omitempty"`
-	Type              *string `json:"Type,omitempty"`
+	Arn               *string               `json:"Arn,omitempty"`
+	MessageTtlSeconds *int                  `json:"MessageTtlSeconds,omitempty"`
+	Name              *string               `json:"Name,omitempty"`
+	Tags              []Tag                 `json:"Tags,omitempty"`
+	Type              *SignalingChannelType `json:"Type,omitempty"`
 }
 
 func (SignalingChannel) CloudControlType() string { return "AWS::KinesisVideo::SignalingChannel" }
 
 type StreamStorageConfiguration struct {
-	DefaultStorageTier *string `json:"DefaultStorageTier,omitempty"`
+	DefaultStorageTier *StreamStorageConfigurationDefaultStorageTier `json:"DefaultStorageTier,omitempty"`
 }
 
 type StreamTag struct {
@@ -39,3 +39,16 @@ type Stream struct {
 }
 
 func (Stream) CloudControlType() string { return "AWS::KinesisVideo::Stream" }
+
+type SignalingChannelType string
+
+const (
+	SignalingChannelTypeSINGLEMASTER SignalingChannelType = "SINGLE_MASTER"
+)
+
+type StreamStorageConfigurationDefaultStorageTier string
+
+const (
+	StreamStorageConfigurationDefaultStorageTierHOT  StreamStorageConfigurationDefaultStorageTier = "HOT"
+	StreamStorageConfigurationDefaultStorageTierWARM StreamStorageConfigurationDefaultStorageTier = "WARM"
+)

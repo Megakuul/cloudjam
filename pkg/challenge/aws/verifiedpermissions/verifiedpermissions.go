@@ -6,10 +6,10 @@ package verifiedpermissions
 import "encoding/json"
 
 type IdentitySourceDetails struct {
-	ClientIds    []string `json:"ClientIds,omitempty"`
-	DiscoveryUrl *string  `json:"DiscoveryUrl,omitempty"`
-	OpenIdIssuer *string  `json:"OpenIdIssuer,omitempty"`
-	UserPoolArn  *string  `json:"UserPoolArn,omitempty"`
+	ClientIds    []string      `json:"ClientIds,omitempty"`
+	DiscoveryUrl *string       `json:"DiscoveryUrl,omitempty"`
+	OpenIdIssuer *OpenIdIssuer `json:"OpenIdIssuer,omitempty"`
+	UserPoolArn  *string       `json:"UserPoolArn,omitempty"`
 }
 
 type IdentitySource struct {
@@ -27,13 +27,13 @@ type Policy struct {
 	Name          *string         `json:"Name,omitempty"`
 	PolicyId      *string         `json:"PolicyId,omitempty"`
 	PolicyStoreId *string         `json:"PolicyStoreId,omitempty"`
-	PolicyType    *string         `json:"PolicyType,omitempty"`
+	PolicyType    *PolicyType     `json:"PolicyType,omitempty"`
 }
 
 func (Policy) CloudControlType() string { return "AWS::VerifiedPermissions::Policy" }
 
 type DeletionProtection struct {
-	Mode *string `json:"Mode,omitempty"`
+	Mode *DeletionMode `json:"Mode,omitempty"`
 }
 
 type SchemaDefinition struct {
@@ -46,7 +46,7 @@ type Tag struct {
 }
 
 type ValidationSettings struct {
-	Mode *string `json:"Mode,omitempty"`
+	Mode *ValidationMode `json:"Mode,omitempty"`
 }
 
 type PolicyStore struct {
@@ -81,3 +81,30 @@ type PolicyTemplate struct {
 }
 
 func (PolicyTemplate) CloudControlType() string { return "AWS::VerifiedPermissions::PolicyTemplate" }
+
+type OpenIdIssuer string
+
+const (
+	OpenIdIssuerCOGNITO OpenIdIssuer = "COGNITO"
+)
+
+type PolicyType string
+
+const (
+	PolicyTypeSTATIC         PolicyType = "STATIC"
+	PolicyTypeTEMPLATELINKED PolicyType = "TEMPLATE_LINKED"
+)
+
+type DeletionMode string
+
+const (
+	DeletionModeENABLED  DeletionMode = "ENABLED"
+	DeletionModeDISABLED DeletionMode = "DISABLED"
+)
+
+type ValidationMode string
+
+const (
+	ValidationModeOFF    ValidationMode = "OFF"
+	ValidationModeSTRICT ValidationMode = "STRICT"
+)

@@ -6,8 +6,8 @@ package cloudtrail
 import "encoding/json"
 
 type Destination struct {
-	Location *string `json:"Location,omitempty"`
-	Type     *string `json:"Type,omitempty"`
+	Location *string          `json:"Location,omitempty"`
+	Type     *DestinationType `json:"Type,omitempty"`
 }
 
 type Tag struct {
@@ -26,13 +26,13 @@ type Channel struct {
 func (Channel) CloudControlType() string { return "AWS::CloudTrail::Channel" }
 
 type RefreshScheduleFrequency struct {
-	Unit  *string `json:"Unit,omitempty"`
-	Value *int    `json:"Value,omitempty"`
+	Unit  *RefreshScheduleFrequencyUnit `json:"Unit,omitempty"`
+	Value *int                          `json:"Value,omitempty"`
 }
 
 type RefreshSchedule struct {
 	Frequency *RefreshScheduleFrequency `json:"Frequency,omitempty"`
-	Status    *string                   `json:"Status,omitempty"`
+	Status    *RefreshScheduleStatus    `json:"Status,omitempty"`
 	TimeOfDay *string                   `json:"TimeOfDay,omitempty"`
 }
 
@@ -52,10 +52,10 @@ type Dashboard struct {
 	DashboardArn                 *string          `json:"DashboardArn,omitempty"`
 	Name                         *string          `json:"Name,omitempty"`
 	RefreshSchedule              *RefreshSchedule `json:"RefreshSchedule,omitempty"`
-	Status                       *string          `json:"Status,omitempty"`
+	Status                       *DashboardStatus `json:"Status,omitempty"`
 	Tags                         []DashboardTag   `json:"Tags,omitempty"`
 	TerminationProtectionEnabled *bool            `json:"TerminationProtectionEnabled,omitempty"`
-	Type                         *string          `json:"Type,omitempty"`
+	Type                         *DashboardType   `json:"Type,omitempty"`
 	UpdatedTimestamp             *string          `json:"UpdatedTimestamp,omitempty"`
 	Widgets                      []Widget         `json:"Widgets,omitempty"`
 }
@@ -78,8 +78,8 @@ type AdvancedEventSelector struct {
 }
 
 type ContextKeySelector struct {
-	Equals []string `json:"Equals,omitempty"`
-	Type   *string  `json:"Type,omitempty"`
+	Equals []string                `json:"Equals,omitempty"`
+	Type   *ContextKeySelectorType `json:"Type,omitempty"`
 }
 
 type InsightSelector struct {
@@ -92,26 +92,26 @@ type EventDataStoreTag struct {
 }
 
 type EventDataStore struct {
-	AdvancedEventSelectors       []AdvancedEventSelector `json:"AdvancedEventSelectors,omitempty"`
-	BillingMode                  *string                 `json:"BillingMode,omitempty"`
-	ContextKeySelectors          []ContextKeySelector    `json:"ContextKeySelectors,omitempty"`
-	CreatedTimestamp             *string                 `json:"CreatedTimestamp,omitempty"`
-	EventDataStoreArn            *string                 `json:"EventDataStoreArn,omitempty"`
-	FederationEnabled            *bool                   `json:"FederationEnabled,omitempty"`
-	FederationRoleArn            *string                 `json:"FederationRoleArn,omitempty"`
-	IngestionEnabled             *bool                   `json:"IngestionEnabled,omitempty"`
-	InsightSelectors             []InsightSelector       `json:"InsightSelectors,omitempty"`
-	InsightsDestination          *string                 `json:"InsightsDestination,omitempty"`
-	KmsKeyId                     *string                 `json:"KmsKeyId,omitempty"`
-	MaxEventSize                 *string                 `json:"MaxEventSize,omitempty"`
-	MultiRegionEnabled           *bool                   `json:"MultiRegionEnabled,omitempty"`
-	Name                         *string                 `json:"Name,omitempty"`
-	OrganizationEnabled          *bool                   `json:"OrganizationEnabled,omitempty"`
-	RetentionPeriod              *int                    `json:"RetentionPeriod,omitempty"`
-	Status                       *string                 `json:"Status,omitempty"`
-	Tags                         []EventDataStoreTag     `json:"Tags,omitempty"`
-	TerminationProtectionEnabled *bool                   `json:"TerminationProtectionEnabled,omitempty"`
-	UpdatedTimestamp             *string                 `json:"UpdatedTimestamp,omitempty"`
+	AdvancedEventSelectors       []AdvancedEventSelector     `json:"AdvancedEventSelectors,omitempty"`
+	BillingMode                  *string                     `json:"BillingMode,omitempty"`
+	ContextKeySelectors          []ContextKeySelector        `json:"ContextKeySelectors,omitempty"`
+	CreatedTimestamp             *string                     `json:"CreatedTimestamp,omitempty"`
+	EventDataStoreArn            *string                     `json:"EventDataStoreArn,omitempty"`
+	FederationEnabled            *bool                       `json:"FederationEnabled,omitempty"`
+	FederationRoleArn            *string                     `json:"FederationRoleArn,omitempty"`
+	IngestionEnabled             *bool                       `json:"IngestionEnabled,omitempty"`
+	InsightSelectors             []InsightSelector           `json:"InsightSelectors,omitempty"`
+	InsightsDestination          *string                     `json:"InsightsDestination,omitempty"`
+	KmsKeyId                     *string                     `json:"KmsKeyId,omitempty"`
+	MaxEventSize                 *EventDataStoreMaxEventSize `json:"MaxEventSize,omitempty"`
+	MultiRegionEnabled           *bool                       `json:"MultiRegionEnabled,omitempty"`
+	Name                         *string                     `json:"Name,omitempty"`
+	OrganizationEnabled          *bool                       `json:"OrganizationEnabled,omitempty"`
+	RetentionPeriod              *int                        `json:"RetentionPeriod,omitempty"`
+	Status                       *string                     `json:"Status,omitempty"`
+	Tags                         []EventDataStoreTag         `json:"Tags,omitempty"`
+	TerminationProtectionEnabled *bool                       `json:"TerminationProtectionEnabled,omitempty"`
+	UpdatedTimestamp             *string                     `json:"UpdatedTimestamp,omitempty"`
 }
 
 func (EventDataStore) CloudControlType() string { return "AWS::CloudTrail::EventDataStore" }
@@ -139,8 +139,8 @@ type TrailAdvancedEventSelector struct {
 }
 
 type AggregationConfiguration struct {
-	EventCategory *string  `json:"EventCategory,omitempty"`
-	Templates     []string `json:"Templates,omitempty"`
+	EventCategory *AggregationConfigurationEventCategory `json:"EventCategory,omitempty"`
+	Templates     []Template                             `json:"Templates,omitempty"`
 }
 
 type DataResource struct {
@@ -149,15 +149,15 @@ type DataResource struct {
 }
 
 type EventSelector struct {
-	DataResources                 []DataResource `json:"DataResources,omitempty"`
-	ExcludeManagementEventSources []string       `json:"ExcludeManagementEventSources,omitempty"`
-	IncludeManagementEvents       *bool          `json:"IncludeManagementEvents,omitempty"`
-	ReadWriteType                 *string        `json:"ReadWriteType,omitempty"`
+	DataResources                 []DataResource              `json:"DataResources,omitempty"`
+	ExcludeManagementEventSources []string                    `json:"ExcludeManagementEventSources,omitempty"`
+	IncludeManagementEvents       *bool                       `json:"IncludeManagementEvents,omitempty"`
+	ReadWriteType                 *EventSelectorReadWriteType `json:"ReadWriteType,omitempty"`
 }
 
 type TrailInsightSelector struct {
-	EventCategories []string `json:"EventCategories,omitempty"`
-	InsightType     *string  `json:"InsightType,omitempty"`
+	EventCategories []SourceEventCategory `json:"EventCategories,omitempty"`
+	InsightType     *string               `json:"InsightType,omitempty"`
 }
 
 type TrailTag struct {
@@ -188,3 +188,83 @@ type Trail struct {
 }
 
 func (Trail) CloudControlType() string { return "AWS::CloudTrail::Trail" }
+
+type DestinationType string
+
+const (
+	DestinationTypeEVENTDATASTORE DestinationType = "EVENT_DATA_STORE"
+)
+
+type RefreshScheduleFrequencyUnit string
+
+const (
+	RefreshScheduleFrequencyUnitHOURS RefreshScheduleFrequencyUnit = "HOURS"
+	RefreshScheduleFrequencyUnitDAYS  RefreshScheduleFrequencyUnit = "DAYS"
+)
+
+type RefreshScheduleStatus string
+
+const (
+	RefreshScheduleStatusENABLED  RefreshScheduleStatus = "ENABLED"
+	RefreshScheduleStatusDISABLED RefreshScheduleStatus = "DISABLED"
+)
+
+type DashboardStatus string
+
+const (
+	DashboardStatusCREATING DashboardStatus = "CREATING"
+	DashboardStatusCREATED  DashboardStatus = "CREATED"
+	DashboardStatusUPDATING DashboardStatus = "UPDATING"
+	DashboardStatusUPDATED  DashboardStatus = "UPDATED"
+	DashboardStatusDELETING DashboardStatus = "DELETING"
+)
+
+type DashboardType string
+
+const (
+	DashboardTypeMANAGED DashboardType = "MANAGED"
+	DashboardTypeCUSTOM  DashboardType = "CUSTOM"
+)
+
+type ContextKeySelectorType string
+
+const (
+	ContextKeySelectorTypeRequestContext ContextKeySelectorType = "RequestContext"
+	ContextKeySelectorTypeTagContext     ContextKeySelectorType = "TagContext"
+)
+
+type EventDataStoreMaxEventSize string
+
+const (
+	EventDataStoreMaxEventSizeStandard EventDataStoreMaxEventSize = "Standard"
+	EventDataStoreMaxEventSizeLarge    EventDataStoreMaxEventSize = "Large"
+)
+
+type AggregationConfigurationEventCategory string
+
+const (
+	AggregationConfigurationEventCategoryData AggregationConfigurationEventCategory = "Data"
+)
+
+type Template string
+
+const (
+	TemplateAPIACTIVITY    Template = "API_ACTIVITY"
+	TemplateRESOURCEACCESS Template = "RESOURCE_ACCESS"
+	TemplateUSERACTIONS    Template = "USER_ACTIONS"
+)
+
+type EventSelectorReadWriteType string
+
+const (
+	EventSelectorReadWriteTypeAll       EventSelectorReadWriteType = "All"
+	EventSelectorReadWriteTypeReadOnly  EventSelectorReadWriteType = "ReadOnly"
+	EventSelectorReadWriteTypeWriteOnly EventSelectorReadWriteType = "WriteOnly"
+)
+
+type SourceEventCategory string
+
+const (
+	SourceEventCategoryManagement SourceEventCategory = "Management"
+	SourceEventCategoryData       SourceEventCategory = "Data"
+)

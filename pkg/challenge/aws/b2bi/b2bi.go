@@ -24,14 +24,14 @@ type Capability struct {
 	ModifiedAt            *string         `json:"ModifiedAt,omitempty"`
 	Name                  *string         `json:"Name,omitempty"`
 	Tags                  []Tag           `json:"Tags,omitempty"`
-	Type                  *string         `json:"Type,omitempty"`
+	Type                  *CapabilityType `json:"Type,omitempty"`
 }
 
 func (Capability) CloudControlType() string { return "AWS::B2BI::Capability" }
 
 type X12AcknowledgmentOptions struct {
-	FunctionalAcknowledgment *string `json:"FunctionalAcknowledgment,omitempty"`
-	TechnicalAcknowledgment  *string `json:"TechnicalAcknowledgment,omitempty"`
+	FunctionalAcknowledgment *X12FunctionalAcknowledgment `json:"FunctionalAcknowledgment,omitempty"`
+	TechnicalAcknowledgment  *X12TechnicalAcknowledgment  `json:"TechnicalAcknowledgment,omitempty"`
 }
 
 type X12InboundEdiOptions struct {
@@ -79,7 +79,7 @@ type Profile struct {
 	CreatedAt    *string      `json:"CreatedAt,omitempty"`
 	Email        *string      `json:"Email,omitempty"`
 	LogGroupName *string      `json:"LogGroupName,omitempty"`
-	Logging      *string      `json:"Logging,omitempty"`
+	Logging      *Logging     `json:"Logging,omitempty"`
 	ModifiedAt   *string      `json:"ModifiedAt,omitempty"`
 	Name         *string      `json:"Name,omitempty"`
 	Phone        *string      `json:"Phone,omitempty"`
@@ -91,7 +91,7 @@ type Profile struct {
 func (Profile) CloudControlType() string { return "AWS::B2BI::Profile" }
 
 type X12SplitOptions struct {
-	SplitBy *string `json:"SplitBy,omitempty"`
+	SplitBy *X12SplitBy `json:"SplitBy,omitempty"`
 }
 
 type X12ValidationOptions struct {
@@ -110,18 +110,18 @@ type AdvancedOptions struct {
 type InputConversion struct {
 	AdvancedOptions *AdvancedOptions `json:"AdvancedOptions,omitempty"`
 	FormatOptions   json.RawMessage  `json:"FormatOptions,omitempty"`
-	FromFormat      *string          `json:"FromFormat,omitempty"`
+	FromFormat      *FromFormat      `json:"FromFormat,omitempty"`
 }
 
 type Mapping struct {
-	Template         *string `json:"Template,omitempty"`
-	TemplateLanguage *string `json:"TemplateLanguage,omitempty"`
+	Template         *string                  `json:"Template,omitempty"`
+	TemplateLanguage *MappingTemplateLanguage `json:"TemplateLanguage,omitempty"`
 }
 
 type OutputConversion struct {
 	AdvancedOptions *AdvancedOptions `json:"AdvancedOptions,omitempty"`
 	FormatOptions   json.RawMessage  `json:"FormatOptions,omitempty"`
-	ToFormat        *string          `json:"ToFormat,omitempty"`
+	ToFormat        *ToFormat        `json:"ToFormat,omitempty"`
 }
 
 type SampleDocumentKeys struct {
@@ -140,21 +140,90 @@ type TransformerTag struct {
 }
 
 type Transformer struct {
-	CreatedAt        *string           `json:"CreatedAt,omitempty"`
-	EdiType          json.RawMessage   `json:"EdiType,omitempty"`
-	FileFormat       *string           `json:"FileFormat,omitempty"`
-	InputConversion  *InputConversion  `json:"InputConversion,omitempty"`
-	Mapping          *Mapping          `json:"Mapping,omitempty"`
-	MappingTemplate  *string           `json:"MappingTemplate,omitempty"`
-	ModifiedAt       *string           `json:"ModifiedAt,omitempty"`
-	Name             *string           `json:"Name,omitempty"`
-	OutputConversion *OutputConversion `json:"OutputConversion,omitempty"`
-	SampleDocument   *string           `json:"SampleDocument,omitempty"`
-	SampleDocuments  *SampleDocuments  `json:"SampleDocuments,omitempty"`
-	Status           *string           `json:"Status,omitempty"`
-	Tags             []TransformerTag  `json:"Tags,omitempty"`
-	TransformerArn   *string           `json:"TransformerArn,omitempty"`
-	TransformerId    *string           `json:"TransformerId,omitempty"`
+	CreatedAt        *string            `json:"CreatedAt,omitempty"`
+	EdiType          json.RawMessage    `json:"EdiType,omitempty"`
+	FileFormat       *FileFormat        `json:"FileFormat,omitempty"`
+	InputConversion  *InputConversion   `json:"InputConversion,omitempty"`
+	Mapping          *Mapping           `json:"Mapping,omitempty"`
+	MappingTemplate  *string            `json:"MappingTemplate,omitempty"`
+	ModifiedAt       *string            `json:"ModifiedAt,omitempty"`
+	Name             *string            `json:"Name,omitempty"`
+	OutputConversion *OutputConversion  `json:"OutputConversion,omitempty"`
+	SampleDocument   *string            `json:"SampleDocument,omitempty"`
+	SampleDocuments  *SampleDocuments   `json:"SampleDocuments,omitempty"`
+	Status           *TransformerStatus `json:"Status,omitempty"`
+	Tags             []TransformerTag   `json:"Tags,omitempty"`
+	TransformerArn   *string            `json:"TransformerArn,omitempty"`
+	TransformerId    *string            `json:"TransformerId,omitempty"`
 }
 
 func (Transformer) CloudControlType() string { return "AWS::B2BI::Transformer" }
+
+type CapabilityType string
+
+const (
+	CapabilityTypeEdi CapabilityType = "edi"
+)
+
+type X12FunctionalAcknowledgment string
+
+const (
+	X12FunctionalAcknowledgmentDONOTGENERATE                             X12FunctionalAcknowledgment = "DO_NOT_GENERATE"
+	X12FunctionalAcknowledgmentGENERATEALLSEGMENTS                       X12FunctionalAcknowledgment = "GENERATE_ALL_SEGMENTS"
+	X12FunctionalAcknowledgmentGENERATEWITHOUTTRANSACTIONSETRESPONSELOOP X12FunctionalAcknowledgment = "GENERATE_WITHOUT_TRANSACTION_SET_RESPONSE_LOOP"
+)
+
+type X12TechnicalAcknowledgment string
+
+const (
+	X12TechnicalAcknowledgmentDONOTGENERATE       X12TechnicalAcknowledgment = "DO_NOT_GENERATE"
+	X12TechnicalAcknowledgmentGENERATEALLSEGMENTS X12TechnicalAcknowledgment = "GENERATE_ALL_SEGMENTS"
+)
+
+type Logging string
+
+const (
+	LoggingENABLED  Logging = "ENABLED"
+	LoggingDISABLED Logging = "DISABLED"
+)
+
+type FileFormat string
+
+const (
+	FileFormatXML     FileFormat = "XML"
+	FileFormatJSON    FileFormat = "JSON"
+	FileFormatNOTUSED FileFormat = "NOT_USED"
+)
+
+type X12SplitBy string
+
+const (
+	X12SplitByNONE        X12SplitBy = "NONE"
+	X12SplitByTRANSACTION X12SplitBy = "TRANSACTION"
+)
+
+type FromFormat string
+
+const (
+	FromFormatX12 FromFormat = "X12"
+)
+
+type MappingTemplateLanguage string
+
+const (
+	MappingTemplateLanguageXSLT    MappingTemplateLanguage = "XSLT"
+	MappingTemplateLanguageJSONATA MappingTemplateLanguage = "JSONATA"
+)
+
+type ToFormat string
+
+const (
+	ToFormatX12 ToFormat = "X12"
+)
+
+type TransformerStatus string
+
+const (
+	TransformerStatusActive   TransformerStatus = "active"
+	TransformerStatusInactive TransformerStatus = "inactive"
+)

@@ -496,35 +496,35 @@ type StudioTag struct {
 }
 
 type Studio struct {
-	Arn                               *string     `json:"Arn,omitempty"`
-	AuthMode                          *string     `json:"AuthMode,omitempty"`
-	DefaultS3Location                 *string     `json:"DefaultS3Location,omitempty"`
-	Description                       *string     `json:"Description,omitempty"`
-	EncryptionKeyArn                  *string     `json:"EncryptionKeyArn,omitempty"`
-	EngineSecurityGroupId             *string     `json:"EngineSecurityGroupId,omitempty"`
-	IdcInstanceArn                    *string     `json:"IdcInstanceArn,omitempty"`
-	IdcUserAssignment                 *string     `json:"IdcUserAssignment,omitempty"`
-	IdpAuthUrl                        *string     `json:"IdpAuthUrl,omitempty"`
-	IdpRelayStateParameterName        *string     `json:"IdpRelayStateParameterName,omitempty"`
-	Name                              *string     `json:"Name,omitempty"`
-	ServiceRole                       *string     `json:"ServiceRole,omitempty"`
-	StudioId                          *string     `json:"StudioId,omitempty"`
-	SubnetIds                         []string    `json:"SubnetIds,omitempty"`
-	Tags                              []StudioTag `json:"Tags,omitempty"`
-	TrustedIdentityPropagationEnabled *bool       `json:"TrustedIdentityPropagationEnabled,omitempty"`
-	Url                               *string     `json:"Url,omitempty"`
-	UserRole                          *string     `json:"UserRole,omitempty"`
-	VpcId                             *string     `json:"VpcId,omitempty"`
-	WorkspaceSecurityGroupId          *string     `json:"WorkspaceSecurityGroupId,omitempty"`
+	Arn                               *string                  `json:"Arn,omitempty"`
+	AuthMode                          *StudioAuthMode          `json:"AuthMode,omitempty"`
+	DefaultS3Location                 *string                  `json:"DefaultS3Location,omitempty"`
+	Description                       *string                  `json:"Description,omitempty"`
+	EncryptionKeyArn                  *string                  `json:"EncryptionKeyArn,omitempty"`
+	EngineSecurityGroupId             *string                  `json:"EngineSecurityGroupId,omitempty"`
+	IdcInstanceArn                    *string                  `json:"IdcInstanceArn,omitempty"`
+	IdcUserAssignment                 *StudioIdcUserAssignment `json:"IdcUserAssignment,omitempty"`
+	IdpAuthUrl                        *string                  `json:"IdpAuthUrl,omitempty"`
+	IdpRelayStateParameterName        *string                  `json:"IdpRelayStateParameterName,omitempty"`
+	Name                              *string                  `json:"Name,omitempty"`
+	ServiceRole                       *string                  `json:"ServiceRole,omitempty"`
+	StudioId                          *string                  `json:"StudioId,omitempty"`
+	SubnetIds                         []string                 `json:"SubnetIds,omitempty"`
+	Tags                              []StudioTag              `json:"Tags,omitempty"`
+	TrustedIdentityPropagationEnabled *bool                    `json:"TrustedIdentityPropagationEnabled,omitempty"`
+	Url                               *string                  `json:"Url,omitempty"`
+	UserRole                          *string                  `json:"UserRole,omitempty"`
+	VpcId                             *string                  `json:"VpcId,omitempty"`
+	WorkspaceSecurityGroupId          *string                  `json:"WorkspaceSecurityGroupId,omitempty"`
 }
 
 func (Studio) CloudControlType() string { return "AWS::EMR::Studio" }
 
 type StudioSessionMapping struct {
-	IdentityName     *string `json:"IdentityName,omitempty"`
-	IdentityType     *string `json:"IdentityType,omitempty"`
-	SessionPolicyArn *string `json:"SessionPolicyArn,omitempty"`
-	StudioId         *string `json:"StudioId,omitempty"`
+	IdentityName     *string                           `json:"IdentityName,omitempty"`
+	IdentityType     *StudioSessionMappingIdentityType `json:"IdentityType,omitempty"`
+	SessionPolicyArn *string                           `json:"SessionPolicyArn,omitempty"`
+	StudioId         *string                           `json:"StudioId,omitempty"`
 }
 
 func (StudioSessionMapping) CloudControlType() string { return "AWS::EMR::StudioSessionMapping" }
@@ -540,3 +540,24 @@ type WALWorkspace struct {
 }
 
 func (WALWorkspace) CloudControlType() string { return "AWS::EMR::WALWorkspace" }
+
+type StudioAuthMode string
+
+const (
+	StudioAuthModeSSO StudioAuthMode = "SSO"
+	StudioAuthModeIAM StudioAuthMode = "IAM"
+)
+
+type StudioIdcUserAssignment string
+
+const (
+	StudioIdcUserAssignmentREQUIRED StudioIdcUserAssignment = "REQUIRED"
+	StudioIdcUserAssignmentOPTIONAL StudioIdcUserAssignment = "OPTIONAL"
+)
+
+type StudioSessionMappingIdentityType string
+
+const (
+	StudioSessionMappingIdentityTypeUSER  StudioSessionMappingIdentityType = "USER"
+	StudioSessionMappingIdentityTypeGROUP StudioSessionMappingIdentityType = "GROUP"
+)

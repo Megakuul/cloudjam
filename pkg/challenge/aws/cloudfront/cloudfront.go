@@ -14,7 +14,7 @@ type AnycastIpListAnycastIpList struct {
 	AnycastIps            []string               `json:"AnycastIps,omitempty"`
 	Arn                   *string                `json:"Arn,omitempty"`
 	Id                    *string                `json:"Id,omitempty"`
-	IpAddressType         *string                `json:"IpAddressType,omitempty"`
+	IpAddressType         *IpAddressType         `json:"IpAddressType,omitempty"`
 	IpCount               *int                   `json:"IpCount,omitempty"`
 	IpamCidrConfigResults []IpamCidrConfigResult `json:"IpamCidrConfigResults,omitempty"`
 	LastModifiedTime      *string                `json:"LastModifiedTime,omitempty"`
@@ -40,7 +40,7 @@ type AnycastIpList struct {
 	AnycastIpList         *AnycastIpListAnycastIpList `json:"AnycastIpList,omitempty"`
 	ETag                  *string                     `json:"ETag,omitempty"`
 	Id                    *string                     `json:"Id,omitempty"`
-	IpAddressType         *string                     `json:"IpAddressType,omitempty"`
+	IpAddressType         *IpAddressType              `json:"IpAddressType,omitempty"`
 	IpCount               *int                        `json:"IpCount,omitempty"`
 	IpamCidrConfigResults []IpamCidrConfigResult      `json:"IpamCidrConfigResults,omitempty"`
 	IpamCidrConfigs       []IpamCidrConfig            `json:"IpamCidrConfigs,omitempty"`
@@ -109,9 +109,9 @@ type KeyValueStoreAssociation struct {
 }
 
 type ConnectionFunctionConfig struct {
-	Comment                   *string                    `json:"Comment,omitempty"`
-	KeyValueStoreAssociations []KeyValueStoreAssociation `json:"KeyValueStoreAssociations,omitempty"`
-	Runtime                   *string                    `json:"Runtime,omitempty"`
+	Comment                   *string                          `json:"Comment,omitempty"`
+	KeyValueStoreAssociations []KeyValueStoreAssociation       `json:"KeyValueStoreAssociations,omitempty"`
+	Runtime                   *ConnectionFunctionConfigRuntime `json:"Runtime,omitempty"`
 }
 
 type ConnectionFunctionTag struct {
@@ -129,8 +129,8 @@ type ConnectionFunction struct {
 	Id                       *string                   `json:"Id,omitempty"`
 	LastModifiedTime         *string                   `json:"LastModifiedTime,omitempty"`
 	Name                     *string                   `json:"Name,omitempty"`
-	Stage                    *string                   `json:"Stage,omitempty"`
-	Status                   *string                   `json:"Status,omitempty"`
+	Stage                    *ConnectionFunctionStage  `json:"Stage,omitempty"`
+	Status                   *ConnectionFunctionStatus `json:"Status,omitempty"`
 	Tags                     []ConnectionFunctionTag   `json:"Tags,omitempty"`
 }
 
@@ -187,7 +187,7 @@ type SingleWeightConfig struct {
 type TrafficConfig struct {
 	SingleHeaderConfig *SingleHeaderConfig `json:"SingleHeaderConfig,omitempty"`
 	SingleWeightConfig *SingleWeightConfig `json:"SingleWeightConfig,omitempty"`
-	Type               *string             `json:"Type,omitempty"`
+	Type               *TrafficConfigType  `json:"Type,omitempty"`
 }
 
 type ContinuousDeploymentPolicyConfig struct {
@@ -196,7 +196,7 @@ type ContinuousDeploymentPolicyConfig struct {
 	SingleWeightPolicyConfig    *ContinuousDeploymentPolicyConfigSingleWeightPolicyConfig `json:"SingleWeightPolicyConfig,omitempty"`
 	StagingDistributionDnsNames []string                                                  `json:"StagingDistributionDnsNames,omitempty"`
 	TrafficConfig               *TrafficConfig                                            `json:"TrafficConfig,omitempty"`
-	Type                        *string                                                   `json:"Type,omitempty"`
+	Type                        *ContinuousDeploymentPolicyConfigType                     `json:"Type,omitempty"`
 }
 
 type ContinuousDeploymentPolicy struct {
@@ -331,10 +331,10 @@ type OriginGroupMembers struct {
 }
 
 type OriginGroup struct {
-	FailoverCriteria  *OriginGroupFailoverCriteria `json:"FailoverCriteria,omitempty"`
-	Id                *string                      `json:"Id,omitempty"`
-	Members           *OriginGroupMembers          `json:"Members,omitempty"`
-	SelectionCriteria *string                      `json:"SelectionCriteria,omitempty"`
+	FailoverCriteria  *OriginGroupFailoverCriteria  `json:"FailoverCriteria,omitempty"`
+	Id                *string                       `json:"Id,omitempty"`
+	Members           *OriginGroupMembers           `json:"Members,omitempty"`
+	SelectionCriteria *OriginGroupSelectionCriteria `json:"SelectionCriteria,omitempty"`
 }
 
 type OriginGroups struct {
@@ -347,14 +347,14 @@ type OriginMtlsConfig struct {
 }
 
 type CustomOriginConfig struct {
-	HTTPPort               *int              `json:"HTTPPort,omitempty"`
-	HTTPSPort              *int              `json:"HTTPSPort,omitempty"`
-	IpAddressType          *string           `json:"IpAddressType,omitempty"`
-	OriginKeepaliveTimeout *int              `json:"OriginKeepaliveTimeout,omitempty"`
-	OriginMtlsConfig       *OriginMtlsConfig `json:"OriginMtlsConfig,omitempty"`
-	OriginProtocolPolicy   *string           `json:"OriginProtocolPolicy,omitempty"`
-	OriginReadTimeout      *int              `json:"OriginReadTimeout,omitempty"`
-	OriginSSLProtocols     []string          `json:"OriginSSLProtocols,omitempty"`
+	HTTPPort               *int                             `json:"HTTPPort,omitempty"`
+	HTTPSPort              *int                             `json:"HTTPSPort,omitempty"`
+	IpAddressType          *CustomOriginConfigIpAddressType `json:"IpAddressType,omitempty"`
+	OriginKeepaliveTimeout *int                             `json:"OriginKeepaliveTimeout,omitempty"`
+	OriginMtlsConfig       *OriginMtlsConfig                `json:"OriginMtlsConfig,omitempty"`
+	OriginProtocolPolicy   *string                          `json:"OriginProtocolPolicy,omitempty"`
+	OriginReadTimeout      *int                             `json:"OriginReadTimeout,omitempty"`
+	OriginSSLProtocols     []string                         `json:"OriginSSLProtocols,omitempty"`
 }
 
 type OriginCustomHeader struct {
@@ -442,7 +442,7 @@ type TrustStoreConfig struct {
 }
 
 type ViewerMtlsConfig struct {
-	Mode             *string           `json:"Mode,omitempty"`
+	Mode             *ViewerMtlsMode   `json:"Mode,omitempty"`
 	TrustStoreConfig *TrustStoreConfig `json:"TrustStoreConfig,omitempty"`
 }
 
@@ -454,7 +454,7 @@ type DistributionConfig struct {
 	CacheTagConfig                *CacheTagConfig                 `json:"CacheTagConfig,omitempty"`
 	Comment                       *string                         `json:"Comment,omitempty"`
 	ConnectionFunctionAssociation *ConnectionFunctionAssociation  `json:"ConnectionFunctionAssociation,omitempty"`
-	ConnectionMode                *string                         `json:"ConnectionMode,omitempty"`
+	ConnectionMode                *ConnectionMode                 `json:"ConnectionMode,omitempty"`
 	ContinuousDeploymentPolicyId  *string                         `json:"ContinuousDeploymentPolicyId,omitempty"`
 	CustomErrorResponses          []CustomErrorResponse           `json:"CustomErrorResponses,omitempty"`
 	CustomOrigin                  *LegacyCustomOrigin             `json:"CustomOrigin,omitempty"`
@@ -495,13 +495,13 @@ type Certificate struct {
 }
 
 type GeoRestrictionCustomization struct {
-	Locations       []string `json:"Locations,omitempty"`
-	RestrictionType *string  `json:"RestrictionType,omitempty"`
+	Locations       []string                                    `json:"Locations,omitempty"`
+	RestrictionType *GeoRestrictionCustomizationRestrictionType `json:"RestrictionType,omitempty"`
 }
 
 type WebAclCustomization struct {
-	Action *string `json:"Action,omitempty"`
-	Arn    *string `json:"Arn,omitempty"`
+	Action *WebAclCustomizationAction `json:"Action,omitempty"`
+	Arn    *string                    `json:"Arn,omitempty"`
 }
 
 type Customizations struct {
@@ -511,14 +511,14 @@ type Customizations struct {
 }
 
 type DomainResult struct {
-	Domain *string `json:"Domain,omitempty"`
-	Status *string `json:"Status,omitempty"`
+	Domain *string             `json:"Domain,omitempty"`
+	Status *DomainResultStatus `json:"Status,omitempty"`
 }
 
 type ManagedCertificateRequest struct {
-	CertificateTransparencyLoggingPreference *string `json:"CertificateTransparencyLoggingPreference,omitempty"`
-	PrimaryDomainName                        *string `json:"PrimaryDomainName,omitempty"`
-	ValidationTokenHost                      *string `json:"ValidationTokenHost,omitempty"`
+	CertificateTransparencyLoggingPreference *ManagedCertificateRequestCertificateTransparencyLoggingPreference `json:"CertificateTransparencyLoggingPreference,omitempty"`
+	PrimaryDomainName                        *string                                                            `json:"PrimaryDomainName,omitempty"`
+	ValidationTokenHost                      *ManagedCertificateRequestValidationTokenHost                      `json:"ValidationTokenHost,omitempty"`
 }
 
 type Parameter struct {
@@ -621,7 +621,7 @@ type KeyValueStore struct {
 func (KeyValueStore) CloudControlType() string { return "AWS::CloudFront::KeyValueStore" }
 
 type RealtimeMetricsSubscriptionConfig struct {
-	RealtimeMetricsSubscriptionStatus *string `json:"RealtimeMetricsSubscriptionStatus,omitempty"`
+	RealtimeMetricsSubscriptionStatus *RealtimeMetricsSubscriptionConfigRealtimeMetricsSubscriptionStatus `json:"RealtimeMetricsSubscriptionStatus,omitempty"`
 }
 
 type MonitoringSubscriptionMonitoringSubscription struct {
@@ -895,7 +895,7 @@ type TrustStore struct {
 	LastModifiedTime                 *string                     `json:"LastModifiedTime,omitempty"`
 	Name                             *string                     `json:"Name,omitempty"`
 	NumberOfCaCertificates           *int                        `json:"NumberOfCaCertificates,omitempty"`
-	Status                           *string                     `json:"Status,omitempty"`
+	Status                           *TrustStoreStatus           `json:"Status,omitempty"`
 	Tags                             []TrustStoreTag             `json:"Tags,omitempty"`
 	UseClientCertificateOCSPEndpoint *bool                       `json:"UseClientCertificateOCSPEndpoint,omitempty"`
 }
@@ -908,13 +908,13 @@ type VpcOriginTag struct {
 }
 
 type VpcOriginEndpointConfig struct {
-	Arn                  *string  `json:"Arn,omitempty"`
-	HTTPPort             *int     `json:"HTTPPort,omitempty"`
-	HTTPSPort            *int     `json:"HTTPSPort,omitempty"`
-	IpAddressType        *string  `json:"IpAddressType,omitempty"`
-	Name                 *string  `json:"Name,omitempty"`
-	OriginProtocolPolicy *string  `json:"OriginProtocolPolicy,omitempty"`
-	OriginSSLProtocols   []string `json:"OriginSSLProtocols,omitempty"`
+	Arn                  *string                               `json:"Arn,omitempty"`
+	HTTPPort             *int                                  `json:"HTTPPort,omitempty"`
+	HTTPSPort            *int                                  `json:"HTTPSPort,omitempty"`
+	IpAddressType        *VpcOriginEndpointConfigIpAddressType `json:"IpAddressType,omitempty"`
+	Name                 *string                               `json:"Name,omitempty"`
+	OriginProtocolPolicy *string                               `json:"OriginProtocolPolicy,omitempty"`
+	OriginSSLProtocols   []string                              `json:"OriginSSLProtocols,omitempty"`
 }
 
 type VpcOrigin struct {
@@ -929,3 +929,135 @@ type VpcOrigin struct {
 }
 
 func (VpcOrigin) CloudControlType() string { return "AWS::CloudFront::VpcOrigin" }
+
+type IpAddressType string
+
+const (
+	IpAddressTypeIpv4      IpAddressType = "ipv4"
+	IpAddressTypeDualstack IpAddressType = "dualstack"
+)
+
+type ConnectionFunctionConfigRuntime string
+
+const (
+	ConnectionFunctionConfigRuntimeCloudfrontJs20 ConnectionFunctionConfigRuntime = "cloudfront-js-2.0"
+)
+
+type ConnectionFunctionStage string
+
+const (
+	ConnectionFunctionStageDEVELOPMENT ConnectionFunctionStage = "DEVELOPMENT"
+	ConnectionFunctionStageLIVE        ConnectionFunctionStage = "LIVE"
+)
+
+type ConnectionFunctionStatus string
+
+const (
+	ConnectionFunctionStatusUNPUBLISHED  ConnectionFunctionStatus = "UNPUBLISHED"
+	ConnectionFunctionStatusDEPLOYED     ConnectionFunctionStatus = "DEPLOYED"
+	ConnectionFunctionStatusUNASSOCIATED ConnectionFunctionStatus = "UNASSOCIATED"
+	ConnectionFunctionStatusPUBLISHING   ConnectionFunctionStatus = "PUBLISHING"
+	ConnectionFunctionStatusINPROGRESS   ConnectionFunctionStatus = "IN_PROGRESS"
+)
+
+type TrafficConfigType string
+
+const (
+	TrafficConfigTypeSingleWeight TrafficConfigType = "SingleWeight"
+	TrafficConfigTypeSingleHeader TrafficConfigType = "SingleHeader"
+)
+
+type ContinuousDeploymentPolicyConfigType string
+
+const (
+	ContinuousDeploymentPolicyConfigTypeSingleWeight ContinuousDeploymentPolicyConfigType = "SingleWeight"
+	ContinuousDeploymentPolicyConfigTypeSingleHeader ContinuousDeploymentPolicyConfigType = "SingleHeader"
+)
+
+type ConnectionMode string
+
+const (
+	ConnectionModeDirect     ConnectionMode = "direct"
+	ConnectionModeTenantOnly ConnectionMode = "tenant-only"
+)
+
+type OriginGroupSelectionCriteria string
+
+const (
+	OriginGroupSelectionCriteriaDefault           OriginGroupSelectionCriteria = "default"
+	OriginGroupSelectionCriteriaMediaQualityBased OriginGroupSelectionCriteria = "media-quality-based"
+)
+
+type CustomOriginConfigIpAddressType string
+
+const (
+	CustomOriginConfigIpAddressTypeIpv4      CustomOriginConfigIpAddressType = "ipv4"
+	CustomOriginConfigIpAddressTypeIpv6      CustomOriginConfigIpAddressType = "ipv6"
+	CustomOriginConfigIpAddressTypeDualstack CustomOriginConfigIpAddressType = "dualstack"
+)
+
+type ViewerMtlsMode string
+
+const (
+	ViewerMtlsModeRequired    ViewerMtlsMode = "required"
+	ViewerMtlsModeOptional    ViewerMtlsMode = "optional"
+	ViewerMtlsModePassthrough ViewerMtlsMode = "passthrough"
+)
+
+type GeoRestrictionCustomizationRestrictionType string
+
+const (
+	GeoRestrictionCustomizationRestrictionTypeBlacklist GeoRestrictionCustomizationRestrictionType = "blacklist"
+	GeoRestrictionCustomizationRestrictionTypeWhitelist GeoRestrictionCustomizationRestrictionType = "whitelist"
+	GeoRestrictionCustomizationRestrictionTypeNone      GeoRestrictionCustomizationRestrictionType = "none"
+)
+
+type WebAclCustomizationAction string
+
+const (
+	WebAclCustomizationActionOverride WebAclCustomizationAction = "override"
+	WebAclCustomizationActionDisable  WebAclCustomizationAction = "disable"
+)
+
+type DomainResultStatus string
+
+const (
+	DomainResultStatusActive   DomainResultStatus = "active"
+	DomainResultStatusInactive DomainResultStatus = "inactive"
+)
+
+type ManagedCertificateRequestCertificateTransparencyLoggingPreference string
+
+const (
+	ManagedCertificateRequestCertificateTransparencyLoggingPreferenceEnabled  ManagedCertificateRequestCertificateTransparencyLoggingPreference = "enabled"
+	ManagedCertificateRequestCertificateTransparencyLoggingPreferenceDisabled ManagedCertificateRequestCertificateTransparencyLoggingPreference = "disabled"
+)
+
+type ManagedCertificateRequestValidationTokenHost string
+
+const (
+	ManagedCertificateRequestValidationTokenHostCloudfront ManagedCertificateRequestValidationTokenHost = "cloudfront"
+	ManagedCertificateRequestValidationTokenHostSelfHosted ManagedCertificateRequestValidationTokenHost = "self-hosted"
+)
+
+type RealtimeMetricsSubscriptionConfigRealtimeMetricsSubscriptionStatus string
+
+const (
+	RealtimeMetricsSubscriptionConfigRealtimeMetricsSubscriptionStatusEnabled  RealtimeMetricsSubscriptionConfigRealtimeMetricsSubscriptionStatus = "Enabled"
+	RealtimeMetricsSubscriptionConfigRealtimeMetricsSubscriptionStatusDisabled RealtimeMetricsSubscriptionConfigRealtimeMetricsSubscriptionStatus = "Disabled"
+)
+
+type TrustStoreStatus string
+
+const (
+	TrustStoreStatusPENDING TrustStoreStatus = "PENDING"
+	TrustStoreStatusACTIVE  TrustStoreStatus = "ACTIVE"
+	TrustStoreStatusFAILED  TrustStoreStatus = "FAILED"
+)
+
+type VpcOriginEndpointConfigIpAddressType string
+
+const (
+	VpcOriginEndpointConfigIpAddressTypeIpv4      VpcOriginEndpointConfigIpAddressType = "ipv4"
+	VpcOriginEndpointConfigIpAddressTypeDualstack VpcOriginEndpointConfigIpAddressType = "dualstack"
+)

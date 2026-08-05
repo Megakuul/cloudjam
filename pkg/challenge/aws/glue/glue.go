@@ -11,28 +11,28 @@ type Tag struct {
 }
 
 type Blueprint struct {
-	Arn               *string `json:"Arn,omitempty"`
-	BlueprintLocation *string `json:"BlueprintLocation,omitempty"`
-	CreatedOn         *string `json:"CreatedOn,omitempty"`
-	Description       *string `json:"Description,omitempty"`
-	LastModifiedOn    *string `json:"LastModifiedOn,omitempty"`
-	Name              *string `json:"Name,omitempty"`
-	ParameterSpec     *string `json:"ParameterSpec,omitempty"`
-	Status            *string `json:"Status,omitempty"`
-	Tags              []Tag   `json:"Tags,omitempty"`
+	Arn               *string          `json:"Arn,omitempty"`
+	BlueprintLocation *string          `json:"BlueprintLocation,omitempty"`
+	CreatedOn         *string          `json:"CreatedOn,omitempty"`
+	Description       *string          `json:"Description,omitempty"`
+	LastModifiedOn    *string          `json:"LastModifiedOn,omitempty"`
+	Name              *string          `json:"Name,omitempty"`
+	ParameterSpec     *string          `json:"ParameterSpec,omitempty"`
+	Status            *BlueprintStatus `json:"Status,omitempty"`
+	Tags              []Tag            `json:"Tags,omitempty"`
 }
 
 func (Blueprint) CloudControlType() string { return "AWS::Glue::Blueprint" }
 
 type DataLakeAccessProperties struct {
-	AllowFullTableExternalDataAccess *string `json:"AllowFullTableExternalDataAccess,omitempty"`
-	CatalogType                      *string `json:"CatalogType,omitempty"`
-	DataLakeAccess                   *bool   `json:"DataLakeAccess,omitempty"`
-	DataTransferRole                 *string `json:"DataTransferRole,omitempty"`
-	KmsKey                           *string `json:"KmsKey,omitempty"`
-	ManagedWorkgroupName             *string `json:"ManagedWorkgroupName,omitempty"`
-	ManagedWorkgroupStatus           *string `json:"ManagedWorkgroupStatus,omitempty"`
-	RedshiftDatabaseName             *string `json:"RedshiftDatabaseName,omitempty"`
+	AllowFullTableExternalDataAccess *DataLakeAccessPropertiesAllowFullTableExternalDataAccess `json:"AllowFullTableExternalDataAccess,omitempty"`
+	CatalogType                      *string                                                   `json:"CatalogType,omitempty"`
+	DataLakeAccess                   *bool                                                     `json:"DataLakeAccess,omitempty"`
+	DataTransferRole                 *string                                                   `json:"DataTransferRole,omitempty"`
+	KmsKey                           *string                                                   `json:"KmsKey,omitempty"`
+	ManagedWorkgroupName             *string                                                   `json:"ManagedWorkgroupName,omitempty"`
+	ManagedWorkgroupStatus           *string                                                   `json:"ManagedWorkgroupStatus,omitempty"`
+	RedshiftDatabaseName             *string                                                   `json:"RedshiftDatabaseName,omitempty"`
 }
 
 type CatalogProperties struct {
@@ -45,8 +45,8 @@ type DataLakePrincipal struct {
 }
 
 type PrincipalPermissions struct {
-	Permissions []string           `json:"Permissions,omitempty"`
-	Principal   *DataLakePrincipal `json:"Principal,omitempty"`
+	Permissions []PrincipalPermissionsPermissionsItem `json:"Permissions,omitempty"`
+	Principal   *DataLakePrincipal                    `json:"Principal,omitempty"`
 }
 
 type FederatedCatalog struct {
@@ -64,21 +64,21 @@ type TargetRedshiftCatalog struct {
 }
 
 type Catalog struct {
-	AllowFullTableExternalDataAccess             *string                `json:"AllowFullTableExternalDataAccess,omitempty"`
-	CatalogId                                    *string                `json:"CatalogId,omitempty"`
-	CatalogProperties                            *CatalogProperties     `json:"CatalogProperties,omitempty"`
-	CreateDatabaseDefaultPermissions             []PrincipalPermissions `json:"CreateDatabaseDefaultPermissions,omitempty"`
-	CreateTableDefaultPermissions                []PrincipalPermissions `json:"CreateTableDefaultPermissions,omitempty"`
-	CreateTime                                   *int                   `json:"CreateTime,omitempty"`
-	Description                                  *string                `json:"Description,omitempty"`
-	FederatedCatalog                             *FederatedCatalog      `json:"FederatedCatalog,omitempty"`
-	Name                                         *string                `json:"Name,omitempty"`
-	OverwriteChildResourcePermissionsWithDefault *string                `json:"OverwriteChildResourcePermissionsWithDefault,omitempty"`
-	Parameters                                   map[string]string      `json:"Parameters,omitempty"`
-	ResourceArn                                  *string                `json:"ResourceArn,omitempty"`
-	Tags                                         []CatalogTag           `json:"Tags,omitempty"`
-	TargetRedshiftCatalog                        *TargetRedshiftCatalog `json:"TargetRedshiftCatalog,omitempty"`
-	UpdateTime                                   *int                   `json:"UpdateTime,omitempty"`
+	AllowFullTableExternalDataAccess             *CatalogAllowFullTableExternalDataAccess             `json:"AllowFullTableExternalDataAccess,omitempty"`
+	CatalogId                                    *string                                              `json:"CatalogId,omitempty"`
+	CatalogProperties                            *CatalogProperties                                   `json:"CatalogProperties,omitempty"`
+	CreateDatabaseDefaultPermissions             []PrincipalPermissions                               `json:"CreateDatabaseDefaultPermissions,omitempty"`
+	CreateTableDefaultPermissions                []PrincipalPermissions                               `json:"CreateTableDefaultPermissions,omitempty"`
+	CreateTime                                   *int                                                 `json:"CreateTime,omitempty"`
+	Description                                  *string                                              `json:"Description,omitempty"`
+	FederatedCatalog                             *FederatedCatalog                                    `json:"FederatedCatalog,omitempty"`
+	Name                                         *string                                              `json:"Name,omitempty"`
+	OverwriteChildResourcePermissionsWithDefault *CatalogOverwriteChildResourcePermissionsWithDefault `json:"OverwriteChildResourcePermissionsWithDefault,omitempty"`
+	Parameters                                   map[string]string                                    `json:"Parameters,omitempty"`
+	ResourceArn                                  *string                                              `json:"ResourceArn,omitempty"`
+	Tags                                         []CatalogTag                                         `json:"Tags,omitempty"`
+	TargetRedshiftCatalog                        *TargetRedshiftCatalog                               `json:"TargetRedshiftCatalog,omitempty"`
+	UpdateTime                                   *int                                                 `json:"UpdateTime,omitempty"`
 }
 
 func (Catalog) CloudControlType() string { return "AWS::Glue::Catalog" }
@@ -517,7 +517,7 @@ type Job struct {
 	SecurityConfiguration   *string               `json:"SecurityConfiguration,omitempty"`
 	Tags                    map[string]any        `json:"Tags,omitempty"`
 	Timeout                 *int                  `json:"Timeout,omitempty"`
-	WorkerType              *string               `json:"WorkerType,omitempty"`
+	WorkerType              *JobWorkerType        `json:"WorkerType,omitempty"`
 }
 
 func (Job) CloudControlType() string { return "AWS::Glue::Job" }
@@ -671,16 +671,16 @@ type SchemaTag struct {
 }
 
 type Schema struct {
-	Arn                    *string         `json:"Arn,omitempty"`
-	CheckpointVersion      *SchemaVersion  `json:"CheckpointVersion,omitempty"`
-	Compatibility          *string         `json:"Compatibility,omitempty"`
-	DataFormat             *string         `json:"DataFormat,omitempty"`
-	Description            *string         `json:"Description,omitempty"`
-	InitialSchemaVersionId *string         `json:"InitialSchemaVersionId,omitempty"`
-	Name                   *string         `json:"Name,omitempty"`
-	Registry               *SchemaRegistry `json:"Registry,omitempty"`
-	SchemaDefinition       *string         `json:"SchemaDefinition,omitempty"`
-	Tags                   []SchemaTag     `json:"Tags,omitempty"`
+	Arn                    *string              `json:"Arn,omitempty"`
+	CheckpointVersion      *SchemaVersion       `json:"CheckpointVersion,omitempty"`
+	Compatibility          *SchemaCompatibility `json:"Compatibility,omitempty"`
+	DataFormat             *SchemaDataFormat    `json:"DataFormat,omitempty"`
+	Description            *string              `json:"Description,omitempty"`
+	InitialSchemaVersionId *string              `json:"InitialSchemaVersionId,omitempty"`
+	Name                   *string              `json:"Name,omitempty"`
+	Registry               *SchemaRegistry      `json:"Registry,omitempty"`
+	SchemaDefinition       *string              `json:"SchemaDefinition,omitempty"`
+	Tags                   []SchemaTag          `json:"Tags,omitempty"`
 }
 
 func (Schema) CloudControlType() string { return "AWS::Glue::Schema" }
@@ -1012,19 +1012,19 @@ type UsageProfile struct {
 func (UsageProfile) CloudControlType() string { return "AWS::Glue::UsageProfile" }
 
 type ResourceUri struct {
-	ResourceType *string `json:"ResourceType,omitempty"`
-	Uri          *string `json:"Uri,omitempty"`
+	ResourceType *ResourceUriResourceType `json:"ResourceType,omitempty"`
+	Uri          *string                  `json:"Uri,omitempty"`
 }
 
 type UserDefinedFunction struct {
-	Arn          *string       `json:"Arn,omitempty"`
-	ClassName    *string       `json:"ClassName,omitempty"`
-	DatabaseName *string       `json:"DatabaseName,omitempty"`
-	FunctionName *string       `json:"FunctionName,omitempty"`
-	FunctionType *string       `json:"FunctionType,omitempty"`
-	OwnerName    *string       `json:"OwnerName,omitempty"`
-	OwnerType    *string       `json:"OwnerType,omitempty"`
-	ResourceUris []ResourceUri `json:"ResourceUris,omitempty"`
+	Arn          *string                          `json:"Arn,omitempty"`
+	ClassName    *string                          `json:"ClassName,omitempty"`
+	DatabaseName *string                          `json:"DatabaseName,omitempty"`
+	FunctionName *string                          `json:"FunctionName,omitempty"`
+	FunctionType *UserDefinedFunctionFunctionType `json:"FunctionType,omitempty"`
+	OwnerName    *string                          `json:"OwnerName,omitempty"`
+	OwnerType    *UserDefinedFunctionOwnerType    `json:"OwnerType,omitempty"`
+	ResourceUris []ResourceUri                    `json:"ResourceUris,omitempty"`
 }
 
 func (UserDefinedFunction) CloudControlType() string { return "AWS::Glue::UserDefinedFunction" }
@@ -1039,3 +1039,110 @@ type Workflow struct {
 }
 
 func (Workflow) CloudControlType() string { return "AWS::Glue::Workflow" }
+
+type BlueprintStatus string
+
+const (
+	BlueprintStatusCREATING BlueprintStatus = "CREATING"
+	BlueprintStatusACTIVE   BlueprintStatus = "ACTIVE"
+	BlueprintStatusUPDATING BlueprintStatus = "UPDATING"
+	BlueprintStatusFAILED   BlueprintStatus = "FAILED"
+)
+
+type CatalogAllowFullTableExternalDataAccess string
+
+const (
+	CatalogAllowFullTableExternalDataAccessTrue  CatalogAllowFullTableExternalDataAccess = "True"
+	CatalogAllowFullTableExternalDataAccessFalse CatalogAllowFullTableExternalDataAccess = "False"
+)
+
+type DataLakeAccessPropertiesAllowFullTableExternalDataAccess string
+
+const (
+	DataLakeAccessPropertiesAllowFullTableExternalDataAccessTrue  DataLakeAccessPropertiesAllowFullTableExternalDataAccess = "True"
+	DataLakeAccessPropertiesAllowFullTableExternalDataAccessFalse DataLakeAccessPropertiesAllowFullTableExternalDataAccess = "False"
+)
+
+type PrincipalPermissionsPermissionsItem string
+
+const (
+	PrincipalPermissionsPermissionsItemALL                PrincipalPermissionsPermissionsItem = "ALL"
+	PrincipalPermissionsPermissionsItemSELECT             PrincipalPermissionsPermissionsItem = "SELECT"
+	PrincipalPermissionsPermissionsItemALTER              PrincipalPermissionsPermissionsItem = "ALTER"
+	PrincipalPermissionsPermissionsItemDROP               PrincipalPermissionsPermissionsItem = "DROP"
+	PrincipalPermissionsPermissionsItemDELETE             PrincipalPermissionsPermissionsItem = "DELETE"
+	PrincipalPermissionsPermissionsItemINSERT             PrincipalPermissionsPermissionsItem = "INSERT"
+	PrincipalPermissionsPermissionsItemCREATEDATABASE     PrincipalPermissionsPermissionsItem = "CREATE_DATABASE"
+	PrincipalPermissionsPermissionsItemCREATETABLE        PrincipalPermissionsPermissionsItem = "CREATE_TABLE"
+	PrincipalPermissionsPermissionsItemDATALOCATIONACCESS PrincipalPermissionsPermissionsItem = "DATA_LOCATION_ACCESS"
+)
+
+type CatalogOverwriteChildResourcePermissionsWithDefault string
+
+const (
+	CatalogOverwriteChildResourcePermissionsWithDefaultAccept CatalogOverwriteChildResourcePermissionsWithDefault = "Accept"
+	CatalogOverwriteChildResourcePermissionsWithDefaultDeny   CatalogOverwriteChildResourcePermissionsWithDefault = "Deny"
+)
+
+type JobWorkerType string
+
+const (
+	JobWorkerTypeStandard JobWorkerType = "Standard"
+	JobWorkerTypeG1X      JobWorkerType = "G.1X"
+	JobWorkerTypeG2X      JobWorkerType = "G.2X"
+	JobWorkerTypeG025X    JobWorkerType = "G.025X"
+	JobWorkerTypeG4X      JobWorkerType = "G.4X"
+	JobWorkerTypeG8X      JobWorkerType = "G.8X"
+	JobWorkerTypeZ2X      JobWorkerType = "Z.2X"
+	JobWorkerTypeG12X     JobWorkerType = "G.12X"
+	JobWorkerTypeG16X     JobWorkerType = "G.16X"
+	JobWorkerTypeR1X      JobWorkerType = "R.1X"
+	JobWorkerTypeR2X      JobWorkerType = "R.2X"
+	JobWorkerTypeR4X      JobWorkerType = "R.4X"
+	JobWorkerTypeR8X      JobWorkerType = "R.8X"
+)
+
+type SchemaCompatibility string
+
+const (
+	SchemaCompatibilityNONE        SchemaCompatibility = "NONE"
+	SchemaCompatibilityDISABLED    SchemaCompatibility = "DISABLED"
+	SchemaCompatibilityBACKWARD    SchemaCompatibility = "BACKWARD"
+	SchemaCompatibilityBACKWARDALL SchemaCompatibility = "BACKWARD_ALL"
+	SchemaCompatibilityFORWARD     SchemaCompatibility = "FORWARD"
+	SchemaCompatibilityFORWARDALL  SchemaCompatibility = "FORWARD_ALL"
+	SchemaCompatibilityFULL        SchemaCompatibility = "FULL"
+	SchemaCompatibilityFULLALL     SchemaCompatibility = "FULL_ALL"
+)
+
+type SchemaDataFormat string
+
+const (
+	SchemaDataFormatAVRO     SchemaDataFormat = "AVRO"
+	SchemaDataFormatJSON     SchemaDataFormat = "JSON"
+	SchemaDataFormatPROTOBUF SchemaDataFormat = "PROTOBUF"
+)
+
+type UserDefinedFunctionFunctionType string
+
+const (
+	UserDefinedFunctionFunctionTypeREGULARFUNCTION   UserDefinedFunctionFunctionType = "REGULAR_FUNCTION"
+	UserDefinedFunctionFunctionTypeAGGREGATEFUNCTION UserDefinedFunctionFunctionType = "AGGREGATE_FUNCTION"
+	UserDefinedFunctionFunctionTypeSTOREDPROCEDURE   UserDefinedFunctionFunctionType = "STORED_PROCEDURE"
+)
+
+type UserDefinedFunctionOwnerType string
+
+const (
+	UserDefinedFunctionOwnerTypeUSER  UserDefinedFunctionOwnerType = "USER"
+	UserDefinedFunctionOwnerTypeROLE  UserDefinedFunctionOwnerType = "ROLE"
+	UserDefinedFunctionOwnerTypeGROUP UserDefinedFunctionOwnerType = "GROUP"
+)
+
+type ResourceUriResourceType string
+
+const (
+	ResourceUriResourceTypeJAR     ResourceUriResourceType = "JAR"
+	ResourceUriResourceTypeFILE    ResourceUriResourceType = "FILE"
+	ResourceUriResourceTypeARCHIVE ResourceUriResourceType = "ARCHIVE"
+)

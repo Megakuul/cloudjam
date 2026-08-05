@@ -40,7 +40,7 @@ type Rule struct {
 	ExpirationInDays               *int                            `json:"ExpirationInDays,omitempty"`
 	Filter                         *RuleFilter                     `json:"Filter,omitempty"`
 	Id                             *string                         `json:"Id,omitempty"`
-	Status                         *string                         `json:"Status,omitempty"`
+	Status                         *RuleStatus                     `json:"Status,omitempty"`
 }
 
 type LifecycleConfiguration struct {
@@ -79,18 +79,42 @@ type NetworkInterface struct {
 }
 
 type Endpoint struct {
-	AccessType            *string            `json:"AccessType,omitempty"`
-	Arn                   *string            `json:"Arn,omitempty"`
-	CidrBlock             *string            `json:"CidrBlock,omitempty"`
-	CreationTime          *string            `json:"CreationTime,omitempty"`
-	CustomerOwnedIpv4Pool *string            `json:"CustomerOwnedIpv4Pool,omitempty"`
-	FailedReason          *FailedReason      `json:"FailedReason,omitempty"`
-	Id                    *string            `json:"Id,omitempty"`
-	NetworkInterfaces     []NetworkInterface `json:"NetworkInterfaces,omitempty"`
-	OutpostId             *string            `json:"OutpostId,omitempty"`
-	SecurityGroupId       *string            `json:"SecurityGroupId,omitempty"`
-	Status                *string            `json:"Status,omitempty"`
-	SubnetId              *string            `json:"SubnetId,omitempty"`
+	AccessType            *EndpointAccessType `json:"AccessType,omitempty"`
+	Arn                   *string             `json:"Arn,omitempty"`
+	CidrBlock             *string             `json:"CidrBlock,omitempty"`
+	CreationTime          *string             `json:"CreationTime,omitempty"`
+	CustomerOwnedIpv4Pool *string             `json:"CustomerOwnedIpv4Pool,omitempty"`
+	FailedReason          *FailedReason       `json:"FailedReason,omitempty"`
+	Id                    *string             `json:"Id,omitempty"`
+	NetworkInterfaces     []NetworkInterface  `json:"NetworkInterfaces,omitempty"`
+	OutpostId             *string             `json:"OutpostId,omitempty"`
+	SecurityGroupId       *string             `json:"SecurityGroupId,omitempty"`
+	Status                *EndpointStatus     `json:"Status,omitempty"`
+	SubnetId              *string             `json:"SubnetId,omitempty"`
 }
 
 func (Endpoint) CloudControlType() string { return "AWS::S3Outposts::Endpoint" }
+
+type RuleStatus string
+
+const (
+	RuleStatusEnabled  RuleStatus = "Enabled"
+	RuleStatusDisabled RuleStatus = "Disabled"
+)
+
+type EndpointAccessType string
+
+const (
+	EndpointAccessTypeCustomerOwnedIp EndpointAccessType = "CustomerOwnedIp"
+	EndpointAccessTypePrivate         EndpointAccessType = "Private"
+)
+
+type EndpointStatus string
+
+const (
+	EndpointStatusAvailable    EndpointStatus = "Available"
+	EndpointStatusPending      EndpointStatus = "Pending"
+	EndpointStatusDeleting     EndpointStatus = "Deleting"
+	EndpointStatusCreateFailed EndpointStatus = "Create_Failed"
+	EndpointStatusDeleteFailed EndpointStatus = "Delete_Failed"
+)

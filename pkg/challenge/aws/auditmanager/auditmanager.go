@@ -4,8 +4,8 @@
 package auditmanager
 
 type AssessmentReportsDestination struct {
-	Destination     *string `json:"Destination,omitempty"`
-	DestinationType *string `json:"DestinationType,omitempty"`
+	Destination     *string                          `json:"Destination,omitempty"`
+	DestinationType *AssessmentReportDestinationType `json:"DestinationType,omitempty"`
 }
 
 type AWSAccount struct {
@@ -15,22 +15,22 @@ type AWSAccount struct {
 }
 
 type Delegation struct {
-	AssessmentId   *string  `json:"AssessmentId,omitempty"`
-	AssessmentName *string  `json:"AssessmentName,omitempty"`
-	Comment        *string  `json:"Comment,omitempty"`
-	ControlSetId   *string  `json:"ControlSetId,omitempty"`
-	CreatedBy      *string  `json:"CreatedBy,omitempty"`
-	CreationTime   *float64 `json:"CreationTime,omitempty"`
-	Id             *string  `json:"Id,omitempty"`
-	LastUpdated    *float64 `json:"LastUpdated,omitempty"`
-	RoleArn        *string  `json:"RoleArn,omitempty"`
-	RoleType       *string  `json:"RoleType,omitempty"`
-	Status         *string  `json:"Status,omitempty"`
+	AssessmentId   *string           `json:"AssessmentId,omitempty"`
+	AssessmentName *string           `json:"AssessmentName,omitempty"`
+	Comment        *string           `json:"Comment,omitempty"`
+	ControlSetId   *string           `json:"ControlSetId,omitempty"`
+	CreatedBy      *string           `json:"CreatedBy,omitempty"`
+	CreationTime   *float64          `json:"CreationTime,omitempty"`
+	Id             *string           `json:"Id,omitempty"`
+	LastUpdated    *float64          `json:"LastUpdated,omitempty"`
+	RoleArn        *string           `json:"RoleArn,omitempty"`
+	RoleType       *RoleType         `json:"RoleType,omitempty"`
+	Status         *DelegationStatus `json:"Status,omitempty"`
 }
 
 type Role struct {
-	RoleArn  *string `json:"RoleArn,omitempty"`
-	RoleType *string `json:"RoleType,omitempty"`
+	RoleArn  *string   `json:"RoleArn,omitempty"`
+	RoleType *RoleType `json:"RoleType,omitempty"`
 }
 
 type AWSService struct {
@@ -59,7 +59,7 @@ type Assessment struct {
 	Name                         *string                       `json:"Name,omitempty"`
 	Roles                        []Role                        `json:"Roles,omitempty"`
 	Scope                        *Scope                        `json:"Scope,omitempty"`
-	Status                       *string                       `json:"Status,omitempty"`
+	Status                       *AssessmentStatus             `json:"Status,omitempty"`
 	Tags                         []Tag                         `json:"Tags,omitempty"`
 }
 
@@ -91,7 +91,42 @@ type AssessmentFramework struct {
 	LastUpdatedBy  *string                  `json:"LastUpdatedBy,omitempty"`
 	Name           *string                  `json:"Name,omitempty"`
 	Tags           []AssessmentFrameworkTag `json:"Tags,omitempty"`
-	Type           *string                  `json:"Type,omitempty"`
+	Type           *AssessmentFrameworkType `json:"Type,omitempty"`
 }
 
 func (AssessmentFramework) CloudControlType() string { return "AWS::AuditManager::AssessmentFramework" }
+
+type AssessmentReportDestinationType string
+
+const (
+	AssessmentReportDestinationTypeS3 AssessmentReportDestinationType = "S3"
+)
+
+type RoleType string
+
+const (
+	RoleTypePROCESSOWNER  RoleType = "PROCESS_OWNER"
+	RoleTypeRESOURCEOWNER RoleType = "RESOURCE_OWNER"
+)
+
+type DelegationStatus string
+
+const (
+	DelegationStatusINPROGRESS  DelegationStatus = "IN_PROGRESS"
+	DelegationStatusUNDERREVIEW DelegationStatus = "UNDER_REVIEW"
+	DelegationStatusCOMPLETE    DelegationStatus = "COMPLETE"
+)
+
+type AssessmentStatus string
+
+const (
+	AssessmentStatusACTIVE   AssessmentStatus = "ACTIVE"
+	AssessmentStatusINACTIVE AssessmentStatus = "INACTIVE"
+)
+
+type AssessmentFrameworkType string
+
+const (
+	AssessmentFrameworkTypeStandard AssessmentFrameworkType = "Standard"
+	AssessmentFrameworkTypeCustom   AssessmentFrameworkType = "Custom"
+)

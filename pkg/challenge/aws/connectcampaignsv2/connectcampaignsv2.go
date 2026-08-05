@@ -55,7 +55,7 @@ type TimeoutConfig struct {
 }
 
 type PreviewConfig struct {
-	AgentActions        []string       `json:"AgentActions,omitempty"`
+	AgentActions        []AgentAction  `json:"AgentActions,omitempty"`
 	BandwidthAllocation *float64       `json:"BandwidthAllocation,omitempty"`
 	TimeoutConfig       *TimeoutConfig `json:"TimeoutConfig,omitempty"`
 }
@@ -101,9 +101,9 @@ type ChannelSubtypeConfig struct {
 }
 
 type CommunicationLimit struct {
-	Frequency            *int    `json:"Frequency,omitempty"`
-	MaxCountPerRecipient *int    `json:"MaxCountPerRecipient,omitempty"`
-	Unit                 *string `json:"Unit,omitempty"`
+	Frequency            *int                        `json:"Frequency,omitempty"`
+	MaxCountPerRecipient *int                        `json:"MaxCountPerRecipient,omitempty"`
+	Unit                 *CommunicationLimitTimeUnit `json:"Unit,omitempty"`
 }
 
 type CommunicationLimits struct {
@@ -111,8 +111,8 @@ type CommunicationLimits struct {
 }
 
 type CommunicationLimitsConfig struct {
-	AllChannelsSubtypes    *CommunicationLimits `json:"AllChannelsSubtypes,omitempty"`
-	InstanceLimitsHandling *string              `json:"InstanceLimitsHandling,omitempty"`
+	AllChannelsSubtypes    *CommunicationLimits    `json:"AllChannelsSubtypes,omitempty"`
+	InstanceLimitsHandling *InstanceLimitsHandling `json:"InstanceLimitsHandling,omitempty"`
 }
 
 type TimeRange struct {
@@ -121,7 +121,7 @@ type TimeRange struct {
 }
 
 type DailyHour struct {
-	Key   *string     `json:"Key,omitempty"`
+	Key   *DayOfWeek  `json:"Key,omitempty"`
 	Value []TimeRange `json:"Value,omitempty"`
 }
 
@@ -145,9 +145,9 @@ type TimeWindow struct {
 }
 
 type LocalTimeZoneConfig struct {
-	DefaultTimeZone             *string  `json:"DefaultTimeZone,omitempty"`
-	LocalTimeZoneDetection      []string `json:"LocalTimeZoneDetection,omitempty"`
-	LocalTimeZoneDetectionScope *string  `json:"LocalTimeZoneDetectionScope,omitempty"`
+	DefaultTimeZone             *string                      `json:"DefaultTimeZone,omitempty"`
+	LocalTimeZoneDetection      []LocalTimeZoneDetectionType `json:"LocalTimeZoneDetection,omitempty"`
+	LocalTimeZoneDetectionScope *LocalTimeZoneDetectionScope `json:"LocalTimeZoneDetectionScope,omitempty"`
 }
 
 type CommunicationTimeConfig struct {
@@ -195,7 +195,59 @@ type Campaign struct {
 	Schedule                    *Schedule                  `json:"Schedule,omitempty"`
 	Source                      *Source                    `json:"Source,omitempty"`
 	Tags                        []Tag                      `json:"Tags,omitempty"`
-	Type                        *string                    `json:"Type,omitempty"`
+	Type                        *CampaignType              `json:"Type,omitempty"`
 }
 
 func (Campaign) CloudControlType() string { return "AWS::ConnectCampaignsV2::Campaign" }
+
+type AgentAction string
+
+const (
+	AgentActionDISCARD AgentAction = "DISCARD"
+)
+
+type CommunicationLimitTimeUnit string
+
+const (
+	CommunicationLimitTimeUnitDAY CommunicationLimitTimeUnit = "DAY"
+)
+
+type InstanceLimitsHandling string
+
+const (
+	InstanceLimitsHandlingOPTIN  InstanceLimitsHandling = "OPT_IN"
+	InstanceLimitsHandlingOPTOUT InstanceLimitsHandling = "OPT_OUT"
+)
+
+type DayOfWeek string
+
+const (
+	DayOfWeekMONDAY    DayOfWeek = "MONDAY"
+	DayOfWeekTUESDAY   DayOfWeek = "TUESDAY"
+	DayOfWeekWEDNESDAY DayOfWeek = "WEDNESDAY"
+	DayOfWeekTHURSDAY  DayOfWeek = "THURSDAY"
+	DayOfWeekFRIDAY    DayOfWeek = "FRIDAY"
+	DayOfWeekSATURDAY  DayOfWeek = "SATURDAY"
+	DayOfWeekSUNDAY    DayOfWeek = "SUNDAY"
+)
+
+type LocalTimeZoneDetectionType string
+
+const (
+	LocalTimeZoneDetectionTypeZIPCODE  LocalTimeZoneDetectionType = "ZIP_CODE"
+	LocalTimeZoneDetectionTypeAREACODE LocalTimeZoneDetectionType = "AREA_CODE"
+)
+
+type LocalTimeZoneDetectionScope string
+
+const (
+	LocalTimeZoneDetectionScopePRIMARYONLY  LocalTimeZoneDetectionScope = "PRIMARY_ONLY"
+	LocalTimeZoneDetectionScopeALLAVAILABLE LocalTimeZoneDetectionScope = "ALL_AVAILABLE"
+)
+
+type CampaignType string
+
+const (
+	CampaignTypeMANAGED CampaignType = "MANAGED"
+	CampaignTypeJOURNEY CampaignType = "JOURNEY"
+)

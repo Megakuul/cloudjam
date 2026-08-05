@@ -11,19 +11,19 @@ type Ec2ConfigurationObject struct {
 }
 
 type LaunchTemplateSpecificationOverride struct {
-	LaunchTemplateId    *string  `json:"LaunchTemplateId,omitempty"`
-	LaunchTemplateName  *string  `json:"LaunchTemplateName,omitempty"`
-	TargetInstanceTypes []string `json:"TargetInstanceTypes,omitempty"`
-	UserdataType        *string  `json:"UserdataType,omitempty"`
-	Version             *string  `json:"Version,omitempty"`
+	LaunchTemplateId    *string                                          `json:"LaunchTemplateId,omitempty"`
+	LaunchTemplateName  *string                                          `json:"LaunchTemplateName,omitempty"`
+	TargetInstanceTypes []string                                         `json:"TargetInstanceTypes,omitempty"`
+	UserdataType        *LaunchTemplateSpecificationOverrideUserdataType `json:"UserdataType,omitempty"`
+	Version             *string                                          `json:"Version,omitempty"`
 }
 
 type LaunchTemplateSpecification struct {
-	LaunchTemplateId   *string                               `json:"LaunchTemplateId,omitempty"`
-	LaunchTemplateName *string                               `json:"LaunchTemplateName,omitempty"`
-	Overrides          []LaunchTemplateSpecificationOverride `json:"Overrides,omitempty"`
-	UserdataType       *string                               `json:"UserdataType,omitempty"`
-	Version            *string                               `json:"Version,omitempty"`
+	LaunchTemplateId   *string                                  `json:"LaunchTemplateId,omitempty"`
+	LaunchTemplateName *string                                  `json:"LaunchTemplateName,omitempty"`
+	Overrides          []LaunchTemplateSpecificationOverride    `json:"Overrides,omitempty"`
+	UserdataType       *LaunchTemplateSpecificationUserdataType `json:"UserdataType,omitempty"`
+	Version            *string                                  `json:"Version,omitempty"`
 }
 
 type ComputeScalingPolicy struct {
@@ -85,7 +85,7 @@ type ConsumableResource struct {
 	ConsumableResourceName *string           `json:"ConsumableResourceName,omitempty"`
 	CreatedAt              *int              `json:"CreatedAt,omitempty"`
 	InUseQuantity          *int              `json:"InUseQuantity,omitempty"`
-	ResourceType           *string           `json:"ResourceType,omitempty"`
+	ResourceType           *ResourceType     `json:"ResourceType,omitempty"`
 	Tags                   map[string]string `json:"Tags,omitempty"`
 	TotalQuantity          *int              `json:"TotalQuantity,omitempty"`
 }
@@ -475,10 +475,10 @@ type ComputeEnvironmentOrder struct {
 }
 
 type JobStateTimeLimitAction struct {
-	Action         *string `json:"Action,omitempty"`
-	MaxTimeSeconds *int    `json:"MaxTimeSeconds,omitempty"`
-	Reason         *string `json:"Reason,omitempty"`
-	State          *string `json:"State,omitempty"`
+	Action         *JobStateTimeLimitActionAction `json:"Action,omitempty"`
+	MaxTimeSeconds *int                           `json:"MaxTimeSeconds,omitempty"`
+	Reason         *string                        `json:"Reason,omitempty"`
+	State          *JobStateTimeLimitActionState  `json:"State,omitempty"`
 }
 
 type ServiceEnvironmentOrder struct {
@@ -495,7 +495,7 @@ type JobQueue struct {
 	Priority                 *int                      `json:"Priority,omitempty"`
 	SchedulingPolicyArn      *string                   `json:"SchedulingPolicyArn,omitempty"`
 	ServiceEnvironmentOrder  []ServiceEnvironmentOrder `json:"ServiceEnvironmentOrder,omitempty"`
-	State                    *string                   `json:"State,omitempty"`
+	State                    *JobQueueState            `json:"State,omitempty"`
 	Tags                     map[string]string         `json:"Tags,omitempty"`
 }
 
@@ -507,12 +507,12 @@ type QuotaShareCapacityLimit struct {
 }
 
 type QuotaSharePreemptionConfiguration struct {
-	InSharePreemption *string `json:"InSharePreemption,omitempty"`
+	InSharePreemption *QuotaSharePreemptionConfigurationInSharePreemption `json:"InSharePreemption,omitempty"`
 }
 
 type QuotaShareResourceSharingConfiguration struct {
-	BorrowLimit *int    `json:"BorrowLimit,omitempty"`
-	Strategy    *string `json:"Strategy,omitempty"`
+	BorrowLimit *int                                            `json:"BorrowLimit,omitempty"`
+	Strategy    *QuotaShareResourceSharingConfigurationStrategy `json:"Strategy,omitempty"`
 }
 
 type QuotaShare struct {
@@ -522,7 +522,7 @@ type QuotaShare struct {
 	QuotaShareArn                *string                                 `json:"QuotaShareArn,omitempty"`
 	QuotaShareName               *string                                 `json:"QuotaShareName,omitempty"`
 	ResourceSharingConfiguration *QuotaShareResourceSharingConfiguration `json:"ResourceSharingConfiguration,omitempty"`
-	State                        *string                                 `json:"State,omitempty"`
+	State                        *QuotaShareState                        `json:"State,omitempty"`
 	Tags                         map[string]string                       `json:"Tags,omitempty"`
 }
 
@@ -540,7 +540,7 @@ type FairsharePolicy struct {
 }
 
 type QuotaSharePolicy struct {
-	IdleResourceAssignmentStrategy *string `json:"IdleResourceAssignmentStrategy,omitempty"`
+	IdleResourceAssignmentStrategy *QuotaSharePolicyIdleResourceAssignmentStrategy `json:"IdleResourceAssignmentStrategy,omitempty"`
 }
 
 type SchedulingPolicy struct {
@@ -568,3 +568,72 @@ type ServiceEnvironment struct {
 }
 
 func (ServiceEnvironment) CloudControlType() string { return "AWS::Batch::ServiceEnvironment" }
+
+type LaunchTemplateSpecificationOverrideUserdataType string
+
+const (
+	LaunchTemplateSpecificationOverrideUserdataTypeEKSBOOTSTRAPSH LaunchTemplateSpecificationOverrideUserdataType = "EKS_BOOTSTRAP_SH"
+	LaunchTemplateSpecificationOverrideUserdataTypeEKSNODEADM     LaunchTemplateSpecificationOverrideUserdataType = "EKS_NODEADM"
+)
+
+type LaunchTemplateSpecificationUserdataType string
+
+const (
+	LaunchTemplateSpecificationUserdataTypeEKSBOOTSTRAPSH LaunchTemplateSpecificationUserdataType = "EKS_BOOTSTRAP_SH"
+	LaunchTemplateSpecificationUserdataTypeEKSNODEADM     LaunchTemplateSpecificationUserdataType = "EKS_NODEADM"
+)
+
+type ResourceType string
+
+const (
+	ResourceTypeREPLENISHABLE    ResourceType = "REPLENISHABLE"
+	ResourceTypeNONREPLENISHABLE ResourceType = "NON_REPLENISHABLE"
+)
+
+type JobStateTimeLimitActionAction string
+
+const (
+	JobStateTimeLimitActionActionCANCEL    JobStateTimeLimitActionAction = "CANCEL"
+	JobStateTimeLimitActionActionTERMINATE JobStateTimeLimitActionAction = "TERMINATE"
+)
+
+type JobStateTimeLimitActionState string
+
+const (
+	JobStateTimeLimitActionStateRUNNABLE JobStateTimeLimitActionState = "RUNNABLE"
+)
+
+type JobQueueState string
+
+const (
+	JobQueueStateDISABLED JobQueueState = "DISABLED"
+	JobQueueStateENABLED  JobQueueState = "ENABLED"
+)
+
+type QuotaSharePreemptionConfigurationInSharePreemption string
+
+const (
+	QuotaSharePreemptionConfigurationInSharePreemptionENABLED  QuotaSharePreemptionConfigurationInSharePreemption = "ENABLED"
+	QuotaSharePreemptionConfigurationInSharePreemptionDISABLED QuotaSharePreemptionConfigurationInSharePreemption = "DISABLED"
+)
+
+type QuotaShareResourceSharingConfigurationStrategy string
+
+const (
+	QuotaShareResourceSharingConfigurationStrategyRESERVE       QuotaShareResourceSharingConfigurationStrategy = "RESERVE"
+	QuotaShareResourceSharingConfigurationStrategyLEND          QuotaShareResourceSharingConfigurationStrategy = "LEND"
+	QuotaShareResourceSharingConfigurationStrategyLENDANDBORROW QuotaShareResourceSharingConfigurationStrategy = "LEND_AND_BORROW"
+)
+
+type QuotaShareState string
+
+const (
+	QuotaShareStateENABLED  QuotaShareState = "ENABLED"
+	QuotaShareStateDISABLED QuotaShareState = "DISABLED"
+)
+
+type QuotaSharePolicyIdleResourceAssignmentStrategy string
+
+const (
+	QuotaSharePolicyIdleResourceAssignmentStrategyFIFO QuotaSharePolicyIdleResourceAssignmentStrategy = "FIFO"
+)

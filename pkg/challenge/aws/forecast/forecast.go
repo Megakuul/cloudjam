@@ -9,8 +9,8 @@ type DatasetEncryptionConfig struct {
 }
 
 type AttributesItem struct {
-	AttributeName *string `json:"AttributeName,omitempty"`
-	AttributeType *string `json:"AttributeType,omitempty"`
+	AttributeName *string                      `json:"AttributeName,omitempty"`
+	AttributeType *AttributesItemAttributeType `json:"AttributeType,omitempty"`
 }
 
 type DatasetSchema struct {
@@ -26,8 +26,8 @@ type Dataset struct {
 	Arn              *string                  `json:"Arn,omitempty"`
 	DataFrequency    *string                  `json:"DataFrequency,omitempty"`
 	DatasetName      *string                  `json:"DatasetName,omitempty"`
-	DatasetType      *string                  `json:"DatasetType,omitempty"`
-	Domain           *string                  `json:"Domain,omitempty"`
+	DatasetType      *DatasetDatasetType      `json:"DatasetType,omitempty"`
+	Domain           *DatasetDomain           `json:"Domain,omitempty"`
 	EncryptionConfig *DatasetEncryptionConfig `json:"EncryptionConfig,omitempty"`
 	Schema           *DatasetSchema           `json:"Schema,omitempty"`
 	Tags             []DatasetTagsItem        `json:"Tags,omitempty"`
@@ -41,11 +41,53 @@ type Tag struct {
 }
 
 type DatasetGroup struct {
-	DatasetArns      []string `json:"DatasetArns,omitempty"`
-	DatasetGroupArn  *string  `json:"DatasetGroupArn,omitempty"`
-	DatasetGroupName *string  `json:"DatasetGroupName,omitempty"`
-	Domain           *string  `json:"Domain,omitempty"`
-	Tags             []Tag    `json:"Tags,omitempty"`
+	DatasetArns      []string            `json:"DatasetArns,omitempty"`
+	DatasetGroupArn  *string             `json:"DatasetGroupArn,omitempty"`
+	DatasetGroupName *string             `json:"DatasetGroupName,omitempty"`
+	Domain           *DatasetGroupDomain `json:"Domain,omitempty"`
+	Tags             []Tag               `json:"Tags,omitempty"`
 }
 
 func (DatasetGroup) CloudControlType() string { return "AWS::Forecast::DatasetGroup" }
+
+type DatasetDatasetType string
+
+const (
+	DatasetDatasetTypeTARGETTIMESERIES  DatasetDatasetType = "TARGET_TIME_SERIES"
+	DatasetDatasetTypeRELATEDTIMESERIES DatasetDatasetType = "RELATED_TIME_SERIES"
+	DatasetDatasetTypeITEMMETADATA      DatasetDatasetType = "ITEM_METADATA"
+)
+
+type DatasetDomain string
+
+const (
+	DatasetDomainRETAIL            DatasetDomain = "RETAIL"
+	DatasetDomainCUSTOM            DatasetDomain = "CUSTOM"
+	DatasetDomainINVENTORYPLANNING DatasetDomain = "INVENTORY_PLANNING"
+	DatasetDomainEC2CAPACITY       DatasetDomain = "EC2_CAPACITY"
+	DatasetDomainWORKFORCE         DatasetDomain = "WORK_FORCE"
+	DatasetDomainWEBTRAFFIC        DatasetDomain = "WEB_TRAFFIC"
+	DatasetDomainMETRICS           DatasetDomain = "METRICS"
+)
+
+type AttributesItemAttributeType string
+
+const (
+	AttributesItemAttributeTypeString      AttributesItemAttributeType = "string"
+	AttributesItemAttributeTypeInteger     AttributesItemAttributeType = "integer"
+	AttributesItemAttributeTypeFloat       AttributesItemAttributeType = "float"
+	AttributesItemAttributeTypeTimestamp   AttributesItemAttributeType = "timestamp"
+	AttributesItemAttributeTypeGeolocation AttributesItemAttributeType = "geolocation"
+)
+
+type DatasetGroupDomain string
+
+const (
+	DatasetGroupDomainRETAIL            DatasetGroupDomain = "RETAIL"
+	DatasetGroupDomainCUSTOM            DatasetGroupDomain = "CUSTOM"
+	DatasetGroupDomainINVENTORYPLANNING DatasetGroupDomain = "INVENTORY_PLANNING"
+	DatasetGroupDomainEC2CAPACITY       DatasetGroupDomain = "EC2_CAPACITY"
+	DatasetGroupDomainWORKFORCE         DatasetGroupDomain = "WORK_FORCE"
+	DatasetGroupDomainWEBTRAFFIC        DatasetGroupDomain = "WEB_TRAFFIC"
+	DatasetGroupDomainMETRICS           DatasetGroupDomain = "METRICS"
+)

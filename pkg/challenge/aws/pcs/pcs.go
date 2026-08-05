@@ -6,11 +6,11 @@ package pcs
 import "encoding/json"
 
 type Endpoint struct {
-	Ipv6Address      *string `json:"Ipv6Address,omitempty"`
-	Port             *string `json:"Port,omitempty"`
-	PrivateIpAddress *string `json:"PrivateIpAddress,omitempty"`
-	PublicIpAddress  *string `json:"PublicIpAddress,omitempty"`
-	Type             *string `json:"Type,omitempty"`
+	Ipv6Address      *string       `json:"Ipv6Address,omitempty"`
+	Port             *string       `json:"Port,omitempty"`
+	PrivateIpAddress *string       `json:"PrivateIpAddress,omitempty"`
+	PublicIpAddress  *string       `json:"PublicIpAddress,omitempty"`
+	Type             *EndpointType `json:"Type,omitempty"`
 }
 
 type ErrorInfo struct {
@@ -19,19 +19,19 @@ type ErrorInfo struct {
 }
 
 type ClusterNetworking struct {
-	NetworkType      *string  `json:"NetworkType,omitempty"`
-	SecurityGroupIds []string `json:"SecurityGroupIds,omitempty"`
-	SubnetIds        []string `json:"SubnetIds,omitempty"`
+	NetworkType      *ClusterNetworkingNetworkType `json:"NetworkType,omitempty"`
+	SecurityGroupIds []string                      `json:"SecurityGroupIds,omitempty"`
+	SubnetIds        []string                      `json:"SubnetIds,omitempty"`
 }
 
 type ClusterScheduler struct {
-	Type    *string `json:"Type,omitempty"`
-	Version *string `json:"Version,omitempty"`
+	Type    *ClusterSchedulerType `json:"Type,omitempty"`
+	Version *string               `json:"Version,omitempty"`
 }
 
 type Accounting struct {
-	DefaultPurgeTimeInDays *int    `json:"DefaultPurgeTimeInDays,omitempty"`
-	Mode                   *string `json:"Mode,omitempty"`
+	DefaultPurgeTimeInDays *int            `json:"DefaultPurgeTimeInDays,omitempty"`
+	Mode                   *AccountingMode `json:"Mode,omitempty"`
 }
 
 type AuthKey struct {
@@ -59,7 +59,7 @@ type SlurmCustomSetting struct {
 }
 
 type SlurmRest struct {
-	Mode *string `json:"Mode,omitempty"`
+	Mode *SlurmRestMode `json:"Mode,omitempty"`
 }
 
 type SlurmdbdCustomSetting struct {
@@ -86,9 +86,9 @@ type Cluster struct {
 	Name               *string                    `json:"Name,omitempty"`
 	Networking         *ClusterNetworking         `json:"Networking,omitempty"`
 	Scheduler          *ClusterScheduler          `json:"Scheduler,omitempty"`
-	Size               *string                    `json:"Size,omitempty"`
+	Size               *ClusterSize               `json:"Size,omitempty"`
 	SlurmConfiguration *ClusterSlurmConfiguration `json:"SlurmConfiguration,omitempty"`
-	Status             *string                    `json:"Status,omitempty"`
+	Status             *ClusterStatus             `json:"Status,omitempty"`
 	Tags               json.RawMessage            `json:"Tags,omitempty"`
 }
 
@@ -115,11 +115,11 @@ type ScriptSource struct {
 }
 
 type NodeLifecycleScript struct {
-	Arguments       []string      `json:"Arguments,omitempty"`
-	ExecutionPolicy *string       `json:"ExecutionPolicy,omitempty"`
-	Name            *string       `json:"Name,omitempty"`
-	OnError         *string       `json:"OnError,omitempty"`
-	ScriptSource    *ScriptSource `json:"ScriptSource,omitempty"`
+	Arguments       []string                            `json:"Arguments,omitempty"`
+	ExecutionPolicy *NodeLifecycleScriptExecutionPolicy `json:"ExecutionPolicy,omitempty"`
+	Name            *string                             `json:"Name,omitempty"`
+	OnError         *NodeLifecycleScriptOnError         `json:"OnError,omitempty"`
+	ScriptSource    *ScriptSource                       `json:"ScriptSource,omitempty"`
 }
 
 type NodeLifecycleStages struct {
@@ -128,8 +128,8 @@ type NodeLifecycleStages struct {
 }
 
 type NodeLifecycleActions struct {
-	ScriptCachingPolicy *string              `json:"ScriptCachingPolicy,omitempty"`
-	Stages              *NodeLifecycleStages `json:"Stages,omitempty"`
+	ScriptCachingPolicy *NodeLifecycleActionsScriptCachingPolicy `json:"ScriptCachingPolicy,omitempty"`
+	Stages              *NodeLifecycleStages                     `json:"Stages,omitempty"`
 }
 
 type ComputeNodeGroupScalingConfiguration struct {
@@ -148,7 +148,7 @@ type ComputeNodeGroupSlurmConfiguration struct {
 }
 
 type ComputeNodeGroupSpotOptions struct {
-	AllocationStrategy *string `json:"AllocationStrategy,omitempty"`
+	AllocationStrategy *ComputeNodeGroupSpotOptionsAllocationStrategy `json:"AllocationStrategy,omitempty"`
 }
 
 type ComputeNodeGroup struct {
@@ -162,11 +162,11 @@ type ComputeNodeGroup struct {
 	InstanceConfigs       []InstanceConfig                      `json:"InstanceConfigs,omitempty"`
 	Name                  *string                               `json:"Name,omitempty"`
 	NodeLifecycleActions  *NodeLifecycleActions                 `json:"NodeLifecycleActions,omitempty"`
-	PurchaseOption        *string                               `json:"PurchaseOption,omitempty"`
+	PurchaseOption        *ComputeNodeGroupPurchaseOption       `json:"PurchaseOption,omitempty"`
 	ScalingConfiguration  *ComputeNodeGroupScalingConfiguration `json:"ScalingConfiguration,omitempty"`
 	SlurmConfiguration    *ComputeNodeGroupSlurmConfiguration   `json:"SlurmConfiguration,omitempty"`
 	SpotOptions           *ComputeNodeGroupSpotOptions          `json:"SpotOptions,omitempty"`
-	Status                *string                               `json:"Status,omitempty"`
+	Status                *ComputeNodeGroupStatus               `json:"Status,omitempty"`
 	SubnetIds             []string                              `json:"SubnetIds,omitempty"`
 	Tags                  json.RawMessage                       `json:"Tags,omitempty"`
 }
@@ -199,8 +199,126 @@ type Queue struct {
 	Id                             *string                         `json:"Id,omitempty"`
 	Name                           *string                         `json:"Name,omitempty"`
 	SlurmConfiguration             *QueueSlurmConfiguration        `json:"SlurmConfiguration,omitempty"`
-	Status                         *string                         `json:"Status,omitempty"`
+	Status                         *QueueStatus                    `json:"Status,omitempty"`
 	Tags                           map[string]string               `json:"Tags,omitempty"`
 }
 
 func (Queue) CloudControlType() string { return "AWS::PCS::Queue" }
+
+type EndpointType string
+
+const (
+	EndpointTypeSLURMCTLD  EndpointType = "SLURMCTLD"
+	EndpointTypeSLURMDBD   EndpointType = "SLURMDBD"
+	EndpointTypeSLURMRESTD EndpointType = "SLURMRESTD"
+)
+
+type ClusterNetworkingNetworkType string
+
+const (
+	ClusterNetworkingNetworkTypeIPV4 ClusterNetworkingNetworkType = "IPV4"
+	ClusterNetworkingNetworkTypeIPV6 ClusterNetworkingNetworkType = "IPV6"
+)
+
+type ClusterSchedulerType string
+
+const (
+	ClusterSchedulerTypeSLURM ClusterSchedulerType = "SLURM"
+)
+
+type ClusterSize string
+
+const (
+	ClusterSizeSMALL  ClusterSize = "SMALL"
+	ClusterSizeMEDIUM ClusterSize = "MEDIUM"
+	ClusterSizeLARGE  ClusterSize = "LARGE"
+)
+
+type AccountingMode string
+
+const (
+	AccountingModeSTANDARD AccountingMode = "STANDARD"
+	AccountingModeNONE     AccountingMode = "NONE"
+)
+
+type SlurmRestMode string
+
+const (
+	SlurmRestModeSTANDARD SlurmRestMode = "STANDARD"
+	SlurmRestModeNONE     SlurmRestMode = "NONE"
+)
+
+type ClusterStatus string
+
+const (
+	ClusterStatusCREATING     ClusterStatus = "CREATING"
+	ClusterStatusACTIVE       ClusterStatus = "ACTIVE"
+	ClusterStatusUPDATING     ClusterStatus = "UPDATING"
+	ClusterStatusDELETING     ClusterStatus = "DELETING"
+	ClusterStatusCREATEFAILED ClusterStatus = "CREATE_FAILED"
+	ClusterStatusDELETEFAILED ClusterStatus = "DELETE_FAILED"
+	ClusterStatusUPDATEFAILED ClusterStatus = "UPDATE_FAILED"
+)
+
+type NodeLifecycleActionsScriptCachingPolicy string
+
+const (
+	NodeLifecycleActionsScriptCachingPolicyCACHEONCE       NodeLifecycleActionsScriptCachingPolicy = "CACHE_ONCE"
+	NodeLifecycleActionsScriptCachingPolicyREFRESHONREBOOT NodeLifecycleActionsScriptCachingPolicy = "REFRESH_ON_REBOOT"
+)
+
+type NodeLifecycleScriptExecutionPolicy string
+
+const (
+	NodeLifecycleScriptExecutionPolicyFIRSTBOOTONLY NodeLifecycleScriptExecutionPolicy = "FIRST_BOOT_ONLY"
+	NodeLifecycleScriptExecutionPolicyEVERYBOOT     NodeLifecycleScriptExecutionPolicy = "EVERY_BOOT"
+)
+
+type NodeLifecycleScriptOnError string
+
+const (
+	NodeLifecycleScriptOnErrorTERMINATE    NodeLifecycleScriptOnError = "TERMINATE"
+	NodeLifecycleScriptOnErrorSTOPSEQUENCE NodeLifecycleScriptOnError = "STOP_SEQUENCE"
+	NodeLifecycleScriptOnErrorCONTINUE     NodeLifecycleScriptOnError = "CONTINUE"
+)
+
+type ComputeNodeGroupPurchaseOption string
+
+const (
+	ComputeNodeGroupPurchaseOptionONDEMAND                         ComputeNodeGroupPurchaseOption = "ONDEMAND"
+	ComputeNodeGroupPurchaseOptionSPOT                             ComputeNodeGroupPurchaseOption = "SPOT"
+	ComputeNodeGroupPurchaseOptionCAPACITYBLOCK                    ComputeNodeGroupPurchaseOption = "CAPACITY_BLOCK"
+	ComputeNodeGroupPurchaseOptionINTERRUPTIBLECAPACITYRESERVATION ComputeNodeGroupPurchaseOption = "INTERRUPTIBLE_CAPACITY_RESERVATION"
+)
+
+type ComputeNodeGroupSpotOptionsAllocationStrategy string
+
+const (
+	ComputeNodeGroupSpotOptionsAllocationStrategyLowestPrice            ComputeNodeGroupSpotOptionsAllocationStrategy = "lowest-price"
+	ComputeNodeGroupSpotOptionsAllocationStrategyCapacityOptimized      ComputeNodeGroupSpotOptionsAllocationStrategy = "capacity-optimized"
+	ComputeNodeGroupSpotOptionsAllocationStrategyPriceCapacityOptimized ComputeNodeGroupSpotOptionsAllocationStrategy = "price-capacity-optimized"
+)
+
+type ComputeNodeGroupStatus string
+
+const (
+	ComputeNodeGroupStatusCREATING     ComputeNodeGroupStatus = "CREATING"
+	ComputeNodeGroupStatusACTIVE       ComputeNodeGroupStatus = "ACTIVE"
+	ComputeNodeGroupStatusUPDATING     ComputeNodeGroupStatus = "UPDATING"
+	ComputeNodeGroupStatusDELETING     ComputeNodeGroupStatus = "DELETING"
+	ComputeNodeGroupStatusCREATEFAILED ComputeNodeGroupStatus = "CREATE_FAILED"
+	ComputeNodeGroupStatusDELETEFAILED ComputeNodeGroupStatus = "DELETE_FAILED"
+	ComputeNodeGroupStatusUPDATEFAILED ComputeNodeGroupStatus = "UPDATE_FAILED"
+)
+
+type QueueStatus string
+
+const (
+	QueueStatusCREATING     QueueStatus = "CREATING"
+	QueueStatusACTIVE       QueueStatus = "ACTIVE"
+	QueueStatusUPDATING     QueueStatus = "UPDATING"
+	QueueStatusDELETING     QueueStatus = "DELETING"
+	QueueStatusCREATEFAILED QueueStatus = "CREATE_FAILED"
+	QueueStatusDELETEFAILED QueueStatus = "DELETE_FAILED"
+	QueueStatusUPDATEFAILED QueueStatus = "UPDATE_FAILED"
+)

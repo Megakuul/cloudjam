@@ -6,8 +6,8 @@ package opensearchservice
 import "encoding/json"
 
 type AppConfig struct {
-	Key   *string `json:"Key,omitempty"`
-	Value *string `json:"Value,omitempty"`
+	Key   *AppConfigType `json:"Key,omitempty"`
+	Value *string        `json:"Value,omitempty"`
 }
 
 type DataSource struct {
@@ -115,8 +115,8 @@ type NodeConfig struct {
 }
 
 type NodeOption struct {
-	NodeConfig *NodeConfig `json:"NodeConfig,omitempty"`
-	NodeType   *string     `json:"NodeType,omitempty"`
+	NodeConfig *NodeConfig         `json:"NodeConfig,omitempty"`
+	NodeType   *NodeOptionNodeType `json:"NodeType,omitempty"`
 }
 
 type ZoneAwarenessConfig struct {
@@ -147,7 +147,7 @@ type CognitoOptions struct {
 }
 
 type DeploymentStrategyOptions struct {
-	DeploymentStrategy *string `json:"DeploymentStrategy,omitempty"`
+	DeploymentStrategy *DeploymentStrategyOptionsDeploymentStrategy `json:"DeploymentStrategy,omitempty"`
 }
 
 type DomainEndpointOptions struct {
@@ -172,12 +172,12 @@ type EncryptionAtRestOptions struct {
 }
 
 type IdentityCenterOptions struct {
-	EnabledAPIAccess             *bool   `json:"EnabledAPIAccess,omitempty"`
-	IdentityCenterApplicationARN *string `json:"IdentityCenterApplicationARN,omitempty"`
-	IdentityCenterInstanceARN    *string `json:"IdentityCenterInstanceARN,omitempty"`
-	IdentityStoreId              *string `json:"IdentityStoreId,omitempty"`
-	RolesKey                     *string `json:"RolesKey,omitempty"`
-	SubjectKey                   *string `json:"SubjectKey,omitempty"`
+	EnabledAPIAccess             *bool              `json:"EnabledAPIAccess,omitempty"`
+	IdentityCenterApplicationARN *string            `json:"IdentityCenterApplicationARN,omitempty"`
+	IdentityCenterInstanceARN    *string            `json:"IdentityCenterInstanceARN,omitempty"`
+	IdentityStoreId              *string            `json:"IdentityStoreId,omitempty"`
+	RolesKey                     *RolesKeyIdcType   `json:"RolesKey,omitempty"`
+	SubjectKey                   *SubjectKeyIdcType `json:"SubjectKey,omitempty"`
 }
 
 type LogPublishingOption struct {
@@ -251,7 +251,7 @@ type Domain struct {
 	DomainName                    *string                        `json:"DomainName,omitempty"`
 	EBSOptions                    *EBSOptions                    `json:"EBSOptions,omitempty"`
 	EncryptionAtRestOptions       *EncryptionAtRestOptions       `json:"EncryptionAtRestOptions,omitempty"`
-	EngineMode                    *string                        `json:"EngineMode,omitempty"`
+	EngineMode                    *DomainEngineMode              `json:"EngineMode,omitempty"`
 	EngineVersion                 *string                        `json:"EngineVersion,omitempty"`
 	IPAddressType                 *string                        `json:"IPAddressType,omitempty"`
 	Id                            *string                        `json:"Id,omitempty"`
@@ -264,8 +264,59 @@ type Domain struct {
 	SnapshotOptions               *SnapshotOptions               `json:"SnapshotOptions,omitempty"`
 	SoftwareUpdateOptions         *SoftwareUpdateOptions         `json:"SoftwareUpdateOptions,omitempty"`
 	Tags                          []DomainTag                    `json:"Tags,omitempty"`
-	UseCase                       *string                        `json:"UseCase,omitempty"`
+	UseCase                       *DomainUseCase                 `json:"UseCase,omitempty"`
 	VPCOptions                    *VPCOptions                    `json:"VPCOptions,omitempty"`
 }
 
 func (Domain) CloudControlType() string { return "AWS::OpenSearchService::Domain" }
+
+type AppConfigType string
+
+const (
+	AppConfigTypeOpensearchDashboardsDashboardAdminUsers  AppConfigType = "opensearchDashboards.dashboardAdmin.users"
+	AppConfigTypeOpensearchDashboardsDashboardAdminGroups AppConfigType = "opensearchDashboards.dashboardAdmin.groups"
+)
+
+type NodeOptionNodeType string
+
+const (
+	NodeOptionNodeTypeCoordinator NodeOptionNodeType = "coordinator"
+)
+
+type DeploymentStrategyOptionsDeploymentStrategy string
+
+const (
+	DeploymentStrategyOptionsDeploymentStrategyDefault           DeploymentStrategyOptionsDeploymentStrategy = "Default"
+	DeploymentStrategyOptionsDeploymentStrategyCapacityOptimized DeploymentStrategyOptionsDeploymentStrategy = "CapacityOptimized"
+)
+
+type DomainEngineMode string
+
+const (
+	DomainEngineModeGENERAL   DomainEngineMode = "GENERAL"
+	DomainEngineModeOPTIMIZED DomainEngineMode = "OPTIMIZED"
+)
+
+type RolesKeyIdcType string
+
+const (
+	RolesKeyIdcTypeGroupName RolesKeyIdcType = "GroupName"
+	RolesKeyIdcTypeGroupId   RolesKeyIdcType = "GroupId"
+)
+
+type SubjectKeyIdcType string
+
+const (
+	SubjectKeyIdcTypeUserName SubjectKeyIdcType = "UserName"
+	SubjectKeyIdcTypeUserId   SubjectKeyIdcType = "UserId"
+	SubjectKeyIdcTypeEmail    SubjectKeyIdcType = "Email"
+)
+
+type DomainUseCase string
+
+const (
+	DomainUseCaseSEARCH        DomainUseCase = "SEARCH"
+	DomainUseCaseVECTOR        DomainUseCase = "VECTOR"
+	DomainUseCaseOBSERVABILITY DomainUseCase = "OBSERVABILITY"
+	DomainUseCaseMIXED         DomainUseCase = "MIXED"
+)

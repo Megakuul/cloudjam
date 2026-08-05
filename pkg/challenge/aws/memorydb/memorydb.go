@@ -29,38 +29,38 @@ type ClusterTag struct {
 }
 
 type Cluster struct {
-	ACLName                 *string      `json:"ACLName,omitempty"`
-	ARN                     *string      `json:"ARN,omitempty"`
-	AutoMinorVersionUpgrade *bool        `json:"AutoMinorVersionUpgrade,omitempty"`
-	ClusterEndpoint         *Endpoint    `json:"ClusterEndpoint,omitempty"`
-	ClusterName             *string      `json:"ClusterName,omitempty"`
-	DataTiering             *string      `json:"DataTiering,omitempty"`
-	Description             *string      `json:"Description,omitempty"`
-	Engine                  *string      `json:"Engine,omitempty"`
-	EngineVersion           *string      `json:"EngineVersion,omitempty"`
-	FinalSnapshotName       *string      `json:"FinalSnapshotName,omitempty"`
-	IpDiscovery             *string      `json:"IpDiscovery,omitempty"`
-	KmsKeyId                *string      `json:"KmsKeyId,omitempty"`
-	MaintenanceWindow       *string      `json:"MaintenanceWindow,omitempty"`
-	MultiRegionClusterName  *string      `json:"MultiRegionClusterName,omitempty"`
-	NetworkType             *string      `json:"NetworkType,omitempty"`
-	NodeType                *string      `json:"NodeType,omitempty"`
-	NumReplicasPerShard     *int         `json:"NumReplicasPerShard,omitempty"`
-	NumShards               *int         `json:"NumShards,omitempty"`
-	ParameterGroupName      *string      `json:"ParameterGroupName,omitempty"`
-	ParameterGroupStatus    *string      `json:"ParameterGroupStatus,omitempty"`
-	Port                    *int         `json:"Port,omitempty"`
-	SecurityGroupIds        []string     `json:"SecurityGroupIds,omitempty"`
-	SnapshotArns            []string     `json:"SnapshotArns,omitempty"`
-	SnapshotName            *string      `json:"SnapshotName,omitempty"`
-	SnapshotRetentionLimit  *int         `json:"SnapshotRetentionLimit,omitempty"`
-	SnapshotWindow          *string      `json:"SnapshotWindow,omitempty"`
-	SnsTopicArn             *string      `json:"SnsTopicArn,omitempty"`
-	SnsTopicStatus          *string      `json:"SnsTopicStatus,omitempty"`
-	Status                  *string      `json:"Status,omitempty"`
-	SubnetGroupName         *string      `json:"SubnetGroupName,omitempty"`
-	TLSEnabled              *bool        `json:"TLSEnabled,omitempty"`
-	Tags                    []ClusterTag `json:"Tags,omitempty"`
+	ACLName                 *string                    `json:"ACLName,omitempty"`
+	ARN                     *string                    `json:"ARN,omitempty"`
+	AutoMinorVersionUpgrade *bool                      `json:"AutoMinorVersionUpgrade,omitempty"`
+	ClusterEndpoint         *Endpoint                  `json:"ClusterEndpoint,omitempty"`
+	ClusterName             *string                    `json:"ClusterName,omitempty"`
+	DataTiering             *DataTieringStatus         `json:"DataTiering,omitempty"`
+	Description             *string                    `json:"Description,omitempty"`
+	Engine                  *string                    `json:"Engine,omitempty"`
+	EngineVersion           *string                    `json:"EngineVersion,omitempty"`
+	FinalSnapshotName       *string                    `json:"FinalSnapshotName,omitempty"`
+	IpDiscovery             *SupportedIpDiscoveryTypes `json:"IpDiscovery,omitempty"`
+	KmsKeyId                *string                    `json:"KmsKeyId,omitempty"`
+	MaintenanceWindow       *string                    `json:"MaintenanceWindow,omitempty"`
+	MultiRegionClusterName  *string                    `json:"MultiRegionClusterName,omitempty"`
+	NetworkType             *SupportedNetworkTypes     `json:"NetworkType,omitempty"`
+	NodeType                *string                    `json:"NodeType,omitempty"`
+	NumReplicasPerShard     *int                       `json:"NumReplicasPerShard,omitempty"`
+	NumShards               *int                       `json:"NumShards,omitempty"`
+	ParameterGroupName      *string                    `json:"ParameterGroupName,omitempty"`
+	ParameterGroupStatus    *string                    `json:"ParameterGroupStatus,omitempty"`
+	Port                    *int                       `json:"Port,omitempty"`
+	SecurityGroupIds        []string                   `json:"SecurityGroupIds,omitempty"`
+	SnapshotArns            []string                   `json:"SnapshotArns,omitempty"`
+	SnapshotName            *string                    `json:"SnapshotName,omitempty"`
+	SnapshotRetentionLimit  *int                       `json:"SnapshotRetentionLimit,omitempty"`
+	SnapshotWindow          *string                    `json:"SnapshotWindow,omitempty"`
+	SnsTopicArn             *string                    `json:"SnsTopicArn,omitempty"`
+	SnsTopicStatus          *string                    `json:"SnsTopicStatus,omitempty"`
+	Status                  *string                    `json:"Status,omitempty"`
+	SubnetGroupName         *string                    `json:"SubnetGroupName,omitempty"`
+	TLSEnabled              *bool                      `json:"TLSEnabled,omitempty"`
+	Tags                    []ClusterTag               `json:"Tags,omitempty"`
 }
 
 func (Cluster) CloudControlType() string { return "AWS::MemoryDB::Cluster" }
@@ -71,19 +71,19 @@ type MultiRegionClusterTag struct {
 }
 
 type MultiRegionCluster struct {
-	ARN                           *string                 `json:"ARN,omitempty"`
-	Description                   *string                 `json:"Description,omitempty"`
-	Engine                        *string                 `json:"Engine,omitempty"`
-	EngineVersion                 *string                 `json:"EngineVersion,omitempty"`
-	MultiRegionClusterName        *string                 `json:"MultiRegionClusterName,omitempty"`
-	MultiRegionClusterNameSuffix  *string                 `json:"MultiRegionClusterNameSuffix,omitempty"`
-	MultiRegionParameterGroupName *string                 `json:"MultiRegionParameterGroupName,omitempty"`
-	NodeType                      *string                 `json:"NodeType,omitempty"`
-	NumShards                     *int                    `json:"NumShards,omitempty"`
-	Status                        *string                 `json:"Status,omitempty"`
-	TLSEnabled                    *bool                   `json:"TLSEnabled,omitempty"`
-	Tags                          []MultiRegionClusterTag `json:"Tags,omitempty"`
-	UpdateStrategy                *string                 `json:"UpdateStrategy,omitempty"`
+	ARN                           *string                           `json:"ARN,omitempty"`
+	Description                   *string                           `json:"Description,omitempty"`
+	Engine                        *string                           `json:"Engine,omitempty"`
+	EngineVersion                 *string                           `json:"EngineVersion,omitempty"`
+	MultiRegionClusterName        *string                           `json:"MultiRegionClusterName,omitempty"`
+	MultiRegionClusterNameSuffix  *string                           `json:"MultiRegionClusterNameSuffix,omitempty"`
+	MultiRegionParameterGroupName *string                           `json:"MultiRegionParameterGroupName,omitempty"`
+	NodeType                      *string                           `json:"NodeType,omitempty"`
+	NumShards                     *int                              `json:"NumShards,omitempty"`
+	Status                        *string                           `json:"Status,omitempty"`
+	TLSEnabled                    *bool                             `json:"TLSEnabled,omitempty"`
+	Tags                          []MultiRegionClusterTag           `json:"Tags,omitempty"`
+	UpdateStrategy                *MultiRegionClusterUpdateStrategy `json:"UpdateStrategy,omitempty"`
 }
 
 func (MultiRegionCluster) CloudControlType() string { return "AWS::MemoryDB::MultiRegionCluster" }
@@ -121,8 +121,8 @@ type SubnetGroup struct {
 func (SubnetGroup) CloudControlType() string { return "AWS::MemoryDB::SubnetGroup" }
 
 type UserAuthenticationMode struct {
-	Passwords []string `json:"Passwords,omitempty"`
-	Type      *string  `json:"Type,omitempty"`
+	Passwords []string                    `json:"Passwords,omitempty"`
+	Type      *UserAuthenticationModeType `json:"Type,omitempty"`
 }
 
 type UserTag struct {
@@ -140,3 +140,39 @@ type User struct {
 }
 
 func (User) CloudControlType() string { return "AWS::MemoryDB::User" }
+
+type DataTieringStatus string
+
+const (
+	DataTieringStatusTrue  DataTieringStatus = "true"
+	DataTieringStatusFalse DataTieringStatus = "false"
+)
+
+type SupportedIpDiscoveryTypes string
+
+const (
+	SupportedIpDiscoveryTypesIpv4 SupportedIpDiscoveryTypes = "ipv4"
+	SupportedIpDiscoveryTypesIpv6 SupportedIpDiscoveryTypes = "ipv6"
+)
+
+type SupportedNetworkTypes string
+
+const (
+	SupportedNetworkTypesIpv4      SupportedNetworkTypes = "ipv4"
+	SupportedNetworkTypesIpv6      SupportedNetworkTypes = "ipv6"
+	SupportedNetworkTypesDualStack SupportedNetworkTypes = "dual_stack"
+)
+
+type MultiRegionClusterUpdateStrategy string
+
+const (
+	MultiRegionClusterUpdateStrategyCOORDINATED   MultiRegionClusterUpdateStrategy = "COORDINATED"
+	MultiRegionClusterUpdateStrategyUNCOORDINATED MultiRegionClusterUpdateStrategy = "UNCOORDINATED"
+)
+
+type UserAuthenticationModeType string
+
+const (
+	UserAuthenticationModeTypePassword UserAuthenticationModeType = "password"
+	UserAuthenticationModeTypeIam      UserAuthenticationModeType = "iam"
+)

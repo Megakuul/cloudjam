@@ -8,8 +8,8 @@ type AlarmMetric struct {
 }
 
 type Alarm struct {
-	AlarmName *string `json:"AlarmName,omitempty"`
-	Severity  *string `json:"Severity,omitempty"`
+	AlarmName *string        `json:"AlarmName,omitempty"`
+	Severity  *AlarmSeverity `json:"Severity,omitempty"`
 }
 
 type HAClusterPrometheusExporter struct {
@@ -31,11 +31,11 @@ type JMXPrometheusExporter struct {
 }
 
 type Log struct {
-	Encoding     *string `json:"Encoding,omitempty"`
-	LogGroupName *string `json:"LogGroupName,omitempty"`
-	LogPath      *string `json:"LogPath,omitempty"`
-	LogType      *string `json:"LogType,omitempty"`
-	PatternSet   *string `json:"PatternSet,omitempty"`
+	Encoding     *LogEncoding `json:"Encoding,omitempty"`
+	LogGroupName *string      `json:"LogGroupName,omitempty"`
+	LogPath      *string      `json:"LogPath,omitempty"`
+	LogType      *string      `json:"LogType,omitempty"`
+	PatternSet   *string      `json:"PatternSet,omitempty"`
 }
 
 type NetWeaverPrometheusExporter struct {
@@ -55,10 +55,10 @@ type SQLServerPrometheusExporter struct {
 }
 
 type WindowsEvent struct {
-	EventLevels  []string `json:"EventLevels,omitempty"`
-	EventName    *string  `json:"EventName,omitempty"`
-	LogGroupName *string  `json:"LogGroupName,omitempty"`
-	PatternSet   *string  `json:"PatternSet,omitempty"`
+	EventLevels  []EventLevel `json:"EventLevels,omitempty"`
+	EventName    *string      `json:"EventName,omitempty"`
+	LogGroupName *string      `json:"LogGroupName,omitempty"`
+	PatternSet   *string      `json:"PatternSet,omitempty"`
 }
 
 type ConfigurationDetails struct {
@@ -82,8 +82,8 @@ type SubComponentConfigurationDetails struct {
 }
 
 type SubComponentTypeConfiguration struct {
-	SubComponentConfigurationDetails *SubComponentConfigurationDetails `json:"SubComponentConfigurationDetails,omitempty"`
-	SubComponentType                 *string                           `json:"SubComponentType,omitempty"`
+	SubComponentConfigurationDetails *SubComponentConfigurationDetails              `json:"SubComponentConfigurationDetails,omitempty"`
+	SubComponentType                 *SubComponentTypeConfigurationSubComponentType `json:"SubComponentType,omitempty"`
 }
 
 type ComponentConfiguration struct {
@@ -92,12 +92,12 @@ type ComponentConfiguration struct {
 }
 
 type ComponentMonitoringSetting struct {
-	ComponentARN                           *string                 `json:"ComponentARN,omitempty"`
-	ComponentConfigurationMode             *string                 `json:"ComponentConfigurationMode,omitempty"`
-	ComponentName                          *string                 `json:"ComponentName,omitempty"`
-	CustomComponentConfiguration           *ComponentConfiguration `json:"CustomComponentConfiguration,omitempty"`
-	DefaultOverwriteComponentConfiguration *ComponentConfiguration `json:"DefaultOverwriteComponentConfiguration,omitempty"`
-	Tier                                   *string                 `json:"Tier,omitempty"`
+	ComponentARN                           *string                                               `json:"ComponentARN,omitempty"`
+	ComponentConfigurationMode             *ComponentMonitoringSettingComponentConfigurationMode `json:"ComponentConfigurationMode,omitempty"`
+	ComponentName                          *string                                               `json:"ComponentName,omitempty"`
+	CustomComponentConfiguration           *ComponentConfiguration                               `json:"CustomComponentConfiguration,omitempty"`
+	DefaultOverwriteComponentConfiguration *ComponentConfiguration                               `json:"DefaultOverwriteComponentConfiguration,omitempty"`
+	Tier                                   *string                                               `json:"Tier,omitempty"`
 }
 
 type CustomComponent struct {
@@ -128,7 +128,7 @@ type Application struct {
 	CWEMonitorEnabled           *bool                        `json:"CWEMonitorEnabled,omitempty"`
 	ComponentMonitoringSettings []ComponentMonitoringSetting `json:"ComponentMonitoringSettings,omitempty"`
 	CustomComponents            []CustomComponent            `json:"CustomComponents,omitempty"`
-	GroupingType                *string                      `json:"GroupingType,omitempty"`
+	GroupingType                *ApplicationGroupingType     `json:"GroupingType,omitempty"`
 	LogPatternSets              []LogPatternSet              `json:"LogPatternSets,omitempty"`
 	OpsCenterEnabled            *bool                        `json:"OpsCenterEnabled,omitempty"`
 	OpsItemSNSTopicArn          *string                      `json:"OpsItemSNSTopicArn,omitempty"`
@@ -138,3 +138,50 @@ type Application struct {
 }
 
 func (Application) CloudControlType() string { return "AWS::ApplicationInsights::Application" }
+
+type ComponentMonitoringSettingComponentConfigurationMode string
+
+const (
+	ComponentMonitoringSettingComponentConfigurationModeDEFAULT              ComponentMonitoringSettingComponentConfigurationMode = "DEFAULT"
+	ComponentMonitoringSettingComponentConfigurationModeDEFAULTWITHOVERWRITE ComponentMonitoringSettingComponentConfigurationMode = "DEFAULT_WITH_OVERWRITE"
+	ComponentMonitoringSettingComponentConfigurationModeCUSTOM               ComponentMonitoringSettingComponentConfigurationMode = "CUSTOM"
+)
+
+type AlarmSeverity string
+
+const (
+	AlarmSeverityHIGH   AlarmSeverity = "HIGH"
+	AlarmSeverityMEDIUM AlarmSeverity = "MEDIUM"
+	AlarmSeverityLOW    AlarmSeverity = "LOW"
+)
+
+type LogEncoding string
+
+const (
+	LogEncodingUtf8  LogEncoding = "utf-8"
+	LogEncodingUtf16 LogEncoding = "utf-16"
+	LogEncodingAscii LogEncoding = "ascii"
+)
+
+type EventLevel string
+
+const (
+	EventLevelINFORMATION EventLevel = "INFORMATION"
+	EventLevelWARNING     EventLevel = "WARNING"
+	EventLevelERROR       EventLevel = "ERROR"
+	EventLevelCRITICAL    EventLevel = "CRITICAL"
+	EventLevelVERBOSE     EventLevel = "VERBOSE"
+)
+
+type SubComponentTypeConfigurationSubComponentType string
+
+const (
+	SubComponentTypeConfigurationSubComponentTypeAWSEC2Instance SubComponentTypeConfigurationSubComponentType = "AWS::EC2::Instance"
+	SubComponentTypeConfigurationSubComponentTypeAWSEC2Volume   SubComponentTypeConfigurationSubComponentType = "AWS::EC2::Volume"
+)
+
+type ApplicationGroupingType string
+
+const (
+	ApplicationGroupingTypeACCOUNTBASED ApplicationGroupingType = "ACCOUNT_BASED"
+)

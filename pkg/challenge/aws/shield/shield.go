@@ -18,16 +18,16 @@ type EmergencyContact struct {
 }
 
 type ProactiveEngagement struct {
-	AccountId                 *string            `json:"AccountId,omitempty"`
-	EmergencyContactList      []EmergencyContact `json:"EmergencyContactList,omitempty"`
-	ProactiveEngagementStatus *string            `json:"ProactiveEngagementStatus,omitempty"`
+	AccountId                 *string                                       `json:"AccountId,omitempty"`
+	EmergencyContactList      []EmergencyContact                            `json:"EmergencyContactList,omitempty"`
+	ProactiveEngagementStatus *ProactiveEngagementProactiveEngagementStatus `json:"ProactiveEngagementStatus,omitempty"`
 }
 
 func (ProactiveEngagement) CloudControlType() string { return "AWS::Shield::ProactiveEngagement" }
 
 type ApplicationLayerAutomaticResponseConfiguration struct {
-	Action map[string]any `json:"Action,omitempty"`
-	Status *string        `json:"Status,omitempty"`
+	Action map[string]any                                        `json:"Action,omitempty"`
+	Status *ApplicationLayerAutomaticResponseConfigurationStatus `json:"Status,omitempty"`
 }
 
 type Tag struct {
@@ -53,13 +53,54 @@ type ProtectionGroupTag struct {
 }
 
 type ProtectionGroup struct {
-	Aggregation        *string              `json:"Aggregation,omitempty"`
-	Members            []string             `json:"Members,omitempty"`
-	Pattern            *string              `json:"Pattern,omitempty"`
-	ProtectionGroupArn *string              `json:"ProtectionGroupArn,omitempty"`
-	ProtectionGroupId  *string              `json:"ProtectionGroupId,omitempty"`
-	ResourceType       *string              `json:"ResourceType,omitempty"`
-	Tags               []ProtectionGroupTag `json:"Tags,omitempty"`
+	Aggregation        *ProtectionGroupAggregation  `json:"Aggregation,omitempty"`
+	Members            []string                     `json:"Members,omitempty"`
+	Pattern            *ProtectionGroupPattern      `json:"Pattern,omitempty"`
+	ProtectionGroupArn *string                      `json:"ProtectionGroupArn,omitempty"`
+	ProtectionGroupId  *string                      `json:"ProtectionGroupId,omitempty"`
+	ResourceType       *ProtectionGroupResourceType `json:"ResourceType,omitempty"`
+	Tags               []ProtectionGroupTag         `json:"Tags,omitempty"`
 }
 
 func (ProtectionGroup) CloudControlType() string { return "AWS::Shield::ProtectionGroup" }
+
+type ProactiveEngagementProactiveEngagementStatus string
+
+const (
+	ProactiveEngagementProactiveEngagementStatusENABLED  ProactiveEngagementProactiveEngagementStatus = "ENABLED"
+	ProactiveEngagementProactiveEngagementStatusDISABLED ProactiveEngagementProactiveEngagementStatus = "DISABLED"
+)
+
+type ApplicationLayerAutomaticResponseConfigurationStatus string
+
+const (
+	ApplicationLayerAutomaticResponseConfigurationStatusENABLED  ApplicationLayerAutomaticResponseConfigurationStatus = "ENABLED"
+	ApplicationLayerAutomaticResponseConfigurationStatusDISABLED ApplicationLayerAutomaticResponseConfigurationStatus = "DISABLED"
+)
+
+type ProtectionGroupAggregation string
+
+const (
+	ProtectionGroupAggregationSUM  ProtectionGroupAggregation = "SUM"
+	ProtectionGroupAggregationMEAN ProtectionGroupAggregation = "MEAN"
+	ProtectionGroupAggregationMAX  ProtectionGroupAggregation = "MAX"
+)
+
+type ProtectionGroupPattern string
+
+const (
+	ProtectionGroupPatternALL            ProtectionGroupPattern = "ALL"
+	ProtectionGroupPatternARBITRARY      ProtectionGroupPattern = "ARBITRARY"
+	ProtectionGroupPatternBYRESOURCETYPE ProtectionGroupPattern = "BY_RESOURCE_TYPE"
+)
+
+type ProtectionGroupResourceType string
+
+const (
+	ProtectionGroupResourceTypeCLOUDFRONTDISTRIBUTION  ProtectionGroupResourceType = "CLOUDFRONT_DISTRIBUTION"
+	ProtectionGroupResourceTypeROUTE53HOSTEDZONE       ProtectionGroupResourceType = "ROUTE_53_HOSTED_ZONE"
+	ProtectionGroupResourceTypeELASTICIPALLOCATION     ProtectionGroupResourceType = "ELASTIC_IP_ALLOCATION"
+	ProtectionGroupResourceTypeCLASSICLOADBALANCER     ProtectionGroupResourceType = "CLASSIC_LOAD_BALANCER"
+	ProtectionGroupResourceTypeAPPLICATIONLOADBALANCER ProtectionGroupResourceType = "APPLICATION_LOAD_BALANCER"
+	ProtectionGroupResourceTypeGLOBALACCELERATOR       ProtectionGroupResourceType = "GLOBAL_ACCELERATOR"
+)

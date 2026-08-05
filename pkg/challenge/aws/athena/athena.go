@@ -23,7 +23,7 @@ type CapacityReservation struct {
 	CreationTime                    *string                          `json:"CreationTime,omitempty"`
 	LastSuccessfulAllocationTime    *string                          `json:"LastSuccessfulAllocationTime,omitempty"`
 	Name                            *string                          `json:"Name,omitempty"`
-	Status                          *string                          `json:"Status,omitempty"`
+	Status                          *CapacityReservationStatus       `json:"Status,omitempty"`
 	Tags                            []Tag                            `json:"Tags,omitempty"`
 	TargetDpus                      *int                             `json:"TargetDpus,omitempty"`
 }
@@ -36,14 +36,14 @@ type DataCatalogTag struct {
 }
 
 type DataCatalog struct {
-	ConnectionType *string           `json:"ConnectionType,omitempty"`
-	Description    *string           `json:"Description,omitempty"`
-	Error          *string           `json:"Error,omitempty"`
-	Name           *string           `json:"Name,omitempty"`
-	Parameters     map[string]string `json:"Parameters,omitempty"`
-	Status         *string           `json:"Status,omitempty"`
-	Tags           []DataCatalogTag  `json:"Tags,omitempty"`
-	Type           *string           `json:"Type,omitempty"`
+	ConnectionType *string            `json:"ConnectionType,omitempty"`
+	Description    *string            `json:"Description,omitempty"`
+	Error          *string            `json:"Error,omitempty"`
+	Name           *string            `json:"Name,omitempty"`
+	Parameters     map[string]string  `json:"Parameters,omitempty"`
+	Status         *DataCatalogStatus `json:"Status,omitempty"`
+	Tags           []DataCatalogTag   `json:"Tags,omitempty"`
+	Type           *DataCatalogType   `json:"Type,omitempty"`
 }
 
 func (DataCatalog) CloudControlType() string { return "AWS::Athena::DataCatalog" }
@@ -130,12 +130,12 @@ type MonitoringConfiguration struct {
 }
 
 type AclConfiguration struct {
-	S3AclOption *string `json:"S3AclOption,omitempty"`
+	S3AclOption *S3AclOption `json:"S3AclOption,omitempty"`
 }
 
 type EncryptionConfiguration struct {
-	EncryptionOption *string `json:"EncryptionOption,omitempty"`
-	KmsKey           *string `json:"KmsKey,omitempty"`
+	EncryptionOption *EncryptionOption `json:"EncryptionOption,omitempty"`
+	KmsKey           *string           `json:"KmsKey,omitempty"`
 }
 
 type ResultConfiguration struct {
@@ -193,10 +193,65 @@ type WorkGroup struct {
 	Description                   *string                        `json:"Description,omitempty"`
 	Name                          *string                        `json:"Name,omitempty"`
 	RecursiveDeleteOption         *bool                          `json:"RecursiveDeleteOption,omitempty"`
-	State                         *string                        `json:"State,omitempty"`
+	State                         *WorkGroupState                `json:"State,omitempty"`
 	Tags                          []WorkGroupTag                 `json:"Tags,omitempty"`
 	WorkGroupConfiguration        *WorkGroupConfiguration        `json:"WorkGroupConfiguration,omitempty"`
 	WorkGroupConfigurationUpdates *WorkGroupConfigurationUpdates `json:"WorkGroupConfigurationUpdates,omitempty"`
 }
 
 func (WorkGroup) CloudControlType() string { return "AWS::Athena::WorkGroup" }
+
+type CapacityReservationStatus string
+
+const (
+	CapacityReservationStatusPENDING       CapacityReservationStatus = "PENDING"
+	CapacityReservationStatusACTIVE        CapacityReservationStatus = "ACTIVE"
+	CapacityReservationStatusCANCELLING    CapacityReservationStatus = "CANCELLING"
+	CapacityReservationStatusCANCELLED     CapacityReservationStatus = "CANCELLED"
+	CapacityReservationStatusFAILED        CapacityReservationStatus = "FAILED"
+	CapacityReservationStatusUPDATEPENDING CapacityReservationStatus = "UPDATE_PENDING"
+)
+
+type DataCatalogStatus string
+
+const (
+	DataCatalogStatusCREATEINPROGRESS              DataCatalogStatus = "CREATE_IN_PROGRESS"
+	DataCatalogStatusCREATECOMPLETE                DataCatalogStatus = "CREATE_COMPLETE"
+	DataCatalogStatusCREATEFAILED                  DataCatalogStatus = "CREATE_FAILED"
+	DataCatalogStatusCREATEFAILEDCLEANUPINPROGRESS DataCatalogStatus = "CREATE_FAILED_CLEANUP_IN_PROGRESS"
+	DataCatalogStatusCREATEFAILEDCLEANUPCOMPLETE   DataCatalogStatus = "CREATE_FAILED_CLEANUP_COMPLETE"
+	DataCatalogStatusCREATEFAILEDCLEANUPFAILED     DataCatalogStatus = "CREATE_FAILED_CLEANUP_FAILED"
+	DataCatalogStatusDELETEINPROGRESS              DataCatalogStatus = "DELETE_IN_PROGRESS"
+	DataCatalogStatusDELETECOMPLETE                DataCatalogStatus = "DELETE_COMPLETE"
+	DataCatalogStatusDELETEFAILED                  DataCatalogStatus = "DELETE_FAILED"
+)
+
+type DataCatalogType string
+
+const (
+	DataCatalogTypeLAMBDA    DataCatalogType = "LAMBDA"
+	DataCatalogTypeGLUE      DataCatalogType = "GLUE"
+	DataCatalogTypeHIVE      DataCatalogType = "HIVE"
+	DataCatalogTypeFEDERATED DataCatalogType = "FEDERATED"
+)
+
+type WorkGroupState string
+
+const (
+	WorkGroupStateENABLED  WorkGroupState = "ENABLED"
+	WorkGroupStateDISABLED WorkGroupState = "DISABLED"
+)
+
+type S3AclOption string
+
+const (
+	S3AclOptionBUCKETOWNERFULLCONTROL S3AclOption = "BUCKET_OWNER_FULL_CONTROL"
+)
+
+type EncryptionOption string
+
+const (
+	EncryptionOptionSSES3  EncryptionOption = "SSE_S3"
+	EncryptionOptionSSEKMS EncryptionOption = "SSE_KMS"
+	EncryptionOptionCSEKMS EncryptionOption = "CSE_KMS"
+)

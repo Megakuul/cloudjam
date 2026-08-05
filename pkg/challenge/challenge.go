@@ -1,21 +1,6 @@
-// Package challenge is the plugin sdk: fill in a Challenge, call Run.
-//
-//	func main() {
-//		bucket := &s3.Bucket{BucketName: aws.String("cloudjam-demo")}
-//
-//		c := &challenge.Challenge{
-//			Title:       "Lock Down the Bucket",
-//			Description: "A bucket has no encryption. Fix it.",
-//			Resources:   []challenge.Resource{bucket},
-//		}
-//		c.Checks = []challenge.Check{{
-//			Name:   "Enabled default encryption",
-//			Points: 50,
-//			Every:  15 * time.Second,
-//			Done:   encrypted,
-//		}}
-//		c.Run()
-//	}
+//go:build wasip1
+
+// Package challenge is the plugin sdk.
 package challenge
 
 import (
@@ -26,24 +11,16 @@ import (
 	"codeberg.org/megakuul/cloudjam/pkg/challenge/api"
 )
 
-// Resource is anything the challenge provisions. The generated aws resource
-// types implement it.
 type Resource interface {
 	CloudControlType() string
 }
 
-// Check is one scored objective.
 type Check struct {
-	// Name is the text shown next to the score update.
-	Name string
-	// Points is awarded when Done first returns true.
-	Points float64
-	// Every throttles evaluation. Zero evaluates every round.
-	Every time.Duration
-	// Repeat awards the check every round it holds instead of once.
-	Repeat bool
-	// Done is the condition being scored.
-	Done func() (bool, error)
+	Name   string               // text shown next to the score update
+	Points float64              // points awarded if the check is positive (can also be negative).
+	Every  time.Duration        // throttles duration (zero evaluates on every loop iteration (which is defined by Challenge.Interval))
+	Repeat bool                 // should the points be awarded on every evaluation?
+	Done   func() (bool, error) // condition that tells if the check is successful.
 
 	last    time.Time
 	retired bool
@@ -54,28 +31,16 @@ type Check struct {
 type Challenge struct {
 	Title       string
 	Description string
-	// Clues are hints the player can reveal, by id.
-	Clues map[string]string
-	// Resources are provisioned when Run starts and retried until they exist.
-	Resources []Resource
-	Checks    []Check
-	// Interval is the wait between rounds. Defaults to 10s.
-	Interval time.Duration
-	// Timeout stops Run after this long. Zero runs until there is nothing left
-	// to do, which for a repeating check is until the host tears the plugin down.
-	Timeout time.Duration
+	Clues       map[string]string
+	Resources   []Resource
+	Checks      []Check
+	Interval    time.Duration // round check speed, defaults to 10s
 
 	ids map[Resource]string
 }
 
-// ID is the identifier a provisioned resource got, which is how a check reaches
-// a resource aws named itself. It is empty until the resource exists.
-func (c *Challenge) ID(resource Resource) string { return c.ids[resource] }
-
-// Run registers the challenge, provisions it and then scores the checks on a
-// timer. It is the plugin's whole body: a wasm command module runs main at
-// startup, so there is nothing to export.
-func (c *Challenge) Run() {
+// Starts the specified challenge inside your wasm plugin.
+func Start(c *Challenge) {
 	if c.Interval <= 0 {
 		c.Interval = 10 * time.Second
 	}
@@ -89,19 +54,11 @@ func (c *Challenge) Run() {
 		c.report(err)
 	}
 
-	deadline := time.Time{}
-	if c.Timeout > 0 {
-		deadline = time.Now().Add(c.Timeout)
-	}
-
 	for {
 		c.provision()
 		c.evaluate()
 
 		if c.finished() {
-			return
-		}
-		if !deadline.IsZero() && time.Now().After(deadline) {
 			return
 		}
 		time.Sleep(c.Interval)

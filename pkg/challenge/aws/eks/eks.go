@@ -4,8 +4,8 @@
 package eks
 
 type AccessScope struct {
-	Namespaces []string `json:"Namespaces,omitempty"`
-	Type       *string  `json:"Type,omitempty"`
+	Namespaces []string         `json:"Namespaces,omitempty"`
+	Type       *AccessScopeType `json:"Type,omitempty"`
 }
 
 type AccessPolicy struct {
@@ -54,7 +54,7 @@ type Addon struct {
 	NamespaceConfig         *AddonNamespaceConfig    `json:"NamespaceConfig,omitempty"`
 	PodIdentityAssociations []PodIdentityAssociation `json:"PodIdentityAssociations,omitempty"`
 	PreserveOnDelete        *bool                    `json:"PreserveOnDelete,omitempty"`
-	ResolveConflicts        *string                  `json:"ResolveConflicts,omitempty"`
+	ResolveConflicts        *AddonResolveConflicts   `json:"ResolveConflicts,omitempty"`
 	ServiceAccountRoleArn   *string                  `json:"ServiceAccountRoleArn,omitempty"`
 	Tags                    []AddonTag               `json:"Tags,omitempty"`
 }
@@ -72,13 +72,13 @@ type NetworkAccess struct {
 }
 
 type SsoIdentity struct {
-	Id   *string `json:"Id,omitempty"`
-	Type *string `json:"Type,omitempty"`
+	Id   *string          `json:"Id,omitempty"`
+	Type *SsoIdentityType `json:"Type,omitempty"`
 }
 
 type ArgoCdRoleMapping struct {
-	Identities []SsoIdentity `json:"Identities,omitempty"`
-	Role       *string       `json:"Role,omitempty"`
+	Identities []SsoIdentity          `json:"Identities,omitempty"`
+	Role       *ArgoCdRoleMappingRole `json:"Role,omitempty"`
 }
 
 type ArgoCd struct {
@@ -99,25 +99,25 @@ type CapabilityTag struct {
 }
 
 type Capability struct {
-	Arn                     *string                  `json:"Arn,omitempty"`
-	CapabilityName          *string                  `json:"CapabilityName,omitempty"`
-	ClusterName             *string                  `json:"ClusterName,omitempty"`
-	Configuration           *CapabilityConfiguration `json:"Configuration,omitempty"`
-	CreatedAt               *string                  `json:"CreatedAt,omitempty"`
-	DeletePropagationPolicy *string                  `json:"DeletePropagationPolicy,omitempty"`
-	ModifiedAt              *string                  `json:"ModifiedAt,omitempty"`
-	RoleArn                 *string                  `json:"RoleArn,omitempty"`
-	Status                  *string                  `json:"Status,omitempty"`
-	Tags                    []CapabilityTag          `json:"Tags,omitempty"`
-	Type                    *string                  `json:"Type,omitempty"`
-	Version                 *string                  `json:"Version,omitempty"`
+	Arn                     *string                            `json:"Arn,omitempty"`
+	CapabilityName          *string                            `json:"CapabilityName,omitempty"`
+	ClusterName             *string                            `json:"ClusterName,omitempty"`
+	Configuration           *CapabilityConfiguration           `json:"Configuration,omitempty"`
+	CreatedAt               *string                            `json:"CreatedAt,omitempty"`
+	DeletePropagationPolicy *CapabilityDeletePropagationPolicy `json:"DeletePropagationPolicy,omitempty"`
+	ModifiedAt              *string                            `json:"ModifiedAt,omitempty"`
+	RoleArn                 *string                            `json:"RoleArn,omitempty"`
+	Status                  *string                            `json:"Status,omitempty"`
+	Tags                    []CapabilityTag                    `json:"Tags,omitempty"`
+	Type                    *CapabilityType                    `json:"Type,omitempty"`
+	Version                 *string                            `json:"Version,omitempty"`
 }
 
 func (Capability) CloudControlType() string { return "AWS::EKS::Capability" }
 
 type AccessConfig struct {
-	AuthenticationMode                      *string `json:"AuthenticationMode,omitempty"`
-	BootstrapClusterCreatorAdminPermissions *bool   `json:"BootstrapClusterCreatorAdminPermissions,omitempty"`
+	AuthenticationMode                      *AccessConfigAuthenticationMode `json:"AuthenticationMode,omitempty"`
+	BootstrapClusterCreatorAdminPermissions *bool                           `json:"BootstrapClusterCreatorAdminPermissions,omitempty"`
 }
 
 type ComputeConfig struct {
@@ -127,7 +127,7 @@ type ComputeConfig struct {
 }
 
 type ControlPlaneScalingConfig struct {
-	Tier *string `json:"Tier,omitempty"`
+	Tier *ControlPlaneScalingConfigTier `json:"Tier,omitempty"`
 }
 
 type Provider struct {
@@ -144,14 +144,14 @@ type ElasticLoadBalancing struct {
 }
 
 type KubernetesNetworkConfig struct {
-	ElasticLoadBalancing *ElasticLoadBalancing `json:"ElasticLoadBalancing,omitempty"`
-	IpFamily             *string               `json:"IpFamily,omitempty"`
-	ServiceIpv4Cidr      *string               `json:"ServiceIpv4Cidr,omitempty"`
-	ServiceIpv6Cidr      *string               `json:"ServiceIpv6Cidr,omitempty"`
+	ElasticLoadBalancing *ElasticLoadBalancing            `json:"ElasticLoadBalancing,omitempty"`
+	IpFamily             *KubernetesNetworkConfigIpFamily `json:"IpFamily,omitempty"`
+	ServiceIpv4Cidr      *string                          `json:"ServiceIpv4Cidr,omitempty"`
+	ServiceIpv6Cidr      *string                          `json:"ServiceIpv6Cidr,omitempty"`
 }
 
 type LoggingTypeConfig struct {
-	Type *string `json:"Type,omitempty"`
+	Type *LoggingTypeConfigType `json:"Type,omitempty"`
 }
 
 type ClusterLogging struct {
@@ -219,7 +219,7 @@ type ClusterTag struct {
 }
 
 type UpgradePolicy struct {
-	SupportType *string `json:"SupportType,omitempty"`
+	SupportType *UpgradePolicySupportType `json:"SupportType,omitempty"`
 }
 
 type ZonalShiftConfig struct {
@@ -311,7 +311,7 @@ type IdentityProviderConfig struct {
 	IdentityProviderConfigName *string                     `json:"IdentityProviderConfigName,omitempty"`
 	Oidc                       *OidcIdentityProviderConfig `json:"Oidc,omitempty"`
 	Tags                       []IdentityProviderConfigTag `json:"Tags,omitempty"`
-	Type                       *string                     `json:"Type,omitempty"`
+	Type                       *IdentityProviderConfigType `json:"Type,omitempty"`
 }
 
 func (IdentityProviderConfig) CloudControlType() string { return "AWS::EKS::IdentityProviderConfig" }
@@ -323,10 +323,10 @@ type LaunchTemplateSpecification struct {
 }
 
 type NodeRepairConfigOverrides struct {
-	MinRepairWaitTimeMins   *int    `json:"MinRepairWaitTimeMins,omitempty"`
-	NodeMonitoringCondition *string `json:"NodeMonitoringCondition,omitempty"`
-	NodeUnhealthyReason     *string `json:"NodeUnhealthyReason,omitempty"`
-	RepairAction            *string `json:"RepairAction,omitempty"`
+	MinRepairWaitTimeMins   *int                                   `json:"MinRepairWaitTimeMins,omitempty"`
+	NodeMonitoringCondition *string                                `json:"NodeMonitoringCondition,omitempty"`
+	NodeUnhealthyReason     *string                                `json:"NodeUnhealthyReason,omitempty"`
+	RepairAction            *NodeRepairConfigOverridesRepairAction `json:"RepairAction,omitempty"`
 }
 
 type NodeRepairConfig struct {
@@ -418,3 +418,104 @@ type PodIdentityAssociationPodIdentityAssociation struct {
 func (PodIdentityAssociationPodIdentityAssociation) CloudControlType() string {
 	return "AWS::EKS::PodIdentityAssociation"
 }
+
+type AccessScopeType string
+
+const (
+	AccessScopeTypeNamespace AccessScopeType = "namespace"
+	AccessScopeTypeCluster   AccessScopeType = "cluster"
+)
+
+type AddonResolveConflicts string
+
+const (
+	AddonResolveConflictsNONE      AddonResolveConflicts = "NONE"
+	AddonResolveConflictsOVERWRITE AddonResolveConflicts = "OVERWRITE"
+	AddonResolveConflictsPRESERVE  AddonResolveConflicts = "PRESERVE"
+)
+
+type SsoIdentityType string
+
+const (
+	SsoIdentityTypeSSOUSER  SsoIdentityType = "SSO_USER"
+	SsoIdentityTypeSSOGROUP SsoIdentityType = "SSO_GROUP"
+)
+
+type ArgoCdRoleMappingRole string
+
+const (
+	ArgoCdRoleMappingRoleADMIN  ArgoCdRoleMappingRole = "ADMIN"
+	ArgoCdRoleMappingRoleEDITOR ArgoCdRoleMappingRole = "EDITOR"
+	ArgoCdRoleMappingRoleVIEWER ArgoCdRoleMappingRole = "VIEWER"
+)
+
+type CapabilityDeletePropagationPolicy string
+
+const (
+	CapabilityDeletePropagationPolicyRETAIN CapabilityDeletePropagationPolicy = "RETAIN"
+)
+
+type CapabilityType string
+
+const (
+	CapabilityTypeARGOCD CapabilityType = "ARGOCD"
+	CapabilityTypeACK    CapabilityType = "ACK"
+	CapabilityTypeKRO    CapabilityType = "KRO"
+)
+
+type AccessConfigAuthenticationMode string
+
+const (
+	AccessConfigAuthenticationModeCONFIGMAP       AccessConfigAuthenticationMode = "CONFIG_MAP"
+	AccessConfigAuthenticationModeAPIANDCONFIGMAP AccessConfigAuthenticationMode = "API_AND_CONFIG_MAP"
+	AccessConfigAuthenticationModeAPI             AccessConfigAuthenticationMode = "API"
+)
+
+type ControlPlaneScalingConfigTier string
+
+const (
+	ControlPlaneScalingConfigTierStandard  ControlPlaneScalingConfigTier = "standard"
+	ControlPlaneScalingConfigTierTierXl    ControlPlaneScalingConfigTier = "tier-xl"
+	ControlPlaneScalingConfigTierTier2xl   ControlPlaneScalingConfigTier = "tier-2xl"
+	ControlPlaneScalingConfigTierTier4xl   ControlPlaneScalingConfigTier = "tier-4xl"
+	ControlPlaneScalingConfigTierTier8xl   ControlPlaneScalingConfigTier = "tier-8xl"
+	ControlPlaneScalingConfigTierTierUltra ControlPlaneScalingConfigTier = "tier-ultra"
+)
+
+type KubernetesNetworkConfigIpFamily string
+
+const (
+	KubernetesNetworkConfigIpFamilyIpv4 KubernetesNetworkConfigIpFamily = "ipv4"
+	KubernetesNetworkConfigIpFamilyIpv6 KubernetesNetworkConfigIpFamily = "ipv6"
+)
+
+type LoggingTypeConfigType string
+
+const (
+	LoggingTypeConfigTypeApi               LoggingTypeConfigType = "api"
+	LoggingTypeConfigTypeAudit             LoggingTypeConfigType = "audit"
+	LoggingTypeConfigTypeAuthenticator     LoggingTypeConfigType = "authenticator"
+	LoggingTypeConfigTypeControllerManager LoggingTypeConfigType = "controllerManager"
+	LoggingTypeConfigTypeScheduler         LoggingTypeConfigType = "scheduler"
+)
+
+type UpgradePolicySupportType string
+
+const (
+	UpgradePolicySupportTypeSTANDARD UpgradePolicySupportType = "STANDARD"
+	UpgradePolicySupportTypeEXTENDED UpgradePolicySupportType = "EXTENDED"
+)
+
+type IdentityProviderConfigType string
+
+const (
+	IdentityProviderConfigTypeOidc IdentityProviderConfigType = "oidc"
+)
+
+type NodeRepairConfigOverridesRepairAction string
+
+const (
+	NodeRepairConfigOverridesRepairActionReplace  NodeRepairConfigOverridesRepairAction = "Replace"
+	NodeRepairConfigOverridesRepairActionReboot   NodeRepairConfigOverridesRepairAction = "Reboot"
+	NodeRepairConfigOverridesRepairActionNoAction NodeRepairConfigOverridesRepairAction = "NoAction"
+)

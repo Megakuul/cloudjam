@@ -276,7 +276,7 @@ type MailManagerArchive struct {
 	ArchiveArn   *string                 `json:"ArchiveArn,omitempty"`
 	ArchiveId    *string                 `json:"ArchiveId,omitempty"`
 	ArchiveName  *string                 `json:"ArchiveName,omitempty"`
-	ArchiveState *string                 `json:"ArchiveState,omitempty"`
+	ArchiveState *ArchiveState           `json:"ArchiveState,omitempty"`
 	KmsKeyArn    *string                 `json:"KmsKeyArn,omitempty"`
 	Retention    json.RawMessage         `json:"Retention,omitempty"`
 	Tags         []MailManagerArchiveTag `json:"Tags,omitempty"`
@@ -297,12 +297,12 @@ type MailManagerIngressPoint struct {
 	IngressPointName          *string                      `json:"IngressPointName,omitempty"`
 	NetworkConfiguration      json.RawMessage              `json:"NetworkConfiguration,omitempty"`
 	RuleSetId                 *string                      `json:"RuleSetId,omitempty"`
-	Status                    *string                      `json:"Status,omitempty"`
-	StatusToUpdate            *string                      `json:"StatusToUpdate,omitempty"`
+	Status                    *IngressPointStatus          `json:"Status,omitempty"`
+	StatusToUpdate            *IngressPointStatusToUpdate  `json:"StatusToUpdate,omitempty"`
 	Tags                      []MailManagerIngressPointTag `json:"Tags,omitempty"`
-	TlsPolicy                 *string                      `json:"TlsPolicy,omitempty"`
+	TlsPolicy                 *TlsPolicy                   `json:"TlsPolicy,omitempty"`
 	TrafficPolicyId           *string                      `json:"TrafficPolicyId,omitempty"`
-	Type                      *string                      `json:"Type,omitempty"`
+	Type                      *IngressPointType            `json:"Type,omitempty"`
 }
 
 func (MailManagerIngressPoint) CloudControlType() string { return "AWS::SES::MailManagerIngressPoint" }
@@ -347,7 +347,7 @@ type MailManagerRuleSet struct {
 func (MailManagerRuleSet) CloudControlType() string { return "AWS::SES::MailManagerRuleSet" }
 
 type PolicyStatement struct {
-	Action     *string           `json:"Action,omitempty"`
+	Action     *AcceptAction     `json:"Action,omitempty"`
 	Conditions []json.RawMessage `json:"Conditions,omitempty"`
 }
 
@@ -357,7 +357,7 @@ type MailManagerTrafficPolicyTag struct {
 }
 
 type MailManagerTrafficPolicy struct {
-	DefaultAction       *string                       `json:"DefaultAction,omitempty"`
+	DefaultAction       *AcceptAction                 `json:"DefaultAction,omitempty"`
 	MaxMessageSizeBytes *float64                      `json:"MaxMessageSizeBytes,omitempty"`
 	PolicyStatements    []PolicyStatement             `json:"PolicyStatements,omitempty"`
 	Tags                []MailManagerTrafficPolicyTag `json:"Tags,omitempty"`
@@ -544,3 +544,51 @@ type VdmAttributes struct {
 }
 
 func (VdmAttributes) CloudControlType() string { return "AWS::SES::VdmAttributes" }
+
+type ArchiveState string
+
+const (
+	ArchiveStateACTIVE          ArchiveState = "ACTIVE"
+	ArchiveStatePENDINGDELETION ArchiveState = "PENDING_DELETION"
+)
+
+type IngressPointStatus string
+
+const (
+	IngressPointStatusPROVISIONING   IngressPointStatus = "PROVISIONING"
+	IngressPointStatusDEPROVISIONING IngressPointStatus = "DEPROVISIONING"
+	IngressPointStatusUPDATING       IngressPointStatus = "UPDATING"
+	IngressPointStatusACTIVE         IngressPointStatus = "ACTIVE"
+	IngressPointStatusCLOSED         IngressPointStatus = "CLOSED"
+	IngressPointStatusFAILED         IngressPointStatus = "FAILED"
+)
+
+type IngressPointStatusToUpdate string
+
+const (
+	IngressPointStatusToUpdateACTIVE IngressPointStatusToUpdate = "ACTIVE"
+	IngressPointStatusToUpdateCLOSED IngressPointStatusToUpdate = "CLOSED"
+)
+
+type TlsPolicy string
+
+const (
+	TlsPolicyREQUIRED TlsPolicy = "REQUIRED"
+	TlsPolicyOPTIONAL TlsPolicy = "OPTIONAL"
+	TlsPolicyFIPS     TlsPolicy = "FIPS"
+)
+
+type IngressPointType string
+
+const (
+	IngressPointTypeOPEN IngressPointType = "OPEN"
+	IngressPointTypeAUTH IngressPointType = "AUTH"
+	IngressPointTypeMTLS IngressPointType = "MTLS"
+)
+
+type AcceptAction string
+
+const (
+	AcceptActionALLOW AcceptAction = "ALLOW"
+	AcceptActionDENY  AcceptAction = "DENY"
+)

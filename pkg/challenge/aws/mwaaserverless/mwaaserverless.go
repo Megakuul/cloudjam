@@ -10,8 +10,8 @@ type S3Location struct {
 }
 
 type EncryptionConfiguration struct {
-	KmsKeyId *string `json:"KmsKeyId,omitempty"`
-	Type     *string `json:"Type,omitempty"`
+	KmsKeyId *string                      `json:"KmsKeyId,omitempty"`
+	Type     *EncryptionConfigurationType `json:"Type,omitempty"`
 }
 
 type LoggingConfiguration struct {
@@ -41,8 +41,22 @@ type Workflow struct {
 	Tags                    map[string]string        `json:"Tags,omitempty"`
 	TriggerMode             *string                  `json:"TriggerMode,omitempty"`
 	WorkflowArn             *string                  `json:"WorkflowArn,omitempty"`
-	WorkflowStatus          *string                  `json:"WorkflowStatus,omitempty"`
+	WorkflowStatus          *WorkflowStatus          `json:"WorkflowStatus,omitempty"`
 	WorkflowVersion         *string                  `json:"WorkflowVersion,omitempty"`
 }
 
 func (Workflow) CloudControlType() string { return "AWS::MWAAServerless::Workflow" }
+
+type EncryptionConfigurationType string
+
+const (
+	EncryptionConfigurationTypeAWSMANAGEDKEY      EncryptionConfigurationType = "AWS_MANAGED_KEY"
+	EncryptionConfigurationTypeCUSTOMERMANAGEDKEY EncryptionConfigurationType = "CUSTOMER_MANAGED_KEY"
+)
+
+type WorkflowStatus string
+
+const (
+	WorkflowStatusREADY    WorkflowStatus = "READY"
+	WorkflowStatusDELETING WorkflowStatus = "DELETING"
+)

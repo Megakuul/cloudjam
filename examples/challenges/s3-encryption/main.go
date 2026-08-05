@@ -1,9 +1,9 @@
+//go:build wasip1
+
 // Command s3-encryption is an example cloudjam challenge plugin.
 //
 // The player is dropped into an account containing an unencrypted, publicly
 // exposed S3 bucket, and scores points as they lock it down.
-//
-//	GOOS=wasip1 GOARCH=wasm go build -o s3-encryption.wasm ./examples/challenges/s3-encryption
 package main
 
 import (
@@ -54,11 +54,11 @@ func main() {
 			},
 		},
 	}
-	c.Run()
+	challenge.Start(c)
 }
 
 func encrypted() (bool, error) {
-	b, err := aws.Get[*s3.Bucket](bucket)
+	b, err := aws.Read[*s3.Bucket](bucket)
 	if err != nil || b.BucketEncryption == nil {
 		return false, err
 	}
@@ -71,7 +71,7 @@ func encrypted() (bool, error) {
 }
 
 func locked() (bool, error) {
-	b, err := aws.Get[*s3.Bucket](bucket)
+	b, err := aws.Read[*s3.Bucket](bucket)
 	if err != nil || b.PublicAccessBlockConfiguration == nil {
 		return false, err
 	}
@@ -90,7 +90,7 @@ func locked() (bool, error) {
 }
 
 func tagged() (bool, error) {
-	b, err := aws.Get[*s3.Bucket](bucket)
+	b, err := aws.Read[*s3.Bucket](bucket)
 	if err != nil {
 		return false, err
 	}

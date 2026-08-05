@@ -9,14 +9,14 @@ type Tag struct {
 }
 
 type Agent struct {
-	ActivationKey     *string  `json:"ActivationKey,omitempty"`
-	AgentArn          *string  `json:"AgentArn,omitempty"`
-	AgentName         *string  `json:"AgentName,omitempty"`
-	EndpointType      *string  `json:"EndpointType,omitempty"`
-	SecurityGroupArns []string `json:"SecurityGroupArns,omitempty"`
-	SubnetArns        []string `json:"SubnetArns,omitempty"`
-	Tags              []Tag    `json:"Tags,omitempty"`
-	VpcEndpointId     *string  `json:"VpcEndpointId,omitempty"`
+	ActivationKey     *string            `json:"ActivationKey,omitempty"`
+	AgentArn          *string            `json:"AgentArn,omitempty"`
+	AgentName         *string            `json:"AgentName,omitempty"`
+	EndpointType      *AgentEndpointType `json:"EndpointType,omitempty"`
+	SecurityGroupArns []string           `json:"SecurityGroupArns,omitempty"`
+	SubnetArns        []string           `json:"SubnetArns,omitempty"`
+	Tags              []Tag              `json:"Tags,omitempty"`
+	VpcEndpointId     *string            `json:"VpcEndpointId,omitempty"`
 }
 
 func (Agent) CloudControlType() string { return "AWS::DataSync::Agent" }
@@ -45,19 +45,19 @@ type LocationAzureBlobTag struct {
 }
 
 type LocationAzureBlob struct {
-	AgentArns                   []string                   `json:"AgentArns,omitempty"`
-	AzureAccessTier             *string                    `json:"AzureAccessTier,omitempty"`
-	AzureBlobAuthenticationType *string                    `json:"AzureBlobAuthenticationType,omitempty"`
-	AzureBlobContainerUrl       *string                    `json:"AzureBlobContainerUrl,omitempty"`
-	AzureBlobSasConfiguration   *AzureBlobSasConfiguration `json:"AzureBlobSasConfiguration,omitempty"`
-	AzureBlobType               *string                    `json:"AzureBlobType,omitempty"`
-	CmkSecretConfig             *CmkSecretConfig           `json:"CmkSecretConfig,omitempty"`
-	CustomSecretConfig          *CustomSecretConfig        `json:"CustomSecretConfig,omitempty"`
-	LocationArn                 *string                    `json:"LocationArn,omitempty"`
-	LocationUri                 *string                    `json:"LocationUri,omitempty"`
-	ManagedSecretConfig         *ManagedSecretConfig       `json:"ManagedSecretConfig,omitempty"`
-	Subdirectory                *string                    `json:"Subdirectory,omitempty"`
-	Tags                        []LocationAzureBlobTag     `json:"Tags,omitempty"`
+	AgentArns                   []string                                      `json:"AgentArns,omitempty"`
+	AzureAccessTier             *LocationAzureBlobAzureAccessTier             `json:"AzureAccessTier,omitempty"`
+	AzureBlobAuthenticationType *LocationAzureBlobAzureBlobAuthenticationType `json:"AzureBlobAuthenticationType,omitempty"`
+	AzureBlobContainerUrl       *string                                       `json:"AzureBlobContainerUrl,omitempty"`
+	AzureBlobSasConfiguration   *AzureBlobSasConfiguration                    `json:"AzureBlobSasConfiguration,omitempty"`
+	AzureBlobType               *LocationAzureBlobAzureBlobType               `json:"AzureBlobType,omitempty"`
+	CmkSecretConfig             *CmkSecretConfig                              `json:"CmkSecretConfig,omitempty"`
+	CustomSecretConfig          *CustomSecretConfig                           `json:"CustomSecretConfig,omitempty"`
+	LocationArn                 *string                                       `json:"LocationArn,omitempty"`
+	LocationUri                 *string                                       `json:"LocationUri,omitempty"`
+	ManagedSecretConfig         *ManagedSecretConfig                          `json:"ManagedSecretConfig,omitempty"`
+	Subdirectory                *string                                       `json:"Subdirectory,omitempty"`
+	Tags                        []LocationAzureBlobTag                        `json:"Tags,omitempty"`
 }
 
 func (LocationAzureBlob) CloudControlType() string { return "AWS::DataSync::LocationAzureBlob" }
@@ -73,15 +73,15 @@ type LocationEFSTag struct {
 }
 
 type LocationEFS struct {
-	AccessPointArn          *string          `json:"AccessPointArn,omitempty"`
-	Ec2Config               *Ec2Config       `json:"Ec2Config,omitempty"`
-	EfsFilesystemArn        *string          `json:"EfsFilesystemArn,omitempty"`
-	FileSystemAccessRoleArn *string          `json:"FileSystemAccessRoleArn,omitempty"`
-	InTransitEncryption     *string          `json:"InTransitEncryption,omitempty"`
-	LocationArn             *string          `json:"LocationArn,omitempty"`
-	LocationUri             *string          `json:"LocationUri,omitempty"`
-	Subdirectory            *string          `json:"Subdirectory,omitempty"`
-	Tags                    []LocationEFSTag `json:"Tags,omitempty"`
+	AccessPointArn          *string                         `json:"AccessPointArn,omitempty"`
+	Ec2Config               *Ec2Config                      `json:"Ec2Config,omitempty"`
+	EfsFilesystemArn        *string                         `json:"EfsFilesystemArn,omitempty"`
+	FileSystemAccessRoleArn *string                         `json:"FileSystemAccessRoleArn,omitempty"`
+	InTransitEncryption     *LocationEFSInTransitEncryption `json:"InTransitEncryption,omitempty"`
+	LocationArn             *string                         `json:"LocationArn,omitempty"`
+	LocationUri             *string                         `json:"LocationUri,omitempty"`
+	Subdirectory            *string                         `json:"Subdirectory,omitempty"`
+	Tags                    []LocationEFSTag                `json:"Tags,omitempty"`
 }
 
 func (LocationEFS) CloudControlType() string { return "AWS::DataSync::LocationEFS" }
@@ -103,7 +103,7 @@ type LocationFSxLustre struct {
 func (LocationFSxLustre) CloudControlType() string { return "AWS::DataSync::LocationFSxLustre" }
 
 type NfsMountOptions struct {
-	Version *string `json:"Version,omitempty"`
+	Version *NfsMountOptionsVersion `json:"Version,omitempty"`
 }
 
 type NFS struct {
@@ -125,7 +125,7 @@ type LocationFSxONTAPManagedSecretConfig struct {
 }
 
 type SmbMountOptions struct {
-	Version *string `json:"Version,omitempty"`
+	Version *SmbMountOptionsVersion `json:"Version,omitempty"`
 }
 
 type SMB struct {
@@ -162,7 +162,7 @@ type LocationFSxONTAP struct {
 func (LocationFSxONTAP) CloudControlType() string { return "AWS::DataSync::LocationFSxONTAP" }
 
 type MountOptions struct {
-	Version *string `json:"Version,omitempty"`
+	Version *MountOptionsVersion `json:"Version,omitempty"`
 }
 
 type LocationFSxOpenZFSNFS struct {
@@ -246,8 +246,8 @@ type NameNode struct {
 }
 
 type QopConfiguration struct {
-	DataTransferProtection *string `json:"DataTransferProtection,omitempty"`
-	RpcProtection          *string `json:"RpcProtection,omitempty"`
+	DataTransferProtection *QopConfigurationDataTransferProtection `json:"DataTransferProtection,omitempty"`
+	RpcProtection          *QopConfigurationRpcProtection          `json:"RpcProtection,omitempty"`
 }
 
 type LocationHDFSTag struct {
@@ -257,7 +257,7 @@ type LocationHDFSTag struct {
 
 type LocationHDFS struct {
 	AgentArns           []string                         `json:"AgentArns,omitempty"`
-	AuthenticationType  *string                          `json:"AuthenticationType,omitempty"`
+	AuthenticationType  *LocationHDFSAuthenticationType  `json:"AuthenticationType,omitempty"`
 	BlockSize           *int                             `json:"BlockSize,omitempty"`
 	CmkSecretConfig     *LocationHDFSCmkSecretConfig     `json:"CmkSecretConfig,omitempty"`
 	CustomSecretConfig  *LocationHDFSCustomSecretConfig  `json:"CustomSecretConfig,omitempty"`
@@ -279,7 +279,7 @@ type LocationHDFS struct {
 func (LocationHDFS) CloudControlType() string { return "AWS::DataSync::LocationHDFS" }
 
 type LocationNFSMountOptions struct {
-	Version *string `json:"Version,omitempty"`
+	Version *LocationNFSMountOptionsVersion `json:"Version,omitempty"`
 }
 
 type OnPremConfig struct {
@@ -335,7 +335,7 @@ type LocationObjectStorage struct {
 	ServerCertificate   *string                                   `json:"ServerCertificate,omitempty"`
 	ServerHostname      *string                                   `json:"ServerHostname,omitempty"`
 	ServerPort          *int                                      `json:"ServerPort,omitempty"`
-	ServerProtocol      *string                                   `json:"ServerProtocol,omitempty"`
+	ServerProtocol      *LocationObjectStorageServerProtocol      `json:"ServerProtocol,omitempty"`
 	Subdirectory        *string                                   `json:"Subdirectory,omitempty"`
 	Tags                []LocationObjectStorageTag                `json:"Tags,omitempty"`
 }
@@ -352,13 +352,13 @@ type LocationS3Tag struct {
 }
 
 type LocationS3 struct {
-	LocationArn    *string         `json:"LocationArn,omitempty"`
-	LocationUri    *string         `json:"LocationUri,omitempty"`
-	S3BucketArn    *string         `json:"S3BucketArn,omitempty"`
-	S3Config       *S3Config       `json:"S3Config,omitempty"`
-	S3StorageClass *string         `json:"S3StorageClass,omitempty"`
-	Subdirectory   *string         `json:"Subdirectory,omitempty"`
-	Tags           []LocationS3Tag `json:"Tags,omitempty"`
+	LocationArn    *string                   `json:"LocationArn,omitempty"`
+	LocationUri    *string                   `json:"LocationUri,omitempty"`
+	S3BucketArn    *string                   `json:"S3BucketArn,omitempty"`
+	S3Config       *S3Config                 `json:"S3Config,omitempty"`
+	S3StorageClass *LocationS3S3StorageClass `json:"S3StorageClass,omitempty"`
+	Subdirectory   *string                   `json:"Subdirectory,omitempty"`
+	Tags           []LocationS3Tag           `json:"Tags,omitempty"`
 }
 
 func (LocationS3) CloudControlType() string { return "AWS::DataSync::LocationS3" }
@@ -378,7 +378,7 @@ type LocationSMBManagedSecretConfig struct {
 }
 
 type LocationSMBMountOptions struct {
-	Version *string `json:"Version,omitempty"`
+	Version *LocationSMBMountOptionsVersion `json:"Version,omitempty"`
 }
 
 type LocationSMBTag struct {
@@ -388,7 +388,7 @@ type LocationSMBTag struct {
 
 type LocationSMB struct {
 	AgentArns           []string                        `json:"AgentArns,omitempty"`
-	AuthenticationType  *string                         `json:"AuthenticationType,omitempty"`
+	AuthenticationType  *LocationSMBAuthenticationType  `json:"AuthenticationType,omitempty"`
 	CmkSecretConfig     *LocationSMBCmkSecretConfig     `json:"CmkSecretConfig,omitempty"`
 	CustomSecretConfig  *LocationSMBCustomSecretConfig  `json:"CustomSecretConfig,omitempty"`
 	DnsIpAddresses      []string                        `json:"DnsIpAddresses,omitempty"`
@@ -410,8 +410,8 @@ type LocationSMB struct {
 func (LocationSMB) CloudControlType() string { return "AWS::DataSync::LocationSMB" }
 
 type FilterRule struct {
-	FilterType *string `json:"FilterType,omitempty"`
-	Value      *string `json:"Value,omitempty"`
+	FilterType *FilterRuleFilterType `json:"FilterType,omitempty"`
+	Value      *string               `json:"Value,omitempty"`
 }
 
 type ManifestConfigSourceS3 struct {
@@ -426,32 +426,32 @@ type ManifestConfigSource struct {
 }
 
 type ManifestConfig struct {
-	Action *string               `json:"Action,omitempty"`
-	Format *string               `json:"Format,omitempty"`
+	Action *ManifestConfigAction `json:"Action,omitempty"`
+	Format *ManifestConfigFormat `json:"Format,omitempty"`
 	Source *ManifestConfigSource `json:"Source,omitempty"`
 }
 
 type Options struct {
-	Atime                       *string `json:"Atime,omitempty"`
-	BytesPerSecond              *int    `json:"BytesPerSecond,omitempty"`
-	Gid                         *string `json:"Gid,omitempty"`
-	LogLevel                    *string `json:"LogLevel,omitempty"`
-	Mtime                       *string `json:"Mtime,omitempty"`
-	ObjectTags                  *string `json:"ObjectTags,omitempty"`
-	OverwriteMode               *string `json:"OverwriteMode,omitempty"`
-	PosixPermissions            *string `json:"PosixPermissions,omitempty"`
-	PreserveDeletedFiles        *string `json:"PreserveDeletedFiles,omitempty"`
-	PreserveDevices             *string `json:"PreserveDevices,omitempty"`
-	SecurityDescriptorCopyFlags *string `json:"SecurityDescriptorCopyFlags,omitempty"`
-	TaskQueueing                *string `json:"TaskQueueing,omitempty"`
-	TransferMode                *string `json:"TransferMode,omitempty"`
-	Uid                         *string `json:"Uid,omitempty"`
-	VerifyMode                  *string `json:"VerifyMode,omitempty"`
+	Atime                       *OptionsAtime                       `json:"Atime,omitempty"`
+	BytesPerSecond              *int                                `json:"BytesPerSecond,omitempty"`
+	Gid                         *OptionsGid                         `json:"Gid,omitempty"`
+	LogLevel                    *OptionsLogLevel                    `json:"LogLevel,omitempty"`
+	Mtime                       *OptionsMtime                       `json:"Mtime,omitempty"`
+	ObjectTags                  *OptionsObjectTags                  `json:"ObjectTags,omitempty"`
+	OverwriteMode               *OptionsOverwriteMode               `json:"OverwriteMode,omitempty"`
+	PosixPermissions            *OptionsPosixPermissions            `json:"PosixPermissions,omitempty"`
+	PreserveDeletedFiles        *OptionsPreserveDeletedFiles        `json:"PreserveDeletedFiles,omitempty"`
+	PreserveDevices             *OptionsPreserveDevices             `json:"PreserveDevices,omitempty"`
+	SecurityDescriptorCopyFlags *OptionsSecurityDescriptorCopyFlags `json:"SecurityDescriptorCopyFlags,omitempty"`
+	TaskQueueing                *OptionsTaskQueueing                `json:"TaskQueueing,omitempty"`
+	TransferMode                *OptionsTransferMode                `json:"TransferMode,omitempty"`
+	Uid                         *OptionsUid                         `json:"Uid,omitempty"`
+	VerifyMode                  *OptionsVerifyMode                  `json:"VerifyMode,omitempty"`
 }
 
 type TaskSchedule struct {
-	ScheduleExpression *string `json:"ScheduleExpression,omitempty"`
-	Status             *string `json:"Status,omitempty"`
+	ScheduleExpression *string             `json:"ScheduleExpression,omitempty"`
+	Status             *TaskScheduleStatus `json:"Status,omitempty"`
 }
 
 type TaskTag struct {
@@ -470,19 +470,19 @@ type TaskReportConfigDestination struct {
 }
 
 type TaskReportConfigOverridesDeleted struct {
-	ReportLevel *string `json:"ReportLevel,omitempty"`
+	ReportLevel *TaskReportConfigOverridesDeletedReportLevel `json:"ReportLevel,omitempty"`
 }
 
 type TaskReportConfigOverridesSkipped struct {
-	ReportLevel *string `json:"ReportLevel,omitempty"`
+	ReportLevel *TaskReportConfigOverridesSkippedReportLevel `json:"ReportLevel,omitempty"`
 }
 
 type TaskReportConfigOverridesTransferred struct {
-	ReportLevel *string `json:"ReportLevel,omitempty"`
+	ReportLevel *TaskReportConfigOverridesTransferredReportLevel `json:"ReportLevel,omitempty"`
 }
 
 type TaskReportConfigOverridesVerified struct {
-	ReportLevel *string `json:"ReportLevel,omitempty"`
+	ReportLevel *TaskReportConfigOverridesVerifiedReportLevel `json:"ReportLevel,omitempty"`
 }
 
 type TaskReportConfigOverrides struct {
@@ -493,11 +493,11 @@ type TaskReportConfigOverrides struct {
 }
 
 type TaskReportConfig struct {
-	Destination      *TaskReportConfigDestination `json:"Destination,omitempty"`
-	ObjectVersionIds *string                      `json:"ObjectVersionIds,omitempty"`
-	OutputType       *string                      `json:"OutputType,omitempty"`
-	Overrides        *TaskReportConfigOverrides   `json:"Overrides,omitempty"`
-	ReportLevel      *string                      `json:"ReportLevel,omitempty"`
+	Destination      *TaskReportConfigDestination      `json:"Destination,omitempty"`
+	ObjectVersionIds *TaskReportConfigObjectVersionIds `json:"ObjectVersionIds,omitempty"`
+	OutputType       *TaskReportConfigOutputType       `json:"OutputType,omitempty"`
+	Overrides        *TaskReportConfigOverrides        `json:"Overrides,omitempty"`
+	ReportLevel      *TaskReportConfigReportLevel      `json:"ReportLevel,omitempty"`
 }
 
 type Task struct {
@@ -512,11 +512,339 @@ type Task struct {
 	Schedule                        *TaskSchedule     `json:"Schedule,omitempty"`
 	SourceLocationArn               *string           `json:"SourceLocationArn,omitempty"`
 	SourceNetworkInterfaceArns      []string          `json:"SourceNetworkInterfaceArns,omitempty"`
-	Status                          *string           `json:"Status,omitempty"`
+	Status                          *TaskStatus       `json:"Status,omitempty"`
 	Tags                            []TaskTag         `json:"Tags,omitempty"`
 	TaskArn                         *string           `json:"TaskArn,omitempty"`
-	TaskMode                        *string           `json:"TaskMode,omitempty"`
+	TaskMode                        *TaskTaskMode     `json:"TaskMode,omitempty"`
 	TaskReportConfig                *TaskReportConfig `json:"TaskReportConfig,omitempty"`
 }
 
 func (Task) CloudControlType() string { return "AWS::DataSync::Task" }
+
+type AgentEndpointType string
+
+const (
+	AgentEndpointTypeFIPS        AgentEndpointType = "FIPS"
+	AgentEndpointTypePUBLIC      AgentEndpointType = "PUBLIC"
+	AgentEndpointTypePRIVATELINK AgentEndpointType = "PRIVATE_LINK"
+)
+
+type LocationAzureBlobAzureAccessTier string
+
+const (
+	LocationAzureBlobAzureAccessTierHOT     LocationAzureBlobAzureAccessTier = "HOT"
+	LocationAzureBlobAzureAccessTierCOOL    LocationAzureBlobAzureAccessTier = "COOL"
+	LocationAzureBlobAzureAccessTierARCHIVE LocationAzureBlobAzureAccessTier = "ARCHIVE"
+)
+
+type LocationAzureBlobAzureBlobAuthenticationType string
+
+const (
+	LocationAzureBlobAzureBlobAuthenticationTypeSAS  LocationAzureBlobAzureBlobAuthenticationType = "SAS"
+	LocationAzureBlobAzureBlobAuthenticationTypeNONE LocationAzureBlobAzureBlobAuthenticationType = "NONE"
+)
+
+type LocationAzureBlobAzureBlobType string
+
+const (
+	LocationAzureBlobAzureBlobTypeBLOCK LocationAzureBlobAzureBlobType = "BLOCK"
+)
+
+type LocationEFSInTransitEncryption string
+
+const (
+	LocationEFSInTransitEncryptionNONE  LocationEFSInTransitEncryption = "NONE"
+	LocationEFSInTransitEncryptionTLS12 LocationEFSInTransitEncryption = "TLS1_2"
+)
+
+type NfsMountOptionsVersion string
+
+const (
+	NfsMountOptionsVersionAUTOMATIC NfsMountOptionsVersion = "AUTOMATIC"
+	NfsMountOptionsVersionNFS3      NfsMountOptionsVersion = "NFS3"
+	NfsMountOptionsVersionNFS40     NfsMountOptionsVersion = "NFS4_0"
+	NfsMountOptionsVersionNFS41     NfsMountOptionsVersion = "NFS4_1"
+)
+
+type SmbMountOptionsVersion string
+
+const (
+	SmbMountOptionsVersionAUTOMATIC SmbMountOptionsVersion = "AUTOMATIC"
+	SmbMountOptionsVersionSMB2      SmbMountOptionsVersion = "SMB2"
+	SmbMountOptionsVersionSMB3      SmbMountOptionsVersion = "SMB3"
+)
+
+type MountOptionsVersion string
+
+const (
+	MountOptionsVersionAUTOMATIC MountOptionsVersion = "AUTOMATIC"
+	MountOptionsVersionNFS3      MountOptionsVersion = "NFS3"
+	MountOptionsVersionNFS40     MountOptionsVersion = "NFS4_0"
+	MountOptionsVersionNFS41     MountOptionsVersion = "NFS4_1"
+)
+
+type LocationHDFSAuthenticationType string
+
+const (
+	LocationHDFSAuthenticationTypeSIMPLE   LocationHDFSAuthenticationType = "SIMPLE"
+	LocationHDFSAuthenticationTypeKERBEROS LocationHDFSAuthenticationType = "KERBEROS"
+)
+
+type QopConfigurationDataTransferProtection string
+
+const (
+	QopConfigurationDataTransferProtectionAUTHENTICATION QopConfigurationDataTransferProtection = "AUTHENTICATION"
+	QopConfigurationDataTransferProtectionINTEGRITY      QopConfigurationDataTransferProtection = "INTEGRITY"
+	QopConfigurationDataTransferProtectionPRIVACY        QopConfigurationDataTransferProtection = "PRIVACY"
+	QopConfigurationDataTransferProtectionDISABLED       QopConfigurationDataTransferProtection = "DISABLED"
+)
+
+type QopConfigurationRpcProtection string
+
+const (
+	QopConfigurationRpcProtectionAUTHENTICATION QopConfigurationRpcProtection = "AUTHENTICATION"
+	QopConfigurationRpcProtectionINTEGRITY      QopConfigurationRpcProtection = "INTEGRITY"
+	QopConfigurationRpcProtectionPRIVACY        QopConfigurationRpcProtection = "PRIVACY"
+	QopConfigurationRpcProtectionDISABLED       QopConfigurationRpcProtection = "DISABLED"
+)
+
+type LocationNFSMountOptionsVersion string
+
+const (
+	LocationNFSMountOptionsVersionAUTOMATIC LocationNFSMountOptionsVersion = "AUTOMATIC"
+	LocationNFSMountOptionsVersionNFS3      LocationNFSMountOptionsVersion = "NFS3"
+	LocationNFSMountOptionsVersionNFS40     LocationNFSMountOptionsVersion = "NFS4_0"
+	LocationNFSMountOptionsVersionNFS41     LocationNFSMountOptionsVersion = "NFS4_1"
+)
+
+type LocationObjectStorageServerProtocol string
+
+const (
+	LocationObjectStorageServerProtocolHTTPS LocationObjectStorageServerProtocol = "HTTPS"
+	LocationObjectStorageServerProtocolHTTP  LocationObjectStorageServerProtocol = "HTTP"
+)
+
+type LocationS3S3StorageClass string
+
+const (
+	LocationS3S3StorageClassSTANDARD                LocationS3S3StorageClass = "STANDARD"
+	LocationS3S3StorageClassSTANDARDIA              LocationS3S3StorageClass = "STANDARD_IA"
+	LocationS3S3StorageClassONEZONEIA               LocationS3S3StorageClass = "ONEZONE_IA"
+	LocationS3S3StorageClassINTELLIGENTTIERING      LocationS3S3StorageClass = "INTELLIGENT_TIERING"
+	LocationS3S3StorageClassGLACIER                 LocationS3S3StorageClass = "GLACIER"
+	LocationS3S3StorageClassGLACIERINSTANTRETRIEVAL LocationS3S3StorageClass = "GLACIER_INSTANT_RETRIEVAL"
+	LocationS3S3StorageClassDEEPARCHIVE             LocationS3S3StorageClass = "DEEP_ARCHIVE"
+)
+
+type LocationSMBAuthenticationType string
+
+const (
+	LocationSMBAuthenticationTypeNTLM     LocationSMBAuthenticationType = "NTLM"
+	LocationSMBAuthenticationTypeKERBEROS LocationSMBAuthenticationType = "KERBEROS"
+)
+
+type LocationSMBMountOptionsVersion string
+
+const (
+	LocationSMBMountOptionsVersionAUTOMATIC LocationSMBMountOptionsVersion = "AUTOMATIC"
+	LocationSMBMountOptionsVersionSMB1      LocationSMBMountOptionsVersion = "SMB1"
+	LocationSMBMountOptionsVersionSMB20     LocationSMBMountOptionsVersion = "SMB2_0"
+	LocationSMBMountOptionsVersionSMB2      LocationSMBMountOptionsVersion = "SMB2"
+	LocationSMBMountOptionsVersionSMB3      LocationSMBMountOptionsVersion = "SMB3"
+)
+
+type FilterRuleFilterType string
+
+const (
+	FilterRuleFilterTypeSIMPLEPATTERN FilterRuleFilterType = "SIMPLE_PATTERN"
+)
+
+type ManifestConfigAction string
+
+const (
+	ManifestConfigActionTRANSFER ManifestConfigAction = "TRANSFER"
+)
+
+type ManifestConfigFormat string
+
+const (
+	ManifestConfigFormatCSV ManifestConfigFormat = "CSV"
+)
+
+type OptionsAtime string
+
+const (
+	OptionsAtimeNONE       OptionsAtime = "NONE"
+	OptionsAtimeBESTEFFORT OptionsAtime = "BEST_EFFORT"
+)
+
+type OptionsGid string
+
+const (
+	OptionsGidNONE     OptionsGid = "NONE"
+	OptionsGidINTVALUE OptionsGid = "INT_VALUE"
+	OptionsGidNAME     OptionsGid = "NAME"
+	OptionsGidBOTH     OptionsGid = "BOTH"
+)
+
+type OptionsLogLevel string
+
+const (
+	OptionsLogLevelOFF      OptionsLogLevel = "OFF"
+	OptionsLogLevelBASIC    OptionsLogLevel = "BASIC"
+	OptionsLogLevelTRANSFER OptionsLogLevel = "TRANSFER"
+)
+
+type OptionsMtime string
+
+const (
+	OptionsMtimeNONE     OptionsMtime = "NONE"
+	OptionsMtimePRESERVE OptionsMtime = "PRESERVE"
+)
+
+type OptionsObjectTags string
+
+const (
+	OptionsObjectTagsPRESERVE OptionsObjectTags = "PRESERVE"
+	OptionsObjectTagsNONE     OptionsObjectTags = "NONE"
+)
+
+type OptionsOverwriteMode string
+
+const (
+	OptionsOverwriteModeALWAYS OptionsOverwriteMode = "ALWAYS"
+	OptionsOverwriteModeNEVER  OptionsOverwriteMode = "NEVER"
+)
+
+type OptionsPosixPermissions string
+
+const (
+	OptionsPosixPermissionsNONE     OptionsPosixPermissions = "NONE"
+	OptionsPosixPermissionsPRESERVE OptionsPosixPermissions = "PRESERVE"
+)
+
+type OptionsPreserveDeletedFiles string
+
+const (
+	OptionsPreserveDeletedFilesPRESERVE OptionsPreserveDeletedFiles = "PRESERVE"
+	OptionsPreserveDeletedFilesREMOVE   OptionsPreserveDeletedFiles = "REMOVE"
+)
+
+type OptionsPreserveDevices string
+
+const (
+	OptionsPreserveDevicesNONE     OptionsPreserveDevices = "NONE"
+	OptionsPreserveDevicesPRESERVE OptionsPreserveDevices = "PRESERVE"
+)
+
+type OptionsSecurityDescriptorCopyFlags string
+
+const (
+	OptionsSecurityDescriptorCopyFlagsNONE          OptionsSecurityDescriptorCopyFlags = "NONE"
+	OptionsSecurityDescriptorCopyFlagsOWNERDACL     OptionsSecurityDescriptorCopyFlags = "OWNER_DACL"
+	OptionsSecurityDescriptorCopyFlagsOWNERDACLSACL OptionsSecurityDescriptorCopyFlags = "OWNER_DACL_SACL"
+)
+
+type OptionsTaskQueueing string
+
+const (
+	OptionsTaskQueueingENABLED  OptionsTaskQueueing = "ENABLED"
+	OptionsTaskQueueingDISABLED OptionsTaskQueueing = "DISABLED"
+)
+
+type OptionsTransferMode string
+
+const (
+	OptionsTransferModeCHANGED OptionsTransferMode = "CHANGED"
+	OptionsTransferModeALL     OptionsTransferMode = "ALL"
+)
+
+type OptionsUid string
+
+const (
+	OptionsUidNONE     OptionsUid = "NONE"
+	OptionsUidINTVALUE OptionsUid = "INT_VALUE"
+	OptionsUidNAME     OptionsUid = "NAME"
+	OptionsUidBOTH     OptionsUid = "BOTH"
+)
+
+type OptionsVerifyMode string
+
+const (
+	OptionsVerifyModePOINTINTIMECONSISTENT OptionsVerifyMode = "POINT_IN_TIME_CONSISTENT"
+	OptionsVerifyModeONLYFILESTRANSFERRED  OptionsVerifyMode = "ONLY_FILES_TRANSFERRED"
+	OptionsVerifyModeNONE                  OptionsVerifyMode = "NONE"
+)
+
+type TaskScheduleStatus string
+
+const (
+	TaskScheduleStatusENABLED  TaskScheduleStatus = "ENABLED"
+	TaskScheduleStatusDISABLED TaskScheduleStatus = "DISABLED"
+)
+
+type TaskStatus string
+
+const (
+	TaskStatusAVAILABLE   TaskStatus = "AVAILABLE"
+	TaskStatusCREATING    TaskStatus = "CREATING"
+	TaskStatusQUEUED      TaskStatus = "QUEUED"
+	TaskStatusRUNNING     TaskStatus = "RUNNING"
+	TaskStatusUNAVAILABLE TaskStatus = "UNAVAILABLE"
+)
+
+type TaskTaskMode string
+
+const (
+	TaskTaskModeBASIC    TaskTaskMode = "BASIC"
+	TaskTaskModeENHANCED TaskTaskMode = "ENHANCED"
+)
+
+type TaskReportConfigObjectVersionIds string
+
+const (
+	TaskReportConfigObjectVersionIdsINCLUDE TaskReportConfigObjectVersionIds = "INCLUDE"
+	TaskReportConfigObjectVersionIdsNONE    TaskReportConfigObjectVersionIds = "NONE"
+)
+
+type TaskReportConfigOutputType string
+
+const (
+	TaskReportConfigOutputTypeSUMMARYONLY TaskReportConfigOutputType = "SUMMARY_ONLY"
+	TaskReportConfigOutputTypeSTANDARD    TaskReportConfigOutputType = "STANDARD"
+)
+
+type TaskReportConfigOverridesDeletedReportLevel string
+
+const (
+	TaskReportConfigOverridesDeletedReportLevelERRORSONLY         TaskReportConfigOverridesDeletedReportLevel = "ERRORS_ONLY"
+	TaskReportConfigOverridesDeletedReportLevelSUCCESSESANDERRORS TaskReportConfigOverridesDeletedReportLevel = "SUCCESSES_AND_ERRORS"
+)
+
+type TaskReportConfigOverridesSkippedReportLevel string
+
+const (
+	TaskReportConfigOverridesSkippedReportLevelERRORSONLY         TaskReportConfigOverridesSkippedReportLevel = "ERRORS_ONLY"
+	TaskReportConfigOverridesSkippedReportLevelSUCCESSESANDERRORS TaskReportConfigOverridesSkippedReportLevel = "SUCCESSES_AND_ERRORS"
+)
+
+type TaskReportConfigOverridesTransferredReportLevel string
+
+const (
+	TaskReportConfigOverridesTransferredReportLevelERRORSONLY         TaskReportConfigOverridesTransferredReportLevel = "ERRORS_ONLY"
+	TaskReportConfigOverridesTransferredReportLevelSUCCESSESANDERRORS TaskReportConfigOverridesTransferredReportLevel = "SUCCESSES_AND_ERRORS"
+)
+
+type TaskReportConfigOverridesVerifiedReportLevel string
+
+const (
+	TaskReportConfigOverridesVerifiedReportLevelERRORSONLY         TaskReportConfigOverridesVerifiedReportLevel = "ERRORS_ONLY"
+	TaskReportConfigOverridesVerifiedReportLevelSUCCESSESANDERRORS TaskReportConfigOverridesVerifiedReportLevel = "SUCCESSES_AND_ERRORS"
+)
+
+type TaskReportConfigReportLevel string
+
+const (
+	TaskReportConfigReportLevelERRORSONLY         TaskReportConfigReportLevel = "ERRORS_ONLY"
+	TaskReportConfigReportLevelSUCCESSESANDERRORS TaskReportConfigReportLevel = "SUCCESSES_AND_ERRORS"
+)

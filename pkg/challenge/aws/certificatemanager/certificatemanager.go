@@ -110,16 +110,30 @@ type CertificateTag struct {
 }
 
 type Certificate struct {
-	CertificateArn                           *string                  `json:"CertificateArn,omitempty"`
-	CertificateAuthorityArn                  *string                  `json:"CertificateAuthorityArn,omitempty"`
-	CertificateExport                        *string                  `json:"CertificateExport,omitempty"`
-	CertificateTransparencyLoggingPreference *string                  `json:"CertificateTransparencyLoggingPreference,omitempty"`
-	DomainName                               *string                  `json:"DomainName,omitempty"`
-	DomainValidationOptions                  []DomainValidationOption `json:"DomainValidationOptions,omitempty"`
-	KeyAlgorithm                             *string                  `json:"KeyAlgorithm,omitempty"`
-	SubjectAlternativeNames                  []string                 `json:"SubjectAlternativeNames,omitempty"`
-	Tags                                     []CertificateTag         `json:"Tags,omitempty"`
-	ValidationMethod                         *string                  `json:"ValidationMethod,omitempty"`
+	CertificateArn                           *string                                              `json:"CertificateArn,omitempty"`
+	CertificateAuthorityArn                  *string                                              `json:"CertificateAuthorityArn,omitempty"`
+	CertificateExport                        *CertificateCertificateExport                        `json:"CertificateExport,omitempty"`
+	CertificateTransparencyLoggingPreference *CertificateCertificateTransparencyLoggingPreference `json:"CertificateTransparencyLoggingPreference,omitempty"`
+	DomainName                               *string                                              `json:"DomainName,omitempty"`
+	DomainValidationOptions                  []DomainValidationOption                             `json:"DomainValidationOptions,omitempty"`
+	KeyAlgorithm                             *string                                              `json:"KeyAlgorithm,omitempty"`
+	SubjectAlternativeNames                  []string                                             `json:"SubjectAlternativeNames,omitempty"`
+	Tags                                     []CertificateTag                                     `json:"Tags,omitempty"`
+	ValidationMethod                         *string                                              `json:"ValidationMethod,omitempty"`
 }
 
 func (Certificate) CloudControlType() string { return "AWS::CertificateManager::Certificate" }
+
+type CertificateCertificateExport string
+
+const (
+	CertificateCertificateExportENABLED  CertificateCertificateExport = "ENABLED"
+	CertificateCertificateExportDISABLED CertificateCertificateExport = "DISABLED"
+)
+
+type CertificateCertificateTransparencyLoggingPreference string
+
+const (
+	CertificateCertificateTransparencyLoggingPreferenceENABLED  CertificateCertificateTransparencyLoggingPreference = "ENABLED"
+	CertificateCertificateTransparencyLoggingPreferenceDISABLED CertificateCertificateTransparencyLoggingPreference = "DISABLED"
+)

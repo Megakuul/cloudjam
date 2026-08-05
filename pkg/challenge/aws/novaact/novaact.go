@@ -9,12 +9,19 @@ type WorkflowExportConfig struct {
 }
 
 type WorkflowDefinition struct {
-	Arn          *string               `json:"Arn,omitempty"`
-	CreatedAt    *string               `json:"CreatedAt,omitempty"`
-	Description  *string               `json:"Description,omitempty"`
-	ExportConfig *WorkflowExportConfig `json:"ExportConfig,omitempty"`
-	Name         *string               `json:"Name,omitempty"`
-	Status       *string               `json:"Status,omitempty"`
+	Arn          *string                   `json:"Arn,omitempty"`
+	CreatedAt    *string                   `json:"CreatedAt,omitempty"`
+	Description  *string                   `json:"Description,omitempty"`
+	ExportConfig *WorkflowExportConfig     `json:"ExportConfig,omitempty"`
+	Name         *string                   `json:"Name,omitempty"`
+	Status       *WorkflowDefinitionStatus `json:"Status,omitempty"`
 }
 
 func (WorkflowDefinition) CloudControlType() string { return "AWS::NovaAct::WorkflowDefinition" }
+
+type WorkflowDefinitionStatus string
+
+const (
+	WorkflowDefinitionStatusACTIVE   WorkflowDefinitionStatus = "ACTIVE"
+	WorkflowDefinitionStatusDELETING WorkflowDefinitionStatus = "DELETING"
+)

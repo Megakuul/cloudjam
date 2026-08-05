@@ -13,10 +13,10 @@ type MetricDefinition struct {
 }
 
 type MetricDestination struct {
-	Destination       *string            `json:"Destination,omitempty"`
-	DestinationArn    *string            `json:"DestinationArn,omitempty"`
-	IamRoleArn        *string            `json:"IamRoleArn,omitempty"`
-	MetricDefinitions []MetricDefinition `json:"MetricDefinitions,omitempty"`
+	Destination       *MetricDestinationDestination `json:"Destination,omitempty"`
+	DestinationArn    *string                       `json:"DestinationArn,omitempty"`
+	IamRoleArn        *string                       `json:"IamRoleArn,omitempty"`
+	MetricDefinitions []MetricDefinition            `json:"MetricDefinitions,omitempty"`
 }
 
 type AppMonitorConfiguration struct {
@@ -29,16 +29,16 @@ type AppMonitorConfiguration struct {
 	IncludedPages      []string            `json:"IncludedPages,omitempty"`
 	MetricDestinations []MetricDestination `json:"MetricDestinations,omitempty"`
 	SessionSampleRate  *float64            `json:"SessionSampleRate,omitempty"`
-	Telemetries        []string            `json:"Telemetries,omitempty"`
+	Telemetries        []Telemetry         `json:"Telemetries,omitempty"`
 }
 
 type CustomEvents struct {
-	Status *string `json:"Status,omitempty"`
+	Status *CustomEventsStatus `json:"Status,omitempty"`
 }
 
 type DeobfuscationConfigurationJavaScriptSourceMaps struct {
-	S3Uri  *string `json:"S3Uri,omitempty"`
-	Status *string `json:"Status,omitempty"`
+	S3Uri  *string                                               `json:"S3Uri,omitempty"`
+	Status *DeobfuscationConfigurationJavaScriptSourceMapsStatus `json:"Status,omitempty"`
 }
 
 type DeobfuscationConfiguration struct {
@@ -64,9 +64,46 @@ type AppMonitor struct {
 	DomainList                 []string                    `json:"DomainList,omitempty"`
 	Id                         *string                     `json:"Id,omitempty"`
 	Name                       *string                     `json:"Name,omitempty"`
-	Platform                   *string                     `json:"Platform,omitempty"`
+	Platform                   *AppMonitorPlatform         `json:"Platform,omitempty"`
 	ResourcePolicy             *ResourcePolicy             `json:"ResourcePolicy,omitempty"`
 	Tags                       []Tag                       `json:"Tags,omitempty"`
 }
 
 func (AppMonitor) CloudControlType() string { return "AWS::RUM::AppMonitor" }
+
+type MetricDestinationDestination string
+
+const (
+	MetricDestinationDestinationCloudWatch MetricDestinationDestination = "CloudWatch"
+	MetricDestinationDestinationEvidently  MetricDestinationDestination = "Evidently"
+)
+
+type Telemetry string
+
+const (
+	TelemetryErrors      Telemetry = "errors"
+	TelemetryPerformance Telemetry = "performance"
+	TelemetryHttp        Telemetry = "http"
+)
+
+type CustomEventsStatus string
+
+const (
+	CustomEventsStatusENABLED  CustomEventsStatus = "ENABLED"
+	CustomEventsStatusDISABLED CustomEventsStatus = "DISABLED"
+)
+
+type DeobfuscationConfigurationJavaScriptSourceMapsStatus string
+
+const (
+	DeobfuscationConfigurationJavaScriptSourceMapsStatusENABLED  DeobfuscationConfigurationJavaScriptSourceMapsStatus = "ENABLED"
+	DeobfuscationConfigurationJavaScriptSourceMapsStatusDISABLED DeobfuscationConfigurationJavaScriptSourceMapsStatus = "DISABLED"
+)
+
+type AppMonitorPlatform string
+
+const (
+	AppMonitorPlatformWeb     AppMonitorPlatform = "Web"
+	AppMonitorPlatformAndroid AppMonitorPlatform = "Android"
+	AppMonitorPlatformIOS     AppMonitorPlatform = "iOS"
+)

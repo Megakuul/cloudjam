@@ -4,15 +4,15 @@
 package comprehend
 
 type AugmentedManifestsListItem struct {
-	AttributeNames []string `json:"AttributeNames,omitempty"`
-	S3Uri          *string  `json:"S3Uri,omitempty"`
-	Split          *string  `json:"Split,omitempty"`
+	AttributeNames []string                         `json:"AttributeNames,omitempty"`
+	S3Uri          *string                          `json:"S3Uri,omitempty"`
+	Split          *AugmentedManifestsListItemSplit `json:"Split,omitempty"`
 }
 
 type DocumentReaderConfig struct {
-	DocumentReadAction *string  `json:"DocumentReadAction,omitempty"`
-	DocumentReadMode   *string  `json:"DocumentReadMode,omitempty"`
-	FeatureTypes       []string `json:"FeatureTypes,omitempty"`
+	DocumentReadAction *DocumentReaderConfigDocumentReadAction `json:"DocumentReadAction,omitempty"`
+	DocumentReadMode   *DocumentReaderConfigDocumentReadMode   `json:"DocumentReadMode,omitempty"`
+	FeatureTypes       []DocumentReaderConfigFeatureTypesItem  `json:"FeatureTypes,omitempty"`
 }
 
 type DocumentClassifierDocuments struct {
@@ -21,14 +21,14 @@ type DocumentClassifierDocuments struct {
 }
 
 type DocumentClassifierInputDataConfig struct {
-	AugmentedManifests   []AugmentedManifestsListItem `json:"AugmentedManifests,omitempty"`
-	DataFormat           *string                      `json:"DataFormat,omitempty"`
-	DocumentReaderConfig *DocumentReaderConfig        `json:"DocumentReaderConfig,omitempty"`
-	DocumentType         *string                      `json:"DocumentType,omitempty"`
-	Documents            *DocumentClassifierDocuments `json:"Documents,omitempty"`
-	LabelDelimiter       *string                      `json:"LabelDelimiter,omitempty"`
-	S3Uri                *string                      `json:"S3Uri,omitempty"`
-	TestS3Uri            *string                      `json:"TestS3Uri,omitempty"`
+	AugmentedManifests   []AugmentedManifestsListItem                   `json:"AugmentedManifests,omitempty"`
+	DataFormat           *DocumentClassifierInputDataConfigDataFormat   `json:"DataFormat,omitempty"`
+	DocumentReaderConfig *DocumentReaderConfig                          `json:"DocumentReaderConfig,omitempty"`
+	DocumentType         *DocumentClassifierInputDataConfigDocumentType `json:"DocumentType,omitempty"`
+	Documents            *DocumentClassifierDocuments                   `json:"Documents,omitempty"`
+	LabelDelimiter       *string                                        `json:"LabelDelimiter,omitempty"`
+	S3Uri                *string                                        `json:"S3Uri,omitempty"`
+	TestS3Uri            *string                                        `json:"TestS3Uri,omitempty"`
 }
 
 type DocumentClassifierOutputDataConfig struct {
@@ -51,8 +51,8 @@ type DocumentClassifier struct {
 	DataAccessRoleArn      *string                             `json:"DataAccessRoleArn,omitempty"`
 	DocumentClassifierName *string                             `json:"DocumentClassifierName,omitempty"`
 	InputDataConfig        *DocumentClassifierInputDataConfig  `json:"InputDataConfig,omitempty"`
-	LanguageCode           *string                             `json:"LanguageCode,omitempty"`
-	Mode                   *string                             `json:"Mode,omitempty"`
+	LanguageCode           *DocumentClassifierLanguageCode     `json:"LanguageCode,omitempty"`
+	Mode                   *DocumentClassifierMode             `json:"Mode,omitempty"`
 	ModelKmsKeyId          *string                             `json:"ModelKmsKeyId,omitempty"`
 	ModelPolicy            *string                             `json:"ModelPolicy,omitempty"`
 	OutputDataConfig       *DocumentClassifierOutputDataConfig `json:"OutputDataConfig,omitempty"`
@@ -82,8 +82,8 @@ type FlywheelTag struct {
 }
 
 type DocumentClassificationConfig struct {
-	Labels []string `json:"Labels,omitempty"`
-	Mode   *string  `json:"Mode,omitempty"`
+	Labels []string                          `json:"Labels,omitempty"`
+	Mode   *DocumentClassificationConfigMode `json:"Mode,omitempty"`
 }
 
 type EntityTypesListItem struct {
@@ -97,7 +97,7 @@ type EntityRecognitionConfig struct {
 type TaskConfig struct {
 	DocumentClassificationConfig *DocumentClassificationConfig `json:"DocumentClassificationConfig,omitempty"`
 	EntityRecognitionConfig      *EntityRecognitionConfig      `json:"EntityRecognitionConfig,omitempty"`
-	LanguageCode                 *string                       `json:"LanguageCode,omitempty"`
+	LanguageCode                 *TaskConfigLanguageCode       `json:"LanguageCode,omitempty"`
 }
 
 type Flywheel struct {
@@ -107,9 +107,94 @@ type Flywheel struct {
 	DataLakeS3Uri      *string             `json:"DataLakeS3Uri,omitempty"`
 	DataSecurityConfig *DataSecurityConfig `json:"DataSecurityConfig,omitempty"`
 	FlywheelName       *string             `json:"FlywheelName,omitempty"`
-	ModelType          *string             `json:"ModelType,omitempty"`
+	ModelType          *FlywheelModelType  `json:"ModelType,omitempty"`
 	Tags               []FlywheelTag       `json:"Tags,omitempty"`
 	TaskConfig         *TaskConfig         `json:"TaskConfig,omitempty"`
 }
 
 func (Flywheel) CloudControlType() string { return "AWS::Comprehend::Flywheel" }
+
+type AugmentedManifestsListItemSplit string
+
+const (
+	AugmentedManifestsListItemSplitTRAIN AugmentedManifestsListItemSplit = "TRAIN"
+	AugmentedManifestsListItemSplitTEST  AugmentedManifestsListItemSplit = "TEST"
+)
+
+type DocumentClassifierInputDataConfigDataFormat string
+
+const (
+	DocumentClassifierInputDataConfigDataFormatCOMPREHENDCSV     DocumentClassifierInputDataConfigDataFormat = "COMPREHEND_CSV"
+	DocumentClassifierInputDataConfigDataFormatAUGMENTEDMANIFEST DocumentClassifierInputDataConfigDataFormat = "AUGMENTED_MANIFEST"
+)
+
+type DocumentReaderConfigDocumentReadAction string
+
+const (
+	DocumentReaderConfigDocumentReadActionTEXTRACTDETECTDOCUMENTTEXT DocumentReaderConfigDocumentReadAction = "TEXTRACT_DETECT_DOCUMENT_TEXT"
+	DocumentReaderConfigDocumentReadActionTEXTRACTANALYZEDOCUMENT    DocumentReaderConfigDocumentReadAction = "TEXTRACT_ANALYZE_DOCUMENT"
+)
+
+type DocumentReaderConfigDocumentReadMode string
+
+const (
+	DocumentReaderConfigDocumentReadModeSERVICEDEFAULT          DocumentReaderConfigDocumentReadMode = "SERVICE_DEFAULT"
+	DocumentReaderConfigDocumentReadModeFORCEDOCUMENTREADACTION DocumentReaderConfigDocumentReadMode = "FORCE_DOCUMENT_READ_ACTION"
+)
+
+type DocumentReaderConfigFeatureTypesItem string
+
+const (
+	DocumentReaderConfigFeatureTypesItemTABLES DocumentReaderConfigFeatureTypesItem = "TABLES"
+	DocumentReaderConfigFeatureTypesItemFORMS  DocumentReaderConfigFeatureTypesItem = "FORMS"
+)
+
+type DocumentClassifierInputDataConfigDocumentType string
+
+const (
+	DocumentClassifierInputDataConfigDocumentTypePLAINTEXTDOCUMENT      DocumentClassifierInputDataConfigDocumentType = "PLAIN_TEXT_DOCUMENT"
+	DocumentClassifierInputDataConfigDocumentTypeSEMISTRUCTUREDDOCUMENT DocumentClassifierInputDataConfigDocumentType = "SEMI_STRUCTURED_DOCUMENT"
+)
+
+type DocumentClassifierLanguageCode string
+
+const (
+	DocumentClassifierLanguageCodeEn DocumentClassifierLanguageCode = "en"
+	DocumentClassifierLanguageCodeEs DocumentClassifierLanguageCode = "es"
+	DocumentClassifierLanguageCodeFr DocumentClassifierLanguageCode = "fr"
+	DocumentClassifierLanguageCodeIt DocumentClassifierLanguageCode = "it"
+	DocumentClassifierLanguageCodeDe DocumentClassifierLanguageCode = "de"
+	DocumentClassifierLanguageCodePt DocumentClassifierLanguageCode = "pt"
+)
+
+type DocumentClassifierMode string
+
+const (
+	DocumentClassifierModeMULTICLASS DocumentClassifierMode = "MULTI_CLASS"
+	DocumentClassifierModeMULTILABEL DocumentClassifierMode = "MULTI_LABEL"
+)
+
+type FlywheelModelType string
+
+const (
+	FlywheelModelTypeDOCUMENTCLASSIFIER FlywheelModelType = "DOCUMENT_CLASSIFIER"
+	FlywheelModelTypeENTITYRECOGNIZER   FlywheelModelType = "ENTITY_RECOGNIZER"
+)
+
+type DocumentClassificationConfigMode string
+
+const (
+	DocumentClassificationConfigModeMULTICLASS DocumentClassificationConfigMode = "MULTI_CLASS"
+	DocumentClassificationConfigModeMULTILABEL DocumentClassificationConfigMode = "MULTI_LABEL"
+)
+
+type TaskConfigLanguageCode string
+
+const (
+	TaskConfigLanguageCodeEn TaskConfigLanguageCode = "en"
+	TaskConfigLanguageCodeEs TaskConfigLanguageCode = "es"
+	TaskConfigLanguageCodeFr TaskConfigLanguageCode = "fr"
+	TaskConfigLanguageCodeIt TaskConfigLanguageCode = "it"
+	TaskConfigLanguageCodeDe TaskConfigLanguageCode = "de"
+	TaskConfigLanguageCodePt TaskConfigLanguageCode = "pt"
+)

@@ -38,11 +38,11 @@ type AccessPoint struct {
 func (AccessPoint) CloudControlType() string { return "AWS::EFS::AccessPoint" }
 
 type BackupPolicy struct {
-	Status *string `json:"Status,omitempty"`
+	Status *BackupPolicyStatus `json:"Status,omitempty"`
 }
 
 type FileSystemProtection struct {
-	ReplicationOverwriteProtection *string `json:"ReplicationOverwriteProtection,omitempty"`
+	ReplicationOverwriteProtection *FileSystemProtectionReplicationOverwriteProtection `json:"ReplicationOverwriteProtection,omitempty"`
 }
 
 type ElasticFileSystemTag struct {
@@ -91,13 +91,35 @@ type FileSystem struct {
 func (FileSystem) CloudControlType() string { return "AWS::EFS::FileSystem" }
 
 type MountTarget struct {
-	FileSystemId   *string  `json:"FileSystemId,omitempty"`
-	Id             *string  `json:"Id,omitempty"`
-	IpAddress      *string  `json:"IpAddress,omitempty"`
-	IpAddressType  *string  `json:"IpAddressType,omitempty"`
-	Ipv6Address    *string  `json:"Ipv6Address,omitempty"`
-	SecurityGroups []string `json:"SecurityGroups,omitempty"`
-	SubnetId       *string  `json:"SubnetId,omitempty"`
+	FileSystemId   *string                   `json:"FileSystemId,omitempty"`
+	Id             *string                   `json:"Id,omitempty"`
+	IpAddress      *string                   `json:"IpAddress,omitempty"`
+	IpAddressType  *MountTargetIpAddressType `json:"IpAddressType,omitempty"`
+	Ipv6Address    *string                   `json:"Ipv6Address,omitempty"`
+	SecurityGroups []string                  `json:"SecurityGroups,omitempty"`
+	SubnetId       *string                   `json:"SubnetId,omitempty"`
 }
 
 func (MountTarget) CloudControlType() string { return "AWS::EFS::MountTarget" }
+
+type BackupPolicyStatus string
+
+const (
+	BackupPolicyStatusDISABLED BackupPolicyStatus = "DISABLED"
+	BackupPolicyStatusENABLED  BackupPolicyStatus = "ENABLED"
+)
+
+type FileSystemProtectionReplicationOverwriteProtection string
+
+const (
+	FileSystemProtectionReplicationOverwriteProtectionDISABLED FileSystemProtectionReplicationOverwriteProtection = "DISABLED"
+	FileSystemProtectionReplicationOverwriteProtectionENABLED  FileSystemProtectionReplicationOverwriteProtection = "ENABLED"
+)
+
+type MountTargetIpAddressType string
+
+const (
+	MountTargetIpAddressTypeIPV4ONLY  MountTargetIpAddressType = "IPV4_ONLY"
+	MountTargetIpAddressTypeIPV6ONLY  MountTargetIpAddressType = "IPV6_ONLY"
+	MountTargetIpAddressTypeDUALSTACK MountTargetIpAddressType = "DUAL_STACK"
+)

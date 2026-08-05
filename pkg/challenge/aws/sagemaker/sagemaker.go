@@ -33,7 +33,7 @@ type Action struct {
 	MetadataProperties *MetadataProperties `json:"MetadataProperties,omitempty"`
 	Properties         map[string]string   `json:"Properties,omitempty"`
 	Source             *ActionSource       `json:"Source,omitempty"`
-	Status             *string             `json:"Status,omitempty"`
+	Status             *ActionStatus       `json:"Status,omitempty"`
 	Tags               []Tag               `json:"Tags,omitempty"`
 }
 
@@ -94,27 +94,27 @@ type ParameterRange struct {
 }
 
 type HyperParameterSpecification struct {
-	DefaultValue *string         `json:"DefaultValue,omitempty"`
-	Description  *string         `json:"Description,omitempty"`
-	IsRequired   *bool           `json:"IsRequired,omitempty"`
-	IsTunable    *bool           `json:"IsTunable,omitempty"`
-	Name         *string         `json:"Name,omitempty"`
-	Range        *ParameterRange `json:"Range,omitempty"`
-	Type         *string         `json:"Type,omitempty"`
+	DefaultValue *string                          `json:"DefaultValue,omitempty"`
+	Description  *string                          `json:"Description,omitempty"`
+	IsRequired   *bool                            `json:"IsRequired,omitempty"`
+	IsTunable    *bool                            `json:"IsTunable,omitempty"`
+	Name         *string                          `json:"Name,omitempty"`
+	Range        *ParameterRange                  `json:"Range,omitempty"`
+	Type         *HyperParameterSpecificationType `json:"Type,omitempty"`
 }
 
 type HyperParameterTuningJobObjective struct {
-	MetricName *string `json:"MetricName,omitempty"`
-	Type       *string `json:"Type,omitempty"`
+	MetricName *string                               `json:"MetricName,omitempty"`
+	Type       *HyperParameterTuningJobObjectiveType `json:"Type,omitempty"`
 }
 
 type ChannelSpecification struct {
-	Description               *string  `json:"Description,omitempty"`
-	IsRequired                *bool    `json:"IsRequired,omitempty"`
-	Name                      *string  `json:"Name,omitempty"`
-	SupportedCompressionTypes []string `json:"SupportedCompressionTypes,omitempty"`
-	SupportedContentTypes     []string `json:"SupportedContentTypes,omitempty"`
-	SupportedInputModes       []string `json:"SupportedInputModes,omitempty"`
+	Description               *string                                             `json:"Description,omitempty"`
+	IsRequired                *bool                                               `json:"IsRequired,omitempty"`
+	Name                      *string                                             `json:"Name,omitempty"`
+	SupportedCompressionTypes []ChannelSpecificationSupportedCompressionTypesItem `json:"SupportedCompressionTypes,omitempty"`
+	SupportedContentTypes     []string                                            `json:"SupportedContentTypes,omitempty"`
+	SupportedInputModes       []ChannelSpecificationSupportedInputModesItem       `json:"SupportedInputModes,omitempty"`
 }
 
 type TrainingSpecification struct {
@@ -142,10 +142,10 @@ type Algorithm struct {
 func (Algorithm) CloudControlType() string { return "AWS::SageMaker::Algorithm" }
 
 type ResourceSpec struct {
-	InstanceType             *string `json:"InstanceType,omitempty"`
-	LifecycleConfigArn       *string `json:"LifecycleConfigArn,omitempty"`
-	SageMakerImageArn        *string `json:"SageMakerImageArn,omitempty"`
-	SageMakerImageVersionArn *string `json:"SageMakerImageVersionArn,omitempty"`
+	InstanceType             *ResourceSpecInstanceType `json:"InstanceType,omitempty"`
+	LifecycleConfigArn       *string                   `json:"LifecycleConfigArn,omitempty"`
+	SageMakerImageArn        *string                   `json:"SageMakerImageArn,omitempty"`
+	SageMakerImageVersionArn *string                   `json:"SageMakerImageVersionArn,omitempty"`
 }
 
 type AppTag struct {
@@ -156,7 +156,7 @@ type AppTag struct {
 type App struct {
 	AppArn                    *string       `json:"AppArn,omitempty"`
 	AppName                   *string       `json:"AppName,omitempty"`
-	AppType                   *string       `json:"AppType,omitempty"`
+	AppType                   *AppAppType   `json:"AppType,omitempty"`
 	BuiltInLifecycleConfigArn *string       `json:"BuiltInLifecycleConfigArn,omitempty"`
 	DomainId                  *string       `json:"DomainId,omitempty"`
 	RecoveryMode              *bool         `json:"RecoveryMode,omitempty"`
@@ -219,8 +219,8 @@ type AppImageConfig struct {
 func (AppImageConfig) CloudControlType() string { return "AWS::SageMaker::AppImageConfig" }
 
 type ClusterAutoScalingConfig struct {
-	AutoScalerType *string `json:"AutoScalerType,omitempty"`
-	Mode           *string `json:"Mode,omitempty"`
+	AutoScalerType *ClusterAutoScalingConfigAutoScalerType `json:"AutoScalerType,omitempty"`
+	Mode           *ClusterAutoScalingConfigMode           `json:"Mode,omitempty"`
 }
 
 type AlarmDetails struct {
@@ -248,9 +248,9 @@ type PatchSchedule struct {
 }
 
 type AutoPatchConfig struct {
-	DeploymentConfig *DeploymentConfig `json:"DeploymentConfig,omitempty"`
-	PatchSchedule    *PatchSchedule    `json:"PatchSchedule,omitempty"`
-	PatchingStrategy *string           `json:"PatchingStrategy,omitempty"`
+	DeploymentConfig *DeploymentConfig                `json:"DeploymentConfig,omitempty"`
+	PatchSchedule    *PatchSchedule                   `json:"PatchSchedule,omitempty"`
+	PatchingStrategy *AutoPatchConfigPatchingStrategy `json:"PatchingStrategy,omitempty"`
 }
 
 type ClusterCapacityRequirements struct {
@@ -263,9 +263,9 @@ type InstanceRequirements struct {
 }
 
 type ClusterKubernetesTaint struct {
-	Effect *string `json:"Effect,omitempty"`
-	Key    *string `json:"Key,omitempty"`
-	Value  *string `json:"Value,omitempty"`
+	Effect *ClusterKubernetesTaintEffect `json:"Effect,omitempty"`
+	Key    *string                       `json:"Key,omitempty"`
+	Value  *string                       `json:"Value,omitempty"`
 }
 
 type ClusterKubernetesConfig struct {
@@ -280,7 +280,7 @@ type ClusterLifeCycleConfig struct {
 }
 
 type ClusterNetworkInterface struct {
-	InterfaceType *string `json:"InterfaceType,omitempty"`
+	InterfaceType *ClusterNetworkInterfaceInterfaceType `json:"InterfaceType,omitempty"`
 }
 
 type VpcConfig struct {
@@ -294,8 +294,8 @@ type ScheduledUpdateConfig struct {
 }
 
 type ClusterSlurmConfig struct {
-	NodeType       *string  `json:"NodeType,omitempty"`
-	PartitionNames []string `json:"PartitionNames,omitempty"`
+	NodeType       *ClusterSlurmConfigNodeType `json:"NodeType,omitempty"`
+	PartitionNames []string                    `json:"PartitionNames,omitempty"`
 }
 
 type ClusterInstanceGroup struct {
@@ -313,7 +313,7 @@ type ClusterInstanceGroup struct {
 	LifeCycleConfig         *ClusterLifeCycleConfig      `json:"LifeCycleConfig,omitempty"`
 	MinInstanceCount        *int                         `json:"MinInstanceCount,omitempty"`
 	NetworkInterface        *ClusterNetworkInterface     `json:"NetworkInterface,omitempty"`
-	OnStartDeepHealthChecks []string                     `json:"OnStartDeepHealthChecks,omitempty"`
+	OnStartDeepHealthChecks []DeepHealthCheckType        `json:"OnStartDeepHealthChecks,omitempty"`
 	OverrideVpcConfig       *VpcConfig                   `json:"OverrideVpcConfig,omitempty"`
 	ScheduledUpdateConfig   *ScheduledUpdateConfig       `json:"ScheduledUpdateConfig,omitempty"`
 	SlurmConfig             *ClusterSlurmConfig          `json:"SlurmConfig,omitempty"`
@@ -331,22 +331,22 @@ type EnvironmentConfig struct {
 }
 
 type ClusterRestrictedInstanceGroup struct {
-	CurrentCount            *int               `json:"CurrentCount,omitempty"`
-	EnvironmentConfig       *EnvironmentConfig `json:"EnvironmentConfig,omitempty"`
-	ExecutionRole           *string            `json:"ExecutionRole,omitempty"`
-	InstanceCount           *int               `json:"InstanceCount,omitempty"`
-	InstanceGroupName       *string            `json:"InstanceGroupName,omitempty"`
-	InstanceStorageConfigs  []map[string]any   `json:"InstanceStorageConfigs,omitempty"`
-	InstanceType            *string            `json:"InstanceType,omitempty"`
-	OnStartDeepHealthChecks []string           `json:"OnStartDeepHealthChecks,omitempty"`
-	OverrideVpcConfig       *VpcConfig         `json:"OverrideVpcConfig,omitempty"`
-	ThreadsPerCore          *int               `json:"ThreadsPerCore,omitempty"`
-	TrainingPlanArn         *string            `json:"TrainingPlanArn,omitempty"`
+	CurrentCount            *int                  `json:"CurrentCount,omitempty"`
+	EnvironmentConfig       *EnvironmentConfig    `json:"EnvironmentConfig,omitempty"`
+	ExecutionRole           *string               `json:"ExecutionRole,omitempty"`
+	InstanceCount           *int                  `json:"InstanceCount,omitempty"`
+	InstanceGroupName       *string               `json:"InstanceGroupName,omitempty"`
+	InstanceStorageConfigs  []map[string]any      `json:"InstanceStorageConfigs,omitempty"`
+	InstanceType            *string               `json:"InstanceType,omitempty"`
+	OnStartDeepHealthChecks []DeepHealthCheckType `json:"OnStartDeepHealthChecks,omitempty"`
+	OverrideVpcConfig       *VpcConfig            `json:"OverrideVpcConfig,omitempty"`
+	ThreadsPerCore          *int                  `json:"ThreadsPerCore,omitempty"`
+	TrainingPlanArn         *string               `json:"TrainingPlanArn,omitempty"`
 }
 
 type SharedEnvironmentConfig struct {
-	FSxLustreConfig         *FSxLustreConfig `json:"FSxLustreConfig,omitempty"`
-	FSxLustreDeletionPolicy *string          `json:"FSxLustreDeletionPolicy,omitempty"`
+	FSxLustreConfig         *FSxLustreConfig                                `json:"FSxLustreConfig,omitempty"`
+	FSxLustreDeletionPolicy *SharedEnvironmentConfigFSxLustreDeletionPolicy `json:"FSxLustreDeletionPolicy,omitempty"`
 }
 
 type RestrictedInstanceGroupsConfig struct {
@@ -359,8 +359,8 @@ type ClusterTag struct {
 }
 
 type TieredStorageConfig struct {
-	InstanceMemoryAllocationPercentage *int    `json:"InstanceMemoryAllocationPercentage,omitempty"`
-	Mode                               *string `json:"Mode,omitempty"`
+	InstanceMemoryAllocationPercentage *int                     `json:"InstanceMemoryAllocationPercentage,omitempty"`
+	Mode                               *TieredStorageConfigMode `json:"Mode,omitempty"`
 }
 
 type Cluster struct {
@@ -368,12 +368,12 @@ type Cluster struct {
 	ClusterArn                     *string                          `json:"ClusterArn,omitempty"`
 	ClusterName                    *string                          `json:"ClusterName,omitempty"`
 	ClusterRole                    *string                          `json:"ClusterRole,omitempty"`
-	ClusterStatus                  *string                          `json:"ClusterStatus,omitempty"`
+	ClusterStatus                  *ClusterClusterStatus            `json:"ClusterStatus,omitempty"`
 	CreationTime                   *string                          `json:"CreationTime,omitempty"`
 	FailureMessage                 *string                          `json:"FailureMessage,omitempty"`
 	InstanceGroups                 []ClusterInstanceGroup           `json:"InstanceGroups,omitempty"`
-	NodeProvisioningMode           *string                          `json:"NodeProvisioningMode,omitempty"`
-	NodeRecovery                   *string                          `json:"NodeRecovery,omitempty"`
+	NodeProvisioningMode           *ClusterNodeProvisioningMode     `json:"NodeProvisioningMode,omitempty"`
+	NodeRecovery                   *ClusterNodeRecovery             `json:"NodeRecovery,omitempty"`
 	Orchestrator                   map[string]any                   `json:"Orchestrator,omitempty"`
 	RestrictedInstanceGroups       []ClusterRestrictedInstanceGroup `json:"RestrictedInstanceGroups,omitempty"`
 	RestrictedInstanceGroupsConfig *RestrictedInstanceGroupsConfig  `json:"RestrictedInstanceGroupsConfig,omitempty"`
@@ -467,20 +467,20 @@ type DatasetFormat struct {
 }
 
 type BatchTransformInput struct {
-	DataCapturedDestinationS3Uri *string        `json:"DataCapturedDestinationS3Uri,omitempty"`
-	DatasetFormat                *DatasetFormat `json:"DatasetFormat,omitempty"`
-	ExcludeFeaturesAttribute     *string        `json:"ExcludeFeaturesAttribute,omitempty"`
-	LocalPath                    *string        `json:"LocalPath,omitempty"`
-	S3DataDistributionType       *string        `json:"S3DataDistributionType,omitempty"`
-	S3InputMode                  *string        `json:"S3InputMode,omitempty"`
+	DataCapturedDestinationS3Uri *string                                    `json:"DataCapturedDestinationS3Uri,omitempty"`
+	DatasetFormat                *DatasetFormat                             `json:"DatasetFormat,omitempty"`
+	ExcludeFeaturesAttribute     *string                                    `json:"ExcludeFeaturesAttribute,omitempty"`
+	LocalPath                    *string                                    `json:"LocalPath,omitempty"`
+	S3DataDistributionType       *BatchTransformInputS3DataDistributionType `json:"S3DataDistributionType,omitempty"`
+	S3InputMode                  *BatchTransformInputS3InputMode            `json:"S3InputMode,omitempty"`
 }
 
 type EndpointInput struct {
-	EndpointName             *string `json:"EndpointName,omitempty"`
-	ExcludeFeaturesAttribute *string `json:"ExcludeFeaturesAttribute,omitempty"`
-	LocalPath                *string `json:"LocalPath,omitempty"`
-	S3DataDistributionType   *string `json:"S3DataDistributionType,omitempty"`
-	S3InputMode              *string `json:"S3InputMode,omitempty"`
+	EndpointName             *string                              `json:"EndpointName,omitempty"`
+	ExcludeFeaturesAttribute *string                              `json:"ExcludeFeaturesAttribute,omitempty"`
+	LocalPath                *string                              `json:"LocalPath,omitempty"`
+	S3DataDistributionType   *EndpointInputS3DataDistributionType `json:"S3DataDistributionType,omitempty"`
+	S3InputMode              *EndpointInputS3InputMode            `json:"S3InputMode,omitempty"`
 }
 
 type DataQualityJobInput struct {
@@ -489,9 +489,9 @@ type DataQualityJobInput struct {
 }
 
 type S3Output struct {
-	LocalPath    *string `json:"LocalPath,omitempty"`
-	S3UploadMode *string `json:"S3UploadMode,omitempty"`
-	S3Uri        *string `json:"S3Uri,omitempty"`
+	LocalPath    *string               `json:"LocalPath,omitempty"`
+	S3UploadMode *S3OutputS3UploadMode `json:"S3UploadMode,omitempty"`
+	S3Uri        *string               `json:"S3Uri,omitempty"`
 }
 
 type MonitoringOutput struct {
@@ -620,10 +620,10 @@ type CustomPosixUserConfig struct {
 }
 
 type IdleSettings struct {
-	IdleTimeoutInMinutes    *int    `json:"IdleTimeoutInMinutes,omitempty"`
-	LifecycleManagement     *string `json:"LifecycleManagement,omitempty"`
-	MaxIdleTimeoutInMinutes *int    `json:"MaxIdleTimeoutInMinutes,omitempty"`
-	MinIdleTimeoutInMinutes *int    `json:"MinIdleTimeoutInMinutes,omitempty"`
+	IdleTimeoutInMinutes    *int                 `json:"IdleTimeoutInMinutes,omitempty"`
+	LifecycleManagement     *LifecycleManagement `json:"LifecycleManagement,omitempty"`
+	MaxIdleTimeoutInMinutes *int                 `json:"MaxIdleTimeoutInMinutes,omitempty"`
+	MinIdleTimeoutInMinutes *int                 `json:"MinIdleTimeoutInMinutes,omitempty"`
 }
 
 type AppLifecycleManagement struct {
@@ -641,11 +641,11 @@ type CustomImage struct {
 }
 
 type DomainResourceSpec struct {
-	InstanceType             *string `json:"InstanceType,omitempty"`
-	LifecycleConfigArn       *string `json:"LifecycleConfigArn,omitempty"`
-	SageMakerImageArn        *string `json:"SageMakerImageArn,omitempty"`
-	SageMakerImageVersionArn *string `json:"SageMakerImageVersionArn,omitempty"`
-	TrainingPlanArn          *string `json:"TrainingPlanArn,omitempty"`
+	InstanceType             *AppInstanceType `json:"InstanceType,omitempty"`
+	LifecycleConfigArn       *string          `json:"LifecycleConfigArn,omitempty"`
+	SageMakerImageArn        *string          `json:"SageMakerImageArn,omitempty"`
+	SageMakerImageVersionArn *string          `json:"SageMakerImageVersionArn,omitempty"`
+	TrainingPlanArn          *string          `json:"TrainingPlanArn,omitempty"`
 }
 
 type JupyterLabAppSettings struct {
@@ -702,50 +702,50 @@ type RSessionAppSettings struct {
 }
 
 type RStudioServerProAppSettings struct {
-	AccessStatus *string `json:"AccessStatus,omitempty"`
-	UserGroup    *string `json:"UserGroup,omitempty"`
+	AccessStatus *RStudioServerProAppSettingsAccessStatus `json:"AccessStatus,omitempty"`
+	UserGroup    *RStudioServerProAppSettingsUserGroup    `json:"UserGroup,omitempty"`
 }
 
 type SharingSettings struct {
-	NotebookOutputOption *string `json:"NotebookOutputOption,omitempty"`
-	S3KmsKeyId           *string `json:"S3KmsKeyId,omitempty"`
-	S3OutputPath         *string `json:"S3OutputPath,omitempty"`
+	NotebookOutputOption *SharingSettingsNotebookOutputOption `json:"NotebookOutputOption,omitempty"`
+	S3KmsKeyId           *string                              `json:"S3KmsKeyId,omitempty"`
+	S3OutputPath         *string                              `json:"S3OutputPath,omitempty"`
 }
 
 type HiddenSageMakerImage struct {
-	SageMakerImageName *string  `json:"SageMakerImageName,omitempty"`
-	VersionAliases     []string `json:"VersionAliases,omitempty"`
+	SageMakerImageName *HiddenSageMakerImageSageMakerImageName `json:"SageMakerImageName,omitempty"`
+	VersionAliases     []string                                `json:"VersionAliases,omitempty"`
 }
 
 type StudioWebPortalSettings struct {
-	HiddenAppTypes                     []string               `json:"HiddenAppTypes,omitempty"`
-	HiddenInstanceTypes                []string               `json:"HiddenInstanceTypes,omitempty"`
-	HiddenMlTools                      []string               `json:"HiddenMlTools,omitempty"`
+	HiddenAppTypes                     []AppType              `json:"HiddenAppTypes,omitempty"`
+	HiddenInstanceTypes                []AppInstanceType      `json:"HiddenInstanceTypes,omitempty"`
+	HiddenMlTools                      []MlTools              `json:"HiddenMlTools,omitempty"`
 	HiddenSageMakerImageVersionAliases []HiddenSageMakerImage `json:"HiddenSageMakerImageVersionAliases,omitempty"`
 }
 
 type UserSettings struct {
-	AutoMountHomeEFS            *string                      `json:"AutoMountHomeEFS,omitempty"`
-	CodeEditorAppSettings       *CodeEditorAppSettings       `json:"CodeEditorAppSettings,omitempty"`
-	CustomFileSystemConfigs     []CustomFileSystemConfig     `json:"CustomFileSystemConfigs,omitempty"`
-	CustomPosixUserConfig       *CustomPosixUserConfig       `json:"CustomPosixUserConfig,omitempty"`
-	DefaultLandingUri           *string                      `json:"DefaultLandingUri,omitempty"`
-	ExecutionRole               *string                      `json:"ExecutionRole,omitempty"`
-	JupyterLabAppSettings       *JupyterLabAppSettings       `json:"JupyterLabAppSettings,omitempty"`
-	JupyterServerAppSettings    *JupyterServerAppSettings    `json:"JupyterServerAppSettings,omitempty"`
-	KernelGatewayAppSettings    *KernelGatewayAppSettings    `json:"KernelGatewayAppSettings,omitempty"`
-	RSessionAppSettings         *RSessionAppSettings         `json:"RSessionAppSettings,omitempty"`
-	RStudioServerProAppSettings *RStudioServerProAppSettings `json:"RStudioServerProAppSettings,omitempty"`
-	SecurityGroups              []string                     `json:"SecurityGroups,omitempty"`
-	SharingSettings             *SharingSettings             `json:"SharingSettings,omitempty"`
-	SpaceStorageSettings        *DefaultSpaceStorageSettings `json:"SpaceStorageSettings,omitempty"`
-	StudioWebPortal             *string                      `json:"StudioWebPortal,omitempty"`
-	StudioWebPortalSettings     *StudioWebPortalSettings     `json:"StudioWebPortalSettings,omitempty"`
+	AutoMountHomeEFS            *UserSettingsAutoMountHomeEFS `json:"AutoMountHomeEFS,omitempty"`
+	CodeEditorAppSettings       *CodeEditorAppSettings        `json:"CodeEditorAppSettings,omitempty"`
+	CustomFileSystemConfigs     []CustomFileSystemConfig      `json:"CustomFileSystemConfigs,omitempty"`
+	CustomPosixUserConfig       *CustomPosixUserConfig        `json:"CustomPosixUserConfig,omitempty"`
+	DefaultLandingUri           *string                       `json:"DefaultLandingUri,omitempty"`
+	ExecutionRole               *string                       `json:"ExecutionRole,omitempty"`
+	JupyterLabAppSettings       *JupyterLabAppSettings        `json:"JupyterLabAppSettings,omitempty"`
+	JupyterServerAppSettings    *JupyterServerAppSettings     `json:"JupyterServerAppSettings,omitempty"`
+	KernelGatewayAppSettings    *KernelGatewayAppSettings     `json:"KernelGatewayAppSettings,omitempty"`
+	RSessionAppSettings         *RSessionAppSettings          `json:"RSessionAppSettings,omitempty"`
+	RStudioServerProAppSettings *RStudioServerProAppSettings  `json:"RStudioServerProAppSettings,omitempty"`
+	SecurityGroups              []string                      `json:"SecurityGroups,omitempty"`
+	SharingSettings             *SharingSettings              `json:"SharingSettings,omitempty"`
+	SpaceStorageSettings        *DefaultSpaceStorageSettings  `json:"SpaceStorageSettings,omitempty"`
+	StudioWebPortal             *UserSettingsStudioWebPortal  `json:"StudioWebPortal,omitempty"`
+	StudioWebPortalSettings     *StudioWebPortalSettings      `json:"StudioWebPortalSettings,omitempty"`
 }
 
 type DockerSettings struct {
-	EnableDockerAccess     *string  `json:"EnableDockerAccess,omitempty"`
-	VpcOnlyTrustedAccounts []string `json:"VpcOnlyTrustedAccounts,omitempty"`
+	EnableDockerAccess     *DockerSettingsEnableDockerAccess `json:"EnableDockerAccess,omitempty"`
+	VpcOnlyTrustedAccounts []string                          `json:"VpcOnlyTrustedAccounts,omitempty"`
 }
 
 type RStudioServerProDomainSettings struct {
@@ -756,22 +756,22 @@ type RStudioServerProDomainSettings struct {
 }
 
 type UnifiedStudioSettings struct {
-	DomainAccountId       *string `json:"DomainAccountId,omitempty"`
-	DomainId              *string `json:"DomainId,omitempty"`
-	DomainRegion          *string `json:"DomainRegion,omitempty"`
-	EnvironmentId         *string `json:"EnvironmentId,omitempty"`
-	ProjectId             *string `json:"ProjectId,omitempty"`
-	ProjectS3Path         *string `json:"ProjectS3Path,omitempty"`
-	StudioWebPortalAccess *string `json:"StudioWebPortalAccess,omitempty"`
+	DomainAccountId       *string                                     `json:"DomainAccountId,omitempty"`
+	DomainId              *string                                     `json:"DomainId,omitempty"`
+	DomainRegion          *string                                     `json:"DomainRegion,omitempty"`
+	EnvironmentId         *string                                     `json:"EnvironmentId,omitempty"`
+	ProjectId             *string                                     `json:"ProjectId,omitempty"`
+	ProjectS3Path         *string                                     `json:"ProjectS3Path,omitempty"`
+	StudioWebPortalAccess *UnifiedStudioSettingsStudioWebPortalAccess `json:"StudioWebPortalAccess,omitempty"`
 }
 
 type DomainSettings struct {
-	DockerSettings                 *DockerSettings                 `json:"DockerSettings,omitempty"`
-	ExecutionRoleIdentityConfig    *string                         `json:"ExecutionRoleIdentityConfig,omitempty"`
-	IpAddressType                  *string                         `json:"IpAddressType,omitempty"`
-	RStudioServerProDomainSettings *RStudioServerProDomainSettings `json:"RStudioServerProDomainSettings,omitempty"`
-	SecurityGroupIds               []string                        `json:"SecurityGroupIds,omitempty"`
-	UnifiedStudioSettings          *UnifiedStudioSettings          `json:"UnifiedStudioSettings,omitempty"`
+	DockerSettings                 *DockerSettings                            `json:"DockerSettings,omitempty"`
+	ExecutionRoleIdentityConfig    *DomainSettingsExecutionRoleIdentityConfig `json:"ExecutionRoleIdentityConfig,omitempty"`
+	IpAddressType                  *IpAddressType                             `json:"IpAddressType,omitempty"`
+	RStudioServerProDomainSettings *RStudioServerProDomainSettings            `json:"RStudioServerProDomainSettings,omitempty"`
+	SecurityGroupIds               []string                                   `json:"SecurityGroupIds,omitempty"`
+	UnifiedStudioSettings          *UnifiedStudioSettings                     `json:"UnifiedStudioSettings,omitempty"`
 }
 
 type DomainTag struct {
@@ -780,26 +780,26 @@ type DomainTag struct {
 }
 
 type Domain struct {
-	AppNetworkAccessType                     *string               `json:"AppNetworkAccessType,omitempty"`
-	AppSecurityGroupManagement               *string               `json:"AppSecurityGroupManagement,omitempty"`
-	AuthMode                                 *string               `json:"AuthMode,omitempty"`
-	DefaultSpaceSettings                     *DefaultSpaceSettings `json:"DefaultSpaceSettings,omitempty"`
-	DefaultUserSettings                      *UserSettings         `json:"DefaultUserSettings,omitempty"`
-	DomainArn                                *string               `json:"DomainArn,omitempty"`
-	DomainId                                 *string               `json:"DomainId,omitempty"`
-	DomainName                               *string               `json:"DomainName,omitempty"`
-	DomainSettings                           *DomainSettings       `json:"DomainSettings,omitempty"`
-	HomeEfsFileSystemCreation                *string               `json:"HomeEfsFileSystemCreation,omitempty"`
-	HomeEfsFileSystemId                      *string               `json:"HomeEfsFileSystemId,omitempty"`
-	KmsKeyId                                 *string               `json:"KmsKeyId,omitempty"`
-	SecurityGroupIdForDomainBoundary         *string               `json:"SecurityGroupIdForDomainBoundary,omitempty"`
-	SingleSignOnApplicationArn               *string               `json:"SingleSignOnApplicationArn,omitempty"`
-	SingleSignOnManagedApplicationInstanceId *string               `json:"SingleSignOnManagedApplicationInstanceId,omitempty"`
-	SubnetIds                                []string              `json:"SubnetIds,omitempty"`
-	TagPropagation                           *string               `json:"TagPropagation,omitempty"`
-	Tags                                     []DomainTag           `json:"Tags,omitempty"`
-	Url                                      *string               `json:"Url,omitempty"`
-	VpcId                                    *string               `json:"VpcId,omitempty"`
+	AppNetworkAccessType                     *DomainAppNetworkAccessType       `json:"AppNetworkAccessType,omitempty"`
+	AppSecurityGroupManagement               *DomainAppSecurityGroupManagement `json:"AppSecurityGroupManagement,omitempty"`
+	AuthMode                                 *DomainAuthMode                   `json:"AuthMode,omitempty"`
+	DefaultSpaceSettings                     *DefaultSpaceSettings             `json:"DefaultSpaceSettings,omitempty"`
+	DefaultUserSettings                      *UserSettings                     `json:"DefaultUserSettings,omitempty"`
+	DomainArn                                *string                           `json:"DomainArn,omitempty"`
+	DomainId                                 *string                           `json:"DomainId,omitempty"`
+	DomainName                               *string                           `json:"DomainName,omitempty"`
+	DomainSettings                           *DomainSettings                   `json:"DomainSettings,omitempty"`
+	HomeEfsFileSystemCreation                *DomainHomeEfsFileSystemCreation  `json:"HomeEfsFileSystemCreation,omitempty"`
+	HomeEfsFileSystemId                      *string                           `json:"HomeEfsFileSystemId,omitempty"`
+	KmsKeyId                                 *string                           `json:"KmsKeyId,omitempty"`
+	SecurityGroupIdForDomainBoundary         *string                           `json:"SecurityGroupIdForDomainBoundary,omitempty"`
+	SingleSignOnApplicationArn               *string                           `json:"SingleSignOnApplicationArn,omitempty"`
+	SingleSignOnManagedApplicationInstanceId *string                           `json:"SingleSignOnManagedApplicationInstanceId,omitempty"`
+	SubnetIds                                []string                          `json:"SubnetIds,omitempty"`
+	TagPropagation                           *DomainTagPropagation             `json:"TagPropagation,omitempty"`
+	Tags                                     []DomainTag                       `json:"Tags,omitempty"`
+	Url                                      *string                           `json:"Url,omitempty"`
+	VpcId                                    *string                           `json:"VpcId,omitempty"`
 }
 
 func (Domain) CloudControlType() string { return "AWS::SageMaker::Domain" }
@@ -1046,8 +1046,8 @@ type ExperimentTrialComponentMetadataProperties struct {
 }
 
 type ExperimentTrialComponentStatus struct {
-	Message       *string `json:"Message,omitempty"`
-	PrimaryStatus *string `json:"PrimaryStatus,omitempty"`
+	Message       *string                                      `json:"Message,omitempty"`
+	PrimaryStatus *ExperimentTrialComponentStatusPrimaryStatus `json:"PrimaryStatus,omitempty"`
 }
 
 type ExperimentTrialComponentTagsItem struct {
@@ -1074,8 +1074,8 @@ func (ExperimentTrialComponent) CloudControlType() string {
 }
 
 type FeatureDefinition struct {
-	FeatureName *string `json:"FeatureName,omitempty"`
-	FeatureType *string `json:"FeatureType,omitempty"`
+	FeatureName *string                       `json:"FeatureName,omitempty"`
+	FeatureType *FeatureDefinitionFeatureType `json:"FeatureType,omitempty"`
 }
 
 type DataCatalogConfig struct {
@@ -1093,7 +1093,7 @@ type FeatureGroupOfflineStoreConfig struct {
 	DataCatalogConfig        *DataCatalogConfig `json:"DataCatalogConfig,omitempty"`
 	DisableGlueTableCreation *bool              `json:"DisableGlueTableCreation,omitempty"`
 	S3StorageConfig          *S3StorageConfig   `json:"S3StorageConfig,omitempty"`
-	TableFormat              *string            `json:"TableFormat,omitempty"`
+	TableFormat              *TableFormat       `json:"TableFormat,omitempty"`
 }
 
 type OnlineStoreSecurityConfig struct {
@@ -1101,14 +1101,14 @@ type OnlineStoreSecurityConfig struct {
 }
 
 type TtlDuration struct {
-	Unit  *string `json:"Unit,omitempty"`
-	Value *int    `json:"Value,omitempty"`
+	Unit  *Unit `json:"Unit,omitempty"`
+	Value *int  `json:"Value,omitempty"`
 }
 
 type FeatureGroupOnlineStoreConfig struct {
 	EnableOnlineStore *bool                      `json:"EnableOnlineStore,omitempty"`
 	SecurityConfig    *OnlineStoreSecurityConfig `json:"SecurityConfig,omitempty"`
-	StorageType       *string                    `json:"StorageType,omitempty"`
+	StorageType       *StorageType               `json:"StorageType,omitempty"`
 	TtlDuration       *TtlDuration               `json:"TtlDuration,omitempty"`
 }
 
@@ -1118,9 +1118,9 @@ type FeatureGroupTag struct {
 }
 
 type ThroughputConfig struct {
-	ProvisionedReadCapacityUnits  *int    `json:"ProvisionedReadCapacityUnits,omitempty"`
-	ProvisionedWriteCapacityUnits *int    `json:"ProvisionedWriteCapacityUnits,omitempty"`
-	ThroughputMode                *string `json:"ThroughputMode,omitempty"`
+	ProvisionedReadCapacityUnits  *int            `json:"ProvisionedReadCapacityUnits,omitempty"`
+	ProvisionedWriteCapacityUnits *int            `json:"ProvisionedWriteCapacityUnits,omitempty"`
+	ThroughputMode                *ThroughputMode `json:"ThroughputMode,omitempty"`
 }
 
 type FeatureGroup struct {
@@ -1156,7 +1156,7 @@ type Hub struct {
 	HubDisplayName    *string             `json:"HubDisplayName,omitempty"`
 	HubName           *string             `json:"HubName,omitempty"`
 	HubSearchKeywords []string            `json:"HubSearchKeywords,omitempty"`
-	HubStatus         *string             `json:"HubStatus,omitempty"`
+	HubStatus         *HubHubStatus       `json:"HubStatus,omitempty"`
 	LastModifiedTime  *string             `json:"LastModifiedTime,omitempty"`
 	S3StorageConfig   *HubS3StorageConfig `json:"S3StorageConfig,omitempty"`
 	Tags              []HubTag            `json:"Tags,omitempty"`
@@ -1181,21 +1181,21 @@ type Image struct {
 func (Image) CloudControlType() string { return "AWS::SageMaker::Image" }
 
 type ImageVersion struct {
-	Alias           *string  `json:"Alias,omitempty"`
-	Aliases         []string `json:"Aliases,omitempty"`
-	BaseImage       *string  `json:"BaseImage,omitempty"`
-	ContainerImage  *string  `json:"ContainerImage,omitempty"`
-	Horovod         *bool    `json:"Horovod,omitempty"`
-	ImageArn        *string  `json:"ImageArn,omitempty"`
-	ImageName       *string  `json:"ImageName,omitempty"`
-	ImageVersionArn *string  `json:"ImageVersionArn,omitempty"`
-	JobType         *string  `json:"JobType,omitempty"`
-	MLFramework     *string  `json:"MLFramework,omitempty"`
-	Processor       *string  `json:"Processor,omitempty"`
-	ProgrammingLang *string  `json:"ProgrammingLang,omitempty"`
-	ReleaseNotes    *string  `json:"ReleaseNotes,omitempty"`
-	VendorGuidance  *string  `json:"VendorGuidance,omitempty"`
-	Version         *int     `json:"Version,omitempty"`
+	Alias           *string         `json:"Alias,omitempty"`
+	Aliases         []string        `json:"Aliases,omitempty"`
+	BaseImage       *string         `json:"BaseImage,omitempty"`
+	ContainerImage  *string         `json:"ContainerImage,omitempty"`
+	Horovod         *bool           `json:"Horovod,omitempty"`
+	ImageArn        *string         `json:"ImageArn,omitempty"`
+	ImageName       *string         `json:"ImageName,omitempty"`
+	ImageVersionArn *string         `json:"ImageVersionArn,omitempty"`
+	JobType         *JobType        `json:"JobType,omitempty"`
+	MLFramework     *string         `json:"MLFramework,omitempty"`
+	Processor       *Processor      `json:"Processor,omitempty"`
+	ProgrammingLang *string         `json:"ProgrammingLang,omitempty"`
+	ReleaseNotes    *string         `json:"ReleaseNotes,omitempty"`
+	VendorGuidance  *VendorGuidance `json:"VendorGuidance,omitempty"`
+	Version         *int            `json:"Version,omitempty"`
 }
 
 func (ImageVersion) CloudControlType() string { return "AWS::SageMaker::ImageVersion" }
@@ -1209,8 +1209,8 @@ type AutoRollbackConfiguration struct {
 }
 
 type InferenceComponentCapacitySize struct {
-	Type  *string `json:"Type,omitempty"`
-	Value *int    `json:"Value,omitempty"`
+	Type  *InferenceComponentCapacitySizeType `json:"Type,omitempty"`
+	Value *int                                `json:"Value,omitempty"`
 }
 
 type InferenceComponentRollingUpdatePolicy struct {
@@ -1277,7 +1277,7 @@ type InferenceComponent struct {
 	FailureReason            *string                             `json:"FailureReason,omitempty"`
 	InferenceComponentArn    *string                             `json:"InferenceComponentArn,omitempty"`
 	InferenceComponentName   *string                             `json:"InferenceComponentName,omitempty"`
-	InferenceComponentStatus *string                             `json:"InferenceComponentStatus,omitempty"`
+	InferenceComponentStatus *InferenceComponentStatus           `json:"InferenceComponentStatus,omitempty"`
 	LastModifiedTime         *string                             `json:"LastModifiedTime,omitempty"`
 	RuntimeConfig            *InferenceComponentRuntimeConfig    `json:"RuntimeConfig,omitempty"`
 	Specification            *InferenceComponentSpecification    `json:"Specification,omitempty"`
@@ -1299,9 +1299,9 @@ type DataStorageConfig struct {
 }
 
 type EndpointMetadata struct {
-	EndpointConfigName *string `json:"EndpointConfigName,omitempty"`
-	EndpointName       *string `json:"EndpointName,omitempty"`
-	EndpointStatus     *string `json:"EndpointStatus,omitempty"`
+	EndpointConfigName *string                         `json:"EndpointConfigName,omitempty"`
+	EndpointName       *string                         `json:"EndpointName,omitempty"`
+	EndpointStatus     *EndpointMetadataEndpointStatus `json:"EndpointStatus,omitempty"`
 }
 
 type RealTimeInferenceConfig struct {
@@ -1310,8 +1310,8 @@ type RealTimeInferenceConfig struct {
 }
 
 type ModelInfrastructureConfig struct {
-	InfrastructureType      *string                  `json:"InfrastructureType,omitempty"`
-	RealTimeInferenceConfig *RealTimeInferenceConfig `json:"RealTimeInferenceConfig,omitempty"`
+	InfrastructureType      *ModelInfrastructureConfigInfrastructureType `json:"InfrastructureType,omitempty"`
+	RealTimeInferenceConfig *RealTimeInferenceConfig                     `json:"RealTimeInferenceConfig,omitempty"`
 }
 
 type ModelVariantConfig struct {
@@ -1341,24 +1341,24 @@ type InferenceExperimentTag struct {
 }
 
 type InferenceExperiment struct {
-	Arn               *string                      `json:"Arn,omitempty"`
-	CreationTime      *string                      `json:"CreationTime,omitempty"`
-	DataStorageConfig *DataStorageConfig           `json:"DataStorageConfig,omitempty"`
-	Description       *string                      `json:"Description,omitempty"`
-	DesiredState      *string                      `json:"DesiredState,omitempty"`
-	EndpointMetadata  *EndpointMetadata            `json:"EndpointMetadata,omitempty"`
-	EndpointName      *string                      `json:"EndpointName,omitempty"`
-	KmsKey            *string                      `json:"KmsKey,omitempty"`
-	LastModifiedTime  *string                      `json:"LastModifiedTime,omitempty"`
-	ModelVariants     []ModelVariantConfig         `json:"ModelVariants,omitempty"`
-	Name              *string                      `json:"Name,omitempty"`
-	RoleArn           *string                      `json:"RoleArn,omitempty"`
-	Schedule          *InferenceExperimentSchedule `json:"Schedule,omitempty"`
-	ShadowModeConfig  *ShadowModeConfig            `json:"ShadowModeConfig,omitempty"`
-	Status            *string                      `json:"Status,omitempty"`
-	StatusReason      *string                      `json:"StatusReason,omitempty"`
-	Tags              []InferenceExperimentTag     `json:"Tags,omitempty"`
-	Type              *string                      `json:"Type,omitempty"`
+	Arn               *string                          `json:"Arn,omitempty"`
+	CreationTime      *string                          `json:"CreationTime,omitempty"`
+	DataStorageConfig *DataStorageConfig               `json:"DataStorageConfig,omitempty"`
+	Description       *string                          `json:"Description,omitempty"`
+	DesiredState      *InferenceExperimentDesiredState `json:"DesiredState,omitempty"`
+	EndpointMetadata  *EndpointMetadata                `json:"EndpointMetadata,omitempty"`
+	EndpointName      *string                          `json:"EndpointName,omitempty"`
+	KmsKey            *string                          `json:"KmsKey,omitempty"`
+	LastModifiedTime  *string                          `json:"LastModifiedTime,omitempty"`
+	ModelVariants     []ModelVariantConfig             `json:"ModelVariants,omitempty"`
+	Name              *string                          `json:"Name,omitempty"`
+	RoleArn           *string                          `json:"RoleArn,omitempty"`
+	Schedule          *InferenceExperimentSchedule     `json:"Schedule,omitempty"`
+	ShadowModeConfig  *ShadowModeConfig                `json:"ShadowModeConfig,omitempty"`
+	Status            *InferenceExperimentStatus       `json:"Status,omitempty"`
+	StatusReason      *string                          `json:"StatusReason,omitempty"`
+	Tags              []InferenceExperimentTag         `json:"Tags,omitempty"`
+	Type              *InferenceExperimentType         `json:"Type,omitempty"`
 }
 
 func (InferenceExperiment) CloudControlType() string { return "AWS::SageMaker::InferenceExperiment" }
@@ -1369,18 +1369,18 @@ type MlflowAppTag struct {
 }
 
 type MlflowApp struct {
-	Arn                          *string        `json:"Arn,omitempty"`
-	ArtifactStoreUri             *string        `json:"ArtifactStoreUri,omitempty"`
-	CreationTime                 *string        `json:"CreationTime,omitempty"`
-	LastModifiedTime             *string        `json:"LastModifiedTime,omitempty"`
-	MlflowAppId                  *string        `json:"MlflowAppId,omitempty"`
-	MlflowVersion                *string        `json:"MlflowVersion,omitempty"`
-	ModelRegistrationMode        *string        `json:"ModelRegistrationMode,omitempty"`
-	Name                         *string        `json:"Name,omitempty"`
-	RoleArn                      *string        `json:"RoleArn,omitempty"`
-	Status                       *string        `json:"Status,omitempty"`
-	Tags                         []MlflowAppTag `json:"Tags,omitempty"`
-	WeeklyMaintenanceWindowStart *string        `json:"WeeklyMaintenanceWindowStart,omitempty"`
+	Arn                          *string                         `json:"Arn,omitempty"`
+	ArtifactStoreUri             *string                         `json:"ArtifactStoreUri,omitempty"`
+	CreationTime                 *string                         `json:"CreationTime,omitempty"`
+	LastModifiedTime             *string                         `json:"LastModifiedTime,omitempty"`
+	MlflowAppId                  *string                         `json:"MlflowAppId,omitempty"`
+	MlflowVersion                *string                         `json:"MlflowVersion,omitempty"`
+	ModelRegistrationMode        *MlflowAppModelRegistrationMode `json:"ModelRegistrationMode,omitempty"`
+	Name                         *string                         `json:"Name,omitempty"`
+	RoleArn                      *string                         `json:"RoleArn,omitempty"`
+	Status                       *MlflowAppStatus                `json:"Status,omitempty"`
+	Tags                         []MlflowAppTag                  `json:"Tags,omitempty"`
+	WeeklyMaintenanceWindowStart *string                         `json:"WeeklyMaintenanceWindowStart,omitempty"`
 }
 
 func (MlflowApp) CloudControlType() string { return "AWS::SageMaker::MlflowApp" }
@@ -1391,15 +1391,15 @@ type MlflowTrackingServerTag struct {
 }
 
 type MlflowTrackingServer struct {
-	ArtifactStoreUri             *string                   `json:"ArtifactStoreUri,omitempty"`
-	AutomaticModelRegistration   *bool                     `json:"AutomaticModelRegistration,omitempty"`
-	MlflowVersion                *string                   `json:"MlflowVersion,omitempty"`
-	RoleArn                      *string                   `json:"RoleArn,omitempty"`
-	Tags                         []MlflowTrackingServerTag `json:"Tags,omitempty"`
-	TrackingServerArn            *string                   `json:"TrackingServerArn,omitempty"`
-	TrackingServerName           *string                   `json:"TrackingServerName,omitempty"`
-	TrackingServerSize           *string                   `json:"TrackingServerSize,omitempty"`
-	WeeklyMaintenanceWindowStart *string                   `json:"WeeklyMaintenanceWindowStart,omitempty"`
+	ArtifactStoreUri             *string                                 `json:"ArtifactStoreUri,omitempty"`
+	AutomaticModelRegistration   *bool                                   `json:"AutomaticModelRegistration,omitempty"`
+	MlflowVersion                *string                                 `json:"MlflowVersion,omitempty"`
+	RoleArn                      *string                                 `json:"RoleArn,omitempty"`
+	Tags                         []MlflowTrackingServerTag               `json:"Tags,omitempty"`
+	TrackingServerArn            *string                                 `json:"TrackingServerArn,omitempty"`
+	TrackingServerName           *string                                 `json:"TrackingServerName,omitempty"`
+	TrackingServerSize           *MlflowTrackingServerTrackingServerSize `json:"TrackingServerSize,omitempty"`
+	WeeklyMaintenanceWindowStart *string                                 `json:"WeeklyMaintenanceWindowStart,omitempty"`
 }
 
 func (MlflowTrackingServer) CloudControlType() string { return "AWS::SageMaker::MlflowTrackingServer" }
@@ -1409,8 +1409,8 @@ type RepositoryAuthConfig struct {
 }
 
 type ImageConfig struct {
-	RepositoryAccessMode *string               `json:"RepositoryAccessMode,omitempty"`
-	RepositoryAuthConfig *RepositoryAuthConfig `json:"RepositoryAuthConfig,omitempty"`
+	RepositoryAccessMode *ImageConfigRepositoryAccessMode `json:"RepositoryAccessMode,omitempty"`
+	RepositoryAuthConfig *RepositoryAuthConfig            `json:"RepositoryAuthConfig,omitempty"`
 }
 
 type HubAccessConfig struct {
@@ -1422,11 +1422,11 @@ type ModelAccessConfig struct {
 }
 
 type S3DataSource struct {
-	CompressionType   *string            `json:"CompressionType,omitempty"`
-	HubAccessConfig   *HubAccessConfig   `json:"HubAccessConfig,omitempty"`
-	ModelAccessConfig *ModelAccessConfig `json:"ModelAccessConfig,omitempty"`
-	S3DataType        *string            `json:"S3DataType,omitempty"`
-	S3Uri             *string            `json:"S3Uri,omitempty"`
+	CompressionType   *S3DataSourceCompressionType `json:"CompressionType,omitempty"`
+	HubAccessConfig   *HubAccessConfig             `json:"HubAccessConfig,omitempty"`
+	ModelAccessConfig *ModelAccessConfig           `json:"ModelAccessConfig,omitempty"`
+	S3DataType        *S3DataSourceS3DataType      `json:"S3DataType,omitempty"`
+	S3Uri             *string                      `json:"S3Uri,omitempty"`
 }
 
 type ModelDataSource struct {
@@ -1434,24 +1434,24 @@ type ModelDataSource struct {
 }
 
 type MultiModelConfig struct {
-	ModelCacheSetting *string `json:"ModelCacheSetting,omitempty"`
+	ModelCacheSetting *MultiModelConfigModelCacheSetting `json:"ModelCacheSetting,omitempty"`
 }
 
 type ContainerDefinition struct {
-	ContainerHostname          *string           `json:"ContainerHostname,omitempty"`
-	Environment                map[string]any    `json:"Environment,omitempty"`
-	Image                      *string           `json:"Image,omitempty"`
-	ImageConfig                *ImageConfig      `json:"ImageConfig,omitempty"`
-	InferenceSpecificationName *string           `json:"InferenceSpecificationName,omitempty"`
-	Mode                       *string           `json:"Mode,omitempty"`
-	ModelDataSource            *ModelDataSource  `json:"ModelDataSource,omitempty"`
-	ModelDataUrl               *string           `json:"ModelDataUrl,omitempty"`
-	ModelPackageName           *string           `json:"ModelPackageName,omitempty"`
-	MultiModelConfig           *MultiModelConfig `json:"MultiModelConfig,omitempty"`
+	ContainerHostname          *string                  `json:"ContainerHostname,omitempty"`
+	Environment                map[string]any           `json:"Environment,omitempty"`
+	Image                      *string                  `json:"Image,omitempty"`
+	ImageConfig                *ImageConfig             `json:"ImageConfig,omitempty"`
+	InferenceSpecificationName *string                  `json:"InferenceSpecificationName,omitempty"`
+	Mode                       *ContainerDefinitionMode `json:"Mode,omitempty"`
+	ModelDataSource            *ModelDataSource         `json:"ModelDataSource,omitempty"`
+	ModelDataUrl               *string                  `json:"ModelDataUrl,omitempty"`
+	ModelPackageName           *string                  `json:"ModelPackageName,omitempty"`
+	MultiModelConfig           *MultiModelConfig        `json:"MultiModelConfig,omitempty"`
 }
 
 type InferenceExecutionConfig struct {
-	Mode *string `json:"Mode,omitempty"`
+	Mode *InferenceExecutionConfigMode `json:"Mode,omitempty"`
 }
 
 type ModelTag struct {
@@ -1519,30 +1519,30 @@ type ModelBiasJobDefinitionDatasetFormat struct {
 }
 
 type ModelBiasJobDefinitionBatchTransformInput struct {
-	DataCapturedDestinationS3Uri  *string                              `json:"DataCapturedDestinationS3Uri,omitempty"`
-	DatasetFormat                 *ModelBiasJobDefinitionDatasetFormat `json:"DatasetFormat,omitempty"`
-	EndTimeOffset                 *string                              `json:"EndTimeOffset,omitempty"`
-	FeaturesAttribute             *string                              `json:"FeaturesAttribute,omitempty"`
-	InferenceAttribute            *string                              `json:"InferenceAttribute,omitempty"`
-	LocalPath                     *string                              `json:"LocalPath,omitempty"`
-	ProbabilityAttribute          *string                              `json:"ProbabilityAttribute,omitempty"`
-	ProbabilityThresholdAttribute *float64                             `json:"ProbabilityThresholdAttribute,omitempty"`
-	S3DataDistributionType        *string                              `json:"S3DataDistributionType,omitempty"`
-	S3InputMode                   *string                              `json:"S3InputMode,omitempty"`
-	StartTimeOffset               *string                              `json:"StartTimeOffset,omitempty"`
+	DataCapturedDestinationS3Uri  *string                                                          `json:"DataCapturedDestinationS3Uri,omitempty"`
+	DatasetFormat                 *ModelBiasJobDefinitionDatasetFormat                             `json:"DatasetFormat,omitempty"`
+	EndTimeOffset                 *string                                                          `json:"EndTimeOffset,omitempty"`
+	FeaturesAttribute             *string                                                          `json:"FeaturesAttribute,omitempty"`
+	InferenceAttribute            *string                                                          `json:"InferenceAttribute,omitempty"`
+	LocalPath                     *string                                                          `json:"LocalPath,omitempty"`
+	ProbabilityAttribute          *string                                                          `json:"ProbabilityAttribute,omitempty"`
+	ProbabilityThresholdAttribute *float64                                                         `json:"ProbabilityThresholdAttribute,omitempty"`
+	S3DataDistributionType        *ModelBiasJobDefinitionBatchTransformInputS3DataDistributionType `json:"S3DataDistributionType,omitempty"`
+	S3InputMode                   *ModelBiasJobDefinitionBatchTransformInputS3InputMode            `json:"S3InputMode,omitempty"`
+	StartTimeOffset               *string                                                          `json:"StartTimeOffset,omitempty"`
 }
 
 type ModelBiasJobDefinitionEndpointInput struct {
-	EndTimeOffset                 *string  `json:"EndTimeOffset,omitempty"`
-	EndpointName                  *string  `json:"EndpointName,omitempty"`
-	FeaturesAttribute             *string  `json:"FeaturesAttribute,omitempty"`
-	InferenceAttribute            *string  `json:"InferenceAttribute,omitempty"`
-	LocalPath                     *string  `json:"LocalPath,omitempty"`
-	ProbabilityAttribute          *string  `json:"ProbabilityAttribute,omitempty"`
-	ProbabilityThresholdAttribute *float64 `json:"ProbabilityThresholdAttribute,omitempty"`
-	S3DataDistributionType        *string  `json:"S3DataDistributionType,omitempty"`
-	S3InputMode                   *string  `json:"S3InputMode,omitempty"`
-	StartTimeOffset               *string  `json:"StartTimeOffset,omitempty"`
+	EndTimeOffset                 *string                                                    `json:"EndTimeOffset,omitempty"`
+	EndpointName                  *string                                                    `json:"EndpointName,omitempty"`
+	FeaturesAttribute             *string                                                    `json:"FeaturesAttribute,omitempty"`
+	InferenceAttribute            *string                                                    `json:"InferenceAttribute,omitempty"`
+	LocalPath                     *string                                                    `json:"LocalPath,omitempty"`
+	ProbabilityAttribute          *string                                                    `json:"ProbabilityAttribute,omitempty"`
+	ProbabilityThresholdAttribute *float64                                                   `json:"ProbabilityThresholdAttribute,omitempty"`
+	S3DataDistributionType        *ModelBiasJobDefinitionEndpointInputS3DataDistributionType `json:"S3DataDistributionType,omitempty"`
+	S3InputMode                   *ModelBiasJobDefinitionEndpointInputS3InputMode            `json:"S3InputMode,omitempty"`
+	StartTimeOffset               *string                                                    `json:"StartTimeOffset,omitempty"`
 }
 
 type MonitoringGroundTruthS3Input struct {
@@ -1556,9 +1556,9 @@ type ModelBiasJobInput struct {
 }
 
 type ModelBiasJobDefinitionS3Output struct {
-	LocalPath    *string `json:"LocalPath,omitempty"`
-	S3UploadMode *string `json:"S3UploadMode,omitempty"`
-	S3Uri        *string `json:"S3Uri,omitempty"`
+	LocalPath    *string                                     `json:"LocalPath,omitempty"`
+	S3UploadMode *ModelBiasJobDefinitionS3OutputS3UploadMode `json:"S3UploadMode,omitempty"`
+	S3Uri        *string                                     `json:"S3Uri,omitempty"`
 }
 
 type ModelBiasJobDefinitionMonitoringOutput struct {
@@ -1637,11 +1637,11 @@ type EvaluationDetail struct {
 }
 
 type IntendedUses struct {
-	ExplanationsForRiskRating       *string `json:"ExplanationsForRiskRating,omitempty"`
-	FactorsAffectingModelEfficiency *string `json:"FactorsAffectingModelEfficiency,omitempty"`
-	IntendedUses                    *string `json:"IntendedUses,omitempty"`
-	PurposeOfModel                  *string `json:"PurposeOfModel,omitempty"`
-	RiskRating                      *string `json:"RiskRating,omitempty"`
+	ExplanationsForRiskRating       *string     `json:"ExplanationsForRiskRating,omitempty"`
+	FactorsAffectingModelEfficiency *string     `json:"FactorsAffectingModelEfficiency,omitempty"`
+	IntendedUses                    *string     `json:"IntendedUses,omitempty"`
+	PurposeOfModel                  *string     `json:"PurposeOfModel,omitempty"`
+	RiskRating                      *RiskRating `json:"RiskRating,omitempty"`
 }
 
 type ModelOverviewInferenceEnvironment struct {
@@ -1681,25 +1681,25 @@ type SourceAlgorithm struct {
 }
 
 type ModelPackageDetails struct {
-	ApprovalDescription     *string                          `json:"ApprovalDescription,omitempty"`
-	CreatedBy               *ModelPackageCreator             `json:"CreatedBy,omitempty"`
-	Domain                  *string                          `json:"Domain,omitempty"`
-	InferenceSpecification  *ModelCardInferenceSpecification `json:"InferenceSpecification,omitempty"`
-	ModelApprovalStatus     *string                          `json:"ModelApprovalStatus,omitempty"`
-	ModelPackageArn         *string                          `json:"ModelPackageArn,omitempty"`
-	ModelPackageDescription *string                          `json:"ModelPackageDescription,omitempty"`
-	ModelPackageGroupName   *string                          `json:"ModelPackageGroupName,omitempty"`
-	ModelPackageName        *string                          `json:"ModelPackageName,omitempty"`
-	ModelPackageStatus      *string                          `json:"ModelPackageStatus,omitempty"`
-	ModelPackageVersion     *float64                         `json:"ModelPackageVersion,omitempty"`
-	SourceAlgorithms        []SourceAlgorithm                `json:"SourceAlgorithms,omitempty"`
-	Task                    *string                          `json:"Task,omitempty"`
+	ApprovalDescription     *string                                 `json:"ApprovalDescription,omitempty"`
+	CreatedBy               *ModelPackageCreator                    `json:"CreatedBy,omitempty"`
+	Domain                  *string                                 `json:"Domain,omitempty"`
+	InferenceSpecification  *ModelCardInferenceSpecification        `json:"InferenceSpecification,omitempty"`
+	ModelApprovalStatus     *ModelPackageDetailsModelApprovalStatus `json:"ModelApprovalStatus,omitempty"`
+	ModelPackageArn         *string                                 `json:"ModelPackageArn,omitempty"`
+	ModelPackageDescription *string                                 `json:"ModelPackageDescription,omitempty"`
+	ModelPackageGroupName   *string                                 `json:"ModelPackageGroupName,omitempty"`
+	ModelPackageName        *string                                 `json:"ModelPackageName,omitempty"`
+	ModelPackageStatus      *ModelPackageDetailsModelPackageStatus  `json:"ModelPackageStatus,omitempty"`
+	ModelPackageVersion     *float64                                `json:"ModelPackageVersion,omitempty"`
+	SourceAlgorithms        []SourceAlgorithm                       `json:"SourceAlgorithms,omitempty"`
+	Task                    *string                                 `json:"Task,omitempty"`
 }
 
 type ObjectiveFunctionFunction struct {
-	Condition *string `json:"Condition,omitempty"`
-	Facet     *string `json:"Facet,omitempty"`
-	Function  *string `json:"Function,omitempty"`
+	Condition *string                            `json:"Condition,omitempty"`
+	Facet     *string                            `json:"Facet,omitempty"`
+	Function  *ObjectiveFunctionFunctionFunction `json:"Function,omitempty"`
 }
 
 type ObjectiveFunction struct {
@@ -1764,18 +1764,18 @@ type ModelCardTag struct {
 }
 
 type ModelCard struct {
-	Content                   *Content        `json:"Content,omitempty"`
-	CreatedBy                 *UserContext    `json:"CreatedBy,omitempty"`
-	CreationTime              *string         `json:"CreationTime,omitempty"`
-	LastModifiedBy            *UserContext    `json:"LastModifiedBy,omitempty"`
-	LastModifiedTime          *string         `json:"LastModifiedTime,omitempty"`
-	ModelCardArn              *string         `json:"ModelCardArn,omitempty"`
-	ModelCardName             *string         `json:"ModelCardName,omitempty"`
-	ModelCardProcessingStatus *string         `json:"ModelCardProcessingStatus,omitempty"`
-	ModelCardStatus           *string         `json:"ModelCardStatus,omitempty"`
-	ModelCardVersion          *int            `json:"ModelCardVersion,omitempty"`
-	SecurityConfig            *SecurityConfig `json:"SecurityConfig,omitempty"`
-	Tags                      []ModelCardTag  `json:"Tags,omitempty"`
+	Content                   *Content                            `json:"Content,omitempty"`
+	CreatedBy                 *UserContext                        `json:"CreatedBy,omitempty"`
+	CreationTime              *string                             `json:"CreationTime,omitempty"`
+	LastModifiedBy            *UserContext                        `json:"LastModifiedBy,omitempty"`
+	LastModifiedTime          *string                             `json:"LastModifiedTime,omitempty"`
+	ModelCardArn              *string                             `json:"ModelCardArn,omitempty"`
+	ModelCardName             *string                             `json:"ModelCardName,omitempty"`
+	ModelCardProcessingStatus *ModelCardModelCardProcessingStatus `json:"ModelCardProcessingStatus,omitempty"`
+	ModelCardStatus           *ModelCardModelCardStatus           `json:"ModelCardStatus,omitempty"`
+	ModelCardVersion          *int                                `json:"ModelCardVersion,omitempty"`
+	SecurityConfig            *SecurityConfig                     `json:"SecurityConfig,omitempty"`
+	Tags                      []ModelCardTag                      `json:"Tags,omitempty"`
 }
 
 func (ModelCard) CloudControlType() string { return "AWS::SageMaker::ModelCard" }
@@ -1821,24 +1821,24 @@ type ModelExplainabilityJobDefinitionDatasetFormat struct {
 }
 
 type ModelExplainabilityJobDefinitionBatchTransformInput struct {
-	DataCapturedDestinationS3Uri *string                                        `json:"DataCapturedDestinationS3Uri,omitempty"`
-	DatasetFormat                *ModelExplainabilityJobDefinitionDatasetFormat `json:"DatasetFormat,omitempty"`
-	FeaturesAttribute            *string                                        `json:"FeaturesAttribute,omitempty"`
-	InferenceAttribute           *string                                        `json:"InferenceAttribute,omitempty"`
-	LocalPath                    *string                                        `json:"LocalPath,omitempty"`
-	ProbabilityAttribute         *string                                        `json:"ProbabilityAttribute,omitempty"`
-	S3DataDistributionType       *string                                        `json:"S3DataDistributionType,omitempty"`
-	S3InputMode                  *string                                        `json:"S3InputMode,omitempty"`
+	DataCapturedDestinationS3Uri *string                                                                    `json:"DataCapturedDestinationS3Uri,omitempty"`
+	DatasetFormat                *ModelExplainabilityJobDefinitionDatasetFormat                             `json:"DatasetFormat,omitempty"`
+	FeaturesAttribute            *string                                                                    `json:"FeaturesAttribute,omitempty"`
+	InferenceAttribute           *string                                                                    `json:"InferenceAttribute,omitempty"`
+	LocalPath                    *string                                                                    `json:"LocalPath,omitempty"`
+	ProbabilityAttribute         *string                                                                    `json:"ProbabilityAttribute,omitempty"`
+	S3DataDistributionType       *ModelExplainabilityJobDefinitionBatchTransformInputS3DataDistributionType `json:"S3DataDistributionType,omitempty"`
+	S3InputMode                  *ModelExplainabilityJobDefinitionBatchTransformInputS3InputMode            `json:"S3InputMode,omitempty"`
 }
 
 type ModelExplainabilityJobDefinitionEndpointInput struct {
-	EndpointName           *string `json:"EndpointName,omitempty"`
-	FeaturesAttribute      *string `json:"FeaturesAttribute,omitempty"`
-	InferenceAttribute     *string `json:"InferenceAttribute,omitempty"`
-	LocalPath              *string `json:"LocalPath,omitempty"`
-	ProbabilityAttribute   *string `json:"ProbabilityAttribute,omitempty"`
-	S3DataDistributionType *string `json:"S3DataDistributionType,omitempty"`
-	S3InputMode            *string `json:"S3InputMode,omitempty"`
+	EndpointName           *string                                                              `json:"EndpointName,omitempty"`
+	FeaturesAttribute      *string                                                              `json:"FeaturesAttribute,omitempty"`
+	InferenceAttribute     *string                                                              `json:"InferenceAttribute,omitempty"`
+	LocalPath              *string                                                              `json:"LocalPath,omitempty"`
+	ProbabilityAttribute   *string                                                              `json:"ProbabilityAttribute,omitempty"`
+	S3DataDistributionType *ModelExplainabilityJobDefinitionEndpointInputS3DataDistributionType `json:"S3DataDistributionType,omitempty"`
+	S3InputMode            *ModelExplainabilityJobDefinitionEndpointInputS3InputMode            `json:"S3InputMode,omitempty"`
 }
 
 type ModelExplainabilityJobInput struct {
@@ -1847,9 +1847,9 @@ type ModelExplainabilityJobInput struct {
 }
 
 type ModelExplainabilityJobDefinitionS3Output struct {
-	LocalPath    *string `json:"LocalPath,omitempty"`
-	S3UploadMode *string `json:"S3UploadMode,omitempty"`
-	S3Uri        *string `json:"S3Uri,omitempty"`
+	LocalPath    *string                                               `json:"LocalPath,omitempty"`
+	S3UploadMode *ModelExplainabilityJobDefinitionS3OutputS3UploadMode `json:"S3UploadMode,omitempty"`
+	S3Uri        *string                                               `json:"S3Uri,omitempty"`
 }
 
 type ModelExplainabilityJobDefinitionMonitoringOutput struct {
@@ -1906,10 +1906,10 @@ type ModelPackageModelAccessConfig struct {
 }
 
 type S3ModelDataSource struct {
-	CompressionType   *string                        `json:"CompressionType,omitempty"`
-	ModelAccessConfig *ModelPackageModelAccessConfig `json:"ModelAccessConfig,omitempty"`
-	S3DataType        *string                        `json:"S3DataType,omitempty"`
-	S3Uri             *string                        `json:"S3Uri,omitempty"`
+	CompressionType   *S3ModelDataSourceCompressionType `json:"CompressionType,omitempty"`
+	ModelAccessConfig *ModelPackageModelAccessConfig    `json:"ModelAccessConfig,omitempty"`
+	S3DataType        *S3ModelDataSourceS3DataType      `json:"S3DataType,omitempty"`
+	S3Uri             *string                           `json:"S3Uri,omitempty"`
 }
 
 type ModelPackageModelDataSource struct {
@@ -1999,8 +1999,8 @@ type ModelPackageMetadataProperties struct {
 }
 
 type ModelPackageModelCard struct {
-	ModelCardContent *string `json:"ModelCardContent,omitempty"`
-	ModelCardStatus  *string `json:"ModelCardStatus,omitempty"`
+	ModelCardContent *string                               `json:"ModelCardContent,omitempty"`
+	ModelCardStatus  *ModelPackageModelCardModelCardStatus `json:"ModelCardStatus,omitempty"`
 }
 
 type Bias struct {
@@ -2031,9 +2031,9 @@ type ModelMetrics struct {
 }
 
 type ModelPackageStatusItem struct {
-	FailureReason *string `json:"FailureReason,omitempty"`
-	Name          *string `json:"Name,omitempty"`
-	Status        *string `json:"Status,omitempty"`
+	FailureReason *string                       `json:"FailureReason,omitempty"`
+	Name          *string                       `json:"Name,omitempty"`
+	Status        *ModelPackageStatusItemStatus `json:"Status,omitempty"`
 }
 
 type ModelPackageStatusDetails struct {
@@ -2059,8 +2059,8 @@ type ModelPackageTag struct {
 }
 
 type ModelPackageS3DataSource struct {
-	S3DataType *string `json:"S3DataType,omitempty"`
-	S3Uri      *string `json:"S3Uri,omitempty"`
+	S3DataType *ModelPackageS3DataSourceS3DataType `json:"S3DataType,omitempty"`
+	S3Uri      *string                             `json:"S3Uri,omitempty"`
 }
 
 type DataSource struct {
@@ -2068,17 +2068,17 @@ type DataSource struct {
 }
 
 type TransformInput struct {
-	CompressionType *string     `json:"CompressionType,omitempty"`
-	ContentType     *string     `json:"ContentType,omitempty"`
-	DataSource      *DataSource `json:"DataSource,omitempty"`
-	SplitType       *string     `json:"SplitType,omitempty"`
+	CompressionType *TransformInputCompressionType `json:"CompressionType,omitempty"`
+	ContentType     *string                        `json:"ContentType,omitempty"`
+	DataSource      *DataSource                    `json:"DataSource,omitempty"`
+	SplitType       *TransformInputSplitType       `json:"SplitType,omitempty"`
 }
 
 type TransformOutput struct {
-	Accept       *string `json:"Accept,omitempty"`
-	AssembleWith *string `json:"AssembleWith,omitempty"`
-	KmsKeyId     *string `json:"KmsKeyId,omitempty"`
-	S3OutputPath *string `json:"S3OutputPath,omitempty"`
+	Accept       *string                      `json:"Accept,omitempty"`
+	AssembleWith *TransformOutputAssembleWith `json:"AssembleWith,omitempty"`
+	KmsKeyId     *string                      `json:"KmsKeyId,omitempty"`
+	S3OutputPath *string                      `json:"S3OutputPath,omitempty"`
 }
 
 type TransformResources struct {
@@ -2088,13 +2088,13 @@ type TransformResources struct {
 }
 
 type TransformJobDefinition struct {
-	BatchStrategy           *string             `json:"BatchStrategy,omitempty"`
-	Environment             map[string]string   `json:"Environment,omitempty"`
-	MaxConcurrentTransforms *int                `json:"MaxConcurrentTransforms,omitempty"`
-	MaxPayloadInMB          *int                `json:"MaxPayloadInMB,omitempty"`
-	TransformInput          *TransformInput     `json:"TransformInput,omitempty"`
-	TransformOutput         *TransformOutput    `json:"TransformOutput,omitempty"`
-	TransformResources      *TransformResources `json:"TransformResources,omitempty"`
+	BatchStrategy           *TransformJobDefinitionBatchStrategy `json:"BatchStrategy,omitempty"`
+	Environment             map[string]string                    `json:"Environment,omitempty"`
+	MaxConcurrentTransforms *int                                 `json:"MaxConcurrentTransforms,omitempty"`
+	MaxPayloadInMB          *int                                 `json:"MaxPayloadInMB,omitempty"`
+	TransformInput          *TransformInput                      `json:"TransformInput,omitempty"`
+	TransformOutput         *TransformOutput                     `json:"TransformOutput,omitempty"`
+	TransformResources      *TransformResources                  `json:"TransformResources,omitempty"`
 }
 
 type ValidationProfile struct {
@@ -2115,24 +2115,24 @@ type ModelPackage struct {
 	ClientToken                            *string                                      `json:"ClientToken,omitempty"`
 	CreationTime                           *string                                      `json:"CreationTime,omitempty"`
 	CustomerMetadataProperties             map[string]string                            `json:"CustomerMetadataProperties,omitempty"`
-	Domain                                 *string                                      `json:"Domain,omitempty"`
+	Domain                                 *Domain                                      `json:"Domain,omitempty"`
 	DriftCheckBaselines                    *DriftCheckBaselines                         `json:"DriftCheckBaselines,omitempty"`
 	InferenceSpecification                 *ModelPackageInferenceSpecification          `json:"InferenceSpecification,omitempty"`
 	LastModifiedTime                       *string                                      `json:"LastModifiedTime,omitempty"`
 	MetadataProperties                     *ModelPackageMetadataProperties              `json:"MetadataProperties,omitempty"`
-	ModelApprovalStatus                    *string                                      `json:"ModelApprovalStatus,omitempty"`
+	ModelApprovalStatus                    *ModelApprovalStatus                         `json:"ModelApprovalStatus,omitempty"`
 	ModelCard                              *ModelPackageModelCard                       `json:"ModelCard,omitempty"`
 	ModelMetrics                           *ModelMetrics                                `json:"ModelMetrics,omitempty"`
 	ModelPackageArn                        *string                                      `json:"ModelPackageArn,omitempty"`
 	ModelPackageDescription                *string                                      `json:"ModelPackageDescription,omitempty"`
 	ModelPackageGroupName                  *string                                      `json:"ModelPackageGroupName,omitempty"`
 	ModelPackageName                       *string                                      `json:"ModelPackageName,omitempty"`
-	ModelPackageStatus                     *string                                      `json:"ModelPackageStatus,omitempty"`
+	ModelPackageStatus                     *ModelPackageStatus                          `json:"ModelPackageStatus,omitempty"`
 	ModelPackageStatusDetails              *ModelPackageStatusDetails                   `json:"ModelPackageStatusDetails,omitempty"`
 	ModelPackageVersion                    *int                                         `json:"ModelPackageVersion,omitempty"`
 	SamplePayloadUrl                       *string                                      `json:"SamplePayloadUrl,omitempty"`
 	SecurityConfig                         *ModelPackageSecurityConfig                  `json:"SecurityConfig,omitempty"`
-	SkipModelValidation                    *string                                      `json:"SkipModelValidation,omitempty"`
+	SkipModelValidation                    *SkipModelValidation                         `json:"SkipModelValidation,omitempty"`
 	SourceAlgorithmSpecification           *SourceAlgorithmSpecification                `json:"SourceAlgorithmSpecification,omitempty"`
 	SourceUri                              *string                                      `json:"SourceUri,omitempty"`
 	Tags                                   []ModelPackageTag                            `json:"Tags,omitempty"`
@@ -2148,13 +2148,13 @@ type ModelPackageGroupTag struct {
 }
 
 type ModelPackageGroup struct {
-	CreationTime                 *string                `json:"CreationTime,omitempty"`
-	ModelPackageGroupArn         *string                `json:"ModelPackageGroupArn,omitempty"`
-	ModelPackageGroupDescription *string                `json:"ModelPackageGroupDescription,omitempty"`
-	ModelPackageGroupName        *string                `json:"ModelPackageGroupName,omitempty"`
-	ModelPackageGroupPolicy      json.RawMessage        `json:"ModelPackageGroupPolicy,omitempty"`
-	ModelPackageGroupStatus      *string                `json:"ModelPackageGroupStatus,omitempty"`
-	Tags                         []ModelPackageGroupTag `json:"Tags,omitempty"`
+	CreationTime                 *string                                   `json:"CreationTime,omitempty"`
+	ModelPackageGroupArn         *string                                   `json:"ModelPackageGroupArn,omitempty"`
+	ModelPackageGroupDescription *string                                   `json:"ModelPackageGroupDescription,omitempty"`
+	ModelPackageGroupName        *string                                   `json:"ModelPackageGroupName,omitempty"`
+	ModelPackageGroupPolicy      json.RawMessage                           `json:"ModelPackageGroupPolicy,omitempty"`
+	ModelPackageGroupStatus      *ModelPackageGroupModelPackageGroupStatus `json:"ModelPackageGroupStatus,omitempty"`
+	Tags                         []ModelPackageGroupTag                    `json:"Tags,omitempty"`
 }
 
 func (ModelPackageGroup) CloudControlType() string { return "AWS::SageMaker::ModelPackageGroup" }
@@ -2176,7 +2176,7 @@ type ModelQualityAppSpecification struct {
 	Environment                     map[string]string `json:"Environment,omitempty"`
 	ImageUri                        *string           `json:"ImageUri,omitempty"`
 	PostAnalyticsProcessorSourceUri *string           `json:"PostAnalyticsProcessorSourceUri,omitempty"`
-	ProblemType                     *string           `json:"ProblemType,omitempty"`
+	ProblemType                     *ProblemType      `json:"ProblemType,omitempty"`
 	RecordPreprocessorSourceUri     *string           `json:"RecordPreprocessorSourceUri,omitempty"`
 }
 
@@ -2204,28 +2204,28 @@ type ModelQualityJobDefinitionDatasetFormat struct {
 }
 
 type ModelQualityJobDefinitionBatchTransformInput struct {
-	DataCapturedDestinationS3Uri  *string                                 `json:"DataCapturedDestinationS3Uri,omitempty"`
-	DatasetFormat                 *ModelQualityJobDefinitionDatasetFormat `json:"DatasetFormat,omitempty"`
-	EndTimeOffset                 *string                                 `json:"EndTimeOffset,omitempty"`
-	InferenceAttribute            *string                                 `json:"InferenceAttribute,omitempty"`
-	LocalPath                     *string                                 `json:"LocalPath,omitempty"`
-	ProbabilityAttribute          *string                                 `json:"ProbabilityAttribute,omitempty"`
-	ProbabilityThresholdAttribute *float64                                `json:"ProbabilityThresholdAttribute,omitempty"`
-	S3DataDistributionType        *string                                 `json:"S3DataDistributionType,omitempty"`
-	S3InputMode                   *string                                 `json:"S3InputMode,omitempty"`
-	StartTimeOffset               *string                                 `json:"StartTimeOffset,omitempty"`
+	DataCapturedDestinationS3Uri  *string                                                             `json:"DataCapturedDestinationS3Uri,omitempty"`
+	DatasetFormat                 *ModelQualityJobDefinitionDatasetFormat                             `json:"DatasetFormat,omitempty"`
+	EndTimeOffset                 *string                                                             `json:"EndTimeOffset,omitempty"`
+	InferenceAttribute            *string                                                             `json:"InferenceAttribute,omitempty"`
+	LocalPath                     *string                                                             `json:"LocalPath,omitempty"`
+	ProbabilityAttribute          *string                                                             `json:"ProbabilityAttribute,omitempty"`
+	ProbabilityThresholdAttribute *float64                                                            `json:"ProbabilityThresholdAttribute,omitempty"`
+	S3DataDistributionType        *ModelQualityJobDefinitionBatchTransformInputS3DataDistributionType `json:"S3DataDistributionType,omitempty"`
+	S3InputMode                   *ModelQualityJobDefinitionBatchTransformInputS3InputMode            `json:"S3InputMode,omitempty"`
+	StartTimeOffset               *string                                                             `json:"StartTimeOffset,omitempty"`
 }
 
 type ModelQualityJobDefinitionEndpointInput struct {
-	EndTimeOffset                 *string  `json:"EndTimeOffset,omitempty"`
-	EndpointName                  *string  `json:"EndpointName,omitempty"`
-	InferenceAttribute            *string  `json:"InferenceAttribute,omitempty"`
-	LocalPath                     *string  `json:"LocalPath,omitempty"`
-	ProbabilityAttribute          *string  `json:"ProbabilityAttribute,omitempty"`
-	ProbabilityThresholdAttribute *float64 `json:"ProbabilityThresholdAttribute,omitempty"`
-	S3DataDistributionType        *string  `json:"S3DataDistributionType,omitempty"`
-	S3InputMode                   *string  `json:"S3InputMode,omitempty"`
-	StartTimeOffset               *string  `json:"StartTimeOffset,omitempty"`
+	EndTimeOffset                 *string                                                       `json:"EndTimeOffset,omitempty"`
+	EndpointName                  *string                                                       `json:"EndpointName,omitempty"`
+	InferenceAttribute            *string                                                       `json:"InferenceAttribute,omitempty"`
+	LocalPath                     *string                                                       `json:"LocalPath,omitempty"`
+	ProbabilityAttribute          *string                                                       `json:"ProbabilityAttribute,omitempty"`
+	ProbabilityThresholdAttribute *float64                                                      `json:"ProbabilityThresholdAttribute,omitempty"`
+	S3DataDistributionType        *ModelQualityJobDefinitionEndpointInputS3DataDistributionType `json:"S3DataDistributionType,omitempty"`
+	S3InputMode                   *ModelQualityJobDefinitionEndpointInputS3InputMode            `json:"S3InputMode,omitempty"`
+	StartTimeOffset               *string                                                       `json:"StartTimeOffset,omitempty"`
 }
 
 type ModelQualityJobDefinitionMonitoringGroundTruthS3Input struct {
@@ -2239,9 +2239,9 @@ type ModelQualityJobInput struct {
 }
 
 type ModelQualityJobDefinitionS3Output struct {
-	LocalPath    *string `json:"LocalPath,omitempty"`
-	S3UploadMode *string `json:"S3UploadMode,omitempty"`
-	S3Uri        *string `json:"S3Uri,omitempty"`
+	LocalPath    *string                                        `json:"LocalPath,omitempty"`
+	S3UploadMode *ModelQualityJobDefinitionS3OutputS3UploadMode `json:"S3UploadMode,omitempty"`
+	S3Uri        *string                                        `json:"S3Uri,omitempty"`
 }
 
 type ModelQualityJobDefinitionMonitoringOutput struct {
@@ -2294,14 +2294,14 @@ func (ModelQualityJobDefinition) CloudControlType() string {
 }
 
 type MonitoringExecutionSummary struct {
-	CreationTime              *string `json:"CreationTime,omitempty"`
-	EndpointName              *string `json:"EndpointName,omitempty"`
-	FailureReason             *string `json:"FailureReason,omitempty"`
-	LastModifiedTime          *string `json:"LastModifiedTime,omitempty"`
-	MonitoringExecutionStatus *string `json:"MonitoringExecutionStatus,omitempty"`
-	MonitoringScheduleName    *string `json:"MonitoringScheduleName,omitempty"`
-	ProcessingJobArn          *string `json:"ProcessingJobArn,omitempty"`
-	ScheduledTime             *string `json:"ScheduledTime,omitempty"`
+	CreationTime              *string                                              `json:"CreationTime,omitempty"`
+	EndpointName              *string                                              `json:"EndpointName,omitempty"`
+	FailureReason             *string                                              `json:"FailureReason,omitempty"`
+	LastModifiedTime          *string                                              `json:"LastModifiedTime,omitempty"`
+	MonitoringExecutionStatus *MonitoringExecutionSummaryMonitoringExecutionStatus `json:"MonitoringExecutionStatus,omitempty"`
+	MonitoringScheduleName    *string                                              `json:"MonitoringScheduleName,omitempty"`
+	ProcessingJobArn          *string                                              `json:"ProcessingJobArn,omitempty"`
+	ScheduledTime             *string                                              `json:"ScheduledTime,omitempty"`
 }
 
 type MonitoringScheduleConstraintsResource struct {
@@ -2340,20 +2340,20 @@ type MonitoringScheduleDatasetFormat struct {
 }
 
 type MonitoringScheduleBatchTransformInput struct {
-	DataCapturedDestinationS3Uri *string                          `json:"DataCapturedDestinationS3Uri,omitempty"`
-	DatasetFormat                *MonitoringScheduleDatasetFormat `json:"DatasetFormat,omitempty"`
-	ExcludeFeaturesAttribute     *string                          `json:"ExcludeFeaturesAttribute,omitempty"`
-	LocalPath                    *string                          `json:"LocalPath,omitempty"`
-	S3DataDistributionType       *string                          `json:"S3DataDistributionType,omitempty"`
-	S3InputMode                  *string                          `json:"S3InputMode,omitempty"`
+	DataCapturedDestinationS3Uri *string                                                      `json:"DataCapturedDestinationS3Uri,omitempty"`
+	DatasetFormat                *MonitoringScheduleDatasetFormat                             `json:"DatasetFormat,omitempty"`
+	ExcludeFeaturesAttribute     *string                                                      `json:"ExcludeFeaturesAttribute,omitempty"`
+	LocalPath                    *string                                                      `json:"LocalPath,omitempty"`
+	S3DataDistributionType       *MonitoringScheduleBatchTransformInputS3DataDistributionType `json:"S3DataDistributionType,omitempty"`
+	S3InputMode                  *MonitoringScheduleBatchTransformInputS3InputMode            `json:"S3InputMode,omitempty"`
 }
 
 type MonitoringScheduleEndpointInput struct {
-	EndpointName             *string `json:"EndpointName,omitempty"`
-	ExcludeFeaturesAttribute *string `json:"ExcludeFeaturesAttribute,omitempty"`
-	LocalPath                *string `json:"LocalPath,omitempty"`
-	S3DataDistributionType   *string `json:"S3DataDistributionType,omitempty"`
-	S3InputMode              *string `json:"S3InputMode,omitempty"`
+	EndpointName             *string                                                `json:"EndpointName,omitempty"`
+	ExcludeFeaturesAttribute *string                                                `json:"ExcludeFeaturesAttribute,omitempty"`
+	LocalPath                *string                                                `json:"LocalPath,omitempty"`
+	S3DataDistributionType   *MonitoringScheduleEndpointInputS3DataDistributionType `json:"S3DataDistributionType,omitempty"`
+	S3InputMode              *MonitoringScheduleEndpointInputS3InputMode            `json:"S3InputMode,omitempty"`
 }
 
 type MonitoringInput struct {
@@ -2362,9 +2362,9 @@ type MonitoringInput struct {
 }
 
 type MonitoringScheduleS3Output struct {
-	LocalPath    *string `json:"LocalPath,omitempty"`
-	S3UploadMode *string `json:"S3UploadMode,omitempty"`
-	S3Uri        *string `json:"S3Uri,omitempty"`
+	LocalPath    *string                                 `json:"LocalPath,omitempty"`
+	S3UploadMode *MonitoringScheduleS3OutputS3UploadMode `json:"S3UploadMode,omitempty"`
+	S3Uri        *string                                 `json:"S3Uri,omitempty"`
 }
 
 type MonitoringScheduleMonitoringOutput struct {
@@ -2423,7 +2423,7 @@ type ScheduleConfig struct {
 type MonitoringScheduleConfig struct {
 	MonitoringJobDefinition     *MonitoringJobDefinition `json:"MonitoringJobDefinition,omitempty"`
 	MonitoringJobDefinitionName *string                  `json:"MonitoringJobDefinitionName,omitempty"`
-	MonitoringType              *string                  `json:"MonitoringType,omitempty"`
+	MonitoringType              *MonitoringType          `json:"MonitoringType,omitempty"`
 	ScheduleConfig              *ScheduleConfig          `json:"ScheduleConfig,omitempty"`
 }
 
@@ -2433,16 +2433,16 @@ type MonitoringScheduleTag struct {
 }
 
 type MonitoringSchedule struct {
-	CreationTime                   *string                     `json:"CreationTime,omitempty"`
-	EndpointName                   *string                     `json:"EndpointName,omitempty"`
-	FailureReason                  *string                     `json:"FailureReason,omitempty"`
-	LastModifiedTime               *string                     `json:"LastModifiedTime,omitempty"`
-	LastMonitoringExecutionSummary *MonitoringExecutionSummary `json:"LastMonitoringExecutionSummary,omitempty"`
-	MonitoringScheduleArn          *string                     `json:"MonitoringScheduleArn,omitempty"`
-	MonitoringScheduleConfig       *MonitoringScheduleConfig   `json:"MonitoringScheduleConfig,omitempty"`
-	MonitoringScheduleName         *string                     `json:"MonitoringScheduleName,omitempty"`
-	MonitoringScheduleStatus       *string                     `json:"MonitoringScheduleStatus,omitempty"`
-	Tags                           []MonitoringScheduleTag     `json:"Tags,omitempty"`
+	CreationTime                   *string                                     `json:"CreationTime,omitempty"`
+	EndpointName                   *string                                     `json:"EndpointName,omitempty"`
+	FailureReason                  *string                                     `json:"FailureReason,omitempty"`
+	LastModifiedTime               *string                                     `json:"LastModifiedTime,omitempty"`
+	LastMonitoringExecutionSummary *MonitoringExecutionSummary                 `json:"LastMonitoringExecutionSummary,omitempty"`
+	MonitoringScheduleArn          *string                                     `json:"MonitoringScheduleArn,omitempty"`
+	MonitoringScheduleConfig       *MonitoringScheduleConfig                   `json:"MonitoringScheduleConfig,omitempty"`
+	MonitoringScheduleName         *string                                     `json:"MonitoringScheduleName,omitempty"`
+	MonitoringScheduleStatus       *MonitoringScheduleMonitoringScheduleStatus `json:"MonitoringScheduleStatus,omitempty"`
+	Tags                           []MonitoringScheduleTag                     `json:"Tags,omitempty"`
 }
 
 func (MonitoringSchedule) CloudControlType() string { return "AWS::SageMaker::MonitoringSchedule" }
@@ -2511,7 +2511,7 @@ type PartnerApp struct {
 	AppVersion                    *string                      `json:"AppVersion,omitempty"`
 	ApplicationConfig             *PartnerAppConfig            `json:"ApplicationConfig,omitempty"`
 	Arn                           *string                      `json:"Arn,omitempty"`
-	AuthType                      *string                      `json:"AuthType,omitempty"`
+	AuthType                      *PartnerAppAuthType          `json:"AuthType,omitempty"`
 	BaseUrl                       *string                      `json:"BaseUrl,omitempty"`
 	ClientToken                   *string                      `json:"ClientToken,omitempty"`
 	CurrentVersionEolDate         *string                      `json:"CurrentVersionEolDate,omitempty"`
@@ -2523,7 +2523,7 @@ type PartnerApp struct {
 	Name                          *string                      `json:"Name,omitempty"`
 	Tags                          []PartnerAppTag              `json:"Tags,omitempty"`
 	Tier                          *string                      `json:"Tier,omitempty"`
-	Type                          *string                      `json:"Type,omitempty"`
+	Type                          *PartnerAppType              `json:"Type,omitempty"`
 }
 
 func (PartnerApp) CloudControlType() string { return "AWS::SageMaker::PartnerApp" }
@@ -2574,43 +2574,43 @@ type ProcessingJobNetworkConfig struct {
 }
 
 type AthenaDatasetDefinition struct {
-	Catalog           *string `json:"Catalog,omitempty"`
-	Database          *string `json:"Database,omitempty"`
-	KmsKeyId          *string `json:"KmsKeyId,omitempty"`
-	OutputCompression *string `json:"OutputCompression,omitempty"`
-	OutputFormat      *string `json:"OutputFormat,omitempty"`
-	OutputS3Uri       *string `json:"OutputS3Uri,omitempty"`
-	QueryString       *string `json:"QueryString,omitempty"`
-	WorkGroup         *string `json:"WorkGroup,omitempty"`
+	Catalog           *string                                   `json:"Catalog,omitempty"`
+	Database          *string                                   `json:"Database,omitempty"`
+	KmsKeyId          *string                                   `json:"KmsKeyId,omitempty"`
+	OutputCompression *AthenaDatasetDefinitionOutputCompression `json:"OutputCompression,omitempty"`
+	OutputFormat      *AthenaDatasetDefinitionOutputFormat      `json:"OutputFormat,omitempty"`
+	OutputS3Uri       *string                                   `json:"OutputS3Uri,omitempty"`
+	QueryString       *string                                   `json:"QueryString,omitempty"`
+	WorkGroup         *string                                   `json:"WorkGroup,omitempty"`
 }
 
 type RedshiftDatasetDefinition struct {
-	ClusterId         *string `json:"ClusterId,omitempty"`
-	ClusterRoleArn    *string `json:"ClusterRoleArn,omitempty"`
-	Database          *string `json:"Database,omitempty"`
-	DbUser            *string `json:"DbUser,omitempty"`
-	KmsKeyId          *string `json:"KmsKeyId,omitempty"`
-	OutputCompression *string `json:"OutputCompression,omitempty"`
-	OutputFormat      *string `json:"OutputFormat,omitempty"`
-	OutputS3Uri       *string `json:"OutputS3Uri,omitempty"`
-	QueryString       *string `json:"QueryString,omitempty"`
+	ClusterId         *string                                     `json:"ClusterId,omitempty"`
+	ClusterRoleArn    *string                                     `json:"ClusterRoleArn,omitempty"`
+	Database          *string                                     `json:"Database,omitempty"`
+	DbUser            *string                                     `json:"DbUser,omitempty"`
+	KmsKeyId          *string                                     `json:"KmsKeyId,omitempty"`
+	OutputCompression *RedshiftDatasetDefinitionOutputCompression `json:"OutputCompression,omitempty"`
+	OutputFormat      *RedshiftDatasetDefinitionOutputFormat      `json:"OutputFormat,omitempty"`
+	OutputS3Uri       *string                                     `json:"OutputS3Uri,omitempty"`
+	QueryString       *string                                     `json:"QueryString,omitempty"`
 }
 
 type DatasetDefinition struct {
-	AthenaDatasetDefinition   *AthenaDatasetDefinition   `json:"AthenaDatasetDefinition,omitempty"`
-	DataDistributionType      *string                    `json:"DataDistributionType,omitempty"`
-	InputMode                 *string                    `json:"InputMode,omitempty"`
-	LocalPath                 *string                    `json:"LocalPath,omitempty"`
-	RedshiftDatasetDefinition *RedshiftDatasetDefinition `json:"RedshiftDatasetDefinition,omitempty"`
+	AthenaDatasetDefinition   *AthenaDatasetDefinition               `json:"AthenaDatasetDefinition,omitempty"`
+	DataDistributionType      *DatasetDefinitionDataDistributionType `json:"DataDistributionType,omitempty"`
+	InputMode                 *DatasetDefinitionInputMode            `json:"InputMode,omitempty"`
+	LocalPath                 *string                                `json:"LocalPath,omitempty"`
+	RedshiftDatasetDefinition *RedshiftDatasetDefinition             `json:"RedshiftDatasetDefinition,omitempty"`
 }
 
 type S3Input struct {
-	LocalPath              *string `json:"LocalPath,omitempty"`
-	S3CompressionType      *string `json:"S3CompressionType,omitempty"`
-	S3DataDistributionType *string `json:"S3DataDistributionType,omitempty"`
-	S3DataType             *string `json:"S3DataType,omitempty"`
-	S3InputMode            *string `json:"S3InputMode,omitempty"`
-	S3Uri                  *string `json:"S3Uri,omitempty"`
+	LocalPath              *string                        `json:"LocalPath,omitempty"`
+	S3CompressionType      *S3InputS3CompressionType      `json:"S3CompressionType,omitempty"`
+	S3DataDistributionType *S3InputS3DataDistributionType `json:"S3DataDistributionType,omitempty"`
+	S3DataType             *S3InputS3DataType             `json:"S3DataType,omitempty"`
+	S3InputMode            *S3InputS3InputMode            `json:"S3InputMode,omitempty"`
+	S3Uri                  *string                        `json:"S3Uri,omitempty"`
 }
 
 type ProcessingInputsObject struct {
@@ -2625,9 +2625,9 @@ type FeatureStoreOutput struct {
 }
 
 type ProcessingJobS3Output struct {
-	LocalPath    *string `json:"LocalPath,omitempty"`
-	S3UploadMode *string `json:"S3UploadMode,omitempty"`
-	S3Uri        *string `json:"S3Uri,omitempty"`
+	LocalPath    *string                            `json:"LocalPath,omitempty"`
+	S3UploadMode *ProcessingJobS3OutputS3UploadMode `json:"S3UploadMode,omitempty"`
+	S3Uri        *string                            `json:"S3Uri,omitempty"`
 }
 
 type ProcessingOutputsObject struct {
@@ -2643,10 +2643,10 @@ type ProcessingOutputConfig struct {
 }
 
 type ProcessingJobClusterConfig struct {
-	InstanceCount  *int    `json:"InstanceCount,omitempty"`
-	InstanceType   *string `json:"InstanceType,omitempty"`
-	VolumeKmsKeyId *string `json:"VolumeKmsKeyId,omitempty"`
-	VolumeSizeInGB *int    `json:"VolumeSizeInGB,omitempty"`
+	InstanceCount  *int                                    `json:"InstanceCount,omitempty"`
+	InstanceType   *ProcessingJobClusterConfigInstanceType `json:"InstanceType,omitempty"`
+	VolumeKmsKeyId *string                                 `json:"VolumeKmsKeyId,omitempty"`
+	VolumeSizeInGB *int                                    `json:"VolumeSizeInGB,omitempty"`
 }
 
 type ProcessingResources struct {
@@ -2663,28 +2663,28 @@ type ProcessingJobTag struct {
 }
 
 type ProcessingJob struct {
-	AppSpecification       *AppSpecification               `json:"AppSpecification,omitempty"`
-	AutoMLJobArn           *string                         `json:"AutoMLJobArn,omitempty"`
-	CreationTime           *string                         `json:"CreationTime,omitempty"`
-	Environment            map[string]string               `json:"Environment,omitempty"`
-	ExitMessage            *string                         `json:"ExitMessage,omitempty"`
-	ExperimentConfig       *ExperimentConfig               `json:"ExperimentConfig,omitempty"`
-	FailureReason          *string                         `json:"FailureReason,omitempty"`
-	LastModifiedTime       *string                         `json:"LastModifiedTime,omitempty"`
-	MonitoringScheduleArn  *string                         `json:"MonitoringScheduleArn,omitempty"`
-	NetworkConfig          *ProcessingJobNetworkConfig     `json:"NetworkConfig,omitempty"`
-	ProcessingEndTime      *string                         `json:"ProcessingEndTime,omitempty"`
-	ProcessingInputs       []ProcessingInputsObject        `json:"ProcessingInputs,omitempty"`
-	ProcessingJobArn       *string                         `json:"ProcessingJobArn,omitempty"`
-	ProcessingJobName      *string                         `json:"ProcessingJobName,omitempty"`
-	ProcessingJobStatus    *string                         `json:"ProcessingJobStatus,omitempty"`
-	ProcessingOutputConfig *ProcessingOutputConfig         `json:"ProcessingOutputConfig,omitempty"`
-	ProcessingResources    *ProcessingResources            `json:"ProcessingResources,omitempty"`
-	ProcessingStartTime    *string                         `json:"ProcessingStartTime,omitempty"`
-	RoleArn                *string                         `json:"RoleArn,omitempty"`
-	StoppingCondition      *ProcessingJobStoppingCondition `json:"StoppingCondition,omitempty"`
-	Tags                   []ProcessingJobTag              `json:"Tags,omitempty"`
-	TrainingJobArn         *string                         `json:"TrainingJobArn,omitempty"`
+	AppSpecification       *AppSpecification                 `json:"AppSpecification,omitempty"`
+	AutoMLJobArn           *string                           `json:"AutoMLJobArn,omitempty"`
+	CreationTime           *string                           `json:"CreationTime,omitempty"`
+	Environment            map[string]string                 `json:"Environment,omitempty"`
+	ExitMessage            *string                           `json:"ExitMessage,omitempty"`
+	ExperimentConfig       *ExperimentConfig                 `json:"ExperimentConfig,omitempty"`
+	FailureReason          *string                           `json:"FailureReason,omitempty"`
+	LastModifiedTime       *string                           `json:"LastModifiedTime,omitempty"`
+	MonitoringScheduleArn  *string                           `json:"MonitoringScheduleArn,omitempty"`
+	NetworkConfig          *ProcessingJobNetworkConfig       `json:"NetworkConfig,omitempty"`
+	ProcessingEndTime      *string                           `json:"ProcessingEndTime,omitempty"`
+	ProcessingInputs       []ProcessingInputsObject          `json:"ProcessingInputs,omitempty"`
+	ProcessingJobArn       *string                           `json:"ProcessingJobArn,omitempty"`
+	ProcessingJobName      *string                           `json:"ProcessingJobName,omitempty"`
+	ProcessingJobStatus    *ProcessingJobProcessingJobStatus `json:"ProcessingJobStatus,omitempty"`
+	ProcessingOutputConfig *ProcessingOutputConfig           `json:"ProcessingOutputConfig,omitempty"`
+	ProcessingResources    *ProcessingResources              `json:"ProcessingResources,omitempty"`
+	ProcessingStartTime    *string                           `json:"ProcessingStartTime,omitempty"`
+	RoleArn                *string                           `json:"RoleArn,omitempty"`
+	StoppingCondition      *ProcessingJobStoppingCondition   `json:"StoppingCondition,omitempty"`
+	Tags                   []ProcessingJobTag                `json:"Tags,omitempty"`
+	TrainingJobArn         *string                           `json:"TrainingJobArn,omitempty"`
 }
 
 func (ProcessingJob) CloudControlType() string { return "AWS::SageMaker::ProcessingJob" }
@@ -2733,7 +2733,7 @@ type Project struct {
 	ProjectDescription                      *string                                         `json:"ProjectDescription,omitempty"`
 	ProjectId                               *string                                         `json:"ProjectId,omitempty"`
 	ProjectName                             *string                                         `json:"ProjectName,omitempty"`
-	ProjectStatus                           *string                                         `json:"ProjectStatus,omitempty"`
+	ProjectStatus                           *ProjectProjectStatus                           `json:"ProjectStatus,omitempty"`
 	ServiceCatalogProvisionedProductDetails *ProjectServiceCatalogProvisionedProductDetails `json:"ServiceCatalogProvisionedProductDetails,omitempty"`
 	ServiceCatalogProvisioningDetails       *ProjectServiceCatalogProvisioningDetails       `json:"ServiceCatalogProvisioningDetails,omitempty"`
 	Tags                                    []ProjectTag                                    `json:"Tags,omitempty"`
@@ -2755,10 +2755,10 @@ type SpaceAppLifecycleManagement struct {
 }
 
 type SpaceResourceSpec struct {
-	InstanceType             *string `json:"InstanceType,omitempty"`
-	LifecycleConfigArn       *string `json:"LifecycleConfigArn,omitempty"`
-	SageMakerImageArn        *string `json:"SageMakerImageArn,omitempty"`
-	SageMakerImageVersionArn *string `json:"SageMakerImageVersionArn,omitempty"`
+	InstanceType             *SpaceResourceSpecInstanceType `json:"InstanceType,omitempty"`
+	LifecycleConfigArn       *string                        `json:"LifecycleConfigArn,omitempty"`
+	SageMakerImageArn        *string                        `json:"SageMakerImageArn,omitempty"`
+	SageMakerImageVersionArn *string                        `json:"SageMakerImageVersionArn,omitempty"`
 }
 
 type SpaceCodeEditorAppSettings struct {
@@ -2820,19 +2820,19 @@ type SpaceStorageSettings struct {
 }
 
 type SpaceSettings struct {
-	AppType                  *string                        `json:"AppType,omitempty"`
+	AppType                  *SpaceAppType                  `json:"AppType,omitempty"`
 	CodeEditorAppSettings    *SpaceCodeEditorAppSettings    `json:"CodeEditorAppSettings,omitempty"`
 	CustomFileSystems        []CustomFileSystem             `json:"CustomFileSystems,omitempty"`
 	JupyterLabAppSettings    *SpaceJupyterLabAppSettings    `json:"JupyterLabAppSettings,omitempty"`
 	JupyterServerAppSettings *SpaceJupyterServerAppSettings `json:"JupyterServerAppSettings,omitempty"`
 	KernelGatewayAppSettings *SpaceKernelGatewayAppSettings `json:"KernelGatewayAppSettings,omitempty"`
-	RemoteAccess             *string                        `json:"RemoteAccess,omitempty"`
-	SpaceManagedResources    *string                        `json:"SpaceManagedResources,omitempty"`
+	RemoteAccess             *RemoteAccess                  `json:"RemoteAccess,omitempty"`
+	SpaceManagedResources    *SpaceManagedResources         `json:"SpaceManagedResources,omitempty"`
 	SpaceStorageSettings     *SpaceStorageSettings          `json:"SpaceStorageSettings,omitempty"`
 }
 
 type SpaceSharingSettings struct {
-	SharingType *string `json:"SharingType,omitempty"`
+	SharingType *SpaceSharingSettingsSharingType `json:"SharingType,omitempty"`
 }
 
 type SpaceTag struct {
@@ -2860,11 +2860,11 @@ type StudioLifecycleConfigTag struct {
 }
 
 type StudioLifecycleConfig struct {
-	StudioLifecycleConfigAppType *string                    `json:"StudioLifecycleConfigAppType,omitempty"`
-	StudioLifecycleConfigArn     *string                    `json:"StudioLifecycleConfigArn,omitempty"`
-	StudioLifecycleConfigContent *string                    `json:"StudioLifecycleConfigContent,omitempty"`
-	StudioLifecycleConfigName    *string                    `json:"StudioLifecycleConfigName,omitempty"`
-	Tags                         []StudioLifecycleConfigTag `json:"Tags,omitempty"`
+	StudioLifecycleConfigAppType *StudioLifecycleConfigStudioLifecycleConfigAppType `json:"StudioLifecycleConfigAppType,omitempty"`
+	StudioLifecycleConfigArn     *string                                            `json:"StudioLifecycleConfigArn,omitempty"`
+	StudioLifecycleConfigContent *string                                            `json:"StudioLifecycleConfigContent,omitempty"`
+	StudioLifecycleConfigName    *string                                            `json:"StudioLifecycleConfigName,omitempty"`
+	Tags                         []StudioLifecycleConfigTag                         `json:"Tags,omitempty"`
 }
 
 func (StudioLifecycleConfig) CloudControlType() string {
@@ -2889,8 +2889,8 @@ type TrialComponentParameterValue struct {
 }
 
 type TrialComponentStatus struct {
-	Message       *string `json:"Message,omitempty"`
-	PrimaryStatus *string `json:"PrimaryStatus,omitempty"`
+	Message       *string                            `json:"Message,omitempty"`
+	PrimaryStatus *TrialComponentStatusPrimaryStatus `json:"PrimaryStatus,omitempty"`
 }
 
 type TrialComponentTagsItem struct {
@@ -2921,10 +2921,10 @@ type UserProfileTag struct {
 }
 
 type UserProfileIdleSettings struct {
-	IdleTimeoutInMinutes    *int    `json:"IdleTimeoutInMinutes,omitempty"`
-	LifecycleManagement     *string `json:"LifecycleManagement,omitempty"`
-	MaxIdleTimeoutInMinutes *int    `json:"MaxIdleTimeoutInMinutes,omitempty"`
-	MinIdleTimeoutInMinutes *int    `json:"MinIdleTimeoutInMinutes,omitempty"`
+	IdleTimeoutInMinutes    *int                            `json:"IdleTimeoutInMinutes,omitempty"`
+	LifecycleManagement     *UserProfileLifecycleManagement `json:"LifecycleManagement,omitempty"`
+	MaxIdleTimeoutInMinutes *int                            `json:"MaxIdleTimeoutInMinutes,omitempty"`
+	MinIdleTimeoutInMinutes *int                            `json:"MinIdleTimeoutInMinutes,omitempty"`
 }
 
 type UserProfileAppLifecycleManagement struct {
@@ -2938,11 +2938,11 @@ type UserProfileCustomImage struct {
 }
 
 type UserProfileResourceSpec struct {
-	InstanceType             *string `json:"InstanceType,omitempty"`
-	LifecycleConfigArn       *string `json:"LifecycleConfigArn,omitempty"`
-	SageMakerImageArn        *string `json:"SageMakerImageArn,omitempty"`
-	SageMakerImageVersionArn *string `json:"SageMakerImageVersionArn,omitempty"`
-	TrainingPlanArn          *string `json:"TrainingPlanArn,omitempty"`
+	InstanceType             *UserProfileAppInstanceType `json:"InstanceType,omitempty"`
+	LifecycleConfigArn       *string                     `json:"LifecycleConfigArn,omitempty"`
+	SageMakerImageArn        *string                     `json:"SageMakerImageArn,omitempty"`
+	SageMakerImageVersionArn *string                     `json:"SageMakerImageVersionArn,omitempty"`
+	TrainingPlanArn          *string                     `json:"TrainingPlanArn,omitempty"`
 }
 
 type UserProfileCodeEditorAppSettings struct {
@@ -3010,14 +3010,14 @@ type UserProfileKernelGatewayAppSettings struct {
 }
 
 type UserProfileRStudioServerProAppSettings struct {
-	AccessStatus *string `json:"AccessStatus,omitempty"`
-	UserGroup    *string `json:"UserGroup,omitempty"`
+	AccessStatus *UserProfileRStudioServerProAppSettingsAccessStatus `json:"AccessStatus,omitempty"`
+	UserGroup    *UserProfileRStudioServerProAppSettingsUserGroup    `json:"UserGroup,omitempty"`
 }
 
 type UserProfileSharingSettings struct {
-	NotebookOutputOption *string `json:"NotebookOutputOption,omitempty"`
-	S3KmsKeyId           *string `json:"S3KmsKeyId,omitempty"`
-	S3OutputPath         *string `json:"S3OutputPath,omitempty"`
+	NotebookOutputOption *UserProfileSharingSettingsNotebookOutputOption `json:"NotebookOutputOption,omitempty"`
+	S3KmsKeyId           *string                                         `json:"S3KmsKeyId,omitempty"`
+	S3OutputPath         *string                                         `json:"S3OutputPath,omitempty"`
 }
 
 type UserProfileDefaultEbsStorageSettings struct {
@@ -3030,33 +3030,33 @@ type UserProfileDefaultSpaceStorageSettings struct {
 }
 
 type UserProfileHiddenSageMakerImage struct {
-	SageMakerImageName *string  `json:"SageMakerImageName,omitempty"`
-	VersionAliases     []string `json:"VersionAliases,omitempty"`
+	SageMakerImageName *UserProfileHiddenSageMakerImageSageMakerImageName `json:"SageMakerImageName,omitempty"`
+	VersionAliases     []string                                           `json:"VersionAliases,omitempty"`
 }
 
 type UserProfileStudioWebPortalSettings struct {
-	HiddenAppTypes                     []string                          `json:"HiddenAppTypes,omitempty"`
-	HiddenInstanceTypes                []string                          `json:"HiddenInstanceTypes,omitempty"`
-	HiddenMlTools                      []string                          `json:"HiddenMlTools,omitempty"`
+	HiddenAppTypes                     []UserProfileAppType              `json:"HiddenAppTypes,omitempty"`
+	HiddenInstanceTypes                []UserProfileAppInstanceType      `json:"HiddenInstanceTypes,omitempty"`
+	HiddenMlTools                      []UserProfileMlTools              `json:"HiddenMlTools,omitempty"`
 	HiddenSageMakerImageVersionAliases []UserProfileHiddenSageMakerImage `json:"HiddenSageMakerImageVersionAliases,omitempty"`
 }
 
 type UserProfileUserSettings struct {
-	AutoMountHomeEFS            *string                                 `json:"AutoMountHomeEFS,omitempty"`
-	CodeEditorAppSettings       *UserProfileCodeEditorAppSettings       `json:"CodeEditorAppSettings,omitempty"`
-	CustomFileSystemConfigs     []UserProfileCustomFileSystemConfig     `json:"CustomFileSystemConfigs,omitempty"`
-	CustomPosixUserConfig       *UserProfileCustomPosixUserConfig       `json:"CustomPosixUserConfig,omitempty"`
-	DefaultLandingUri           *string                                 `json:"DefaultLandingUri,omitempty"`
-	ExecutionRole               *string                                 `json:"ExecutionRole,omitempty"`
-	JupyterLabAppSettings       *UserProfileJupyterLabAppSettings       `json:"JupyterLabAppSettings,omitempty"`
-	JupyterServerAppSettings    *UserProfileJupyterServerAppSettings    `json:"JupyterServerAppSettings,omitempty"`
-	KernelGatewayAppSettings    *UserProfileKernelGatewayAppSettings    `json:"KernelGatewayAppSettings,omitempty"`
-	RStudioServerProAppSettings *UserProfileRStudioServerProAppSettings `json:"RStudioServerProAppSettings,omitempty"`
-	SecurityGroups              []string                                `json:"SecurityGroups,omitempty"`
-	SharingSettings             *UserProfileSharingSettings             `json:"SharingSettings,omitempty"`
-	SpaceStorageSettings        *UserProfileDefaultSpaceStorageSettings `json:"SpaceStorageSettings,omitempty"`
-	StudioWebPortal             *string                                 `json:"StudioWebPortal,omitempty"`
-	StudioWebPortalSettings     *UserProfileStudioWebPortalSettings     `json:"StudioWebPortalSettings,omitempty"`
+	AutoMountHomeEFS            *UserProfileUserSettingsAutoMountHomeEFS `json:"AutoMountHomeEFS,omitempty"`
+	CodeEditorAppSettings       *UserProfileCodeEditorAppSettings        `json:"CodeEditorAppSettings,omitempty"`
+	CustomFileSystemConfigs     []UserProfileCustomFileSystemConfig      `json:"CustomFileSystemConfigs,omitempty"`
+	CustomPosixUserConfig       *UserProfileCustomPosixUserConfig        `json:"CustomPosixUserConfig,omitempty"`
+	DefaultLandingUri           *string                                  `json:"DefaultLandingUri,omitempty"`
+	ExecutionRole               *string                                  `json:"ExecutionRole,omitempty"`
+	JupyterLabAppSettings       *UserProfileJupyterLabAppSettings        `json:"JupyterLabAppSettings,omitempty"`
+	JupyterServerAppSettings    *UserProfileJupyterServerAppSettings     `json:"JupyterServerAppSettings,omitempty"`
+	KernelGatewayAppSettings    *UserProfileKernelGatewayAppSettings     `json:"KernelGatewayAppSettings,omitempty"`
+	RStudioServerProAppSettings *UserProfileRStudioServerProAppSettings  `json:"RStudioServerProAppSettings,omitempty"`
+	SecurityGroups              []string                                 `json:"SecurityGroups,omitempty"`
+	SharingSettings             *UserProfileSharingSettings              `json:"SharingSettings,omitempty"`
+	SpaceStorageSettings        *UserProfileDefaultSpaceStorageSettings  `json:"SpaceStorageSettings,omitempty"`
+	StudioWebPortal             *UserProfileUserSettingsStudioWebPortal  `json:"StudioWebPortal,omitempty"`
+	StudioWebPortalSettings     *UserProfileStudioWebPortalSettings      `json:"StudioWebPortalSettings,omitempty"`
 }
 
 type UserProfile struct {
@@ -3106,3 +3106,1858 @@ type Workteam struct {
 }
 
 func (Workteam) CloudControlType() string { return "AWS::SageMaker::Workteam" }
+
+type ActionStatus string
+
+const (
+	ActionStatusUnknown    ActionStatus = "Unknown"
+	ActionStatusInProgress ActionStatus = "InProgress"
+	ActionStatusCompleted  ActionStatus = "Completed"
+	ActionStatusFailed     ActionStatus = "Failed"
+	ActionStatusStopping   ActionStatus = "Stopping"
+	ActionStatusStopped    ActionStatus = "Stopped"
+)
+
+type HyperParameterSpecificationType string
+
+const (
+	HyperParameterSpecificationTypeInteger     HyperParameterSpecificationType = "Integer"
+	HyperParameterSpecificationTypeContinuous  HyperParameterSpecificationType = "Continuous"
+	HyperParameterSpecificationTypeCategorical HyperParameterSpecificationType = "Categorical"
+	HyperParameterSpecificationTypeFreeText    HyperParameterSpecificationType = "FreeText"
+)
+
+type HyperParameterTuningJobObjectiveType string
+
+const (
+	HyperParameterTuningJobObjectiveTypeMaximize HyperParameterTuningJobObjectiveType = "Maximize"
+	HyperParameterTuningJobObjectiveTypeMinimize HyperParameterTuningJobObjectiveType = "Minimize"
+)
+
+type ChannelSpecificationSupportedCompressionTypesItem string
+
+const (
+	ChannelSpecificationSupportedCompressionTypesItemNone ChannelSpecificationSupportedCompressionTypesItem = "None"
+	ChannelSpecificationSupportedCompressionTypesItemGzip ChannelSpecificationSupportedCompressionTypesItem = "Gzip"
+)
+
+type ChannelSpecificationSupportedInputModesItem string
+
+const (
+	ChannelSpecificationSupportedInputModesItemPipe     ChannelSpecificationSupportedInputModesItem = "Pipe"
+	ChannelSpecificationSupportedInputModesItemFile     ChannelSpecificationSupportedInputModesItem = "File"
+	ChannelSpecificationSupportedInputModesItemFastFile ChannelSpecificationSupportedInputModesItem = "FastFile"
+)
+
+type AppAppType string
+
+const (
+	AppAppTypeJupyterServer    AppAppType = "JupyterServer"
+	AppAppTypeKernelGateway    AppAppType = "KernelGateway"
+	AppAppTypeRStudioServerPro AppAppType = "RStudioServerPro"
+	AppAppTypeRSessionGateway  AppAppType = "RSessionGateway"
+	AppAppTypeCanvas           AppAppType = "Canvas"
+)
+
+type ResourceSpecInstanceType string
+
+const (
+	ResourceSpecInstanceTypeSystem                  ResourceSpecInstanceType = "system"
+	ResourceSpecInstanceTypeMlT3Micro               ResourceSpecInstanceType = "ml.t3.micro"
+	ResourceSpecInstanceTypeMlT3Small               ResourceSpecInstanceType = "ml.t3.small"
+	ResourceSpecInstanceTypeMlT3Medium              ResourceSpecInstanceType = "ml.t3.medium"
+	ResourceSpecInstanceTypeMlT3Large               ResourceSpecInstanceType = "ml.t3.large"
+	ResourceSpecInstanceTypeMlT3Xlarge              ResourceSpecInstanceType = "ml.t3.xlarge"
+	ResourceSpecInstanceTypeMlT32xlarge             ResourceSpecInstanceType = "ml.t3.2xlarge"
+	ResourceSpecInstanceTypeMlM5Large               ResourceSpecInstanceType = "ml.m5.large"
+	ResourceSpecInstanceTypeMlM5Xlarge              ResourceSpecInstanceType = "ml.m5.xlarge"
+	ResourceSpecInstanceTypeMlM52xlarge             ResourceSpecInstanceType = "ml.m5.2xlarge"
+	ResourceSpecInstanceTypeMlM54xlarge             ResourceSpecInstanceType = "ml.m5.4xlarge"
+	ResourceSpecInstanceTypeMlM58xlarge             ResourceSpecInstanceType = "ml.m5.8xlarge"
+	ResourceSpecInstanceTypeMlM512xlarge            ResourceSpecInstanceType = "ml.m5.12xlarge"
+	ResourceSpecInstanceTypeMlM516xlarge            ResourceSpecInstanceType = "ml.m5.16xlarge"
+	ResourceSpecInstanceTypeMlM524xlarge            ResourceSpecInstanceType = "ml.m5.24xlarge"
+	ResourceSpecInstanceTypeMlM5dLarge              ResourceSpecInstanceType = "ml.m5d.large"
+	ResourceSpecInstanceTypeMlM5dXlarge             ResourceSpecInstanceType = "ml.m5d.xlarge"
+	ResourceSpecInstanceTypeMlM5d2xlarge            ResourceSpecInstanceType = "ml.m5d.2xlarge"
+	ResourceSpecInstanceTypeMlM5d4xlarge            ResourceSpecInstanceType = "ml.m5d.4xlarge"
+	ResourceSpecInstanceTypeMlM5d8xlarge            ResourceSpecInstanceType = "ml.m5d.8xlarge"
+	ResourceSpecInstanceTypeMlM5d12xlarge           ResourceSpecInstanceType = "ml.m5d.12xlarge"
+	ResourceSpecInstanceTypeMlM5d16xlarge           ResourceSpecInstanceType = "ml.m5d.16xlarge"
+	ResourceSpecInstanceTypeMlM5d24xlarge           ResourceSpecInstanceType = "ml.m5d.24xlarge"
+	ResourceSpecInstanceTypeMlC5Large               ResourceSpecInstanceType = "ml.c5.large"
+	ResourceSpecInstanceTypeMlC5Xlarge              ResourceSpecInstanceType = "ml.c5.xlarge"
+	ResourceSpecInstanceTypeMlC52xlarge             ResourceSpecInstanceType = "ml.c5.2xlarge"
+	ResourceSpecInstanceTypeMlC54xlarge             ResourceSpecInstanceType = "ml.c5.4xlarge"
+	ResourceSpecInstanceTypeMlC59xlarge             ResourceSpecInstanceType = "ml.c5.9xlarge"
+	ResourceSpecInstanceTypeMlC512xlarge            ResourceSpecInstanceType = "ml.c5.12xlarge"
+	ResourceSpecInstanceTypeMlC518xlarge            ResourceSpecInstanceType = "ml.c5.18xlarge"
+	ResourceSpecInstanceTypeMlC524xlarge            ResourceSpecInstanceType = "ml.c5.24xlarge"
+	ResourceSpecInstanceTypeMlP32xlarge             ResourceSpecInstanceType = "ml.p3.2xlarge"
+	ResourceSpecInstanceTypeMlP38xlarge             ResourceSpecInstanceType = "ml.p3.8xlarge"
+	ResourceSpecInstanceTypeMlP316xlarge            ResourceSpecInstanceType = "ml.p3.16xlarge"
+	ResourceSpecInstanceTypeMlP3dn24xlarge          ResourceSpecInstanceType = "ml.p3dn.24xlarge"
+	ResourceSpecInstanceTypeMlG4dnXlarge            ResourceSpecInstanceType = "ml.g4dn.xlarge"
+	ResourceSpecInstanceTypeMlG4dn2xlarge           ResourceSpecInstanceType = "ml.g4dn.2xlarge"
+	ResourceSpecInstanceTypeMlG4dn4xlarge           ResourceSpecInstanceType = "ml.g4dn.4xlarge"
+	ResourceSpecInstanceTypeMlG4dn8xlarge           ResourceSpecInstanceType = "ml.g4dn.8xlarge"
+	ResourceSpecInstanceTypeMlG4dn12xlarge          ResourceSpecInstanceType = "ml.g4dn.12xlarge"
+	ResourceSpecInstanceTypeMlG4dn16xlarge          ResourceSpecInstanceType = "ml.g4dn.16xlarge"
+	ResourceSpecInstanceTypeMlR5Large               ResourceSpecInstanceType = "ml.r5.large"
+	ResourceSpecInstanceTypeMlR5Xlarge              ResourceSpecInstanceType = "ml.r5.xlarge"
+	ResourceSpecInstanceTypeMlR52xlarge             ResourceSpecInstanceType = "ml.r5.2xlarge"
+	ResourceSpecInstanceTypeMlR54xlarge             ResourceSpecInstanceType = "ml.r5.4xlarge"
+	ResourceSpecInstanceTypeMlR58xlarge             ResourceSpecInstanceType = "ml.r5.8xlarge"
+	ResourceSpecInstanceTypeMlR512xlarge            ResourceSpecInstanceType = "ml.r5.12xlarge"
+	ResourceSpecInstanceTypeMlR516xlarge            ResourceSpecInstanceType = "ml.r5.16xlarge"
+	ResourceSpecInstanceTypeMlR524xlarge            ResourceSpecInstanceType = "ml.r5.24xlarge"
+	ResourceSpecInstanceTypeMlG5Xlarge              ResourceSpecInstanceType = "ml.g5.xlarge"
+	ResourceSpecInstanceTypeMlG52xlarge             ResourceSpecInstanceType = "ml.g5.2xlarge"
+	ResourceSpecInstanceTypeMlG54xlarge             ResourceSpecInstanceType = "ml.g5.4xlarge"
+	ResourceSpecInstanceTypeMlG58xlarge             ResourceSpecInstanceType = "ml.g5.8xlarge"
+	ResourceSpecInstanceTypeMlG512xlarge            ResourceSpecInstanceType = "ml.g5.12xlarge"
+	ResourceSpecInstanceTypeMlG516xlarge            ResourceSpecInstanceType = "ml.g5.16xlarge"
+	ResourceSpecInstanceTypeMlG524xlarge            ResourceSpecInstanceType = "ml.g5.24xlarge"
+	ResourceSpecInstanceTypeMlG548xlarge            ResourceSpecInstanceType = "ml.g5.48xlarge"
+	ResourceSpecInstanceTypeMlG6Xlarge              ResourceSpecInstanceType = "ml.g6.xlarge"
+	ResourceSpecInstanceTypeMlG62xlarge             ResourceSpecInstanceType = "ml.g6.2xlarge"
+	ResourceSpecInstanceTypeMlG64xlarge             ResourceSpecInstanceType = "ml.g6.4xlarge"
+	ResourceSpecInstanceTypeMlG68xlarge             ResourceSpecInstanceType = "ml.g6.8xlarge"
+	ResourceSpecInstanceTypeMlG612xlarge            ResourceSpecInstanceType = "ml.g6.12xlarge"
+	ResourceSpecInstanceTypeMlG616xlarge            ResourceSpecInstanceType = "ml.g6.16xlarge"
+	ResourceSpecInstanceTypeMlG624xlarge            ResourceSpecInstanceType = "ml.g6.24xlarge"
+	ResourceSpecInstanceTypeMlG648xlarge            ResourceSpecInstanceType = "ml.g6.48xlarge"
+	ResourceSpecInstanceTypeMlG6eXlarge             ResourceSpecInstanceType = "ml.g6e.xlarge"
+	ResourceSpecInstanceTypeMlG6e2xlarge            ResourceSpecInstanceType = "ml.g6e.2xlarge"
+	ResourceSpecInstanceTypeMlG6e4xlarge            ResourceSpecInstanceType = "ml.g6e.4xlarge"
+	ResourceSpecInstanceTypeMlG6e8xlarge            ResourceSpecInstanceType = "ml.g6e.8xlarge"
+	ResourceSpecInstanceTypeMlG6e12xlarge           ResourceSpecInstanceType = "ml.g6e.12xlarge"
+	ResourceSpecInstanceTypeMlG6e16xlarge           ResourceSpecInstanceType = "ml.g6e.16xlarge"
+	ResourceSpecInstanceTypeMlG6e24xlarge           ResourceSpecInstanceType = "ml.g6e.24xlarge"
+	ResourceSpecInstanceTypeMlG6e48xlarge           ResourceSpecInstanceType = "ml.g6e.48xlarge"
+	ResourceSpecInstanceTypeMlGeospatialInteractive ResourceSpecInstanceType = "ml.geospatial.interactive"
+	ResourceSpecInstanceTypeMlP4d24xlarge           ResourceSpecInstanceType = "ml.p4d.24xlarge"
+	ResourceSpecInstanceTypeMlP4de24xlarge          ResourceSpecInstanceType = "ml.p4de.24xlarge"
+	ResourceSpecInstanceTypeMlTrn12xlarge           ResourceSpecInstanceType = "ml.trn1.2xlarge"
+	ResourceSpecInstanceTypeMlTrn132xlarge          ResourceSpecInstanceType = "ml.trn1.32xlarge"
+	ResourceSpecInstanceTypeMlTrn1n32xlarge         ResourceSpecInstanceType = "ml.trn1n.32xlarge"
+	ResourceSpecInstanceTypeMlP548xlarge            ResourceSpecInstanceType = "ml.p5.48xlarge"
+	ResourceSpecInstanceTypeMlP5e48xlarge           ResourceSpecInstanceType = "ml.p5e.48xlarge"
+	ResourceSpecInstanceTypeMlP5en48xlarge          ResourceSpecInstanceType = "ml.p5en.48xlarge"
+	ResourceSpecInstanceTypeMlM6iLarge              ResourceSpecInstanceType = "ml.m6i.large"
+	ResourceSpecInstanceTypeMlM6iXlarge             ResourceSpecInstanceType = "ml.m6i.xlarge"
+	ResourceSpecInstanceTypeMlM6i2xlarge            ResourceSpecInstanceType = "ml.m6i.2xlarge"
+	ResourceSpecInstanceTypeMlM6i4xlarge            ResourceSpecInstanceType = "ml.m6i.4xlarge"
+	ResourceSpecInstanceTypeMlM6i8xlarge            ResourceSpecInstanceType = "ml.m6i.8xlarge"
+	ResourceSpecInstanceTypeMlM6i12xlarge           ResourceSpecInstanceType = "ml.m6i.12xlarge"
+	ResourceSpecInstanceTypeMlM6i16xlarge           ResourceSpecInstanceType = "ml.m6i.16xlarge"
+	ResourceSpecInstanceTypeMlM6i24xlarge           ResourceSpecInstanceType = "ml.m6i.24xlarge"
+	ResourceSpecInstanceTypeMlM6i32xlarge           ResourceSpecInstanceType = "ml.m6i.32xlarge"
+	ResourceSpecInstanceTypeMlM7iLarge              ResourceSpecInstanceType = "ml.m7i.large"
+	ResourceSpecInstanceTypeMlM7iXlarge             ResourceSpecInstanceType = "ml.m7i.xlarge"
+	ResourceSpecInstanceTypeMlM7i2xlarge            ResourceSpecInstanceType = "ml.m7i.2xlarge"
+	ResourceSpecInstanceTypeMlM7i4xlarge            ResourceSpecInstanceType = "ml.m7i.4xlarge"
+	ResourceSpecInstanceTypeMlM7i8xlarge            ResourceSpecInstanceType = "ml.m7i.8xlarge"
+	ResourceSpecInstanceTypeMlM7i12xlarge           ResourceSpecInstanceType = "ml.m7i.12xlarge"
+	ResourceSpecInstanceTypeMlM7i16xlarge           ResourceSpecInstanceType = "ml.m7i.16xlarge"
+	ResourceSpecInstanceTypeMlM7i24xlarge           ResourceSpecInstanceType = "ml.m7i.24xlarge"
+	ResourceSpecInstanceTypeMlM7i48xlarge           ResourceSpecInstanceType = "ml.m7i.48xlarge"
+	ResourceSpecInstanceTypeMlC6iLarge              ResourceSpecInstanceType = "ml.c6i.large"
+	ResourceSpecInstanceTypeMlC6iXlarge             ResourceSpecInstanceType = "ml.c6i.xlarge"
+	ResourceSpecInstanceTypeMlC6i2xlarge            ResourceSpecInstanceType = "ml.c6i.2xlarge"
+	ResourceSpecInstanceTypeMlC6i4xlarge            ResourceSpecInstanceType = "ml.c6i.4xlarge"
+	ResourceSpecInstanceTypeMlC6i8xlarge            ResourceSpecInstanceType = "ml.c6i.8xlarge"
+	ResourceSpecInstanceTypeMlC6i12xlarge           ResourceSpecInstanceType = "ml.c6i.12xlarge"
+	ResourceSpecInstanceTypeMlC6i16xlarge           ResourceSpecInstanceType = "ml.c6i.16xlarge"
+	ResourceSpecInstanceTypeMlC6i24xlarge           ResourceSpecInstanceType = "ml.c6i.24xlarge"
+	ResourceSpecInstanceTypeMlC6i32xlarge           ResourceSpecInstanceType = "ml.c6i.32xlarge"
+	ResourceSpecInstanceTypeMlC7iLarge              ResourceSpecInstanceType = "ml.c7i.large"
+	ResourceSpecInstanceTypeMlC7iXlarge             ResourceSpecInstanceType = "ml.c7i.xlarge"
+	ResourceSpecInstanceTypeMlC7i2xlarge            ResourceSpecInstanceType = "ml.c7i.2xlarge"
+	ResourceSpecInstanceTypeMlC7i4xlarge            ResourceSpecInstanceType = "ml.c7i.4xlarge"
+	ResourceSpecInstanceTypeMlC7i8xlarge            ResourceSpecInstanceType = "ml.c7i.8xlarge"
+	ResourceSpecInstanceTypeMlC7i12xlarge           ResourceSpecInstanceType = "ml.c7i.12xlarge"
+	ResourceSpecInstanceTypeMlC7i16xlarge           ResourceSpecInstanceType = "ml.c7i.16xlarge"
+	ResourceSpecInstanceTypeMlC7i24xlarge           ResourceSpecInstanceType = "ml.c7i.24xlarge"
+	ResourceSpecInstanceTypeMlC7i48xlarge           ResourceSpecInstanceType = "ml.c7i.48xlarge"
+	ResourceSpecInstanceTypeMlR6iLarge              ResourceSpecInstanceType = "ml.r6i.large"
+	ResourceSpecInstanceTypeMlR6iXlarge             ResourceSpecInstanceType = "ml.r6i.xlarge"
+	ResourceSpecInstanceTypeMlR6i2xlarge            ResourceSpecInstanceType = "ml.r6i.2xlarge"
+	ResourceSpecInstanceTypeMlR6i4xlarge            ResourceSpecInstanceType = "ml.r6i.4xlarge"
+	ResourceSpecInstanceTypeMlR6i8xlarge            ResourceSpecInstanceType = "ml.r6i.8xlarge"
+	ResourceSpecInstanceTypeMlR6i12xlarge           ResourceSpecInstanceType = "ml.r6i.12xlarge"
+	ResourceSpecInstanceTypeMlR6i16xlarge           ResourceSpecInstanceType = "ml.r6i.16xlarge"
+	ResourceSpecInstanceTypeMlR6i24xlarge           ResourceSpecInstanceType = "ml.r6i.24xlarge"
+	ResourceSpecInstanceTypeMlR6i32xlarge           ResourceSpecInstanceType = "ml.r6i.32xlarge"
+	ResourceSpecInstanceTypeMlR7iLarge              ResourceSpecInstanceType = "ml.r7i.large"
+	ResourceSpecInstanceTypeMlR7iXlarge             ResourceSpecInstanceType = "ml.r7i.xlarge"
+	ResourceSpecInstanceTypeMlR7i2xlarge            ResourceSpecInstanceType = "ml.r7i.2xlarge"
+	ResourceSpecInstanceTypeMlR7i4xlarge            ResourceSpecInstanceType = "ml.r7i.4xlarge"
+	ResourceSpecInstanceTypeMlR7i8xlarge            ResourceSpecInstanceType = "ml.r7i.8xlarge"
+	ResourceSpecInstanceTypeMlR7i12xlarge           ResourceSpecInstanceType = "ml.r7i.12xlarge"
+	ResourceSpecInstanceTypeMlR7i16xlarge           ResourceSpecInstanceType = "ml.r7i.16xlarge"
+	ResourceSpecInstanceTypeMlR7i24xlarge           ResourceSpecInstanceType = "ml.r7i.24xlarge"
+	ResourceSpecInstanceTypeMlR7i48xlarge           ResourceSpecInstanceType = "ml.r7i.48xlarge"
+	ResourceSpecInstanceTypeMlM6idLarge             ResourceSpecInstanceType = "ml.m6id.large"
+	ResourceSpecInstanceTypeMlM6idXlarge            ResourceSpecInstanceType = "ml.m6id.xlarge"
+	ResourceSpecInstanceTypeMlM6id2xlarge           ResourceSpecInstanceType = "ml.m6id.2xlarge"
+	ResourceSpecInstanceTypeMlM6id4xlarge           ResourceSpecInstanceType = "ml.m6id.4xlarge"
+	ResourceSpecInstanceTypeMlM6id8xlarge           ResourceSpecInstanceType = "ml.m6id.8xlarge"
+	ResourceSpecInstanceTypeMlM6id12xlarge          ResourceSpecInstanceType = "ml.m6id.12xlarge"
+	ResourceSpecInstanceTypeMlM6id16xlarge          ResourceSpecInstanceType = "ml.m6id.16xlarge"
+	ResourceSpecInstanceTypeMlM6id24xlarge          ResourceSpecInstanceType = "ml.m6id.24xlarge"
+	ResourceSpecInstanceTypeMlM6id32xlarge          ResourceSpecInstanceType = "ml.m6id.32xlarge"
+	ResourceSpecInstanceTypeMlC6idLarge             ResourceSpecInstanceType = "ml.c6id.large"
+	ResourceSpecInstanceTypeMlC6idXlarge            ResourceSpecInstanceType = "ml.c6id.xlarge"
+	ResourceSpecInstanceTypeMlC6id2xlarge           ResourceSpecInstanceType = "ml.c6id.2xlarge"
+	ResourceSpecInstanceTypeMlC6id4xlarge           ResourceSpecInstanceType = "ml.c6id.4xlarge"
+	ResourceSpecInstanceTypeMlC6id8xlarge           ResourceSpecInstanceType = "ml.c6id.8xlarge"
+	ResourceSpecInstanceTypeMlC6id12xlarge          ResourceSpecInstanceType = "ml.c6id.12xlarge"
+	ResourceSpecInstanceTypeMlC6id16xlarge          ResourceSpecInstanceType = "ml.c6id.16xlarge"
+	ResourceSpecInstanceTypeMlC6id24xlarge          ResourceSpecInstanceType = "ml.c6id.24xlarge"
+	ResourceSpecInstanceTypeMlC6id32xlarge          ResourceSpecInstanceType = "ml.c6id.32xlarge"
+	ResourceSpecInstanceTypeMlR6idLarge             ResourceSpecInstanceType = "ml.r6id.large"
+	ResourceSpecInstanceTypeMlR6idXlarge            ResourceSpecInstanceType = "ml.r6id.xlarge"
+	ResourceSpecInstanceTypeMlR6id2xlarge           ResourceSpecInstanceType = "ml.r6id.2xlarge"
+	ResourceSpecInstanceTypeMlR6id4xlarge           ResourceSpecInstanceType = "ml.r6id.4xlarge"
+	ResourceSpecInstanceTypeMlR6id8xlarge           ResourceSpecInstanceType = "ml.r6id.8xlarge"
+	ResourceSpecInstanceTypeMlR6id12xlarge          ResourceSpecInstanceType = "ml.r6id.12xlarge"
+	ResourceSpecInstanceTypeMlR6id16xlarge          ResourceSpecInstanceType = "ml.r6id.16xlarge"
+	ResourceSpecInstanceTypeMlR6id24xlarge          ResourceSpecInstanceType = "ml.r6id.24xlarge"
+	ResourceSpecInstanceTypeMlR6id32xlarge          ResourceSpecInstanceType = "ml.r6id.32xlarge"
+)
+
+type ClusterAutoScalingConfigAutoScalerType string
+
+const (
+	ClusterAutoScalingConfigAutoScalerTypeKarpenter ClusterAutoScalingConfigAutoScalerType = "Karpenter"
+)
+
+type ClusterAutoScalingConfigMode string
+
+const (
+	ClusterAutoScalingConfigModeEnable  ClusterAutoScalingConfigMode = "Enable"
+	ClusterAutoScalingConfigModeDisable ClusterAutoScalingConfigMode = "Disable"
+)
+
+type ClusterClusterStatus string
+
+const (
+	ClusterClusterStatusCreating       ClusterClusterStatus = "Creating"
+	ClusterClusterStatusDeleting       ClusterClusterStatus = "Deleting"
+	ClusterClusterStatusFailed         ClusterClusterStatus = "Failed"
+	ClusterClusterStatusInService      ClusterClusterStatus = "InService"
+	ClusterClusterStatusRollingBack    ClusterClusterStatus = "RollingBack"
+	ClusterClusterStatusSystemUpdating ClusterClusterStatus = "SystemUpdating"
+	ClusterClusterStatusUpdating       ClusterClusterStatus = "Updating"
+)
+
+type AutoPatchConfigPatchingStrategy string
+
+const (
+	AutoPatchConfigPatchingStrategyWhenIdle    AutoPatchConfigPatchingStrategy = "WhenIdle"
+	AutoPatchConfigPatchingStrategyWhenAllIdle AutoPatchConfigPatchingStrategy = "WhenAllIdle"
+)
+
+type ClusterKubernetesTaintEffect string
+
+const (
+	ClusterKubernetesTaintEffectNoSchedule       ClusterKubernetesTaintEffect = "NoSchedule"
+	ClusterKubernetesTaintEffectPreferNoSchedule ClusterKubernetesTaintEffect = "PreferNoSchedule"
+	ClusterKubernetesTaintEffectNoExecute        ClusterKubernetesTaintEffect = "NoExecute"
+)
+
+type ClusterNetworkInterfaceInterfaceType string
+
+const (
+	ClusterNetworkInterfaceInterfaceTypeEfa     ClusterNetworkInterfaceInterfaceType = "efa"
+	ClusterNetworkInterfaceInterfaceTypeEfaOnly ClusterNetworkInterfaceInterfaceType = "efa-only"
+)
+
+type DeepHealthCheckType string
+
+const (
+	DeepHealthCheckTypeInstanceStress       DeepHealthCheckType = "InstanceStress"
+	DeepHealthCheckTypeInstanceConnectivity DeepHealthCheckType = "InstanceConnectivity"
+)
+
+type ClusterSlurmConfigNodeType string
+
+const (
+	ClusterSlurmConfigNodeTypeController ClusterSlurmConfigNodeType = "Controller"
+	ClusterSlurmConfigNodeTypeLogin      ClusterSlurmConfigNodeType = "Login"
+	ClusterSlurmConfigNodeTypeCompute    ClusterSlurmConfigNodeType = "Compute"
+)
+
+type ClusterNodeProvisioningMode string
+
+const (
+	ClusterNodeProvisioningModeContinuous ClusterNodeProvisioningMode = "Continuous"
+)
+
+type ClusterNodeRecovery string
+
+const (
+	ClusterNodeRecoveryAutomatic ClusterNodeRecovery = "Automatic"
+	ClusterNodeRecoveryNone      ClusterNodeRecovery = "None"
+)
+
+type SharedEnvironmentConfigFSxLustreDeletionPolicy string
+
+const (
+	SharedEnvironmentConfigFSxLustreDeletionPolicyKeep            SharedEnvironmentConfigFSxLustreDeletionPolicy = "Keep"
+	SharedEnvironmentConfigFSxLustreDeletionPolicyDeleteIfNotUsed SharedEnvironmentConfigFSxLustreDeletionPolicy = "DeleteIfNotUsed"
+)
+
+type TieredStorageConfigMode string
+
+const (
+	TieredStorageConfigModeEnable  TieredStorageConfigMode = "Enable"
+	TieredStorageConfigModeDisable TieredStorageConfigMode = "Disable"
+)
+
+type BatchTransformInputS3DataDistributionType string
+
+const (
+	BatchTransformInputS3DataDistributionTypeFullyReplicated BatchTransformInputS3DataDistributionType = "FullyReplicated"
+	BatchTransformInputS3DataDistributionTypeShardedByS3Key  BatchTransformInputS3DataDistributionType = "ShardedByS3Key"
+)
+
+type BatchTransformInputS3InputMode string
+
+const (
+	BatchTransformInputS3InputModePipe BatchTransformInputS3InputMode = "Pipe"
+	BatchTransformInputS3InputModeFile BatchTransformInputS3InputMode = "File"
+)
+
+type EndpointInputS3DataDistributionType string
+
+const (
+	EndpointInputS3DataDistributionTypeFullyReplicated EndpointInputS3DataDistributionType = "FullyReplicated"
+	EndpointInputS3DataDistributionTypeShardedByS3Key  EndpointInputS3DataDistributionType = "ShardedByS3Key"
+)
+
+type EndpointInputS3InputMode string
+
+const (
+	EndpointInputS3InputModePipe EndpointInputS3InputMode = "Pipe"
+	EndpointInputS3InputModeFile EndpointInputS3InputMode = "File"
+)
+
+type S3OutputS3UploadMode string
+
+const (
+	S3OutputS3UploadModeContinuous S3OutputS3UploadMode = "Continuous"
+	S3OutputS3UploadModeEndOfJob   S3OutputS3UploadMode = "EndOfJob"
+)
+
+type DomainAppNetworkAccessType string
+
+const (
+	DomainAppNetworkAccessTypePublicInternetOnly DomainAppNetworkAccessType = "PublicInternetOnly"
+	DomainAppNetworkAccessTypeVpcOnly            DomainAppNetworkAccessType = "VpcOnly"
+)
+
+type DomainAppSecurityGroupManagement string
+
+const (
+	DomainAppSecurityGroupManagementService  DomainAppSecurityGroupManagement = "Service"
+	DomainAppSecurityGroupManagementCustomer DomainAppSecurityGroupManagement = "Customer"
+)
+
+type DomainAuthMode string
+
+const (
+	DomainAuthModeSSO DomainAuthMode = "SSO"
+	DomainAuthModeIAM DomainAuthMode = "IAM"
+)
+
+type LifecycleManagement string
+
+const (
+	LifecycleManagementENABLED  LifecycleManagement = "ENABLED"
+	LifecycleManagementDISABLED LifecycleManagement = "DISABLED"
+)
+
+type AppInstanceType string
+
+const (
+	AppInstanceTypeSystem                  AppInstanceType = "system"
+	AppInstanceTypeMlT3Micro               AppInstanceType = "ml.t3.micro"
+	AppInstanceTypeMlT3Small               AppInstanceType = "ml.t3.small"
+	AppInstanceTypeMlT3Medium              AppInstanceType = "ml.t3.medium"
+	AppInstanceTypeMlT3Large               AppInstanceType = "ml.t3.large"
+	AppInstanceTypeMlT3Xlarge              AppInstanceType = "ml.t3.xlarge"
+	AppInstanceTypeMlT32xlarge             AppInstanceType = "ml.t3.2xlarge"
+	AppInstanceTypeMlM5Large               AppInstanceType = "ml.m5.large"
+	AppInstanceTypeMlM5Xlarge              AppInstanceType = "ml.m5.xlarge"
+	AppInstanceTypeMlM52xlarge             AppInstanceType = "ml.m5.2xlarge"
+	AppInstanceTypeMlM54xlarge             AppInstanceType = "ml.m5.4xlarge"
+	AppInstanceTypeMlM58xlarge             AppInstanceType = "ml.m5.8xlarge"
+	AppInstanceTypeMlM512xlarge            AppInstanceType = "ml.m5.12xlarge"
+	AppInstanceTypeMlM516xlarge            AppInstanceType = "ml.m5.16xlarge"
+	AppInstanceTypeMlM524xlarge            AppInstanceType = "ml.m5.24xlarge"
+	AppInstanceTypeMlM5dLarge              AppInstanceType = "ml.m5d.large"
+	AppInstanceTypeMlM5dXlarge             AppInstanceType = "ml.m5d.xlarge"
+	AppInstanceTypeMlM5d2xlarge            AppInstanceType = "ml.m5d.2xlarge"
+	AppInstanceTypeMlM5d4xlarge            AppInstanceType = "ml.m5d.4xlarge"
+	AppInstanceTypeMlM5d8xlarge            AppInstanceType = "ml.m5d.8xlarge"
+	AppInstanceTypeMlM5d12xlarge           AppInstanceType = "ml.m5d.12xlarge"
+	AppInstanceTypeMlM5d16xlarge           AppInstanceType = "ml.m5d.16xlarge"
+	AppInstanceTypeMlM5d24xlarge           AppInstanceType = "ml.m5d.24xlarge"
+	AppInstanceTypeMlC5Large               AppInstanceType = "ml.c5.large"
+	AppInstanceTypeMlC5Xlarge              AppInstanceType = "ml.c5.xlarge"
+	AppInstanceTypeMlC52xlarge             AppInstanceType = "ml.c5.2xlarge"
+	AppInstanceTypeMlC54xlarge             AppInstanceType = "ml.c5.4xlarge"
+	AppInstanceTypeMlC59xlarge             AppInstanceType = "ml.c5.9xlarge"
+	AppInstanceTypeMlC512xlarge            AppInstanceType = "ml.c5.12xlarge"
+	AppInstanceTypeMlC518xlarge            AppInstanceType = "ml.c5.18xlarge"
+	AppInstanceTypeMlC524xlarge            AppInstanceType = "ml.c5.24xlarge"
+	AppInstanceTypeMlP32xlarge             AppInstanceType = "ml.p3.2xlarge"
+	AppInstanceTypeMlP38xlarge             AppInstanceType = "ml.p3.8xlarge"
+	AppInstanceTypeMlP316xlarge            AppInstanceType = "ml.p3.16xlarge"
+	AppInstanceTypeMlP3dn24xlarge          AppInstanceType = "ml.p3dn.24xlarge"
+	AppInstanceTypeMlG4dnXlarge            AppInstanceType = "ml.g4dn.xlarge"
+	AppInstanceTypeMlG4dn2xlarge           AppInstanceType = "ml.g4dn.2xlarge"
+	AppInstanceTypeMlG4dn4xlarge           AppInstanceType = "ml.g4dn.4xlarge"
+	AppInstanceTypeMlG4dn8xlarge           AppInstanceType = "ml.g4dn.8xlarge"
+	AppInstanceTypeMlG4dn12xlarge          AppInstanceType = "ml.g4dn.12xlarge"
+	AppInstanceTypeMlG4dn16xlarge          AppInstanceType = "ml.g4dn.16xlarge"
+	AppInstanceTypeMlR5Large               AppInstanceType = "ml.r5.large"
+	AppInstanceTypeMlR5Xlarge              AppInstanceType = "ml.r5.xlarge"
+	AppInstanceTypeMlR52xlarge             AppInstanceType = "ml.r5.2xlarge"
+	AppInstanceTypeMlR54xlarge             AppInstanceType = "ml.r5.4xlarge"
+	AppInstanceTypeMlR58xlarge             AppInstanceType = "ml.r5.8xlarge"
+	AppInstanceTypeMlR512xlarge            AppInstanceType = "ml.r5.12xlarge"
+	AppInstanceTypeMlR516xlarge            AppInstanceType = "ml.r5.16xlarge"
+	AppInstanceTypeMlR524xlarge            AppInstanceType = "ml.r5.24xlarge"
+	AppInstanceTypeMlG5Xlarge              AppInstanceType = "ml.g5.xlarge"
+	AppInstanceTypeMlG52xlarge             AppInstanceType = "ml.g5.2xlarge"
+	AppInstanceTypeMlG54xlarge             AppInstanceType = "ml.g5.4xlarge"
+	AppInstanceTypeMlG58xlarge             AppInstanceType = "ml.g5.8xlarge"
+	AppInstanceTypeMlG512xlarge            AppInstanceType = "ml.g5.12xlarge"
+	AppInstanceTypeMlG516xlarge            AppInstanceType = "ml.g5.16xlarge"
+	AppInstanceTypeMlG524xlarge            AppInstanceType = "ml.g5.24xlarge"
+	AppInstanceTypeMlG548xlarge            AppInstanceType = "ml.g5.48xlarge"
+	AppInstanceTypeMlG6Xlarge              AppInstanceType = "ml.g6.xlarge"
+	AppInstanceTypeMlG62xlarge             AppInstanceType = "ml.g6.2xlarge"
+	AppInstanceTypeMlG64xlarge             AppInstanceType = "ml.g6.4xlarge"
+	AppInstanceTypeMlG68xlarge             AppInstanceType = "ml.g6.8xlarge"
+	AppInstanceTypeMlG612xlarge            AppInstanceType = "ml.g6.12xlarge"
+	AppInstanceTypeMlG616xlarge            AppInstanceType = "ml.g6.16xlarge"
+	AppInstanceTypeMlG624xlarge            AppInstanceType = "ml.g6.24xlarge"
+	AppInstanceTypeMlG648xlarge            AppInstanceType = "ml.g6.48xlarge"
+	AppInstanceTypeMlG6eXlarge             AppInstanceType = "ml.g6e.xlarge"
+	AppInstanceTypeMlG6e2xlarge            AppInstanceType = "ml.g6e.2xlarge"
+	AppInstanceTypeMlG6e4xlarge            AppInstanceType = "ml.g6e.4xlarge"
+	AppInstanceTypeMlG6e8xlarge            AppInstanceType = "ml.g6e.8xlarge"
+	AppInstanceTypeMlG6e12xlarge           AppInstanceType = "ml.g6e.12xlarge"
+	AppInstanceTypeMlG6e16xlarge           AppInstanceType = "ml.g6e.16xlarge"
+	AppInstanceTypeMlG6e24xlarge           AppInstanceType = "ml.g6e.24xlarge"
+	AppInstanceTypeMlG6e48xlarge           AppInstanceType = "ml.g6e.48xlarge"
+	AppInstanceTypeMlGeospatialInteractive AppInstanceType = "ml.geospatial.interactive"
+	AppInstanceTypeMlP4d24xlarge           AppInstanceType = "ml.p4d.24xlarge"
+	AppInstanceTypeMlP4de24xlarge          AppInstanceType = "ml.p4de.24xlarge"
+	AppInstanceTypeMlTrn12xlarge           AppInstanceType = "ml.trn1.2xlarge"
+	AppInstanceTypeMlTrn132xlarge          AppInstanceType = "ml.trn1.32xlarge"
+	AppInstanceTypeMlTrn1n32xlarge         AppInstanceType = "ml.trn1n.32xlarge"
+	AppInstanceTypeMlP548xlarge            AppInstanceType = "ml.p5.48xlarge"
+	AppInstanceTypeMlP5e48xlarge           AppInstanceType = "ml.p5e.48xlarge"
+	AppInstanceTypeMlP5en48xlarge          AppInstanceType = "ml.p5en.48xlarge"
+	AppInstanceTypeMlM6iLarge              AppInstanceType = "ml.m6i.large"
+	AppInstanceTypeMlM6iXlarge             AppInstanceType = "ml.m6i.xlarge"
+	AppInstanceTypeMlM6i2xlarge            AppInstanceType = "ml.m6i.2xlarge"
+	AppInstanceTypeMlM6i4xlarge            AppInstanceType = "ml.m6i.4xlarge"
+	AppInstanceTypeMlM6i8xlarge            AppInstanceType = "ml.m6i.8xlarge"
+	AppInstanceTypeMlM6i12xlarge           AppInstanceType = "ml.m6i.12xlarge"
+	AppInstanceTypeMlM6i16xlarge           AppInstanceType = "ml.m6i.16xlarge"
+	AppInstanceTypeMlM6i24xlarge           AppInstanceType = "ml.m6i.24xlarge"
+	AppInstanceTypeMlM6i32xlarge           AppInstanceType = "ml.m6i.32xlarge"
+	AppInstanceTypeMlM7iLarge              AppInstanceType = "ml.m7i.large"
+	AppInstanceTypeMlM7iXlarge             AppInstanceType = "ml.m7i.xlarge"
+	AppInstanceTypeMlM7i2xlarge            AppInstanceType = "ml.m7i.2xlarge"
+	AppInstanceTypeMlM7i4xlarge            AppInstanceType = "ml.m7i.4xlarge"
+	AppInstanceTypeMlM7i8xlarge            AppInstanceType = "ml.m7i.8xlarge"
+	AppInstanceTypeMlM7i12xlarge           AppInstanceType = "ml.m7i.12xlarge"
+	AppInstanceTypeMlM7i16xlarge           AppInstanceType = "ml.m7i.16xlarge"
+	AppInstanceTypeMlM7i24xlarge           AppInstanceType = "ml.m7i.24xlarge"
+	AppInstanceTypeMlM7i48xlarge           AppInstanceType = "ml.m7i.48xlarge"
+	AppInstanceTypeMlC6iLarge              AppInstanceType = "ml.c6i.large"
+	AppInstanceTypeMlC6iXlarge             AppInstanceType = "ml.c6i.xlarge"
+	AppInstanceTypeMlC6i2xlarge            AppInstanceType = "ml.c6i.2xlarge"
+	AppInstanceTypeMlC6i4xlarge            AppInstanceType = "ml.c6i.4xlarge"
+	AppInstanceTypeMlC6i8xlarge            AppInstanceType = "ml.c6i.8xlarge"
+	AppInstanceTypeMlC6i12xlarge           AppInstanceType = "ml.c6i.12xlarge"
+	AppInstanceTypeMlC6i16xlarge           AppInstanceType = "ml.c6i.16xlarge"
+	AppInstanceTypeMlC6i24xlarge           AppInstanceType = "ml.c6i.24xlarge"
+	AppInstanceTypeMlC6i32xlarge           AppInstanceType = "ml.c6i.32xlarge"
+	AppInstanceTypeMlC7iLarge              AppInstanceType = "ml.c7i.large"
+	AppInstanceTypeMlC7iXlarge             AppInstanceType = "ml.c7i.xlarge"
+	AppInstanceTypeMlC7i2xlarge            AppInstanceType = "ml.c7i.2xlarge"
+	AppInstanceTypeMlC7i4xlarge            AppInstanceType = "ml.c7i.4xlarge"
+	AppInstanceTypeMlC7i8xlarge            AppInstanceType = "ml.c7i.8xlarge"
+	AppInstanceTypeMlC7i12xlarge           AppInstanceType = "ml.c7i.12xlarge"
+	AppInstanceTypeMlC7i16xlarge           AppInstanceType = "ml.c7i.16xlarge"
+	AppInstanceTypeMlC7i24xlarge           AppInstanceType = "ml.c7i.24xlarge"
+	AppInstanceTypeMlC7i48xlarge           AppInstanceType = "ml.c7i.48xlarge"
+	AppInstanceTypeMlR6iLarge              AppInstanceType = "ml.r6i.large"
+	AppInstanceTypeMlR6iXlarge             AppInstanceType = "ml.r6i.xlarge"
+	AppInstanceTypeMlR6i2xlarge            AppInstanceType = "ml.r6i.2xlarge"
+	AppInstanceTypeMlR6i4xlarge            AppInstanceType = "ml.r6i.4xlarge"
+	AppInstanceTypeMlR6i8xlarge            AppInstanceType = "ml.r6i.8xlarge"
+	AppInstanceTypeMlR6i12xlarge           AppInstanceType = "ml.r6i.12xlarge"
+	AppInstanceTypeMlR6i16xlarge           AppInstanceType = "ml.r6i.16xlarge"
+	AppInstanceTypeMlR6i24xlarge           AppInstanceType = "ml.r6i.24xlarge"
+	AppInstanceTypeMlR6i32xlarge           AppInstanceType = "ml.r6i.32xlarge"
+	AppInstanceTypeMlR7iLarge              AppInstanceType = "ml.r7i.large"
+	AppInstanceTypeMlR7iXlarge             AppInstanceType = "ml.r7i.xlarge"
+	AppInstanceTypeMlR7i2xlarge            AppInstanceType = "ml.r7i.2xlarge"
+	AppInstanceTypeMlR7i4xlarge            AppInstanceType = "ml.r7i.4xlarge"
+	AppInstanceTypeMlR7i8xlarge            AppInstanceType = "ml.r7i.8xlarge"
+	AppInstanceTypeMlR7i12xlarge           AppInstanceType = "ml.r7i.12xlarge"
+	AppInstanceTypeMlR7i16xlarge           AppInstanceType = "ml.r7i.16xlarge"
+	AppInstanceTypeMlR7i24xlarge           AppInstanceType = "ml.r7i.24xlarge"
+	AppInstanceTypeMlR7i48xlarge           AppInstanceType = "ml.r7i.48xlarge"
+	AppInstanceTypeMlM6idLarge             AppInstanceType = "ml.m6id.large"
+	AppInstanceTypeMlM6idXlarge            AppInstanceType = "ml.m6id.xlarge"
+	AppInstanceTypeMlM6id2xlarge           AppInstanceType = "ml.m6id.2xlarge"
+	AppInstanceTypeMlM6id4xlarge           AppInstanceType = "ml.m6id.4xlarge"
+	AppInstanceTypeMlM6id8xlarge           AppInstanceType = "ml.m6id.8xlarge"
+	AppInstanceTypeMlM6id12xlarge          AppInstanceType = "ml.m6id.12xlarge"
+	AppInstanceTypeMlM6id16xlarge          AppInstanceType = "ml.m6id.16xlarge"
+	AppInstanceTypeMlM6id24xlarge          AppInstanceType = "ml.m6id.24xlarge"
+	AppInstanceTypeMlM6id32xlarge          AppInstanceType = "ml.m6id.32xlarge"
+	AppInstanceTypeMlC6idLarge             AppInstanceType = "ml.c6id.large"
+	AppInstanceTypeMlC6idXlarge            AppInstanceType = "ml.c6id.xlarge"
+	AppInstanceTypeMlC6id2xlarge           AppInstanceType = "ml.c6id.2xlarge"
+	AppInstanceTypeMlC6id4xlarge           AppInstanceType = "ml.c6id.4xlarge"
+	AppInstanceTypeMlC6id8xlarge           AppInstanceType = "ml.c6id.8xlarge"
+	AppInstanceTypeMlC6id12xlarge          AppInstanceType = "ml.c6id.12xlarge"
+	AppInstanceTypeMlC6id16xlarge          AppInstanceType = "ml.c6id.16xlarge"
+	AppInstanceTypeMlC6id24xlarge          AppInstanceType = "ml.c6id.24xlarge"
+	AppInstanceTypeMlC6id32xlarge          AppInstanceType = "ml.c6id.32xlarge"
+	AppInstanceTypeMlR6idLarge             AppInstanceType = "ml.r6id.large"
+	AppInstanceTypeMlR6idXlarge            AppInstanceType = "ml.r6id.xlarge"
+	AppInstanceTypeMlR6id2xlarge           AppInstanceType = "ml.r6id.2xlarge"
+	AppInstanceTypeMlR6id4xlarge           AppInstanceType = "ml.r6id.4xlarge"
+	AppInstanceTypeMlR6id8xlarge           AppInstanceType = "ml.r6id.8xlarge"
+	AppInstanceTypeMlR6id12xlarge          AppInstanceType = "ml.r6id.12xlarge"
+	AppInstanceTypeMlR6id16xlarge          AppInstanceType = "ml.r6id.16xlarge"
+	AppInstanceTypeMlR6id24xlarge          AppInstanceType = "ml.r6id.24xlarge"
+	AppInstanceTypeMlR6id32xlarge          AppInstanceType = "ml.r6id.32xlarge"
+	AppInstanceTypeMlP54xlarge             AppInstanceType = "ml.p5.4xlarge"
+	AppInstanceTypeMlP6B20048xlarge        AppInstanceType = "ml.p6-b200.48xlarge"
+	AppInstanceTypeMlG7e2xlarge            AppInstanceType = "ml.g7e.2xlarge"
+	AppInstanceTypeMlG7e4xlarge            AppInstanceType = "ml.g7e.4xlarge"
+	AppInstanceTypeMlG7e8xlarge            AppInstanceType = "ml.g7e.8xlarge"
+	AppInstanceTypeMlG7e12xlarge           AppInstanceType = "ml.g7e.12xlarge"
+	AppInstanceTypeMlG7e24xlarge           AppInstanceType = "ml.g7e.24xlarge"
+	AppInstanceTypeMlG7e48xlarge           AppInstanceType = "ml.g7e.48xlarge"
+)
+
+type UserSettingsAutoMountHomeEFS string
+
+const (
+	UserSettingsAutoMountHomeEFSEnabled         UserSettingsAutoMountHomeEFS = "Enabled"
+	UserSettingsAutoMountHomeEFSDisabled        UserSettingsAutoMountHomeEFS = "Disabled"
+	UserSettingsAutoMountHomeEFSDefaultAsDomain UserSettingsAutoMountHomeEFS = "DefaultAsDomain"
+)
+
+type RStudioServerProAppSettingsAccessStatus string
+
+const (
+	RStudioServerProAppSettingsAccessStatusENABLED  RStudioServerProAppSettingsAccessStatus = "ENABLED"
+	RStudioServerProAppSettingsAccessStatusDISABLED RStudioServerProAppSettingsAccessStatus = "DISABLED"
+)
+
+type RStudioServerProAppSettingsUserGroup string
+
+const (
+	RStudioServerProAppSettingsUserGroupRSTUDIOADMIN RStudioServerProAppSettingsUserGroup = "R_STUDIO_ADMIN"
+	RStudioServerProAppSettingsUserGroupRSTUDIOUSER  RStudioServerProAppSettingsUserGroup = "R_STUDIO_USER"
+)
+
+type SharingSettingsNotebookOutputOption string
+
+const (
+	SharingSettingsNotebookOutputOptionAllowed  SharingSettingsNotebookOutputOption = "Allowed"
+	SharingSettingsNotebookOutputOptionDisabled SharingSettingsNotebookOutputOption = "Disabled"
+)
+
+type UserSettingsStudioWebPortal string
+
+const (
+	UserSettingsStudioWebPortalENABLED  UserSettingsStudioWebPortal = "ENABLED"
+	UserSettingsStudioWebPortalDISABLED UserSettingsStudioWebPortal = "DISABLED"
+)
+
+type AppType string
+
+const (
+	AppTypeJupyterServer    AppType = "JupyterServer"
+	AppTypeTensorBoard      AppType = "TensorBoard"
+	AppTypeRStudioServerPro AppType = "RStudioServerPro"
+	AppTypeJupyterLab       AppType = "JupyterLab"
+	AppTypeCodeEditor       AppType = "CodeEditor"
+	AppTypeDetailedProfiler AppType = "DetailedProfiler"
+	AppTypeCanvas           AppType = "Canvas"
+)
+
+type MlTools string
+
+const (
+	MlToolsDataWrangler            MlTools = "DataWrangler"
+	MlToolsFeatureStore            MlTools = "FeatureStore"
+	MlToolsEmrClusters             MlTools = "EmrClusters"
+	MlToolsAutoMl                  MlTools = "AutoMl"
+	MlToolsExperiments             MlTools = "Experiments"
+	MlToolsTraining                MlTools = "Training"
+	MlToolsModelEvaluation         MlTools = "ModelEvaluation"
+	MlToolsPipelines               MlTools = "Pipelines"
+	MlToolsModels                  MlTools = "Models"
+	MlToolsJumpStart               MlTools = "JumpStart"
+	MlToolsInferenceRecommender    MlTools = "InferenceRecommender"
+	MlToolsEndpoints               MlTools = "Endpoints"
+	MlToolsProjects                MlTools = "Projects"
+	MlToolsInferenceOptimization   MlTools = "InferenceOptimization"
+	MlToolsHyperPodClusters        MlTools = "HyperPodClusters"
+	MlToolsComet                   MlTools = "Comet"
+	MlToolsDeepchecksLLMEvaluation MlTools = "DeepchecksLLMEvaluation"
+	MlToolsFiddler                 MlTools = "Fiddler"
+	MlToolsLakeraGuard             MlTools = "LakeraGuard"
+	MlToolsPerformanceEvaluation   MlTools = "PerformanceEvaluation"
+)
+
+type HiddenSageMakerImageSageMakerImageName string
+
+const (
+	HiddenSageMakerImageSageMakerImageNameSagemakerDistribution HiddenSageMakerImageSageMakerImageName = "sagemaker_distribution"
+)
+
+type DockerSettingsEnableDockerAccess string
+
+const (
+	DockerSettingsEnableDockerAccessENABLED  DockerSettingsEnableDockerAccess = "ENABLED"
+	DockerSettingsEnableDockerAccessDISABLED DockerSettingsEnableDockerAccess = "DISABLED"
+)
+
+type DomainSettingsExecutionRoleIdentityConfig string
+
+const (
+	DomainSettingsExecutionRoleIdentityConfigUSERPROFILENAME DomainSettingsExecutionRoleIdentityConfig = "USER_PROFILE_NAME"
+	DomainSettingsExecutionRoleIdentityConfigDISABLED        DomainSettingsExecutionRoleIdentityConfig = "DISABLED"
+)
+
+type IpAddressType string
+
+const (
+	IpAddressTypeIPV4      IpAddressType = "IPV4"
+	IpAddressTypeDUALSTACK IpAddressType = "DUALSTACK"
+)
+
+type UnifiedStudioSettingsStudioWebPortalAccess string
+
+const (
+	UnifiedStudioSettingsStudioWebPortalAccessENABLED  UnifiedStudioSettingsStudioWebPortalAccess = "ENABLED"
+	UnifiedStudioSettingsStudioWebPortalAccessDISABLED UnifiedStudioSettingsStudioWebPortalAccess = "DISABLED"
+)
+
+type DomainHomeEfsFileSystemCreation string
+
+const (
+	DomainHomeEfsFileSystemCreationEnabled  DomainHomeEfsFileSystemCreation = "Enabled"
+	DomainHomeEfsFileSystemCreationDisabled DomainHomeEfsFileSystemCreation = "Disabled"
+)
+
+type DomainTagPropagation string
+
+const (
+	DomainTagPropagationENABLED  DomainTagPropagation = "ENABLED"
+	DomainTagPropagationDISABLED DomainTagPropagation = "DISABLED"
+)
+
+type ExperimentTrialComponentStatusPrimaryStatus string
+
+const (
+	ExperimentTrialComponentStatusPrimaryStatusInProgress ExperimentTrialComponentStatusPrimaryStatus = "InProgress"
+	ExperimentTrialComponentStatusPrimaryStatusCompleted  ExperimentTrialComponentStatusPrimaryStatus = "Completed"
+	ExperimentTrialComponentStatusPrimaryStatusFailed     ExperimentTrialComponentStatusPrimaryStatus = "Failed"
+	ExperimentTrialComponentStatusPrimaryStatusStopping   ExperimentTrialComponentStatusPrimaryStatus = "Stopping"
+	ExperimentTrialComponentStatusPrimaryStatusStopped    ExperimentTrialComponentStatusPrimaryStatus = "Stopped"
+)
+
+type FeatureDefinitionFeatureType string
+
+const (
+	FeatureDefinitionFeatureTypeIntegral   FeatureDefinitionFeatureType = "Integral"
+	FeatureDefinitionFeatureTypeFractional FeatureDefinitionFeatureType = "Fractional"
+	FeatureDefinitionFeatureTypeString     FeatureDefinitionFeatureType = "String"
+)
+
+type TableFormat string
+
+const (
+	TableFormatIceberg TableFormat = "Iceberg"
+	TableFormatGlue    TableFormat = "Glue"
+)
+
+type StorageType string
+
+const (
+	StorageTypeStandard StorageType = "Standard"
+	StorageTypeInMemory StorageType = "InMemory"
+)
+
+type Unit string
+
+const (
+	UnitSeconds Unit = "Seconds"
+	UnitMinutes Unit = "Minutes"
+	UnitHours   Unit = "Hours"
+	UnitDays    Unit = "Days"
+	UnitWeeks   Unit = "Weeks"
+)
+
+type ThroughputMode string
+
+const (
+	ThroughputModeOnDemand    ThroughputMode = "OnDemand"
+	ThroughputModeProvisioned ThroughputMode = "Provisioned"
+)
+
+type HubHubStatus string
+
+const (
+	HubHubStatusInService    HubHubStatus = "InService"
+	HubHubStatusCreating     HubHubStatus = "Creating"
+	HubHubStatusUpdating     HubHubStatus = "Updating"
+	HubHubStatusDeleting     HubHubStatus = "Deleting"
+	HubHubStatusCreateFailed HubHubStatus = "CreateFailed"
+	HubHubStatusUpdateFailed HubHubStatus = "UpdateFailed"
+	HubHubStatusDeleteFailed HubHubStatus = "DeleteFailed"
+)
+
+type JobType string
+
+const (
+	JobTypeTRAINING       JobType = "TRAINING"
+	JobTypeINFERENCE      JobType = "INFERENCE"
+	JobTypeNOTEBOOKKERNEL JobType = "NOTEBOOK_KERNEL"
+)
+
+type Processor string
+
+const (
+	ProcessorCPU Processor = "CPU"
+	ProcessorGPU Processor = "GPU"
+)
+
+type VendorGuidance string
+
+const (
+	VendorGuidanceNOTPROVIDED  VendorGuidance = "NOT_PROVIDED"
+	VendorGuidanceSTABLE       VendorGuidance = "STABLE"
+	VendorGuidanceTOBEARCHIVED VendorGuidance = "TO_BE_ARCHIVED"
+	VendorGuidanceARCHIVED     VendorGuidance = "ARCHIVED"
+)
+
+type InferenceComponentCapacitySizeType string
+
+const (
+	InferenceComponentCapacitySizeTypeCOPYCOUNT       InferenceComponentCapacitySizeType = "COPY_COUNT"
+	InferenceComponentCapacitySizeTypeCAPACITYPERCENT InferenceComponentCapacitySizeType = "CAPACITY_PERCENT"
+)
+
+type InferenceComponentStatus string
+
+const (
+	InferenceComponentStatusInService InferenceComponentStatus = "InService"
+	InferenceComponentStatusCreating  InferenceComponentStatus = "Creating"
+	InferenceComponentStatusUpdating  InferenceComponentStatus = "Updating"
+	InferenceComponentStatusFailed    InferenceComponentStatus = "Failed"
+	InferenceComponentStatusDeleting  InferenceComponentStatus = "Deleting"
+)
+
+type InferenceExperimentDesiredState string
+
+const (
+	InferenceExperimentDesiredStateRunning   InferenceExperimentDesiredState = "Running"
+	InferenceExperimentDesiredStateCompleted InferenceExperimentDesiredState = "Completed"
+	InferenceExperimentDesiredStateCancelled InferenceExperimentDesiredState = "Cancelled"
+)
+
+type EndpointMetadataEndpointStatus string
+
+const (
+	EndpointMetadataEndpointStatusCreating       EndpointMetadataEndpointStatus = "Creating"
+	EndpointMetadataEndpointStatusUpdating       EndpointMetadataEndpointStatus = "Updating"
+	EndpointMetadataEndpointStatusSystemUpdating EndpointMetadataEndpointStatus = "SystemUpdating"
+	EndpointMetadataEndpointStatusRollingBack    EndpointMetadataEndpointStatus = "RollingBack"
+	EndpointMetadataEndpointStatusInService      EndpointMetadataEndpointStatus = "InService"
+	EndpointMetadataEndpointStatusOutOfService   EndpointMetadataEndpointStatus = "OutOfService"
+	EndpointMetadataEndpointStatusDeleting       EndpointMetadataEndpointStatus = "Deleting"
+	EndpointMetadataEndpointStatusFailed         EndpointMetadataEndpointStatus = "Failed"
+)
+
+type ModelInfrastructureConfigInfrastructureType string
+
+const (
+	ModelInfrastructureConfigInfrastructureTypeRealTimeInference ModelInfrastructureConfigInfrastructureType = "RealTimeInference"
+)
+
+type InferenceExperimentStatus string
+
+const (
+	InferenceExperimentStatusCreating  InferenceExperimentStatus = "Creating"
+	InferenceExperimentStatusCreated   InferenceExperimentStatus = "Created"
+	InferenceExperimentStatusUpdating  InferenceExperimentStatus = "Updating"
+	InferenceExperimentStatusStarting  InferenceExperimentStatus = "Starting"
+	InferenceExperimentStatusStopping  InferenceExperimentStatus = "Stopping"
+	InferenceExperimentStatusRunning   InferenceExperimentStatus = "Running"
+	InferenceExperimentStatusCompleted InferenceExperimentStatus = "Completed"
+	InferenceExperimentStatusCancelled InferenceExperimentStatus = "Cancelled"
+)
+
+type InferenceExperimentType string
+
+const (
+	InferenceExperimentTypeShadowMode InferenceExperimentType = "ShadowMode"
+)
+
+type MlflowAppModelRegistrationMode string
+
+const (
+	MlflowAppModelRegistrationModeAutoModelRegistrationEnabled  MlflowAppModelRegistrationMode = "AutoModelRegistrationEnabled"
+	MlflowAppModelRegistrationModeAutoModelRegistrationDisabled MlflowAppModelRegistrationMode = "AutoModelRegistrationDisabled"
+)
+
+type MlflowAppStatus string
+
+const (
+	MlflowAppStatusCreating     MlflowAppStatus = "Creating"
+	MlflowAppStatusCreated      MlflowAppStatus = "Created"
+	MlflowAppStatusCreateFailed MlflowAppStatus = "CreateFailed"
+	MlflowAppStatusUpdating     MlflowAppStatus = "Updating"
+	MlflowAppStatusUpdated      MlflowAppStatus = "Updated"
+	MlflowAppStatusUpdateFailed MlflowAppStatus = "UpdateFailed"
+	MlflowAppStatusDeleting     MlflowAppStatus = "Deleting"
+	MlflowAppStatusDeleteFailed MlflowAppStatus = "DeleteFailed"
+	MlflowAppStatusDeleted      MlflowAppStatus = "Deleted"
+)
+
+type MlflowTrackingServerTrackingServerSize string
+
+const (
+	MlflowTrackingServerTrackingServerSizeSmall  MlflowTrackingServerTrackingServerSize = "Small"
+	MlflowTrackingServerTrackingServerSizeMedium MlflowTrackingServerTrackingServerSize = "Medium"
+	MlflowTrackingServerTrackingServerSizeLarge  MlflowTrackingServerTrackingServerSize = "Large"
+)
+
+type ImageConfigRepositoryAccessMode string
+
+const (
+	ImageConfigRepositoryAccessModePlatform ImageConfigRepositoryAccessMode = "Platform"
+	ImageConfigRepositoryAccessModeVpc      ImageConfigRepositoryAccessMode = "Vpc"
+)
+
+type ContainerDefinitionMode string
+
+const (
+	ContainerDefinitionModeSingleModel ContainerDefinitionMode = "SingleModel"
+	ContainerDefinitionModeMultiModel  ContainerDefinitionMode = "MultiModel"
+)
+
+type S3DataSourceCompressionType string
+
+const (
+	S3DataSourceCompressionTypeNone S3DataSourceCompressionType = "None"
+	S3DataSourceCompressionTypeGzip S3DataSourceCompressionType = "Gzip"
+)
+
+type S3DataSourceS3DataType string
+
+const (
+	S3DataSourceS3DataTypeS3Prefix S3DataSourceS3DataType = "S3Prefix"
+	S3DataSourceS3DataTypeS3Object S3DataSourceS3DataType = "S3Object"
+)
+
+type MultiModelConfigModelCacheSetting string
+
+const (
+	MultiModelConfigModelCacheSettingEnabled  MultiModelConfigModelCacheSetting = "Enabled"
+	MultiModelConfigModelCacheSettingDisabled MultiModelConfigModelCacheSetting = "Disabled"
+)
+
+type InferenceExecutionConfigMode string
+
+const (
+	InferenceExecutionConfigModeSerial InferenceExecutionConfigMode = "Serial"
+	InferenceExecutionConfigModeDirect InferenceExecutionConfigMode = "Direct"
+)
+
+type ModelBiasJobDefinitionBatchTransformInputS3DataDistributionType string
+
+const (
+	ModelBiasJobDefinitionBatchTransformInputS3DataDistributionTypeFullyReplicated ModelBiasJobDefinitionBatchTransformInputS3DataDistributionType = "FullyReplicated"
+	ModelBiasJobDefinitionBatchTransformInputS3DataDistributionTypeShardedByS3Key  ModelBiasJobDefinitionBatchTransformInputS3DataDistributionType = "ShardedByS3Key"
+)
+
+type ModelBiasJobDefinitionBatchTransformInputS3InputMode string
+
+const (
+	ModelBiasJobDefinitionBatchTransformInputS3InputModePipe ModelBiasJobDefinitionBatchTransformInputS3InputMode = "Pipe"
+	ModelBiasJobDefinitionBatchTransformInputS3InputModeFile ModelBiasJobDefinitionBatchTransformInputS3InputMode = "File"
+)
+
+type ModelBiasJobDefinitionEndpointInputS3DataDistributionType string
+
+const (
+	ModelBiasJobDefinitionEndpointInputS3DataDistributionTypeFullyReplicated ModelBiasJobDefinitionEndpointInputS3DataDistributionType = "FullyReplicated"
+	ModelBiasJobDefinitionEndpointInputS3DataDistributionTypeShardedByS3Key  ModelBiasJobDefinitionEndpointInputS3DataDistributionType = "ShardedByS3Key"
+)
+
+type ModelBiasJobDefinitionEndpointInputS3InputMode string
+
+const (
+	ModelBiasJobDefinitionEndpointInputS3InputModePipe ModelBiasJobDefinitionEndpointInputS3InputMode = "Pipe"
+	ModelBiasJobDefinitionEndpointInputS3InputModeFile ModelBiasJobDefinitionEndpointInputS3InputMode = "File"
+)
+
+type ModelBiasJobDefinitionS3OutputS3UploadMode string
+
+const (
+	ModelBiasJobDefinitionS3OutputS3UploadModeContinuous ModelBiasJobDefinitionS3OutputS3UploadMode = "Continuous"
+	ModelBiasJobDefinitionS3OutputS3UploadModeEndOfJob   ModelBiasJobDefinitionS3OutputS3UploadMode = "EndOfJob"
+)
+
+type RiskRating string
+
+const (
+	RiskRatingHigh    RiskRating = "High"
+	RiskRatingMedium  RiskRating = "Medium"
+	RiskRatingLow     RiskRating = "Low"
+	RiskRatingUnknown RiskRating = "Unknown"
+)
+
+type ModelPackageDetailsModelApprovalStatus string
+
+const (
+	ModelPackageDetailsModelApprovalStatusApproved              ModelPackageDetailsModelApprovalStatus = "Approved"
+	ModelPackageDetailsModelApprovalStatusRejected              ModelPackageDetailsModelApprovalStatus = "Rejected"
+	ModelPackageDetailsModelApprovalStatusPendingManualApproval ModelPackageDetailsModelApprovalStatus = "PendingManualApproval"
+)
+
+type ModelPackageDetailsModelPackageStatus string
+
+const (
+	ModelPackageDetailsModelPackageStatusPending    ModelPackageDetailsModelPackageStatus = "Pending"
+	ModelPackageDetailsModelPackageStatusInProgress ModelPackageDetailsModelPackageStatus = "InProgress"
+	ModelPackageDetailsModelPackageStatusCompleted  ModelPackageDetailsModelPackageStatus = "Completed"
+	ModelPackageDetailsModelPackageStatusFailed     ModelPackageDetailsModelPackageStatus = "Failed"
+	ModelPackageDetailsModelPackageStatusDeleting   ModelPackageDetailsModelPackageStatus = "Deleting"
+)
+
+type ObjectiveFunctionFunctionFunction string
+
+const (
+	ObjectiveFunctionFunctionFunctionMaximize ObjectiveFunctionFunctionFunction = "Maximize"
+	ObjectiveFunctionFunctionFunctionMinimize ObjectiveFunctionFunctionFunction = "Minimize"
+)
+
+type ModelCardModelCardProcessingStatus string
+
+const (
+	ModelCardModelCardProcessingStatusUnsetValue        ModelCardModelCardProcessingStatus = "UnsetValue"
+	ModelCardModelCardProcessingStatusDeleteInProgress  ModelCardModelCardProcessingStatus = "DeleteInProgress"
+	ModelCardModelCardProcessingStatusDeletePending     ModelCardModelCardProcessingStatus = "DeletePending"
+	ModelCardModelCardProcessingStatusContentDeleted    ModelCardModelCardProcessingStatus = "ContentDeleted"
+	ModelCardModelCardProcessingStatusExportJobsDeleted ModelCardModelCardProcessingStatus = "ExportJobsDeleted"
+	ModelCardModelCardProcessingStatusDeleteCompleted   ModelCardModelCardProcessingStatus = "DeleteCompleted"
+	ModelCardModelCardProcessingStatusDeleteFailed      ModelCardModelCardProcessingStatus = "DeleteFailed"
+)
+
+type ModelCardModelCardStatus string
+
+const (
+	ModelCardModelCardStatusDraft         ModelCardModelCardStatus = "Draft"
+	ModelCardModelCardStatusPendingReview ModelCardModelCardStatus = "PendingReview"
+	ModelCardModelCardStatusApproved      ModelCardModelCardStatus = "Approved"
+	ModelCardModelCardStatusArchived      ModelCardModelCardStatus = "Archived"
+)
+
+type ModelExplainabilityJobDefinitionBatchTransformInputS3DataDistributionType string
+
+const (
+	ModelExplainabilityJobDefinitionBatchTransformInputS3DataDistributionTypeFullyReplicated ModelExplainabilityJobDefinitionBatchTransformInputS3DataDistributionType = "FullyReplicated"
+	ModelExplainabilityJobDefinitionBatchTransformInputS3DataDistributionTypeShardedByS3Key  ModelExplainabilityJobDefinitionBatchTransformInputS3DataDistributionType = "ShardedByS3Key"
+)
+
+type ModelExplainabilityJobDefinitionBatchTransformInputS3InputMode string
+
+const (
+	ModelExplainabilityJobDefinitionBatchTransformInputS3InputModePipe ModelExplainabilityJobDefinitionBatchTransformInputS3InputMode = "Pipe"
+	ModelExplainabilityJobDefinitionBatchTransformInputS3InputModeFile ModelExplainabilityJobDefinitionBatchTransformInputS3InputMode = "File"
+)
+
+type ModelExplainabilityJobDefinitionEndpointInputS3DataDistributionType string
+
+const (
+	ModelExplainabilityJobDefinitionEndpointInputS3DataDistributionTypeFullyReplicated ModelExplainabilityJobDefinitionEndpointInputS3DataDistributionType = "FullyReplicated"
+	ModelExplainabilityJobDefinitionEndpointInputS3DataDistributionTypeShardedByS3Key  ModelExplainabilityJobDefinitionEndpointInputS3DataDistributionType = "ShardedByS3Key"
+)
+
+type ModelExplainabilityJobDefinitionEndpointInputS3InputMode string
+
+const (
+	ModelExplainabilityJobDefinitionEndpointInputS3InputModePipe ModelExplainabilityJobDefinitionEndpointInputS3InputMode = "Pipe"
+	ModelExplainabilityJobDefinitionEndpointInputS3InputModeFile ModelExplainabilityJobDefinitionEndpointInputS3InputMode = "File"
+)
+
+type ModelExplainabilityJobDefinitionS3OutputS3UploadMode string
+
+const (
+	ModelExplainabilityJobDefinitionS3OutputS3UploadModeContinuous ModelExplainabilityJobDefinitionS3OutputS3UploadMode = "Continuous"
+	ModelExplainabilityJobDefinitionS3OutputS3UploadModeEndOfJob   ModelExplainabilityJobDefinitionS3OutputS3UploadMode = "EndOfJob"
+)
+
+type S3ModelDataSourceCompressionType string
+
+const (
+	S3ModelDataSourceCompressionTypeNone S3ModelDataSourceCompressionType = "None"
+	S3ModelDataSourceCompressionTypeGzip S3ModelDataSourceCompressionType = "Gzip"
+)
+
+type S3ModelDataSourceS3DataType string
+
+const (
+	S3ModelDataSourceS3DataTypeS3Prefix S3ModelDataSourceS3DataType = "S3Prefix"
+	S3ModelDataSourceS3DataTypeS3Object S3ModelDataSourceS3DataType = "S3Object"
+)
+
+type ModelApprovalStatus string
+
+const (
+	ModelApprovalStatusApproved              ModelApprovalStatus = "Approved"
+	ModelApprovalStatusRejected              ModelApprovalStatus = "Rejected"
+	ModelApprovalStatusPendingManualApproval ModelApprovalStatus = "PendingManualApproval"
+)
+
+type ModelPackageModelCardModelCardStatus string
+
+const (
+	ModelPackageModelCardModelCardStatusDraft         ModelPackageModelCardModelCardStatus = "Draft"
+	ModelPackageModelCardModelCardStatusPendingReview ModelPackageModelCardModelCardStatus = "PendingReview"
+	ModelPackageModelCardModelCardStatusApproved      ModelPackageModelCardModelCardStatus = "Approved"
+	ModelPackageModelCardModelCardStatusArchived      ModelPackageModelCardModelCardStatus = "Archived"
+)
+
+type ModelPackageStatus string
+
+const (
+	ModelPackageStatusPending    ModelPackageStatus = "Pending"
+	ModelPackageStatusDeleting   ModelPackageStatus = "Deleting"
+	ModelPackageStatusInProgress ModelPackageStatus = "InProgress"
+	ModelPackageStatusCompleted  ModelPackageStatus = "Completed"
+	ModelPackageStatusFailed     ModelPackageStatus = "Failed"
+)
+
+type ModelPackageStatusItemStatus string
+
+const (
+	ModelPackageStatusItemStatusNotStarted ModelPackageStatusItemStatus = "NotStarted"
+	ModelPackageStatusItemStatusFailed     ModelPackageStatusItemStatus = "Failed"
+	ModelPackageStatusItemStatusInProgress ModelPackageStatusItemStatus = "InProgress"
+	ModelPackageStatusItemStatusCompleted  ModelPackageStatusItemStatus = "Completed"
+)
+
+type SkipModelValidation string
+
+const (
+	SkipModelValidationNone SkipModelValidation = "None"
+	SkipModelValidationAll  SkipModelValidation = "All"
+)
+
+type TransformJobDefinitionBatchStrategy string
+
+const (
+	TransformJobDefinitionBatchStrategyMultiRecord  TransformJobDefinitionBatchStrategy = "MultiRecord"
+	TransformJobDefinitionBatchStrategySingleRecord TransformJobDefinitionBatchStrategy = "SingleRecord"
+)
+
+type TransformInputCompressionType string
+
+const (
+	TransformInputCompressionTypeNone TransformInputCompressionType = "None"
+	TransformInputCompressionTypeGzip TransformInputCompressionType = "Gzip"
+)
+
+type ModelPackageS3DataSourceS3DataType string
+
+const (
+	ModelPackageS3DataSourceS3DataTypeManifestFile          ModelPackageS3DataSourceS3DataType = "ManifestFile"
+	ModelPackageS3DataSourceS3DataTypeS3Prefix              ModelPackageS3DataSourceS3DataType = "S3Prefix"
+	ModelPackageS3DataSourceS3DataTypeAugmentedManifestFile ModelPackageS3DataSourceS3DataType = "AugmentedManifestFile"
+)
+
+type TransformInputSplitType string
+
+const (
+	TransformInputSplitTypeNone     TransformInputSplitType = "None"
+	TransformInputSplitTypeTFRecord TransformInputSplitType = "TFRecord"
+	TransformInputSplitTypeLine     TransformInputSplitType = "Line"
+	TransformInputSplitTypeRecordIO TransformInputSplitType = "RecordIO"
+)
+
+type TransformOutputAssembleWith string
+
+const (
+	TransformOutputAssembleWithNone TransformOutputAssembleWith = "None"
+	TransformOutputAssembleWithLine TransformOutputAssembleWith = "Line"
+)
+
+type ModelPackageGroupModelPackageGroupStatus string
+
+const (
+	ModelPackageGroupModelPackageGroupStatusPending      ModelPackageGroupModelPackageGroupStatus = "Pending"
+	ModelPackageGroupModelPackageGroupStatusInProgress   ModelPackageGroupModelPackageGroupStatus = "InProgress"
+	ModelPackageGroupModelPackageGroupStatusCompleted    ModelPackageGroupModelPackageGroupStatus = "Completed"
+	ModelPackageGroupModelPackageGroupStatusFailed       ModelPackageGroupModelPackageGroupStatus = "Failed"
+	ModelPackageGroupModelPackageGroupStatusDeleting     ModelPackageGroupModelPackageGroupStatus = "Deleting"
+	ModelPackageGroupModelPackageGroupStatusDeleteFailed ModelPackageGroupModelPackageGroupStatus = "DeleteFailed"
+)
+
+type ProblemType string
+
+const (
+	ProblemTypeBinaryClassification     ProblemType = "BinaryClassification"
+	ProblemTypeMulticlassClassification ProblemType = "MulticlassClassification"
+	ProblemTypeRegression               ProblemType = "Regression"
+)
+
+type ModelQualityJobDefinitionBatchTransformInputS3DataDistributionType string
+
+const (
+	ModelQualityJobDefinitionBatchTransformInputS3DataDistributionTypeFullyReplicated ModelQualityJobDefinitionBatchTransformInputS3DataDistributionType = "FullyReplicated"
+	ModelQualityJobDefinitionBatchTransformInputS3DataDistributionTypeShardedByS3Key  ModelQualityJobDefinitionBatchTransformInputS3DataDistributionType = "ShardedByS3Key"
+)
+
+type ModelQualityJobDefinitionBatchTransformInputS3InputMode string
+
+const (
+	ModelQualityJobDefinitionBatchTransformInputS3InputModePipe ModelQualityJobDefinitionBatchTransformInputS3InputMode = "Pipe"
+	ModelQualityJobDefinitionBatchTransformInputS3InputModeFile ModelQualityJobDefinitionBatchTransformInputS3InputMode = "File"
+)
+
+type ModelQualityJobDefinitionEndpointInputS3DataDistributionType string
+
+const (
+	ModelQualityJobDefinitionEndpointInputS3DataDistributionTypeFullyReplicated ModelQualityJobDefinitionEndpointInputS3DataDistributionType = "FullyReplicated"
+	ModelQualityJobDefinitionEndpointInputS3DataDistributionTypeShardedByS3Key  ModelQualityJobDefinitionEndpointInputS3DataDistributionType = "ShardedByS3Key"
+)
+
+type ModelQualityJobDefinitionEndpointInputS3InputMode string
+
+const (
+	ModelQualityJobDefinitionEndpointInputS3InputModePipe ModelQualityJobDefinitionEndpointInputS3InputMode = "Pipe"
+	ModelQualityJobDefinitionEndpointInputS3InputModeFile ModelQualityJobDefinitionEndpointInputS3InputMode = "File"
+)
+
+type ModelQualityJobDefinitionS3OutputS3UploadMode string
+
+const (
+	ModelQualityJobDefinitionS3OutputS3UploadModeContinuous ModelQualityJobDefinitionS3OutputS3UploadMode = "Continuous"
+	ModelQualityJobDefinitionS3OutputS3UploadModeEndOfJob   ModelQualityJobDefinitionS3OutputS3UploadMode = "EndOfJob"
+)
+
+type MonitoringExecutionSummaryMonitoringExecutionStatus string
+
+const (
+	MonitoringExecutionSummaryMonitoringExecutionStatusPending                 MonitoringExecutionSummaryMonitoringExecutionStatus = "Pending"
+	MonitoringExecutionSummaryMonitoringExecutionStatusCompleted               MonitoringExecutionSummaryMonitoringExecutionStatus = "Completed"
+	MonitoringExecutionSummaryMonitoringExecutionStatusCompletedWithViolations MonitoringExecutionSummaryMonitoringExecutionStatus = "CompletedWithViolations"
+	MonitoringExecutionSummaryMonitoringExecutionStatusInProgress              MonitoringExecutionSummaryMonitoringExecutionStatus = "InProgress"
+	MonitoringExecutionSummaryMonitoringExecutionStatusFailed                  MonitoringExecutionSummaryMonitoringExecutionStatus = "Failed"
+	MonitoringExecutionSummaryMonitoringExecutionStatusStopping                MonitoringExecutionSummaryMonitoringExecutionStatus = "Stopping"
+	MonitoringExecutionSummaryMonitoringExecutionStatusStopped                 MonitoringExecutionSummaryMonitoringExecutionStatus = "Stopped"
+)
+
+type MonitoringScheduleBatchTransformInputS3DataDistributionType string
+
+const (
+	MonitoringScheduleBatchTransformInputS3DataDistributionTypeFullyReplicated MonitoringScheduleBatchTransformInputS3DataDistributionType = "FullyReplicated"
+	MonitoringScheduleBatchTransformInputS3DataDistributionTypeShardedByS3Key  MonitoringScheduleBatchTransformInputS3DataDistributionType = "ShardedByS3Key"
+)
+
+type MonitoringScheduleBatchTransformInputS3InputMode string
+
+const (
+	MonitoringScheduleBatchTransformInputS3InputModePipe MonitoringScheduleBatchTransformInputS3InputMode = "Pipe"
+	MonitoringScheduleBatchTransformInputS3InputModeFile MonitoringScheduleBatchTransformInputS3InputMode = "File"
+)
+
+type MonitoringScheduleEndpointInputS3DataDistributionType string
+
+const (
+	MonitoringScheduleEndpointInputS3DataDistributionTypeFullyReplicated MonitoringScheduleEndpointInputS3DataDistributionType = "FullyReplicated"
+	MonitoringScheduleEndpointInputS3DataDistributionTypeShardedByS3Key  MonitoringScheduleEndpointInputS3DataDistributionType = "ShardedByS3Key"
+)
+
+type MonitoringScheduleEndpointInputS3InputMode string
+
+const (
+	MonitoringScheduleEndpointInputS3InputModePipe MonitoringScheduleEndpointInputS3InputMode = "Pipe"
+	MonitoringScheduleEndpointInputS3InputModeFile MonitoringScheduleEndpointInputS3InputMode = "File"
+)
+
+type MonitoringScheduleS3OutputS3UploadMode string
+
+const (
+	MonitoringScheduleS3OutputS3UploadModeContinuous MonitoringScheduleS3OutputS3UploadMode = "Continuous"
+	MonitoringScheduleS3OutputS3UploadModeEndOfJob   MonitoringScheduleS3OutputS3UploadMode = "EndOfJob"
+)
+
+type MonitoringType string
+
+const (
+	MonitoringTypeDataQuality         MonitoringType = "DataQuality"
+	MonitoringTypeModelQuality        MonitoringType = "ModelQuality"
+	MonitoringTypeModelBias           MonitoringType = "ModelBias"
+	MonitoringTypeModelExplainability MonitoringType = "ModelExplainability"
+)
+
+type MonitoringScheduleMonitoringScheduleStatus string
+
+const (
+	MonitoringScheduleMonitoringScheduleStatusPending   MonitoringScheduleMonitoringScheduleStatus = "Pending"
+	MonitoringScheduleMonitoringScheduleStatusFailed    MonitoringScheduleMonitoringScheduleStatus = "Failed"
+	MonitoringScheduleMonitoringScheduleStatusScheduled MonitoringScheduleMonitoringScheduleStatus = "Scheduled"
+	MonitoringScheduleMonitoringScheduleStatusStopped   MonitoringScheduleMonitoringScheduleStatus = "Stopped"
+)
+
+type PartnerAppAuthType string
+
+const (
+	PartnerAppAuthTypeIAM PartnerAppAuthType = "IAM"
+)
+
+type PartnerAppType string
+
+const (
+	PartnerAppTypeLakeraGuard             PartnerAppType = "lakera-guard"
+	PartnerAppTypeComet                   PartnerAppType = "comet"
+	PartnerAppTypeDeepchecksLlmEvaluation PartnerAppType = "deepchecks-llm-evaluation"
+	PartnerAppTypeFiddler                 PartnerAppType = "fiddler"
+)
+
+type AthenaDatasetDefinitionOutputCompression string
+
+const (
+	AthenaDatasetDefinitionOutputCompressionGZIP   AthenaDatasetDefinitionOutputCompression = "GZIP"
+	AthenaDatasetDefinitionOutputCompressionSNAPPY AthenaDatasetDefinitionOutputCompression = "SNAPPY"
+	AthenaDatasetDefinitionOutputCompressionZLIB   AthenaDatasetDefinitionOutputCompression = "ZLIB"
+)
+
+type AthenaDatasetDefinitionOutputFormat string
+
+const (
+	AthenaDatasetDefinitionOutputFormatPARQUET  AthenaDatasetDefinitionOutputFormat = "PARQUET"
+	AthenaDatasetDefinitionOutputFormatAVRO     AthenaDatasetDefinitionOutputFormat = "AVRO"
+	AthenaDatasetDefinitionOutputFormatORC      AthenaDatasetDefinitionOutputFormat = "ORC"
+	AthenaDatasetDefinitionOutputFormatJSON     AthenaDatasetDefinitionOutputFormat = "JSON"
+	AthenaDatasetDefinitionOutputFormatTEXTFILE AthenaDatasetDefinitionOutputFormat = "TEXTFILE"
+)
+
+type DatasetDefinitionDataDistributionType string
+
+const (
+	DatasetDefinitionDataDistributionTypeFullyReplicated DatasetDefinitionDataDistributionType = "FullyReplicated"
+	DatasetDefinitionDataDistributionTypeShardedByS3Key  DatasetDefinitionDataDistributionType = "ShardedByS3Key"
+)
+
+type DatasetDefinitionInputMode string
+
+const (
+	DatasetDefinitionInputModeFile DatasetDefinitionInputMode = "File"
+	DatasetDefinitionInputModePipe DatasetDefinitionInputMode = "Pipe"
+)
+
+type RedshiftDatasetDefinitionOutputCompression string
+
+const (
+	RedshiftDatasetDefinitionOutputCompressionNone   RedshiftDatasetDefinitionOutputCompression = "None"
+	RedshiftDatasetDefinitionOutputCompressionGZIP   RedshiftDatasetDefinitionOutputCompression = "GZIP"
+	RedshiftDatasetDefinitionOutputCompressionSNAPPY RedshiftDatasetDefinitionOutputCompression = "SNAPPY"
+	RedshiftDatasetDefinitionOutputCompressionZSTD   RedshiftDatasetDefinitionOutputCompression = "ZSTD"
+	RedshiftDatasetDefinitionOutputCompressionBZIP2  RedshiftDatasetDefinitionOutputCompression = "BZIP2"
+)
+
+type RedshiftDatasetDefinitionOutputFormat string
+
+const (
+	RedshiftDatasetDefinitionOutputFormatPARQUET RedshiftDatasetDefinitionOutputFormat = "PARQUET"
+	RedshiftDatasetDefinitionOutputFormatCSV     RedshiftDatasetDefinitionOutputFormat = "CSV"
+)
+
+type S3InputS3CompressionType string
+
+const (
+	S3InputS3CompressionTypeNone S3InputS3CompressionType = "None"
+	S3InputS3CompressionTypeGzip S3InputS3CompressionType = "Gzip"
+)
+
+type S3InputS3DataDistributionType string
+
+const (
+	S3InputS3DataDistributionTypeFullyReplicated S3InputS3DataDistributionType = "FullyReplicated"
+	S3InputS3DataDistributionTypeShardedByS3Key  S3InputS3DataDistributionType = "ShardedByS3Key"
+)
+
+type S3InputS3DataType string
+
+const (
+	S3InputS3DataTypeManifestFile S3InputS3DataType = "ManifestFile"
+	S3InputS3DataTypeS3Prefix     S3InputS3DataType = "S3Prefix"
+)
+
+type S3InputS3InputMode string
+
+const (
+	S3InputS3InputModeFile S3InputS3InputMode = "File"
+	S3InputS3InputModePipe S3InputS3InputMode = "Pipe"
+)
+
+type ProcessingJobProcessingJobStatus string
+
+const (
+	ProcessingJobProcessingJobStatusCompleted  ProcessingJobProcessingJobStatus = "Completed"
+	ProcessingJobProcessingJobStatusInProgress ProcessingJobProcessingJobStatus = "InProgress"
+	ProcessingJobProcessingJobStatusStopping   ProcessingJobProcessingJobStatus = "Stopping"
+	ProcessingJobProcessingJobStatusStopped    ProcessingJobProcessingJobStatus = "Stopped"
+	ProcessingJobProcessingJobStatusFailed     ProcessingJobProcessingJobStatus = "Failed"
+)
+
+type ProcessingJobS3OutputS3UploadMode string
+
+const (
+	ProcessingJobS3OutputS3UploadModeContinuous ProcessingJobS3OutputS3UploadMode = "Continuous"
+	ProcessingJobS3OutputS3UploadModeEndOfJob   ProcessingJobS3OutputS3UploadMode = "EndOfJob"
+)
+
+type ProcessingJobClusterConfigInstanceType string
+
+const (
+	ProcessingJobClusterConfigInstanceTypeMlT3Medium     ProcessingJobClusterConfigInstanceType = "ml.t3.medium"
+	ProcessingJobClusterConfigInstanceTypeMlT3Large      ProcessingJobClusterConfigInstanceType = "ml.t3.large"
+	ProcessingJobClusterConfigInstanceTypeMlT3Xlarge     ProcessingJobClusterConfigInstanceType = "ml.t3.xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlT32xlarge    ProcessingJobClusterConfigInstanceType = "ml.t3.2xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlM4Xlarge     ProcessingJobClusterConfigInstanceType = "ml.m4.xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlM42xlarge    ProcessingJobClusterConfigInstanceType = "ml.m4.2xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlM44xlarge    ProcessingJobClusterConfigInstanceType = "ml.m4.4xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlM410xlarge   ProcessingJobClusterConfigInstanceType = "ml.m4.10xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlM416xlarge   ProcessingJobClusterConfigInstanceType = "ml.m4.16xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlC4Xlarge     ProcessingJobClusterConfigInstanceType = "ml.c4.xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlC42xlarge    ProcessingJobClusterConfigInstanceType = "ml.c4.2xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlC44xlarge    ProcessingJobClusterConfigInstanceType = "ml.c4.4xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlC48xlarge    ProcessingJobClusterConfigInstanceType = "ml.c4.8xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlC5Xlarge     ProcessingJobClusterConfigInstanceType = "ml.c5.xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlC52xlarge    ProcessingJobClusterConfigInstanceType = "ml.c5.2xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlC54xlarge    ProcessingJobClusterConfigInstanceType = "ml.c5.4xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlC59xlarge    ProcessingJobClusterConfigInstanceType = "ml.c5.9xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlC518xlarge   ProcessingJobClusterConfigInstanceType = "ml.c5.18xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlM5Large      ProcessingJobClusterConfigInstanceType = "ml.m5.large"
+	ProcessingJobClusterConfigInstanceTypeMlM5Xlarge     ProcessingJobClusterConfigInstanceType = "ml.m5.xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlM52xlarge    ProcessingJobClusterConfigInstanceType = "ml.m5.2xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlM54xlarge    ProcessingJobClusterConfigInstanceType = "ml.m5.4xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlM512xlarge   ProcessingJobClusterConfigInstanceType = "ml.m5.12xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlM524xlarge   ProcessingJobClusterConfigInstanceType = "ml.m5.24xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlR5Large      ProcessingJobClusterConfigInstanceType = "ml.r5.large"
+	ProcessingJobClusterConfigInstanceTypeMlR5Xlarge     ProcessingJobClusterConfigInstanceType = "ml.r5.xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlR52xlarge    ProcessingJobClusterConfigInstanceType = "ml.r5.2xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlR54xlarge    ProcessingJobClusterConfigInstanceType = "ml.r5.4xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlR58xlarge    ProcessingJobClusterConfigInstanceType = "ml.r5.8xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlR512xlarge   ProcessingJobClusterConfigInstanceType = "ml.r5.12xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlR516xlarge   ProcessingJobClusterConfigInstanceType = "ml.r5.16xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlR524xlarge   ProcessingJobClusterConfigInstanceType = "ml.r5.24xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG4dnXlarge   ProcessingJobClusterConfigInstanceType = "ml.g4dn.xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG4dn2xlarge  ProcessingJobClusterConfigInstanceType = "ml.g4dn.2xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG4dn4xlarge  ProcessingJobClusterConfigInstanceType = "ml.g4dn.4xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG4dn8xlarge  ProcessingJobClusterConfigInstanceType = "ml.g4dn.8xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG4dn12xlarge ProcessingJobClusterConfigInstanceType = "ml.g4dn.12xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG4dn16xlarge ProcessingJobClusterConfigInstanceType = "ml.g4dn.16xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG5Xlarge     ProcessingJobClusterConfigInstanceType = "ml.g5.xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG52xlarge    ProcessingJobClusterConfigInstanceType = "ml.g5.2xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG54xlarge    ProcessingJobClusterConfigInstanceType = "ml.g5.4xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG58xlarge    ProcessingJobClusterConfigInstanceType = "ml.g5.8xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG516xlarge   ProcessingJobClusterConfigInstanceType = "ml.g5.16xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG512xlarge   ProcessingJobClusterConfigInstanceType = "ml.g5.12xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG524xlarge   ProcessingJobClusterConfigInstanceType = "ml.g5.24xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG548xlarge   ProcessingJobClusterConfigInstanceType = "ml.g5.48xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlR5dLarge     ProcessingJobClusterConfigInstanceType = "ml.r5d.large"
+	ProcessingJobClusterConfigInstanceTypeMlR5dXlarge    ProcessingJobClusterConfigInstanceType = "ml.r5d.xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlR5d2xlarge   ProcessingJobClusterConfigInstanceType = "ml.r5d.2xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlR5d4xlarge   ProcessingJobClusterConfigInstanceType = "ml.r5d.4xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlR5d8xlarge   ProcessingJobClusterConfigInstanceType = "ml.r5d.8xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlR5d12xlarge  ProcessingJobClusterConfigInstanceType = "ml.r5d.12xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlR5d16xlarge  ProcessingJobClusterConfigInstanceType = "ml.r5d.16xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlR5d24xlarge  ProcessingJobClusterConfigInstanceType = "ml.r5d.24xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG6Xlarge     ProcessingJobClusterConfigInstanceType = "ml.g6.xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG62xlarge    ProcessingJobClusterConfigInstanceType = "ml.g6.2xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG64xlarge    ProcessingJobClusterConfigInstanceType = "ml.g6.4xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG68xlarge    ProcessingJobClusterConfigInstanceType = "ml.g6.8xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG612xlarge   ProcessingJobClusterConfigInstanceType = "ml.g6.12xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG616xlarge   ProcessingJobClusterConfigInstanceType = "ml.g6.16xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG624xlarge   ProcessingJobClusterConfigInstanceType = "ml.g6.24xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG648xlarge   ProcessingJobClusterConfigInstanceType = "ml.g6.48xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG6eXlarge    ProcessingJobClusterConfigInstanceType = "ml.g6e.xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG6e2xlarge   ProcessingJobClusterConfigInstanceType = "ml.g6e.2xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG6e4xlarge   ProcessingJobClusterConfigInstanceType = "ml.g6e.4xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG6e8xlarge   ProcessingJobClusterConfigInstanceType = "ml.g6e.8xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG6e12xlarge  ProcessingJobClusterConfigInstanceType = "ml.g6e.12xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG6e16xlarge  ProcessingJobClusterConfigInstanceType = "ml.g6e.16xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG6e24xlarge  ProcessingJobClusterConfigInstanceType = "ml.g6e.24xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlG6e48xlarge  ProcessingJobClusterConfigInstanceType = "ml.g6e.48xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlM6iLarge     ProcessingJobClusterConfigInstanceType = "ml.m6i.large"
+	ProcessingJobClusterConfigInstanceTypeMlM6iXlarge    ProcessingJobClusterConfigInstanceType = "ml.m6i.xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlM6i2xlarge   ProcessingJobClusterConfigInstanceType = "ml.m6i.2xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlM6i4xlarge   ProcessingJobClusterConfigInstanceType = "ml.m6i.4xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlM6i8xlarge   ProcessingJobClusterConfigInstanceType = "ml.m6i.8xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlM6i12xlarge  ProcessingJobClusterConfigInstanceType = "ml.m6i.12xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlM6i16xlarge  ProcessingJobClusterConfigInstanceType = "ml.m6i.16xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlM6i24xlarge  ProcessingJobClusterConfigInstanceType = "ml.m6i.24xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlM6i32xlarge  ProcessingJobClusterConfigInstanceType = "ml.m6i.32xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlC6iXlarge    ProcessingJobClusterConfigInstanceType = "ml.c6i.xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlC6i2xlarge   ProcessingJobClusterConfigInstanceType = "ml.c6i.2xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlC6i4xlarge   ProcessingJobClusterConfigInstanceType = "ml.c6i.4xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlC6i8xlarge   ProcessingJobClusterConfigInstanceType = "ml.c6i.8xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlC6i12xlarge  ProcessingJobClusterConfigInstanceType = "ml.c6i.12xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlC6i16xlarge  ProcessingJobClusterConfigInstanceType = "ml.c6i.16xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlC6i24xlarge  ProcessingJobClusterConfigInstanceType = "ml.c6i.24xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlC6i32xlarge  ProcessingJobClusterConfigInstanceType = "ml.c6i.32xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlM7iLarge     ProcessingJobClusterConfigInstanceType = "ml.m7i.large"
+	ProcessingJobClusterConfigInstanceTypeMlM7iXlarge    ProcessingJobClusterConfigInstanceType = "ml.m7i.xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlM7i2xlarge   ProcessingJobClusterConfigInstanceType = "ml.m7i.2xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlM7i4xlarge   ProcessingJobClusterConfigInstanceType = "ml.m7i.4xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlM7i8xlarge   ProcessingJobClusterConfigInstanceType = "ml.m7i.8xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlM7i12xlarge  ProcessingJobClusterConfigInstanceType = "ml.m7i.12xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlM7i16xlarge  ProcessingJobClusterConfigInstanceType = "ml.m7i.16xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlM7i24xlarge  ProcessingJobClusterConfigInstanceType = "ml.m7i.24xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlM7i48xlarge  ProcessingJobClusterConfigInstanceType = "ml.m7i.48xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlC7iLarge     ProcessingJobClusterConfigInstanceType = "ml.c7i.large"
+	ProcessingJobClusterConfigInstanceTypeMlC7iXlarge    ProcessingJobClusterConfigInstanceType = "ml.c7i.xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlC7i2xlarge   ProcessingJobClusterConfigInstanceType = "ml.c7i.2xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlC7i4xlarge   ProcessingJobClusterConfigInstanceType = "ml.c7i.4xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlC7i8xlarge   ProcessingJobClusterConfigInstanceType = "ml.c7i.8xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlC7i12xlarge  ProcessingJobClusterConfigInstanceType = "ml.c7i.12xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlC7i16xlarge  ProcessingJobClusterConfigInstanceType = "ml.c7i.16xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlC7i24xlarge  ProcessingJobClusterConfigInstanceType = "ml.c7i.24xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlC7i48xlarge  ProcessingJobClusterConfigInstanceType = "ml.c7i.48xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlR7iLarge     ProcessingJobClusterConfigInstanceType = "ml.r7i.large"
+	ProcessingJobClusterConfigInstanceTypeMlR7iXlarge    ProcessingJobClusterConfigInstanceType = "ml.r7i.xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlR7i2xlarge   ProcessingJobClusterConfigInstanceType = "ml.r7i.2xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlR7i4xlarge   ProcessingJobClusterConfigInstanceType = "ml.r7i.4xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlR7i8xlarge   ProcessingJobClusterConfigInstanceType = "ml.r7i.8xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlR7i12xlarge  ProcessingJobClusterConfigInstanceType = "ml.r7i.12xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlR7i16xlarge  ProcessingJobClusterConfigInstanceType = "ml.r7i.16xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlR7i24xlarge  ProcessingJobClusterConfigInstanceType = "ml.r7i.24xlarge"
+	ProcessingJobClusterConfigInstanceTypeMlR7i48xlarge  ProcessingJobClusterConfigInstanceType = "ml.r7i.48xlarge"
+)
+
+type ProjectProjectStatus string
+
+const (
+	ProjectProjectStatusPending          ProjectProjectStatus = "Pending"
+	ProjectProjectStatusCreateInProgress ProjectProjectStatus = "CreateInProgress"
+	ProjectProjectStatusCreateCompleted  ProjectProjectStatus = "CreateCompleted"
+	ProjectProjectStatusCreateFailed     ProjectProjectStatus = "CreateFailed"
+	ProjectProjectStatusDeleteInProgress ProjectProjectStatus = "DeleteInProgress"
+	ProjectProjectStatusDeleteFailed     ProjectProjectStatus = "DeleteFailed"
+	ProjectProjectStatusDeleteCompleted  ProjectProjectStatus = "DeleteCompleted"
+)
+
+type SpaceAppType string
+
+const (
+	SpaceAppTypeJupyterServer    SpaceAppType = "JupyterServer"
+	SpaceAppTypeKernelGateway    SpaceAppType = "KernelGateway"
+	SpaceAppTypeTensorBoard      SpaceAppType = "TensorBoard"
+	SpaceAppTypeRStudioServerPro SpaceAppType = "RStudioServerPro"
+	SpaceAppTypeRSessionGateway  SpaceAppType = "RSessionGateway"
+	SpaceAppTypeJupyterLab       SpaceAppType = "JupyterLab"
+	SpaceAppTypeCodeEditor       SpaceAppType = "CodeEditor"
+)
+
+type SpaceResourceSpecInstanceType string
+
+const (
+	SpaceResourceSpecInstanceTypeSystem                  SpaceResourceSpecInstanceType = "system"
+	SpaceResourceSpecInstanceTypeMlT3Micro               SpaceResourceSpecInstanceType = "ml.t3.micro"
+	SpaceResourceSpecInstanceTypeMlT3Small               SpaceResourceSpecInstanceType = "ml.t3.small"
+	SpaceResourceSpecInstanceTypeMlT3Medium              SpaceResourceSpecInstanceType = "ml.t3.medium"
+	SpaceResourceSpecInstanceTypeMlT3Large               SpaceResourceSpecInstanceType = "ml.t3.large"
+	SpaceResourceSpecInstanceTypeMlT3Xlarge              SpaceResourceSpecInstanceType = "ml.t3.xlarge"
+	SpaceResourceSpecInstanceTypeMlT32xlarge             SpaceResourceSpecInstanceType = "ml.t3.2xlarge"
+	SpaceResourceSpecInstanceTypeMlM5Large               SpaceResourceSpecInstanceType = "ml.m5.large"
+	SpaceResourceSpecInstanceTypeMlM5Xlarge              SpaceResourceSpecInstanceType = "ml.m5.xlarge"
+	SpaceResourceSpecInstanceTypeMlM52xlarge             SpaceResourceSpecInstanceType = "ml.m5.2xlarge"
+	SpaceResourceSpecInstanceTypeMlM54xlarge             SpaceResourceSpecInstanceType = "ml.m5.4xlarge"
+	SpaceResourceSpecInstanceTypeMlM58xlarge             SpaceResourceSpecInstanceType = "ml.m5.8xlarge"
+	SpaceResourceSpecInstanceTypeMlM512xlarge            SpaceResourceSpecInstanceType = "ml.m5.12xlarge"
+	SpaceResourceSpecInstanceTypeMlM516xlarge            SpaceResourceSpecInstanceType = "ml.m5.16xlarge"
+	SpaceResourceSpecInstanceTypeMlM524xlarge            SpaceResourceSpecInstanceType = "ml.m5.24xlarge"
+	SpaceResourceSpecInstanceTypeMlC5Large               SpaceResourceSpecInstanceType = "ml.c5.large"
+	SpaceResourceSpecInstanceTypeMlC5Xlarge              SpaceResourceSpecInstanceType = "ml.c5.xlarge"
+	SpaceResourceSpecInstanceTypeMlC52xlarge             SpaceResourceSpecInstanceType = "ml.c5.2xlarge"
+	SpaceResourceSpecInstanceTypeMlC54xlarge             SpaceResourceSpecInstanceType = "ml.c5.4xlarge"
+	SpaceResourceSpecInstanceTypeMlC59xlarge             SpaceResourceSpecInstanceType = "ml.c5.9xlarge"
+	SpaceResourceSpecInstanceTypeMlC512xlarge            SpaceResourceSpecInstanceType = "ml.c5.12xlarge"
+	SpaceResourceSpecInstanceTypeMlC518xlarge            SpaceResourceSpecInstanceType = "ml.c5.18xlarge"
+	SpaceResourceSpecInstanceTypeMlC524xlarge            SpaceResourceSpecInstanceType = "ml.c5.24xlarge"
+	SpaceResourceSpecInstanceTypeMlP32xlarge             SpaceResourceSpecInstanceType = "ml.p3.2xlarge"
+	SpaceResourceSpecInstanceTypeMlP38xlarge             SpaceResourceSpecInstanceType = "ml.p3.8xlarge"
+	SpaceResourceSpecInstanceTypeMlP316xlarge            SpaceResourceSpecInstanceType = "ml.p3.16xlarge"
+	SpaceResourceSpecInstanceTypeMlG4dnXlarge            SpaceResourceSpecInstanceType = "ml.g4dn.xlarge"
+	SpaceResourceSpecInstanceTypeMlG4dn2xlarge           SpaceResourceSpecInstanceType = "ml.g4dn.2xlarge"
+	SpaceResourceSpecInstanceTypeMlG4dn4xlarge           SpaceResourceSpecInstanceType = "ml.g4dn.4xlarge"
+	SpaceResourceSpecInstanceTypeMlG4dn8xlarge           SpaceResourceSpecInstanceType = "ml.g4dn.8xlarge"
+	SpaceResourceSpecInstanceTypeMlG4dn12xlarge          SpaceResourceSpecInstanceType = "ml.g4dn.12xlarge"
+	SpaceResourceSpecInstanceTypeMlG4dn16xlarge          SpaceResourceSpecInstanceType = "ml.g4dn.16xlarge"
+	SpaceResourceSpecInstanceTypeMlR5Large               SpaceResourceSpecInstanceType = "ml.r5.large"
+	SpaceResourceSpecInstanceTypeMlR5Xlarge              SpaceResourceSpecInstanceType = "ml.r5.xlarge"
+	SpaceResourceSpecInstanceTypeMlR52xlarge             SpaceResourceSpecInstanceType = "ml.r5.2xlarge"
+	SpaceResourceSpecInstanceTypeMlR54xlarge             SpaceResourceSpecInstanceType = "ml.r5.4xlarge"
+	SpaceResourceSpecInstanceTypeMlR58xlarge             SpaceResourceSpecInstanceType = "ml.r5.8xlarge"
+	SpaceResourceSpecInstanceTypeMlR512xlarge            SpaceResourceSpecInstanceType = "ml.r5.12xlarge"
+	SpaceResourceSpecInstanceTypeMlR516xlarge            SpaceResourceSpecInstanceType = "ml.r5.16xlarge"
+	SpaceResourceSpecInstanceTypeMlR524xlarge            SpaceResourceSpecInstanceType = "ml.r5.24xlarge"
+	SpaceResourceSpecInstanceTypeMlP3dn24xlarge          SpaceResourceSpecInstanceType = "ml.p3dn.24xlarge"
+	SpaceResourceSpecInstanceTypeMlM5dLarge              SpaceResourceSpecInstanceType = "ml.m5d.large"
+	SpaceResourceSpecInstanceTypeMlM5dXlarge             SpaceResourceSpecInstanceType = "ml.m5d.xlarge"
+	SpaceResourceSpecInstanceTypeMlM5d2xlarge            SpaceResourceSpecInstanceType = "ml.m5d.2xlarge"
+	SpaceResourceSpecInstanceTypeMlM5d4xlarge            SpaceResourceSpecInstanceType = "ml.m5d.4xlarge"
+	SpaceResourceSpecInstanceTypeMlM5d8xlarge            SpaceResourceSpecInstanceType = "ml.m5d.8xlarge"
+	SpaceResourceSpecInstanceTypeMlM5d12xlarge           SpaceResourceSpecInstanceType = "ml.m5d.12xlarge"
+	SpaceResourceSpecInstanceTypeMlM5d16xlarge           SpaceResourceSpecInstanceType = "ml.m5d.16xlarge"
+	SpaceResourceSpecInstanceTypeMlM5d24xlarge           SpaceResourceSpecInstanceType = "ml.m5d.24xlarge"
+	SpaceResourceSpecInstanceTypeMlG5Xlarge              SpaceResourceSpecInstanceType = "ml.g5.xlarge"
+	SpaceResourceSpecInstanceTypeMlG52xlarge             SpaceResourceSpecInstanceType = "ml.g5.2xlarge"
+	SpaceResourceSpecInstanceTypeMlG54xlarge             SpaceResourceSpecInstanceType = "ml.g5.4xlarge"
+	SpaceResourceSpecInstanceTypeMlG58xlarge             SpaceResourceSpecInstanceType = "ml.g5.8xlarge"
+	SpaceResourceSpecInstanceTypeMlG512xlarge            SpaceResourceSpecInstanceType = "ml.g5.12xlarge"
+	SpaceResourceSpecInstanceTypeMlG516xlarge            SpaceResourceSpecInstanceType = "ml.g5.16xlarge"
+	SpaceResourceSpecInstanceTypeMlG524xlarge            SpaceResourceSpecInstanceType = "ml.g5.24xlarge"
+	SpaceResourceSpecInstanceTypeMlG548xlarge            SpaceResourceSpecInstanceType = "ml.g5.48xlarge"
+	SpaceResourceSpecInstanceTypeMlP4d24xlarge           SpaceResourceSpecInstanceType = "ml.p4d.24xlarge"
+	SpaceResourceSpecInstanceTypeMlP4de24xlarge          SpaceResourceSpecInstanceType = "ml.p4de.24xlarge"
+	SpaceResourceSpecInstanceTypeMlGeospatialInteractive SpaceResourceSpecInstanceType = "ml.geospatial.interactive"
+	SpaceResourceSpecInstanceTypeMlTrn12xlarge           SpaceResourceSpecInstanceType = "ml.trn1.2xlarge"
+	SpaceResourceSpecInstanceTypeMlTrn132xlarge          SpaceResourceSpecInstanceType = "ml.trn1.32xlarge"
+	SpaceResourceSpecInstanceTypeMlTrn1n32xlarge         SpaceResourceSpecInstanceType = "ml.trn1n.32xlarge"
+)
+
+type RemoteAccess string
+
+const (
+	RemoteAccessENABLED  RemoteAccess = "ENABLED"
+	RemoteAccessDISABLED RemoteAccess = "DISABLED"
+)
+
+type SpaceManagedResources string
+
+const (
+	SpaceManagedResourcesENABLED  SpaceManagedResources = "ENABLED"
+	SpaceManagedResourcesDISABLED SpaceManagedResources = "DISABLED"
+)
+
+type SpaceSharingSettingsSharingType string
+
+const (
+	SpaceSharingSettingsSharingTypePrivate SpaceSharingSettingsSharingType = "Private"
+	SpaceSharingSettingsSharingTypeShared  SpaceSharingSettingsSharingType = "Shared"
+)
+
+type StudioLifecycleConfigStudioLifecycleConfigAppType string
+
+const (
+	StudioLifecycleConfigStudioLifecycleConfigAppTypeJupyterServer StudioLifecycleConfigStudioLifecycleConfigAppType = "JupyterServer"
+	StudioLifecycleConfigStudioLifecycleConfigAppTypeKernelGateway StudioLifecycleConfigStudioLifecycleConfigAppType = "KernelGateway"
+	StudioLifecycleConfigStudioLifecycleConfigAppTypeCodeEditor    StudioLifecycleConfigStudioLifecycleConfigAppType = "CodeEditor"
+	StudioLifecycleConfigStudioLifecycleConfigAppTypeJupyterLab    StudioLifecycleConfigStudioLifecycleConfigAppType = "JupyterLab"
+)
+
+type TrialComponentStatusPrimaryStatus string
+
+const (
+	TrialComponentStatusPrimaryStatusInProgress TrialComponentStatusPrimaryStatus = "InProgress"
+	TrialComponentStatusPrimaryStatusCompleted  TrialComponentStatusPrimaryStatus = "Completed"
+	TrialComponentStatusPrimaryStatusFailed     TrialComponentStatusPrimaryStatus = "Failed"
+	TrialComponentStatusPrimaryStatusStopping   TrialComponentStatusPrimaryStatus = "Stopping"
+	TrialComponentStatusPrimaryStatusStopped    TrialComponentStatusPrimaryStatus = "Stopped"
+)
+
+type UserProfileUserSettingsAutoMountHomeEFS string
+
+const (
+	UserProfileUserSettingsAutoMountHomeEFSEnabled         UserProfileUserSettingsAutoMountHomeEFS = "Enabled"
+	UserProfileUserSettingsAutoMountHomeEFSDisabled        UserProfileUserSettingsAutoMountHomeEFS = "Disabled"
+	UserProfileUserSettingsAutoMountHomeEFSDefaultAsDomain UserProfileUserSettingsAutoMountHomeEFS = "DefaultAsDomain"
+)
+
+type UserProfileLifecycleManagement string
+
+const (
+	UserProfileLifecycleManagementENABLED  UserProfileLifecycleManagement = "ENABLED"
+	UserProfileLifecycleManagementDISABLED UserProfileLifecycleManagement = "DISABLED"
+)
+
+type UserProfileAppInstanceType string
+
+const (
+	UserProfileAppInstanceTypeSystem                  UserProfileAppInstanceType = "system"
+	UserProfileAppInstanceTypeMlT3Micro               UserProfileAppInstanceType = "ml.t3.micro"
+	UserProfileAppInstanceTypeMlT3Small               UserProfileAppInstanceType = "ml.t3.small"
+	UserProfileAppInstanceTypeMlT3Medium              UserProfileAppInstanceType = "ml.t3.medium"
+	UserProfileAppInstanceTypeMlT3Large               UserProfileAppInstanceType = "ml.t3.large"
+	UserProfileAppInstanceTypeMlT3Xlarge              UserProfileAppInstanceType = "ml.t3.xlarge"
+	UserProfileAppInstanceTypeMlT32xlarge             UserProfileAppInstanceType = "ml.t3.2xlarge"
+	UserProfileAppInstanceTypeMlM5Large               UserProfileAppInstanceType = "ml.m5.large"
+	UserProfileAppInstanceTypeMlM5Xlarge              UserProfileAppInstanceType = "ml.m5.xlarge"
+	UserProfileAppInstanceTypeMlM52xlarge             UserProfileAppInstanceType = "ml.m5.2xlarge"
+	UserProfileAppInstanceTypeMlM54xlarge             UserProfileAppInstanceType = "ml.m5.4xlarge"
+	UserProfileAppInstanceTypeMlM58xlarge             UserProfileAppInstanceType = "ml.m5.8xlarge"
+	UserProfileAppInstanceTypeMlM512xlarge            UserProfileAppInstanceType = "ml.m5.12xlarge"
+	UserProfileAppInstanceTypeMlM516xlarge            UserProfileAppInstanceType = "ml.m5.16xlarge"
+	UserProfileAppInstanceTypeMlM524xlarge            UserProfileAppInstanceType = "ml.m5.24xlarge"
+	UserProfileAppInstanceTypeMlM5dLarge              UserProfileAppInstanceType = "ml.m5d.large"
+	UserProfileAppInstanceTypeMlM5dXlarge             UserProfileAppInstanceType = "ml.m5d.xlarge"
+	UserProfileAppInstanceTypeMlM5d2xlarge            UserProfileAppInstanceType = "ml.m5d.2xlarge"
+	UserProfileAppInstanceTypeMlM5d4xlarge            UserProfileAppInstanceType = "ml.m5d.4xlarge"
+	UserProfileAppInstanceTypeMlM5d8xlarge            UserProfileAppInstanceType = "ml.m5d.8xlarge"
+	UserProfileAppInstanceTypeMlM5d12xlarge           UserProfileAppInstanceType = "ml.m5d.12xlarge"
+	UserProfileAppInstanceTypeMlM5d16xlarge           UserProfileAppInstanceType = "ml.m5d.16xlarge"
+	UserProfileAppInstanceTypeMlM5d24xlarge           UserProfileAppInstanceType = "ml.m5d.24xlarge"
+	UserProfileAppInstanceTypeMlC5Large               UserProfileAppInstanceType = "ml.c5.large"
+	UserProfileAppInstanceTypeMlC5Xlarge              UserProfileAppInstanceType = "ml.c5.xlarge"
+	UserProfileAppInstanceTypeMlC52xlarge             UserProfileAppInstanceType = "ml.c5.2xlarge"
+	UserProfileAppInstanceTypeMlC54xlarge             UserProfileAppInstanceType = "ml.c5.4xlarge"
+	UserProfileAppInstanceTypeMlC59xlarge             UserProfileAppInstanceType = "ml.c5.9xlarge"
+	UserProfileAppInstanceTypeMlC512xlarge            UserProfileAppInstanceType = "ml.c5.12xlarge"
+	UserProfileAppInstanceTypeMlC518xlarge            UserProfileAppInstanceType = "ml.c5.18xlarge"
+	UserProfileAppInstanceTypeMlC524xlarge            UserProfileAppInstanceType = "ml.c5.24xlarge"
+	UserProfileAppInstanceTypeMlP32xlarge             UserProfileAppInstanceType = "ml.p3.2xlarge"
+	UserProfileAppInstanceTypeMlP38xlarge             UserProfileAppInstanceType = "ml.p3.8xlarge"
+	UserProfileAppInstanceTypeMlP316xlarge            UserProfileAppInstanceType = "ml.p3.16xlarge"
+	UserProfileAppInstanceTypeMlP3dn24xlarge          UserProfileAppInstanceType = "ml.p3dn.24xlarge"
+	UserProfileAppInstanceTypeMlG4dnXlarge            UserProfileAppInstanceType = "ml.g4dn.xlarge"
+	UserProfileAppInstanceTypeMlG4dn2xlarge           UserProfileAppInstanceType = "ml.g4dn.2xlarge"
+	UserProfileAppInstanceTypeMlG4dn4xlarge           UserProfileAppInstanceType = "ml.g4dn.4xlarge"
+	UserProfileAppInstanceTypeMlG4dn8xlarge           UserProfileAppInstanceType = "ml.g4dn.8xlarge"
+	UserProfileAppInstanceTypeMlG4dn12xlarge          UserProfileAppInstanceType = "ml.g4dn.12xlarge"
+	UserProfileAppInstanceTypeMlG4dn16xlarge          UserProfileAppInstanceType = "ml.g4dn.16xlarge"
+	UserProfileAppInstanceTypeMlR5Large               UserProfileAppInstanceType = "ml.r5.large"
+	UserProfileAppInstanceTypeMlR5Xlarge              UserProfileAppInstanceType = "ml.r5.xlarge"
+	UserProfileAppInstanceTypeMlR52xlarge             UserProfileAppInstanceType = "ml.r5.2xlarge"
+	UserProfileAppInstanceTypeMlR54xlarge             UserProfileAppInstanceType = "ml.r5.4xlarge"
+	UserProfileAppInstanceTypeMlR58xlarge             UserProfileAppInstanceType = "ml.r5.8xlarge"
+	UserProfileAppInstanceTypeMlR512xlarge            UserProfileAppInstanceType = "ml.r5.12xlarge"
+	UserProfileAppInstanceTypeMlR516xlarge            UserProfileAppInstanceType = "ml.r5.16xlarge"
+	UserProfileAppInstanceTypeMlR524xlarge            UserProfileAppInstanceType = "ml.r5.24xlarge"
+	UserProfileAppInstanceTypeMlG5Xlarge              UserProfileAppInstanceType = "ml.g5.xlarge"
+	UserProfileAppInstanceTypeMlG52xlarge             UserProfileAppInstanceType = "ml.g5.2xlarge"
+	UserProfileAppInstanceTypeMlG54xlarge             UserProfileAppInstanceType = "ml.g5.4xlarge"
+	UserProfileAppInstanceTypeMlG58xlarge             UserProfileAppInstanceType = "ml.g5.8xlarge"
+	UserProfileAppInstanceTypeMlG512xlarge            UserProfileAppInstanceType = "ml.g5.12xlarge"
+	UserProfileAppInstanceTypeMlG516xlarge            UserProfileAppInstanceType = "ml.g5.16xlarge"
+	UserProfileAppInstanceTypeMlG524xlarge            UserProfileAppInstanceType = "ml.g5.24xlarge"
+	UserProfileAppInstanceTypeMlG548xlarge            UserProfileAppInstanceType = "ml.g5.48xlarge"
+	UserProfileAppInstanceTypeMlG6Xlarge              UserProfileAppInstanceType = "ml.g6.xlarge"
+	UserProfileAppInstanceTypeMlG62xlarge             UserProfileAppInstanceType = "ml.g6.2xlarge"
+	UserProfileAppInstanceTypeMlG64xlarge             UserProfileAppInstanceType = "ml.g6.4xlarge"
+	UserProfileAppInstanceTypeMlG68xlarge             UserProfileAppInstanceType = "ml.g6.8xlarge"
+	UserProfileAppInstanceTypeMlG612xlarge            UserProfileAppInstanceType = "ml.g6.12xlarge"
+	UserProfileAppInstanceTypeMlG616xlarge            UserProfileAppInstanceType = "ml.g6.16xlarge"
+	UserProfileAppInstanceTypeMlG624xlarge            UserProfileAppInstanceType = "ml.g6.24xlarge"
+	UserProfileAppInstanceTypeMlG648xlarge            UserProfileAppInstanceType = "ml.g6.48xlarge"
+	UserProfileAppInstanceTypeMlG6eXlarge             UserProfileAppInstanceType = "ml.g6e.xlarge"
+	UserProfileAppInstanceTypeMlG6e2xlarge            UserProfileAppInstanceType = "ml.g6e.2xlarge"
+	UserProfileAppInstanceTypeMlG6e4xlarge            UserProfileAppInstanceType = "ml.g6e.4xlarge"
+	UserProfileAppInstanceTypeMlG6e8xlarge            UserProfileAppInstanceType = "ml.g6e.8xlarge"
+	UserProfileAppInstanceTypeMlG6e12xlarge           UserProfileAppInstanceType = "ml.g6e.12xlarge"
+	UserProfileAppInstanceTypeMlG6e16xlarge           UserProfileAppInstanceType = "ml.g6e.16xlarge"
+	UserProfileAppInstanceTypeMlG6e24xlarge           UserProfileAppInstanceType = "ml.g6e.24xlarge"
+	UserProfileAppInstanceTypeMlG6e48xlarge           UserProfileAppInstanceType = "ml.g6e.48xlarge"
+	UserProfileAppInstanceTypeMlGeospatialInteractive UserProfileAppInstanceType = "ml.geospatial.interactive"
+	UserProfileAppInstanceTypeMlP4d24xlarge           UserProfileAppInstanceType = "ml.p4d.24xlarge"
+	UserProfileAppInstanceTypeMlP4de24xlarge          UserProfileAppInstanceType = "ml.p4de.24xlarge"
+	UserProfileAppInstanceTypeMlTrn12xlarge           UserProfileAppInstanceType = "ml.trn1.2xlarge"
+	UserProfileAppInstanceTypeMlTrn132xlarge          UserProfileAppInstanceType = "ml.trn1.32xlarge"
+	UserProfileAppInstanceTypeMlTrn1n32xlarge         UserProfileAppInstanceType = "ml.trn1n.32xlarge"
+	UserProfileAppInstanceTypeMlP548xlarge            UserProfileAppInstanceType = "ml.p5.48xlarge"
+	UserProfileAppInstanceTypeMlP5e48xlarge           UserProfileAppInstanceType = "ml.p5e.48xlarge"
+	UserProfileAppInstanceTypeMlP5en48xlarge          UserProfileAppInstanceType = "ml.p5en.48xlarge"
+	UserProfileAppInstanceTypeMlM6iLarge              UserProfileAppInstanceType = "ml.m6i.large"
+	UserProfileAppInstanceTypeMlM6iXlarge             UserProfileAppInstanceType = "ml.m6i.xlarge"
+	UserProfileAppInstanceTypeMlM6i2xlarge            UserProfileAppInstanceType = "ml.m6i.2xlarge"
+	UserProfileAppInstanceTypeMlM6i4xlarge            UserProfileAppInstanceType = "ml.m6i.4xlarge"
+	UserProfileAppInstanceTypeMlM6i8xlarge            UserProfileAppInstanceType = "ml.m6i.8xlarge"
+	UserProfileAppInstanceTypeMlM6i12xlarge           UserProfileAppInstanceType = "ml.m6i.12xlarge"
+	UserProfileAppInstanceTypeMlM6i16xlarge           UserProfileAppInstanceType = "ml.m6i.16xlarge"
+	UserProfileAppInstanceTypeMlM6i24xlarge           UserProfileAppInstanceType = "ml.m6i.24xlarge"
+	UserProfileAppInstanceTypeMlM6i32xlarge           UserProfileAppInstanceType = "ml.m6i.32xlarge"
+	UserProfileAppInstanceTypeMlM7iLarge              UserProfileAppInstanceType = "ml.m7i.large"
+	UserProfileAppInstanceTypeMlM7iXlarge             UserProfileAppInstanceType = "ml.m7i.xlarge"
+	UserProfileAppInstanceTypeMlM7i2xlarge            UserProfileAppInstanceType = "ml.m7i.2xlarge"
+	UserProfileAppInstanceTypeMlM7i4xlarge            UserProfileAppInstanceType = "ml.m7i.4xlarge"
+	UserProfileAppInstanceTypeMlM7i8xlarge            UserProfileAppInstanceType = "ml.m7i.8xlarge"
+	UserProfileAppInstanceTypeMlM7i12xlarge           UserProfileAppInstanceType = "ml.m7i.12xlarge"
+	UserProfileAppInstanceTypeMlM7i16xlarge           UserProfileAppInstanceType = "ml.m7i.16xlarge"
+	UserProfileAppInstanceTypeMlM7i24xlarge           UserProfileAppInstanceType = "ml.m7i.24xlarge"
+	UserProfileAppInstanceTypeMlM7i48xlarge           UserProfileAppInstanceType = "ml.m7i.48xlarge"
+	UserProfileAppInstanceTypeMlC6iLarge              UserProfileAppInstanceType = "ml.c6i.large"
+	UserProfileAppInstanceTypeMlC6iXlarge             UserProfileAppInstanceType = "ml.c6i.xlarge"
+	UserProfileAppInstanceTypeMlC6i2xlarge            UserProfileAppInstanceType = "ml.c6i.2xlarge"
+	UserProfileAppInstanceTypeMlC6i4xlarge            UserProfileAppInstanceType = "ml.c6i.4xlarge"
+	UserProfileAppInstanceTypeMlC6i8xlarge            UserProfileAppInstanceType = "ml.c6i.8xlarge"
+	UserProfileAppInstanceTypeMlC6i12xlarge           UserProfileAppInstanceType = "ml.c6i.12xlarge"
+	UserProfileAppInstanceTypeMlC6i16xlarge           UserProfileAppInstanceType = "ml.c6i.16xlarge"
+	UserProfileAppInstanceTypeMlC6i24xlarge           UserProfileAppInstanceType = "ml.c6i.24xlarge"
+	UserProfileAppInstanceTypeMlC6i32xlarge           UserProfileAppInstanceType = "ml.c6i.32xlarge"
+	UserProfileAppInstanceTypeMlC7iLarge              UserProfileAppInstanceType = "ml.c7i.large"
+	UserProfileAppInstanceTypeMlC7iXlarge             UserProfileAppInstanceType = "ml.c7i.xlarge"
+	UserProfileAppInstanceTypeMlC7i2xlarge            UserProfileAppInstanceType = "ml.c7i.2xlarge"
+	UserProfileAppInstanceTypeMlC7i4xlarge            UserProfileAppInstanceType = "ml.c7i.4xlarge"
+	UserProfileAppInstanceTypeMlC7i8xlarge            UserProfileAppInstanceType = "ml.c7i.8xlarge"
+	UserProfileAppInstanceTypeMlC7i12xlarge           UserProfileAppInstanceType = "ml.c7i.12xlarge"
+	UserProfileAppInstanceTypeMlC7i16xlarge           UserProfileAppInstanceType = "ml.c7i.16xlarge"
+	UserProfileAppInstanceTypeMlC7i24xlarge           UserProfileAppInstanceType = "ml.c7i.24xlarge"
+	UserProfileAppInstanceTypeMlC7i48xlarge           UserProfileAppInstanceType = "ml.c7i.48xlarge"
+	UserProfileAppInstanceTypeMlR6iLarge              UserProfileAppInstanceType = "ml.r6i.large"
+	UserProfileAppInstanceTypeMlR6iXlarge             UserProfileAppInstanceType = "ml.r6i.xlarge"
+	UserProfileAppInstanceTypeMlR6i2xlarge            UserProfileAppInstanceType = "ml.r6i.2xlarge"
+	UserProfileAppInstanceTypeMlR6i4xlarge            UserProfileAppInstanceType = "ml.r6i.4xlarge"
+	UserProfileAppInstanceTypeMlR6i8xlarge            UserProfileAppInstanceType = "ml.r6i.8xlarge"
+	UserProfileAppInstanceTypeMlR6i12xlarge           UserProfileAppInstanceType = "ml.r6i.12xlarge"
+	UserProfileAppInstanceTypeMlR6i16xlarge           UserProfileAppInstanceType = "ml.r6i.16xlarge"
+	UserProfileAppInstanceTypeMlR6i24xlarge           UserProfileAppInstanceType = "ml.r6i.24xlarge"
+	UserProfileAppInstanceTypeMlR6i32xlarge           UserProfileAppInstanceType = "ml.r6i.32xlarge"
+	UserProfileAppInstanceTypeMlR7iLarge              UserProfileAppInstanceType = "ml.r7i.large"
+	UserProfileAppInstanceTypeMlR7iXlarge             UserProfileAppInstanceType = "ml.r7i.xlarge"
+	UserProfileAppInstanceTypeMlR7i2xlarge            UserProfileAppInstanceType = "ml.r7i.2xlarge"
+	UserProfileAppInstanceTypeMlR7i4xlarge            UserProfileAppInstanceType = "ml.r7i.4xlarge"
+	UserProfileAppInstanceTypeMlR7i8xlarge            UserProfileAppInstanceType = "ml.r7i.8xlarge"
+	UserProfileAppInstanceTypeMlR7i12xlarge           UserProfileAppInstanceType = "ml.r7i.12xlarge"
+	UserProfileAppInstanceTypeMlR7i16xlarge           UserProfileAppInstanceType = "ml.r7i.16xlarge"
+	UserProfileAppInstanceTypeMlR7i24xlarge           UserProfileAppInstanceType = "ml.r7i.24xlarge"
+	UserProfileAppInstanceTypeMlR7i48xlarge           UserProfileAppInstanceType = "ml.r7i.48xlarge"
+	UserProfileAppInstanceTypeMlM6idLarge             UserProfileAppInstanceType = "ml.m6id.large"
+	UserProfileAppInstanceTypeMlM6idXlarge            UserProfileAppInstanceType = "ml.m6id.xlarge"
+	UserProfileAppInstanceTypeMlM6id2xlarge           UserProfileAppInstanceType = "ml.m6id.2xlarge"
+	UserProfileAppInstanceTypeMlM6id4xlarge           UserProfileAppInstanceType = "ml.m6id.4xlarge"
+	UserProfileAppInstanceTypeMlM6id8xlarge           UserProfileAppInstanceType = "ml.m6id.8xlarge"
+	UserProfileAppInstanceTypeMlM6id12xlarge          UserProfileAppInstanceType = "ml.m6id.12xlarge"
+	UserProfileAppInstanceTypeMlM6id16xlarge          UserProfileAppInstanceType = "ml.m6id.16xlarge"
+	UserProfileAppInstanceTypeMlM6id24xlarge          UserProfileAppInstanceType = "ml.m6id.24xlarge"
+	UserProfileAppInstanceTypeMlM6id32xlarge          UserProfileAppInstanceType = "ml.m6id.32xlarge"
+	UserProfileAppInstanceTypeMlC6idLarge             UserProfileAppInstanceType = "ml.c6id.large"
+	UserProfileAppInstanceTypeMlC6idXlarge            UserProfileAppInstanceType = "ml.c6id.xlarge"
+	UserProfileAppInstanceTypeMlC6id2xlarge           UserProfileAppInstanceType = "ml.c6id.2xlarge"
+	UserProfileAppInstanceTypeMlC6id4xlarge           UserProfileAppInstanceType = "ml.c6id.4xlarge"
+	UserProfileAppInstanceTypeMlC6id8xlarge           UserProfileAppInstanceType = "ml.c6id.8xlarge"
+	UserProfileAppInstanceTypeMlC6id12xlarge          UserProfileAppInstanceType = "ml.c6id.12xlarge"
+	UserProfileAppInstanceTypeMlC6id16xlarge          UserProfileAppInstanceType = "ml.c6id.16xlarge"
+	UserProfileAppInstanceTypeMlC6id24xlarge          UserProfileAppInstanceType = "ml.c6id.24xlarge"
+	UserProfileAppInstanceTypeMlC6id32xlarge          UserProfileAppInstanceType = "ml.c6id.32xlarge"
+	UserProfileAppInstanceTypeMlR6idLarge             UserProfileAppInstanceType = "ml.r6id.large"
+	UserProfileAppInstanceTypeMlR6idXlarge            UserProfileAppInstanceType = "ml.r6id.xlarge"
+	UserProfileAppInstanceTypeMlR6id2xlarge           UserProfileAppInstanceType = "ml.r6id.2xlarge"
+	UserProfileAppInstanceTypeMlR6id4xlarge           UserProfileAppInstanceType = "ml.r6id.4xlarge"
+	UserProfileAppInstanceTypeMlR6id8xlarge           UserProfileAppInstanceType = "ml.r6id.8xlarge"
+	UserProfileAppInstanceTypeMlR6id12xlarge          UserProfileAppInstanceType = "ml.r6id.12xlarge"
+	UserProfileAppInstanceTypeMlR6id16xlarge          UserProfileAppInstanceType = "ml.r6id.16xlarge"
+	UserProfileAppInstanceTypeMlR6id24xlarge          UserProfileAppInstanceType = "ml.r6id.24xlarge"
+	UserProfileAppInstanceTypeMlR6id32xlarge          UserProfileAppInstanceType = "ml.r6id.32xlarge"
+	UserProfileAppInstanceTypeMlP54xlarge             UserProfileAppInstanceType = "ml.p5.4xlarge"
+	UserProfileAppInstanceTypeMlP6B20048xlarge        UserProfileAppInstanceType = "ml.p6-b200.48xlarge"
+	UserProfileAppInstanceTypeMlG72xlarge             UserProfileAppInstanceType = "ml.g7.2xlarge"
+	UserProfileAppInstanceTypeMlG74xlarge             UserProfileAppInstanceType = "ml.g7.4xlarge"
+	UserProfileAppInstanceTypeMlG78xlarge             UserProfileAppInstanceType = "ml.g7.8xlarge"
+	UserProfileAppInstanceTypeMlG712xlarge            UserProfileAppInstanceType = "ml.g7.12xlarge"
+	UserProfileAppInstanceTypeMlG724xlarge            UserProfileAppInstanceType = "ml.g7.24xlarge"
+	UserProfileAppInstanceTypeMlG748xlarge            UserProfileAppInstanceType = "ml.g7.48xlarge"
+	UserProfileAppInstanceTypeMlG7e2xlarge            UserProfileAppInstanceType = "ml.g7e.2xlarge"
+	UserProfileAppInstanceTypeMlG7e4xlarge            UserProfileAppInstanceType = "ml.g7e.4xlarge"
+	UserProfileAppInstanceTypeMlG7e8xlarge            UserProfileAppInstanceType = "ml.g7e.8xlarge"
+	UserProfileAppInstanceTypeMlG7e12xlarge           UserProfileAppInstanceType = "ml.g7e.12xlarge"
+	UserProfileAppInstanceTypeMlG7e24xlarge           UserProfileAppInstanceType = "ml.g7e.24xlarge"
+	UserProfileAppInstanceTypeMlG7e48xlarge           UserProfileAppInstanceType = "ml.g7e.48xlarge"
+)
+
+type UserProfileRStudioServerProAppSettingsAccessStatus string
+
+const (
+	UserProfileRStudioServerProAppSettingsAccessStatusENABLED  UserProfileRStudioServerProAppSettingsAccessStatus = "ENABLED"
+	UserProfileRStudioServerProAppSettingsAccessStatusDISABLED UserProfileRStudioServerProAppSettingsAccessStatus = "DISABLED"
+)
+
+type UserProfileRStudioServerProAppSettingsUserGroup string
+
+const (
+	UserProfileRStudioServerProAppSettingsUserGroupRSTUDIOADMIN UserProfileRStudioServerProAppSettingsUserGroup = "R_STUDIO_ADMIN"
+	UserProfileRStudioServerProAppSettingsUserGroupRSTUDIOUSER  UserProfileRStudioServerProAppSettingsUserGroup = "R_STUDIO_USER"
+)
+
+type UserProfileSharingSettingsNotebookOutputOption string
+
+const (
+	UserProfileSharingSettingsNotebookOutputOptionAllowed  UserProfileSharingSettingsNotebookOutputOption = "Allowed"
+	UserProfileSharingSettingsNotebookOutputOptionDisabled UserProfileSharingSettingsNotebookOutputOption = "Disabled"
+)
+
+type UserProfileUserSettingsStudioWebPortal string
+
+const (
+	UserProfileUserSettingsStudioWebPortalENABLED  UserProfileUserSettingsStudioWebPortal = "ENABLED"
+	UserProfileUserSettingsStudioWebPortalDISABLED UserProfileUserSettingsStudioWebPortal = "DISABLED"
+)
+
+type UserProfileAppType string
+
+const (
+	UserProfileAppTypeJupyterServer    UserProfileAppType = "JupyterServer"
+	UserProfileAppTypeTensorBoard      UserProfileAppType = "TensorBoard"
+	UserProfileAppTypeRStudioServerPro UserProfileAppType = "RStudioServerPro"
+	UserProfileAppTypeJupyterLab       UserProfileAppType = "JupyterLab"
+	UserProfileAppTypeCodeEditor       UserProfileAppType = "CodeEditor"
+	UserProfileAppTypeDetailedProfiler UserProfileAppType = "DetailedProfiler"
+	UserProfileAppTypeCanvas           UserProfileAppType = "Canvas"
+)
+
+type UserProfileMlTools string
+
+const (
+	UserProfileMlToolsDataWrangler            UserProfileMlTools = "DataWrangler"
+	UserProfileMlToolsFeatureStore            UserProfileMlTools = "FeatureStore"
+	UserProfileMlToolsEmrClusters             UserProfileMlTools = "EmrClusters"
+	UserProfileMlToolsAutoMl                  UserProfileMlTools = "AutoMl"
+	UserProfileMlToolsExperiments             UserProfileMlTools = "Experiments"
+	UserProfileMlToolsTraining                UserProfileMlTools = "Training"
+	UserProfileMlToolsModelEvaluation         UserProfileMlTools = "ModelEvaluation"
+	UserProfileMlToolsPipelines               UserProfileMlTools = "Pipelines"
+	UserProfileMlToolsModels                  UserProfileMlTools = "Models"
+	UserProfileMlToolsJumpStart               UserProfileMlTools = "JumpStart"
+	UserProfileMlToolsInferenceRecommender    UserProfileMlTools = "InferenceRecommender"
+	UserProfileMlToolsEndpoints               UserProfileMlTools = "Endpoints"
+	UserProfileMlToolsProjects                UserProfileMlTools = "Projects"
+	UserProfileMlToolsInferenceOptimization   UserProfileMlTools = "InferenceOptimization"
+	UserProfileMlToolsHyperPodClusters        UserProfileMlTools = "HyperPodClusters"
+	UserProfileMlToolsComet                   UserProfileMlTools = "Comet"
+	UserProfileMlToolsDeepchecksLLMEvaluation UserProfileMlTools = "DeepchecksLLMEvaluation"
+	UserProfileMlToolsFiddler                 UserProfileMlTools = "Fiddler"
+	UserProfileMlToolsLakeraGuard             UserProfileMlTools = "LakeraGuard"
+	UserProfileMlToolsPerformanceEvaluation   UserProfileMlTools = "PerformanceEvaluation"
+)
+
+type UserProfileHiddenSageMakerImageSageMakerImageName string
+
+const (
+	UserProfileHiddenSageMakerImageSageMakerImageNameSagemakerDistribution UserProfileHiddenSageMakerImageSageMakerImageName = "sagemaker_distribution"
+)

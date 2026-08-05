@@ -4,9 +4,9 @@
 package ivs
 
 type MultitrackInputConfiguration struct {
-	Enabled           *bool   `json:"Enabled,omitempty"`
-	MaximumResolution *string `json:"MaximumResolution,omitempty"`
-	Policy            *string `json:"Policy,omitempty"`
+	Enabled           *bool                                          `json:"Enabled,omitempty"`
+	MaximumResolution *MultitrackInputConfigurationMaximumResolution `json:"MaximumResolution,omitempty"`
+	Policy            *MultitrackInputConfigurationPolicy            `json:"Policy,omitempty"`
 }
 
 type Tag struct {
@@ -17,17 +17,17 @@ type Tag struct {
 type Channel struct {
 	Arn                          *string                       `json:"Arn,omitempty"`
 	Authorized                   *bool                         `json:"Authorized,omitempty"`
-	ContainerFormat              *string                       `json:"ContainerFormat,omitempty"`
+	ContainerFormat              *ChannelContainerFormat       `json:"ContainerFormat,omitempty"`
 	IngestEndpoint               *string                       `json:"IngestEndpoint,omitempty"`
 	InsecureIngest               *bool                         `json:"InsecureIngest,omitempty"`
-	LatencyMode                  *string                       `json:"LatencyMode,omitempty"`
+	LatencyMode                  *ChannelLatencyMode           `json:"LatencyMode,omitempty"`
 	MultitrackInputConfiguration *MultitrackInputConfiguration `json:"MultitrackInputConfiguration,omitempty"`
 	Name                         *string                       `json:"Name,omitempty"`
 	PlaybackUrl                  *string                       `json:"PlaybackUrl,omitempty"`
-	Preset                       *string                       `json:"Preset,omitempty"`
+	Preset                       *ChannelPreset                `json:"Preset,omitempty"`
 	RecordingConfigurationArn    *string                       `json:"RecordingConfigurationArn,omitempty"`
 	Tags                         []Tag                         `json:"Tags,omitempty"`
-	Type                         *string                       `json:"Type,omitempty"`
+	Type                         *ChannelType                  `json:"Type,omitempty"`
 }
 
 func (Channel) CloudControlType() string { return "AWS::IVS::Channel" }
@@ -59,16 +59,16 @@ type IngestConfigurationTag struct {
 }
 
 type IngestConfiguration struct {
-	Arn            *string                  `json:"Arn,omitempty"`
-	IngestProtocol *string                  `json:"IngestProtocol,omitempty"`
-	InsecureIngest *bool                    `json:"InsecureIngest,omitempty"`
-	Name           *string                  `json:"Name,omitempty"`
-	ParticipantId  *string                  `json:"ParticipantId,omitempty"`
-	StageArn       *string                  `json:"StageArn,omitempty"`
-	State          *string                  `json:"State,omitempty"`
-	StreamKey      *string                  `json:"StreamKey,omitempty"`
-	Tags           []IngestConfigurationTag `json:"Tags,omitempty"`
-	UserId         *string                  `json:"UserId,omitempty"`
+	Arn            *string                            `json:"Arn,omitempty"`
+	IngestProtocol *IngestConfigurationIngestProtocol `json:"IngestProtocol,omitempty"`
+	InsecureIngest *bool                              `json:"InsecureIngest,omitempty"`
+	Name           *string                            `json:"Name,omitempty"`
+	ParticipantId  *string                            `json:"ParticipantId,omitempty"`
+	StageArn       *string                            `json:"StageArn,omitempty"`
+	State          *IngestConfigurationState          `json:"State,omitempty"`
+	StreamKey      *string                            `json:"StreamKey,omitempty"`
+	Tags           []IngestConfigurationTag           `json:"Tags,omitempty"`
+	UserId         *string                            `json:"UserId,omitempty"`
 }
 
 func (IngestConfiguration) CloudControlType() string { return "AWS::IVS::IngestConfiguration" }
@@ -130,8 +130,8 @@ type DestinationConfiguration struct {
 }
 
 type RenditionConfiguration struct {
-	RenditionSelection *string  `json:"RenditionSelection,omitempty"`
-	Renditions         []string `json:"Renditions,omitempty"`
+	RenditionSelection *RenditionConfigurationRenditionSelection `json:"RenditionSelection,omitempty"`
+	Renditions         []RenditionConfigurationRenditionsItem    `json:"Renditions,omitempty"`
 }
 
 type RecordingConfigurationTag struct {
@@ -140,21 +140,21 @@ type RecordingConfigurationTag struct {
 }
 
 type ThumbnailConfiguration struct {
-	RecordingMode         *string  `json:"RecordingMode,omitempty"`
-	Resolution            *string  `json:"Resolution,omitempty"`
-	Storage               []string `json:"Storage,omitempty"`
-	TargetIntervalSeconds *int     `json:"TargetIntervalSeconds,omitempty"`
+	RecordingMode         *ThumbnailConfigurationRecordingMode `json:"RecordingMode,omitempty"`
+	Resolution            *ThumbnailConfigurationResolution    `json:"Resolution,omitempty"`
+	Storage               []ThumbnailConfigurationStorageItem  `json:"Storage,omitempty"`
+	TargetIntervalSeconds *int                                 `json:"TargetIntervalSeconds,omitempty"`
 }
 
 type RecordingConfiguration struct {
-	Arn                             *string                     `json:"Arn,omitempty"`
-	DestinationConfiguration        *DestinationConfiguration   `json:"DestinationConfiguration,omitempty"`
-	Name                            *string                     `json:"Name,omitempty"`
-	RecordingReconnectWindowSeconds *int                        `json:"RecordingReconnectWindowSeconds,omitempty"`
-	RenditionConfiguration          *RenditionConfiguration     `json:"RenditionConfiguration,omitempty"`
-	State                           *string                     `json:"State,omitempty"`
-	Tags                            []RecordingConfigurationTag `json:"Tags,omitempty"`
-	ThumbnailConfiguration          *ThumbnailConfiguration     `json:"ThumbnailConfiguration,omitempty"`
+	Arn                             *string                      `json:"Arn,omitempty"`
+	DestinationConfiguration        *DestinationConfiguration    `json:"DestinationConfiguration,omitempty"`
+	Name                            *string                      `json:"Name,omitempty"`
+	RecordingReconnectWindowSeconds *int                         `json:"RecordingReconnectWindowSeconds,omitempty"`
+	RenditionConfiguration          *RenditionConfiguration      `json:"RenditionConfiguration,omitempty"`
+	State                           *RecordingConfigurationState `json:"State,omitempty"`
+	Tags                            []RecordingConfigurationTag  `json:"Tags,omitempty"`
+	ThumbnailConfiguration          *ThumbnailConfiguration      `json:"ThumbnailConfiguration,omitempty"`
 }
 
 func (RecordingConfiguration) CloudControlType() string { return "AWS::IVS::RecordingConfiguration" }
@@ -168,9 +168,9 @@ type HlsConfiguration struct {
 }
 
 type StageThumbnailConfigurationParticipantThumbnailConfiguration struct {
-	RecordingMode         *string  `json:"RecordingMode,omitempty"`
-	Storage               []string `json:"Storage,omitempty"`
-	TargetIntervalSeconds *int     `json:"TargetIntervalSeconds,omitempty"`
+	RecordingMode         *StageThumbnailConfigurationParticipantThumbnailConfigurationRecordingMode `json:"RecordingMode,omitempty"`
+	Storage               []StageThumbnailConfigurationParticipantThumbnailConfigurationStorageItem  `json:"Storage,omitempty"`
+	TargetIntervalSeconds *int                                                                       `json:"TargetIntervalSeconds,omitempty"`
 }
 
 type StageThumbnailConfiguration struct {
@@ -178,11 +178,11 @@ type StageThumbnailConfiguration struct {
 }
 
 type AutoParticipantRecordingConfiguration struct {
-	HlsConfiguration                *HlsConfiguration            `json:"HlsConfiguration,omitempty"`
-	MediaTypes                      []string                     `json:"MediaTypes,omitempty"`
-	RecordingReconnectWindowSeconds *int                         `json:"RecordingReconnectWindowSeconds,omitempty"`
-	StorageConfigurationArn         *string                      `json:"StorageConfigurationArn,omitempty"`
-	ThumbnailConfiguration          *StageThumbnailConfiguration `json:"ThumbnailConfiguration,omitempty"`
+	HlsConfiguration                *HlsConfiguration                                     `json:"HlsConfiguration,omitempty"`
+	MediaTypes                      []AutoParticipantRecordingConfigurationMediaTypesItem `json:"MediaTypes,omitempty"`
+	RecordingReconnectWindowSeconds *int                                                  `json:"RecordingReconnectWindowSeconds,omitempty"`
+	StorageConfigurationArn         *string                                               `json:"StorageConfigurationArn,omitempty"`
+	ThumbnailConfiguration          *StageThumbnailConfiguration                          `json:"ThumbnailConfiguration,omitempty"`
 }
 
 type StageTag struct {
@@ -231,3 +231,131 @@ type StreamKey struct {
 }
 
 func (StreamKey) CloudControlType() string { return "AWS::IVS::StreamKey" }
+
+type ChannelContainerFormat string
+
+const (
+	ChannelContainerFormatTS            ChannelContainerFormat = "TS"
+	ChannelContainerFormatFRAGMENTEDMP4 ChannelContainerFormat = "FRAGMENTED_MP4"
+)
+
+type ChannelLatencyMode string
+
+const (
+	ChannelLatencyModeNORMAL ChannelLatencyMode = "NORMAL"
+	ChannelLatencyModeLOW    ChannelLatencyMode = "LOW"
+)
+
+type MultitrackInputConfigurationMaximumResolution string
+
+const (
+	MultitrackInputConfigurationMaximumResolutionSD     MultitrackInputConfigurationMaximumResolution = "SD"
+	MultitrackInputConfigurationMaximumResolutionHD     MultitrackInputConfigurationMaximumResolution = "HD"
+	MultitrackInputConfigurationMaximumResolutionFULLHD MultitrackInputConfigurationMaximumResolution = "FULL_HD"
+)
+
+type MultitrackInputConfigurationPolicy string
+
+const (
+	MultitrackInputConfigurationPolicyALLOW   MultitrackInputConfigurationPolicy = "ALLOW"
+	MultitrackInputConfigurationPolicyREQUIRE MultitrackInputConfigurationPolicy = "REQUIRE"
+)
+
+type ChannelPreset string
+
+const (
+	ChannelPresetHIGHERBANDWIDTHDELIVERY      ChannelPreset = "HIGHER_BANDWIDTH_DELIVERY"
+	ChannelPresetCONSTRAINEDBANDWIDTHDELIVERY ChannelPreset = "CONSTRAINED_BANDWIDTH_DELIVERY"
+)
+
+type ChannelType string
+
+const (
+	ChannelTypeSTANDARD   ChannelType = "STANDARD"
+	ChannelTypeBASIC      ChannelType = "BASIC"
+	ChannelTypeADVANCEDSD ChannelType = "ADVANCED_SD"
+	ChannelTypeADVANCEDHD ChannelType = "ADVANCED_HD"
+)
+
+type IngestConfigurationIngestProtocol string
+
+const (
+	IngestConfigurationIngestProtocolRTMP  IngestConfigurationIngestProtocol = "RTMP"
+	IngestConfigurationIngestProtocolRTMPS IngestConfigurationIngestProtocol = "RTMPS"
+)
+
+type IngestConfigurationState string
+
+const (
+	IngestConfigurationStateACTIVE   IngestConfigurationState = "ACTIVE"
+	IngestConfigurationStateINACTIVE IngestConfigurationState = "INACTIVE"
+)
+
+type RenditionConfigurationRenditionSelection string
+
+const (
+	RenditionConfigurationRenditionSelectionALL    RenditionConfigurationRenditionSelection = "ALL"
+	RenditionConfigurationRenditionSelectionNONE   RenditionConfigurationRenditionSelection = "NONE"
+	RenditionConfigurationRenditionSelectionCUSTOM RenditionConfigurationRenditionSelection = "CUSTOM"
+)
+
+type RenditionConfigurationRenditionsItem string
+
+const (
+	RenditionConfigurationRenditionsItemFULLHD           RenditionConfigurationRenditionsItem = "FULL_HD"
+	RenditionConfigurationRenditionsItemHD               RenditionConfigurationRenditionsItem = "HD"
+	RenditionConfigurationRenditionsItemSD               RenditionConfigurationRenditionsItem = "SD"
+	RenditionConfigurationRenditionsItemLOWESTRESOLUTION RenditionConfigurationRenditionsItem = "LOWEST_RESOLUTION"
+)
+
+type RecordingConfigurationState string
+
+const (
+	RecordingConfigurationStateCREATING     RecordingConfigurationState = "CREATING"
+	RecordingConfigurationStateCREATEFAILED RecordingConfigurationState = "CREATE_FAILED"
+	RecordingConfigurationStateACTIVE       RecordingConfigurationState = "ACTIVE"
+)
+
+type ThumbnailConfigurationRecordingMode string
+
+const (
+	ThumbnailConfigurationRecordingModeINTERVAL ThumbnailConfigurationRecordingMode = "INTERVAL"
+	ThumbnailConfigurationRecordingModeDISABLED ThumbnailConfigurationRecordingMode = "DISABLED"
+)
+
+type ThumbnailConfigurationResolution string
+
+const (
+	ThumbnailConfigurationResolutionFULLHD           ThumbnailConfigurationResolution = "FULL_HD"
+	ThumbnailConfigurationResolutionHD               ThumbnailConfigurationResolution = "HD"
+	ThumbnailConfigurationResolutionSD               ThumbnailConfigurationResolution = "SD"
+	ThumbnailConfigurationResolutionLOWESTRESOLUTION ThumbnailConfigurationResolution = "LOWEST_RESOLUTION"
+)
+
+type ThumbnailConfigurationStorageItem string
+
+const (
+	ThumbnailConfigurationStorageItemSEQUENTIAL ThumbnailConfigurationStorageItem = "SEQUENTIAL"
+	ThumbnailConfigurationStorageItemLATEST     ThumbnailConfigurationStorageItem = "LATEST"
+)
+
+type AutoParticipantRecordingConfigurationMediaTypesItem string
+
+const (
+	AutoParticipantRecordingConfigurationMediaTypesItemAUDIOVIDEO AutoParticipantRecordingConfigurationMediaTypesItem = "AUDIO_VIDEO"
+	AutoParticipantRecordingConfigurationMediaTypesItemAUDIOONLY  AutoParticipantRecordingConfigurationMediaTypesItem = "AUDIO_ONLY"
+)
+
+type StageThumbnailConfigurationParticipantThumbnailConfigurationRecordingMode string
+
+const (
+	StageThumbnailConfigurationParticipantThumbnailConfigurationRecordingModeINTERVAL StageThumbnailConfigurationParticipantThumbnailConfigurationRecordingMode = "INTERVAL"
+	StageThumbnailConfigurationParticipantThumbnailConfigurationRecordingModeDISABLED StageThumbnailConfigurationParticipantThumbnailConfigurationRecordingMode = "DISABLED"
+)
+
+type StageThumbnailConfigurationParticipantThumbnailConfigurationStorageItem string
+
+const (
+	StageThumbnailConfigurationParticipantThumbnailConfigurationStorageItemSEQUENTIAL StageThumbnailConfigurationParticipantThumbnailConfigurationStorageItem = "SEQUENTIAL"
+	StageThumbnailConfigurationParticipantThumbnailConfigurationStorageItemLATEST     StageThumbnailConfigurationParticipantThumbnailConfigurationStorageItem = "LATEST"
+)

@@ -6,13 +6,13 @@ package iotfleetwise
 import "encoding/json"
 
 type StorageMaximumSize struct {
-	Unit  *string `json:"Unit,omitempty"`
-	Value *int    `json:"Value,omitempty"`
+	Unit  *StorageMaximumSizeUnit `json:"Unit,omitempty"`
+	Value *int                    `json:"Value,omitempty"`
 }
 
 type StorageMinimumTimeToLive struct {
-	Unit  *string `json:"Unit,omitempty"`
-	Value *int    `json:"Value,omitempty"`
+	Unit  *StorageMinimumTimeToLiveUnit `json:"Unit,omitempty"`
+	Value *int                          `json:"Value,omitempty"`
 }
 
 type DataPartitionStorageOptions struct {
@@ -52,16 +52,16 @@ type Tag struct {
 }
 
 type Campaign struct {
-	Action                        *string                  `json:"Action,omitempty"`
+	Action                        *UpdateCampaignAction    `json:"Action,omitempty"`
 	Arn                           *string                  `json:"Arn,omitempty"`
 	CollectionScheme              json.RawMessage          `json:"CollectionScheme,omitempty"`
-	Compression                   *string                  `json:"Compression,omitempty"`
+	Compression                   *Compression             `json:"Compression,omitempty"`
 	CreationTime                  *string                  `json:"CreationTime,omitempty"`
 	DataDestinationConfigs        []json.RawMessage        `json:"DataDestinationConfigs,omitempty"`
 	DataExtraDimensions           []string                 `json:"DataExtraDimensions,omitempty"`
 	DataPartitions                []DataPartition          `json:"DataPartitions,omitempty"`
 	Description                   *string                  `json:"Description,omitempty"`
-	DiagnosticsMode               *string                  `json:"DiagnosticsMode,omitempty"`
+	DiagnosticsMode               *DiagnosticsMode         `json:"DiagnosticsMode,omitempty"`
 	ExpiryTime                    *string                  `json:"ExpiryTime,omitempty"`
 	LastModificationTime          *string                  `json:"LastModificationTime,omitempty"`
 	Name                          *string                  `json:"Name,omitempty"`
@@ -70,9 +70,9 @@ type Campaign struct {
 	SignalCatalogArn              *string                  `json:"SignalCatalogArn,omitempty"`
 	SignalsToCollect              []SignalInformation      `json:"SignalsToCollect,omitempty"`
 	SignalsToFetch                []SignalFetchInformation `json:"SignalsToFetch,omitempty"`
-	SpoolingMode                  *string                  `json:"SpoolingMode,omitempty"`
+	SpoolingMode                  *SpoolingMode            `json:"SpoolingMode,omitempty"`
 	StartTime                     *string                  `json:"StartTime,omitempty"`
-	Status                        *string                  `json:"Status,omitempty"`
+	Status                        *CampaignStatus          `json:"Status,omitempty"`
 	Tags                          []Tag                    `json:"Tags,omitempty"`
 	TargetArn                     *string                  `json:"TargetArn,omitempty"`
 }
@@ -85,17 +85,17 @@ type DecoderManifestTag struct {
 }
 
 type DecoderManifest struct {
-	Arn                       *string              `json:"Arn,omitempty"`
-	CreationTime              *string              `json:"CreationTime,omitempty"`
-	DefaultForUnmappedSignals *string              `json:"DefaultForUnmappedSignals,omitempty"`
-	Description               *string              `json:"Description,omitempty"`
-	LastModificationTime      *string              `json:"LastModificationTime,omitempty"`
-	ModelManifestArn          *string              `json:"ModelManifestArn,omitempty"`
-	Name                      *string              `json:"Name,omitempty"`
-	NetworkInterfaces         []json.RawMessage    `json:"NetworkInterfaces,omitempty"`
-	SignalDecoders            []json.RawMessage    `json:"SignalDecoders,omitempty"`
-	Status                    *string              `json:"Status,omitempty"`
-	Tags                      []DecoderManifestTag `json:"Tags,omitempty"`
+	Arn                       *string                        `json:"Arn,omitempty"`
+	CreationTime              *string                        `json:"CreationTime,omitempty"`
+	DefaultForUnmappedSignals *DefaultForUnmappedSignalsType `json:"DefaultForUnmappedSignals,omitempty"`
+	Description               *string                        `json:"Description,omitempty"`
+	LastModificationTime      *string                        `json:"LastModificationTime,omitempty"`
+	ModelManifestArn          *string                        `json:"ModelManifestArn,omitempty"`
+	Name                      *string                        `json:"Name,omitempty"`
+	NetworkInterfaces         []json.RawMessage              `json:"NetworkInterfaces,omitempty"`
+	SignalDecoders            []json.RawMessage              `json:"SignalDecoders,omitempty"`
+	Status                    *ManifestStatus                `json:"Status,omitempty"`
+	Tags                      []DecoderManifestTag           `json:"Tags,omitempty"`
 }
 
 func (DecoderManifest) CloudControlType() string { return "AWS::IoTFleetWise::DecoderManifest" }
@@ -123,15 +123,15 @@ type ModelManifestTag struct {
 }
 
 type ModelManifest struct {
-	Arn                  *string            `json:"Arn,omitempty"`
-	CreationTime         *string            `json:"CreationTime,omitempty"`
-	Description          *string            `json:"Description,omitempty"`
-	LastModificationTime *string            `json:"LastModificationTime,omitempty"`
-	Name                 *string            `json:"Name,omitempty"`
-	Nodes                []string           `json:"Nodes,omitempty"`
-	SignalCatalogArn     *string            `json:"SignalCatalogArn,omitempty"`
-	Status               *string            `json:"Status,omitempty"`
-	Tags                 []ModelManifestTag `json:"Tags,omitempty"`
+	Arn                  *string                      `json:"Arn,omitempty"`
+	CreationTime         *string                      `json:"CreationTime,omitempty"`
+	Description          *string                      `json:"Description,omitempty"`
+	LastModificationTime *string                      `json:"LastModificationTime,omitempty"`
+	Name                 *string                      `json:"Name,omitempty"`
+	Nodes                []string                     `json:"Nodes,omitempty"`
+	SignalCatalogArn     *string                      `json:"SignalCatalogArn,omitempty"`
+	Status               *ModelManifestManifestStatus `json:"Status,omitempty"`
+	Tags                 []ModelManifestTag           `json:"Tags,omitempty"`
 }
 
 func (ModelManifest) CloudControlType() string { return "AWS::IoTFleetWise::ModelManifest" }
@@ -194,16 +194,98 @@ type VehicleTag struct {
 }
 
 type Vehicle struct {
-	Arn                  *string                    `json:"Arn,omitempty"`
-	AssociationBehavior  *string                    `json:"AssociationBehavior,omitempty"`
-	Attributes           map[string]string          `json:"Attributes,omitempty"`
-	CreationTime         *string                    `json:"CreationTime,omitempty"`
-	DecoderManifestArn   *string                    `json:"DecoderManifestArn,omitempty"`
-	LastModificationTime *string                    `json:"LastModificationTime,omitempty"`
-	ModelManifestArn     *string                    `json:"ModelManifestArn,omitempty"`
-	Name                 *string                    `json:"Name,omitempty"`
-	StateTemplates       []StateTemplateAssociation `json:"StateTemplates,omitempty"`
-	Tags                 []VehicleTag               `json:"Tags,omitempty"`
+	Arn                  *string                     `json:"Arn,omitempty"`
+	AssociationBehavior  *VehicleAssociationBehavior `json:"AssociationBehavior,omitempty"`
+	Attributes           map[string]string           `json:"Attributes,omitempty"`
+	CreationTime         *string                     `json:"CreationTime,omitempty"`
+	DecoderManifestArn   *string                     `json:"DecoderManifestArn,omitempty"`
+	LastModificationTime *string                     `json:"LastModificationTime,omitempty"`
+	ModelManifestArn     *string                     `json:"ModelManifestArn,omitempty"`
+	Name                 *string                     `json:"Name,omitempty"`
+	StateTemplates       []StateTemplateAssociation  `json:"StateTemplates,omitempty"`
+	Tags                 []VehicleTag                `json:"Tags,omitempty"`
 }
 
 func (Vehicle) CloudControlType() string { return "AWS::IoTFleetWise::Vehicle" }
+
+type UpdateCampaignAction string
+
+const (
+	UpdateCampaignActionAPPROVE UpdateCampaignAction = "APPROVE"
+	UpdateCampaignActionSUSPEND UpdateCampaignAction = "SUSPEND"
+	UpdateCampaignActionRESUME  UpdateCampaignAction = "RESUME"
+	UpdateCampaignActionUPDATE  UpdateCampaignAction = "UPDATE"
+)
+
+type Compression string
+
+const (
+	CompressionOFF    Compression = "OFF"
+	CompressionSNAPPY Compression = "SNAPPY"
+)
+
+type StorageMaximumSizeUnit string
+
+const (
+	StorageMaximumSizeUnitMB StorageMaximumSizeUnit = "MB"
+	StorageMaximumSizeUnitGB StorageMaximumSizeUnit = "GB"
+	StorageMaximumSizeUnitTB StorageMaximumSizeUnit = "TB"
+)
+
+type StorageMinimumTimeToLiveUnit string
+
+const (
+	StorageMinimumTimeToLiveUnitHOURS StorageMinimumTimeToLiveUnit = "HOURS"
+	StorageMinimumTimeToLiveUnitDAYS  StorageMinimumTimeToLiveUnit = "DAYS"
+	StorageMinimumTimeToLiveUnitWEEKS StorageMinimumTimeToLiveUnit = "WEEKS"
+)
+
+type DiagnosticsMode string
+
+const (
+	DiagnosticsModeOFF            DiagnosticsMode = "OFF"
+	DiagnosticsModeSENDACTIVEDTCS DiagnosticsMode = "SEND_ACTIVE_DTCS"
+)
+
+type SpoolingMode string
+
+const (
+	SpoolingModeOFF    SpoolingMode = "OFF"
+	SpoolingModeTODISK SpoolingMode = "TO_DISK"
+)
+
+type CampaignStatus string
+
+const (
+	CampaignStatusCREATING           CampaignStatus = "CREATING"
+	CampaignStatusWAITINGFORAPPROVAL CampaignStatus = "WAITING_FOR_APPROVAL"
+	CampaignStatusRUNNING            CampaignStatus = "RUNNING"
+	CampaignStatusSUSPENDED          CampaignStatus = "SUSPENDED"
+)
+
+type DefaultForUnmappedSignalsType string
+
+const (
+	DefaultForUnmappedSignalsTypeCUSTOMDECODING DefaultForUnmappedSignalsType = "CUSTOM_DECODING"
+)
+
+type ManifestStatus string
+
+const (
+	ManifestStatusACTIVE ManifestStatus = "ACTIVE"
+	ManifestStatusDRAFT  ManifestStatus = "DRAFT"
+)
+
+type ModelManifestManifestStatus string
+
+const (
+	ModelManifestManifestStatusACTIVE ModelManifestManifestStatus = "ACTIVE"
+	ModelManifestManifestStatusDRAFT  ModelManifestManifestStatus = "DRAFT"
+)
+
+type VehicleAssociationBehavior string
+
+const (
+	VehicleAssociationBehaviorCreateIotThing         VehicleAssociationBehavior = "CreateIotThing"
+	VehicleAssociationBehaviorValidateIotThingExists VehicleAssociationBehavior = "ValidateIotThingExists"
+)

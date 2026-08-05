@@ -32,7 +32,7 @@ type Association struct {
 	AssociationName               *string                            `json:"AssociationName,omitempty"`
 	AutomationTargetParameterName *string                            `json:"AutomationTargetParameterName,omitempty"`
 	CalendarNames                 []string                           `json:"CalendarNames,omitempty"`
-	ComplianceSeverity            *string                            `json:"ComplianceSeverity,omitempty"`
+	ComplianceSeverity            *AssociationComplianceSeverity     `json:"ComplianceSeverity,omitempty"`
 	DocumentVersion               *string                            `json:"DocumentVersion,omitempty"`
 	InstanceId                    *string                            `json:"InstanceId,omitempty"`
 	MaxConcurrency                *string                            `json:"MaxConcurrency,omitempty"`
@@ -42,7 +42,7 @@ type Association struct {
 	Parameters                    map[string][]string                `json:"Parameters,omitempty"`
 	ScheduleExpression            *string                            `json:"ScheduleExpression,omitempty"`
 	ScheduleOffset                *int                               `json:"ScheduleOffset,omitempty"`
-	SyncCompliance                *string                            `json:"SyncCompliance,omitempty"`
+	SyncCompliance                *AssociationSyncCompliance         `json:"SyncCompliance,omitempty"`
 	Tags                          []Tag                              `json:"Tags,omitempty"`
 	Targets                       []Target                           `json:"Targets,omitempty"`
 	WaitForSuccessTimeoutSeconds  *int                               `json:"WaitForSuccessTimeoutSeconds,omitempty"`
@@ -51,9 +51,9 @@ type Association struct {
 func (Association) CloudControlType() string { return "AWS::SSM::Association" }
 
 type AttachmentsSource struct {
-	Key    *string  `json:"Key,omitempty"`
-	Name   *string  `json:"Name,omitempty"`
-	Values []string `json:"Values,omitempty"`
+	Key    *AttachmentsSourceKey `json:"Key,omitempty"`
+	Name   *string               `json:"Name,omitempty"`
+	Values []string              `json:"Values,omitempty"`
 }
 
 type DocumentRequires struct {
@@ -67,16 +67,16 @@ type DocumentTag struct {
 }
 
 type Document struct {
-	Attachments    []AttachmentsSource `json:"Attachments,omitempty"`
-	Content        json.RawMessage     `json:"Content,omitempty"`
-	DocumentFormat *string             `json:"DocumentFormat,omitempty"`
-	DocumentType   *string             `json:"DocumentType,omitempty"`
-	Name           *string             `json:"Name,omitempty"`
-	Requires       []DocumentRequires  `json:"Requires,omitempty"`
-	Tags           []DocumentTag       `json:"Tags,omitempty"`
-	TargetType     *string             `json:"TargetType,omitempty"`
-	UpdateMethod   *string             `json:"UpdateMethod,omitempty"`
-	VersionName    *string             `json:"VersionName,omitempty"`
+	Attachments    []AttachmentsSource     `json:"Attachments,omitempty"`
+	Content        json.RawMessage         `json:"Content,omitempty"`
+	DocumentFormat *DocumentDocumentFormat `json:"DocumentFormat,omitempty"`
+	DocumentType   *DocumentDocumentType   `json:"DocumentType,omitempty"`
+	Name           *string                 `json:"Name,omitempty"`
+	Requires       []DocumentRequires      `json:"Requires,omitempty"`
+	Tags           []DocumentTag           `json:"Tags,omitempty"`
+	TargetType     *string                 `json:"TargetType,omitempty"`
+	UpdateMethod   *DocumentUpdateMethod   `json:"UpdateMethod,omitempty"`
+	VersionName    *string                 `json:"VersionName,omitempty"`
 }
 
 func (Document) CloudControlType() string { return "AWS::SSM::Document" }
@@ -226,23 +226,23 @@ type OpsItem struct {
 func (OpsItem) CloudControlType() string { return "AWS::SSM::OpsItem" }
 
 type Parameter struct {
-	AllowedPattern *string           `json:"AllowedPattern,omitempty"`
-	Arn            *string           `json:"Arn,omitempty"`
-	DataType       *string           `json:"DataType,omitempty"`
-	Description    *string           `json:"Description,omitempty"`
-	Name           *string           `json:"Name,omitempty"`
-	Policies       *string           `json:"Policies,omitempty"`
-	Tags           map[string]string `json:"Tags,omitempty"`
-	Tier           *string           `json:"Tier,omitempty"`
-	Type           *string           `json:"Type,omitempty"`
-	Value          *string           `json:"Value,omitempty"`
+	AllowedPattern *string            `json:"AllowedPattern,omitempty"`
+	Arn            *string            `json:"Arn,omitempty"`
+	DataType       *ParameterDataType `json:"DataType,omitempty"`
+	Description    *string            `json:"Description,omitempty"`
+	Name           *string            `json:"Name,omitempty"`
+	Policies       *string            `json:"Policies,omitempty"`
+	Tags           map[string]string  `json:"Tags,omitempty"`
+	Tier           *ParameterTier     `json:"Tier,omitempty"`
+	Type           *ParameterType     `json:"Type,omitempty"`
+	Value          *string            `json:"Value,omitempty"`
 }
 
 func (Parameter) CloudControlType() string { return "AWS::SSM::Parameter" }
 
 type PatchFilter struct {
-	Key    *string  `json:"Key,omitempty"`
-	Values []string `json:"Values,omitempty"`
+	Key    *PatchFilterKey `json:"Key,omitempty"`
+	Values []string        `json:"Values,omitempty"`
 }
 
 type PatchFilterGroup struct {
@@ -250,11 +250,11 @@ type PatchFilterGroup struct {
 }
 
 type Rule struct {
-	ApproveAfterDays  *int              `json:"ApproveAfterDays,omitempty"`
-	ApproveUntilDate  *string           `json:"ApproveUntilDate,omitempty"`
-	ComplianceLevel   *string           `json:"ComplianceLevel,omitempty"`
-	EnableNonSecurity *bool             `json:"EnableNonSecurity,omitempty"`
-	PatchFilterGroup  *PatchFilterGroup `json:"PatchFilterGroup,omitempty"`
+	ApproveAfterDays  *int                 `json:"ApproveAfterDays,omitempty"`
+	ApproveUntilDate  *string              `json:"ApproveUntilDate,omitempty"`
+	ComplianceLevel   *RuleComplianceLevel `json:"ComplianceLevel,omitempty"`
+	EnableNonSecurity *bool                `json:"EnableNonSecurity,omitempty"`
+	PatchFilterGroup  *PatchFilterGroup    `json:"PatchFilterGroup,omitempty"`
 }
 
 type RuleGroup struct {
@@ -273,22 +273,22 @@ type PatchBaselineTag struct {
 }
 
 type PatchBaseline struct {
-	ApprovalRules                            *RuleGroup         `json:"ApprovalRules,omitempty"`
-	ApprovedPatches                          []string           `json:"ApprovedPatches,omitempty"`
-	ApprovedPatchesComplianceLevel           *string            `json:"ApprovedPatchesComplianceLevel,omitempty"`
-	ApprovedPatchesEnableNonSecurity         *bool              `json:"ApprovedPatchesEnableNonSecurity,omitempty"`
-	AvailableSecurityUpdatesComplianceStatus *string            `json:"AvailableSecurityUpdatesComplianceStatus,omitempty"`
-	DefaultBaseline                          *bool              `json:"DefaultBaseline,omitempty"`
-	Description                              *string            `json:"Description,omitempty"`
-	GlobalFilters                            *PatchFilterGroup  `json:"GlobalFilters,omitempty"`
-	Id                                       *string            `json:"Id,omitempty"`
-	Name                                     *string            `json:"Name,omitempty"`
-	OperatingSystem                          *string            `json:"OperatingSystem,omitempty"`
-	PatchGroups                              []string           `json:"PatchGroups,omitempty"`
-	RejectedPatches                          []string           `json:"RejectedPatches,omitempty"`
-	RejectedPatchesAction                    *string            `json:"RejectedPatchesAction,omitempty"`
-	Sources                                  []PatchSource      `json:"Sources,omitempty"`
-	Tags                                     []PatchBaselineTag `json:"Tags,omitempty"`
+	ApprovalRules                            *RuleGroup                                             `json:"ApprovalRules,omitempty"`
+	ApprovedPatches                          []string                                               `json:"ApprovedPatches,omitempty"`
+	ApprovedPatchesComplianceLevel           *PatchBaselineApprovedPatchesComplianceLevel           `json:"ApprovedPatchesComplianceLevel,omitempty"`
+	ApprovedPatchesEnableNonSecurity         *bool                                                  `json:"ApprovedPatchesEnableNonSecurity,omitempty"`
+	AvailableSecurityUpdatesComplianceStatus *PatchBaselineAvailableSecurityUpdatesComplianceStatus `json:"AvailableSecurityUpdatesComplianceStatus,omitempty"`
+	DefaultBaseline                          *bool                                                  `json:"DefaultBaseline,omitempty"`
+	Description                              *string                                                `json:"Description,omitempty"`
+	GlobalFilters                            *PatchFilterGroup                                      `json:"GlobalFilters,omitempty"`
+	Id                                       *string                                                `json:"Id,omitempty"`
+	Name                                     *string                                                `json:"Name,omitempty"`
+	OperatingSystem                          *PatchBaselineOperatingSystem                          `json:"OperatingSystem,omitempty"`
+	PatchGroups                              []string                                               `json:"PatchGroups,omitempty"`
+	RejectedPatches                          []string                                               `json:"RejectedPatches,omitempty"`
+	RejectedPatchesAction                    *PatchBaselineRejectedPatchesAction                    `json:"RejectedPatchesAction,omitempty"`
+	Sources                                  []PatchSource                                          `json:"Sources,omitempty"`
+	Tags                                     []PatchBaselineTag                                     `json:"Tags,omitempty"`
 }
 
 func (PatchBaseline) CloudControlType() string { return "AWS::SSM::PatchBaseline" }
@@ -346,3 +346,165 @@ type ServiceSetting struct {
 }
 
 func (ServiceSetting) CloudControlType() string { return "AWS::SSM::ServiceSetting" }
+
+type AssociationComplianceSeverity string
+
+const (
+	AssociationComplianceSeverityCRITICAL    AssociationComplianceSeverity = "CRITICAL"
+	AssociationComplianceSeverityHIGH        AssociationComplianceSeverity = "HIGH"
+	AssociationComplianceSeverityMEDIUM      AssociationComplianceSeverity = "MEDIUM"
+	AssociationComplianceSeverityLOW         AssociationComplianceSeverity = "LOW"
+	AssociationComplianceSeverityUNSPECIFIED AssociationComplianceSeverity = "UNSPECIFIED"
+)
+
+type AssociationSyncCompliance string
+
+const (
+	AssociationSyncComplianceAUTO   AssociationSyncCompliance = "AUTO"
+	AssociationSyncComplianceMANUAL AssociationSyncCompliance = "MANUAL"
+)
+
+type AttachmentsSourceKey string
+
+const (
+	AttachmentsSourceKeySourceUrl           AttachmentsSourceKey = "SourceUrl"
+	AttachmentsSourceKeyS3FileUrl           AttachmentsSourceKey = "S3FileUrl"
+	AttachmentsSourceKeyAttachmentReference AttachmentsSourceKey = "AttachmentReference"
+)
+
+type DocumentDocumentFormat string
+
+const (
+	DocumentDocumentFormatYAML DocumentDocumentFormat = "YAML"
+	DocumentDocumentFormatJSON DocumentDocumentFormat = "JSON"
+	DocumentDocumentFormatTEXT DocumentDocumentFormat = "TEXT"
+)
+
+type DocumentDocumentType string
+
+const (
+	DocumentDocumentTypeApplicationConfiguration       DocumentDocumentType = "ApplicationConfiguration"
+	DocumentDocumentTypeApplicationConfigurationSchema DocumentDocumentType = "ApplicationConfigurationSchema"
+	DocumentDocumentTypeAutomation                     DocumentDocumentType = "Automation"
+	DocumentDocumentTypeAutomationChangeTemplate       DocumentDocumentType = "Automation.ChangeTemplate"
+	DocumentDocumentTypeAutoApprovalPolicy             DocumentDocumentType = "AutoApprovalPolicy"
+	DocumentDocumentTypeChangeCalendar                 DocumentDocumentType = "ChangeCalendar"
+	DocumentDocumentTypeCloudFormation                 DocumentDocumentType = "CloudFormation"
+	DocumentDocumentTypeCommand                        DocumentDocumentType = "Command"
+	DocumentDocumentTypeDeploymentStrategy             DocumentDocumentType = "DeploymentStrategy"
+	DocumentDocumentTypeManualApprovalPolicy           DocumentDocumentType = "ManualApprovalPolicy"
+	DocumentDocumentTypePackage                        DocumentDocumentType = "Package"
+	DocumentDocumentTypePolicy                         DocumentDocumentType = "Policy"
+	DocumentDocumentTypeProblemAnalysis                DocumentDocumentType = "ProblemAnalysis"
+	DocumentDocumentTypeProblemAnalysisTemplate        DocumentDocumentType = "ProblemAnalysisTemplate"
+	DocumentDocumentTypeSession                        DocumentDocumentType = "Session"
+)
+
+type DocumentUpdateMethod string
+
+const (
+	DocumentUpdateMethodReplace    DocumentUpdateMethod = "Replace"
+	DocumentUpdateMethodNewVersion DocumentUpdateMethod = "NewVersion"
+)
+
+type ParameterDataType string
+
+const (
+	ParameterDataTypeText        ParameterDataType = "text"
+	ParameterDataTypeAwsEc2Image ParameterDataType = "aws:ec2:image"
+)
+
+type ParameterTier string
+
+const (
+	ParameterTierStandard           ParameterTier = "Standard"
+	ParameterTierAdvanced           ParameterTier = "Advanced"
+	ParameterTierIntelligentTiering ParameterTier = "Intelligent-Tiering"
+)
+
+type ParameterType string
+
+const (
+	ParameterTypeString     ParameterType = "String"
+	ParameterTypeStringList ParameterType = "StringList"
+)
+
+type RuleComplianceLevel string
+
+const (
+	RuleComplianceLevelCRITICAL      RuleComplianceLevel = "CRITICAL"
+	RuleComplianceLevelHIGH          RuleComplianceLevel = "HIGH"
+	RuleComplianceLevelINFORMATIONAL RuleComplianceLevel = "INFORMATIONAL"
+	RuleComplianceLevelLOW           RuleComplianceLevel = "LOW"
+	RuleComplianceLevelMEDIUM        RuleComplianceLevel = "MEDIUM"
+	RuleComplianceLevelUNSPECIFIED   RuleComplianceLevel = "UNSPECIFIED"
+)
+
+type PatchFilterKey string
+
+const (
+	PatchFilterKeyADVISORYID     PatchFilterKey = "ADVISORY_ID"
+	PatchFilterKeyARCH           PatchFilterKey = "ARCH"
+	PatchFilterKeyBUGZILLAID     PatchFilterKey = "BUGZILLA_ID"
+	PatchFilterKeyCLASSIFICATION PatchFilterKey = "CLASSIFICATION"
+	PatchFilterKeyCVEID          PatchFilterKey = "CVE_ID"
+	PatchFilterKeyEPOCH          PatchFilterKey = "EPOCH"
+	PatchFilterKeyMSRCSEVERITY   PatchFilterKey = "MSRC_SEVERITY"
+	PatchFilterKeyNAME           PatchFilterKey = "NAME"
+	PatchFilterKeyPATCHID        PatchFilterKey = "PATCH_ID"
+	PatchFilterKeyPATCHSET       PatchFilterKey = "PATCH_SET"
+	PatchFilterKeyPRIORITY       PatchFilterKey = "PRIORITY"
+	PatchFilterKeyPRODUCT        PatchFilterKey = "PRODUCT"
+	PatchFilterKeyPRODUCTFAMILY  PatchFilterKey = "PRODUCT_FAMILY"
+	PatchFilterKeyRELEASE        PatchFilterKey = "RELEASE"
+	PatchFilterKeyREPOSITORY     PatchFilterKey = "REPOSITORY"
+	PatchFilterKeySECTION        PatchFilterKey = "SECTION"
+	PatchFilterKeySECURITY       PatchFilterKey = "SECURITY"
+	PatchFilterKeySEVERITY       PatchFilterKey = "SEVERITY"
+	PatchFilterKeyVERSION        PatchFilterKey = "VERSION"
+)
+
+type PatchBaselineApprovedPatchesComplianceLevel string
+
+const (
+	PatchBaselineApprovedPatchesComplianceLevelCRITICAL      PatchBaselineApprovedPatchesComplianceLevel = "CRITICAL"
+	PatchBaselineApprovedPatchesComplianceLevelHIGH          PatchBaselineApprovedPatchesComplianceLevel = "HIGH"
+	PatchBaselineApprovedPatchesComplianceLevelMEDIUM        PatchBaselineApprovedPatchesComplianceLevel = "MEDIUM"
+	PatchBaselineApprovedPatchesComplianceLevelLOW           PatchBaselineApprovedPatchesComplianceLevel = "LOW"
+	PatchBaselineApprovedPatchesComplianceLevelINFORMATIONAL PatchBaselineApprovedPatchesComplianceLevel = "INFORMATIONAL"
+	PatchBaselineApprovedPatchesComplianceLevelUNSPECIFIED   PatchBaselineApprovedPatchesComplianceLevel = "UNSPECIFIED"
+)
+
+type PatchBaselineAvailableSecurityUpdatesComplianceStatus string
+
+const (
+	PatchBaselineAvailableSecurityUpdatesComplianceStatusNONCOMPLIANT PatchBaselineAvailableSecurityUpdatesComplianceStatus = "NON_COMPLIANT"
+	PatchBaselineAvailableSecurityUpdatesComplianceStatusCOMPLIANT    PatchBaselineAvailableSecurityUpdatesComplianceStatus = "COMPLIANT"
+)
+
+type PatchBaselineOperatingSystem string
+
+const (
+	PatchBaselineOperatingSystemWINDOWS               PatchBaselineOperatingSystem = "WINDOWS"
+	PatchBaselineOperatingSystemAMAZONLINUX           PatchBaselineOperatingSystem = "AMAZON_LINUX"
+	PatchBaselineOperatingSystemAMAZONLINUX2          PatchBaselineOperatingSystem = "AMAZON_LINUX_2"
+	PatchBaselineOperatingSystemAMAZONLINUX2022       PatchBaselineOperatingSystem = "AMAZON_LINUX_2022"
+	PatchBaselineOperatingSystemAMAZONLINUX2023       PatchBaselineOperatingSystem = "AMAZON_LINUX_2023"
+	PatchBaselineOperatingSystemUBUNTU                PatchBaselineOperatingSystem = "UBUNTU"
+	PatchBaselineOperatingSystemREDHATENTERPRISELINUX PatchBaselineOperatingSystem = "REDHAT_ENTERPRISE_LINUX"
+	PatchBaselineOperatingSystemSUSE                  PatchBaselineOperatingSystem = "SUSE"
+	PatchBaselineOperatingSystemCENTOS                PatchBaselineOperatingSystem = "CENTOS"
+	PatchBaselineOperatingSystemORACLELINUX           PatchBaselineOperatingSystem = "ORACLE_LINUX"
+	PatchBaselineOperatingSystemDEBIAN                PatchBaselineOperatingSystem = "DEBIAN"
+	PatchBaselineOperatingSystemMACOS                 PatchBaselineOperatingSystem = "MACOS"
+	PatchBaselineOperatingSystemRASPBIAN              PatchBaselineOperatingSystem = "RASPBIAN"
+	PatchBaselineOperatingSystemROCKYLINUX            PatchBaselineOperatingSystem = "ROCKY_LINUX"
+	PatchBaselineOperatingSystemALMALINUX             PatchBaselineOperatingSystem = "ALMA_LINUX"
+)
+
+type PatchBaselineRejectedPatchesAction string
+
+const (
+	PatchBaselineRejectedPatchesActionALLOWASDEPENDENCY PatchBaselineRejectedPatchesAction = "ALLOW_AS_DEPENDENCY"
+	PatchBaselineRejectedPatchesActionBLOCK             PatchBaselineRejectedPatchesAction = "BLOCK"
+)

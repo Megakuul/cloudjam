@@ -13,7 +13,7 @@ type DocumentAttributeValue struct {
 type DocumentAttributeCondition struct {
 	ConditionDocumentAttributeKey *string                 `json:"ConditionDocumentAttributeKey,omitempty"`
 	ConditionOnValue              *DocumentAttributeValue `json:"ConditionOnValue,omitempty"`
-	Operator                      *string                 `json:"Operator,omitempty"`
+	Operator                      *ConditionOperator      `json:"Operator,omitempty"`
 }
 
 type DocumentAttributeTarget struct {
@@ -42,9 +42,9 @@ type CustomDocumentEnrichmentConfiguration struct {
 }
 
 type ConfluenceAttachmentToIndexFieldMapping struct {
-	DataSourceFieldName *string `json:"DataSourceFieldName,omitempty"`
-	DateFieldFormat     *string `json:"DateFieldFormat,omitempty"`
-	IndexFieldName      *string `json:"IndexFieldName,omitempty"`
+	DataSourceFieldName *ConfluenceAttachmentFieldName `json:"DataSourceFieldName,omitempty"`
+	DateFieldFormat     *string                        `json:"DateFieldFormat,omitempty"`
+	IndexFieldName      *string                        `json:"IndexFieldName,omitempty"`
 }
 
 type ConfluenceAttachmentConfiguration struct {
@@ -53,9 +53,9 @@ type ConfluenceAttachmentConfiguration struct {
 }
 
 type ConfluenceBlogToIndexFieldMapping struct {
-	DataSourceFieldName *string `json:"DataSourceFieldName,omitempty"`
-	DateFieldFormat     *string `json:"DateFieldFormat,omitempty"`
-	IndexFieldName      *string `json:"IndexFieldName,omitempty"`
+	DataSourceFieldName *ConfluenceBlogFieldName `json:"DataSourceFieldName,omitempty"`
+	DateFieldFormat     *string                  `json:"DateFieldFormat,omitempty"`
+	IndexFieldName      *string                  `json:"IndexFieldName,omitempty"`
 }
 
 type ConfluenceBlogConfiguration struct {
@@ -63,9 +63,9 @@ type ConfluenceBlogConfiguration struct {
 }
 
 type ConfluencePageToIndexFieldMapping struct {
-	DataSourceFieldName *string `json:"DataSourceFieldName,omitempty"`
-	DateFieldFormat     *string `json:"DateFieldFormat,omitempty"`
-	IndexFieldName      *string `json:"IndexFieldName,omitempty"`
+	DataSourceFieldName *ConfluencePageFieldName `json:"DataSourceFieldName,omitempty"`
+	DateFieldFormat     *string                  `json:"DateFieldFormat,omitempty"`
+	IndexFieldName      *string                  `json:"IndexFieldName,omitempty"`
 }
 
 type ConfluencePageConfiguration struct {
@@ -73,9 +73,9 @@ type ConfluencePageConfiguration struct {
 }
 
 type ConfluenceSpaceToIndexFieldMapping struct {
-	DataSourceFieldName *string `json:"DataSourceFieldName,omitempty"`
-	DateFieldFormat     *string `json:"DateFieldFormat,omitempty"`
-	IndexFieldName      *string `json:"IndexFieldName,omitempty"`
+	DataSourceFieldName *ConfluenceSpaceFieldName `json:"DataSourceFieldName,omitempty"`
+	DateFieldFormat     *string                   `json:"DateFieldFormat,omitempty"`
+	IndexFieldName      *string                   `json:"IndexFieldName,omitempty"`
 }
 
 type ConfluenceSpaceConfiguration struct {
@@ -100,7 +100,7 @@ type ConfluenceConfiguration struct {
 	SecretArn               *string                            `json:"SecretArn,omitempty"`
 	ServerUrl               *string                            `json:"ServerUrl,omitempty"`
 	SpaceConfiguration      *ConfluenceSpaceConfiguration      `json:"SpaceConfiguration,omitempty"`
-	Version                 *string                            `json:"Version,omitempty"`
+	Version                 *ConfluenceVersion                 `json:"Version,omitempty"`
 	VpcConfiguration        *DataSourceVpcConfiguration        `json:"VpcConfiguration,omitempty"`
 }
 
@@ -131,14 +131,14 @@ type ConnectionConfiguration struct {
 }
 
 type SqlConfiguration struct {
-	QueryIdentifiersEnclosingOption *string `json:"QueryIdentifiersEnclosingOption,omitempty"`
+	QueryIdentifiersEnclosingOption *QueryIdentifiersEnclosingOption `json:"QueryIdentifiersEnclosingOption,omitempty"`
 }
 
 type DatabaseConfiguration struct {
 	AclConfiguration        *AclConfiguration           `json:"AclConfiguration,omitempty"`
 	ColumnConfiguration     *ColumnConfiguration        `json:"ColumnConfiguration,omitempty"`
 	ConnectionConfiguration *ConnectionConfiguration    `json:"ConnectionConfiguration,omitempty"`
-	DatabaseEngineType      *string                     `json:"DatabaseEngineType,omitempty"`
+	DatabaseEngineType      *DatabaseEngineType         `json:"DatabaseEngineType,omitempty"`
 	SqlConfiguration        *SqlConfiguration           `json:"SqlConfiguration,omitempty"`
 	VpcConfiguration        *DataSourceVpcConfiguration `json:"VpcConfiguration,omitempty"`
 }
@@ -191,10 +191,10 @@ type S3DataSourceConfiguration struct {
 }
 
 type SalesforceChatterFeedConfiguration struct {
-	DocumentDataFieldName  *string                         `json:"DocumentDataFieldName,omitempty"`
-	DocumentTitleFieldName *string                         `json:"DocumentTitleFieldName,omitempty"`
-	FieldMappings          []DataSourceToIndexFieldMapping `json:"FieldMappings,omitempty"`
-	IncludeFilterTypes     []string                        `json:"IncludeFilterTypes,omitempty"`
+	DocumentDataFieldName  *string                                  `json:"DocumentDataFieldName,omitempty"`
+	DocumentTitleFieldName *string                                  `json:"DocumentTitleFieldName,omitempty"`
+	FieldMappings          []DataSourceToIndexFieldMapping          `json:"FieldMappings,omitempty"`
+	IncludeFilterTypes     []SalesforceChatterFeedIncludeFilterType `json:"IncludeFilterTypes,omitempty"`
 }
 
 type SalesforceCustomKnowledgeArticleTypeConfiguration struct {
@@ -212,7 +212,7 @@ type SalesforceStandardKnowledgeArticleTypeConfiguration struct {
 
 type SalesforceKnowledgeArticleConfiguration struct {
 	CustomKnowledgeArticleTypeConfigurations  []SalesforceCustomKnowledgeArticleTypeConfiguration  `json:"CustomKnowledgeArticleTypeConfigurations,omitempty"`
-	IncludedStates                            []string                                             `json:"IncludedStates,omitempty"`
+	IncludedStates                            []SalesforceKnowledgeArticleState                    `json:"IncludedStates,omitempty"`
 	StandardKnowledgeArticleTypeConfiguration *SalesforceStandardKnowledgeArticleTypeConfiguration `json:"StandardKnowledgeArticleTypeConfiguration,omitempty"`
 }
 
@@ -225,7 +225,7 @@ type SalesforceStandardObjectConfiguration struct {
 	DocumentDataFieldName  *string                         `json:"DocumentDataFieldName,omitempty"`
 	DocumentTitleFieldName *string                         `json:"DocumentTitleFieldName,omitempty"`
 	FieldMappings          []DataSourceToIndexFieldMapping `json:"FieldMappings,omitempty"`
-	Name                   *string                         `json:"Name,omitempty"`
+	Name                   *SalesforceStandardObjectName   `json:"Name,omitempty"`
 }
 
 type SalesforceConfiguration struct {
@@ -260,27 +260,27 @@ type ServiceNowServiceCatalogConfiguration struct {
 }
 
 type ServiceNowConfiguration struct {
-	AuthenticationType            *string                                  `json:"AuthenticationType,omitempty"`
+	AuthenticationType            *ServiceNowAuthenticationType            `json:"AuthenticationType,omitempty"`
 	HostUrl                       *string                                  `json:"HostUrl,omitempty"`
 	KnowledgeArticleConfiguration *ServiceNowKnowledgeArticleConfiguration `json:"KnowledgeArticleConfiguration,omitempty"`
 	SecretArn                     *string                                  `json:"SecretArn,omitempty"`
 	ServiceCatalogConfiguration   *ServiceNowServiceCatalogConfiguration   `json:"ServiceCatalogConfiguration,omitempty"`
-	ServiceNowBuildVersion        *string                                  `json:"ServiceNowBuildVersion,omitempty"`
+	ServiceNowBuildVersion        *ServiceNowBuildVersionType              `json:"ServiceNowBuildVersion,omitempty"`
 }
 
 type SharePointConfiguration struct {
-	CrawlAttachments       *bool                           `json:"CrawlAttachments,omitempty"`
-	DisableLocalGroups     *bool                           `json:"DisableLocalGroups,omitempty"`
-	DocumentTitleFieldName *string                         `json:"DocumentTitleFieldName,omitempty"`
-	ExclusionPatterns      []string                        `json:"ExclusionPatterns,omitempty"`
-	FieldMappings          []DataSourceToIndexFieldMapping `json:"FieldMappings,omitempty"`
-	InclusionPatterns      []string                        `json:"InclusionPatterns,omitempty"`
-	SecretArn              *string                         `json:"SecretArn,omitempty"`
-	SharePointVersion      *string                         `json:"SharePointVersion,omitempty"`
-	SslCertificateS3Path   *S3Path                         `json:"SslCertificateS3Path,omitempty"`
-	Urls                   []string                        `json:"Urls,omitempty"`
-	UseChangeLog           *bool                           `json:"UseChangeLog,omitempty"`
-	VpcConfiguration       *DataSourceVpcConfiguration     `json:"VpcConfiguration,omitempty"`
+	CrawlAttachments       *bool                                     `json:"CrawlAttachments,omitempty"`
+	DisableLocalGroups     *bool                                     `json:"DisableLocalGroups,omitempty"`
+	DocumentTitleFieldName *string                                   `json:"DocumentTitleFieldName,omitempty"`
+	ExclusionPatterns      []string                                  `json:"ExclusionPatterns,omitempty"`
+	FieldMappings          []DataSourceToIndexFieldMapping           `json:"FieldMappings,omitempty"`
+	InclusionPatterns      []string                                  `json:"InclusionPatterns,omitempty"`
+	SecretArn              *string                                   `json:"SecretArn,omitempty"`
+	SharePointVersion      *SharePointConfigurationSharePointVersion `json:"SharePointVersion,omitempty"`
+	SslCertificateS3Path   *S3Path                                   `json:"SslCertificateS3Path,omitempty"`
+	Urls                   []string                                  `json:"Urls,omitempty"`
+	UseChangeLog           *bool                                     `json:"UseChangeLog,omitempty"`
+	VpcConfiguration       *DataSourceVpcConfiguration               `json:"VpcConfiguration,omitempty"`
 }
 
 type TemplateConfiguration struct {
@@ -304,8 +304,8 @@ type ProxyConfiguration struct {
 }
 
 type WebCrawlerSeedUrlConfiguration struct {
-	SeedUrls       []string `json:"SeedUrls,omitempty"`
-	WebCrawlerMode *string  `json:"WebCrawlerMode,omitempty"`
+	SeedUrls       []string                                      `json:"SeedUrls,omitempty"`
+	WebCrawlerMode *WebCrawlerSeedUrlConfigurationWebCrawlerMode `json:"WebCrawlerMode,omitempty"`
 }
 
 type WebCrawlerSiteMapsConfiguration struct {
@@ -369,7 +369,7 @@ type DataSource struct {
 	RoleArn                               *string                                `json:"RoleArn,omitempty"`
 	Schedule                              *string                                `json:"Schedule,omitempty"`
 	Tags                                  []Tag                                  `json:"Tags,omitempty"`
-	Type                                  *string                                `json:"Type,omitempty"`
+	Type                                  *Type                                  `json:"Type,omitempty"`
 }
 
 func (DataSource) CloudControlType() string { return "AWS::Kendra::DataSource" }
@@ -385,16 +385,16 @@ type FaqTag struct {
 }
 
 type Faq struct {
-	Arn          *string    `json:"Arn,omitempty"`
-	Description  *string    `json:"Description,omitempty"`
-	FileFormat   *string    `json:"FileFormat,omitempty"`
-	Id           *string    `json:"Id,omitempty"`
-	IndexId      *string    `json:"IndexId,omitempty"`
-	LanguageCode *string    `json:"LanguageCode,omitempty"`
-	Name         *string    `json:"Name,omitempty"`
-	RoleArn      *string    `json:"RoleArn,omitempty"`
-	S3Path       *FaqS3Path `json:"S3Path,omitempty"`
-	Tags         []FaqTag   `json:"Tags,omitempty"`
+	Arn          *string     `json:"Arn,omitempty"`
+	Description  *string     `json:"Description,omitempty"`
+	FileFormat   *FileFormat `json:"FileFormat,omitempty"`
+	Id           *string     `json:"Id,omitempty"`
+	IndexId      *string     `json:"IndexId,omitempty"`
+	LanguageCode *string     `json:"LanguageCode,omitempty"`
+	Name         *string     `json:"Name,omitempty"`
+	RoleArn      *string     `json:"RoleArn,omitempty"`
+	S3Path       *FaqS3Path  `json:"S3Path,omitempty"`
+	Tags         []FaqTag    `json:"Tags,omitempty"`
 }
 
 func (Faq) CloudControlType() string { return "AWS::Kendra::Faq" }
@@ -413,7 +413,7 @@ type Relevance struct {
 	Duration             *string               `json:"Duration,omitempty"`
 	Freshness            *bool                 `json:"Freshness,omitempty"`
 	Importance           *int                  `json:"Importance,omitempty"`
-	RankOrder            *string               `json:"RankOrder,omitempty"`
+	RankOrder            *Order                `json:"RankOrder,omitempty"`
 	ValueImportanceItems []ValueImportanceItem `json:"ValueImportanceItems,omitempty"`
 }
 
@@ -425,10 +425,10 @@ type Search struct {
 }
 
 type DocumentMetadataConfiguration struct {
-	Name      *string    `json:"Name,omitempty"`
-	Relevance *Relevance `json:"Relevance,omitempty"`
-	Search    *Search    `json:"Search,omitempty"`
-	Type      *string    `json:"Type,omitempty"`
+	Name      *string                     `json:"Name,omitempty"`
+	Relevance *Relevance                  `json:"Relevance,omitempty"`
+	Search    *Search                     `json:"Search,omitempty"`
+	Type      *DocumentAttributeValueType `json:"Type,omitempty"`
 }
 
 type ServerSideEncryptionConfiguration struct {
@@ -446,13 +446,13 @@ type JsonTokenTypeConfiguration struct {
 }
 
 type JwtTokenTypeConfiguration struct {
-	ClaimRegex             *string `json:"ClaimRegex,omitempty"`
-	GroupAttributeField    *string `json:"GroupAttributeField,omitempty"`
-	Issuer                 *string `json:"Issuer,omitempty"`
-	KeyLocation            *string `json:"KeyLocation,omitempty"`
-	SecretManagerArn       *string `json:"SecretManagerArn,omitempty"`
-	URL                    *string `json:"URL,omitempty"`
-	UserNameAttributeField *string `json:"UserNameAttributeField,omitempty"`
+	ClaimRegex             *string      `json:"ClaimRegex,omitempty"`
+	GroupAttributeField    *string      `json:"GroupAttributeField,omitempty"`
+	Issuer                 *string      `json:"Issuer,omitempty"`
+	KeyLocation            *KeyLocation `json:"KeyLocation,omitempty"`
+	SecretManagerArn       *string      `json:"SecretManagerArn,omitempty"`
+	URL                    *string      `json:"URL,omitempty"`
+	UserNameAttributeField *string      `json:"UserNameAttributeField,omitempty"`
 }
 
 type UserTokenConfiguration struct {
@@ -465,14 +465,239 @@ type Index struct {
 	CapacityUnits                     *CapacityUnitsConfiguration        `json:"CapacityUnits,omitempty"`
 	Description                       *string                            `json:"Description,omitempty"`
 	DocumentMetadataConfigurations    []DocumentMetadataConfiguration    `json:"DocumentMetadataConfigurations,omitempty"`
-	Edition                           *string                            `json:"Edition,omitempty"`
+	Edition                           *Edition                           `json:"Edition,omitempty"`
 	Id                                *string                            `json:"Id,omitempty"`
 	Name                              *string                            `json:"Name,omitempty"`
 	RoleArn                           *string                            `json:"RoleArn,omitempty"`
 	ServerSideEncryptionConfiguration *ServerSideEncryptionConfiguration `json:"ServerSideEncryptionConfiguration,omitempty"`
 	Tags                              []IndexTag                         `json:"Tags,omitempty"`
-	UserContextPolicy                 *string                            `json:"UserContextPolicy,omitempty"`
+	UserContextPolicy                 *UserContextPolicy                 `json:"UserContextPolicy,omitempty"`
 	UserTokenConfigurations           []UserTokenConfiguration           `json:"UserTokenConfigurations,omitempty"`
 }
 
 func (Index) CloudControlType() string { return "AWS::Kendra::Index" }
+
+type ConditionOperator string
+
+const (
+	ConditionOperatorGreaterThan         ConditionOperator = "GreaterThan"
+	ConditionOperatorGreaterThanOrEquals ConditionOperator = "GreaterThanOrEquals"
+	ConditionOperatorLessThan            ConditionOperator = "LessThan"
+	ConditionOperatorLessThanOrEquals    ConditionOperator = "LessThanOrEquals"
+	ConditionOperatorEquals              ConditionOperator = "Equals"
+	ConditionOperatorNotEquals           ConditionOperator = "NotEquals"
+	ConditionOperatorContains            ConditionOperator = "Contains"
+	ConditionOperatorNotContains         ConditionOperator = "NotContains"
+	ConditionOperatorExists              ConditionOperator = "Exists"
+	ConditionOperatorNotExists           ConditionOperator = "NotExists"
+	ConditionOperatorBeginsWith          ConditionOperator = "BeginsWith"
+)
+
+type ConfluenceAttachmentFieldName string
+
+const (
+	ConfluenceAttachmentFieldNameAUTHOR      ConfluenceAttachmentFieldName = "AUTHOR"
+	ConfluenceAttachmentFieldNameCONTENTTYPE ConfluenceAttachmentFieldName = "CONTENT_TYPE"
+	ConfluenceAttachmentFieldNameCREATEDDATE ConfluenceAttachmentFieldName = "CREATED_DATE"
+	ConfluenceAttachmentFieldNameDISPLAYURL  ConfluenceAttachmentFieldName = "DISPLAY_URL"
+	ConfluenceAttachmentFieldNameFILESIZE    ConfluenceAttachmentFieldName = "FILE_SIZE"
+	ConfluenceAttachmentFieldNameITEMTYPE    ConfluenceAttachmentFieldName = "ITEM_TYPE"
+	ConfluenceAttachmentFieldNamePARENTID    ConfluenceAttachmentFieldName = "PARENT_ID"
+	ConfluenceAttachmentFieldNameSPACEKEY    ConfluenceAttachmentFieldName = "SPACE_KEY"
+	ConfluenceAttachmentFieldNameSPACENAME   ConfluenceAttachmentFieldName = "SPACE_NAME"
+	ConfluenceAttachmentFieldNameURL         ConfluenceAttachmentFieldName = "URL"
+	ConfluenceAttachmentFieldNameVERSION     ConfluenceAttachmentFieldName = "VERSION"
+)
+
+type ConfluenceBlogFieldName string
+
+const (
+	ConfluenceBlogFieldNameAUTHOR      ConfluenceBlogFieldName = "AUTHOR"
+	ConfluenceBlogFieldNameDISPLAYURL  ConfluenceBlogFieldName = "DISPLAY_URL"
+	ConfluenceBlogFieldNameITEMTYPE    ConfluenceBlogFieldName = "ITEM_TYPE"
+	ConfluenceBlogFieldNameLABELS      ConfluenceBlogFieldName = "LABELS"
+	ConfluenceBlogFieldNamePUBLISHDATE ConfluenceBlogFieldName = "PUBLISH_DATE"
+	ConfluenceBlogFieldNameSPACEKEY    ConfluenceBlogFieldName = "SPACE_KEY"
+	ConfluenceBlogFieldNameSPACENAME   ConfluenceBlogFieldName = "SPACE_NAME"
+	ConfluenceBlogFieldNameURL         ConfluenceBlogFieldName = "URL"
+	ConfluenceBlogFieldNameVERSION     ConfluenceBlogFieldName = "VERSION"
+)
+
+type ConfluencePageFieldName string
+
+const (
+	ConfluencePageFieldNameAUTHOR        ConfluencePageFieldName = "AUTHOR"
+	ConfluencePageFieldNameCONTENTSTATUS ConfluencePageFieldName = "CONTENT_STATUS"
+	ConfluencePageFieldNameCREATEDDATE   ConfluencePageFieldName = "CREATED_DATE"
+	ConfluencePageFieldNameDISPLAYURL    ConfluencePageFieldName = "DISPLAY_URL"
+	ConfluencePageFieldNameITEMTYPE      ConfluencePageFieldName = "ITEM_TYPE"
+	ConfluencePageFieldNameLABELS        ConfluencePageFieldName = "LABELS"
+	ConfluencePageFieldNameMODIFIEDDATE  ConfluencePageFieldName = "MODIFIED_DATE"
+	ConfluencePageFieldNamePARENTID      ConfluencePageFieldName = "PARENT_ID"
+	ConfluencePageFieldNameSPACEKEY      ConfluencePageFieldName = "SPACE_KEY"
+	ConfluencePageFieldNameSPACENAME     ConfluencePageFieldName = "SPACE_NAME"
+	ConfluencePageFieldNameURL           ConfluencePageFieldName = "URL"
+	ConfluencePageFieldNameVERSION       ConfluencePageFieldName = "VERSION"
+)
+
+type ConfluenceSpaceFieldName string
+
+const (
+	ConfluenceSpaceFieldNameDISPLAYURL ConfluenceSpaceFieldName = "DISPLAY_URL"
+	ConfluenceSpaceFieldNameITEMTYPE   ConfluenceSpaceFieldName = "ITEM_TYPE"
+	ConfluenceSpaceFieldNameSPACEKEY   ConfluenceSpaceFieldName = "SPACE_KEY"
+	ConfluenceSpaceFieldNameURL        ConfluenceSpaceFieldName = "URL"
+)
+
+type ConfluenceVersion string
+
+const (
+	ConfluenceVersionCLOUD  ConfluenceVersion = "CLOUD"
+	ConfluenceVersionSERVER ConfluenceVersion = "SERVER"
+)
+
+type DatabaseEngineType string
+
+const (
+	DatabaseEngineTypeRDSAURORAMYSQL      DatabaseEngineType = "RDS_AURORA_MYSQL"
+	DatabaseEngineTypeRDSAURORAPOSTGRESQL DatabaseEngineType = "RDS_AURORA_POSTGRESQL"
+	DatabaseEngineTypeRDSMYSQL            DatabaseEngineType = "RDS_MYSQL"
+	DatabaseEngineTypeRDSPOSTGRESQL       DatabaseEngineType = "RDS_POSTGRESQL"
+)
+
+type QueryIdentifiersEnclosingOption string
+
+const (
+	QueryIdentifiersEnclosingOptionDOUBLEQUOTES QueryIdentifiersEnclosingOption = "DOUBLE_QUOTES"
+	QueryIdentifiersEnclosingOptionNONE         QueryIdentifiersEnclosingOption = "NONE"
+)
+
+type SalesforceChatterFeedIncludeFilterType string
+
+const (
+	SalesforceChatterFeedIncludeFilterTypeACTIVEUSER   SalesforceChatterFeedIncludeFilterType = "ACTIVE_USER"
+	SalesforceChatterFeedIncludeFilterTypeSTANDARDUSER SalesforceChatterFeedIncludeFilterType = "STANDARD_USER"
+)
+
+type SalesforceKnowledgeArticleState string
+
+const (
+	SalesforceKnowledgeArticleStateDRAFT     SalesforceKnowledgeArticleState = "DRAFT"
+	SalesforceKnowledgeArticleStatePUBLISHED SalesforceKnowledgeArticleState = "PUBLISHED"
+	SalesforceKnowledgeArticleStateARCHIVED  SalesforceKnowledgeArticleState = "ARCHIVED"
+)
+
+type SalesforceStandardObjectName string
+
+const (
+	SalesforceStandardObjectNameACCOUNT     SalesforceStandardObjectName = "ACCOUNT"
+	SalesforceStandardObjectNameCAMPAIGN    SalesforceStandardObjectName = "CAMPAIGN"
+	SalesforceStandardObjectNameCASE        SalesforceStandardObjectName = "CASE"
+	SalesforceStandardObjectNameCONTACT     SalesforceStandardObjectName = "CONTACT"
+	SalesforceStandardObjectNameCONTRACT    SalesforceStandardObjectName = "CONTRACT"
+	SalesforceStandardObjectNameDOCUMENT    SalesforceStandardObjectName = "DOCUMENT"
+	SalesforceStandardObjectNameGROUP       SalesforceStandardObjectName = "GROUP"
+	SalesforceStandardObjectNameIDEA        SalesforceStandardObjectName = "IDEA"
+	SalesforceStandardObjectNameLEAD        SalesforceStandardObjectName = "LEAD"
+	SalesforceStandardObjectNameOPPORTUNITY SalesforceStandardObjectName = "OPPORTUNITY"
+	SalesforceStandardObjectNamePARTNER     SalesforceStandardObjectName = "PARTNER"
+	SalesforceStandardObjectNamePRICEBOOK   SalesforceStandardObjectName = "PRICEBOOK"
+	SalesforceStandardObjectNamePRODUCT     SalesforceStandardObjectName = "PRODUCT"
+	SalesforceStandardObjectNamePROFILE     SalesforceStandardObjectName = "PROFILE"
+	SalesforceStandardObjectNameSOLUTION    SalesforceStandardObjectName = "SOLUTION"
+	SalesforceStandardObjectNameTASK        SalesforceStandardObjectName = "TASK"
+	SalesforceStandardObjectNameUSER        SalesforceStandardObjectName = "USER"
+)
+
+type ServiceNowAuthenticationType string
+
+const (
+	ServiceNowAuthenticationTypeHTTPBASIC ServiceNowAuthenticationType = "HTTP_BASIC"
+	ServiceNowAuthenticationTypeOAUTH2    ServiceNowAuthenticationType = "OAUTH2"
+)
+
+type ServiceNowBuildVersionType string
+
+const (
+	ServiceNowBuildVersionTypeLONDON ServiceNowBuildVersionType = "LONDON"
+	ServiceNowBuildVersionTypeOTHERS ServiceNowBuildVersionType = "OTHERS"
+)
+
+type SharePointConfigurationSharePointVersion string
+
+const (
+	SharePointConfigurationSharePointVersionSHAREPOINTONLINE SharePointConfigurationSharePointVersion = "SHAREPOINT_ONLINE"
+	SharePointConfigurationSharePointVersionSHAREPOINT2013   SharePointConfigurationSharePointVersion = "SHAREPOINT_2013"
+	SharePointConfigurationSharePointVersionSHAREPOINT2016   SharePointConfigurationSharePointVersion = "SHAREPOINT_2016"
+)
+
+type WebCrawlerSeedUrlConfigurationWebCrawlerMode string
+
+const (
+	WebCrawlerSeedUrlConfigurationWebCrawlerModeHOSTONLY   WebCrawlerSeedUrlConfigurationWebCrawlerMode = "HOST_ONLY"
+	WebCrawlerSeedUrlConfigurationWebCrawlerModeSUBDOMAINS WebCrawlerSeedUrlConfigurationWebCrawlerMode = "SUBDOMAINS"
+	WebCrawlerSeedUrlConfigurationWebCrawlerModeEVERYTHING WebCrawlerSeedUrlConfigurationWebCrawlerMode = "EVERYTHING"
+)
+
+type Type string
+
+const (
+	TypeS3          Type = "S3"
+	TypeSHAREPOINT  Type = "SHAREPOINT"
+	TypeSALESFORCE  Type = "SALESFORCE"
+	TypeONEDRIVE    Type = "ONEDRIVE"
+	TypeSERVICENOW  Type = "SERVICENOW"
+	TypeDATABASE    Type = "DATABASE"
+	TypeCUSTOM      Type = "CUSTOM"
+	TypeCONFLUENCE  Type = "CONFLUENCE"
+	TypeGOOGLEDRIVE Type = "GOOGLEDRIVE"
+	TypeWEBCRAWLER  Type = "WEBCRAWLER"
+	TypeWORKDOCS    Type = "WORKDOCS"
+	TypeTEMPLATE    Type = "TEMPLATE"
+)
+
+type FileFormat string
+
+const (
+	FileFormatCSV           FileFormat = "CSV"
+	FileFormatCSVWITHHEADER FileFormat = "CSV_WITH_HEADER"
+	FileFormatJSON          FileFormat = "JSON"
+)
+
+type Order string
+
+const (
+	OrderASCENDING  Order = "ASCENDING"
+	OrderDESCENDING Order = "DESCENDING"
+)
+
+type DocumentAttributeValueType string
+
+const (
+	DocumentAttributeValueTypeSTRINGVALUE     DocumentAttributeValueType = "STRING_VALUE"
+	DocumentAttributeValueTypeSTRINGLISTVALUE DocumentAttributeValueType = "STRING_LIST_VALUE"
+	DocumentAttributeValueTypeLONGVALUE       DocumentAttributeValueType = "LONG_VALUE"
+	DocumentAttributeValueTypeDATEVALUE       DocumentAttributeValueType = "DATE_VALUE"
+)
+
+type Edition string
+
+const (
+	EditionDEVELOPEREDITION       Edition = "DEVELOPER_EDITION"
+	EditionENTERPRISEEDITION      Edition = "ENTERPRISE_EDITION"
+	EditionGENAIENTERPRISEEDITION Edition = "GEN_AI_ENTERPRISE_EDITION"
+)
+
+type UserContextPolicy string
+
+const (
+	UserContextPolicyATTRIBUTEFILTER UserContextPolicy = "ATTRIBUTE_FILTER"
+	UserContextPolicyUSERTOKEN       UserContextPolicy = "USER_TOKEN"
+)
+
+type KeyLocation string
+
+const (
+	KeyLocationURL           KeyLocation = "URL"
+	KeyLocationSECRETMANAGER KeyLocation = "SECRET_MANAGER"
+)

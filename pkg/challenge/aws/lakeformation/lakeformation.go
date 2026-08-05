@@ -133,9 +133,9 @@ type LFTag struct {
 }
 
 type LFTagPolicyResource struct {
-	CatalogId    *string `json:"CatalogId,omitempty"`
-	Expression   []LFTag `json:"Expression,omitempty"`
-	ResourceType *string `json:"ResourceType,omitempty"`
+	CatalogId    *string       `json:"CatalogId,omitempty"`
+	Expression   []LFTag       `json:"Expression,omitempty"`
+	ResourceType *ResourceType `json:"ResourceType,omitempty"`
 }
 
 type PrincipalPermissionsTableResource struct {
@@ -170,8 +170,8 @@ type PrincipalPermissionsResource struct {
 
 type PrincipalPermissionsPrincipalPermissions struct {
 	Catalog                    *string                                `json:"Catalog,omitempty"`
-	Permissions                []string                               `json:"Permissions,omitempty"`
-	PermissionsWithGrantOption []string                               `json:"PermissionsWithGrantOption,omitempty"`
+	Permissions                []Permission                           `json:"Permissions,omitempty"`
+	PermissionsWithGrantOption []Permission                           `json:"PermissionsWithGrantOption,omitempty"`
 	Principal                  *PrincipalPermissionsDataLakePrincipal `json:"Principal,omitempty"`
 	PrincipalIdentifier        *string                                `json:"PrincipalIdentifier,omitempty"`
 	Resource                   *PrincipalPermissionsResource          `json:"Resource,omitempty"`
@@ -241,3 +241,28 @@ type TagAssociation struct {
 }
 
 func (TagAssociation) CloudControlType() string { return "AWS::LakeFormation::TagAssociation" }
+
+type Permission string
+
+const (
+	PermissionALL                      Permission = "ALL"
+	PermissionSELECT                   Permission = "SELECT"
+	PermissionALTER                    Permission = "ALTER"
+	PermissionDROP                     Permission = "DROP"
+	PermissionDELETE                   Permission = "DELETE"
+	PermissionINSERT                   Permission = "INSERT"
+	PermissionDESCRIBE                 Permission = "DESCRIBE"
+	PermissionCREATEDATABASE           Permission = "CREATE_DATABASE"
+	PermissionCREATETABLE              Permission = "CREATE_TABLE"
+	PermissionDATALOCATIONACCESS       Permission = "DATA_LOCATION_ACCESS"
+	PermissionCREATELFTAG              Permission = "CREATE_LF_TAG"
+	PermissionASSOCIATE                Permission = "ASSOCIATE"
+	PermissionGRANTWITHLFTAGEXPRESSION Permission = "GRANT_WITH_LF_TAG_EXPRESSION"
+)
+
+type ResourceType string
+
+const (
+	ResourceTypeDATABASE ResourceType = "DATABASE"
+	ResourceTypeTABLE    ResourceType = "TABLE"
+)

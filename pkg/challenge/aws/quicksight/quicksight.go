@@ -6,8 +6,8 @@ package quicksight
 import "encoding/json"
 
 type AuthConfig struct {
-	AuthenticationMetadata json.RawMessage `json:"AuthenticationMetadata,omitempty"`
-	AuthenticationType     *string         `json:"AuthenticationType,omitempty"`
+	AuthenticationMetadata json.RawMessage     `json:"AuthenticationMetadata,omitempty"`
+	AuthenticationType     *ConnectionAuthType `json:"AuthenticationType,omitempty"`
 }
 
 type ResourcePermission struct {
@@ -31,9 +31,9 @@ type ActionConnector struct {
 	LastUpdatedTime      *string              `json:"LastUpdatedTime,omitempty"`
 	Name                 *string              `json:"Name,omitempty"`
 	Permissions          []ResourcePermission `json:"Permissions,omitempty"`
-	Status               *string              `json:"Status,omitempty"`
+	Status               *ResourceStatus      `json:"Status,omitempty"`
 	Tags                 []Tag                `json:"Tags,omitempty"`
-	Type                 *string              `json:"Type,omitempty"`
+	Type                 *ActionConnectorType `json:"Type,omitempty"`
 	VpcConnectionArn     *string              `json:"VpcConnectionArn,omitempty"`
 }
 
@@ -78,8 +78,8 @@ type AgentTag struct {
 type Agent struct {
 	ActionConnectors      []string               `json:"ActionConnectors,omitempty"`
 	AgentId               *string                `json:"AgentId,omitempty"`
-	AgentLifecycle        *string                `json:"AgentLifecycle,omitempty"`
-	AgentStatus           *string                `json:"AgentStatus,omitempty"`
+	AgentLifecycle        *AgentAgentLifecycle   `json:"AgentLifecycle,omitempty"`
+	AgentStatus           *AgentAgentStatus      `json:"AgentStatus,omitempty"`
 	Arn                   *string                `json:"Arn,omitempty"`
 	AwsAccountId          *string                `json:"AwsAccountId,omitempty"`
 	CreatedAt             *string                `json:"CreatedAt,omitempty"`
@@ -112,8 +112,8 @@ type DefaultFreeFormLayoutConfiguration struct {
 }
 
 type GridLayoutScreenCanvasSizeOptions struct {
-	OptimizedViewPortWidth *string `json:"OptimizedViewPortWidth,omitempty"`
-	ResizeOption           *string `json:"ResizeOption,omitempty"`
+	OptimizedViewPortWidth *string       `json:"OptimizedViewPortWidth,omitempty"`
+	ResizeOption           *ResizeOption `json:"ResizeOption,omitempty"`
 }
 
 type GridLayoutCanvasSizeOptions struct {
@@ -137,9 +137,9 @@ type Spacing struct {
 }
 
 type SectionBasedLayoutPaperCanvasSizeOptions struct {
-	PaperMargin      *Spacing `json:"PaperMargin,omitempty"`
-	PaperOrientation *string  `json:"PaperOrientation,omitempty"`
-	PaperSize        *string  `json:"PaperSize,omitempty"`
+	PaperMargin      *Spacing          `json:"PaperMargin,omitempty"`
+	PaperOrientation *PaperOrientation `json:"PaperOrientation,omitempty"`
+	PaperSize        *PaperSize        `json:"PaperSize,omitempty"`
 }
 
 type SectionBasedLayoutCanvasSizeOptions struct {
@@ -157,7 +157,7 @@ type DefaultPaginatedLayoutConfiguration struct {
 type DefaultNewSheetConfiguration struct {
 	InteractiveLayoutConfiguration *DefaultInteractiveLayoutConfiguration `json:"InteractiveLayoutConfiguration,omitempty"`
 	PaginatedLayoutConfiguration   *DefaultPaginatedLayoutConfiguration   `json:"PaginatedLayoutConfiguration,omitempty"`
-	SheetContentType               *string                                `json:"SheetContentType,omitempty"`
+	SheetContentType               *SheetContentType                      `json:"SheetContentType,omitempty"`
 }
 
 type AnalysisDefaults struct {
@@ -171,9 +171,9 @@ type CalculatedField struct {
 }
 
 type CustomColor struct {
-	Color        *string `json:"Color,omitempty"`
-	FieldValue   *string `json:"FieldValue,omitempty"`
-	SpecialValue *string `json:"SpecialValue,omitempty"`
+	Color        *string       `json:"Color,omitempty"`
+	FieldValue   *string       `json:"FieldValue,omitempty"`
+	SpecialValue *SpecialValue `json:"SpecialValue,omitempty"`
 }
 
 type ColorsConfiguration struct {
@@ -194,17 +194,17 @@ type DecimalPlacesConfiguration struct {
 }
 
 type NegativeValueConfiguration struct {
-	DisplayMode *string `json:"DisplayMode,omitempty"`
+	DisplayMode *NegativeValueDisplayMode `json:"DisplayMode,omitempty"`
 }
 
 type ThousandSeparatorOptions struct {
-	GroupingStyle *string `json:"GroupingStyle,omitempty"`
-	Symbol        *string `json:"Symbol,omitempty"`
-	Visibility    *string `json:"Visibility,omitempty"`
+	GroupingStyle *DigitGroupingStyle     `json:"GroupingStyle,omitempty"`
+	Symbol        *NumericSeparatorSymbol `json:"Symbol,omitempty"`
+	Visibility    *Visibility             `json:"Visibility,omitempty"`
 }
 
 type NumericSeparatorConfiguration struct {
-	DecimalSeparator   *string                   `json:"DecimalSeparator,omitempty"`
+	DecimalSeparator   *NumericSeparatorSymbol   `json:"DecimalSeparator,omitempty"`
 	ThousandsSeparator *ThousandSeparatorOptions `json:"ThousandsSeparator,omitempty"`
 }
 
@@ -212,7 +212,7 @@ type CurrencyDisplayFormatConfiguration struct {
 	DecimalPlacesConfiguration   *DecimalPlacesConfiguration    `json:"DecimalPlacesConfiguration,omitempty"`
 	NegativeValueConfiguration   *NegativeValueConfiguration    `json:"NegativeValueConfiguration,omitempty"`
 	NullValueFormatConfiguration *NullValueFormatConfiguration  `json:"NullValueFormatConfiguration,omitempty"`
-	NumberScale                  *string                        `json:"NumberScale,omitempty"`
+	NumberScale                  *NumberScale                   `json:"NumberScale,omitempty"`
 	Prefix                       *string                        `json:"Prefix,omitempty"`
 	SeparatorConfiguration       *NumericSeparatorConfiguration `json:"SeparatorConfiguration,omitempty"`
 	Suffix                       *string                        `json:"Suffix,omitempty"`
@@ -223,7 +223,7 @@ type NumberDisplayFormatConfiguration struct {
 	DecimalPlacesConfiguration   *DecimalPlacesConfiguration    `json:"DecimalPlacesConfiguration,omitempty"`
 	NegativeValueConfiguration   *NegativeValueConfiguration    `json:"NegativeValueConfiguration,omitempty"`
 	NullValueFormatConfiguration *NullValueFormatConfiguration  `json:"NullValueFormatConfiguration,omitempty"`
-	NumberScale                  *string                        `json:"NumberScale,omitempty"`
+	NumberScale                  *NumberScale                   `json:"NumberScale,omitempty"`
 	Prefix                       *string                        `json:"Prefix,omitempty"`
 	SeparatorConfiguration       *NumericSeparatorConfiguration `json:"SeparatorConfiguration,omitempty"`
 	Suffix                       *string                        `json:"Suffix,omitempty"`
@@ -269,7 +269,7 @@ type ColumnConfiguration struct {
 	ColorsConfiguration *ColorsConfiguration `json:"ColorsConfiguration,omitempty"`
 	Column              *ColumnIdentifier    `json:"Column,omitempty"`
 	FormatConfiguration *FormatConfiguration `json:"FormatConfiguration,omitempty"`
-	Role                *string              `json:"Role,omitempty"`
+	Role                *ColumnRole          `json:"Role,omitempty"`
 }
 
 type DataSetIdentifierDeclaration struct {
@@ -278,25 +278,25 @@ type DataSetIdentifierDeclaration struct {
 }
 
 type CustomFilterConfiguration struct {
-	CategoryValue    *string `json:"CategoryValue,omitempty"`
-	MatchOperator    *string `json:"MatchOperator,omitempty"`
-	NullOption       *string `json:"NullOption,omitempty"`
-	ParameterName    *string `json:"ParameterName,omitempty"`
-	SelectAllOptions *string `json:"SelectAllOptions,omitempty"`
+	CategoryValue    *string                         `json:"CategoryValue,omitempty"`
+	MatchOperator    *CategoryFilterMatchOperator    `json:"MatchOperator,omitempty"`
+	NullOption       *FilterNullOption               `json:"NullOption,omitempty"`
+	ParameterName    *string                         `json:"ParameterName,omitempty"`
+	SelectAllOptions *CategoryFilterSelectAllOptions `json:"SelectAllOptions,omitempty"`
 }
 
 type CustomFilterListConfiguration struct {
-	CategoryValues   []string `json:"CategoryValues,omitempty"`
-	MatchOperator    *string  `json:"MatchOperator,omitempty"`
-	NullOption       *string  `json:"NullOption,omitempty"`
-	SelectAllOptions *string  `json:"SelectAllOptions,omitempty"`
+	CategoryValues   []string                        `json:"CategoryValues,omitempty"`
+	MatchOperator    *CategoryFilterMatchOperator    `json:"MatchOperator,omitempty"`
+	NullOption       *FilterNullOption               `json:"NullOption,omitempty"`
+	SelectAllOptions *CategoryFilterSelectAllOptions `json:"SelectAllOptions,omitempty"`
 }
 
 type FilterListConfiguration struct {
-	CategoryValues   []string `json:"CategoryValues,omitempty"`
-	MatchOperator    *string  `json:"MatchOperator,omitempty"`
-	NullOption       *string  `json:"NullOption,omitempty"`
-	SelectAllOptions *string  `json:"SelectAllOptions,omitempty"`
+	CategoryValues   []string                        `json:"CategoryValues,omitempty"`
+	MatchOperator    *CategoryFilterMatchOperator    `json:"MatchOperator,omitempty"`
+	NullOption       *FilterNullOption               `json:"NullOption,omitempty"`
+	SelectAllOptions *CategoryFilterSelectAllOptions `json:"SelectAllOptions,omitempty"`
 }
 
 type CategoryFilterConfiguration struct {
@@ -306,50 +306,50 @@ type CategoryFilterConfiguration struct {
 }
 
 type SheetControlInfoIconLabelOptions struct {
-	InfoIconText *string `json:"InfoIconText,omitempty"`
-	Visibility   *string `json:"Visibility,omitempty"`
+	InfoIconText *string     `json:"InfoIconText,omitempty"`
+	Visibility   *Visibility `json:"Visibility,omitempty"`
 }
 
 type FontSize struct {
-	Absolute *string `json:"Absolute,omitempty"`
-	Relative *string `json:"Relative,omitempty"`
+	Absolute *string           `json:"Absolute,omitempty"`
+	Relative *RelativeFontSize `json:"Relative,omitempty"`
 }
 
 type FontWeight struct {
-	Name *string `json:"Name,omitempty"`
+	Name *FontWeightName `json:"Name,omitempty"`
 }
 
 type FontConfiguration struct {
-	FontColor      *string     `json:"FontColor,omitempty"`
-	FontDecoration *string     `json:"FontDecoration,omitempty"`
-	FontFamily     *string     `json:"FontFamily,omitempty"`
-	FontSize       *FontSize   `json:"FontSize,omitempty"`
-	FontStyle      *string     `json:"FontStyle,omitempty"`
-	FontWeight     *FontWeight `json:"FontWeight,omitempty"`
+	FontColor      *string         `json:"FontColor,omitempty"`
+	FontDecoration *FontDecoration `json:"FontDecoration,omitempty"`
+	FontFamily     *string         `json:"FontFamily,omitempty"`
+	FontSize       *FontSize       `json:"FontSize,omitempty"`
+	FontStyle      *FontStyle      `json:"FontStyle,omitempty"`
+	FontWeight     *FontWeight     `json:"FontWeight,omitempty"`
 }
 
 type LabelOptions struct {
 	CustomLabel       *string            `json:"CustomLabel,omitempty"`
 	FontConfiguration *FontConfiguration `json:"FontConfiguration,omitempty"`
-	Visibility        *string            `json:"Visibility,omitempty"`
+	Visibility        *Visibility        `json:"Visibility,omitempty"`
 }
 
 type DateTimePickerControlDisplayOptions struct {
-	DateIconVisibility   *string                           `json:"DateIconVisibility,omitempty"`
+	DateIconVisibility   *Visibility                       `json:"DateIconVisibility,omitempty"`
 	DateTimeFormat       *string                           `json:"DateTimeFormat,omitempty"`
-	HelperTextVisibility *string                           `json:"HelperTextVisibility,omitempty"`
+	HelperTextVisibility *Visibility                       `json:"HelperTextVisibility,omitempty"`
 	InfoIconLabelOptions *SheetControlInfoIconLabelOptions `json:"InfoIconLabelOptions,omitempty"`
 	TitleOptions         *LabelOptions                     `json:"TitleOptions,omitempty"`
 }
 
 type DefaultDateTimePickerControlOptions struct {
-	CommitMode     *string                              `json:"CommitMode,omitempty"`
+	CommitMode     *CommitMode                          `json:"CommitMode,omitempty"`
 	DisplayOptions *DateTimePickerControlDisplayOptions `json:"DisplayOptions,omitempty"`
-	Type           *string                              `json:"Type,omitempty"`
+	Type           *SheetControlDateTimePickerType      `json:"Type,omitempty"`
 }
 
 type ListControlSelectAllOptions struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *Visibility `json:"Visibility,omitempty"`
 }
 
 type DropDownControlDisplayOptions struct {
@@ -363,14 +363,14 @@ type FilterSelectableValues struct {
 }
 
 type DefaultFilterDropDownControlOptions struct {
-	CommitMode       *string                        `json:"CommitMode,omitempty"`
+	CommitMode       *CommitMode                    `json:"CommitMode,omitempty"`
 	DisplayOptions   *DropDownControlDisplayOptions `json:"DisplayOptions,omitempty"`
 	SelectableValues *FilterSelectableValues        `json:"SelectableValues,omitempty"`
-	Type             *string                        `json:"Type,omitempty"`
+	Type             *SheetControlListType          `json:"Type,omitempty"`
 }
 
 type ListControlSearchOptions struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *Visibility `json:"Visibility,omitempty"`
 }
 
 type ListControlDisplayOptions struct {
@@ -383,7 +383,7 @@ type ListControlDisplayOptions struct {
 type DefaultFilterListControlOptions struct {
 	DisplayOptions   *ListControlDisplayOptions `json:"DisplayOptions,omitempty"`
 	SelectableValues *FilterSelectableValues    `json:"SelectableValues,omitempty"`
-	Type             *string                    `json:"Type,omitempty"`
+	Type             *SheetControlListType      `json:"Type,omitempty"`
 }
 
 type RelativeDateTimeControlDisplayOptions struct {
@@ -393,7 +393,7 @@ type RelativeDateTimeControlDisplayOptions struct {
 }
 
 type DefaultRelativeDateTimeControlOptions struct {
-	CommitMode     *string                                `json:"CommitMode,omitempty"`
+	CommitMode     *CommitMode                            `json:"CommitMode,omitempty"`
 	DisplayOptions *RelativeDateTimeControlDisplayOptions `json:"DisplayOptions,omitempty"`
 }
 
@@ -407,11 +407,11 @@ type DefaultSliderControlOptions struct {
 	MaximumValue   *float64                     `json:"MaximumValue,omitempty"`
 	MinimumValue   *float64                     `json:"MinimumValue,omitempty"`
 	StepSize       *float64                     `json:"StepSize,omitempty"`
-	Type           *string                      `json:"Type,omitempty"`
+	Type           *SheetControlSliderType      `json:"Type,omitempty"`
 }
 
 type TextControlPlaceholderOptions struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *Visibility `json:"Visibility,omitempty"`
 }
 
 type TextAreaControlDisplayOptions struct {
@@ -475,8 +475,8 @@ type NestedFilter struct {
 }
 
 type AttributeAggregationFunction struct {
-	SimpleAttributeAggregation *string `json:"SimpleAttributeAggregation,omitempty"`
-	ValueForMultipleValues     *string `json:"ValueForMultipleValues,omitempty"`
+	SimpleAttributeAggregation *SimpleAttributeAggregationFunction `json:"SimpleAttributeAggregation,omitempty"`
+	ValueForMultipleValues     *string                             `json:"ValueForMultipleValues,omitempty"`
 }
 
 type PercentileAggregation struct {
@@ -484,15 +484,15 @@ type PercentileAggregation struct {
 }
 
 type NumericalAggregationFunction struct {
-	PercentileAggregation      *PercentileAggregation `json:"PercentileAggregation,omitempty"`
-	SimpleNumericalAggregation *string                `json:"SimpleNumericalAggregation,omitempty"`
+	PercentileAggregation      *PercentileAggregation              `json:"PercentileAggregation,omitempty"`
+	SimpleNumericalAggregation *SimpleNumericalAggregationFunction `json:"SimpleNumericalAggregation,omitempty"`
 }
 
 type AggregationFunction struct {
-	AttributeAggregationFunction   *AttributeAggregationFunction `json:"AttributeAggregationFunction,omitempty"`
-	CategoricalAggregationFunction *string                       `json:"CategoricalAggregationFunction,omitempty"`
-	DateAggregationFunction        *string                       `json:"DateAggregationFunction,omitempty"`
-	NumericalAggregationFunction   *NumericalAggregationFunction `json:"NumericalAggregationFunction,omitempty"`
+	AttributeAggregationFunction   *AttributeAggregationFunction   `json:"AttributeAggregationFunction,omitempty"`
+	CategoricalAggregationFunction *CategoricalAggregationFunction `json:"CategoricalAggregationFunction,omitempty"`
+	DateAggregationFunction        *DateAggregationFunction        `json:"DateAggregationFunction,omitempty"`
+	NumericalAggregationFunction   *NumericalAggregationFunction   `json:"NumericalAggregationFunction,omitempty"`
 }
 
 type NumericEqualityFilter struct {
@@ -500,10 +500,10 @@ type NumericEqualityFilter struct {
 	Column                            *ColumnIdentifier                  `json:"Column,omitempty"`
 	DefaultFilterControlConfiguration *DefaultFilterControlConfiguration `json:"DefaultFilterControlConfiguration,omitempty"`
 	FilterId                          *string                            `json:"FilterId,omitempty"`
-	MatchOperator                     *string                            `json:"MatchOperator,omitempty"`
-	NullOption                        *string                            `json:"NullOption,omitempty"`
+	MatchOperator                     *NumericEqualityMatchOperator      `json:"MatchOperator,omitempty"`
+	NullOption                        *FilterNullOption                  `json:"NullOption,omitempty"`
 	ParameterName                     *string                            `json:"ParameterName,omitempty"`
-	SelectAllOptions                  *string                            `json:"SelectAllOptions,omitempty"`
+	SelectAllOptions                  *NumericFilterSelectAllOptions     `json:"SelectAllOptions,omitempty"`
 	Value                             *float64                           `json:"Value,omitempty"`
 }
 
@@ -519,21 +519,21 @@ type NumericRangeFilter struct {
 	FilterId                          *string                            `json:"FilterId,omitempty"`
 	IncludeMaximum                    *bool                              `json:"IncludeMaximum,omitempty"`
 	IncludeMinimum                    *bool                              `json:"IncludeMinimum,omitempty"`
-	NullOption                        *string                            `json:"NullOption,omitempty"`
+	NullOption                        *FilterNullOption                  `json:"NullOption,omitempty"`
 	RangeMaximum                      *NumericRangeFilterValue           `json:"RangeMaximum,omitempty"`
 	RangeMinimum                      *NumericRangeFilterValue           `json:"RangeMinimum,omitempty"`
-	SelectAllOptions                  *string                            `json:"SelectAllOptions,omitempty"`
+	SelectAllOptions                  *NumericFilterSelectAllOptions     `json:"SelectAllOptions,omitempty"`
 }
 
 type AnchorDateConfiguration struct {
-	AnchorOption  *string `json:"AnchorOption,omitempty"`
-	ParameterName *string `json:"ParameterName,omitempty"`
+	AnchorOption  *AnchorOption `json:"AnchorOption,omitempty"`
+	ParameterName *string       `json:"ParameterName,omitempty"`
 }
 
 type ExcludePeriodConfiguration struct {
-	Amount      *float64 `json:"Amount,omitempty"`
-	Granularity *string  `json:"Granularity,omitempty"`
-	Status      *string  `json:"Status,omitempty"`
+	Amount      *float64         `json:"Amount,omitempty"`
+	Granularity *TimeGranularity `json:"Granularity,omitempty"`
+	Status      *WidgetStatus    `json:"Status,omitempty"`
 }
 
 type RelativeDatesFilter struct {
@@ -542,12 +542,12 @@ type RelativeDatesFilter struct {
 	DefaultFilterControlConfiguration *DefaultFilterControlConfiguration `json:"DefaultFilterControlConfiguration,omitempty"`
 	ExcludePeriodConfiguration        *ExcludePeriodConfiguration        `json:"ExcludePeriodConfiguration,omitempty"`
 	FilterId                          *string                            `json:"FilterId,omitempty"`
-	MinimumGranularity                *string                            `json:"MinimumGranularity,omitempty"`
-	NullOption                        *string                            `json:"NullOption,omitempty"`
+	MinimumGranularity                *TimeGranularity                   `json:"MinimumGranularity,omitempty"`
+	NullOption                        *FilterNullOption                  `json:"NullOption,omitempty"`
 	ParameterName                     *string                            `json:"ParameterName,omitempty"`
-	RelativeDateType                  *string                            `json:"RelativeDateType,omitempty"`
+	RelativeDateType                  *RelativeDateType                  `json:"RelativeDateType,omitempty"`
 	RelativeDateValue                 *float64                           `json:"RelativeDateValue,omitempty"`
-	TimeGranularity                   *string                            `json:"TimeGranularity,omitempty"`
+	TimeGranularity                   *TimeGranularity                   `json:"TimeGranularity,omitempty"`
 }
 
 type RollingDateConfiguration struct {
@@ -561,7 +561,7 @@ type TimeEqualityFilter struct {
 	FilterId                          *string                            `json:"FilterId,omitempty"`
 	ParameterName                     *string                            `json:"ParameterName,omitempty"`
 	RollingDate                       *RollingDateConfiguration          `json:"RollingDate,omitempty"`
-	TimeGranularity                   *string                            `json:"TimeGranularity,omitempty"`
+	TimeGranularity                   *TimeGranularity                   `json:"TimeGranularity,omitempty"`
 	Value                             *string                            `json:"Value,omitempty"`
 }
 
@@ -578,16 +578,16 @@ type TimeRangeFilter struct {
 	FilterId                          *string                            `json:"FilterId,omitempty"`
 	IncludeMaximum                    *bool                              `json:"IncludeMaximum,omitempty"`
 	IncludeMinimum                    *bool                              `json:"IncludeMinimum,omitempty"`
-	NullOption                        *string                            `json:"NullOption,omitempty"`
+	NullOption                        *FilterNullOption                  `json:"NullOption,omitempty"`
 	RangeMaximumValue                 *TimeRangeFilterValue              `json:"RangeMaximumValue,omitempty"`
 	RangeMinimumValue                 *TimeRangeFilterValue              `json:"RangeMinimumValue,omitempty"`
-	TimeGranularity                   *string                            `json:"TimeGranularity,omitempty"`
+	TimeGranularity                   *TimeGranularity                   `json:"TimeGranularity,omitempty"`
 }
 
 type AggregationSortConfiguration struct {
 	AggregationFunction *AggregationFunction `json:"AggregationFunction,omitempty"`
 	Column              *ColumnIdentifier    `json:"Column,omitempty"`
-	SortDirection       *string              `json:"SortDirection,omitempty"`
+	SortDirection       *SortDirection       `json:"SortDirection,omitempty"`
 }
 
 type TopBottomFilter struct {
@@ -597,7 +597,7 @@ type TopBottomFilter struct {
 	FilterId                          *string                            `json:"FilterId,omitempty"`
 	Limit                             *float64                           `json:"Limit,omitempty"`
 	ParameterName                     *string                            `json:"ParameterName,omitempty"`
-	TimeGranularity                   *string                            `json:"TimeGranularity,omitempty"`
+	TimeGranularity                   *TimeGranularity                   `json:"TimeGranularity,omitempty"`
 }
 
 type Filter struct {
@@ -612,9 +612,9 @@ type Filter struct {
 }
 
 type SheetVisualScopingConfiguration struct {
-	Scope     *string  `json:"Scope,omitempty"`
-	SheetId   *string  `json:"SheetId,omitempty"`
-	VisualIds []string `json:"VisualIds,omitempty"`
+	Scope     *FilterVisualScope `json:"Scope,omitempty"`
+	SheetId   *string            `json:"SheetId,omitempty"`
+	VisualIds []string           `json:"VisualIds,omitempty"`
 }
 
 type SelectedSheetsFilterScopeConfiguration struct {
@@ -627,16 +627,16 @@ type FilterScopeConfiguration struct {
 }
 
 type FilterGroup struct {
-	CrossDataset       *string                   `json:"CrossDataset,omitempty"`
+	CrossDataset       *CrossDatasetTypes        `json:"CrossDataset,omitempty"`
 	FilterGroupId      *string                   `json:"FilterGroupId,omitempty"`
 	Filters            []Filter                  `json:"Filters,omitempty"`
 	ScopeConfiguration *FilterScopeConfiguration `json:"ScopeConfiguration,omitempty"`
-	Status             *string                   `json:"Status,omitempty"`
+	Status             *WidgetStatus             `json:"Status,omitempty"`
 }
 
 type AssetOptions struct {
-	Timezone  *string `json:"Timezone,omitempty"`
-	WeekStart *string `json:"WeekStart,omitempty"`
+	Timezone  *string       `json:"Timezone,omitempty"`
+	WeekStart *DayOfTheWeek `json:"WeekStart,omitempty"`
 }
 
 type DynamicDefaultValue struct {
@@ -657,15 +657,15 @@ type MappedDataSetParameter struct {
 }
 
 type DateTimeValueWhenUnsetConfiguration struct {
-	CustomValue          *string `json:"CustomValue,omitempty"`
-	ValueWhenUnsetOption *string `json:"ValueWhenUnsetOption,omitempty"`
+	CustomValue          *string               `json:"CustomValue,omitempty"`
+	ValueWhenUnsetOption *ValueWhenUnsetOption `json:"ValueWhenUnsetOption,omitempty"`
 }
 
 type DateTimeParameterDeclaration struct {
 	DefaultValues           *DateTimeDefaultValues               `json:"DefaultValues,omitempty"`
 	MappedDataSetParameters []MappedDataSetParameter             `json:"MappedDataSetParameters,omitempty"`
 	Name                    *string                              `json:"Name,omitempty"`
-	TimeGranularity         *string                              `json:"TimeGranularity,omitempty"`
+	TimeGranularity         *TimeGranularity                     `json:"TimeGranularity,omitempty"`
 	ValueWhenUnset          *DateTimeValueWhenUnsetConfiguration `json:"ValueWhenUnset,omitempty"`
 }
 
@@ -675,15 +675,15 @@ type DecimalDefaultValues struct {
 }
 
 type DecimalValueWhenUnsetConfiguration struct {
-	CustomValue          *float64 `json:"CustomValue,omitempty"`
-	ValueWhenUnsetOption *string  `json:"ValueWhenUnsetOption,omitempty"`
+	CustomValue          *float64              `json:"CustomValue,omitempty"`
+	ValueWhenUnsetOption *ValueWhenUnsetOption `json:"ValueWhenUnsetOption,omitempty"`
 }
 
 type DecimalParameterDeclaration struct {
 	DefaultValues           *DecimalDefaultValues               `json:"DefaultValues,omitempty"`
 	MappedDataSetParameters []MappedDataSetParameter            `json:"MappedDataSetParameters,omitempty"`
 	Name                    *string                             `json:"Name,omitempty"`
-	ParameterValueType      *string                             `json:"ParameterValueType,omitempty"`
+	ParameterValueType      *ParameterValueType                 `json:"ParameterValueType,omitempty"`
 	ValueWhenUnset          *DecimalValueWhenUnsetConfiguration `json:"ValueWhenUnset,omitempty"`
 }
 
@@ -693,15 +693,15 @@ type IntegerDefaultValues struct {
 }
 
 type IntegerValueWhenUnsetConfiguration struct {
-	CustomValue          *float64 `json:"CustomValue,omitempty"`
-	ValueWhenUnsetOption *string  `json:"ValueWhenUnsetOption,omitempty"`
+	CustomValue          *float64              `json:"CustomValue,omitempty"`
+	ValueWhenUnsetOption *ValueWhenUnsetOption `json:"ValueWhenUnsetOption,omitempty"`
 }
 
 type IntegerParameterDeclaration struct {
 	DefaultValues           *IntegerDefaultValues               `json:"DefaultValues,omitempty"`
 	MappedDataSetParameters []MappedDataSetParameter            `json:"MappedDataSetParameters,omitempty"`
 	Name                    *string                             `json:"Name,omitempty"`
-	ParameterValueType      *string                             `json:"ParameterValueType,omitempty"`
+	ParameterValueType      *ParameterValueType                 `json:"ParameterValueType,omitempty"`
 	ValueWhenUnset          *IntegerValueWhenUnsetConfiguration `json:"ValueWhenUnset,omitempty"`
 }
 
@@ -711,15 +711,15 @@ type StringDefaultValues struct {
 }
 
 type StringValueWhenUnsetConfiguration struct {
-	CustomValue          *string `json:"CustomValue,omitempty"`
-	ValueWhenUnsetOption *string `json:"ValueWhenUnsetOption,omitempty"`
+	CustomValue          *string               `json:"CustomValue,omitempty"`
+	ValueWhenUnsetOption *ValueWhenUnsetOption `json:"ValueWhenUnsetOption,omitempty"`
 }
 
 type StringParameterDeclaration struct {
 	DefaultValues           *StringDefaultValues               `json:"DefaultValues,omitempty"`
 	MappedDataSetParameters []MappedDataSetParameter           `json:"MappedDataSetParameters,omitempty"`
 	Name                    *string                            `json:"Name,omitempty"`
-	ParameterValueType      *string                            `json:"ParameterValueType,omitempty"`
+	ParameterValueType      *ParameterValueType                `json:"ParameterValueType,omitempty"`
 	ValueWhenUnset          *StringValueWhenUnsetConfiguration `json:"ValueWhenUnset,omitempty"`
 }
 
@@ -731,7 +731,7 @@ type ParameterDeclaration struct {
 }
 
 type QueryExecutionOptions struct {
-	QueryExecutionMode *string `json:"QueryExecutionMode,omitempty"`
+	QueryExecutionMode *QueryExecutionMode `json:"QueryExecutionMode,omitempty"`
 }
 
 type CascadingControlSource struct {
@@ -750,23 +750,23 @@ type FilterCrossSheetControl struct {
 }
 
 type FilterDateTimePickerControl struct {
-	CommitMode      *string                              `json:"CommitMode,omitempty"`
+	CommitMode      *CommitMode                          `json:"CommitMode,omitempty"`
 	DisplayOptions  *DateTimePickerControlDisplayOptions `json:"DisplayOptions,omitempty"`
 	FilterControlId *string                              `json:"FilterControlId,omitempty"`
 	SourceFilterId  *string                              `json:"SourceFilterId,omitempty"`
 	Title           *string                              `json:"Title,omitempty"`
-	Type            *string                              `json:"Type,omitempty"`
+	Type            *SheetControlDateTimePickerType      `json:"Type,omitempty"`
 }
 
 type FilterDropDownControl struct {
 	CascadingControlConfiguration *CascadingControlConfiguration `json:"CascadingControlConfiguration,omitempty"`
-	CommitMode                    *string                        `json:"CommitMode,omitempty"`
+	CommitMode                    *CommitMode                    `json:"CommitMode,omitempty"`
 	DisplayOptions                *DropDownControlDisplayOptions `json:"DisplayOptions,omitempty"`
 	FilterControlId               *string                        `json:"FilterControlId,omitempty"`
 	SelectableValues              *FilterSelectableValues        `json:"SelectableValues,omitempty"`
 	SourceFilterId                *string                        `json:"SourceFilterId,omitempty"`
 	Title                         *string                        `json:"Title,omitempty"`
-	Type                          *string                        `json:"Type,omitempty"`
+	Type                          *SheetControlListType          `json:"Type,omitempty"`
 }
 
 type FilterListControl struct {
@@ -776,11 +776,11 @@ type FilterListControl struct {
 	SelectableValues              *FilterSelectableValues        `json:"SelectableValues,omitempty"`
 	SourceFilterId                *string                        `json:"SourceFilterId,omitempty"`
 	Title                         *string                        `json:"Title,omitempty"`
-	Type                          *string                        `json:"Type,omitempty"`
+	Type                          *SheetControlListType          `json:"Type,omitempty"`
 }
 
 type FilterRelativeDateTimeControl struct {
-	CommitMode      *string                                `json:"CommitMode,omitempty"`
+	CommitMode      *CommitMode                            `json:"CommitMode,omitempty"`
 	DisplayOptions  *RelativeDateTimeControlDisplayOptions `json:"DisplayOptions,omitempty"`
 	FilterControlId *string                                `json:"FilterControlId,omitempty"`
 	SourceFilterId  *string                                `json:"SourceFilterId,omitempty"`
@@ -795,7 +795,7 @@ type FilterSliderControl struct {
 	SourceFilterId  *string                      `json:"SourceFilterId,omitempty"`
 	StepSize        *float64                     `json:"StepSize,omitempty"`
 	Title           *string                      `json:"Title,omitempty"`
-	Type            *string                      `json:"Type,omitempty"`
+	Type            *SheetControlSliderType      `json:"Type,omitempty"`
 }
 
 type FilterTextAreaControl struct {
@@ -846,7 +846,7 @@ type CustomValuesConfiguration struct {
 
 type DestinationParameterValueConfiguration struct {
 	CustomValuesConfiguration *CustomValuesConfiguration `json:"CustomValuesConfiguration,omitempty"`
-	SelectAllValueOptions     *string                    `json:"SelectAllValueOptions,omitempty"`
+	SelectAllValueOptions     *SelectAllValueOptions     `json:"SelectAllValueOptions,omitempty"`
 	SourceColumn              *ColumnIdentifier          `json:"SourceColumn,omitempty"`
 	SourceField               *string                    `json:"SourceField,omitempty"`
 	SourceParameterName       *string                    `json:"SourceParameterName,omitempty"`
@@ -862,8 +862,8 @@ type CustomActionSetParametersOperation struct {
 }
 
 type CustomActionURLOperation struct {
-	URLTarget   *string `json:"URLTarget,omitempty"`
-	URLTemplate *string `json:"URLTemplate,omitempty"`
+	URLTarget   *URLTargetConfiguration `json:"URLTarget,omitempty"`
+	URLTemplate *string                 `json:"URLTemplate,omitempty"`
 }
 
 type ImageCustomActionOperation struct {
@@ -876,12 +876,12 @@ type ImageCustomAction struct {
 	ActionOperations []ImageCustomActionOperation `json:"ActionOperations,omitempty"`
 	CustomActionId   *string                      `json:"CustomActionId,omitempty"`
 	Name             *string                      `json:"Name,omitempty"`
-	Status           *string                      `json:"Status,omitempty"`
-	Trigger          *string                      `json:"Trigger,omitempty"`
+	Status           *WidgetStatus                `json:"Status,omitempty"`
+	Trigger          *ImageCustomActionTrigger    `json:"Trigger,omitempty"`
 }
 
 type ImageMenuOption struct {
-	AvailabilityStatus *string `json:"AvailabilityStatus,omitempty"`
+	AvailabilityStatus *DashboardBehavior `json:"AvailabilityStatus,omitempty"`
 }
 
 type ImageInteractionOptions struct {
@@ -889,7 +889,7 @@ type ImageInteractionOptions struct {
 }
 
 type SheetImageScalingConfiguration struct {
-	ScalingType *string `json:"ScalingType,omitempty"`
+	ScalingType *SheetImageScalingType `json:"ScalingType,omitempty"`
 }
 
 type SheetImageStaticFileSource struct {
@@ -906,7 +906,7 @@ type SheetImageTooltipText struct {
 
 type SheetImageTooltipConfiguration struct {
 	TooltipText *SheetImageTooltipText `json:"TooltipText,omitempty"`
-	Visibility  *string                `json:"Visibility,omitempty"`
+	Visibility  *Visibility            `json:"Visibility,omitempty"`
 }
 
 type SheetImage struct {
@@ -920,21 +920,21 @@ type SheetImage struct {
 }
 
 type FreeFormLayoutElementBackgroundStyle struct {
-	Color      *string `json:"Color,omitempty"`
-	Visibility *string `json:"Visibility,omitempty"`
+	Color      *string     `json:"Color,omitempty"`
+	Visibility *Visibility `json:"Visibility,omitempty"`
 }
 
 type FreeFormLayoutElementBorderStyle struct {
-	Color      *string `json:"Color,omitempty"`
-	Visibility *string `json:"Visibility,omitempty"`
+	Color      *string     `json:"Color,omitempty"`
+	Visibility *Visibility `json:"Visibility,omitempty"`
 }
 
 type LoadingAnimation struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *Visibility `json:"Visibility,omitempty"`
 }
 
 type SheetElementConfigurationOverrides struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *Visibility `json:"Visibility,omitempty"`
 }
 
 type SheetElementRenderingRule struct {
@@ -946,12 +946,12 @@ type FreeFormLayoutElement struct {
 	BackgroundStyle     *FreeFormLayoutElementBackgroundStyle `json:"BackgroundStyle,omitempty"`
 	BorderStyle         *FreeFormLayoutElementBorderStyle     `json:"BorderStyle,omitempty"`
 	ElementId           *string                               `json:"ElementId,omitempty"`
-	ElementType         *string                               `json:"ElementType,omitempty"`
+	ElementType         *LayoutElementType                    `json:"ElementType,omitempty"`
 	Height              *string                               `json:"Height,omitempty"`
 	LoadingAnimation    *LoadingAnimation                     `json:"LoadingAnimation,omitempty"`
 	RenderingRules      []SheetElementRenderingRule           `json:"RenderingRules,omitempty"`
 	SelectedBorderStyle *FreeFormLayoutElementBorderStyle     `json:"SelectedBorderStyle,omitempty"`
-	Visibility          *string                               `json:"Visibility,omitempty"`
+	Visibility          *Visibility                           `json:"Visibility,omitempty"`
 	Width               *string                               `json:"Width,omitempty"`
 	XAxisLocation       *string                               `json:"XAxisLocation,omitempty"`
 	YAxisLocation       *string                               `json:"YAxisLocation,omitempty"`
@@ -963,12 +963,12 @@ type FreeFormLayoutConfiguration struct {
 }
 
 type GridLayoutElement struct {
-	ColumnIndex *float64 `json:"ColumnIndex,omitempty"`
-	ColumnSpan  *float64 `json:"ColumnSpan,omitempty"`
-	ElementId   *string  `json:"ElementId,omitempty"`
-	ElementType *string  `json:"ElementType,omitempty"`
-	RowIndex    *float64 `json:"RowIndex,omitempty"`
-	RowSpan     *float64 `json:"RowSpan,omitempty"`
+	ColumnIndex *float64           `json:"ColumnIndex,omitempty"`
+	ColumnSpan  *float64           `json:"ColumnSpan,omitempty"`
+	ElementId   *string            `json:"ElementId,omitempty"`
+	ElementType *LayoutElementType `json:"ElementType,omitempty"`
+	RowIndex    *float64           `json:"RowIndex,omitempty"`
+	RowSpan     *float64           `json:"RowSpan,omitempty"`
 }
 
 type GridLayoutConfiguration struct {
@@ -989,7 +989,7 @@ type BodySectionContent struct {
 }
 
 type SectionAfterPageBreak struct {
-	Status *string `json:"Status,omitempty"`
+	Status *SectionPageBreakStatus `json:"Status,omitempty"`
 }
 
 type SectionPageBreakConfiguration struct {
@@ -998,7 +998,7 @@ type SectionPageBreakConfiguration struct {
 
 type ColumnSort struct {
 	AggregationFunction *AggregationFunction `json:"AggregationFunction,omitempty"`
-	Direction           *string              `json:"Direction,omitempty"`
+	Direction           *SortDirection       `json:"Direction,omitempty"`
 	SortBy              *ColumnIdentifier    `json:"SortBy,omitempty"`
 }
 
@@ -1079,13 +1079,13 @@ type ParameterSelectableValues struct {
 
 type ParameterDropDownControl struct {
 	CascadingControlConfiguration *CascadingControlConfiguration `json:"CascadingControlConfiguration,omitempty"`
-	CommitMode                    *string                        `json:"CommitMode,omitempty"`
+	CommitMode                    *CommitMode                    `json:"CommitMode,omitempty"`
 	DisplayOptions                *DropDownControlDisplayOptions `json:"DisplayOptions,omitempty"`
 	ParameterControlId            *string                        `json:"ParameterControlId,omitempty"`
 	SelectableValues              *ParameterSelectableValues     `json:"SelectableValues,omitempty"`
 	SourceParameterName           *string                        `json:"SourceParameterName,omitempty"`
 	Title                         *string                        `json:"Title,omitempty"`
-	Type                          *string                        `json:"Type,omitempty"`
+	Type                          *SheetControlListType          `json:"Type,omitempty"`
 }
 
 type ParameterListControl struct {
@@ -1095,7 +1095,7 @@ type ParameterListControl struct {
 	SelectableValues              *ParameterSelectableValues     `json:"SelectableValues,omitempty"`
 	SourceParameterName           *string                        `json:"SourceParameterName,omitempty"`
 	Title                         *string                        `json:"Title,omitempty"`
-	Type                          *string                        `json:"Type,omitempty"`
+	Type                          *SheetControlListType          `json:"Type,omitempty"`
 }
 
 type ParameterSliderControl struct {
@@ -1146,14 +1146,14 @@ type SheetTextBox struct {
 }
 
 type FilterOperationSelectedFieldsConfiguration struct {
-	SelectedColumns      []ColumnIdentifier `json:"SelectedColumns,omitempty"`
-	SelectedFieldOptions *string            `json:"SelectedFieldOptions,omitempty"`
-	SelectedFields       []string           `json:"SelectedFields,omitempty"`
+	SelectedColumns      []ColumnIdentifier    `json:"SelectedColumns,omitempty"`
+	SelectedFieldOptions *SelectedFieldOptions `json:"SelectedFieldOptions,omitempty"`
+	SelectedFields       []string              `json:"SelectedFields,omitempty"`
 }
 
 type SameSheetTargetVisualConfiguration struct {
-	TargetVisualOptions *string  `json:"TargetVisualOptions,omitempty"`
-	TargetVisuals       []string `json:"TargetVisuals,omitempty"`
+	TargetVisualOptions *TargetVisualOptions `json:"TargetVisualOptions,omitempty"`
+	TargetVisuals       []string             `json:"TargetVisuals,omitempty"`
 }
 
 type FilterOperationTargetVisualsConfiguration struct {
@@ -1176,12 +1176,12 @@ type VisualCustomAction struct {
 	ActionOperations []VisualCustomActionOperation `json:"ActionOperations,omitempty"`
 	CustomActionId   *string                       `json:"CustomActionId,omitempty"`
 	Name             *string                       `json:"Name,omitempty"`
-	Status           *string                       `json:"Status,omitempty"`
-	Trigger          *string                       `json:"Trigger,omitempty"`
+	Status           *WidgetStatus                 `json:"Status,omitempty"`
+	Trigger          *VisualCustomActionTrigger    `json:"Trigger,omitempty"`
 }
 
 type DateAxisOptions struct {
-	MissingDateVisibility *string `json:"MissingDateVisibility,omitempty"`
+	MissingDateVisibility *Visibility `json:"MissingDateVisibility,omitempty"`
 }
 
 type AxisDisplayMinMaxRange struct {
@@ -1228,7 +1228,7 @@ type VisibleRangeOptions struct {
 }
 
 type ScrollBarOptions struct {
-	Visibility   *string              `json:"Visibility,omitempty"`
+	Visibility   *Visibility          `json:"Visibility,omitempty"`
 	VisibleRange *VisibleRangeOptions `json:"VisibleRange,omitempty"`
 }
 
@@ -1238,10 +1238,10 @@ type AxisTickLabelOptions struct {
 }
 
 type AxisDisplayOptions struct {
-	AxisLineVisibility *string               `json:"AxisLineVisibility,omitempty"`
+	AxisLineVisibility *Visibility           `json:"AxisLineVisibility,omitempty"`
 	AxisOffset         *string               `json:"AxisOffset,omitempty"`
 	DataOptions        *AxisDataOptions      `json:"DataOptions,omitempty"`
-	GridLineVisibility *string               `json:"GridLineVisibility,omitempty"`
+	GridLineVisibility *Visibility           `json:"GridLineVisibility,omitempty"`
 	ScrollbarOptions   *ScrollBarOptions     `json:"ScrollbarOptions,omitempty"`
 	TickLabelOptions   *AxisTickLabelOptions `json:"TickLabelOptions,omitempty"`
 }
@@ -1259,8 +1259,8 @@ type AxisLabelOptions struct {
 
 type ChartAxisLabelOptions struct {
 	AxisLabelOptions   []AxisLabelOptions `json:"AxisLabelOptions,omitempty"`
-	SortIconVisibility *string            `json:"SortIconVisibility,omitempty"`
-	Visibility         *string            `json:"Visibility,omitempty"`
+	SortIconVisibility *Visibility        `json:"SortIconVisibility,omitempty"`
+	Visibility         *Visibility        `json:"Visibility,omitempty"`
 }
 
 type ContributionAnalysisDefault struct {
@@ -1269,26 +1269,26 @@ type ContributionAnalysisDefault struct {
 }
 
 type DataPathLabelType struct {
-	FieldId    *string `json:"FieldId,omitempty"`
-	FieldValue *string `json:"FieldValue,omitempty"`
-	Visibility *string `json:"Visibility,omitempty"`
+	FieldId    *string     `json:"FieldId,omitempty"`
+	FieldValue *string     `json:"FieldValue,omitempty"`
+	Visibility *Visibility `json:"Visibility,omitempty"`
 }
 
 type FieldLabelType struct {
-	FieldId    *string `json:"FieldId,omitempty"`
-	Visibility *string `json:"Visibility,omitempty"`
+	FieldId    *string     `json:"FieldId,omitempty"`
+	Visibility *Visibility `json:"Visibility,omitempty"`
 }
 
 type MaximumLabelType struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *Visibility `json:"Visibility,omitempty"`
 }
 
 type MinimumLabelType struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *Visibility `json:"Visibility,omitempty"`
 }
 
 type RangeEndsLabelType struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *Visibility `json:"Visibility,omitempty"`
 }
 
 type DataLabelType struct {
@@ -1300,16 +1300,16 @@ type DataLabelType struct {
 }
 
 type DataLabelOptions struct {
-	CategoryLabelVisibility *string            `json:"CategoryLabelVisibility,omitempty"`
+	CategoryLabelVisibility *Visibility        `json:"CategoryLabelVisibility,omitempty"`
 	DataLabelTypes          []DataLabelType    `json:"DataLabelTypes,omitempty"`
 	LabelColor              *string            `json:"LabelColor,omitempty"`
-	LabelContent            *string            `json:"LabelContent,omitempty"`
+	LabelContent            *DataLabelContent  `json:"LabelContent,omitempty"`
 	LabelFontConfiguration  *FontConfiguration `json:"LabelFontConfiguration,omitempty"`
-	MeasureLabelVisibility  *string            `json:"MeasureLabelVisibility,omitempty"`
-	Overlap                 *string            `json:"Overlap,omitempty"`
-	Position                *string            `json:"Position,omitempty"`
-	TotalsVisibility        *string            `json:"TotalsVisibility,omitempty"`
-	Visibility              *string            `json:"Visibility,omitempty"`
+	MeasureLabelVisibility  *Visibility        `json:"MeasureLabelVisibility,omitempty"`
+	Overlap                 *DataLabelOverlap  `json:"Overlap,omitempty"`
+	Position                *DataLabelPosition `json:"Position,omitempty"`
+	TotalsVisibility        *Visibility        `json:"TotalsVisibility,omitempty"`
+	Visibility              *Visibility        `json:"Visibility,omitempty"`
 }
 
 type CategoricalDimensionField struct {
@@ -1321,7 +1321,7 @@ type CategoricalDimensionField struct {
 
 type DateDimensionField struct {
 	Column              *ColumnIdentifier            `json:"Column,omitempty"`
-	DateGranularity     *string                      `json:"DateGranularity,omitempty"`
+	DateGranularity     *TimeGranularity             `json:"DateGranularity,omitempty"`
 	FieldId             *string                      `json:"FieldId,omitempty"`
 	FormatConfiguration *DateTimeFormatConfiguration `json:"FormatConfiguration,omitempty"`
 	HierarchyId         *string                      `json:"HierarchyId,omitempty"`
@@ -1346,14 +1346,14 @@ type CalculatedMeasureField struct {
 }
 
 type CategoricalMeasureField struct {
-	AggregationFunction *string                    `json:"AggregationFunction,omitempty"`
-	Column              *ColumnIdentifier          `json:"Column,omitempty"`
-	FieldId             *string                    `json:"FieldId,omitempty"`
-	FormatConfiguration *StringFormatConfiguration `json:"FormatConfiguration,omitempty"`
+	AggregationFunction *CategoricalAggregationFunction `json:"AggregationFunction,omitempty"`
+	Column              *ColumnIdentifier               `json:"Column,omitempty"`
+	FieldId             *string                         `json:"FieldId,omitempty"`
+	FormatConfiguration *StringFormatConfiguration      `json:"FormatConfiguration,omitempty"`
 }
 
 type DateMeasureField struct {
-	AggregationFunction *string                      `json:"AggregationFunction,omitempty"`
+	AggregationFunction *DateAggregationFunction     `json:"AggregationFunction,omitempty"`
 	Column              *ColumnIdentifier            `json:"Column,omitempty"`
 	FieldId             *string                      `json:"FieldId,omitempty"`
 	FormatConfiguration *DateTimeFormatConfiguration `json:"FormatConfiguration,omitempty"`
@@ -1385,11 +1385,11 @@ type BarChartFieldWells struct {
 }
 
 type ContextMenuOption struct {
-	AvailabilityStatus *string `json:"AvailabilityStatus,omitempty"`
+	AvailabilityStatus *DashboardBehavior `json:"AvailabilityStatus,omitempty"`
 }
 
 type VisualMenuOption struct {
-	AvailabilityStatus *string `json:"AvailabilityStatus,omitempty"`
+	AvailabilityStatus *DashboardBehavior `json:"AvailabilityStatus,omitempty"`
 }
 
 type VisualInteractionOptions struct {
@@ -1399,10 +1399,10 @@ type VisualInteractionOptions struct {
 
 type LegendOptions struct {
 	Height                 *string            `json:"Height,omitempty"`
-	Position               *string            `json:"Position,omitempty"`
+	Position               *LegendPosition    `json:"Position,omitempty"`
 	Title                  *LabelOptions      `json:"Title,omitempty"`
 	ValueFontConfiguration *FontConfiguration `json:"ValueFontConfiguration,omitempty"`
-	Visibility             *string            `json:"Visibility,omitempty"`
+	Visibility             *Visibility        `json:"Visibility,omitempty"`
 	Width                  *string            `json:"Width,omitempty"`
 }
 
@@ -1417,9 +1417,9 @@ type ReferenceLineStaticDataConfiguration struct {
 }
 
 type ReferenceLineDataConfiguration struct {
-	AxisBinding          *string                                `json:"AxisBinding,omitempty"`
+	AxisBinding          *AxisBinding                           `json:"AxisBinding,omitempty"`
 	DynamicConfiguration *ReferenceLineDynamicDataConfiguration `json:"DynamicConfiguration,omitempty"`
-	SeriesType           *string                                `json:"SeriesType,omitempty"`
+	SeriesType           *ReferenceLineSeriesType               `json:"SeriesType,omitempty"`
 	StaticConfiguration  *ReferenceLineStaticDataConfiguration  `json:"StaticConfiguration,omitempty"`
 }
 
@@ -1428,52 +1428,52 @@ type ReferenceLineCustomLabelConfiguration struct {
 }
 
 type ReferenceLineValueLabelConfiguration struct {
-	FormatConfiguration *NumericFormatConfiguration `json:"FormatConfiguration,omitempty"`
-	RelativePosition    *string                     `json:"RelativePosition,omitempty"`
+	FormatConfiguration *NumericFormatConfiguration              `json:"FormatConfiguration,omitempty"`
+	RelativePosition    *ReferenceLineValueLabelRelativePosition `json:"RelativePosition,omitempty"`
 }
 
 type ReferenceLineLabelConfiguration struct {
 	CustomLabelConfiguration *ReferenceLineCustomLabelConfiguration `json:"CustomLabelConfiguration,omitempty"`
 	FontColor                *string                                `json:"FontColor,omitempty"`
 	FontConfiguration        *FontConfiguration                     `json:"FontConfiguration,omitempty"`
-	HorizontalPosition       *string                                `json:"HorizontalPosition,omitempty"`
+	HorizontalPosition       *ReferenceLineLabelHorizontalPosition  `json:"HorizontalPosition,omitempty"`
 	ValueLabelConfiguration  *ReferenceLineValueLabelConfiguration  `json:"ValueLabelConfiguration,omitempty"`
-	VerticalPosition         *string                                `json:"VerticalPosition,omitempty"`
+	VerticalPosition         *ReferenceLineLabelVerticalPosition    `json:"VerticalPosition,omitempty"`
 }
 
 type ReferenceLineStyleConfiguration struct {
-	Color   *string `json:"Color,omitempty"`
-	Pattern *string `json:"Pattern,omitempty"`
+	Color   *string                   `json:"Color,omitempty"`
+	Pattern *ReferenceLinePatternType `json:"Pattern,omitempty"`
 }
 
 type ReferenceLine struct {
 	DataConfiguration  *ReferenceLineDataConfiguration  `json:"DataConfiguration,omitempty"`
 	LabelConfiguration *ReferenceLineLabelConfiguration `json:"LabelConfiguration,omitempty"`
-	Status             *string                          `json:"Status,omitempty"`
+	Status             *WidgetStatus                    `json:"Status,omitempty"`
 	StyleConfiguration *ReferenceLineStyleConfiguration `json:"StyleConfiguration,omitempty"`
 }
 
 type PanelTitleOptions struct {
-	FontConfiguration       *FontConfiguration `json:"FontConfiguration,omitempty"`
-	HorizontalTextAlignment *string            `json:"HorizontalTextAlignment,omitempty"`
-	Visibility              *string            `json:"Visibility,omitempty"`
+	FontConfiguration       *FontConfiguration       `json:"FontConfiguration,omitempty"`
+	HorizontalTextAlignment *HorizontalTextAlignment `json:"HorizontalTextAlignment,omitempty"`
+	Visibility              *Visibility              `json:"Visibility,omitempty"`
 }
 
 type PanelConfiguration struct {
 	BackgroundColor      *string            `json:"BackgroundColor,omitempty"`
-	BackgroundVisibility *string            `json:"BackgroundVisibility,omitempty"`
+	BackgroundVisibility *Visibility        `json:"BackgroundVisibility,omitempty"`
 	BorderColor          *string            `json:"BorderColor,omitempty"`
-	BorderStyle          *string            `json:"BorderStyle,omitempty"`
+	BorderStyle          *PanelBorderStyle  `json:"BorderStyle,omitempty"`
 	BorderThickness      *string            `json:"BorderThickness,omitempty"`
-	BorderVisibility     *string            `json:"BorderVisibility,omitempty"`
+	BorderVisibility     *Visibility        `json:"BorderVisibility,omitempty"`
 	GutterSpacing        *string            `json:"GutterSpacing,omitempty"`
-	GutterVisibility     *string            `json:"GutterVisibility,omitempty"`
+	GutterVisibility     *Visibility        `json:"GutterVisibility,omitempty"`
 	Title                *PanelTitleOptions `json:"Title,omitempty"`
 }
 
 type SmallMultiplesAxisProperties struct {
-	Placement *string `json:"Placement,omitempty"`
-	Scale     *string `json:"Scale,omitempty"`
+	Placement *SmallMultiplesAxisPlacement `json:"Placement,omitempty"`
+	Scale     *SmallMultiplesAxisScale     `json:"Scale,omitempty"`
 }
 
 type SmallMultiplesOptions struct {
@@ -1485,13 +1485,13 @@ type SmallMultiplesOptions struct {
 }
 
 type ItemsLimitConfiguration struct {
-	ItemsLimit      *float64 `json:"ItemsLimit,omitempty"`
-	OtherCategories *string  `json:"OtherCategories,omitempty"`
+	ItemsLimit      *float64         `json:"ItemsLimit,omitempty"`
+	OtherCategories *OtherCategories `json:"OtherCategories,omitempty"`
 }
 
 type FieldSort struct {
-	Direction *string `json:"Direction,omitempty"`
-	FieldId   *string `json:"FieldId,omitempty"`
+	Direction *SortDirection `json:"Direction,omitempty"`
+	FieldId   *string        `json:"FieldId,omitempty"`
 }
 
 type FieldSortOptions struct {
@@ -1512,15 +1512,15 @@ type ColumnTooltipItem struct {
 	Aggregation   *AggregationFunction `json:"Aggregation,omitempty"`
 	Column        *ColumnIdentifier    `json:"Column,omitempty"`
 	Label         *string              `json:"Label,omitempty"`
-	TooltipTarget *string              `json:"TooltipTarget,omitempty"`
-	Visibility    *string              `json:"Visibility,omitempty"`
+	TooltipTarget *TooltipTarget       `json:"TooltipTarget,omitempty"`
+	Visibility    *Visibility          `json:"Visibility,omitempty"`
 }
 
 type FieldTooltipItem struct {
-	FieldId       *string `json:"FieldId,omitempty"`
-	Label         *string `json:"Label,omitempty"`
-	TooltipTarget *string `json:"TooltipTarget,omitempty"`
-	Visibility    *string `json:"Visibility,omitempty"`
+	FieldId       *string        `json:"FieldId,omitempty"`
+	Label         *string        `json:"Label,omitempty"`
+	TooltipTarget *TooltipTarget `json:"TooltipTarget,omitempty"`
+	Visibility    *Visibility    `json:"Visibility,omitempty"`
 }
 
 type TooltipItem struct {
@@ -1529,19 +1529,19 @@ type TooltipItem struct {
 }
 
 type FieldBasedTooltip struct {
-	AggregationVisibility *string       `json:"AggregationVisibility,omitempty"`
-	TooltipFields         []TooltipItem `json:"TooltipFields,omitempty"`
-	TooltipTitleType      *string       `json:"TooltipTitleType,omitempty"`
+	AggregationVisibility *Visibility       `json:"AggregationVisibility,omitempty"`
+	TooltipFields         []TooltipItem     `json:"TooltipFields,omitempty"`
+	TooltipTitleType      *TooltipTitleType `json:"TooltipTitleType,omitempty"`
 }
 
 type TooltipOptions struct {
-	FieldBasedTooltip   *FieldBasedTooltip `json:"FieldBasedTooltip,omitempty"`
-	SelectedTooltipType *string            `json:"SelectedTooltipType,omitempty"`
-	TooltipVisibility   *string            `json:"TooltipVisibility,omitempty"`
+	FieldBasedTooltip   *FieldBasedTooltip   `json:"FieldBasedTooltip,omitempty"`
+	SelectedTooltipType *SelectedTooltipType `json:"SelectedTooltipType,omitempty"`
+	TooltipVisibility   *Visibility          `json:"TooltipVisibility,omitempty"`
 }
 
 type DataPathType struct {
-	PivotTableDataPathType *string `json:"PivotTableDataPathType,omitempty"`
+	PivotTableDataPathType *PivotTableDataPathType `json:"PivotTableDataPathType,omitempty"`
 }
 
 type DataPathValue struct {
@@ -1551,9 +1551,9 @@ type DataPathValue struct {
 }
 
 type DataPathColor struct {
-	Color           *string        `json:"Color,omitempty"`
-	Element         *DataPathValue `json:"Element,omitempty"`
-	TimeGranularity *string        `json:"TimeGranularity,omitempty"`
+	Color           *string          `json:"Color,omitempty"`
+	Element         *DataPathValue   `json:"Element,omitempty"`
+	TimeGranularity *TimeGranularity `json:"TimeGranularity,omitempty"`
 }
 
 type VisualPalette struct {
@@ -1562,7 +1562,7 @@ type VisualPalette struct {
 }
 
 type BarChartConfiguration struct {
-	BarsArrangement              *string                       `json:"BarsArrangement,omitempty"`
+	BarsArrangement              *BarsArrangement              `json:"BarsArrangement,omitempty"`
 	CategoryAxis                 *AxisDisplayOptions           `json:"CategoryAxis,omitempty"`
 	CategoryLabelOptions         *ChartAxisLabelOptions        `json:"CategoryLabelOptions,omitempty"`
 	ColorLabelOptions            *ChartAxisLabelOptions        `json:"ColorLabelOptions,omitempty"`
@@ -1571,7 +1571,7 @@ type BarChartConfiguration struct {
 	FieldWells                   *BarChartFieldWells           `json:"FieldWells,omitempty"`
 	Interactions                 *VisualInteractionOptions     `json:"Interactions,omitempty"`
 	Legend                       *LegendOptions                `json:"Legend,omitempty"`
-	Orientation                  *string                       `json:"Orientation,omitempty"`
+	Orientation                  *BarChartOrientation          `json:"Orientation,omitempty"`
 	ReferenceLines               []ReferenceLine               `json:"ReferenceLines,omitempty"`
 	SmallMultiplesOptions        *SmallMultiplesOptions        `json:"SmallMultiplesOptions,omitempty"`
 	SortConfiguration            *BarChartSortConfiguration    `json:"SortConfiguration,omitempty"`
@@ -1595,7 +1595,7 @@ type TimeRangeDrillDownFilter struct {
 	Column          *ColumnIdentifier `json:"Column,omitempty"`
 	RangeMaximum    *string           `json:"RangeMaximum,omitempty"`
 	RangeMinimum    *string           `json:"RangeMinimum,omitempty"`
-	TimeGranularity *string           `json:"TimeGranularity,omitempty"`
+	TimeGranularity *TimeGranularity  `json:"TimeGranularity,omitempty"`
 }
 
 type DrillDownFilter struct {
@@ -1634,7 +1634,7 @@ type LongFormatText struct {
 
 type VisualSubtitleLabelOptions struct {
 	FormatText *LongFormatText `json:"FormatText,omitempty"`
-	Visibility *string         `json:"Visibility,omitempty"`
+	Visibility *Visibility     `json:"Visibility,omitempty"`
 }
 
 type ShortFormatText struct {
@@ -1644,7 +1644,7 @@ type ShortFormatText struct {
 
 type VisualTitleLabelOptions struct {
 	FormatText *ShortFormatText `json:"FormatText,omitempty"`
-	Visibility *string          `json:"Visibility,omitempty"`
+	Visibility *Visibility      `json:"Visibility,omitempty"`
 }
 
 type BarChartVisual struct {
@@ -1658,12 +1658,12 @@ type BarChartVisual struct {
 }
 
 type BoxPlotStyleOptions struct {
-	FillStyle *string `json:"FillStyle,omitempty"`
+	FillStyle *BoxPlotFillStyle `json:"FillStyle,omitempty"`
 }
 
 type BoxPlotOptions struct {
-	AllDataPointsVisibility *string              `json:"AllDataPointsVisibility,omitempty"`
-	OutlierVisibility       *string              `json:"OutlierVisibility,omitempty"`
+	AllDataPointsVisibility *Visibility          `json:"AllDataPointsVisibility,omitempty"`
+	OutlierVisibility       *Visibility          `json:"OutlierVisibility,omitempty"`
 	StyleOptions            *BoxPlotStyleOptions `json:"StyleOptions,omitempty"`
 }
 
@@ -1723,7 +1723,7 @@ type ComboChartFieldWells struct {
 }
 
 type YAxisOptions struct {
-	YAxis *string `json:"YAxis,omitempty"`
+	YAxis *SingleYAxisOption `json:"YAxis,omitempty"`
 }
 
 type SingleAxisOptions struct {
@@ -1739,7 +1739,7 @@ type ComboChartSortConfiguration struct {
 
 type ComboChartConfiguration struct {
 	BarDataLabels                *DataLabelOptions            `json:"BarDataLabels,omitempty"`
-	BarsArrangement              *string                      `json:"BarsArrangement,omitempty"`
+	BarsArrangement              *BarsArrangement             `json:"BarsArrangement,omitempty"`
 	CategoryAxis                 *AxisDisplayOptions          `json:"CategoryAxis,omitempty"`
 	CategoryLabelOptions         *ChartAxisLabelOptions       `json:"CategoryLabelOptions,omitempty"`
 	ColorLabelOptions            *ChartAxisLabelOptions       `json:"ColorLabelOptions,omitempty"`
@@ -1769,10 +1769,10 @@ type ComboChartVisual struct {
 }
 
 type CustomContentConfiguration struct {
-	ContentType  *string                   `json:"ContentType,omitempty"`
-	ContentUrl   *string                   `json:"ContentUrl,omitempty"`
-	ImageScaling *string                   `json:"ImageScaling,omitempty"`
-	Interactions *VisualInteractionOptions `json:"Interactions,omitempty"`
+	ContentType  *CustomContentType                      `json:"ContentType,omitempty"`
+	ContentUrl   *string                                 `json:"ContentUrl,omitempty"`
+	ImageScaling *CustomContentImageScalingConfiguration `json:"ImageScaling,omitempty"`
+	Interactions *VisualInteractionOptions               `json:"Interactions,omitempty"`
 }
 
 type CustomContentVisual struct {
@@ -1801,7 +1801,7 @@ type FilledMapFieldWells struct {
 }
 
 type GeospatialMapStyleOptions struct {
-	BaseMapStyle *string `json:"BaseMapStyle,omitempty"`
+	BaseMapStyle *BaseMapStyleType `json:"BaseMapStyle,omitempty"`
 }
 
 type FilledMapSortConfiguration struct {
@@ -1817,7 +1817,7 @@ type GeospatialCoordinateBounds struct {
 
 type GeospatialWindowOptions struct {
 	Bounds      *GeospatialCoordinateBounds `json:"Bounds,omitempty"`
-	MapZoomMode *string                     `json:"MapZoomMode,omitempty"`
+	MapZoomMode *MapZoomMode                `json:"MapZoomMode,omitempty"`
 }
 
 type FilledMapConfiguration struct {
@@ -1884,13 +1884,13 @@ type FilledMapVisual struct {
 }
 
 type FunnelChartDataLabelOptions struct {
-	CategoryLabelVisibility *string            `json:"CategoryLabelVisibility,omitempty"`
-	LabelColor              *string            `json:"LabelColor,omitempty"`
-	LabelFontConfiguration  *FontConfiguration `json:"LabelFontConfiguration,omitempty"`
-	MeasureDataLabelStyle   *string            `json:"MeasureDataLabelStyle,omitempty"`
-	MeasureLabelVisibility  *string            `json:"MeasureLabelVisibility,omitempty"`
-	Position                *string            `json:"Position,omitempty"`
-	Visibility              *string            `json:"Visibility,omitempty"`
+	CategoryLabelVisibility *Visibility                       `json:"CategoryLabelVisibility,omitempty"`
+	LabelColor              *string                           `json:"LabelColor,omitempty"`
+	LabelFontConfiguration  *FontConfiguration                `json:"LabelFontConfiguration,omitempty"`
+	MeasureDataLabelStyle   *FunnelChartMeasureDataLabelStyle `json:"MeasureDataLabelStyle,omitempty"`
+	MeasureLabelVisibility  *Visibility                       `json:"MeasureLabelVisibility,omitempty"`
+	Position                *DataLabelPosition                `json:"Position,omitempty"`
+	Visibility              *Visibility                       `json:"Visibility,omitempty"`
 }
 
 type FunnelChartAggregatedFieldWells struct {
@@ -1939,8 +1939,8 @@ type GaugeChartFieldWells struct {
 }
 
 type ArcConfiguration struct {
-	ArcAngle     *float64 `json:"ArcAngle,omitempty"`
-	ArcThickness *string  `json:"ArcThickness,omitempty"`
+	ArcAngle     *float64             `json:"ArcAngle,omitempty"`
+	ArcThickness *ArcThicknessOptions `json:"ArcThickness,omitempty"`
 }
 
 type ArcAxisDisplayRange struct {
@@ -1960,14 +1960,14 @@ type ComparisonFormatConfiguration struct {
 
 type ComparisonConfiguration struct {
 	ComparisonFormat *ComparisonFormatConfiguration `json:"ComparisonFormat,omitempty"`
-	ComparisonMethod *string                        `json:"ComparisonMethod,omitempty"`
+	ComparisonMethod *ComparisonMethod              `json:"ComparisonMethod,omitempty"`
 }
 
 type GaugeChartOptions struct {
 	Arc                           *ArcConfiguration        `json:"Arc,omitempty"`
 	ArcAxis                       *ArcAxisConfiguration    `json:"ArcAxis,omitempty"`
 	Comparison                    *ComparisonConfiguration `json:"Comparison,omitempty"`
-	PrimaryValueDisplayType       *string                  `json:"PrimaryValueDisplayType,omitempty"`
+	PrimaryValueDisplayType       *PrimaryValueDisplayType `json:"PrimaryValueDisplayType,omitempty"`
 	PrimaryValueFontConfiguration *FontConfiguration       `json:"PrimaryValueFontConfiguration,omitempty"`
 }
 
@@ -1986,11 +1986,11 @@ type GaugeChartArcConditionalFormatting struct {
 }
 
 type ConditionalFormattingIconDisplayConfiguration struct {
-	IconDisplayOption *string `json:"IconDisplayOption,omitempty"`
+	IconDisplayOption *ConditionalFormattingIconDisplayOption `json:"IconDisplayOption,omitempty"`
 }
 
 type ConditionalFormattingCustomIconOptions struct {
-	Icon        *string `json:"Icon,omitempty"`
+	Icon        *Icon   `json:"Icon,omitempty"`
 	UnicodeIcon *string `json:"UnicodeIcon,omitempty"`
 }
 
@@ -2002,8 +2002,8 @@ type ConditionalFormattingCustomIconCondition struct {
 }
 
 type ConditionalFormattingIconSet struct {
-	Expression  *string `json:"Expression,omitempty"`
-	IconSetType *string `json:"IconSetType,omitempty"`
+	Expression  *string                           `json:"Expression,omitempty"`
+	IconSetType *ConditionalFormattingIconSetType `json:"IconSetType,omitempty"`
 }
 
 type ConditionalFormattingIcon struct {
@@ -2072,7 +2072,7 @@ type GeospatialHeatmapConfiguration struct {
 type GeospatialPointStyleOptions struct {
 	ClusterMarkerConfiguration *ClusterMarkerConfiguration     `json:"ClusterMarkerConfiguration,omitempty"`
 	HeatmapConfiguration       *GeospatialHeatmapConfiguration `json:"HeatmapConfiguration,omitempty"`
-	SelectedPointStyle         *string                         `json:"SelectedPointStyle,omitempty"`
+	SelectedPointStyle         *GeospatialSelectedPointStyle   `json:"SelectedPointStyle,omitempty"`
 }
 
 type GeospatialMapConfiguration struct {
@@ -2102,9 +2102,9 @@ type DataColor struct {
 }
 
 type ColorScale struct {
-	ColorFillType  *string     `json:"ColorFillType,omitempty"`
-	Colors         []DataColor `json:"Colors,omitempty"`
-	NullValueColor *DataColor  `json:"NullValueColor,omitempty"`
+	ColorFillType  *ColorFillType `json:"ColorFillType,omitempty"`
+	Colors         []DataColor    `json:"Colors,omitempty"`
+	NullValueColor *DataColor     `json:"NullValueColor,omitempty"`
 }
 
 type HeatMapAggregatedFieldWells struct {
@@ -2156,10 +2156,10 @@ type BinWidthOptions struct {
 }
 
 type HistogramBinOptions struct {
-	BinCount        *BinCountOptions `json:"BinCount,omitempty"`
-	BinWidth        *BinWidthOptions `json:"BinWidth,omitempty"`
-	SelectedBinType *string          `json:"SelectedBinType,omitempty"`
-	StartValue      *float64         `json:"StartValue,omitempty"`
+	BinCount        *BinCountOptions  `json:"BinCount,omitempty"`
+	BinWidth        *BinWidthOptions  `json:"BinWidth,omitempty"`
+	SelectedBinType *HistogramBinType `json:"SelectedBinType,omitempty"`
+	StartValue      *float64          `json:"StartValue,omitempty"`
 }
 
 type HistogramAggregatedFieldWells struct {
@@ -2192,17 +2192,17 @@ type HistogramVisual struct {
 }
 
 type ForecastComputation struct {
-	ComputationId          *string         `json:"ComputationId,omitempty"`
-	CustomSeasonalityValue *float64        `json:"CustomSeasonalityValue,omitempty"`
-	LowerBoundary          *float64        `json:"LowerBoundary,omitempty"`
-	Name                   *string         `json:"Name,omitempty"`
-	PeriodsBackward        *float64        `json:"PeriodsBackward,omitempty"`
-	PeriodsForward         *float64        `json:"PeriodsForward,omitempty"`
-	PredictionInterval     *float64        `json:"PredictionInterval,omitempty"`
-	Seasonality            *string         `json:"Seasonality,omitempty"`
-	Time                   *DimensionField `json:"Time,omitempty"`
-	UpperBoundary          *float64        `json:"UpperBoundary,omitempty"`
-	Value                  *MeasureField   `json:"Value,omitempty"`
+	ComputationId          *string                         `json:"ComputationId,omitempty"`
+	CustomSeasonalityValue *float64                        `json:"CustomSeasonalityValue,omitempty"`
+	LowerBoundary          *float64                        `json:"LowerBoundary,omitempty"`
+	Name                   *string                         `json:"Name,omitempty"`
+	PeriodsBackward        *float64                        `json:"PeriodsBackward,omitempty"`
+	PeriodsForward         *float64                        `json:"PeriodsForward,omitempty"`
+	PredictionInterval     *float64                        `json:"PredictionInterval,omitempty"`
+	Seasonality            *ForecastComputationSeasonality `json:"Seasonality,omitempty"`
+	Time                   *DimensionField                 `json:"Time,omitempty"`
+	UpperBoundary          *float64                        `json:"UpperBoundary,omitempty"`
+	Value                  *MeasureField                   `json:"Value,omitempty"`
 }
 
 type GrowthRateComputation struct {
@@ -2214,11 +2214,11 @@ type GrowthRateComputation struct {
 }
 
 type MaximumMinimumComputation struct {
-	ComputationId *string         `json:"ComputationId,omitempty"`
-	Name          *string         `json:"Name,omitempty"`
-	Time          *DimensionField `json:"Time,omitempty"`
-	Type          *string         `json:"Type,omitempty"`
-	Value         *MeasureField   `json:"Value,omitempty"`
+	ComputationId *string                        `json:"ComputationId,omitempty"`
+	Name          *string                        `json:"Name,omitempty"`
+	Time          *DimensionField                `json:"Time,omitempty"`
+	Type          *MaximumMinimumComputationType `json:"Type,omitempty"`
+	Value         *MeasureField                  `json:"Value,omitempty"`
 }
 
 type MetricComparisonComputation struct {
@@ -2237,31 +2237,31 @@ type PeriodOverPeriodComputation struct {
 }
 
 type PeriodToDateComputation struct {
-	ComputationId         *string         `json:"ComputationId,omitempty"`
-	Name                  *string         `json:"Name,omitempty"`
-	PeriodTimeGranularity *string         `json:"PeriodTimeGranularity,omitempty"`
-	Time                  *DimensionField `json:"Time,omitempty"`
-	Value                 *MeasureField   `json:"Value,omitempty"`
+	ComputationId         *string          `json:"ComputationId,omitempty"`
+	Name                  *string          `json:"Name,omitempty"`
+	PeriodTimeGranularity *TimeGranularity `json:"PeriodTimeGranularity,omitempty"`
+	Time                  *DimensionField  `json:"Time,omitempty"`
+	Value                 *MeasureField    `json:"Value,omitempty"`
 }
 
 type TopBottomMoversComputation struct {
-	Category      *DimensionField `json:"Category,omitempty"`
-	ComputationId *string         `json:"ComputationId,omitempty"`
-	MoverSize     *float64        `json:"MoverSize,omitempty"`
-	Name          *string         `json:"Name,omitempty"`
-	SortOrder     *string         `json:"SortOrder,omitempty"`
-	Time          *DimensionField `json:"Time,omitempty"`
-	Type          *string         `json:"Type,omitempty"`
-	Value         *MeasureField   `json:"Value,omitempty"`
+	Category      *DimensionField           `json:"Category,omitempty"`
+	ComputationId *string                   `json:"ComputationId,omitempty"`
+	MoverSize     *float64                  `json:"MoverSize,omitempty"`
+	Name          *string                   `json:"Name,omitempty"`
+	SortOrder     *TopBottomSortOrder       `json:"SortOrder,omitempty"`
+	Time          *DimensionField           `json:"Time,omitempty"`
+	Type          *TopBottomComputationType `json:"Type,omitempty"`
+	Value         *MeasureField             `json:"Value,omitempty"`
 }
 
 type TopBottomRankedComputation struct {
-	Category      *DimensionField `json:"Category,omitempty"`
-	ComputationId *string         `json:"ComputationId,omitempty"`
-	Name          *string         `json:"Name,omitempty"`
-	ResultSize    *float64        `json:"ResultSize,omitempty"`
-	Type          *string         `json:"Type,omitempty"`
-	Value         *MeasureField   `json:"Value,omitempty"`
+	Category      *DimensionField           `json:"Category,omitempty"`
+	ComputationId *string                   `json:"ComputationId,omitempty"`
+	Name          *string                   `json:"Name,omitempty"`
+	ResultSize    *float64                  `json:"ResultSize,omitempty"`
+	Type          *TopBottomComputationType `json:"Type,omitempty"`
+	Value         *MeasureField             `json:"Value,omitempty"`
 }
 
 type TotalAggregationComputation struct {
@@ -2316,26 +2316,26 @@ type KPIFieldWells struct {
 }
 
 type ProgressBarOptions struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *Visibility `json:"Visibility,omitempty"`
 }
 
 type SecondaryValueOptions struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *Visibility `json:"Visibility,omitempty"`
 }
 
 type KPISparklineOptions struct {
-	Color             *string `json:"Color,omitempty"`
-	TooltipVisibility *string `json:"TooltipVisibility,omitempty"`
-	Type              *string `json:"Type,omitempty"`
-	Visibility        *string `json:"Visibility,omitempty"`
+	Color             *string           `json:"Color,omitempty"`
+	TooltipVisibility *Visibility       `json:"TooltipVisibility,omitempty"`
+	Type              *KPISparklineType `json:"Type,omitempty"`
+	Visibility        *Visibility       `json:"Visibility,omitempty"`
 }
 
 type TrendArrowOptions struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *Visibility `json:"Visibility,omitempty"`
 }
 
 type KPIVisualStandardLayout struct {
-	Type *string `json:"Type,omitempty"`
+	Type *KPIVisualStandardLayoutType `json:"Type,omitempty"`
 }
 
 type KPIVisualLayoutOptions struct {
@@ -2344,7 +2344,7 @@ type KPIVisualLayoutOptions struct {
 
 type KPIOptions struct {
 	Comparison                      *ComparisonConfiguration `json:"Comparison,omitempty"`
-	PrimaryValueDisplayType         *string                  `json:"PrimaryValueDisplayType,omitempty"`
+	PrimaryValueDisplayType         *PrimaryValueDisplayType `json:"PrimaryValueDisplayType,omitempty"`
 	PrimaryValueFontConfiguration   *FontConfiguration       `json:"PrimaryValueFontConfiguration,omitempty"`
 	ProgressBar                     *ProgressBarOptions      `json:"ProgressBar,omitempty"`
 	SecondaryValue                  *SecondaryValueOptions   `json:"SecondaryValue,omitempty"`
@@ -2417,8 +2417,8 @@ type LayerCustomAction struct {
 	ActionOperations []LayerCustomActionOperation `json:"ActionOperations,omitempty"`
 	CustomActionId   *string                      `json:"CustomActionId,omitempty"`
 	Name             *string                      `json:"Name,omitempty"`
-	Status           *string                      `json:"Status,omitempty"`
-	Trigger          *string                      `json:"Trigger,omitempty"`
+	Status           *WidgetStatus                `json:"Status,omitempty"`
+	Trigger          *LayerCustomActionTrigger    `json:"Trigger,omitempty"`
 }
 
 type GeospatialStaticFileSource struct {
@@ -2465,7 +2465,7 @@ type GeospatialCategoricalColor struct {
 	CategoryDataColors []GeospatialCategoricalDataColor `json:"CategoryDataColors,omitempty"`
 	DefaultOpacity     *float64                         `json:"DefaultOpacity,omitempty"`
 	NullDataSettings   *GeospatialNullDataSettings      `json:"NullDataSettings,omitempty"`
-	NullDataVisibility *string                          `json:"NullDataVisibility,omitempty"`
+	NullDataVisibility *Visibility                      `json:"NullDataVisibility,omitempty"`
 }
 
 type GeospatialGradientStepColor struct {
@@ -2476,13 +2476,13 @@ type GeospatialGradientStepColor struct {
 type GeospatialGradientColor struct {
 	DefaultOpacity     *float64                      `json:"DefaultOpacity,omitempty"`
 	NullDataSettings   *GeospatialNullDataSettings   `json:"NullDataSettings,omitempty"`
-	NullDataVisibility *string                       `json:"NullDataVisibility,omitempty"`
+	NullDataVisibility *Visibility                   `json:"NullDataVisibility,omitempty"`
 	StepColors         []GeospatialGradientStepColor `json:"StepColors,omitempty"`
 }
 
 type GeospatialSolidColor struct {
-	Color *string `json:"Color,omitempty"`
-	State *string `json:"State,omitempty"`
+	Color *string               `json:"Color,omitempty"`
+	State *GeospatialColorState `json:"State,omitempty"`
 }
 
 type GeospatialColor struct {
@@ -2554,20 +2554,20 @@ type GeospatialLayerItem struct {
 	Label           *string                        `json:"Label,omitempty"`
 	LayerDefinition *GeospatialLayerDefinition     `json:"LayerDefinition,omitempty"`
 	LayerId         *string                        `json:"LayerId,omitempty"`
-	LayerType       *string                        `json:"LayerType,omitempty"`
+	LayerType       *GeospatialLayerType           `json:"LayerType,omitempty"`
 	Tooltip         *TooltipOptions                `json:"Tooltip,omitempty"`
-	Visibility      *string                        `json:"Visibility,omitempty"`
+	Visibility      *Visibility                    `json:"Visibility,omitempty"`
 }
 
 type GeospatialMapState struct {
 	Bounds        *GeospatialCoordinateBounds `json:"Bounds,omitempty"`
-	MapNavigation *string                     `json:"MapNavigation,omitempty"`
+	MapNavigation *GeospatialMapNavigation    `json:"MapNavigation,omitempty"`
 }
 
 type GeospatialMapStyle struct {
-	BackgroundColor   *string `json:"BackgroundColor,omitempty"`
-	BaseMapStyle      *string `json:"BaseMapStyle,omitempty"`
-	BaseMapVisibility *string `json:"BaseMapVisibility,omitempty"`
+	BackgroundColor   *string           `json:"BackgroundColor,omitempty"`
+	BaseMapStyle      *BaseMapStyleType `json:"BaseMapStyle,omitempty"`
+	BaseMapVisibility *Visibility       `json:"BaseMapVisibility,omitempty"`
 }
 
 type GeospatialLayerMapConfiguration struct {
@@ -2588,21 +2588,21 @@ type LayerMapVisual struct {
 }
 
 type LineChartLineStyleSettings struct {
-	LineInterpolation *string `json:"LineInterpolation,omitempty"`
-	LineStyle         *string `json:"LineStyle,omitempty"`
-	LineVisibility    *string `json:"LineVisibility,omitempty"`
-	LineWidth         *string `json:"LineWidth,omitempty"`
+	LineInterpolation *LineInterpolation  `json:"LineInterpolation,omitempty"`
+	LineStyle         *LineChartLineStyle `json:"LineStyle,omitempty"`
+	LineVisibility    *Visibility         `json:"LineVisibility,omitempty"`
+	LineWidth         *string             `json:"LineWidth,omitempty"`
 }
 
 type LineChartMarkerStyleSettings struct {
-	MarkerColor      *string `json:"MarkerColor,omitempty"`
-	MarkerShape      *string `json:"MarkerShape,omitempty"`
-	MarkerSize       *string `json:"MarkerSize,omitempty"`
-	MarkerVisibility *string `json:"MarkerVisibility,omitempty"`
+	MarkerColor      *string               `json:"MarkerColor,omitempty"`
+	MarkerShape      *LineChartMarkerShape `json:"MarkerShape,omitempty"`
+	MarkerSize       *string               `json:"MarkerSize,omitempty"`
+	MarkerVisibility *Visibility           `json:"MarkerVisibility,omitempty"`
 }
 
 type LineChartDefaultSeriesSettings struct {
-	AxisBinding         *string                       `json:"AxisBinding,omitempty"`
+	AxisBinding         *AxisBinding                  `json:"AxisBinding,omitempty"`
 	LineStyleSettings   *LineChartLineStyleSettings   `json:"LineStyleSettings,omitempty"`
 	MarkerStyleSettings *LineChartMarkerStyleSettings `json:"MarkerStyleSettings,omitempty"`
 }
@@ -2649,7 +2649,7 @@ type ForecastConfiguration struct {
 }
 
 type MissingDataConfiguration struct {
-	TreatmentOption *string `json:"TreatmentOption,omitempty"`
+	TreatmentOption *MissingDataTreatmentOption `json:"TreatmentOption,omitempty"`
 }
 
 type LineSeriesAxisDisplayOptions struct {
@@ -2663,14 +2663,14 @@ type LineChartSeriesSettings struct {
 }
 
 type DataFieldSeriesItem struct {
-	AxisBinding *string                  `json:"AxisBinding,omitempty"`
+	AxisBinding *AxisBinding             `json:"AxisBinding,omitempty"`
 	FieldId     *string                  `json:"FieldId,omitempty"`
 	FieldValue  *string                  `json:"FieldValue,omitempty"`
 	Settings    *LineChartSeriesSettings `json:"Settings,omitempty"`
 }
 
 type FieldSeriesItem struct {
-	AxisBinding *string                  `json:"AxisBinding,omitempty"`
+	AxisBinding *AxisBinding             `json:"AxisBinding,omitempty"`
 	FieldId     *string                  `json:"FieldId,omitempty"`
 	Settings    *LineChartSeriesSettings `json:"Settings,omitempty"`
 }
@@ -2706,7 +2706,7 @@ type LineChartConfiguration struct {
 	SmallMultiplesOptions        *SmallMultiplesOptions          `json:"SmallMultiplesOptions,omitempty"`
 	SortConfiguration            *LineChartSortConfiguration     `json:"SortConfiguration,omitempty"`
 	Tooltip                      *TooltipOptions                 `json:"Tooltip,omitempty"`
-	Type                         *string                         `json:"Type,omitempty"`
+	Type                         *LineChartType                  `json:"Type,omitempty"`
 	VisualPalette                *VisualPalette                  `json:"VisualPalette,omitempty"`
 	XAxisDisplayOptions          *AxisDisplayOptions             `json:"XAxisDisplayOptions,omitempty"`
 	XAxisLabelOptions            *ChartAxisLabelOptions          `json:"XAxisLabelOptions,omitempty"`
@@ -2723,11 +2723,11 @@ type LineChartVisual struct {
 }
 
 type ArcOptions struct {
-	ArcThickness *string `json:"ArcThickness,omitempty"`
+	ArcThickness *ArcThickness `json:"ArcThickness,omitempty"`
 }
 
 type DonutCenterOptions struct {
-	LabelVisibility *string `json:"LabelVisibility,omitempty"`
+	LabelVisibility *Visibility `json:"LabelVisibility,omitempty"`
 }
 
 type DonutOptions struct {
@@ -2783,7 +2783,7 @@ type PivotTableFieldCollapseStateTarget struct {
 }
 
 type PivotTableFieldCollapseStateOption struct {
-	State  *string                             `json:"State,omitempty"`
+	State  *PivotTableFieldCollapseState       `json:"State,omitempty"`
 	Target *PivotTableFieldCollapseStateTarget `json:"Target,omitempty"`
 }
 
@@ -2793,9 +2793,9 @@ type PivotTableDataPathOption struct {
 }
 
 type PivotTableFieldOption struct {
-	CustomLabel *string `json:"CustomLabel,omitempty"`
-	FieldId     *string `json:"FieldId,omitempty"`
-	Visibility  *string `json:"Visibility,omitempty"`
+	CustomLabel *string     `json:"CustomLabel,omitempty"`
+	FieldId     *string     `json:"FieldId,omitempty"`
+	Visibility  *Visibility `json:"Visibility,omitempty"`
 }
 
 type PivotTableFieldOptions struct {
@@ -2815,12 +2815,12 @@ type PivotTableFieldWells struct {
 }
 
 type PivotTablePaginatedReportOptions struct {
-	OverflowColumnHeaderVisibility *string `json:"OverflowColumnHeaderVisibility,omitempty"`
-	VerticalOverflowVisibility     *string `json:"VerticalOverflowVisibility,omitempty"`
+	OverflowColumnHeaderVisibility *Visibility `json:"OverflowColumnHeaderVisibility,omitempty"`
+	VerticalOverflowVisibility     *Visibility `json:"VerticalOverflowVisibility,omitempty"`
 }
 
 type DataPathSort struct {
-	Direction *string         `json:"Direction,omitempty"`
+	Direction *SortDirection  `json:"Direction,omitempty"`
 	SortPaths []DataPathValue `json:"SortPaths,omitempty"`
 }
 
@@ -2840,9 +2840,9 @@ type PivotTableSortConfiguration struct {
 }
 
 type TableBorderOptions struct {
-	Color     *string  `json:"Color,omitempty"`
-	Style     *string  `json:"Style,omitempty"`
-	Thickness *float64 `json:"Thickness,omitempty"`
+	Color     *string           `json:"Color,omitempty"`
+	Style     *TableBorderStyle `json:"Style,omitempty"`
+	Thickness *float64          `json:"Thickness,omitempty"`
 }
 
 type TableSideBorderOptions struct {
@@ -2864,37 +2864,37 @@ type TableCellStyle struct {
 	Border                  *GlobalTableBorderOptions `json:"Border,omitempty"`
 	FontConfiguration       *FontConfiguration        `json:"FontConfiguration,omitempty"`
 	Height                  *float64                  `json:"Height,omitempty"`
-	HorizontalTextAlignment *string                   `json:"HorizontalTextAlignment,omitempty"`
-	TextWrap                *string                   `json:"TextWrap,omitempty"`
-	VerticalTextAlignment   *string                   `json:"VerticalTextAlignment,omitempty"`
-	Visibility              *string                   `json:"Visibility,omitempty"`
+	HorizontalTextAlignment *HorizontalTextAlignment  `json:"HorizontalTextAlignment,omitempty"`
+	TextWrap                *TextWrap                 `json:"TextWrap,omitempty"`
+	VerticalTextAlignment   *VerticalTextAlignment    `json:"VerticalTextAlignment,omitempty"`
+	Visibility              *Visibility               `json:"Visibility,omitempty"`
 }
 
 type RowAlternateColorOptions struct {
-	RowAlternateColors        []string `json:"RowAlternateColors,omitempty"`
-	Status                    *string  `json:"Status,omitempty"`
-	UsePrimaryBackgroundColor *string  `json:"UsePrimaryBackgroundColor,omitempty"`
+	RowAlternateColors        []string      `json:"RowAlternateColors,omitempty"`
+	Status                    *WidgetStatus `json:"Status,omitempty"`
+	UsePrimaryBackgroundColor *WidgetStatus `json:"UsePrimaryBackgroundColor,omitempty"`
 }
 
 type PivotTableRowsLabelOptions struct {
-	CustomLabel *string `json:"CustomLabel,omitempty"`
-	Visibility  *string `json:"Visibility,omitempty"`
+	CustomLabel *string     `json:"CustomLabel,omitempty"`
+	Visibility  *Visibility `json:"Visibility,omitempty"`
 }
 
 type PivotTableOptions struct {
 	CellStyle                        *TableCellStyle             `json:"CellStyle,omitempty"`
-	CollapsedRowDimensionsVisibility *string                     `json:"CollapsedRowDimensionsVisibility,omitempty"`
+	CollapsedRowDimensionsVisibility *Visibility                 `json:"CollapsedRowDimensionsVisibility,omitempty"`
 	ColumnHeaderStyle                *TableCellStyle             `json:"ColumnHeaderStyle,omitempty"`
-	ColumnNamesVisibility            *string                     `json:"ColumnNamesVisibility,omitempty"`
+	ColumnNamesVisibility            *Visibility                 `json:"ColumnNamesVisibility,omitempty"`
 	DefaultCellWidth                 *string                     `json:"DefaultCellWidth,omitempty"`
-	MetricPlacement                  *string                     `json:"MetricPlacement,omitempty"`
+	MetricPlacement                  *PivotTableMetricPlacement  `json:"MetricPlacement,omitempty"`
 	RowAlternateColorOptions         *RowAlternateColorOptions   `json:"RowAlternateColorOptions,omitempty"`
 	RowFieldNamesStyle               *TableCellStyle             `json:"RowFieldNamesStyle,omitempty"`
 	RowHeaderStyle                   *TableCellStyle             `json:"RowHeaderStyle,omitempty"`
 	RowsLabelOptions                 *PivotTableRowsLabelOptions `json:"RowsLabelOptions,omitempty"`
-	RowsLayout                       *string                     `json:"RowsLayout,omitempty"`
-	SingleMetricVisibility           *string                     `json:"SingleMetricVisibility,omitempty"`
-	ToggleButtonsVisibility          *string                     `json:"ToggleButtonsVisibility,omitempty"`
+	RowsLayout                       *PivotTableRowsLayout       `json:"RowsLayout,omitempty"`
+	SingleMetricVisibility           *Visibility                 `json:"SingleMetricVisibility,omitempty"`
+	ToggleButtonsVisibility          *Visibility                 `json:"ToggleButtonsVisibility,omitempty"`
 }
 
 type PivotTableFieldSubtotalOptions struct {
@@ -2902,22 +2902,22 @@ type PivotTableFieldSubtotalOptions struct {
 }
 
 type TableStyleTarget struct {
-	CellType *string `json:"CellType,omitempty"`
+	CellType *StyledCellType `json:"CellType,omitempty"`
 }
 
 type SubtotalOptions struct {
 	CustomLabel           *string                          `json:"CustomLabel,omitempty"`
-	FieldLevel            *string                          `json:"FieldLevel,omitempty"`
+	FieldLevel            *PivotTableSubtotalLevel         `json:"FieldLevel,omitempty"`
 	FieldLevelOptions     []PivotTableFieldSubtotalOptions `json:"FieldLevelOptions,omitempty"`
 	MetricHeaderCellStyle *TableCellStyle                  `json:"MetricHeaderCellStyle,omitempty"`
 	StyleTargets          []TableStyleTarget               `json:"StyleTargets,omitempty"`
 	TotalCellStyle        *TableCellStyle                  `json:"TotalCellStyle,omitempty"`
-	TotalsVisibility      *string                          `json:"TotalsVisibility,omitempty"`
+	TotalsVisibility      *Visibility                      `json:"TotalsVisibility,omitempty"`
 	ValueCellStyle        *TableCellStyle                  `json:"ValueCellStyle,omitempty"`
 }
 
 type TotalAggregationFunction struct {
-	SimpleTotalAggregationFunction *string `json:"SimpleTotalAggregationFunction,omitempty"`
+	SimpleTotalAggregationFunction *SimpleTotalAggregationFunction `json:"SimpleTotalAggregationFunction,omitempty"`
 }
 
 type TotalAggregationOption struct {
@@ -2928,11 +2928,11 @@ type TotalAggregationOption struct {
 type PivotTotalOptions struct {
 	CustomLabel             *string                  `json:"CustomLabel,omitempty"`
 	MetricHeaderCellStyle   *TableCellStyle          `json:"MetricHeaderCellStyle,omitempty"`
-	Placement               *string                  `json:"Placement,omitempty"`
-	ScrollStatus            *string                  `json:"ScrollStatus,omitempty"`
+	Placement               *TableTotalsPlacement    `json:"Placement,omitempty"`
+	ScrollStatus            *TableTotalsScrollStatus `json:"ScrollStatus,omitempty"`
 	TotalAggregationOptions []TotalAggregationOption `json:"TotalAggregationOptions,omitempty"`
 	TotalCellStyle          *TableCellStyle          `json:"TotalCellStyle,omitempty"`
-	TotalsVisibility        *string                  `json:"TotalsVisibility,omitempty"`
+	TotalsVisibility        *Visibility              `json:"TotalsVisibility,omitempty"`
 	ValueCellStyle          *TableCellStyle          `json:"ValueCellStyle,omitempty"`
 }
 
@@ -2954,7 +2954,7 @@ type PivotTableConfiguration struct {
 }
 
 type PivotTableConditionalFormattingScope struct {
-	Role *string `json:"Role,omitempty"`
+	Role *PivotTableConditionalFormattingScopeRole `json:"Role,omitempty"`
 }
 
 type TextConditionalFormat struct {
@@ -2989,10 +2989,10 @@ type PivotTableVisual struct {
 }
 
 type PluginVisualFieldWell struct {
-	AxisName     *string             `json:"AxisName,omitempty"`
-	Dimensions   []DimensionField    `json:"Dimensions,omitempty"`
-	Measures     []MeasureField      `json:"Measures,omitempty"`
-	Unaggregated []UnaggregatedField `json:"Unaggregated,omitempty"`
+	AxisName     *PluginVisualAxisName `json:"AxisName,omitempty"`
+	Dimensions   []DimensionField      `json:"Dimensions,omitempty"`
+	Measures     []MeasureField        `json:"Measures,omitempty"`
+	Unaggregated []UnaggregatedField   `json:"Unaggregated,omitempty"`
 }
 
 type PluginVisualItemsLimitConfiguration struct {
@@ -3033,7 +3033,7 @@ type PluginVisual struct {
 }
 
 type RadarChartAreaStyleSettings struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *Visibility `json:"Visibility,omitempty"`
 }
 
 type RadarChartSeriesSettings struct {
@@ -3058,10 +3058,10 @@ type RadarChartSortConfiguration struct {
 }
 
 type RadarChartConfiguration struct {
-	AlternateBandColorsVisibility *string                      `json:"AlternateBandColorsVisibility,omitempty"`
+	AlternateBandColorsVisibility *Visibility                  `json:"AlternateBandColorsVisibility,omitempty"`
 	AlternateBandEvenColor        *string                      `json:"AlternateBandEvenColor,omitempty"`
 	AlternateBandOddColor         *string                      `json:"AlternateBandOddColor,omitempty"`
-	AxesRangeScale                *string                      `json:"AxesRangeScale,omitempty"`
+	AxesRangeScale                *RadarChartAxesRangeScale    `json:"AxesRangeScale,omitempty"`
 	BaseSeriesSettings            *RadarChartSeriesSettings    `json:"BaseSeriesSettings,omitempty"`
 	CategoryAxis                  *AxisDisplayOptions          `json:"CategoryAxis,omitempty"`
 	CategoryLabelOptions          *ChartAxisLabelOptions       `json:"CategoryLabelOptions,omitempty"`
@@ -3070,7 +3070,7 @@ type RadarChartConfiguration struct {
 	FieldWells                    *RadarChartFieldWells        `json:"FieldWells,omitempty"`
 	Interactions                  *VisualInteractionOptions    `json:"Interactions,omitempty"`
 	Legend                        *LegendOptions               `json:"Legend,omitempty"`
-	Shape                         *string                      `json:"Shape,omitempty"`
+	Shape                         *RadarChartShape             `json:"Shape,omitempty"`
 	SortConfiguration             *RadarChartSortConfiguration `json:"SortConfiguration,omitempty"`
 	StartAngle                    *float64                     `json:"StartAngle,omitempty"`
 	VisualPalette                 *VisualPalette               `json:"VisualPalette,omitempty"`
@@ -3172,7 +3172,7 @@ type TablePinnedFieldOptions struct {
 }
 
 type TableCellImageSizingConfiguration struct {
-	TableCellImageScalingConfiguration *string `json:"TableCellImageScalingConfiguration,omitempty"`
+	TableCellImageScalingConfiguration *TableCellImageScalingConfiguration `json:"TableCellImageScalingConfiguration,omitempty"`
 }
 
 type TableFieldImageConfiguration struct {
@@ -3180,7 +3180,7 @@ type TableFieldImageConfiguration struct {
 }
 
 type TableFieldCustomIconContent struct {
-	Icon *string `json:"Icon,omitempty"`
+	Icon *TableFieldIconSetType `json:"Icon,omitempty"`
 }
 
 type TableFieldCustomTextContent struct {
@@ -3195,7 +3195,7 @@ type TableFieldLinkContentConfiguration struct {
 
 type TableFieldLinkConfiguration struct {
 	Content *TableFieldLinkContentConfiguration `json:"Content,omitempty"`
-	Target  *string                             `json:"Target,omitempty"`
+	Target  *URLTargetConfiguration             `json:"Target,omitempty"`
 }
 
 type TableFieldURLConfiguration struct {
@@ -3207,14 +3207,14 @@ type TableFieldOption struct {
 	CustomLabel *string                     `json:"CustomLabel,omitempty"`
 	FieldId     *string                     `json:"FieldId,omitempty"`
 	URLStyling  *TableFieldURLConfiguration `json:"URLStyling,omitempty"`
-	Visibility  *string                     `json:"Visibility,omitempty"`
+	Visibility  *Visibility                 `json:"Visibility,omitempty"`
 	Width       *string                     `json:"Width,omitempty"`
 }
 
 type TransposedTableOption struct {
-	ColumnIndex *float64 `json:"ColumnIndex,omitempty"`
-	ColumnType  *string  `json:"ColumnType,omitempty"`
-	ColumnWidth *string  `json:"ColumnWidth,omitempty"`
+	ColumnIndex *float64              `json:"ColumnIndex,omitempty"`
+	ColumnType  *TransposedColumnType `json:"ColumnType,omitempty"`
+	ColumnWidth *string               `json:"ColumnWidth,omitempty"`
 }
 
 type TableFieldOptions struct {
@@ -3239,8 +3239,8 @@ type TableFieldWells struct {
 }
 
 type TablePaginatedReportOptions struct {
-	OverflowColumnHeaderVisibility *string `json:"OverflowColumnHeaderVisibility,omitempty"`
-	VerticalOverflowVisibility     *string `json:"VerticalOverflowVisibility,omitempty"`
+	OverflowColumnHeaderVisibility *Visibility `json:"OverflowColumnHeaderVisibility,omitempty"`
+	VerticalOverflowVisibility     *Visibility `json:"VerticalOverflowVisibility,omitempty"`
 }
 
 type TableSortConfiguration struct {
@@ -3261,17 +3261,17 @@ type TableInlineVisualization struct {
 type TableOptions struct {
 	CellStyle                *TableCellStyle           `json:"CellStyle,omitempty"`
 	HeaderStyle              *TableCellStyle           `json:"HeaderStyle,omitempty"`
-	Orientation              *string                   `json:"Orientation,omitempty"`
+	Orientation              *TableOrientation         `json:"Orientation,omitempty"`
 	RowAlternateColorOptions *RowAlternateColorOptions `json:"RowAlternateColorOptions,omitempty"`
 }
 
 type TotalOptions struct {
 	CustomLabel             *string                  `json:"CustomLabel,omitempty"`
-	Placement               *string                  `json:"Placement,omitempty"`
-	ScrollStatus            *string                  `json:"ScrollStatus,omitempty"`
+	Placement               *TableTotalsPlacement    `json:"Placement,omitempty"`
+	ScrollStatus            *TableTotalsScrollStatus `json:"ScrollStatus,omitempty"`
 	TotalAggregationOptions []TotalAggregationOption `json:"TotalAggregationOptions,omitempty"`
 	TotalCellStyle          *TableCellStyle          `json:"TotalCellStyle,omitempty"`
-	TotalsVisibility        *string                  `json:"TotalsVisibility,omitempty"`
+	TotalsVisibility        *Visibility              `json:"TotalsVisibility,omitempty"`
 }
 
 type TableConfiguration struct {
@@ -3421,12 +3421,12 @@ type WordCloudSortConfiguration struct {
 }
 
 type WordCloudOptions struct {
-	CloudLayout         *string  `json:"CloudLayout,omitempty"`
-	MaximumStringLength *float64 `json:"MaximumStringLength,omitempty"`
-	WordCasing          *string  `json:"WordCasing,omitempty"`
-	WordOrientation     *string  `json:"WordOrientation,omitempty"`
-	WordPadding         *string  `json:"WordPadding,omitempty"`
-	WordScaling         *string  `json:"WordScaling,omitempty"`
+	CloudLayout         *WordCloudCloudLayout     `json:"CloudLayout,omitempty"`
+	MaximumStringLength *float64                  `json:"MaximumStringLength,omitempty"`
+	WordCasing          *WordCloudWordCasing      `json:"WordCasing,omitempty"`
+	WordOrientation     *WordCloudWordOrientation `json:"WordOrientation,omitempty"`
+	WordPadding         *WordCloudWordPadding     `json:"WordPadding,omitempty"`
+	WordScaling         *WordCloudWordScaling     `json:"WordScaling,omitempty"`
 }
 
 type WordCloudChartConfiguration struct {
@@ -3476,7 +3476,7 @@ type Visual struct {
 }
 
 type SheetDefinition struct {
-	ContentType         *string              `json:"ContentType,omitempty"`
+	ContentType         *SheetContentType    `json:"ContentType,omitempty"`
 	Description         *string              `json:"Description,omitempty"`
 	FilterControls      []FilterControl      `json:"FilterControls,omitempty"`
 	Images              []SheetImage         `json:"Images,omitempty"`
@@ -3538,9 +3538,9 @@ type Entity struct {
 }
 
 type AnalysisError struct {
-	Message          *string  `json:"Message,omitempty"`
-	Type             *string  `json:"Type,omitempty"`
-	ViolatedEntities []Entity `json:"ViolatedEntities,omitempty"`
+	Message          *string            `json:"Message,omitempty"`
+	Type             *AnalysisErrorType `json:"Type,omitempty"`
+	ViolatedEntities []Entity           `json:"ViolatedEntities,omitempty"`
 }
 
 type DateTimeParameter struct {
@@ -3600,7 +3600,7 @@ type AnalysisTag struct {
 }
 
 type ValidationStrategy struct {
-	Mode *string `json:"Mode,omitempty"`
+	Mode *ValidationStrategyMode `json:"Mode,omitempty"`
 }
 
 type Analysis struct {
@@ -3618,7 +3618,7 @@ type Analysis struct {
 	Permissions        []AnalysisResourcePermission `json:"Permissions,omitempty"`
 	Sheets             []Sheet                      `json:"Sheets,omitempty"`
 	SourceEntity       *AnalysisSourceEntity        `json:"SourceEntity,omitempty"`
-	Status             *string                      `json:"Status,omitempty"`
+	Status             *AnalysisResourceStatus      `json:"Status,omitempty"`
 	Tags               []AnalysisTag                `json:"Tags,omitempty"`
 	ThemeArn           *string                      `json:"ThemeArn,omitempty"`
 	ValidationStrategy *ValidationStrategy          `json:"ValidationStrategy,omitempty"`
@@ -3627,232 +3627,232 @@ type Analysis struct {
 func (Analysis) CloudControlType() string { return "AWS::QuickSight::Analysis" }
 
 type Capabilities struct {
-	AccessAppsNativeDataStore                 *string `json:"AccessAppsNativeDataStore,omitempty"`
-	Action                                    *string `json:"Action,omitempty"`
-	AddOrRunAnomalyDetectionForAnalyses       *string `json:"AddOrRunAnomalyDetectionForAnalyses,omitempty"`
-	AmazonBedrockARSAction                    *string `json:"AmazonBedrockARSAction,omitempty"`
-	AmazonBedrockFSAction                     *string `json:"AmazonBedrockFSAction,omitempty"`
-	AmazonBedrockKRSAction                    *string `json:"AmazonBedrockKRSAction,omitempty"`
-	AmazonSThreeAction                        *string `json:"AmazonSThreeAction,omitempty"`
-	Analysis                                  *string `json:"Analysis,omitempty"`
-	ApproveFlowShareRequests                  *string `json:"ApproveFlowShareRequests,omitempty"`
-	Apps                                      *string `json:"Apps,omitempty"`
-	AsanaAction                               *string `json:"AsanaAction,omitempty"`
-	Automate                                  *string `json:"Automate,omitempty"`
-	BambooHRAction                            *string `json:"BambooHRAction,omitempty"`
-	BoxAgentAction                            *string `json:"BoxAgentAction,omitempty"`
-	BuildCalculatedFieldWithQ                 *string `json:"BuildCalculatedFieldWithQ,omitempty"`
-	CanvaAgentAction                          *string `json:"CanvaAgentAction,omitempty"`
-	ChatAgent                                 *string `json:"ChatAgent,omitempty"`
-	ComprehendAction                          *string `json:"ComprehendAction,omitempty"`
-	ComprehendMedicalAction                   *string `json:"ComprehendMedicalAction,omitempty"`
-	ConfluenceAction                          *string `json:"ConfluenceAction,omitempty"`
-	CreateAndUpdateAmazonBedrockARSAction     *string `json:"CreateAndUpdateAmazonBedrockARSAction,omitempty"`
-	CreateAndUpdateAmazonBedrockFSAction      *string `json:"CreateAndUpdateAmazonBedrockFSAction,omitempty"`
-	CreateAndUpdateAmazonBedrockKRSAction     *string `json:"CreateAndUpdateAmazonBedrockKRSAction,omitempty"`
-	CreateAndUpdateAmazonSThreeAction         *string `json:"CreateAndUpdateAmazonSThreeAction,omitempty"`
-	CreateAndUpdateApps                       *string `json:"CreateAndUpdateApps,omitempty"`
-	CreateAndUpdateAsanaAction                *string `json:"CreateAndUpdateAsanaAction,omitempty"`
-	CreateAndUpdateBambooHRAction             *string `json:"CreateAndUpdateBambooHRAction,omitempty"`
-	CreateAndUpdateBoxAgentAction             *string `json:"CreateAndUpdateBoxAgentAction,omitempty"`
-	CreateAndUpdateCanvaAgentAction           *string `json:"CreateAndUpdateCanvaAgentAction,omitempty"`
-	CreateAndUpdateComprehendAction           *string `json:"CreateAndUpdateComprehendAction,omitempty"`
-	CreateAndUpdateComprehendMedicalAction    *string `json:"CreateAndUpdateComprehendMedicalAction,omitempty"`
-	CreateAndUpdateConfluenceAction           *string `json:"CreateAndUpdateConfluenceAction,omitempty"`
-	CreateAndUpdateDashboardEmailReports      *string `json:"CreateAndUpdateDashboardEmailReports,omitempty"`
-	CreateAndUpdateDataSources                *string `json:"CreateAndUpdateDataSources,omitempty"`
-	CreateAndUpdateDatasets                   *string `json:"CreateAndUpdateDatasets,omitempty"`
-	CreateAndUpdateFactSetAction              *string `json:"CreateAndUpdateFactSetAction,omitempty"`
-	CreateAndUpdateGenericHTTPAction          *string `json:"CreateAndUpdateGenericHTTPAction,omitempty"`
-	CreateAndUpdateGithubAction               *string `json:"CreateAndUpdateGithubAction,omitempty"`
-	CreateAndUpdateGoogleCalendarAction       *string `json:"CreateAndUpdateGoogleCalendarAction,omitempty"`
-	CreateAndUpdateHubspotAction              *string `json:"CreateAndUpdateHubspotAction,omitempty"`
-	CreateAndUpdateHuggingFaceAction          *string `json:"CreateAndUpdateHuggingFaceAction,omitempty"`
-	CreateAndUpdateIntercomAction             *string `json:"CreateAndUpdateIntercomAction,omitempty"`
-	CreateAndUpdateJiraAction                 *string `json:"CreateAndUpdateJiraAction,omitempty"`
-	CreateAndUpdateKnowledgeBases             *string `json:"CreateAndUpdateKnowledgeBases,omitempty"`
-	CreateAndUpdateLinearAction               *string `json:"CreateAndUpdateLinearAction,omitempty"`
-	CreateAndUpdateMCPAction                  *string `json:"CreateAndUpdateMCPAction,omitempty"`
-	CreateAndUpdateMSExchangeAction           *string `json:"CreateAndUpdateMSExchangeAction,omitempty"`
-	CreateAndUpdateMSTeamsAction              *string `json:"CreateAndUpdateMSTeamsAction,omitempty"`
-	CreateAndUpdateMondayAction               *string `json:"CreateAndUpdateMondayAction,omitempty"`
-	CreateAndUpdateNewRelicAction             *string `json:"CreateAndUpdateNewRelicAction,omitempty"`
-	CreateAndUpdateNotionAction               *string `json:"CreateAndUpdateNotionAction,omitempty"`
-	CreateAndUpdateOneDriveAction             *string `json:"CreateAndUpdateOneDriveAction,omitempty"`
-	CreateAndUpdateOpenAPIAction              *string `json:"CreateAndUpdateOpenAPIAction,omitempty"`
-	CreateAndUpdatePagerDutyAction            *string `json:"CreateAndUpdatePagerDutyAction,omitempty"`
-	CreateAndUpdateSAPBillOfMaterialAction    *string `json:"CreateAndUpdateSAPBillOfMaterialAction,omitempty"`
-	CreateAndUpdateSAPBusinessPartnerAction   *string `json:"CreateAndUpdateSAPBusinessPartnerAction,omitempty"`
-	CreateAndUpdateSAPMaterialStockAction     *string `json:"CreateAndUpdateSAPMaterialStockAction,omitempty"`
-	CreateAndUpdateSAPPhysicalInventoryAction *string `json:"CreateAndUpdateSAPPhysicalInventoryAction,omitempty"`
-	CreateAndUpdateSAPProductMasterDataAction *string `json:"CreateAndUpdateSAPProductMasterDataAction,omitempty"`
-	CreateAndUpdateSalesforceAction           *string `json:"CreateAndUpdateSalesforceAction,omitempty"`
-	CreateAndUpdateSandPGMIAction             *string `json:"CreateAndUpdateSandPGMIAction,omitempty"`
-	CreateAndUpdateSandPGlobalEnergyAction    *string `json:"CreateAndUpdateSandPGlobalEnergyAction,omitempty"`
-	CreateAndUpdateServiceNowAction           *string `json:"CreateAndUpdateServiceNowAction,omitempty"`
-	CreateAndUpdateSharePointAction           *string `json:"CreateAndUpdateSharePointAction,omitempty"`
-	CreateAndUpdateSlackAction                *string `json:"CreateAndUpdateSlackAction,omitempty"`
-	CreateAndUpdateSmartsheetAction           *string `json:"CreateAndUpdateSmartsheetAction,omitempty"`
-	CreateAndUpdateTextractAction             *string `json:"CreateAndUpdateTextractAction,omitempty"`
-	CreateAndUpdateThemes                     *string `json:"CreateAndUpdateThemes,omitempty"`
-	CreateAndUpdateThresholdAlerts            *string `json:"CreateAndUpdateThresholdAlerts,omitempty"`
-	CreateAndUpdateZendeskAction              *string `json:"CreateAndUpdateZendeskAction,omitempty"`
-	CreateChatAgents                          *string `json:"CreateChatAgents,omitempty"`
-	CreateDashboardExecutiveSummaryWithQ      *string `json:"CreateDashboardExecutiveSummaryWithQ,omitempty"`
-	CreateSPICEDataset                        *string `json:"CreateSPICEDataset,omitempty"`
-	CreateSharedFolders                       *string `json:"CreateSharedFolders,omitempty"`
-	CreateSpaces                              *string `json:"CreateSpaces,omitempty"`
-	Dashboard                                 *string `json:"Dashboard,omitempty"`
-	EditVisualWithQ                           *string `json:"EditVisualWithQ,omitempty"`
-	ExportToCsv                               *string `json:"ExportToCsv,omitempty"`
-	ExportToCsvInScheduledReports             *string `json:"ExportToCsvInScheduledReports,omitempty"`
-	ExportToExcel                             *string `json:"ExportToExcel,omitempty"`
-	ExportToExcelInScheduledReports           *string `json:"ExportToExcelInScheduledReports,omitempty"`
-	ExportToPdf                               *string `json:"ExportToPdf,omitempty"`
-	ExportToPdfInScheduledReports             *string `json:"ExportToPdfInScheduledReports,omitempty"`
-	Extension                                 *string `json:"Extension,omitempty"`
-	FactSetAction                             *string `json:"FactSetAction,omitempty"`
-	Flow                                      *string `json:"Flow,omitempty"`
-	GenericHTTPAction                         *string `json:"GenericHTTPAction,omitempty"`
-	GithubAction                              *string `json:"GithubAction,omitempty"`
-	GoogleCalendarAction                      *string `json:"GoogleCalendarAction,omitempty"`
-	HubspotAction                             *string `json:"HubspotAction,omitempty"`
-	HuggingFaceAction                         *string `json:"HuggingFaceAction,omitempty"`
-	IncludeContentInScheduledReportsEmail     *string `json:"IncludeContentInScheduledReportsEmail,omitempty"`
-	IntercomAction                            *string `json:"IntercomAction,omitempty"`
-	InvokeAppsAIInference                     *string `json:"InvokeAppsAIInference,omitempty"`
-	JiraAction                                *string `json:"JiraAction,omitempty"`
-	KnowledgeBase                             *string `json:"KnowledgeBase,omitempty"`
-	LinearAction                              *string `json:"LinearAction,omitempty"`
-	MCPAction                                 *string `json:"MCPAction,omitempty"`
-	MSExchangeAction                          *string `json:"MSExchangeAction,omitempty"`
-	MSTeamsAction                             *string `json:"MSTeamsAction,omitempty"`
-	ManageSharedFolders                       *string `json:"ManageSharedFolders,omitempty"`
-	MondayAction                              *string `json:"MondayAction,omitempty"`
-	NewRelicAction                            *string `json:"NewRelicAction,omitempty"`
-	NotionAction                              *string `json:"NotionAction,omitempty"`
-	OneDriveAction                            *string `json:"OneDriveAction,omitempty"`
-	OpenAPIAction                             *string `json:"OpenAPIAction,omitempty"`
-	PagerDutyAction                           *string `json:"PagerDutyAction,omitempty"`
-	PerformFlowUiTask                         *string `json:"PerformFlowUiTask,omitempty"`
-	PrintReports                              *string `json:"PrintReports,omitempty"`
-	PublishWithoutApproval                    *string `json:"PublishWithoutApproval,omitempty"`
-	RenameSharedFolders                       *string `json:"RenameSharedFolders,omitempty"`
-	Research                                  *string `json:"Research,omitempty"`
-	SAPBillOfMaterialAction                   *string `json:"SAPBillOfMaterialAction,omitempty"`
-	SAPBusinessPartnerAction                  *string `json:"SAPBusinessPartnerAction,omitempty"`
-	SAPMaterialStockAction                    *string `json:"SAPMaterialStockAction,omitempty"`
-	SAPPhysicalInventoryAction                *string `json:"SAPPhysicalInventoryAction,omitempty"`
-	SAPProductMasterDataAction                *string `json:"SAPProductMasterDataAction,omitempty"`
-	SalesforceAction                          *string `json:"SalesforceAction,omitempty"`
-	SandPGMIAction                            *string `json:"SandPGMIAction,omitempty"`
-	SandPGlobalEnergyAction                   *string `json:"SandPGlobalEnergyAction,omitempty"`
-	ServiceNowAction                          *string `json:"ServiceNowAction,omitempty"`
-	ShareAmazonBedrockARSAction               *string `json:"ShareAmazonBedrockARSAction,omitempty"`
-	ShareAmazonBedrockFSAction                *string `json:"ShareAmazonBedrockFSAction,omitempty"`
-	ShareAmazonBedrockKRSAction               *string `json:"ShareAmazonBedrockKRSAction,omitempty"`
-	ShareAmazonSThreeAction                   *string `json:"ShareAmazonSThreeAction,omitempty"`
-	ShareAnalyses                             *string `json:"ShareAnalyses,omitempty"`
-	ShareApps                                 *string `json:"ShareApps,omitempty"`
-	ShareAsanaAction                          *string `json:"ShareAsanaAction,omitempty"`
-	ShareBambooHRAction                       *string `json:"ShareBambooHRAction,omitempty"`
-	ShareBoxAgentAction                       *string `json:"ShareBoxAgentAction,omitempty"`
-	ShareCanvaAgentAction                     *string `json:"ShareCanvaAgentAction,omitempty"`
-	ShareChatAgents                           *string `json:"ShareChatAgents,omitempty"`
-	ShareComprehendAction                     *string `json:"ShareComprehendAction,omitempty"`
-	ShareComprehendMedicalAction              *string `json:"ShareComprehendMedicalAction,omitempty"`
-	ShareConfluenceAction                     *string `json:"ShareConfluenceAction,omitempty"`
-	ShareDashboards                           *string `json:"ShareDashboards,omitempty"`
-	ShareDataSources                          *string `json:"ShareDataSources,omitempty"`
-	ShareDatasets                             *string `json:"ShareDatasets,omitempty"`
-	ShareFactSetAction                        *string `json:"ShareFactSetAction,omitempty"`
-	ShareGenericHTTPAction                    *string `json:"ShareGenericHTTPAction,omitempty"`
-	ShareGithubAction                         *string `json:"ShareGithubAction,omitempty"`
-	ShareGoogleCalendarAction                 *string `json:"ShareGoogleCalendarAction,omitempty"`
-	ShareHubspotAction                        *string `json:"ShareHubspotAction,omitempty"`
-	ShareHuggingFaceAction                    *string `json:"ShareHuggingFaceAction,omitempty"`
-	ShareIntercomAction                       *string `json:"ShareIntercomAction,omitempty"`
-	ShareJiraAction                           *string `json:"ShareJiraAction,omitempty"`
-	ShareKnowledgeBases                       *string `json:"ShareKnowledgeBases,omitempty"`
-	ShareLinearAction                         *string `json:"ShareLinearAction,omitempty"`
-	ShareMCPAction                            *string `json:"ShareMCPAction,omitempty"`
-	ShareMSExchangeAction                     *string `json:"ShareMSExchangeAction,omitempty"`
-	ShareMSTeamsAction                        *string `json:"ShareMSTeamsAction,omitempty"`
-	ShareMondayAction                         *string `json:"ShareMondayAction,omitempty"`
-	ShareNewRelicAction                       *string `json:"ShareNewRelicAction,omitempty"`
-	ShareNotionAction                         *string `json:"ShareNotionAction,omitempty"`
-	ShareOneDriveAction                       *string `json:"ShareOneDriveAction,omitempty"`
-	ShareOpenAPIAction                        *string `json:"ShareOpenAPIAction,omitempty"`
-	SharePagerDutyAction                      *string `json:"SharePagerDutyAction,omitempty"`
-	SharePointAction                          *string `json:"SharePointAction,omitempty"`
-	ShareSAPBillOfMaterialAction              *string `json:"ShareSAPBillOfMaterialAction,omitempty"`
-	ShareSAPBusinessPartnerAction             *string `json:"ShareSAPBusinessPartnerAction,omitempty"`
-	ShareSAPMaterialStockAction               *string `json:"ShareSAPMaterialStockAction,omitempty"`
-	ShareSAPPhysicalInventoryAction           *string `json:"ShareSAPPhysicalInventoryAction,omitempty"`
-	ShareSAPProductMasterDataAction           *string `json:"ShareSAPProductMasterDataAction,omitempty"`
-	ShareSalesforceAction                     *string `json:"ShareSalesforceAction,omitempty"`
-	ShareSandPGMIAction                       *string `json:"ShareSandPGMIAction,omitempty"`
-	ShareSandPGlobalEnergyAction              *string `json:"ShareSandPGlobalEnergyAction,omitempty"`
-	ShareServiceNowAction                     *string `json:"ShareServiceNowAction,omitempty"`
-	ShareSharePointAction                     *string `json:"ShareSharePointAction,omitempty"`
-	ShareSlackAction                          *string `json:"ShareSlackAction,omitempty"`
-	ShareSmartsheetAction                     *string `json:"ShareSmartsheetAction,omitempty"`
-	ShareSpaces                               *string `json:"ShareSpaces,omitempty"`
-	ShareTextractAction                       *string `json:"ShareTextractAction,omitempty"`
-	ShareZendeskAction                        *string `json:"ShareZendeskAction,omitempty"`
-	SlackAction                               *string `json:"SlackAction,omitempty"`
-	SmartsheetAction                          *string `json:"SmartsheetAction,omitempty"`
-	Space                                     *string `json:"Space,omitempty"`
-	SubscribeDashboardEmailReports            *string `json:"SubscribeDashboardEmailReports,omitempty"`
-	TextractAction                            *string `json:"TextractAction,omitempty"`
-	Topic                                     *string `json:"Topic,omitempty"`
-	UseAgentWebSearch                         *string `json:"UseAgentWebSearch,omitempty"`
-	UseAmazonBedrockARSAction                 *string `json:"UseAmazonBedrockARSAction,omitempty"`
-	UseAmazonBedrockFSAction                  *string `json:"UseAmazonBedrockFSAction,omitempty"`
-	UseAmazonBedrockKRSAction                 *string `json:"UseAmazonBedrockKRSAction,omitempty"`
-	UseAmazonSThreeAction                     *string `json:"UseAmazonSThreeAction,omitempty"`
-	UseAsanaAction                            *string `json:"UseAsanaAction,omitempty"`
-	UseBambooHRAction                         *string `json:"UseBambooHRAction,omitempty"`
-	UseBedrockModels                          *string `json:"UseBedrockModels,omitempty"`
-	UseBoxAgentAction                         *string `json:"UseBoxAgentAction,omitempty"`
-	UseCanvaAgentAction                       *string `json:"UseCanvaAgentAction,omitempty"`
-	UseComprehendAction                       *string `json:"UseComprehendAction,omitempty"`
-	UseComprehendMedicalAction                *string `json:"UseComprehendMedicalAction,omitempty"`
-	UseConfluenceAction                       *string `json:"UseConfluenceAction,omitempty"`
-	UseFactSetAction                          *string `json:"UseFactSetAction,omitempty"`
-	UseGenericHTTPAction                      *string `json:"UseGenericHTTPAction,omitempty"`
-	UseGithubAction                           *string `json:"UseGithubAction,omitempty"`
-	UseGoogleCalendarAction                   *string `json:"UseGoogleCalendarAction,omitempty"`
-	UseHubspotAction                          *string `json:"UseHubspotAction,omitempty"`
-	UseHuggingFaceAction                      *string `json:"UseHuggingFaceAction,omitempty"`
-	UseIntercomAction                         *string `json:"UseIntercomAction,omitempty"`
-	UseJiraAction                             *string `json:"UseJiraAction,omitempty"`
-	UseLinearAction                           *string `json:"UseLinearAction,omitempty"`
-	UseMCPAction                              *string `json:"UseMCPAction,omitempty"`
-	UseMSExchangeAction                       *string `json:"UseMSExchangeAction,omitempty"`
-	UseMSTeamsAction                          *string `json:"UseMSTeamsAction,omitempty"`
-	UseMondayAction                           *string `json:"UseMondayAction,omitempty"`
-	UseNewRelicAction                         *string `json:"UseNewRelicAction,omitempty"`
-	UseNotionAction                           *string `json:"UseNotionAction,omitempty"`
-	UseOneDriveAction                         *string `json:"UseOneDriveAction,omitempty"`
-	UseOpenAPIAction                          *string `json:"UseOpenAPIAction,omitempty"`
-	UsePagerDutyAction                        *string `json:"UsePagerDutyAction,omitempty"`
-	UseSAPBillOfMaterialAction                *string `json:"UseSAPBillOfMaterialAction,omitempty"`
-	UseSAPBusinessPartnerAction               *string `json:"UseSAPBusinessPartnerAction,omitempty"`
-	UseSAPMaterialStockAction                 *string `json:"UseSAPMaterialStockAction,omitempty"`
-	UseSAPPhysicalInventoryAction             *string `json:"UseSAPPhysicalInventoryAction,omitempty"`
-	UseSAPProductMasterDataAction             *string `json:"UseSAPProductMasterDataAction,omitempty"`
-	UseSalesforceAction                       *string `json:"UseSalesforceAction,omitempty"`
-	UseSandPGMIAction                         *string `json:"UseSandPGMIAction,omitempty"`
-	UseSandPGlobalEnergyAction                *string `json:"UseSandPGlobalEnergyAction,omitempty"`
-	UseServiceNowAction                       *string `json:"UseServiceNowAction,omitempty"`
-	UseSharePointAction                       *string `json:"UseSharePointAction,omitempty"`
-	UseSlackAction                            *string `json:"UseSlackAction,omitempty"`
-	UseSmartsheetAction                       *string `json:"UseSmartsheetAction,omitempty"`
-	UseTextractAction                         *string `json:"UseTextractAction,omitempty"`
-	UseZendeskAction                          *string `json:"UseZendeskAction,omitempty"`
-	ViewAccountSPICECapacity                  *string `json:"ViewAccountSPICECapacity,omitempty"`
-	ZendeskAction                             *string `json:"ZendeskAction,omitempty"`
+	AccessAppsNativeDataStore                 *CapabilityState `json:"AccessAppsNativeDataStore,omitempty"`
+	Action                                    *CapabilityState `json:"Action,omitempty"`
+	AddOrRunAnomalyDetectionForAnalyses       *CapabilityState `json:"AddOrRunAnomalyDetectionForAnalyses,omitempty"`
+	AmazonBedrockARSAction                    *CapabilityState `json:"AmazonBedrockARSAction,omitempty"`
+	AmazonBedrockFSAction                     *CapabilityState `json:"AmazonBedrockFSAction,omitempty"`
+	AmazonBedrockKRSAction                    *CapabilityState `json:"AmazonBedrockKRSAction,omitempty"`
+	AmazonSThreeAction                        *CapabilityState `json:"AmazonSThreeAction,omitempty"`
+	Analysis                                  *CapabilityState `json:"Analysis,omitempty"`
+	ApproveFlowShareRequests                  *CapabilityState `json:"ApproveFlowShareRequests,omitempty"`
+	Apps                                      *CapabilityState `json:"Apps,omitempty"`
+	AsanaAction                               *CapabilityState `json:"AsanaAction,omitempty"`
+	Automate                                  *CapabilityState `json:"Automate,omitempty"`
+	BambooHRAction                            *CapabilityState `json:"BambooHRAction,omitempty"`
+	BoxAgentAction                            *CapabilityState `json:"BoxAgentAction,omitempty"`
+	BuildCalculatedFieldWithQ                 *CapabilityState `json:"BuildCalculatedFieldWithQ,omitempty"`
+	CanvaAgentAction                          *CapabilityState `json:"CanvaAgentAction,omitempty"`
+	ChatAgent                                 *CapabilityState `json:"ChatAgent,omitempty"`
+	ComprehendAction                          *CapabilityState `json:"ComprehendAction,omitempty"`
+	ComprehendMedicalAction                   *CapabilityState `json:"ComprehendMedicalAction,omitempty"`
+	ConfluenceAction                          *CapabilityState `json:"ConfluenceAction,omitempty"`
+	CreateAndUpdateAmazonBedrockARSAction     *CapabilityState `json:"CreateAndUpdateAmazonBedrockARSAction,omitempty"`
+	CreateAndUpdateAmazonBedrockFSAction      *CapabilityState `json:"CreateAndUpdateAmazonBedrockFSAction,omitempty"`
+	CreateAndUpdateAmazonBedrockKRSAction     *CapabilityState `json:"CreateAndUpdateAmazonBedrockKRSAction,omitempty"`
+	CreateAndUpdateAmazonSThreeAction         *CapabilityState `json:"CreateAndUpdateAmazonSThreeAction,omitempty"`
+	CreateAndUpdateApps                       *CapabilityState `json:"CreateAndUpdateApps,omitempty"`
+	CreateAndUpdateAsanaAction                *CapabilityState `json:"CreateAndUpdateAsanaAction,omitempty"`
+	CreateAndUpdateBambooHRAction             *CapabilityState `json:"CreateAndUpdateBambooHRAction,omitempty"`
+	CreateAndUpdateBoxAgentAction             *CapabilityState `json:"CreateAndUpdateBoxAgentAction,omitempty"`
+	CreateAndUpdateCanvaAgentAction           *CapabilityState `json:"CreateAndUpdateCanvaAgentAction,omitempty"`
+	CreateAndUpdateComprehendAction           *CapabilityState `json:"CreateAndUpdateComprehendAction,omitempty"`
+	CreateAndUpdateComprehendMedicalAction    *CapabilityState `json:"CreateAndUpdateComprehendMedicalAction,omitempty"`
+	CreateAndUpdateConfluenceAction           *CapabilityState `json:"CreateAndUpdateConfluenceAction,omitempty"`
+	CreateAndUpdateDashboardEmailReports      *CapabilityState `json:"CreateAndUpdateDashboardEmailReports,omitempty"`
+	CreateAndUpdateDataSources                *CapabilityState `json:"CreateAndUpdateDataSources,omitempty"`
+	CreateAndUpdateDatasets                   *CapabilityState `json:"CreateAndUpdateDatasets,omitempty"`
+	CreateAndUpdateFactSetAction              *CapabilityState `json:"CreateAndUpdateFactSetAction,omitempty"`
+	CreateAndUpdateGenericHTTPAction          *CapabilityState `json:"CreateAndUpdateGenericHTTPAction,omitempty"`
+	CreateAndUpdateGithubAction               *CapabilityState `json:"CreateAndUpdateGithubAction,omitempty"`
+	CreateAndUpdateGoogleCalendarAction       *CapabilityState `json:"CreateAndUpdateGoogleCalendarAction,omitempty"`
+	CreateAndUpdateHubspotAction              *CapabilityState `json:"CreateAndUpdateHubspotAction,omitempty"`
+	CreateAndUpdateHuggingFaceAction          *CapabilityState `json:"CreateAndUpdateHuggingFaceAction,omitempty"`
+	CreateAndUpdateIntercomAction             *CapabilityState `json:"CreateAndUpdateIntercomAction,omitempty"`
+	CreateAndUpdateJiraAction                 *CapabilityState `json:"CreateAndUpdateJiraAction,omitempty"`
+	CreateAndUpdateKnowledgeBases             *CapabilityState `json:"CreateAndUpdateKnowledgeBases,omitempty"`
+	CreateAndUpdateLinearAction               *CapabilityState `json:"CreateAndUpdateLinearAction,omitempty"`
+	CreateAndUpdateMCPAction                  *CapabilityState `json:"CreateAndUpdateMCPAction,omitempty"`
+	CreateAndUpdateMSExchangeAction           *CapabilityState `json:"CreateAndUpdateMSExchangeAction,omitempty"`
+	CreateAndUpdateMSTeamsAction              *CapabilityState `json:"CreateAndUpdateMSTeamsAction,omitempty"`
+	CreateAndUpdateMondayAction               *CapabilityState `json:"CreateAndUpdateMondayAction,omitempty"`
+	CreateAndUpdateNewRelicAction             *CapabilityState `json:"CreateAndUpdateNewRelicAction,omitempty"`
+	CreateAndUpdateNotionAction               *CapabilityState `json:"CreateAndUpdateNotionAction,omitempty"`
+	CreateAndUpdateOneDriveAction             *CapabilityState `json:"CreateAndUpdateOneDriveAction,omitempty"`
+	CreateAndUpdateOpenAPIAction              *CapabilityState `json:"CreateAndUpdateOpenAPIAction,omitempty"`
+	CreateAndUpdatePagerDutyAction            *CapabilityState `json:"CreateAndUpdatePagerDutyAction,omitempty"`
+	CreateAndUpdateSAPBillOfMaterialAction    *CapabilityState `json:"CreateAndUpdateSAPBillOfMaterialAction,omitempty"`
+	CreateAndUpdateSAPBusinessPartnerAction   *CapabilityState `json:"CreateAndUpdateSAPBusinessPartnerAction,omitempty"`
+	CreateAndUpdateSAPMaterialStockAction     *CapabilityState `json:"CreateAndUpdateSAPMaterialStockAction,omitempty"`
+	CreateAndUpdateSAPPhysicalInventoryAction *CapabilityState `json:"CreateAndUpdateSAPPhysicalInventoryAction,omitempty"`
+	CreateAndUpdateSAPProductMasterDataAction *CapabilityState `json:"CreateAndUpdateSAPProductMasterDataAction,omitempty"`
+	CreateAndUpdateSalesforceAction           *CapabilityState `json:"CreateAndUpdateSalesforceAction,omitempty"`
+	CreateAndUpdateSandPGMIAction             *CapabilityState `json:"CreateAndUpdateSandPGMIAction,omitempty"`
+	CreateAndUpdateSandPGlobalEnergyAction    *CapabilityState `json:"CreateAndUpdateSandPGlobalEnergyAction,omitempty"`
+	CreateAndUpdateServiceNowAction           *CapabilityState `json:"CreateAndUpdateServiceNowAction,omitempty"`
+	CreateAndUpdateSharePointAction           *CapabilityState `json:"CreateAndUpdateSharePointAction,omitempty"`
+	CreateAndUpdateSlackAction                *CapabilityState `json:"CreateAndUpdateSlackAction,omitempty"`
+	CreateAndUpdateSmartsheetAction           *CapabilityState `json:"CreateAndUpdateSmartsheetAction,omitempty"`
+	CreateAndUpdateTextractAction             *CapabilityState `json:"CreateAndUpdateTextractAction,omitempty"`
+	CreateAndUpdateThemes                     *CapabilityState `json:"CreateAndUpdateThemes,omitempty"`
+	CreateAndUpdateThresholdAlerts            *CapabilityState `json:"CreateAndUpdateThresholdAlerts,omitempty"`
+	CreateAndUpdateZendeskAction              *CapabilityState `json:"CreateAndUpdateZendeskAction,omitempty"`
+	CreateChatAgents                          *CapabilityState `json:"CreateChatAgents,omitempty"`
+	CreateDashboardExecutiveSummaryWithQ      *CapabilityState `json:"CreateDashboardExecutiveSummaryWithQ,omitempty"`
+	CreateSPICEDataset                        *CapabilityState `json:"CreateSPICEDataset,omitempty"`
+	CreateSharedFolders                       *CapabilityState `json:"CreateSharedFolders,omitempty"`
+	CreateSpaces                              *CapabilityState `json:"CreateSpaces,omitempty"`
+	Dashboard                                 *CapabilityState `json:"Dashboard,omitempty"`
+	EditVisualWithQ                           *CapabilityState `json:"EditVisualWithQ,omitempty"`
+	ExportToCsv                               *CapabilityState `json:"ExportToCsv,omitempty"`
+	ExportToCsvInScheduledReports             *CapabilityState `json:"ExportToCsvInScheduledReports,omitempty"`
+	ExportToExcel                             *CapabilityState `json:"ExportToExcel,omitempty"`
+	ExportToExcelInScheduledReports           *CapabilityState `json:"ExportToExcelInScheduledReports,omitempty"`
+	ExportToPdf                               *CapabilityState `json:"ExportToPdf,omitempty"`
+	ExportToPdfInScheduledReports             *CapabilityState `json:"ExportToPdfInScheduledReports,omitempty"`
+	Extension                                 *CapabilityState `json:"Extension,omitempty"`
+	FactSetAction                             *CapabilityState `json:"FactSetAction,omitempty"`
+	Flow                                      *CapabilityState `json:"Flow,omitempty"`
+	GenericHTTPAction                         *CapabilityState `json:"GenericHTTPAction,omitempty"`
+	GithubAction                              *CapabilityState `json:"GithubAction,omitempty"`
+	GoogleCalendarAction                      *CapabilityState `json:"GoogleCalendarAction,omitempty"`
+	HubspotAction                             *CapabilityState `json:"HubspotAction,omitempty"`
+	HuggingFaceAction                         *CapabilityState `json:"HuggingFaceAction,omitempty"`
+	IncludeContentInScheduledReportsEmail     *CapabilityState `json:"IncludeContentInScheduledReportsEmail,omitempty"`
+	IntercomAction                            *CapabilityState `json:"IntercomAction,omitempty"`
+	InvokeAppsAIInference                     *CapabilityState `json:"InvokeAppsAIInference,omitempty"`
+	JiraAction                                *CapabilityState `json:"JiraAction,omitempty"`
+	KnowledgeBase                             *CapabilityState `json:"KnowledgeBase,omitempty"`
+	LinearAction                              *CapabilityState `json:"LinearAction,omitempty"`
+	MCPAction                                 *CapabilityState `json:"MCPAction,omitempty"`
+	MSExchangeAction                          *CapabilityState `json:"MSExchangeAction,omitempty"`
+	MSTeamsAction                             *CapabilityState `json:"MSTeamsAction,omitempty"`
+	ManageSharedFolders                       *CapabilityState `json:"ManageSharedFolders,omitempty"`
+	MondayAction                              *CapabilityState `json:"MondayAction,omitempty"`
+	NewRelicAction                            *CapabilityState `json:"NewRelicAction,omitempty"`
+	NotionAction                              *CapabilityState `json:"NotionAction,omitempty"`
+	OneDriveAction                            *CapabilityState `json:"OneDriveAction,omitempty"`
+	OpenAPIAction                             *CapabilityState `json:"OpenAPIAction,omitempty"`
+	PagerDutyAction                           *CapabilityState `json:"PagerDutyAction,omitempty"`
+	PerformFlowUiTask                         *CapabilityState `json:"PerformFlowUiTask,omitempty"`
+	PrintReports                              *CapabilityState `json:"PrintReports,omitempty"`
+	PublishWithoutApproval                    *CapabilityState `json:"PublishWithoutApproval,omitempty"`
+	RenameSharedFolders                       *CapabilityState `json:"RenameSharedFolders,omitempty"`
+	Research                                  *CapabilityState `json:"Research,omitempty"`
+	SAPBillOfMaterialAction                   *CapabilityState `json:"SAPBillOfMaterialAction,omitempty"`
+	SAPBusinessPartnerAction                  *CapabilityState `json:"SAPBusinessPartnerAction,omitempty"`
+	SAPMaterialStockAction                    *CapabilityState `json:"SAPMaterialStockAction,omitempty"`
+	SAPPhysicalInventoryAction                *CapabilityState `json:"SAPPhysicalInventoryAction,omitempty"`
+	SAPProductMasterDataAction                *CapabilityState `json:"SAPProductMasterDataAction,omitempty"`
+	SalesforceAction                          *CapabilityState `json:"SalesforceAction,omitempty"`
+	SandPGMIAction                            *CapabilityState `json:"SandPGMIAction,omitempty"`
+	SandPGlobalEnergyAction                   *CapabilityState `json:"SandPGlobalEnergyAction,omitempty"`
+	ServiceNowAction                          *CapabilityState `json:"ServiceNowAction,omitempty"`
+	ShareAmazonBedrockARSAction               *CapabilityState `json:"ShareAmazonBedrockARSAction,omitempty"`
+	ShareAmazonBedrockFSAction                *CapabilityState `json:"ShareAmazonBedrockFSAction,omitempty"`
+	ShareAmazonBedrockKRSAction               *CapabilityState `json:"ShareAmazonBedrockKRSAction,omitempty"`
+	ShareAmazonSThreeAction                   *CapabilityState `json:"ShareAmazonSThreeAction,omitempty"`
+	ShareAnalyses                             *CapabilityState `json:"ShareAnalyses,omitempty"`
+	ShareApps                                 *CapabilityState `json:"ShareApps,omitempty"`
+	ShareAsanaAction                          *CapabilityState `json:"ShareAsanaAction,omitempty"`
+	ShareBambooHRAction                       *CapabilityState `json:"ShareBambooHRAction,omitempty"`
+	ShareBoxAgentAction                       *CapabilityState `json:"ShareBoxAgentAction,omitempty"`
+	ShareCanvaAgentAction                     *CapabilityState `json:"ShareCanvaAgentAction,omitempty"`
+	ShareChatAgents                           *CapabilityState `json:"ShareChatAgents,omitempty"`
+	ShareComprehendAction                     *CapabilityState `json:"ShareComprehendAction,omitempty"`
+	ShareComprehendMedicalAction              *CapabilityState `json:"ShareComprehendMedicalAction,omitempty"`
+	ShareConfluenceAction                     *CapabilityState `json:"ShareConfluenceAction,omitempty"`
+	ShareDashboards                           *CapabilityState `json:"ShareDashboards,omitempty"`
+	ShareDataSources                          *CapabilityState `json:"ShareDataSources,omitempty"`
+	ShareDatasets                             *CapabilityState `json:"ShareDatasets,omitempty"`
+	ShareFactSetAction                        *CapabilityState `json:"ShareFactSetAction,omitempty"`
+	ShareGenericHTTPAction                    *CapabilityState `json:"ShareGenericHTTPAction,omitempty"`
+	ShareGithubAction                         *CapabilityState `json:"ShareGithubAction,omitempty"`
+	ShareGoogleCalendarAction                 *CapabilityState `json:"ShareGoogleCalendarAction,omitempty"`
+	ShareHubspotAction                        *CapabilityState `json:"ShareHubspotAction,omitempty"`
+	ShareHuggingFaceAction                    *CapabilityState `json:"ShareHuggingFaceAction,omitempty"`
+	ShareIntercomAction                       *CapabilityState `json:"ShareIntercomAction,omitempty"`
+	ShareJiraAction                           *CapabilityState `json:"ShareJiraAction,omitempty"`
+	ShareKnowledgeBases                       *CapabilityState `json:"ShareKnowledgeBases,omitempty"`
+	ShareLinearAction                         *CapabilityState `json:"ShareLinearAction,omitempty"`
+	ShareMCPAction                            *CapabilityState `json:"ShareMCPAction,omitempty"`
+	ShareMSExchangeAction                     *CapabilityState `json:"ShareMSExchangeAction,omitempty"`
+	ShareMSTeamsAction                        *CapabilityState `json:"ShareMSTeamsAction,omitempty"`
+	ShareMondayAction                         *CapabilityState `json:"ShareMondayAction,omitempty"`
+	ShareNewRelicAction                       *CapabilityState `json:"ShareNewRelicAction,omitempty"`
+	ShareNotionAction                         *CapabilityState `json:"ShareNotionAction,omitempty"`
+	ShareOneDriveAction                       *CapabilityState `json:"ShareOneDriveAction,omitempty"`
+	ShareOpenAPIAction                        *CapabilityState `json:"ShareOpenAPIAction,omitempty"`
+	SharePagerDutyAction                      *CapabilityState `json:"SharePagerDutyAction,omitempty"`
+	SharePointAction                          *CapabilityState `json:"SharePointAction,omitempty"`
+	ShareSAPBillOfMaterialAction              *CapabilityState `json:"ShareSAPBillOfMaterialAction,omitempty"`
+	ShareSAPBusinessPartnerAction             *CapabilityState `json:"ShareSAPBusinessPartnerAction,omitempty"`
+	ShareSAPMaterialStockAction               *CapabilityState `json:"ShareSAPMaterialStockAction,omitempty"`
+	ShareSAPPhysicalInventoryAction           *CapabilityState `json:"ShareSAPPhysicalInventoryAction,omitempty"`
+	ShareSAPProductMasterDataAction           *CapabilityState `json:"ShareSAPProductMasterDataAction,omitempty"`
+	ShareSalesforceAction                     *CapabilityState `json:"ShareSalesforceAction,omitempty"`
+	ShareSandPGMIAction                       *CapabilityState `json:"ShareSandPGMIAction,omitempty"`
+	ShareSandPGlobalEnergyAction              *CapabilityState `json:"ShareSandPGlobalEnergyAction,omitempty"`
+	ShareServiceNowAction                     *CapabilityState `json:"ShareServiceNowAction,omitempty"`
+	ShareSharePointAction                     *CapabilityState `json:"ShareSharePointAction,omitempty"`
+	ShareSlackAction                          *CapabilityState `json:"ShareSlackAction,omitempty"`
+	ShareSmartsheetAction                     *CapabilityState `json:"ShareSmartsheetAction,omitempty"`
+	ShareSpaces                               *CapabilityState `json:"ShareSpaces,omitempty"`
+	ShareTextractAction                       *CapabilityState `json:"ShareTextractAction,omitempty"`
+	ShareZendeskAction                        *CapabilityState `json:"ShareZendeskAction,omitempty"`
+	SlackAction                               *CapabilityState `json:"SlackAction,omitempty"`
+	SmartsheetAction                          *CapabilityState `json:"SmartsheetAction,omitempty"`
+	Space                                     *CapabilityState `json:"Space,omitempty"`
+	SubscribeDashboardEmailReports            *CapabilityState `json:"SubscribeDashboardEmailReports,omitempty"`
+	TextractAction                            *CapabilityState `json:"TextractAction,omitempty"`
+	Topic                                     *CapabilityState `json:"Topic,omitempty"`
+	UseAgentWebSearch                         *CapabilityState `json:"UseAgentWebSearch,omitempty"`
+	UseAmazonBedrockARSAction                 *CapabilityState `json:"UseAmazonBedrockARSAction,omitempty"`
+	UseAmazonBedrockFSAction                  *CapabilityState `json:"UseAmazonBedrockFSAction,omitempty"`
+	UseAmazonBedrockKRSAction                 *CapabilityState `json:"UseAmazonBedrockKRSAction,omitempty"`
+	UseAmazonSThreeAction                     *CapabilityState `json:"UseAmazonSThreeAction,omitempty"`
+	UseAsanaAction                            *CapabilityState `json:"UseAsanaAction,omitempty"`
+	UseBambooHRAction                         *CapabilityState `json:"UseBambooHRAction,omitempty"`
+	UseBedrockModels                          *CapabilityState `json:"UseBedrockModels,omitempty"`
+	UseBoxAgentAction                         *CapabilityState `json:"UseBoxAgentAction,omitempty"`
+	UseCanvaAgentAction                       *CapabilityState `json:"UseCanvaAgentAction,omitempty"`
+	UseComprehendAction                       *CapabilityState `json:"UseComprehendAction,omitempty"`
+	UseComprehendMedicalAction                *CapabilityState `json:"UseComprehendMedicalAction,omitempty"`
+	UseConfluenceAction                       *CapabilityState `json:"UseConfluenceAction,omitempty"`
+	UseFactSetAction                          *CapabilityState `json:"UseFactSetAction,omitempty"`
+	UseGenericHTTPAction                      *CapabilityState `json:"UseGenericHTTPAction,omitempty"`
+	UseGithubAction                           *CapabilityState `json:"UseGithubAction,omitempty"`
+	UseGoogleCalendarAction                   *CapabilityState `json:"UseGoogleCalendarAction,omitempty"`
+	UseHubspotAction                          *CapabilityState `json:"UseHubspotAction,omitempty"`
+	UseHuggingFaceAction                      *CapabilityState `json:"UseHuggingFaceAction,omitempty"`
+	UseIntercomAction                         *CapabilityState `json:"UseIntercomAction,omitempty"`
+	UseJiraAction                             *CapabilityState `json:"UseJiraAction,omitempty"`
+	UseLinearAction                           *CapabilityState `json:"UseLinearAction,omitempty"`
+	UseMCPAction                              *CapabilityState `json:"UseMCPAction,omitempty"`
+	UseMSExchangeAction                       *CapabilityState `json:"UseMSExchangeAction,omitempty"`
+	UseMSTeamsAction                          *CapabilityState `json:"UseMSTeamsAction,omitempty"`
+	UseMondayAction                           *CapabilityState `json:"UseMondayAction,omitempty"`
+	UseNewRelicAction                         *CapabilityState `json:"UseNewRelicAction,omitempty"`
+	UseNotionAction                           *CapabilityState `json:"UseNotionAction,omitempty"`
+	UseOneDriveAction                         *CapabilityState `json:"UseOneDriveAction,omitempty"`
+	UseOpenAPIAction                          *CapabilityState `json:"UseOpenAPIAction,omitempty"`
+	UsePagerDutyAction                        *CapabilityState `json:"UsePagerDutyAction,omitempty"`
+	UseSAPBillOfMaterialAction                *CapabilityState `json:"UseSAPBillOfMaterialAction,omitempty"`
+	UseSAPBusinessPartnerAction               *CapabilityState `json:"UseSAPBusinessPartnerAction,omitempty"`
+	UseSAPMaterialStockAction                 *CapabilityState `json:"UseSAPMaterialStockAction,omitempty"`
+	UseSAPPhysicalInventoryAction             *CapabilityState `json:"UseSAPPhysicalInventoryAction,omitempty"`
+	UseSAPProductMasterDataAction             *CapabilityState `json:"UseSAPProductMasterDataAction,omitempty"`
+	UseSalesforceAction                       *CapabilityState `json:"UseSalesforceAction,omitempty"`
+	UseSandPGMIAction                         *CapabilityState `json:"UseSandPGMIAction,omitempty"`
+	UseSandPGlobalEnergyAction                *CapabilityState `json:"UseSandPGlobalEnergyAction,omitempty"`
+	UseServiceNowAction                       *CapabilityState `json:"UseServiceNowAction,omitempty"`
+	UseSharePointAction                       *CapabilityState `json:"UseSharePointAction,omitempty"`
+	UseSlackAction                            *CapabilityState `json:"UseSlackAction,omitempty"`
+	UseSmartsheetAction                       *CapabilityState `json:"UseSmartsheetAction,omitempty"`
+	UseTextractAction                         *CapabilityState `json:"UseTextractAction,omitempty"`
+	UseZendeskAction                          *CapabilityState `json:"UseZendeskAction,omitempty"`
+	ViewAccountSPICECapacity                  *CapabilityState `json:"ViewAccountSPICECapacity,omitempty"`
+	ZendeskAction                             *CapabilityState `json:"ZendeskAction,omitempty"`
 }
 
 type CustomPermissionsTag struct {
@@ -3871,63 +3871,63 @@ type CustomPermissions struct {
 func (CustomPermissions) CloudControlType() string { return "AWS::QuickSight::CustomPermissions" }
 
 type AdHocFilteringOption struct {
-	AvailabilityStatus *string `json:"AvailabilityStatus,omitempty"`
+	AvailabilityStatus *DashboardDashboardBehavior `json:"AvailabilityStatus,omitempty"`
 }
 
 type DataPointDrillUpDownOption struct {
-	AvailabilityStatus *string `json:"AvailabilityStatus,omitempty"`
+	AvailabilityStatus *DashboardDashboardBehavior `json:"AvailabilityStatus,omitempty"`
 }
 
 type DataPointMenuLabelOption struct {
-	AvailabilityStatus *string `json:"AvailabilityStatus,omitempty"`
+	AvailabilityStatus *DashboardDashboardBehavior `json:"AvailabilityStatus,omitempty"`
 }
 
 type DataPointTooltipOption struct {
-	AvailabilityStatus *string `json:"AvailabilityStatus,omitempty"`
+	AvailabilityStatus *DashboardDashboardBehavior `json:"AvailabilityStatus,omitempty"`
 }
 
 type DataQAEnabledOption struct {
-	AvailabilityStatus *string `json:"AvailabilityStatus,omitempty"`
+	AvailabilityStatus *DashboardDashboardBehavior `json:"AvailabilityStatus,omitempty"`
 }
 
 type DataStoriesSharingOption struct {
-	AvailabilityStatus *string `json:"AvailabilityStatus,omitempty"`
+	AvailabilityStatus *DashboardDashboardBehavior `json:"AvailabilityStatus,omitempty"`
 }
 
 type ExecutiveSummaryOption struct {
-	AvailabilityStatus *string `json:"AvailabilityStatus,omitempty"`
+	AvailabilityStatus *DashboardDashboardBehavior `json:"AvailabilityStatus,omitempty"`
 }
 
 type ExportToCSVOption struct {
-	AvailabilityStatus *string `json:"AvailabilityStatus,omitempty"`
+	AvailabilityStatus *DashboardDashboardBehavior `json:"AvailabilityStatus,omitempty"`
 }
 
 type ExportWithHiddenFieldsOption struct {
-	AvailabilityStatus *string `json:"AvailabilityStatus,omitempty"`
+	AvailabilityStatus *DashboardDashboardBehavior `json:"AvailabilityStatus,omitempty"`
 }
 
 type QuickSuiteActionsOption struct {
-	AvailabilityStatus *string `json:"AvailabilityStatus,omitempty"`
+	AvailabilityStatus *DashboardDashboardBehavior `json:"AvailabilityStatus,omitempty"`
 }
 
 type SheetControlsOption struct {
-	VisibilityState *string `json:"VisibilityState,omitempty"`
+	VisibilityState *DashboardUIState `json:"VisibilityState,omitempty"`
 }
 
 type SheetLayoutElementMaximizationOption struct {
-	AvailabilityStatus *string `json:"AvailabilityStatus,omitempty"`
+	AvailabilityStatus *DashboardDashboardBehavior `json:"AvailabilityStatus,omitempty"`
 }
 
 type VisualAxisSortOption struct {
-	AvailabilityStatus *string `json:"AvailabilityStatus,omitempty"`
+	AvailabilityStatus *DashboardDashboardBehavior `json:"AvailabilityStatus,omitempty"`
 }
 
 type DashboardVisualMenuOption struct {
-	AvailabilityStatus *string `json:"AvailabilityStatus,omitempty"`
+	AvailabilityStatus *DashboardDashboardBehavior `json:"AvailabilityStatus,omitempty"`
 }
 
 type ExportHiddenFieldsOption struct {
-	AvailabilityStatus *string `json:"AvailabilityStatus,omitempty"`
+	AvailabilityStatus *DashboardDashboardBehavior `json:"AvailabilityStatus,omitempty"`
 }
 
 type DashboardVisualPublishOptions struct {
@@ -3965,8 +3965,8 @@ type DashboardDefaultFreeFormLayoutConfiguration struct {
 }
 
 type DashboardGridLayoutScreenCanvasSizeOptions struct {
-	OptimizedViewPortWidth *string `json:"OptimizedViewPortWidth,omitempty"`
-	ResizeOption           *string `json:"ResizeOption,omitempty"`
+	OptimizedViewPortWidth *string                `json:"OptimizedViewPortWidth,omitempty"`
+	ResizeOption           *DashboardResizeOption `json:"ResizeOption,omitempty"`
 }
 
 type DashboardGridLayoutCanvasSizeOptions struct {
@@ -3990,9 +3990,9 @@ type DashboardSpacing struct {
 }
 
 type DashboardSectionBasedLayoutPaperCanvasSizeOptions struct {
-	PaperMargin      *DashboardSpacing `json:"PaperMargin,omitempty"`
-	PaperOrientation *string           `json:"PaperOrientation,omitempty"`
-	PaperSize        *string           `json:"PaperSize,omitempty"`
+	PaperMargin      *DashboardSpacing          `json:"PaperMargin,omitempty"`
+	PaperOrientation *DashboardPaperOrientation `json:"PaperOrientation,omitempty"`
+	PaperSize        *DashboardPaperSize        `json:"PaperSize,omitempty"`
 }
 
 type DashboardSectionBasedLayoutCanvasSizeOptions struct {
@@ -4010,7 +4010,7 @@ type DashboardDefaultPaginatedLayoutConfiguration struct {
 type DashboardDefaultNewSheetConfiguration struct {
 	InteractiveLayoutConfiguration *DashboardDefaultInteractiveLayoutConfiguration `json:"InteractiveLayoutConfiguration,omitempty"`
 	PaginatedLayoutConfiguration   *DashboardDefaultPaginatedLayoutConfiguration   `json:"PaginatedLayoutConfiguration,omitempty"`
-	SheetContentType               *string                                         `json:"SheetContentType,omitempty"`
+	SheetContentType               *DashboardSheetContentType                      `json:"SheetContentType,omitempty"`
 }
 
 type DashboardAnalysisDefaults struct {
@@ -4024,9 +4024,9 @@ type DashboardCalculatedField struct {
 }
 
 type DashboardCustomColor struct {
-	Color        *string `json:"Color,omitempty"`
-	FieldValue   *string `json:"FieldValue,omitempty"`
-	SpecialValue *string `json:"SpecialValue,omitempty"`
+	Color        *string                `json:"Color,omitempty"`
+	FieldValue   *string                `json:"FieldValue,omitempty"`
+	SpecialValue *DashboardSpecialValue `json:"SpecialValue,omitempty"`
 }
 
 type DashboardColorsConfiguration struct {
@@ -4047,17 +4047,17 @@ type DashboardDecimalPlacesConfiguration struct {
 }
 
 type DashboardNegativeValueConfiguration struct {
-	DisplayMode *string `json:"DisplayMode,omitempty"`
+	DisplayMode *DashboardNegativeValueDisplayMode `json:"DisplayMode,omitempty"`
 }
 
 type DashboardThousandSeparatorOptions struct {
-	GroupingStyle *string `json:"GroupingStyle,omitempty"`
-	Symbol        *string `json:"Symbol,omitempty"`
-	Visibility    *string `json:"Visibility,omitempty"`
+	GroupingStyle *DashboardDigitGroupingStyle     `json:"GroupingStyle,omitempty"`
+	Symbol        *DashboardNumericSeparatorSymbol `json:"Symbol,omitempty"`
+	Visibility    *DashboardVisibility             `json:"Visibility,omitempty"`
 }
 
 type DashboardNumericSeparatorConfiguration struct {
-	DecimalSeparator   *string                            `json:"DecimalSeparator,omitempty"`
+	DecimalSeparator   *DashboardNumericSeparatorSymbol   `json:"DecimalSeparator,omitempty"`
 	ThousandsSeparator *DashboardThousandSeparatorOptions `json:"ThousandsSeparator,omitempty"`
 }
 
@@ -4065,7 +4065,7 @@ type DashboardCurrencyDisplayFormatConfiguration struct {
 	DecimalPlacesConfiguration   *DashboardDecimalPlacesConfiguration    `json:"DecimalPlacesConfiguration,omitempty"`
 	NegativeValueConfiguration   *DashboardNegativeValueConfiguration    `json:"NegativeValueConfiguration,omitempty"`
 	NullValueFormatConfiguration *DashboardNullValueFormatConfiguration  `json:"NullValueFormatConfiguration,omitempty"`
-	NumberScale                  *string                                 `json:"NumberScale,omitempty"`
+	NumberScale                  *DashboardNumberScale                   `json:"NumberScale,omitempty"`
 	Prefix                       *string                                 `json:"Prefix,omitempty"`
 	SeparatorConfiguration       *DashboardNumericSeparatorConfiguration `json:"SeparatorConfiguration,omitempty"`
 	Suffix                       *string                                 `json:"Suffix,omitempty"`
@@ -4076,7 +4076,7 @@ type DashboardNumberDisplayFormatConfiguration struct {
 	DecimalPlacesConfiguration   *DashboardDecimalPlacesConfiguration    `json:"DecimalPlacesConfiguration,omitempty"`
 	NegativeValueConfiguration   *DashboardNegativeValueConfiguration    `json:"NegativeValueConfiguration,omitempty"`
 	NullValueFormatConfiguration *DashboardNullValueFormatConfiguration  `json:"NullValueFormatConfiguration,omitempty"`
-	NumberScale                  *string                                 `json:"NumberScale,omitempty"`
+	NumberScale                  *DashboardNumberScale                   `json:"NumberScale,omitempty"`
 	Prefix                       *string                                 `json:"Prefix,omitempty"`
 	SeparatorConfiguration       *DashboardNumericSeparatorConfiguration `json:"SeparatorConfiguration,omitempty"`
 	Suffix                       *string                                 `json:"Suffix,omitempty"`
@@ -4122,7 +4122,7 @@ type DashboardColumnConfiguration struct {
 	ColorsConfiguration *DashboardColorsConfiguration `json:"ColorsConfiguration,omitempty"`
 	Column              *DashboardColumnIdentifier    `json:"Column,omitempty"`
 	FormatConfiguration *DashboardFormatConfiguration `json:"FormatConfiguration,omitempty"`
-	Role                *string                       `json:"Role,omitempty"`
+	Role                *DashboardColumnRole          `json:"Role,omitempty"`
 }
 
 type DashboardDataSetIdentifierDeclaration struct {
@@ -4131,25 +4131,25 @@ type DashboardDataSetIdentifierDeclaration struct {
 }
 
 type DashboardCustomFilterConfiguration struct {
-	CategoryValue    *string `json:"CategoryValue,omitempty"`
-	MatchOperator    *string `json:"MatchOperator,omitempty"`
-	NullOption       *string `json:"NullOption,omitempty"`
-	ParameterName    *string `json:"ParameterName,omitempty"`
-	SelectAllOptions *string `json:"SelectAllOptions,omitempty"`
+	CategoryValue    *string                                  `json:"CategoryValue,omitempty"`
+	MatchOperator    *DashboardCategoryFilterMatchOperator    `json:"MatchOperator,omitempty"`
+	NullOption       *DashboardFilterNullOption               `json:"NullOption,omitempty"`
+	ParameterName    *string                                  `json:"ParameterName,omitempty"`
+	SelectAllOptions *DashboardCategoryFilterSelectAllOptions `json:"SelectAllOptions,omitempty"`
 }
 
 type DashboardCustomFilterListConfiguration struct {
-	CategoryValues   []string `json:"CategoryValues,omitempty"`
-	MatchOperator    *string  `json:"MatchOperator,omitempty"`
-	NullOption       *string  `json:"NullOption,omitempty"`
-	SelectAllOptions *string  `json:"SelectAllOptions,omitempty"`
+	CategoryValues   []string                                 `json:"CategoryValues,omitempty"`
+	MatchOperator    *DashboardCategoryFilterMatchOperator    `json:"MatchOperator,omitempty"`
+	NullOption       *DashboardFilterNullOption               `json:"NullOption,omitempty"`
+	SelectAllOptions *DashboardCategoryFilterSelectAllOptions `json:"SelectAllOptions,omitempty"`
 }
 
 type DashboardFilterListConfiguration struct {
-	CategoryValues   []string `json:"CategoryValues,omitempty"`
-	MatchOperator    *string  `json:"MatchOperator,omitempty"`
-	NullOption       *string  `json:"NullOption,omitempty"`
-	SelectAllOptions *string  `json:"SelectAllOptions,omitempty"`
+	CategoryValues   []string                                 `json:"CategoryValues,omitempty"`
+	MatchOperator    *DashboardCategoryFilterMatchOperator    `json:"MatchOperator,omitempty"`
+	NullOption       *DashboardFilterNullOption               `json:"NullOption,omitempty"`
+	SelectAllOptions *DashboardCategoryFilterSelectAllOptions `json:"SelectAllOptions,omitempty"`
 }
 
 type DashboardCategoryFilterConfiguration struct {
@@ -4159,50 +4159,50 @@ type DashboardCategoryFilterConfiguration struct {
 }
 
 type DashboardSheetControlInfoIconLabelOptions struct {
-	InfoIconText *string `json:"InfoIconText,omitempty"`
-	Visibility   *string `json:"Visibility,omitempty"`
+	InfoIconText *string              `json:"InfoIconText,omitempty"`
+	Visibility   *DashboardVisibility `json:"Visibility,omitempty"`
 }
 
 type DashboardFontSize struct {
-	Absolute *string `json:"Absolute,omitempty"`
-	Relative *string `json:"Relative,omitempty"`
+	Absolute *string                    `json:"Absolute,omitempty"`
+	Relative *DashboardRelativeFontSize `json:"Relative,omitempty"`
 }
 
 type DashboardFontWeight struct {
-	Name *string `json:"Name,omitempty"`
+	Name *DashboardFontWeightName `json:"Name,omitempty"`
 }
 
 type DashboardFontConfiguration struct {
-	FontColor      *string              `json:"FontColor,omitempty"`
-	FontDecoration *string              `json:"FontDecoration,omitempty"`
-	FontFamily     *string              `json:"FontFamily,omitempty"`
-	FontSize       *DashboardFontSize   `json:"FontSize,omitempty"`
-	FontStyle      *string              `json:"FontStyle,omitempty"`
-	FontWeight     *DashboardFontWeight `json:"FontWeight,omitempty"`
+	FontColor      *string                  `json:"FontColor,omitempty"`
+	FontDecoration *DashboardFontDecoration `json:"FontDecoration,omitempty"`
+	FontFamily     *string                  `json:"FontFamily,omitempty"`
+	FontSize       *DashboardFontSize       `json:"FontSize,omitempty"`
+	FontStyle      *DashboardFontStyle      `json:"FontStyle,omitempty"`
+	FontWeight     *DashboardFontWeight     `json:"FontWeight,omitempty"`
 }
 
 type DashboardLabelOptions struct {
 	CustomLabel       *string                     `json:"CustomLabel,omitempty"`
 	FontConfiguration *DashboardFontConfiguration `json:"FontConfiguration,omitempty"`
-	Visibility        *string                     `json:"Visibility,omitempty"`
+	Visibility        *DashboardVisibility        `json:"Visibility,omitempty"`
 }
 
 type DashboardDateTimePickerControlDisplayOptions struct {
-	DateIconVisibility   *string                                    `json:"DateIconVisibility,omitempty"`
+	DateIconVisibility   *DashboardVisibility                       `json:"DateIconVisibility,omitempty"`
 	DateTimeFormat       *string                                    `json:"DateTimeFormat,omitempty"`
-	HelperTextVisibility *string                                    `json:"HelperTextVisibility,omitempty"`
+	HelperTextVisibility *DashboardVisibility                       `json:"HelperTextVisibility,omitempty"`
 	InfoIconLabelOptions *DashboardSheetControlInfoIconLabelOptions `json:"InfoIconLabelOptions,omitempty"`
 	TitleOptions         *DashboardLabelOptions                     `json:"TitleOptions,omitempty"`
 }
 
 type DashboardDefaultDateTimePickerControlOptions struct {
-	CommitMode     *string                                       `json:"CommitMode,omitempty"`
+	CommitMode     *DashboardCommitMode                          `json:"CommitMode,omitempty"`
 	DisplayOptions *DashboardDateTimePickerControlDisplayOptions `json:"DisplayOptions,omitempty"`
-	Type           *string                                       `json:"Type,omitempty"`
+	Type           *DashboardSheetControlDateTimePickerType      `json:"Type,omitempty"`
 }
 
 type DashboardListControlSelectAllOptions struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *DashboardVisibility `json:"Visibility,omitempty"`
 }
 
 type DashboardDropDownControlDisplayOptions struct {
@@ -4216,14 +4216,14 @@ type DashboardFilterSelectableValues struct {
 }
 
 type DashboardDefaultFilterDropDownControlOptions struct {
-	CommitMode       *string                                 `json:"CommitMode,omitempty"`
+	CommitMode       *DashboardCommitMode                    `json:"CommitMode,omitempty"`
 	DisplayOptions   *DashboardDropDownControlDisplayOptions `json:"DisplayOptions,omitempty"`
 	SelectableValues *DashboardFilterSelectableValues        `json:"SelectableValues,omitempty"`
-	Type             *string                                 `json:"Type,omitempty"`
+	Type             *DashboardSheetControlListType          `json:"Type,omitempty"`
 }
 
 type DashboardListControlSearchOptions struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *DashboardVisibility `json:"Visibility,omitempty"`
 }
 
 type DashboardListControlDisplayOptions struct {
@@ -4236,7 +4236,7 @@ type DashboardListControlDisplayOptions struct {
 type DashboardDefaultFilterListControlOptions struct {
 	DisplayOptions   *DashboardListControlDisplayOptions `json:"DisplayOptions,omitempty"`
 	SelectableValues *DashboardFilterSelectableValues    `json:"SelectableValues,omitempty"`
-	Type             *string                             `json:"Type,omitempty"`
+	Type             *DashboardSheetControlListType      `json:"Type,omitempty"`
 }
 
 type DashboardRelativeDateTimeControlDisplayOptions struct {
@@ -4246,7 +4246,7 @@ type DashboardRelativeDateTimeControlDisplayOptions struct {
 }
 
 type DashboardDefaultRelativeDateTimeControlOptions struct {
-	CommitMode     *string                                         `json:"CommitMode,omitempty"`
+	CommitMode     *DashboardCommitMode                            `json:"CommitMode,omitempty"`
 	DisplayOptions *DashboardRelativeDateTimeControlDisplayOptions `json:"DisplayOptions,omitempty"`
 }
 
@@ -4260,11 +4260,11 @@ type DashboardDefaultSliderControlOptions struct {
 	MaximumValue   *float64                              `json:"MaximumValue,omitempty"`
 	MinimumValue   *float64                              `json:"MinimumValue,omitempty"`
 	StepSize       *float64                              `json:"StepSize,omitempty"`
-	Type           *string                               `json:"Type,omitempty"`
+	Type           *DashboardSheetControlSliderType      `json:"Type,omitempty"`
 }
 
 type DashboardTextControlPlaceholderOptions struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *DashboardVisibility `json:"Visibility,omitempty"`
 }
 
 type DashboardTextAreaControlDisplayOptions struct {
@@ -4328,8 +4328,8 @@ type DashboardNestedFilter struct {
 }
 
 type DashboardAttributeAggregationFunction struct {
-	SimpleAttributeAggregation *string `json:"SimpleAttributeAggregation,omitempty"`
-	ValueForMultipleValues     *string `json:"ValueForMultipleValues,omitempty"`
+	SimpleAttributeAggregation *DashboardSimpleAttributeAggregationFunction `json:"SimpleAttributeAggregation,omitempty"`
+	ValueForMultipleValues     *string                                      `json:"ValueForMultipleValues,omitempty"`
 }
 
 type DashboardPercentileAggregation struct {
@@ -4337,15 +4337,15 @@ type DashboardPercentileAggregation struct {
 }
 
 type DashboardNumericalAggregationFunction struct {
-	PercentileAggregation      *DashboardPercentileAggregation `json:"PercentileAggregation,omitempty"`
-	SimpleNumericalAggregation *string                         `json:"SimpleNumericalAggregation,omitempty"`
+	PercentileAggregation      *DashboardPercentileAggregation              `json:"PercentileAggregation,omitempty"`
+	SimpleNumericalAggregation *DashboardSimpleNumericalAggregationFunction `json:"SimpleNumericalAggregation,omitempty"`
 }
 
 type DashboardAggregationFunction struct {
-	AttributeAggregationFunction   *DashboardAttributeAggregationFunction `json:"AttributeAggregationFunction,omitempty"`
-	CategoricalAggregationFunction *string                                `json:"CategoricalAggregationFunction,omitempty"`
-	DateAggregationFunction        *string                                `json:"DateAggregationFunction,omitempty"`
-	NumericalAggregationFunction   *DashboardNumericalAggregationFunction `json:"NumericalAggregationFunction,omitempty"`
+	AttributeAggregationFunction   *DashboardAttributeAggregationFunction   `json:"AttributeAggregationFunction,omitempty"`
+	CategoricalAggregationFunction *DashboardCategoricalAggregationFunction `json:"CategoricalAggregationFunction,omitempty"`
+	DateAggregationFunction        *DashboardDateAggregationFunction        `json:"DateAggregationFunction,omitempty"`
+	NumericalAggregationFunction   *DashboardNumericalAggregationFunction   `json:"NumericalAggregationFunction,omitempty"`
 }
 
 type DashboardNumericEqualityFilter struct {
@@ -4353,10 +4353,10 @@ type DashboardNumericEqualityFilter struct {
 	Column                            *DashboardColumnIdentifier                  `json:"Column,omitempty"`
 	DefaultFilterControlConfiguration *DashboardDefaultFilterControlConfiguration `json:"DefaultFilterControlConfiguration,omitempty"`
 	FilterId                          *string                                     `json:"FilterId,omitempty"`
-	MatchOperator                     *string                                     `json:"MatchOperator,omitempty"`
-	NullOption                        *string                                     `json:"NullOption,omitempty"`
+	MatchOperator                     *DashboardNumericEqualityMatchOperator      `json:"MatchOperator,omitempty"`
+	NullOption                        *DashboardFilterNullOption                  `json:"NullOption,omitempty"`
 	ParameterName                     *string                                     `json:"ParameterName,omitempty"`
-	SelectAllOptions                  *string                                     `json:"SelectAllOptions,omitempty"`
+	SelectAllOptions                  *DashboardNumericFilterSelectAllOptions     `json:"SelectAllOptions,omitempty"`
 	Value                             *float64                                    `json:"Value,omitempty"`
 }
 
@@ -4372,21 +4372,21 @@ type DashboardNumericRangeFilter struct {
 	FilterId                          *string                                     `json:"FilterId,omitempty"`
 	IncludeMaximum                    *bool                                       `json:"IncludeMaximum,omitempty"`
 	IncludeMinimum                    *bool                                       `json:"IncludeMinimum,omitempty"`
-	NullOption                        *string                                     `json:"NullOption,omitempty"`
+	NullOption                        *DashboardFilterNullOption                  `json:"NullOption,omitempty"`
 	RangeMaximum                      *DashboardNumericRangeFilterValue           `json:"RangeMaximum,omitempty"`
 	RangeMinimum                      *DashboardNumericRangeFilterValue           `json:"RangeMinimum,omitempty"`
-	SelectAllOptions                  *string                                     `json:"SelectAllOptions,omitempty"`
+	SelectAllOptions                  *DashboardNumericFilterSelectAllOptions     `json:"SelectAllOptions,omitempty"`
 }
 
 type DashboardAnchorDateConfiguration struct {
-	AnchorOption  *string `json:"AnchorOption,omitempty"`
-	ParameterName *string `json:"ParameterName,omitempty"`
+	AnchorOption  *DashboardAnchorOption `json:"AnchorOption,omitempty"`
+	ParameterName *string                `json:"ParameterName,omitempty"`
 }
 
 type DashboardExcludePeriodConfiguration struct {
-	Amount      *float64 `json:"Amount,omitempty"`
-	Granularity *string  `json:"Granularity,omitempty"`
-	Status      *string  `json:"Status,omitempty"`
+	Amount      *float64                  `json:"Amount,omitempty"`
+	Granularity *DashboardTimeGranularity `json:"Granularity,omitempty"`
+	Status      *DashboardWidgetStatus    `json:"Status,omitempty"`
 }
 
 type DashboardRelativeDatesFilter struct {
@@ -4395,12 +4395,12 @@ type DashboardRelativeDatesFilter struct {
 	DefaultFilterControlConfiguration *DashboardDefaultFilterControlConfiguration `json:"DefaultFilterControlConfiguration,omitempty"`
 	ExcludePeriodConfiguration        *DashboardExcludePeriodConfiguration        `json:"ExcludePeriodConfiguration,omitempty"`
 	FilterId                          *string                                     `json:"FilterId,omitempty"`
-	MinimumGranularity                *string                                     `json:"MinimumGranularity,omitempty"`
-	NullOption                        *string                                     `json:"NullOption,omitempty"`
+	MinimumGranularity                *DashboardTimeGranularity                   `json:"MinimumGranularity,omitempty"`
+	NullOption                        *DashboardFilterNullOption                  `json:"NullOption,omitempty"`
 	ParameterName                     *string                                     `json:"ParameterName,omitempty"`
-	RelativeDateType                  *string                                     `json:"RelativeDateType,omitempty"`
+	RelativeDateType                  *DashboardRelativeDateType                  `json:"RelativeDateType,omitempty"`
 	RelativeDateValue                 *float64                                    `json:"RelativeDateValue,omitempty"`
-	TimeGranularity                   *string                                     `json:"TimeGranularity,omitempty"`
+	TimeGranularity                   *DashboardTimeGranularity                   `json:"TimeGranularity,omitempty"`
 }
 
 type DashboardRollingDateConfiguration struct {
@@ -4414,7 +4414,7 @@ type DashboardTimeEqualityFilter struct {
 	FilterId                          *string                                     `json:"FilterId,omitempty"`
 	ParameterName                     *string                                     `json:"ParameterName,omitempty"`
 	RollingDate                       *DashboardRollingDateConfiguration          `json:"RollingDate,omitempty"`
-	TimeGranularity                   *string                                     `json:"TimeGranularity,omitempty"`
+	TimeGranularity                   *DashboardTimeGranularity                   `json:"TimeGranularity,omitempty"`
 	Value                             *string                                     `json:"Value,omitempty"`
 }
 
@@ -4431,16 +4431,16 @@ type DashboardTimeRangeFilter struct {
 	FilterId                          *string                                     `json:"FilterId,omitempty"`
 	IncludeMaximum                    *bool                                       `json:"IncludeMaximum,omitempty"`
 	IncludeMinimum                    *bool                                       `json:"IncludeMinimum,omitempty"`
-	NullOption                        *string                                     `json:"NullOption,omitempty"`
+	NullOption                        *DashboardFilterNullOption                  `json:"NullOption,omitempty"`
 	RangeMaximumValue                 *DashboardTimeRangeFilterValue              `json:"RangeMaximumValue,omitempty"`
 	RangeMinimumValue                 *DashboardTimeRangeFilterValue              `json:"RangeMinimumValue,omitempty"`
-	TimeGranularity                   *string                                     `json:"TimeGranularity,omitempty"`
+	TimeGranularity                   *DashboardTimeGranularity                   `json:"TimeGranularity,omitempty"`
 }
 
 type DashboardAggregationSortConfiguration struct {
 	AggregationFunction *DashboardAggregationFunction `json:"AggregationFunction,omitempty"`
 	Column              *DashboardColumnIdentifier    `json:"Column,omitempty"`
-	SortDirection       *string                       `json:"SortDirection,omitempty"`
+	SortDirection       *DashboardSortDirection       `json:"SortDirection,omitempty"`
 }
 
 type DashboardTopBottomFilter struct {
@@ -4450,7 +4450,7 @@ type DashboardTopBottomFilter struct {
 	FilterId                          *string                                     `json:"FilterId,omitempty"`
 	Limit                             *float64                                    `json:"Limit,omitempty"`
 	ParameterName                     *string                                     `json:"ParameterName,omitempty"`
-	TimeGranularity                   *string                                     `json:"TimeGranularity,omitempty"`
+	TimeGranularity                   *DashboardTimeGranularity                   `json:"TimeGranularity,omitempty"`
 }
 
 type DashboardFilter struct {
@@ -4465,9 +4465,9 @@ type DashboardFilter struct {
 }
 
 type DashboardSheetVisualScopingConfiguration struct {
-	Scope     *string  `json:"Scope,omitempty"`
-	SheetId   *string  `json:"SheetId,omitempty"`
-	VisualIds []string `json:"VisualIds,omitempty"`
+	Scope     *DashboardFilterVisualScope `json:"Scope,omitempty"`
+	SheetId   *string                     `json:"SheetId,omitempty"`
+	VisualIds []string                    `json:"VisualIds,omitempty"`
 }
 
 type DashboardSelectedSheetsFilterScopeConfiguration struct {
@@ -4480,18 +4480,18 @@ type DashboardFilterScopeConfiguration struct {
 }
 
 type DashboardFilterGroup struct {
-	CrossDataset       *string                            `json:"CrossDataset,omitempty"`
+	CrossDataset       *DashboardCrossDatasetTypes        `json:"CrossDataset,omitempty"`
 	FilterGroupId      *string                            `json:"FilterGroupId,omitempty"`
 	Filters            []DashboardFilter                  `json:"Filters,omitempty"`
 	ScopeConfiguration *DashboardFilterScopeConfiguration `json:"ScopeConfiguration,omitempty"`
-	Status             *string                            `json:"Status,omitempty"`
+	Status             *DashboardWidgetStatus             `json:"Status,omitempty"`
 }
 
 type DashboardAssetOptions struct {
-	ExcludedDataSetArns     []string `json:"ExcludedDataSetArns,omitempty"`
-	QBusinessInsightsStatus *string  `json:"QBusinessInsightsStatus,omitempty"`
-	Timezone                *string  `json:"Timezone,omitempty"`
-	WeekStart               *string  `json:"WeekStart,omitempty"`
+	ExcludedDataSetArns     []string                 `json:"ExcludedDataSetArns,omitempty"`
+	QBusinessInsightsStatus *QBusinessInsightsStatus `json:"QBusinessInsightsStatus,omitempty"`
+	Timezone                *string                  `json:"Timezone,omitempty"`
+	WeekStart               *DashboardDayOfTheWeek   `json:"WeekStart,omitempty"`
 }
 
 type DashboardDynamicDefaultValue struct {
@@ -4512,15 +4512,15 @@ type DashboardMappedDataSetParameter struct {
 }
 
 type DashboardDateTimeValueWhenUnsetConfiguration struct {
-	CustomValue          *string `json:"CustomValue,omitempty"`
-	ValueWhenUnsetOption *string `json:"ValueWhenUnsetOption,omitempty"`
+	CustomValue          *string                        `json:"CustomValue,omitempty"`
+	ValueWhenUnsetOption *DashboardValueWhenUnsetOption `json:"ValueWhenUnsetOption,omitempty"`
 }
 
 type DashboardDateTimeParameterDeclaration struct {
 	DefaultValues           *DashboardDateTimeDefaultValues               `json:"DefaultValues,omitempty"`
 	MappedDataSetParameters []DashboardMappedDataSetParameter             `json:"MappedDataSetParameters,omitempty"`
 	Name                    *string                                       `json:"Name,omitempty"`
-	TimeGranularity         *string                                       `json:"TimeGranularity,omitempty"`
+	TimeGranularity         *DashboardTimeGranularity                     `json:"TimeGranularity,omitempty"`
 	ValueWhenUnset          *DashboardDateTimeValueWhenUnsetConfiguration `json:"ValueWhenUnset,omitempty"`
 }
 
@@ -4530,15 +4530,15 @@ type DashboardDecimalDefaultValues struct {
 }
 
 type DashboardDecimalValueWhenUnsetConfiguration struct {
-	CustomValue          *float64 `json:"CustomValue,omitempty"`
-	ValueWhenUnsetOption *string  `json:"ValueWhenUnsetOption,omitempty"`
+	CustomValue          *float64                       `json:"CustomValue,omitempty"`
+	ValueWhenUnsetOption *DashboardValueWhenUnsetOption `json:"ValueWhenUnsetOption,omitempty"`
 }
 
 type DashboardDecimalParameterDeclaration struct {
 	DefaultValues           *DashboardDecimalDefaultValues               `json:"DefaultValues,omitempty"`
 	MappedDataSetParameters []DashboardMappedDataSetParameter            `json:"MappedDataSetParameters,omitempty"`
 	Name                    *string                                      `json:"Name,omitempty"`
-	ParameterValueType      *string                                      `json:"ParameterValueType,omitempty"`
+	ParameterValueType      *DashboardParameterValueType                 `json:"ParameterValueType,omitempty"`
 	ValueWhenUnset          *DashboardDecimalValueWhenUnsetConfiguration `json:"ValueWhenUnset,omitempty"`
 }
 
@@ -4548,15 +4548,15 @@ type DashboardIntegerDefaultValues struct {
 }
 
 type DashboardIntegerValueWhenUnsetConfiguration struct {
-	CustomValue          *float64 `json:"CustomValue,omitempty"`
-	ValueWhenUnsetOption *string  `json:"ValueWhenUnsetOption,omitempty"`
+	CustomValue          *float64                       `json:"CustomValue,omitempty"`
+	ValueWhenUnsetOption *DashboardValueWhenUnsetOption `json:"ValueWhenUnsetOption,omitempty"`
 }
 
 type DashboardIntegerParameterDeclaration struct {
 	DefaultValues           *DashboardIntegerDefaultValues               `json:"DefaultValues,omitempty"`
 	MappedDataSetParameters []DashboardMappedDataSetParameter            `json:"MappedDataSetParameters,omitempty"`
 	Name                    *string                                      `json:"Name,omitempty"`
-	ParameterValueType      *string                                      `json:"ParameterValueType,omitempty"`
+	ParameterValueType      *DashboardParameterValueType                 `json:"ParameterValueType,omitempty"`
 	ValueWhenUnset          *DashboardIntegerValueWhenUnsetConfiguration `json:"ValueWhenUnset,omitempty"`
 }
 
@@ -4566,15 +4566,15 @@ type DashboardStringDefaultValues struct {
 }
 
 type DashboardStringValueWhenUnsetConfiguration struct {
-	CustomValue          *string `json:"CustomValue,omitempty"`
-	ValueWhenUnsetOption *string `json:"ValueWhenUnsetOption,omitempty"`
+	CustomValue          *string                        `json:"CustomValue,omitempty"`
+	ValueWhenUnsetOption *DashboardValueWhenUnsetOption `json:"ValueWhenUnsetOption,omitempty"`
 }
 
 type DashboardStringParameterDeclaration struct {
 	DefaultValues           *DashboardStringDefaultValues               `json:"DefaultValues,omitempty"`
 	MappedDataSetParameters []DashboardMappedDataSetParameter           `json:"MappedDataSetParameters,omitempty"`
 	Name                    *string                                     `json:"Name,omitempty"`
-	ParameterValueType      *string                                     `json:"ParameterValueType,omitempty"`
+	ParameterValueType      *DashboardParameterValueType                `json:"ParameterValueType,omitempty"`
 	ValueWhenUnset          *DashboardStringValueWhenUnsetConfiguration `json:"ValueWhenUnset,omitempty"`
 }
 
@@ -4601,23 +4601,23 @@ type DashboardFilterCrossSheetControl struct {
 }
 
 type DashboardFilterDateTimePickerControl struct {
-	CommitMode      *string                                       `json:"CommitMode,omitempty"`
+	CommitMode      *DashboardCommitMode                          `json:"CommitMode,omitempty"`
 	DisplayOptions  *DashboardDateTimePickerControlDisplayOptions `json:"DisplayOptions,omitempty"`
 	FilterControlId *string                                       `json:"FilterControlId,omitempty"`
 	SourceFilterId  *string                                       `json:"SourceFilterId,omitempty"`
 	Title           *string                                       `json:"Title,omitempty"`
-	Type            *string                                       `json:"Type,omitempty"`
+	Type            *DashboardSheetControlDateTimePickerType      `json:"Type,omitempty"`
 }
 
 type DashboardFilterDropDownControl struct {
 	CascadingControlConfiguration *DashboardCascadingControlConfiguration `json:"CascadingControlConfiguration,omitempty"`
-	CommitMode                    *string                                 `json:"CommitMode,omitempty"`
+	CommitMode                    *DashboardCommitMode                    `json:"CommitMode,omitempty"`
 	DisplayOptions                *DashboardDropDownControlDisplayOptions `json:"DisplayOptions,omitempty"`
 	FilterControlId               *string                                 `json:"FilterControlId,omitempty"`
 	SelectableValues              *DashboardFilterSelectableValues        `json:"SelectableValues,omitempty"`
 	SourceFilterId                *string                                 `json:"SourceFilterId,omitempty"`
 	Title                         *string                                 `json:"Title,omitempty"`
-	Type                          *string                                 `json:"Type,omitempty"`
+	Type                          *DashboardSheetControlListType          `json:"Type,omitempty"`
 }
 
 type DashboardFilterListControl struct {
@@ -4627,11 +4627,11 @@ type DashboardFilterListControl struct {
 	SelectableValues              *DashboardFilterSelectableValues        `json:"SelectableValues,omitempty"`
 	SourceFilterId                *string                                 `json:"SourceFilterId,omitempty"`
 	Title                         *string                                 `json:"Title,omitempty"`
-	Type                          *string                                 `json:"Type,omitempty"`
+	Type                          *DashboardSheetControlListType          `json:"Type,omitempty"`
 }
 
 type DashboardFilterRelativeDateTimeControl struct {
-	CommitMode      *string                                         `json:"CommitMode,omitempty"`
+	CommitMode      *DashboardCommitMode                            `json:"CommitMode,omitempty"`
 	DisplayOptions  *DashboardRelativeDateTimeControlDisplayOptions `json:"DisplayOptions,omitempty"`
 	FilterControlId *string                                         `json:"FilterControlId,omitempty"`
 	SourceFilterId  *string                                         `json:"SourceFilterId,omitempty"`
@@ -4646,7 +4646,7 @@ type DashboardFilterSliderControl struct {
 	SourceFilterId  *string                               `json:"SourceFilterId,omitempty"`
 	StepSize        *float64                              `json:"StepSize,omitempty"`
 	Title           *string                               `json:"Title,omitempty"`
-	Type            *string                               `json:"Type,omitempty"`
+	Type            *DashboardSheetControlSliderType      `json:"Type,omitempty"`
 }
 
 type DashboardFilterTextAreaControl struct {
@@ -4697,7 +4697,7 @@ type DashboardCustomValuesConfiguration struct {
 
 type DashboardDestinationParameterValueConfiguration struct {
 	CustomValuesConfiguration *DashboardCustomValuesConfiguration `json:"CustomValuesConfiguration,omitempty"`
-	SelectAllValueOptions     *string                             `json:"SelectAllValueOptions,omitempty"`
+	SelectAllValueOptions     *DashboardSelectAllValueOptions     `json:"SelectAllValueOptions,omitempty"`
 	SourceColumn              *DashboardColumnIdentifier          `json:"SourceColumn,omitempty"`
 	SourceField               *string                             `json:"SourceField,omitempty"`
 	SourceParameterName       *string                             `json:"SourceParameterName,omitempty"`
@@ -4713,8 +4713,8 @@ type DashboardCustomActionSetParametersOperation struct {
 }
 
 type DashboardCustomActionURLOperation struct {
-	URLTarget   *string `json:"URLTarget,omitempty"`
-	URLTemplate *string `json:"URLTemplate,omitempty"`
+	URLTarget   *DashboardURLTargetConfiguration `json:"URLTarget,omitempty"`
+	URLTemplate *string                          `json:"URLTemplate,omitempty"`
 }
 
 type DashboardImageCustomActionOperation struct {
@@ -4727,12 +4727,12 @@ type DashboardImageCustomAction struct {
 	ActionOperations []DashboardImageCustomActionOperation `json:"ActionOperations,omitempty"`
 	CustomActionId   *string                               `json:"CustomActionId,omitempty"`
 	Name             *string                               `json:"Name,omitempty"`
-	Status           *string                               `json:"Status,omitempty"`
-	Trigger          *string                               `json:"Trigger,omitempty"`
+	Status           *DashboardWidgetStatus                `json:"Status,omitempty"`
+	Trigger          *DashboardImageCustomActionTrigger    `json:"Trigger,omitempty"`
 }
 
 type DashboardImageMenuOption struct {
-	AvailabilityStatus *string `json:"AvailabilityStatus,omitempty"`
+	AvailabilityStatus *DashboardDashboardBehavior `json:"AvailabilityStatus,omitempty"`
 }
 
 type DashboardImageInteractionOptions struct {
@@ -4740,7 +4740,7 @@ type DashboardImageInteractionOptions struct {
 }
 
 type DashboardSheetImageScalingConfiguration struct {
-	ScalingType *string `json:"ScalingType,omitempty"`
+	ScalingType *DashboardSheetImageScalingType `json:"ScalingType,omitempty"`
 }
 
 type DashboardSheetImageStaticFileSource struct {
@@ -4757,7 +4757,7 @@ type DashboardSheetImageTooltipText struct {
 
 type DashboardSheetImageTooltipConfiguration struct {
 	TooltipText *DashboardSheetImageTooltipText `json:"TooltipText,omitempty"`
-	Visibility  *string                         `json:"Visibility,omitempty"`
+	Visibility  *DashboardVisibility            `json:"Visibility,omitempty"`
 }
 
 type DashboardSheetImage struct {
@@ -4771,22 +4771,22 @@ type DashboardSheetImage struct {
 }
 
 type DashboardFreeFormLayoutElementBackgroundStyle struct {
-	Color      *string `json:"Color,omitempty"`
-	Visibility *string `json:"Visibility,omitempty"`
+	Color      *string              `json:"Color,omitempty"`
+	Visibility *DashboardVisibility `json:"Visibility,omitempty"`
 }
 
 type DashboardFreeFormLayoutElementBorderStyle struct {
-	Color      *string `json:"Color,omitempty"`
-	Visibility *string `json:"Visibility,omitempty"`
-	Width      *string `json:"Width,omitempty"`
+	Color      *string              `json:"Color,omitempty"`
+	Visibility *DashboardVisibility `json:"Visibility,omitempty"`
+	Width      *string              `json:"Width,omitempty"`
 }
 
 type DashboardLoadingAnimation struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *DashboardVisibility `json:"Visibility,omitempty"`
 }
 
 type DashboardSheetElementConfigurationOverrides struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *DashboardVisibility `json:"Visibility,omitempty"`
 }
 
 type DashboardSheetElementRenderingRule struct {
@@ -4799,13 +4799,13 @@ type DashboardFreeFormLayoutElement struct {
 	BorderRadius        *string                                        `json:"BorderRadius,omitempty"`
 	BorderStyle         *DashboardFreeFormLayoutElementBorderStyle     `json:"BorderStyle,omitempty"`
 	ElementId           *string                                        `json:"ElementId,omitempty"`
-	ElementType         *string                                        `json:"ElementType,omitempty"`
+	ElementType         *DashboardLayoutElementType                    `json:"ElementType,omitempty"`
 	Height              *string                                        `json:"Height,omitempty"`
 	LoadingAnimation    *DashboardLoadingAnimation                     `json:"LoadingAnimation,omitempty"`
 	Padding             *string                                        `json:"Padding,omitempty"`
 	RenderingRules      []DashboardSheetElementRenderingRule           `json:"RenderingRules,omitempty"`
 	SelectedBorderStyle *DashboardFreeFormLayoutElementBorderStyle     `json:"SelectedBorderStyle,omitempty"`
-	Visibility          *string                                        `json:"Visibility,omitempty"`
+	Visibility          *DashboardVisibility                           `json:"Visibility,omitempty"`
 	Width               *string                                        `json:"Width,omitempty"`
 	XAxisLocation       *string                                        `json:"XAxisLocation,omitempty"`
 	YAxisLocation       *string                                        `json:"YAxisLocation,omitempty"`
@@ -4817,14 +4817,14 @@ type DashboardFreeFormLayoutConfiguration struct {
 }
 
 type GridLayoutElementBackgroundStyle struct {
-	Color      *string `json:"Color,omitempty"`
-	Visibility *string `json:"Visibility,omitempty"`
+	Color      *string              `json:"Color,omitempty"`
+	Visibility *DashboardVisibility `json:"Visibility,omitempty"`
 }
 
 type GridLayoutElementBorderStyle struct {
-	Color      *string `json:"Color,omitempty"`
-	Visibility *string `json:"Visibility,omitempty"`
-	Width      *string `json:"Width,omitempty"`
+	Color      *string              `json:"Color,omitempty"`
+	Visibility *DashboardVisibility `json:"Visibility,omitempty"`
+	Width      *string              `json:"Width,omitempty"`
 }
 
 type DashboardGridLayoutElement struct {
@@ -4834,7 +4834,7 @@ type DashboardGridLayoutElement struct {
 	ColumnIndex         *float64                          `json:"ColumnIndex,omitempty"`
 	ColumnSpan          *float64                          `json:"ColumnSpan,omitempty"`
 	ElementId           *string                           `json:"ElementId,omitempty"`
-	ElementType         *string                           `json:"ElementType,omitempty"`
+	ElementType         *DashboardLayoutElementType       `json:"ElementType,omitempty"`
 	LoadingAnimation    *DashboardLoadingAnimation        `json:"LoadingAnimation,omitempty"`
 	Padding             *string                           `json:"Padding,omitempty"`
 	RowIndex            *float64                          `json:"RowIndex,omitempty"`
@@ -4860,7 +4860,7 @@ type DashboardBodySectionContent struct {
 }
 
 type DashboardSectionAfterPageBreak struct {
-	Status *string `json:"Status,omitempty"`
+	Status *DashboardSectionPageBreakStatus `json:"Status,omitempty"`
 }
 
 type DashboardSectionPageBreakConfiguration struct {
@@ -4869,7 +4869,7 @@ type DashboardSectionPageBreakConfiguration struct {
 
 type DashboardColumnSort struct {
 	AggregationFunction *DashboardAggregationFunction `json:"AggregationFunction,omitempty"`
-	Direction           *string                       `json:"Direction,omitempty"`
+	Direction           *DashboardSortDirection       `json:"Direction,omitempty"`
 	SortBy              *DashboardColumnIdentifier    `json:"SortBy,omitempty"`
 }
 
@@ -4950,13 +4950,13 @@ type DashboardParameterSelectableValues struct {
 
 type DashboardParameterDropDownControl struct {
 	CascadingControlConfiguration *DashboardCascadingControlConfiguration `json:"CascadingControlConfiguration,omitempty"`
-	CommitMode                    *string                                 `json:"CommitMode,omitempty"`
+	CommitMode                    *DashboardCommitMode                    `json:"CommitMode,omitempty"`
 	DisplayOptions                *DashboardDropDownControlDisplayOptions `json:"DisplayOptions,omitempty"`
 	ParameterControlId            *string                                 `json:"ParameterControlId,omitempty"`
 	SelectableValues              *DashboardParameterSelectableValues     `json:"SelectableValues,omitempty"`
 	SourceParameterName           *string                                 `json:"SourceParameterName,omitempty"`
 	Title                         *string                                 `json:"Title,omitempty"`
-	Type                          *string                                 `json:"Type,omitempty"`
+	Type                          *DashboardSheetControlListType          `json:"Type,omitempty"`
 }
 
 type DashboardParameterListControl struct {
@@ -4966,7 +4966,7 @@ type DashboardParameterListControl struct {
 	SelectableValues              *DashboardParameterSelectableValues     `json:"SelectableValues,omitempty"`
 	SourceParameterName           *string                                 `json:"SourceParameterName,omitempty"`
 	Title                         *string                                 `json:"Title,omitempty"`
-	Type                          *string                                 `json:"Type,omitempty"`
+	Type                          *DashboardSheetControlListType          `json:"Type,omitempty"`
 }
 
 type DashboardParameterSliderControl struct {
@@ -5017,14 +5017,14 @@ type DashboardSheetTextBox struct {
 }
 
 type DashboardFilterOperationSelectedFieldsConfiguration struct {
-	SelectedColumns      []DashboardColumnIdentifier `json:"SelectedColumns,omitempty"`
-	SelectedFieldOptions *string                     `json:"SelectedFieldOptions,omitempty"`
-	SelectedFields       []string                    `json:"SelectedFields,omitempty"`
+	SelectedColumns      []DashboardColumnIdentifier    `json:"SelectedColumns,omitempty"`
+	SelectedFieldOptions *DashboardSelectedFieldOptions `json:"SelectedFieldOptions,omitempty"`
+	SelectedFields       []string                       `json:"SelectedFields,omitempty"`
 }
 
 type DashboardSameSheetTargetVisualConfiguration struct {
-	TargetVisualOptions *string  `json:"TargetVisualOptions,omitempty"`
-	TargetVisuals       []string `json:"TargetVisuals,omitempty"`
+	TargetVisualOptions *DashboardTargetVisualOptions `json:"TargetVisualOptions,omitempty"`
+	TargetVisuals       []string                      `json:"TargetVisuals,omitempty"`
 }
 
 type DashboardFilterOperationTargetVisualsConfiguration struct {
@@ -5047,12 +5047,12 @@ type DashboardVisualCustomAction struct {
 	ActionOperations []DashboardVisualCustomActionOperation `json:"ActionOperations,omitempty"`
 	CustomActionId   *string                                `json:"CustomActionId,omitempty"`
 	Name             *string                                `json:"Name,omitempty"`
-	Status           *string                                `json:"Status,omitempty"`
-	Trigger          *string                                `json:"Trigger,omitempty"`
+	Status           *DashboardWidgetStatus                 `json:"Status,omitempty"`
+	Trigger          *DashboardVisualCustomActionTrigger    `json:"Trigger,omitempty"`
 }
 
 type DashboardDateAxisOptions struct {
-	MissingDateVisibility *string `json:"MissingDateVisibility,omitempty"`
+	MissingDateVisibility *DashboardVisibility `json:"MissingDateVisibility,omitempty"`
 }
 
 type DashboardAxisDisplayMinMaxRange struct {
@@ -5099,7 +5099,7 @@ type DashboardVisibleRangeOptions struct {
 }
 
 type DashboardScrollBarOptions struct {
-	Visibility   *string                       `json:"Visibility,omitempty"`
+	Visibility   *DashboardVisibility          `json:"Visibility,omitempty"`
 	VisibleRange *DashboardVisibleRangeOptions `json:"VisibleRange,omitempty"`
 }
 
@@ -5109,10 +5109,10 @@ type DashboardAxisTickLabelOptions struct {
 }
 
 type DashboardAxisDisplayOptions struct {
-	AxisLineVisibility *string                        `json:"AxisLineVisibility,omitempty"`
+	AxisLineVisibility *DashboardVisibility           `json:"AxisLineVisibility,omitempty"`
 	AxisOffset         *string                        `json:"AxisOffset,omitempty"`
 	DataOptions        *DashboardAxisDataOptions      `json:"DataOptions,omitempty"`
-	GridLineVisibility *string                        `json:"GridLineVisibility,omitempty"`
+	GridLineVisibility *DashboardVisibility           `json:"GridLineVisibility,omitempty"`
 	ScrollbarOptions   *DashboardScrollBarOptions     `json:"ScrollbarOptions,omitempty"`
 	TickLabelOptions   *DashboardAxisTickLabelOptions `json:"TickLabelOptions,omitempty"`
 }
@@ -5130,8 +5130,8 @@ type DashboardAxisLabelOptions struct {
 
 type DashboardChartAxisLabelOptions struct {
 	AxisLabelOptions   []DashboardAxisLabelOptions `json:"AxisLabelOptions,omitempty"`
-	SortIconVisibility *string                     `json:"SortIconVisibility,omitempty"`
-	Visibility         *string                     `json:"Visibility,omitempty"`
+	SortIconVisibility *DashboardVisibility        `json:"SortIconVisibility,omitempty"`
+	Visibility         *DashboardVisibility        `json:"Visibility,omitempty"`
 }
 
 type DashboardContributionAnalysisDefault struct {
@@ -5140,26 +5140,26 @@ type DashboardContributionAnalysisDefault struct {
 }
 
 type DashboardDataPathLabelType struct {
-	FieldId    *string `json:"FieldId,omitempty"`
-	FieldValue *string `json:"FieldValue,omitempty"`
-	Visibility *string `json:"Visibility,omitempty"`
+	FieldId    *string              `json:"FieldId,omitempty"`
+	FieldValue *string              `json:"FieldValue,omitempty"`
+	Visibility *DashboardVisibility `json:"Visibility,omitempty"`
 }
 
 type DashboardFieldLabelType struct {
-	FieldId    *string `json:"FieldId,omitempty"`
-	Visibility *string `json:"Visibility,omitempty"`
+	FieldId    *string              `json:"FieldId,omitempty"`
+	Visibility *DashboardVisibility `json:"Visibility,omitempty"`
 }
 
 type DashboardMaximumLabelType struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *DashboardVisibility `json:"Visibility,omitempty"`
 }
 
 type DashboardMinimumLabelType struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *DashboardVisibility `json:"Visibility,omitempty"`
 }
 
 type DashboardRangeEndsLabelType struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *DashboardVisibility `json:"Visibility,omitempty"`
 }
 
 type DashboardDataLabelType struct {
@@ -5171,16 +5171,16 @@ type DashboardDataLabelType struct {
 }
 
 type DashboardDataLabelOptions struct {
-	CategoryLabelVisibility *string                     `json:"CategoryLabelVisibility,omitempty"`
+	CategoryLabelVisibility *DashboardVisibility        `json:"CategoryLabelVisibility,omitempty"`
 	DataLabelTypes          []DashboardDataLabelType    `json:"DataLabelTypes,omitempty"`
 	LabelColor              *string                     `json:"LabelColor,omitempty"`
-	LabelContent            *string                     `json:"LabelContent,omitempty"`
+	LabelContent            *DashboardDataLabelContent  `json:"LabelContent,omitempty"`
 	LabelFontConfiguration  *DashboardFontConfiguration `json:"LabelFontConfiguration,omitempty"`
-	MeasureLabelVisibility  *string                     `json:"MeasureLabelVisibility,omitempty"`
-	Overlap                 *string                     `json:"Overlap,omitempty"`
-	Position                *string                     `json:"Position,omitempty"`
-	TotalsVisibility        *string                     `json:"TotalsVisibility,omitempty"`
-	Visibility              *string                     `json:"Visibility,omitempty"`
+	MeasureLabelVisibility  *DashboardVisibility        `json:"MeasureLabelVisibility,omitempty"`
+	Overlap                 *DashboardDataLabelOverlap  `json:"Overlap,omitempty"`
+	Position                *DashboardDataLabelPosition `json:"Position,omitempty"`
+	TotalsVisibility        *DashboardVisibility        `json:"TotalsVisibility,omitempty"`
+	Visibility              *DashboardVisibility        `json:"Visibility,omitempty"`
 }
 
 type DashboardCategoricalDimensionField struct {
@@ -5192,7 +5192,7 @@ type DashboardCategoricalDimensionField struct {
 
 type DashboardDateDimensionField struct {
 	Column              *DashboardColumnIdentifier            `json:"Column,omitempty"`
-	DateGranularity     *string                               `json:"DateGranularity,omitempty"`
+	DateGranularity     *DashboardTimeGranularity             `json:"DateGranularity,omitempty"`
 	FieldId             *string                               `json:"FieldId,omitempty"`
 	FormatConfiguration *DashboardDateTimeFormatConfiguration `json:"FormatConfiguration,omitempty"`
 	HierarchyId         *string                               `json:"HierarchyId,omitempty"`
@@ -5217,14 +5217,14 @@ type DashboardCalculatedMeasureField struct {
 }
 
 type DashboardCategoricalMeasureField struct {
-	AggregationFunction *string                             `json:"AggregationFunction,omitempty"`
-	Column              *DashboardColumnIdentifier          `json:"Column,omitempty"`
-	FieldId             *string                             `json:"FieldId,omitempty"`
-	FormatConfiguration *DashboardStringFormatConfiguration `json:"FormatConfiguration,omitempty"`
+	AggregationFunction *DashboardCategoricalAggregationFunction `json:"AggregationFunction,omitempty"`
+	Column              *DashboardColumnIdentifier               `json:"Column,omitempty"`
+	FieldId             *string                                  `json:"FieldId,omitempty"`
+	FormatConfiguration *DashboardStringFormatConfiguration      `json:"FormatConfiguration,omitempty"`
 }
 
 type DashboardDateMeasureField struct {
-	AggregationFunction *string                               `json:"AggregationFunction,omitempty"`
+	AggregationFunction *DashboardDateAggregationFunction     `json:"AggregationFunction,omitempty"`
 	Column              *DashboardColumnIdentifier            `json:"Column,omitempty"`
 	FieldId             *string                               `json:"FieldId,omitempty"`
 	FormatConfiguration *DashboardDateTimeFormatConfiguration `json:"FormatConfiguration,omitempty"`
@@ -5256,7 +5256,7 @@ type DashboardBarChartFieldWells struct {
 }
 
 type DashboardContextMenuOption struct {
-	AvailabilityStatus *string `json:"AvailabilityStatus,omitempty"`
+	AvailabilityStatus *DashboardDashboardBehavior `json:"AvailabilityStatus,omitempty"`
 }
 
 type DashboardVisualInteractionOptions struct {
@@ -5266,10 +5266,10 @@ type DashboardVisualInteractionOptions struct {
 
 type DashboardLegendOptions struct {
 	Height                 *string                     `json:"Height,omitempty"`
-	Position               *string                     `json:"Position,omitempty"`
+	Position               *DashboardLegendPosition    `json:"Position,omitempty"`
 	Title                  *DashboardLabelOptions      `json:"Title,omitempty"`
 	ValueFontConfiguration *DashboardFontConfiguration `json:"ValueFontConfiguration,omitempty"`
-	Visibility             *string                     `json:"Visibility,omitempty"`
+	Visibility             *DashboardVisibility        `json:"Visibility,omitempty"`
 	Width                  *string                     `json:"Width,omitempty"`
 }
 
@@ -5284,9 +5284,9 @@ type DashboardReferenceLineStaticDataConfiguration struct {
 }
 
 type DashboardReferenceLineDataConfiguration struct {
-	AxisBinding          *string                                         `json:"AxisBinding,omitempty"`
+	AxisBinding          *DashboardAxisBinding                           `json:"AxisBinding,omitempty"`
 	DynamicConfiguration *DashboardReferenceLineDynamicDataConfiguration `json:"DynamicConfiguration,omitempty"`
-	SeriesType           *string                                         `json:"SeriesType,omitempty"`
+	SeriesType           *DashboardReferenceLineSeriesType               `json:"SeriesType,omitempty"`
 	StaticConfiguration  *DashboardReferenceLineStaticDataConfiguration  `json:"StaticConfiguration,omitempty"`
 }
 
@@ -5295,52 +5295,52 @@ type DashboardReferenceLineCustomLabelConfiguration struct {
 }
 
 type DashboardReferenceLineValueLabelConfiguration struct {
-	FormatConfiguration *DashboardNumericFormatConfiguration `json:"FormatConfiguration,omitempty"`
-	RelativePosition    *string                              `json:"RelativePosition,omitempty"`
+	FormatConfiguration *DashboardNumericFormatConfiguration              `json:"FormatConfiguration,omitempty"`
+	RelativePosition    *DashboardReferenceLineValueLabelRelativePosition `json:"RelativePosition,omitempty"`
 }
 
 type DashboardReferenceLineLabelConfiguration struct {
 	CustomLabelConfiguration *DashboardReferenceLineCustomLabelConfiguration `json:"CustomLabelConfiguration,omitempty"`
 	FontColor                *string                                         `json:"FontColor,omitempty"`
 	FontConfiguration        *DashboardFontConfiguration                     `json:"FontConfiguration,omitempty"`
-	HorizontalPosition       *string                                         `json:"HorizontalPosition,omitempty"`
+	HorizontalPosition       *DashboardReferenceLineLabelHorizontalPosition  `json:"HorizontalPosition,omitempty"`
 	ValueLabelConfiguration  *DashboardReferenceLineValueLabelConfiguration  `json:"ValueLabelConfiguration,omitempty"`
-	VerticalPosition         *string                                         `json:"VerticalPosition,omitempty"`
+	VerticalPosition         *DashboardReferenceLineLabelVerticalPosition    `json:"VerticalPosition,omitempty"`
 }
 
 type DashboardReferenceLineStyleConfiguration struct {
-	Color   *string `json:"Color,omitempty"`
-	Pattern *string `json:"Pattern,omitempty"`
+	Color   *string                            `json:"Color,omitempty"`
+	Pattern *DashboardReferenceLinePatternType `json:"Pattern,omitempty"`
 }
 
 type DashboardReferenceLine struct {
 	DataConfiguration  *DashboardReferenceLineDataConfiguration  `json:"DataConfiguration,omitempty"`
 	LabelConfiguration *DashboardReferenceLineLabelConfiguration `json:"LabelConfiguration,omitempty"`
-	Status             *string                                   `json:"Status,omitempty"`
+	Status             *DashboardWidgetStatus                    `json:"Status,omitempty"`
 	StyleConfiguration *DashboardReferenceLineStyleConfiguration `json:"StyleConfiguration,omitempty"`
 }
 
 type DashboardPanelTitleOptions struct {
-	FontConfiguration       *DashboardFontConfiguration `json:"FontConfiguration,omitempty"`
-	HorizontalTextAlignment *string                     `json:"HorizontalTextAlignment,omitempty"`
-	Visibility              *string                     `json:"Visibility,omitempty"`
+	FontConfiguration       *DashboardFontConfiguration       `json:"FontConfiguration,omitempty"`
+	HorizontalTextAlignment *DashboardHorizontalTextAlignment `json:"HorizontalTextAlignment,omitempty"`
+	Visibility              *DashboardVisibility              `json:"Visibility,omitempty"`
 }
 
 type DashboardPanelConfiguration struct {
 	BackgroundColor      *string                     `json:"BackgroundColor,omitempty"`
-	BackgroundVisibility *string                     `json:"BackgroundVisibility,omitempty"`
+	BackgroundVisibility *DashboardVisibility        `json:"BackgroundVisibility,omitempty"`
 	BorderColor          *string                     `json:"BorderColor,omitempty"`
-	BorderStyle          *string                     `json:"BorderStyle,omitempty"`
+	BorderStyle          *DashboardPanelBorderStyle  `json:"BorderStyle,omitempty"`
 	BorderThickness      *string                     `json:"BorderThickness,omitempty"`
-	BorderVisibility     *string                     `json:"BorderVisibility,omitempty"`
+	BorderVisibility     *DashboardVisibility        `json:"BorderVisibility,omitempty"`
 	GutterSpacing        *string                     `json:"GutterSpacing,omitempty"`
-	GutterVisibility     *string                     `json:"GutterVisibility,omitempty"`
+	GutterVisibility     *DashboardVisibility        `json:"GutterVisibility,omitempty"`
 	Title                *DashboardPanelTitleOptions `json:"Title,omitempty"`
 }
 
 type DashboardSmallMultiplesAxisProperties struct {
-	Placement *string `json:"Placement,omitempty"`
-	Scale     *string `json:"Scale,omitempty"`
+	Placement *DashboardSmallMultiplesAxisPlacement `json:"Placement,omitempty"`
+	Scale     *DashboardSmallMultiplesAxisScale     `json:"Scale,omitempty"`
 }
 
 type DashboardSmallMultiplesOptions struct {
@@ -5352,13 +5352,13 @@ type DashboardSmallMultiplesOptions struct {
 }
 
 type DashboardItemsLimitConfiguration struct {
-	ItemsLimit      *float64 `json:"ItemsLimit,omitempty"`
-	OtherCategories *string  `json:"OtherCategories,omitempty"`
+	ItemsLimit      *float64                  `json:"ItemsLimit,omitempty"`
+	OtherCategories *DashboardOtherCategories `json:"OtherCategories,omitempty"`
 }
 
 type DashboardFieldSort struct {
-	Direction *string `json:"Direction,omitempty"`
-	FieldId   *string `json:"FieldId,omitempty"`
+	Direction *DashboardSortDirection `json:"Direction,omitempty"`
+	FieldId   *string                 `json:"FieldId,omitempty"`
 }
 
 type DashboardFieldSortOptions struct {
@@ -5379,15 +5379,15 @@ type DashboardColumnTooltipItem struct {
 	Aggregation   *DashboardAggregationFunction `json:"Aggregation,omitempty"`
 	Column        *DashboardColumnIdentifier    `json:"Column,omitempty"`
 	Label         *string                       `json:"Label,omitempty"`
-	TooltipTarget *string                       `json:"TooltipTarget,omitempty"`
-	Visibility    *string                       `json:"Visibility,omitempty"`
+	TooltipTarget *DashboardTooltipTarget       `json:"TooltipTarget,omitempty"`
+	Visibility    *DashboardVisibility          `json:"Visibility,omitempty"`
 }
 
 type DashboardFieldTooltipItem struct {
-	FieldId       *string `json:"FieldId,omitempty"`
-	Label         *string `json:"Label,omitempty"`
-	TooltipTarget *string `json:"TooltipTarget,omitempty"`
-	Visibility    *string `json:"Visibility,omitempty"`
+	FieldId       *string                 `json:"FieldId,omitempty"`
+	Label         *string                 `json:"Label,omitempty"`
+	TooltipTarget *DashboardTooltipTarget `json:"TooltipTarget,omitempty"`
+	Visibility    *DashboardVisibility    `json:"Visibility,omitempty"`
 }
 
 type DashboardTooltipItem struct {
@@ -5396,19 +5396,19 @@ type DashboardTooltipItem struct {
 }
 
 type DashboardFieldBasedTooltip struct {
-	AggregationVisibility *string                `json:"AggregationVisibility,omitempty"`
-	TooltipFields         []DashboardTooltipItem `json:"TooltipFields,omitempty"`
-	TooltipTitleType      *string                `json:"TooltipTitleType,omitempty"`
+	AggregationVisibility *DashboardVisibility       `json:"AggregationVisibility,omitempty"`
+	TooltipFields         []DashboardTooltipItem     `json:"TooltipFields,omitempty"`
+	TooltipTitleType      *DashboardTooltipTitleType `json:"TooltipTitleType,omitempty"`
 }
 
 type DashboardTooltipOptions struct {
-	FieldBasedTooltip   *DashboardFieldBasedTooltip `json:"FieldBasedTooltip,omitempty"`
-	SelectedTooltipType *string                     `json:"SelectedTooltipType,omitempty"`
-	TooltipVisibility   *string                     `json:"TooltipVisibility,omitempty"`
+	FieldBasedTooltip   *DashboardFieldBasedTooltip   `json:"FieldBasedTooltip,omitempty"`
+	SelectedTooltipType *DashboardSelectedTooltipType `json:"SelectedTooltipType,omitempty"`
+	TooltipVisibility   *DashboardVisibility          `json:"TooltipVisibility,omitempty"`
 }
 
 type DashboardDataPathType struct {
-	PivotTableDataPathType *string `json:"PivotTableDataPathType,omitempty"`
+	PivotTableDataPathType *DashboardPivotTableDataPathType `json:"PivotTableDataPathType,omitempty"`
 }
 
 type DashboardDataPathValue struct {
@@ -5418,9 +5418,9 @@ type DashboardDataPathValue struct {
 }
 
 type DashboardDataPathColor struct {
-	Color           *string                 `json:"Color,omitempty"`
-	Element         *DashboardDataPathValue `json:"Element,omitempty"`
-	TimeGranularity *string                 `json:"TimeGranularity,omitempty"`
+	Color           *string                   `json:"Color,omitempty"`
+	Element         *DashboardDataPathValue   `json:"Element,omitempty"`
+	TimeGranularity *DashboardTimeGranularity `json:"TimeGranularity,omitempty"`
 }
 
 type DashboardVisualPalette struct {
@@ -5429,7 +5429,7 @@ type DashboardVisualPalette struct {
 }
 
 type DashboardBarChartConfiguration struct {
-	BarsArrangement              *string                                `json:"BarsArrangement,omitempty"`
+	BarsArrangement              *DashboardBarsArrangement              `json:"BarsArrangement,omitempty"`
 	CategoryAxis                 *DashboardAxisDisplayOptions           `json:"CategoryAxis,omitempty"`
 	CategoryLabelOptions         *DashboardChartAxisLabelOptions        `json:"CategoryLabelOptions,omitempty"`
 	ColorLabelOptions            *DashboardChartAxisLabelOptions        `json:"ColorLabelOptions,omitempty"`
@@ -5438,7 +5438,7 @@ type DashboardBarChartConfiguration struct {
 	FieldWells                   *DashboardBarChartFieldWells           `json:"FieldWells,omitempty"`
 	Interactions                 *DashboardVisualInteractionOptions     `json:"Interactions,omitempty"`
 	Legend                       *DashboardLegendOptions                `json:"Legend,omitempty"`
-	Orientation                  *string                                `json:"Orientation,omitempty"`
+	Orientation                  *DashboardBarChartOrientation          `json:"Orientation,omitempty"`
 	ReferenceLines               []DashboardReferenceLine               `json:"ReferenceLines,omitempty"`
 	SmallMultiplesOptions        *DashboardSmallMultiplesOptions        `json:"SmallMultiplesOptions,omitempty"`
 	SortConfiguration            *DashboardBarChartSortConfiguration    `json:"SortConfiguration,omitempty"`
@@ -5462,7 +5462,7 @@ type DashboardTimeRangeDrillDownFilter struct {
 	Column          *DashboardColumnIdentifier `json:"Column,omitempty"`
 	RangeMaximum    *string                    `json:"RangeMaximum,omitempty"`
 	RangeMinimum    *string                    `json:"RangeMinimum,omitempty"`
-	TimeGranularity *string                    `json:"TimeGranularity,omitempty"`
+	TimeGranularity *DashboardTimeGranularity  `json:"TimeGranularity,omitempty"`
 }
 
 type DashboardDrillDownFilter struct {
@@ -5501,7 +5501,7 @@ type DashboardLongFormatText struct {
 
 type DashboardVisualSubtitleLabelOptions struct {
 	FormatText *DashboardLongFormatText `json:"FormatText,omitempty"`
-	Visibility *string                  `json:"Visibility,omitempty"`
+	Visibility *DashboardVisibility     `json:"Visibility,omitempty"`
 }
 
 type DashboardShortFormatText struct {
@@ -5511,7 +5511,7 @@ type DashboardShortFormatText struct {
 
 type DashboardVisualTitleLabelOptions struct {
 	FormatText *DashboardShortFormatText `json:"FormatText,omitempty"`
-	Visibility *string                   `json:"Visibility,omitempty"`
+	Visibility *DashboardVisibility      `json:"Visibility,omitempty"`
 }
 
 type DashboardBarChartVisual struct {
@@ -5525,12 +5525,12 @@ type DashboardBarChartVisual struct {
 }
 
 type DashboardBoxPlotStyleOptions struct {
-	FillStyle *string `json:"FillStyle,omitempty"`
+	FillStyle *DashboardBoxPlotFillStyle `json:"FillStyle,omitempty"`
 }
 
 type DashboardBoxPlotOptions struct {
-	AllDataPointsVisibility *string                       `json:"AllDataPointsVisibility,omitempty"`
-	OutlierVisibility       *string                       `json:"OutlierVisibility,omitempty"`
+	AllDataPointsVisibility *DashboardVisibility          `json:"AllDataPointsVisibility,omitempty"`
+	OutlierVisibility       *DashboardVisibility          `json:"OutlierVisibility,omitempty"`
 	StyleOptions            *DashboardBoxPlotStyleOptions `json:"StyleOptions,omitempty"`
 }
 
@@ -5590,7 +5590,7 @@ type DashboardComboChartFieldWells struct {
 }
 
 type DashboardYAxisOptions struct {
-	YAxis *string `json:"YAxis,omitempty"`
+	YAxis *DashboardSingleYAxisOption `json:"YAxis,omitempty"`
 }
 
 type DashboardSingleAxisOptions struct {
@@ -5606,7 +5606,7 @@ type DashboardComboChartSortConfiguration struct {
 
 type DashboardComboChartConfiguration struct {
 	BarDataLabels                *DashboardDataLabelOptions            `json:"BarDataLabels,omitempty"`
-	BarsArrangement              *string                               `json:"BarsArrangement,omitempty"`
+	BarsArrangement              *DashboardBarsArrangement             `json:"BarsArrangement,omitempty"`
 	CategoryAxis                 *DashboardAxisDisplayOptions          `json:"CategoryAxis,omitempty"`
 	CategoryLabelOptions         *DashboardChartAxisLabelOptions       `json:"CategoryLabelOptions,omitempty"`
 	ColorLabelOptions            *DashboardChartAxisLabelOptions       `json:"ColorLabelOptions,omitempty"`
@@ -5636,10 +5636,10 @@ type DashboardComboChartVisual struct {
 }
 
 type DashboardCustomContentConfiguration struct {
-	ContentType  *string                            `json:"ContentType,omitempty"`
-	ContentUrl   *string                            `json:"ContentUrl,omitempty"`
-	ImageScaling *string                            `json:"ImageScaling,omitempty"`
-	Interactions *DashboardVisualInteractionOptions `json:"Interactions,omitempty"`
+	ContentType  *DashboardCustomContentType                      `json:"ContentType,omitempty"`
+	ContentUrl   *string                                          `json:"ContentUrl,omitempty"`
+	ImageScaling *DashboardCustomContentImageScalingConfiguration `json:"ImageScaling,omitempty"`
+	Interactions *DashboardVisualInteractionOptions               `json:"Interactions,omitempty"`
 }
 
 type DashboardCustomContentVisual struct {
@@ -5668,7 +5668,7 @@ type DashboardFilledMapFieldWells struct {
 }
 
 type DashboardGeospatialMapStyleOptions struct {
-	BaseMapStyle *string `json:"BaseMapStyle,omitempty"`
+	BaseMapStyle *DashboardBaseMapStyleType `json:"BaseMapStyle,omitempty"`
 }
 
 type DashboardFilledMapSortConfiguration struct {
@@ -5684,7 +5684,7 @@ type DashboardGeospatialCoordinateBounds struct {
 
 type DashboardGeospatialWindowOptions struct {
 	Bounds      *DashboardGeospatialCoordinateBounds `json:"Bounds,omitempty"`
-	MapZoomMode *string                              `json:"MapZoomMode,omitempty"`
+	MapZoomMode *DashboardMapZoomMode                `json:"MapZoomMode,omitempty"`
 }
 
 type DashboardFilledMapConfiguration struct {
@@ -5751,13 +5751,13 @@ type DashboardFilledMapVisual struct {
 }
 
 type DashboardFunnelChartDataLabelOptions struct {
-	CategoryLabelVisibility *string                     `json:"CategoryLabelVisibility,omitempty"`
-	LabelColor              *string                     `json:"LabelColor,omitempty"`
-	LabelFontConfiguration  *DashboardFontConfiguration `json:"LabelFontConfiguration,omitempty"`
-	MeasureDataLabelStyle   *string                     `json:"MeasureDataLabelStyle,omitempty"`
-	MeasureLabelVisibility  *string                     `json:"MeasureLabelVisibility,omitempty"`
-	Position                *string                     `json:"Position,omitempty"`
-	Visibility              *string                     `json:"Visibility,omitempty"`
+	CategoryLabelVisibility *DashboardVisibility                       `json:"CategoryLabelVisibility,omitempty"`
+	LabelColor              *string                                    `json:"LabelColor,omitempty"`
+	LabelFontConfiguration  *DashboardFontConfiguration                `json:"LabelFontConfiguration,omitempty"`
+	MeasureDataLabelStyle   *DashboardFunnelChartMeasureDataLabelStyle `json:"MeasureDataLabelStyle,omitempty"`
+	MeasureLabelVisibility  *DashboardVisibility                       `json:"MeasureLabelVisibility,omitempty"`
+	Position                *DashboardDataLabelPosition                `json:"Position,omitempty"`
+	Visibility              *DashboardVisibility                       `json:"Visibility,omitempty"`
 }
 
 type DashboardFunnelChartAggregatedFieldWells struct {
@@ -5806,8 +5806,8 @@ type DashboardGaugeChartFieldWells struct {
 }
 
 type DashboardArcConfiguration struct {
-	ArcAngle     *float64 `json:"ArcAngle,omitempty"`
-	ArcThickness *string  `json:"ArcThickness,omitempty"`
+	ArcAngle     *float64                      `json:"ArcAngle,omitempty"`
+	ArcThickness *DashboardArcThicknessOptions `json:"ArcThickness,omitempty"`
 }
 
 type DashboardArcAxisDisplayRange struct {
@@ -5827,14 +5827,14 @@ type DashboardComparisonFormatConfiguration struct {
 
 type DashboardComparisonConfiguration struct {
 	ComparisonFormat *DashboardComparisonFormatConfiguration `json:"ComparisonFormat,omitempty"`
-	ComparisonMethod *string                                 `json:"ComparisonMethod,omitempty"`
+	ComparisonMethod *DashboardComparisonMethod              `json:"ComparisonMethod,omitempty"`
 }
 
 type DashboardGaugeChartOptions struct {
 	Arc                           *DashboardArcConfiguration        `json:"Arc,omitempty"`
 	ArcAxis                       *DashboardArcAxisConfiguration    `json:"ArcAxis,omitempty"`
 	Comparison                    *DashboardComparisonConfiguration `json:"Comparison,omitempty"`
-	PrimaryValueDisplayType       *string                           `json:"PrimaryValueDisplayType,omitempty"`
+	PrimaryValueDisplayType       *DashboardPrimaryValueDisplayType `json:"PrimaryValueDisplayType,omitempty"`
 	PrimaryValueFontConfiguration *DashboardFontConfiguration       `json:"PrimaryValueFontConfiguration,omitempty"`
 }
 
@@ -5853,12 +5853,12 @@ type DashboardGaugeChartArcConditionalFormatting struct {
 }
 
 type DashboardConditionalFormattingIconDisplayConfiguration struct {
-	IconDisplayOption *string `json:"IconDisplayOption,omitempty"`
+	IconDisplayOption *DashboardConditionalFormattingIconDisplayOption `json:"IconDisplayOption,omitempty"`
 }
 
 type DashboardConditionalFormattingCustomIconOptions struct {
-	Icon        *string `json:"Icon,omitempty"`
-	UnicodeIcon *string `json:"UnicodeIcon,omitempty"`
+	Icon        *DashboardIcon `json:"Icon,omitempty"`
+	UnicodeIcon *string        `json:"UnicodeIcon,omitempty"`
 }
 
 type DashboardConditionalFormattingCustomIconCondition struct {
@@ -5869,8 +5869,8 @@ type DashboardConditionalFormattingCustomIconCondition struct {
 }
 
 type DashboardConditionalFormattingIconSet struct {
-	Expression  *string `json:"Expression,omitempty"`
-	IconSetType *string `json:"IconSetType,omitempty"`
+	Expression  *string                                    `json:"Expression,omitempty"`
+	IconSetType *DashboardConditionalFormattingIconSetType `json:"IconSetType,omitempty"`
 }
 
 type DashboardConditionalFormattingIcon struct {
@@ -5939,7 +5939,7 @@ type DashboardGeospatialHeatmapConfiguration struct {
 type DashboardGeospatialPointStyleOptions struct {
 	ClusterMarkerConfiguration *DashboardClusterMarkerConfiguration     `json:"ClusterMarkerConfiguration,omitempty"`
 	HeatmapConfiguration       *DashboardGeospatialHeatmapConfiguration `json:"HeatmapConfiguration,omitempty"`
-	SelectedPointStyle         *string                                  `json:"SelectedPointStyle,omitempty"`
+	SelectedPointStyle         *DashboardGeospatialSelectedPointStyle   `json:"SelectedPointStyle,omitempty"`
 }
 
 type DashboardGeospatialMapConfiguration struct {
@@ -5969,9 +5969,9 @@ type DashboardDataColor struct {
 }
 
 type DashboardColorScale struct {
-	ColorFillType  *string              `json:"ColorFillType,omitempty"`
-	Colors         []DashboardDataColor `json:"Colors,omitempty"`
-	NullValueColor *DashboardDataColor  `json:"NullValueColor,omitempty"`
+	ColorFillType  *DashboardColorFillType `json:"ColorFillType,omitempty"`
+	Colors         []DashboardDataColor    `json:"Colors,omitempty"`
+	NullValueColor *DashboardDataColor     `json:"NullValueColor,omitempty"`
 }
 
 type DashboardHeatMapAggregatedFieldWells struct {
@@ -6023,10 +6023,10 @@ type DashboardBinWidthOptions struct {
 }
 
 type DashboardHistogramBinOptions struct {
-	BinCount        *DashboardBinCountOptions `json:"BinCount,omitempty"`
-	BinWidth        *DashboardBinWidthOptions `json:"BinWidth,omitempty"`
-	SelectedBinType *string                   `json:"SelectedBinType,omitempty"`
-	StartValue      *float64                  `json:"StartValue,omitempty"`
+	BinCount        *DashboardBinCountOptions  `json:"BinCount,omitempty"`
+	BinWidth        *DashboardBinWidthOptions  `json:"BinWidth,omitempty"`
+	SelectedBinType *DashboardHistogramBinType `json:"SelectedBinType,omitempty"`
+	StartValue      *float64                   `json:"StartValue,omitempty"`
 }
 
 type DashboardHistogramAggregatedFieldWells struct {
@@ -6059,17 +6059,17 @@ type DashboardHistogramVisual struct {
 }
 
 type DashboardForecastComputation struct {
-	ComputationId          *string                  `json:"ComputationId,omitempty"`
-	CustomSeasonalityValue *float64                 `json:"CustomSeasonalityValue,omitempty"`
-	LowerBoundary          *float64                 `json:"LowerBoundary,omitempty"`
-	Name                   *string                  `json:"Name,omitempty"`
-	PeriodsBackward        *float64                 `json:"PeriodsBackward,omitempty"`
-	PeriodsForward         *float64                 `json:"PeriodsForward,omitempty"`
-	PredictionInterval     *float64                 `json:"PredictionInterval,omitempty"`
-	Seasonality            *string                  `json:"Seasonality,omitempty"`
-	Time                   *DashboardDimensionField `json:"Time,omitempty"`
-	UpperBoundary          *float64                 `json:"UpperBoundary,omitempty"`
-	Value                  *DashboardMeasureField   `json:"Value,omitempty"`
+	ComputationId          *string                                  `json:"ComputationId,omitempty"`
+	CustomSeasonalityValue *float64                                 `json:"CustomSeasonalityValue,omitempty"`
+	LowerBoundary          *float64                                 `json:"LowerBoundary,omitempty"`
+	Name                   *string                                  `json:"Name,omitempty"`
+	PeriodsBackward        *float64                                 `json:"PeriodsBackward,omitempty"`
+	PeriodsForward         *float64                                 `json:"PeriodsForward,omitempty"`
+	PredictionInterval     *float64                                 `json:"PredictionInterval,omitempty"`
+	Seasonality            *DashboardForecastComputationSeasonality `json:"Seasonality,omitempty"`
+	Time                   *DashboardDimensionField                 `json:"Time,omitempty"`
+	UpperBoundary          *float64                                 `json:"UpperBoundary,omitempty"`
+	Value                  *DashboardMeasureField                   `json:"Value,omitempty"`
 }
 
 type DashboardGrowthRateComputation struct {
@@ -6081,11 +6081,11 @@ type DashboardGrowthRateComputation struct {
 }
 
 type DashboardMaximumMinimumComputation struct {
-	ComputationId *string                  `json:"ComputationId,omitempty"`
-	Name          *string                  `json:"Name,omitempty"`
-	Time          *DashboardDimensionField `json:"Time,omitempty"`
-	Type          *string                  `json:"Type,omitempty"`
-	Value         *DashboardMeasureField   `json:"Value,omitempty"`
+	ComputationId *string                                 `json:"ComputationId,omitempty"`
+	Name          *string                                 `json:"Name,omitempty"`
+	Time          *DashboardDimensionField                `json:"Time,omitempty"`
+	Type          *DashboardMaximumMinimumComputationType `json:"Type,omitempty"`
+	Value         *DashboardMeasureField                  `json:"Value,omitempty"`
 }
 
 type DashboardMetricComparisonComputation struct {
@@ -6104,31 +6104,31 @@ type DashboardPeriodOverPeriodComputation struct {
 }
 
 type DashboardPeriodToDateComputation struct {
-	ComputationId         *string                  `json:"ComputationId,omitempty"`
-	Name                  *string                  `json:"Name,omitempty"`
-	PeriodTimeGranularity *string                  `json:"PeriodTimeGranularity,omitempty"`
-	Time                  *DashboardDimensionField `json:"Time,omitempty"`
-	Value                 *DashboardMeasureField   `json:"Value,omitempty"`
+	ComputationId         *string                   `json:"ComputationId,omitempty"`
+	Name                  *string                   `json:"Name,omitempty"`
+	PeriodTimeGranularity *DashboardTimeGranularity `json:"PeriodTimeGranularity,omitempty"`
+	Time                  *DashboardDimensionField  `json:"Time,omitempty"`
+	Value                 *DashboardMeasureField    `json:"Value,omitempty"`
 }
 
 type DashboardTopBottomMoversComputation struct {
-	Category      *DashboardDimensionField `json:"Category,omitempty"`
-	ComputationId *string                  `json:"ComputationId,omitempty"`
-	MoverSize     *float64                 `json:"MoverSize,omitempty"`
-	Name          *string                  `json:"Name,omitempty"`
-	SortOrder     *string                  `json:"SortOrder,omitempty"`
-	Time          *DashboardDimensionField `json:"Time,omitempty"`
-	Type          *string                  `json:"Type,omitempty"`
-	Value         *DashboardMeasureField   `json:"Value,omitempty"`
+	Category      *DashboardDimensionField           `json:"Category,omitempty"`
+	ComputationId *string                            `json:"ComputationId,omitempty"`
+	MoverSize     *float64                           `json:"MoverSize,omitempty"`
+	Name          *string                            `json:"Name,omitempty"`
+	SortOrder     *DashboardTopBottomSortOrder       `json:"SortOrder,omitempty"`
+	Time          *DashboardDimensionField           `json:"Time,omitempty"`
+	Type          *DashboardTopBottomComputationType `json:"Type,omitempty"`
+	Value         *DashboardMeasureField             `json:"Value,omitempty"`
 }
 
 type DashboardTopBottomRankedComputation struct {
-	Category      *DashboardDimensionField `json:"Category,omitempty"`
-	ComputationId *string                  `json:"ComputationId,omitempty"`
-	Name          *string                  `json:"Name,omitempty"`
-	ResultSize    *float64                 `json:"ResultSize,omitempty"`
-	Type          *string                  `json:"Type,omitempty"`
-	Value         *DashboardMeasureField   `json:"Value,omitempty"`
+	Category      *DashboardDimensionField           `json:"Category,omitempty"`
+	ComputationId *string                            `json:"ComputationId,omitempty"`
+	Name          *string                            `json:"Name,omitempty"`
+	ResultSize    *float64                           `json:"ResultSize,omitempty"`
+	Type          *DashboardTopBottomComputationType `json:"Type,omitempty"`
+	Value         *DashboardMeasureField             `json:"Value,omitempty"`
 }
 
 type DashboardTotalAggregationComputation struct {
@@ -6183,26 +6183,26 @@ type DashboardKPIFieldWells struct {
 }
 
 type DashboardProgressBarOptions struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *DashboardVisibility `json:"Visibility,omitempty"`
 }
 
 type DashboardSecondaryValueOptions struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *DashboardVisibility `json:"Visibility,omitempty"`
 }
 
 type DashboardKPISparklineOptions struct {
-	Color             *string `json:"Color,omitempty"`
-	TooltipVisibility *string `json:"TooltipVisibility,omitempty"`
-	Type              *string `json:"Type,omitempty"`
-	Visibility        *string `json:"Visibility,omitempty"`
+	Color             *string                    `json:"Color,omitempty"`
+	TooltipVisibility *DashboardVisibility       `json:"TooltipVisibility,omitempty"`
+	Type              *DashboardKPISparklineType `json:"Type,omitempty"`
+	Visibility        *DashboardVisibility       `json:"Visibility,omitempty"`
 }
 
 type DashboardTrendArrowOptions struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *DashboardVisibility `json:"Visibility,omitempty"`
 }
 
 type DashboardKPIVisualStandardLayout struct {
-	Type *string `json:"Type,omitempty"`
+	Type *DashboardKPIVisualStandardLayoutType `json:"Type,omitempty"`
 }
 
 type DashboardKPIVisualLayoutOptions struct {
@@ -6211,7 +6211,7 @@ type DashboardKPIVisualLayoutOptions struct {
 
 type DashboardKPIOptions struct {
 	Comparison                      *DashboardComparisonConfiguration `json:"Comparison,omitempty"`
-	PrimaryValueDisplayType         *string                           `json:"PrimaryValueDisplayType,omitempty"`
+	PrimaryValueDisplayType         *DashboardPrimaryValueDisplayType `json:"PrimaryValueDisplayType,omitempty"`
 	PrimaryValueFontConfiguration   *DashboardFontConfiguration       `json:"PrimaryValueFontConfiguration,omitempty"`
 	ProgressBar                     *DashboardProgressBarOptions      `json:"ProgressBar,omitempty"`
 	SecondaryValue                  *DashboardSecondaryValueOptions   `json:"SecondaryValue,omitempty"`
@@ -6284,8 +6284,8 @@ type DashboardLayerCustomAction struct {
 	ActionOperations []DashboardLayerCustomActionOperation `json:"ActionOperations,omitempty"`
 	CustomActionId   *string                               `json:"CustomActionId,omitempty"`
 	Name             *string                               `json:"Name,omitempty"`
-	Status           *string                               `json:"Status,omitempty"`
-	Trigger          *string                               `json:"Trigger,omitempty"`
+	Status           *DashboardWidgetStatus                `json:"Status,omitempty"`
+	Trigger          *DashboardLayerCustomActionTrigger    `json:"Trigger,omitempty"`
 }
 
 type DashboardGeospatialStaticFileSource struct {
@@ -6332,7 +6332,7 @@ type DashboardGeospatialCategoricalColor struct {
 	CategoryDataColors []DashboardGeospatialCategoricalDataColor `json:"CategoryDataColors,omitempty"`
 	DefaultOpacity     *float64                                  `json:"DefaultOpacity,omitempty"`
 	NullDataSettings   *DashboardGeospatialNullDataSettings      `json:"NullDataSettings,omitempty"`
-	NullDataVisibility *string                                   `json:"NullDataVisibility,omitempty"`
+	NullDataVisibility *DashboardVisibility                      `json:"NullDataVisibility,omitempty"`
 }
 
 type DashboardGeospatialGradientStepColor struct {
@@ -6343,13 +6343,13 @@ type DashboardGeospatialGradientStepColor struct {
 type DashboardGeospatialGradientColor struct {
 	DefaultOpacity     *float64                               `json:"DefaultOpacity,omitempty"`
 	NullDataSettings   *DashboardGeospatialNullDataSettings   `json:"NullDataSettings,omitempty"`
-	NullDataVisibility *string                                `json:"NullDataVisibility,omitempty"`
+	NullDataVisibility *DashboardVisibility                   `json:"NullDataVisibility,omitempty"`
 	StepColors         []DashboardGeospatialGradientStepColor `json:"StepColors,omitempty"`
 }
 
 type DashboardGeospatialSolidColor struct {
-	Color *string `json:"Color,omitempty"`
-	State *string `json:"State,omitempty"`
+	Color *string                        `json:"Color,omitempty"`
+	State *DashboardGeospatialColorState `json:"State,omitempty"`
 }
 
 type DashboardGeospatialColor struct {
@@ -6421,20 +6421,20 @@ type DashboardGeospatialLayerItem struct {
 	Label           *string                                 `json:"Label,omitempty"`
 	LayerDefinition *DashboardGeospatialLayerDefinition     `json:"LayerDefinition,omitempty"`
 	LayerId         *string                                 `json:"LayerId,omitempty"`
-	LayerType       *string                                 `json:"LayerType,omitempty"`
+	LayerType       *DashboardGeospatialLayerType           `json:"LayerType,omitempty"`
 	Tooltip         *DashboardTooltipOptions                `json:"Tooltip,omitempty"`
-	Visibility      *string                                 `json:"Visibility,omitempty"`
+	Visibility      *DashboardVisibility                    `json:"Visibility,omitempty"`
 }
 
 type DashboardGeospatialMapState struct {
 	Bounds        *DashboardGeospatialCoordinateBounds `json:"Bounds,omitempty"`
-	MapNavigation *string                              `json:"MapNavigation,omitempty"`
+	MapNavigation *DashboardGeospatialMapNavigation    `json:"MapNavigation,omitempty"`
 }
 
 type DashboardGeospatialMapStyle struct {
-	BackgroundColor   *string `json:"BackgroundColor,omitempty"`
-	BaseMapStyle      *string `json:"BaseMapStyle,omitempty"`
-	BaseMapVisibility *string `json:"BaseMapVisibility,omitempty"`
+	BackgroundColor   *string                    `json:"BackgroundColor,omitempty"`
+	BaseMapStyle      *DashboardBaseMapStyleType `json:"BaseMapStyle,omitempty"`
+	BaseMapVisibility *DashboardVisibility       `json:"BaseMapVisibility,omitempty"`
 }
 
 type DashboardGeospatialLayerMapConfiguration struct {
@@ -6455,21 +6455,21 @@ type DashboardLayerMapVisual struct {
 }
 
 type DashboardLineChartLineStyleSettings struct {
-	LineInterpolation *string `json:"LineInterpolation,omitempty"`
-	LineStyle         *string `json:"LineStyle,omitempty"`
-	LineVisibility    *string `json:"LineVisibility,omitempty"`
-	LineWidth         *string `json:"LineWidth,omitempty"`
+	LineInterpolation *DashboardLineInterpolation  `json:"LineInterpolation,omitempty"`
+	LineStyle         *DashboardLineChartLineStyle `json:"LineStyle,omitempty"`
+	LineVisibility    *DashboardVisibility         `json:"LineVisibility,omitempty"`
+	LineWidth         *string                      `json:"LineWidth,omitempty"`
 }
 
 type DashboardLineChartMarkerStyleSettings struct {
-	MarkerColor      *string `json:"MarkerColor,omitempty"`
-	MarkerShape      *string `json:"MarkerShape,omitempty"`
-	MarkerSize       *string `json:"MarkerSize,omitempty"`
-	MarkerVisibility *string `json:"MarkerVisibility,omitempty"`
+	MarkerColor      *string                        `json:"MarkerColor,omitempty"`
+	MarkerShape      *DashboardLineChartMarkerShape `json:"MarkerShape,omitempty"`
+	MarkerSize       *string                        `json:"MarkerSize,omitempty"`
+	MarkerVisibility *DashboardVisibility           `json:"MarkerVisibility,omitempty"`
 }
 
 type DashboardLineChartDefaultSeriesSettings struct {
-	AxisBinding         *string                                `json:"AxisBinding,omitempty"`
+	AxisBinding         *DashboardAxisBinding                  `json:"AxisBinding,omitempty"`
 	LineStyleSettings   *DashboardLineChartLineStyleSettings   `json:"LineStyleSettings,omitempty"`
 	MarkerStyleSettings *DashboardLineChartMarkerStyleSettings `json:"MarkerStyleSettings,omitempty"`
 }
@@ -6516,7 +6516,7 @@ type DashboardForecastConfiguration struct {
 }
 
 type DashboardMissingDataConfiguration struct {
-	TreatmentOption *string `json:"TreatmentOption,omitempty"`
+	TreatmentOption *DashboardMissingDataTreatmentOption `json:"TreatmentOption,omitempty"`
 }
 
 type DashboardLineSeriesAxisDisplayOptions struct {
@@ -6530,14 +6530,14 @@ type DashboardLineChartSeriesSettings struct {
 }
 
 type DashboardDataFieldSeriesItem struct {
-	AxisBinding *string                           `json:"AxisBinding,omitempty"`
+	AxisBinding *DashboardAxisBinding             `json:"AxisBinding,omitempty"`
 	FieldId     *string                           `json:"FieldId,omitempty"`
 	FieldValue  *string                           `json:"FieldValue,omitempty"`
 	Settings    *DashboardLineChartSeriesSettings `json:"Settings,omitempty"`
 }
 
 type DashboardFieldSeriesItem struct {
-	AxisBinding *string                           `json:"AxisBinding,omitempty"`
+	AxisBinding *DashboardAxisBinding             `json:"AxisBinding,omitempty"`
 	FieldId     *string                           `json:"FieldId,omitempty"`
 	Settings    *DashboardLineChartSeriesSettings `json:"Settings,omitempty"`
 }
@@ -6573,7 +6573,7 @@ type DashboardLineChartConfiguration struct {
 	SmallMultiplesOptions        *DashboardSmallMultiplesOptions          `json:"SmallMultiplesOptions,omitempty"`
 	SortConfiguration            *DashboardLineChartSortConfiguration     `json:"SortConfiguration,omitempty"`
 	Tooltip                      *DashboardTooltipOptions                 `json:"Tooltip,omitempty"`
-	Type                         *string                                  `json:"Type,omitempty"`
+	Type                         *DashboardLineChartType                  `json:"Type,omitempty"`
 	VisualPalette                *DashboardVisualPalette                  `json:"VisualPalette,omitempty"`
 	XAxisDisplayOptions          *DashboardAxisDisplayOptions             `json:"XAxisDisplayOptions,omitempty"`
 	XAxisLabelOptions            *DashboardChartAxisLabelOptions          `json:"XAxisLabelOptions,omitempty"`
@@ -6590,11 +6590,11 @@ type DashboardLineChartVisual struct {
 }
 
 type DashboardArcOptions struct {
-	ArcThickness *string `json:"ArcThickness,omitempty"`
+	ArcThickness *DashboardArcThickness `json:"ArcThickness,omitempty"`
 }
 
 type DashboardDonutCenterOptions struct {
-	LabelVisibility *string `json:"LabelVisibility,omitempty"`
+	LabelVisibility *DashboardVisibility `json:"LabelVisibility,omitempty"`
 }
 
 type DashboardDonutOptions struct {
@@ -6650,7 +6650,7 @@ type DashboardPivotTableFieldCollapseStateTarget struct {
 }
 
 type DashboardPivotTableFieldCollapseStateOption struct {
-	State  *string                                      `json:"State,omitempty"`
+	State  *DashboardPivotTableFieldCollapseState       `json:"State,omitempty"`
 	Target *DashboardPivotTableFieldCollapseStateTarget `json:"Target,omitempty"`
 }
 
@@ -6660,9 +6660,9 @@ type DashboardPivotTableDataPathOption struct {
 }
 
 type DashboardPivotTableFieldOption struct {
-	CustomLabel *string `json:"CustomLabel,omitempty"`
-	FieldId     *string `json:"FieldId,omitempty"`
-	Visibility  *string `json:"Visibility,omitempty"`
+	CustomLabel *string              `json:"CustomLabel,omitempty"`
+	FieldId     *string              `json:"FieldId,omitempty"`
+	Visibility  *DashboardVisibility `json:"Visibility,omitempty"`
 }
 
 type DashboardPivotTableFieldOptions struct {
@@ -6682,12 +6682,12 @@ type DashboardPivotTableFieldWells struct {
 }
 
 type DashboardPivotTablePaginatedReportOptions struct {
-	OverflowColumnHeaderVisibility *string `json:"OverflowColumnHeaderVisibility,omitempty"`
-	VerticalOverflowVisibility     *string `json:"VerticalOverflowVisibility,omitempty"`
+	OverflowColumnHeaderVisibility *DashboardVisibility `json:"OverflowColumnHeaderVisibility,omitempty"`
+	VerticalOverflowVisibility     *DashboardVisibility `json:"VerticalOverflowVisibility,omitempty"`
 }
 
 type DashboardDataPathSort struct {
-	Direction *string                  `json:"Direction,omitempty"`
+	Direction *DashboardSortDirection  `json:"Direction,omitempty"`
 	SortPaths []DashboardDataPathValue `json:"SortPaths,omitempty"`
 }
 
@@ -6707,9 +6707,9 @@ type DashboardPivotTableSortConfiguration struct {
 }
 
 type DashboardTableBorderOptions struct {
-	Color     *string  `json:"Color,omitempty"`
-	Style     *string  `json:"Style,omitempty"`
-	Thickness *float64 `json:"Thickness,omitempty"`
+	Color     *string                    `json:"Color,omitempty"`
+	Style     *DashboardTableBorderStyle `json:"Style,omitempty"`
+	Thickness *float64                   `json:"Thickness,omitempty"`
 }
 
 type DashboardTableSideBorderOptions struct {
@@ -6731,37 +6731,37 @@ type DashboardTableCellStyle struct {
 	Border                  *DashboardGlobalTableBorderOptions `json:"Border,omitempty"`
 	FontConfiguration       *DashboardFontConfiguration        `json:"FontConfiguration,omitempty"`
 	Height                  *float64                           `json:"Height,omitempty"`
-	HorizontalTextAlignment *string                            `json:"HorizontalTextAlignment,omitempty"`
-	TextWrap                *string                            `json:"TextWrap,omitempty"`
-	VerticalTextAlignment   *string                            `json:"VerticalTextAlignment,omitempty"`
-	Visibility              *string                            `json:"Visibility,omitempty"`
+	HorizontalTextAlignment *DashboardHorizontalTextAlignment  `json:"HorizontalTextAlignment,omitempty"`
+	TextWrap                *DashboardTextWrap                 `json:"TextWrap,omitempty"`
+	VerticalTextAlignment   *DashboardVerticalTextAlignment    `json:"VerticalTextAlignment,omitempty"`
+	Visibility              *DashboardVisibility               `json:"Visibility,omitempty"`
 }
 
 type DashboardRowAlternateColorOptions struct {
-	RowAlternateColors        []string `json:"RowAlternateColors,omitempty"`
-	Status                    *string  `json:"Status,omitempty"`
-	UsePrimaryBackgroundColor *string  `json:"UsePrimaryBackgroundColor,omitempty"`
+	RowAlternateColors        []string               `json:"RowAlternateColors,omitempty"`
+	Status                    *DashboardWidgetStatus `json:"Status,omitempty"`
+	UsePrimaryBackgroundColor *DashboardWidgetStatus `json:"UsePrimaryBackgroundColor,omitempty"`
 }
 
 type DashboardPivotTableRowsLabelOptions struct {
-	CustomLabel *string `json:"CustomLabel,omitempty"`
-	Visibility  *string `json:"Visibility,omitempty"`
+	CustomLabel *string              `json:"CustomLabel,omitempty"`
+	Visibility  *DashboardVisibility `json:"Visibility,omitempty"`
 }
 
 type DashboardPivotTableOptions struct {
 	CellStyle                        *DashboardTableCellStyle             `json:"CellStyle,omitempty"`
-	CollapsedRowDimensionsVisibility *string                              `json:"CollapsedRowDimensionsVisibility,omitempty"`
+	CollapsedRowDimensionsVisibility *DashboardVisibility                 `json:"CollapsedRowDimensionsVisibility,omitempty"`
 	ColumnHeaderStyle                *DashboardTableCellStyle             `json:"ColumnHeaderStyle,omitempty"`
-	ColumnNamesVisibility            *string                              `json:"ColumnNamesVisibility,omitempty"`
+	ColumnNamesVisibility            *DashboardVisibility                 `json:"ColumnNamesVisibility,omitempty"`
 	DefaultCellWidth                 *string                              `json:"DefaultCellWidth,omitempty"`
-	MetricPlacement                  *string                              `json:"MetricPlacement,omitempty"`
+	MetricPlacement                  *DashboardPivotTableMetricPlacement  `json:"MetricPlacement,omitempty"`
 	RowAlternateColorOptions         *DashboardRowAlternateColorOptions   `json:"RowAlternateColorOptions,omitempty"`
 	RowFieldNamesStyle               *DashboardTableCellStyle             `json:"RowFieldNamesStyle,omitempty"`
 	RowHeaderStyle                   *DashboardTableCellStyle             `json:"RowHeaderStyle,omitempty"`
 	RowsLabelOptions                 *DashboardPivotTableRowsLabelOptions `json:"RowsLabelOptions,omitempty"`
-	RowsLayout                       *string                              `json:"RowsLayout,omitempty"`
-	SingleMetricVisibility           *string                              `json:"SingleMetricVisibility,omitempty"`
-	ToggleButtonsVisibility          *string                              `json:"ToggleButtonsVisibility,omitempty"`
+	RowsLayout                       *DashboardPivotTableRowsLayout       `json:"RowsLayout,omitempty"`
+	SingleMetricVisibility           *DashboardVisibility                 `json:"SingleMetricVisibility,omitempty"`
+	ToggleButtonsVisibility          *DashboardVisibility                 `json:"ToggleButtonsVisibility,omitempty"`
 }
 
 type DashboardPivotTableFieldSubtotalOptions struct {
@@ -6769,22 +6769,22 @@ type DashboardPivotTableFieldSubtotalOptions struct {
 }
 
 type DashboardTableStyleTarget struct {
-	CellType *string `json:"CellType,omitempty"`
+	CellType *DashboardStyledCellType `json:"CellType,omitempty"`
 }
 
 type DashboardSubtotalOptions struct {
 	CustomLabel           *string                                   `json:"CustomLabel,omitempty"`
-	FieldLevel            *string                                   `json:"FieldLevel,omitempty"`
+	FieldLevel            *DashboardPivotTableSubtotalLevel         `json:"FieldLevel,omitempty"`
 	FieldLevelOptions     []DashboardPivotTableFieldSubtotalOptions `json:"FieldLevelOptions,omitempty"`
 	MetricHeaderCellStyle *DashboardTableCellStyle                  `json:"MetricHeaderCellStyle,omitempty"`
 	StyleTargets          []DashboardTableStyleTarget               `json:"StyleTargets,omitempty"`
 	TotalCellStyle        *DashboardTableCellStyle                  `json:"TotalCellStyle,omitempty"`
-	TotalsVisibility      *string                                   `json:"TotalsVisibility,omitempty"`
+	TotalsVisibility      *DashboardVisibility                      `json:"TotalsVisibility,omitempty"`
 	ValueCellStyle        *DashboardTableCellStyle                  `json:"ValueCellStyle,omitempty"`
 }
 
 type DashboardTotalAggregationFunction struct {
-	SimpleTotalAggregationFunction *string `json:"SimpleTotalAggregationFunction,omitempty"`
+	SimpleTotalAggregationFunction *DashboardSimpleTotalAggregationFunction `json:"SimpleTotalAggregationFunction,omitempty"`
 }
 
 type DashboardTotalAggregationOption struct {
@@ -6795,11 +6795,11 @@ type DashboardTotalAggregationOption struct {
 type DashboardPivotTotalOptions struct {
 	CustomLabel             *string                           `json:"CustomLabel,omitempty"`
 	MetricHeaderCellStyle   *DashboardTableCellStyle          `json:"MetricHeaderCellStyle,omitempty"`
-	Placement               *string                           `json:"Placement,omitempty"`
-	ScrollStatus            *string                           `json:"ScrollStatus,omitempty"`
+	Placement               *DashboardTableTotalsPlacement    `json:"Placement,omitempty"`
+	ScrollStatus            *DashboardTableTotalsScrollStatus `json:"ScrollStatus,omitempty"`
 	TotalAggregationOptions []DashboardTotalAggregationOption `json:"TotalAggregationOptions,omitempty"`
 	TotalCellStyle          *DashboardTableCellStyle          `json:"TotalCellStyle,omitempty"`
-	TotalsVisibility        *string                           `json:"TotalsVisibility,omitempty"`
+	TotalsVisibility        *DashboardVisibility              `json:"TotalsVisibility,omitempty"`
 	ValueCellStyle          *DashboardTableCellStyle          `json:"ValueCellStyle,omitempty"`
 }
 
@@ -6821,7 +6821,7 @@ type DashboardPivotTableConfiguration struct {
 }
 
 type DashboardPivotTableConditionalFormattingScope struct {
-	Role *string `json:"Role,omitempty"`
+	Role *DashboardPivotTableConditionalFormattingScopeRole `json:"Role,omitempty"`
 }
 
 type DashboardTextConditionalFormat struct {
@@ -6856,10 +6856,10 @@ type DashboardPivotTableVisual struct {
 }
 
 type DashboardPluginVisualFieldWell struct {
-	AxisName     *string                      `json:"AxisName,omitempty"`
-	Dimensions   []DashboardDimensionField    `json:"Dimensions,omitempty"`
-	Measures     []DashboardMeasureField      `json:"Measures,omitempty"`
-	Unaggregated []DashboardUnaggregatedField `json:"Unaggregated,omitempty"`
+	AxisName     *DashboardPluginVisualAxisName `json:"AxisName,omitempty"`
+	Dimensions   []DashboardDimensionField      `json:"Dimensions,omitempty"`
+	Measures     []DashboardMeasureField        `json:"Measures,omitempty"`
+	Unaggregated []DashboardUnaggregatedField   `json:"Unaggregated,omitempty"`
 }
 
 type DashboardPluginVisualItemsLimitConfiguration struct {
@@ -6900,7 +6900,7 @@ type DashboardPluginVisual struct {
 }
 
 type DashboardRadarChartAreaStyleSettings struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *DashboardVisibility `json:"Visibility,omitempty"`
 }
 
 type DashboardRadarChartSeriesSettings struct {
@@ -6925,10 +6925,10 @@ type DashboardRadarChartSortConfiguration struct {
 }
 
 type DashboardRadarChartConfiguration struct {
-	AlternateBandColorsVisibility *string                               `json:"AlternateBandColorsVisibility,omitempty"`
+	AlternateBandColorsVisibility *DashboardVisibility                  `json:"AlternateBandColorsVisibility,omitempty"`
 	AlternateBandEvenColor        *string                               `json:"AlternateBandEvenColor,omitempty"`
 	AlternateBandOddColor         *string                               `json:"AlternateBandOddColor,omitempty"`
-	AxesRangeScale                *string                               `json:"AxesRangeScale,omitempty"`
+	AxesRangeScale                *DashboardRadarChartAxesRangeScale    `json:"AxesRangeScale,omitempty"`
 	BaseSeriesSettings            *DashboardRadarChartSeriesSettings    `json:"BaseSeriesSettings,omitempty"`
 	CategoryAxis                  *DashboardAxisDisplayOptions          `json:"CategoryAxis,omitempty"`
 	CategoryLabelOptions          *DashboardChartAxisLabelOptions       `json:"CategoryLabelOptions,omitempty"`
@@ -6937,7 +6937,7 @@ type DashboardRadarChartConfiguration struct {
 	FieldWells                    *DashboardRadarChartFieldWells        `json:"FieldWells,omitempty"`
 	Interactions                  *DashboardVisualInteractionOptions    `json:"Interactions,omitempty"`
 	Legend                        *DashboardLegendOptions               `json:"Legend,omitempty"`
-	Shape                         *string                               `json:"Shape,omitempty"`
+	Shape                         *DashboardRadarChartShape             `json:"Shape,omitempty"`
 	SortConfiguration             *DashboardRadarChartSortConfiguration `json:"SortConfiguration,omitempty"`
 	StartAngle                    *float64                              `json:"StartAngle,omitempty"`
 	VisualPalette                 *DashboardVisualPalette               `json:"VisualPalette,omitempty"`
@@ -7039,7 +7039,7 @@ type DashboardTablePinnedFieldOptions struct {
 }
 
 type DashboardTableCellImageSizingConfiguration struct {
-	TableCellImageScalingConfiguration *string `json:"TableCellImageScalingConfiguration,omitempty"`
+	TableCellImageScalingConfiguration *DashboardTableCellImageScalingConfiguration `json:"TableCellImageScalingConfiguration,omitempty"`
 }
 
 type DashboardTableFieldImageConfiguration struct {
@@ -7047,7 +7047,7 @@ type DashboardTableFieldImageConfiguration struct {
 }
 
 type DashboardTableFieldCustomIconContent struct {
-	Icon *string `json:"Icon,omitempty"`
+	Icon *DashboardTableFieldIconSetType `json:"Icon,omitempty"`
 }
 
 type DashboardTableFieldCustomTextContent struct {
@@ -7062,7 +7062,7 @@ type DashboardTableFieldLinkContentConfiguration struct {
 
 type DashboardTableFieldLinkConfiguration struct {
 	Content *DashboardTableFieldLinkContentConfiguration `json:"Content,omitempty"`
-	Target  *string                                      `json:"Target,omitempty"`
+	Target  *DashboardURLTargetConfiguration             `json:"Target,omitempty"`
 }
 
 type DashboardTableFieldURLConfiguration struct {
@@ -7074,14 +7074,14 @@ type DashboardTableFieldOption struct {
 	CustomLabel *string                              `json:"CustomLabel,omitempty"`
 	FieldId     *string                              `json:"FieldId,omitempty"`
 	URLStyling  *DashboardTableFieldURLConfiguration `json:"URLStyling,omitempty"`
-	Visibility  *string                              `json:"Visibility,omitempty"`
+	Visibility  *DashboardVisibility                 `json:"Visibility,omitempty"`
 	Width       *string                              `json:"Width,omitempty"`
 }
 
 type DashboardTransposedTableOption struct {
-	ColumnIndex *float64 `json:"ColumnIndex,omitempty"`
-	ColumnType  *string  `json:"ColumnType,omitempty"`
-	ColumnWidth *string  `json:"ColumnWidth,omitempty"`
+	ColumnIndex *float64                       `json:"ColumnIndex,omitempty"`
+	ColumnType  *DashboardTransposedColumnType `json:"ColumnType,omitempty"`
+	ColumnWidth *string                        `json:"ColumnWidth,omitempty"`
 }
 
 type DashboardTableFieldOptions struct {
@@ -7106,8 +7106,8 @@ type DashboardTableFieldWells struct {
 }
 
 type DashboardTablePaginatedReportOptions struct {
-	OverflowColumnHeaderVisibility *string `json:"OverflowColumnHeaderVisibility,omitempty"`
-	VerticalOverflowVisibility     *string `json:"VerticalOverflowVisibility,omitempty"`
+	OverflowColumnHeaderVisibility *DashboardVisibility `json:"OverflowColumnHeaderVisibility,omitempty"`
+	VerticalOverflowVisibility     *DashboardVisibility `json:"VerticalOverflowVisibility,omitempty"`
 }
 
 type DashboardTableSortConfiguration struct {
@@ -7128,17 +7128,17 @@ type DashboardTableInlineVisualization struct {
 type DashboardTableOptions struct {
 	CellStyle                *DashboardTableCellStyle           `json:"CellStyle,omitempty"`
 	HeaderStyle              *DashboardTableCellStyle           `json:"HeaderStyle,omitempty"`
-	Orientation              *string                            `json:"Orientation,omitempty"`
+	Orientation              *DashboardTableOrientation         `json:"Orientation,omitempty"`
 	RowAlternateColorOptions *DashboardRowAlternateColorOptions `json:"RowAlternateColorOptions,omitempty"`
 }
 
 type DashboardTotalOptions struct {
 	CustomLabel             *string                           `json:"CustomLabel,omitempty"`
-	Placement               *string                           `json:"Placement,omitempty"`
-	ScrollStatus            *string                           `json:"ScrollStatus,omitempty"`
+	Placement               *DashboardTableTotalsPlacement    `json:"Placement,omitempty"`
+	ScrollStatus            *DashboardTableTotalsScrollStatus `json:"ScrollStatus,omitempty"`
 	TotalAggregationOptions []DashboardTotalAggregationOption `json:"TotalAggregationOptions,omitempty"`
 	TotalCellStyle          *DashboardTableCellStyle          `json:"TotalCellStyle,omitempty"`
-	TotalsVisibility        *string                           `json:"TotalsVisibility,omitempty"`
+	TotalsVisibility        *DashboardVisibility              `json:"TotalsVisibility,omitempty"`
 }
 
 type DashboardTableConfiguration struct {
@@ -7288,12 +7288,12 @@ type DashboardWordCloudSortConfiguration struct {
 }
 
 type DashboardWordCloudOptions struct {
-	CloudLayout         *string  `json:"CloudLayout,omitempty"`
-	MaximumStringLength *float64 `json:"MaximumStringLength,omitempty"`
-	WordCasing          *string  `json:"WordCasing,omitempty"`
-	WordOrientation     *string  `json:"WordOrientation,omitempty"`
-	WordPadding         *string  `json:"WordPadding,omitempty"`
-	WordScaling         *string  `json:"WordScaling,omitempty"`
+	CloudLayout         *DashboardWordCloudCloudLayout     `json:"CloudLayout,omitempty"`
+	MaximumStringLength *float64                           `json:"MaximumStringLength,omitempty"`
+	WordCasing          *DashboardWordCloudWordCasing      `json:"WordCasing,omitempty"`
+	WordOrientation     *DashboardWordCloudWordOrientation `json:"WordOrientation,omitempty"`
+	WordPadding         *DashboardWordCloudWordPadding     `json:"WordPadding,omitempty"`
+	WordScaling         *DashboardWordCloudWordScaling     `json:"WordScaling,omitempty"`
 }
 
 type DashboardWordCloudChartConfiguration struct {
@@ -7343,7 +7343,7 @@ type DashboardVisual struct {
 }
 
 type DashboardSheetDefinition struct {
-	ContentType         *string                       `json:"ContentType,omitempty"`
+	ContentType         *DashboardSheetContentType    `json:"ContentType,omitempty"`
 	Description         *string                       `json:"Description,omitempty"`
 	FilterControls      []DashboardFilterControl      `json:"FilterControls,omitempty"`
 	Images              []DashboardSheetImage         `json:"Images,omitempty"`
@@ -7455,7 +7455,7 @@ type DashboardTag struct {
 }
 
 type DashboardValidationStrategy struct {
-	Mode *string `json:"Mode,omitempty"`
+	Mode *DashboardValidationStrategyMode `json:"Mode,omitempty"`
 }
 
 type DashboardEntity struct {
@@ -7463,9 +7463,9 @@ type DashboardEntity struct {
 }
 
 type DashboardError struct {
-	Message          *string           `json:"Message,omitempty"`
-	Type             *string           `json:"Type,omitempty"`
-	ViolatedEntities []DashboardEntity `json:"ViolatedEntities,omitempty"`
+	Message          *string             `json:"Message,omitempty"`
+	Type             *DashboardErrorType `json:"Type,omitempty"`
+	ViolatedEntities []DashboardEntity   `json:"ViolatedEntities,omitempty"`
 }
 
 type DashboardSheet struct {
@@ -7474,16 +7474,16 @@ type DashboardSheet struct {
 }
 
 type DashboardVersion struct {
-	Arn             *string          `json:"Arn,omitempty"`
-	CreatedTime     *string          `json:"CreatedTime,omitempty"`
-	DataSetArns     []string         `json:"DataSetArns,omitempty"`
-	Description     *string          `json:"Description,omitempty"`
-	Errors          []DashboardError `json:"Errors,omitempty"`
-	Sheets          []DashboardSheet `json:"Sheets,omitempty"`
-	SourceEntityArn *string          `json:"SourceEntityArn,omitempty"`
-	Status          *string          `json:"Status,omitempty"`
-	ThemeArn        *string          `json:"ThemeArn,omitempty"`
-	VersionNumber   *float64         `json:"VersionNumber,omitempty"`
+	Arn             *string                  `json:"Arn,omitempty"`
+	CreatedTime     *string                  `json:"CreatedTime,omitempty"`
+	DataSetArns     []string                 `json:"DataSetArns,omitempty"`
+	Description     *string                  `json:"Description,omitempty"`
+	Errors          []DashboardError         `json:"Errors,omitempty"`
+	Sheets          []DashboardSheet         `json:"Sheets,omitempty"`
+	SourceEntityArn *string                  `json:"SourceEntityArn,omitempty"`
+	Status          *DashboardResourceStatus `json:"Status,omitempty"`
+	ThemeArn        *string                  `json:"ThemeArn,omitempty"`
+	VersionNumber   *float64                 `json:"VersionNumber,omitempty"`
 }
 
 type Dashboard struct {
@@ -7512,9 +7512,9 @@ type Dashboard struct {
 func (Dashboard) CloudControlType() string { return "AWS::QuickSight::Dashboard" }
 
 type GeoSpatialColumnGroup struct {
-	Columns     []string `json:"Columns,omitempty"`
-	CountryCode *string  `json:"CountryCode,omitempty"`
-	Name        *string  `json:"Name,omitempty"`
+	Columns     []string               `json:"Columns,omitempty"`
+	CountryCode *GeoSpatialCountryCode `json:"CountryCode,omitempty"`
+	Name        *string                `json:"Name,omitempty"`
 }
 
 type ColumnGroup struct {
@@ -7536,10 +7536,10 @@ type DestinationTable struct {
 }
 
 type InputColumn struct {
-	Id      *string `json:"Id,omitempty"`
-	Name    *string `json:"Name,omitempty"`
-	SubType *string `json:"SubType,omitempty"`
-	Type    *string `json:"Type,omitempty"`
+	Id      *string              `json:"Id,omitempty"`
+	Name    *string              `json:"Name,omitempty"`
+	SubType *ColumnDataSubType   `json:"SubType,omitempty"`
+	Type    *InputColumnDataType `json:"Type,omitempty"`
 }
 
 type ParentDataSet struct {
@@ -7564,8 +7564,8 @@ type DataPrepPercentileAggregationFunction struct {
 }
 
 type DataPrepSimpleAggregationFunction struct {
-	FunctionType    *string `json:"FunctionType,omitempty"`
-	InputColumnName *string `json:"InputColumnName,omitempty"`
+	FunctionType    *DataPrepSimpleAggregationFunctionType `json:"FunctionType,omitempty"`
+	InputColumnName *string                                `json:"InputColumnName,omitempty"`
 }
 
 type DataPrepAggregationFunction struct {
@@ -7610,10 +7610,10 @@ type AppendOperation struct {
 }
 
 type CastColumnTypeOperation struct {
-	ColumnName    *string `json:"ColumnName,omitempty"`
-	Format        *string `json:"Format,omitempty"`
-	NewColumnType *string `json:"NewColumnType,omitempty"`
-	SubType       *string `json:"SubType,omitempty"`
+	ColumnName    *string            `json:"ColumnName,omitempty"`
+	Format        *string            `json:"Format,omitempty"`
+	NewColumnType *ColumnDataType    `json:"NewColumnType,omitempty"`
+	SubType       *ColumnDataSubType `json:"SubType,omitempty"`
 }
 
 type CastColumnTypesOperation struct {
@@ -7639,8 +7639,8 @@ type DataSetDateFilterValue struct {
 }
 
 type DataSetDateComparisonFilterCondition struct {
-	Operator *string                 `json:"Operator,omitempty"`
-	Value    *DataSetDateFilterValue `json:"Value,omitempty"`
+	Operator *DataSetDateComparisonFilterOperator `json:"Operator,omitempty"`
+	Value    *DataSetDateFilterValue              `json:"Value,omitempty"`
 }
 
 type DataSetDateRangeFilterCondition struct {
@@ -7661,8 +7661,8 @@ type DataSetNumericFilterValue struct {
 }
 
 type DataSetNumericComparisonFilterCondition struct {
-	Operator *string                    `json:"Operator,omitempty"`
-	Value    *DataSetNumericFilterValue `json:"Value,omitempty"`
+	Operator *DataSetNumericComparisonFilterOperator `json:"Operator,omitempty"`
+	Value    *DataSetNumericFilterValue              `json:"Value,omitempty"`
 }
 
 type DataSetNumericRangeFilterCondition struct {
@@ -7683,8 +7683,8 @@ type DataSetStringFilterValue struct {
 }
 
 type DataSetStringComparisonFilterCondition struct {
-	Operator *string                   `json:"Operator,omitempty"`
-	Value    *DataSetStringFilterValue `json:"Value,omitempty"`
+	Operator *DataSetStringComparisonFilterOperator `json:"Operator,omitempty"`
+	Value    *DataSetStringFilterValue              `json:"Value,omitempty"`
 }
 
 type DataSetStringListFilterValue struct {
@@ -7692,8 +7692,8 @@ type DataSetStringListFilterValue struct {
 }
 
 type DataSetStringListFilterCondition struct {
-	Operator *string                       `json:"Operator,omitempty"`
-	Values   *DataSetStringListFilterValue `json:"Values,omitempty"`
+	Operator *DataSetStringListFilterOperator `json:"Operator,omitempty"`
+	Values   *DataSetStringListFilterValue    `json:"Values,omitempty"`
 }
 
 type DataSetStringFilterCondition struct {
@@ -7741,7 +7741,7 @@ type JoinOperation struct {
 	OnClause               *string                   `json:"OnClause,omitempty"`
 	RightOperand           *TransformOperationSource `json:"RightOperand,omitempty"`
 	RightOperandProperties *JoinOperandProperties    `json:"RightOperandProperties,omitempty"`
-	Type                   *string                   `json:"Type,omitempty"`
+	Type                   *JoinOperationType        `json:"Type,omitempty"`
 }
 
 type PivotedLabel struct {
@@ -7820,7 +7820,7 @@ type DataPrepConfiguration struct {
 }
 
 type RefreshFailureEmailAlert struct {
-	AlertStatus *string `json:"AlertStatus,omitempty"`
+	AlertStatus *RefreshFailureAlertStatus `json:"AlertStatus,omitempty"`
 }
 
 type RefreshFailureConfiguration struct {
@@ -7828,9 +7828,9 @@ type RefreshFailureConfiguration struct {
 }
 
 type LookbackWindow struct {
-	ColumnName *string  `json:"ColumnName,omitempty"`
-	Size       *float64 `json:"Size,omitempty"`
-	SizeUnit   *string  `json:"SizeUnit,omitempty"`
+	ColumnName *string                 `json:"ColumnName,omitempty"`
+	Size       *float64                `json:"Size,omitempty"`
+	SizeUnit   *LookbackWindowSizeUnit `json:"SizeUnit,omitempty"`
 }
 
 type IncrementalRefresh struct {
@@ -7859,8 +7859,8 @@ type DateTimeDatasetParameter struct {
 	DefaultValues   *DateTimeDatasetParameterDefaultValues `json:"DefaultValues,omitempty"`
 	Id              *string                                `json:"Id,omitempty"`
 	Name            *string                                `json:"Name,omitempty"`
-	TimeGranularity *string                                `json:"TimeGranularity,omitempty"`
-	ValueType       *string                                `json:"ValueType,omitempty"`
+	TimeGranularity *DataSetTimeGranularity                `json:"TimeGranularity,omitempty"`
+	ValueType       *DatasetParameterValueType             `json:"ValueType,omitempty"`
 }
 
 type DecimalDatasetParameterDefaultValues struct {
@@ -7871,7 +7871,7 @@ type DecimalDatasetParameter struct {
 	DefaultValues *DecimalDatasetParameterDefaultValues `json:"DefaultValues,omitempty"`
 	Id            *string                               `json:"Id,omitempty"`
 	Name          *string                               `json:"Name,omitempty"`
-	ValueType     *string                               `json:"ValueType,omitempty"`
+	ValueType     *DatasetParameterValueType            `json:"ValueType,omitempty"`
 }
 
 type IntegerDatasetParameterDefaultValues struct {
@@ -7882,7 +7882,7 @@ type IntegerDatasetParameter struct {
 	DefaultValues *IntegerDatasetParameterDefaultValues `json:"DefaultValues,omitempty"`
 	Id            *string                               `json:"Id,omitempty"`
 	Name          *string                               `json:"Name,omitempty"`
-	ValueType     *string                               `json:"ValueType,omitempty"`
+	ValueType     *DatasetParameterValueType            `json:"ValueType,omitempty"`
 }
 
 type StringDatasetParameterDefaultValues struct {
@@ -7893,7 +7893,7 @@ type StringDatasetParameter struct {
 	DefaultValues *StringDatasetParameterDefaultValues `json:"DefaultValues,omitempty"`
 	Id            *string                              `json:"Id,omitempty"`
 	Name          *string                              `json:"Name,omitempty"`
-	ValueType     *string                              `json:"ValueType,omitempty"`
+	ValueType     *DatasetParameterValueType           `json:"ValueType,omitempty"`
 }
 
 type DatasetParameter struct {
@@ -7931,8 +7931,8 @@ type ColumnDescription struct {
 }
 
 type ColumnTag struct {
-	ColumnDescription    *ColumnDescription `json:"ColumnDescription,omitempty"`
-	ColumnGeographicRole *string            `json:"ColumnGeographicRole,omitempty"`
+	ColumnDescription    *ColumnDescription  `json:"ColumnDescription,omitempty"`
+	ColumnGeographicRole *GeoSpatialDataRole `json:"ColumnGeographicRole,omitempty"`
 }
 
 type TagColumnOperation struct {
@@ -7941,8 +7941,8 @@ type TagColumnOperation struct {
 }
 
 type UntagColumnOperation struct {
-	ColumnName *string  `json:"ColumnName,omitempty"`
-	TagNames   []string `json:"TagNames,omitempty"`
+	ColumnName *string         `json:"ColumnName,omitempty"`
+	TagNames   []ColumnTagName `json:"TagNames,omitempty"`
 }
 
 type TransformOperation struct {
@@ -7966,7 +7966,7 @@ type JoinInstruction struct {
 	OnClause               *string            `json:"OnClause,omitempty"`
 	RightJoinKeyProperties *JoinKeyProperties `json:"RightJoinKeyProperties,omitempty"`
 	RightOperand           *string            `json:"RightOperand,omitempty"`
-	Type                   *string            `json:"Type,omitempty"`
+	Type                   *JoinType          `json:"Type,omitempty"`
 }
 
 type LogicalTableSource struct {
@@ -7982,11 +7982,11 @@ type LogicalTable struct {
 }
 
 type OutputColumn struct {
-	Description *string `json:"Description,omitempty"`
-	Id          *string `json:"Id,omitempty"`
-	Name        *string `json:"Name,omitempty"`
-	SubType     *string `json:"SubType,omitempty"`
-	Type        *string `json:"Type,omitempty"`
+	Description *string            `json:"Description,omitempty"`
+	Id          *string            `json:"Id,omitempty"`
+	Name        *string            `json:"Name,omitempty"`
+	SubType     *ColumnDataSubType `json:"SubType,omitempty"`
+	Type        *ColumnDataType    `json:"Type,omitempty"`
 }
 
 type UniqueKey struct {
@@ -8018,11 +8018,11 @@ type RelationalTable struct {
 }
 
 type UploadSettings struct {
-	ContainsHeader *bool    `json:"ContainsHeader,omitempty"`
-	Delimiter      *string  `json:"Delimiter,omitempty"`
-	Format         *string  `json:"Format,omitempty"`
-	StartFromRow   *float64 `json:"StartFromRow,omitempty"`
-	TextQualifier  *string  `json:"TextQualifier,omitempty"`
+	ContainsHeader *bool          `json:"ContainsHeader,omitempty"`
+	Delimiter      *string        `json:"Delimiter,omitempty"`
+	Format         *FileFormat    `json:"Format,omitempty"`
+	StartFromRow   *float64       `json:"StartFromRow,omitempty"`
+	TextQualifier  *TextQualifier `json:"TextQualifier,omitempty"`
 }
 
 type S3Source struct {
@@ -8050,11 +8050,11 @@ type PhysicalTable struct {
 }
 
 type RowLevelPermissionDataSet struct {
-	Arn              *string `json:"Arn,omitempty"`
-	FormatVersion    *string `json:"FormatVersion,omitempty"`
-	Namespace        *string `json:"Namespace,omitempty"`
-	PermissionPolicy *string `json:"PermissionPolicy,omitempty"`
-	Status           *string `json:"Status,omitempty"`
+	Arn              *string                          `json:"Arn,omitempty"`
+	FormatVersion    *RowLevelPermissionFormatVersion `json:"FormatVersion,omitempty"`
+	Namespace        *string                          `json:"Namespace,omitempty"`
+	PermissionPolicy *RowLevelPermissionPolicy        `json:"PermissionPolicy,omitempty"`
+	Status           *Status                          `json:"Status,omitempty"`
 }
 
 type RowLevelPermissionTagRule struct {
@@ -8065,7 +8065,7 @@ type RowLevelPermissionTagRule struct {
 }
 
 type RowLevelPermissionTagConfiguration struct {
-	Status                *string                     `json:"Status,omitempty"`
+	Status                *Status                     `json:"Status,omitempty"`
 	TagRuleConfigurations [][]string                  `json:"TagRuleConfigurations,omitempty"`
 	TagRules              []RowLevelPermissionTagRule `json:"TagRules,omitempty"`
 }
@@ -8102,7 +8102,7 @@ type AdditionalNotes struct {
 }
 
 type ColumnSemanticType struct {
-	GeographicalRole *string `json:"GeographicalRole,omitempty"`
+	GeographicalRole *GeoSpatialDataRole `json:"GeographicalRole,omitempty"`
 }
 
 type ColumnSemanticProperty struct {
@@ -8151,7 +8151,7 @@ type DataSet struct {
 	DatasetParameters                  []DatasetParameter                  `json:"DatasetParameters,omitempty"`
 	FieldFolders                       map[string]FieldFolder              `json:"FieldFolders,omitempty"`
 	FolderArns                         []string                            `json:"FolderArns,omitempty"`
-	ImportMode                         *string                             `json:"ImportMode,omitempty"`
+	ImportMode                         *DataSetImportMode                  `json:"ImportMode,omitempty"`
 	IngestionWaitPolicy                *IngestionWaitPolicy                `json:"IngestionWaitPolicy,omitempty"`
 	LastUpdatedTime                    *string                             `json:"LastUpdatedTime,omitempty"`
 	LogicalTableMap                    map[string]LogicalTable             `json:"LogicalTableMap,omitempty"`
@@ -8164,7 +8164,7 @@ type DataSet struct {
 	RowLevelPermissionTagConfiguration *RowLevelPermissionTagConfiguration `json:"RowLevelPermissionTagConfiguration,omitempty"`
 	SemanticModelConfiguration         *SemanticModelConfiguration         `json:"SemanticModelConfiguration,omitempty"`
 	Tags                               []DataSetTag                        `json:"Tags,omitempty"`
-	UseAs                              *string                             `json:"UseAs,omitempty"`
+	UseAs                              *DataSetUseAs                       `json:"UseAs,omitempty"`
 }
 
 func (DataSet) CloudControlType() string { return "AWS::QuickSight::DataSet" }
@@ -8283,12 +8283,12 @@ type OAuthParameters struct {
 }
 
 type SnowflakeParameters struct {
-	AuthenticationType        *string          `json:"AuthenticationType,omitempty"`
-	Database                  *string          `json:"Database,omitempty"`
-	DatabaseAccessControlRole *string          `json:"DatabaseAccessControlRole,omitempty"`
-	Host                      *string          `json:"Host,omitempty"`
-	OAuthParameters           *OAuthParameters `json:"OAuthParameters,omitempty"`
-	Warehouse                 *string          `json:"Warehouse,omitempty"`
+	AuthenticationType        *AuthenticationType `json:"AuthenticationType,omitempty"`
+	Database                  *string             `json:"Database,omitempty"`
+	DatabaseAccessControlRole *string             `json:"DatabaseAccessControlRole,omitempty"`
+	Host                      *string             `json:"Host,omitempty"`
+	OAuthParameters           *OAuthParameters    `json:"OAuthParameters,omitempty"`
+	Warehouse                 *string             `json:"Warehouse,omitempty"`
 }
 
 type SparkParameters struct {
@@ -8303,13 +8303,13 @@ type SqlServerParameters struct {
 }
 
 type StarburstParameters struct {
-	AuthenticationType        *string          `json:"AuthenticationType,omitempty"`
-	Catalog                   *string          `json:"Catalog,omitempty"`
-	DatabaseAccessControlRole *string          `json:"DatabaseAccessControlRole,omitempty"`
-	Host                      *string          `json:"Host,omitempty"`
-	OAuthParameters           *OAuthParameters `json:"OAuthParameters,omitempty"`
-	Port                      *float64         `json:"Port,omitempty"`
-	ProductType               *string          `json:"ProductType,omitempty"`
+	AuthenticationType        *AuthenticationType   `json:"AuthenticationType,omitempty"`
+	Catalog                   *string               `json:"Catalog,omitempty"`
+	DatabaseAccessControlRole *string               `json:"DatabaseAccessControlRole,omitempty"`
+	Host                      *string               `json:"Host,omitempty"`
+	OAuthParameters           *OAuthParameters      `json:"OAuthParameters,omitempty"`
+	Port                      *float64              `json:"Port,omitempty"`
+	ProductType               *StarburstProductType `json:"ProductType,omitempty"`
 }
 
 type TeradataParameters struct {
@@ -8368,8 +8368,8 @@ type DataSourceCredentials struct {
 }
 
 type DataSourceErrorInfo struct {
-	Message *string `json:"Message,omitempty"`
-	Type    *string `json:"Type,omitempty"`
+	Message *string                  `json:"Message,omitempty"`
+	Type    *DataSourceErrorInfoType `json:"Type,omitempty"`
 }
 
 type DataSourceResourcePermission struct {
@@ -8401,9 +8401,9 @@ type DataSource struct {
 	Name                          *string                        `json:"Name,omitempty"`
 	Permissions                   []DataSourceResourcePermission `json:"Permissions,omitempty"`
 	SslProperties                 *SslProperties                 `json:"SslProperties,omitempty"`
-	Status                        *string                        `json:"Status,omitempty"`
+	Status                        *DataSourceResourceStatus      `json:"Status,omitempty"`
 	Tags                          []DataSourceTag                `json:"Tags,omitempty"`
-	Type                          *string                        `json:"Type,omitempty"`
+	Type                          *DataSourceType                `json:"Type,omitempty"`
 	VpcConnectionProperties       *VpcConnectionProperties       `json:"VpcConnectionProperties,omitempty"`
 }
 
@@ -8429,7 +8429,7 @@ type Flow struct {
 	LastUpdatedTime *string            `json:"LastUpdatedTime,omitempty"`
 	Name            *string            `json:"Name,omitempty"`
 	Permissions     []Permission       `json:"Permissions,omitempty"`
-	PublishState    *string            `json:"PublishState,omitempty"`
+	PublishState    *FlowPublishState  `json:"PublishState,omitempty"`
 	StepAliases     []StepAliasMapping `json:"StepAliases,omitempty"`
 }
 
@@ -8450,12 +8450,12 @@ type Folder struct {
 	AwsAccountId    *string                    `json:"AwsAccountId,omitempty"`
 	CreatedTime     *string                    `json:"CreatedTime,omitempty"`
 	FolderId        *string                    `json:"FolderId,omitempty"`
-	FolderType      *string                    `json:"FolderType,omitempty"`
+	FolderType      *FolderType                `json:"FolderType,omitempty"`
 	LastUpdatedTime *string                    `json:"LastUpdatedTime,omitempty"`
 	Name            *string                    `json:"Name,omitempty"`
 	ParentFolderArn *string                    `json:"ParentFolderArn,omitempty"`
 	Permissions     []FolderResourcePermission `json:"Permissions,omitempty"`
-	SharingModel    *string                    `json:"SharingModel,omitempty"`
+	SharingModel    *SharingModel              `json:"SharingModel,omitempty"`
 	Tags            []FolderTag                `json:"Tags,omitempty"`
 }
 
@@ -8474,16 +8474,16 @@ type KnowledgeBaseConfiguration struct {
 }
 
 type AudioExtractionConfiguration struct {
-	AudioExtractionStatus *string `json:"AudioExtractionStatus,omitempty"`
+	AudioExtractionStatus *AudioExtractionStatus `json:"AudioExtractionStatus,omitempty"`
 }
 
 type ImageExtractionConfiguration struct {
-	ImageExtractionStatus *string `json:"ImageExtractionStatus,omitempty"`
+	ImageExtractionStatus *ImageExtractionStatus `json:"ImageExtractionStatus,omitempty"`
 }
 
 type VideoExtractionConfiguration struct {
-	VideoExtractionStatus *string `json:"VideoExtractionStatus,omitempty"`
-	VideoExtractionType   *string `json:"VideoExtractionType,omitempty"`
+	VideoExtractionStatus *VideoExtractionStatus `json:"VideoExtractionStatus,omitempty"`
+	VideoExtractionType   *VideoExtractionType   `json:"VideoExtractionType,omitempty"`
 }
 
 type MediaExtractionConfiguration struct {
@@ -8520,7 +8520,7 @@ type KnowledgeBase struct {
 	Permissions                                  []KnowledgeBaseResourcePermission `json:"Permissions,omitempty"`
 	PrimaryOwnerArn                              *string                           `json:"PrimaryOwnerArn,omitempty"`
 	PrimaryOwnerUsername                         *string                           `json:"PrimaryOwnerUsername,omitempty"`
-	Status                                       *string                           `json:"Status,omitempty"`
+	Status                                       *DataSetStatus                    `json:"Status,omitempty"`
 	Tags                                         []KnowledgeBaseTag                `json:"Tags,omitempty"`
 	Type                                         *string                           `json:"Type,omitempty"`
 	UpdatedAt                                    *string                           `json:"UpdatedAt,omitempty"`
@@ -8538,20 +8538,20 @@ type OAuthClientApplicationTag struct {
 }
 
 type OAuthClientApplication struct {
-	Arn                                     *string                                  `json:"Arn,omitempty"`
-	ClientId                                *string                                  `json:"ClientId,omitempty"`
-	ClientSecret                            *string                                  `json:"ClientSecret,omitempty"`
-	CreatedTime                             *string                                  `json:"CreatedTime,omitempty"`
-	DataSourceType                          *string                                  `json:"DataSourceType,omitempty"`
-	IdentityProviderVpcConnectionProperties *IdentityProviderVpcConnectionProperties `json:"IdentityProviderVpcConnectionProperties,omitempty"`
-	LastUpdatedTime                         *string                                  `json:"LastUpdatedTime,omitempty"`
-	Name                                    *string                                  `json:"Name,omitempty"`
-	OAuthAuthorizationEndpointUrl           *string                                  `json:"OAuthAuthorizationEndpointUrl,omitempty"`
-	OAuthClientApplicationId                *string                                  `json:"OAuthClientApplicationId,omitempty"`
-	OAuthClientAuthenticationType           *string                                  `json:"OAuthClientAuthenticationType,omitempty"`
-	OAuthScopes                             *string                                  `json:"OAuthScopes,omitempty"`
-	OAuthTokenEndpointUrl                   *string                                  `json:"OAuthTokenEndpointUrl,omitempty"`
-	Tags                                    []OAuthClientApplicationTag              `json:"Tags,omitempty"`
+	Arn                                     *string                                              `json:"Arn,omitempty"`
+	ClientId                                *string                                              `json:"ClientId,omitempty"`
+	ClientSecret                            *string                                              `json:"ClientSecret,omitempty"`
+	CreatedTime                             *string                                              `json:"CreatedTime,omitempty"`
+	DataSourceType                          *OAuthClientApplicationDataSourceType                `json:"DataSourceType,omitempty"`
+	IdentityProviderVpcConnectionProperties *IdentityProviderVpcConnectionProperties             `json:"IdentityProviderVpcConnectionProperties,omitempty"`
+	LastUpdatedTime                         *string                                              `json:"LastUpdatedTime,omitempty"`
+	Name                                    *string                                              `json:"Name,omitempty"`
+	OAuthAuthorizationEndpointUrl           *string                                              `json:"OAuthAuthorizationEndpointUrl,omitempty"`
+	OAuthClientApplicationId                *string                                              `json:"OAuthClientApplicationId,omitempty"`
+	OAuthClientAuthenticationType           *OAuthClientApplicationOAuthClientAuthenticationType `json:"OAuthClientAuthenticationType,omitempty"`
+	OAuthScopes                             *string                                              `json:"OAuthScopes,omitempty"`
+	OAuthTokenEndpointUrl                   *string                                              `json:"OAuthTokenEndpointUrl,omitempty"`
+	Tags                                    []OAuthClientApplicationTag                          `json:"Tags,omitempty"`
 }
 
 func (OAuthClientApplication) CloudControlType() string {
@@ -8559,19 +8559,19 @@ func (OAuthClientApplication) CloudControlType() string {
 }
 
 type RefreshScheduleMapScheduleFrequencyRefreshOnDay struct {
-	DayOfMonth *string `json:"DayOfMonth,omitempty"`
-	DayOfWeek  *string `json:"DayOfWeek,omitempty"`
+	DayOfMonth *string                                                   `json:"DayOfMonth,omitempty"`
+	DayOfWeek  *RefreshScheduleMapScheduleFrequencyRefreshOnDayDayOfWeek `json:"DayOfWeek,omitempty"`
 }
 
 type RefreshScheduleMapScheduleFrequency struct {
-	Interval     *string                                          `json:"Interval,omitempty"`
+	Interval     *RefreshScheduleMapScheduleFrequencyInterval     `json:"Interval,omitempty"`
 	RefreshOnDay *RefreshScheduleMapScheduleFrequencyRefreshOnDay `json:"RefreshOnDay,omitempty"`
 	TimeOfTheDay *string                                          `json:"TimeOfTheDay,omitempty"`
 	TimeZone     *string                                          `json:"TimeZone,omitempty"`
 }
 
 type RefreshScheduleMap struct {
-	RefreshType        *string                              `json:"RefreshType,omitempty"`
+	RefreshType        *RefreshScheduleMapRefreshType       `json:"RefreshType,omitempty"`
 	ScheduleFrequency  *RefreshScheduleMapScheduleFrequency `json:"ScheduleFrequency,omitempty"`
 	ScheduleId         *string                              `json:"ScheduleId,omitempty"`
 	StartAfterDateTime *string                              `json:"StartAfterDateTime,omitempty"`
@@ -8592,8 +8592,8 @@ type SpaceResourcePermission struct {
 }
 
 type SpaceResource struct {
-	ResourceArn  *string `json:"ResourceArn,omitempty"`
-	ResourceType *string `json:"ResourceType,omitempty"`
+	ResourceArn  *string                    `json:"ResourceArn,omitempty"`
+	ResourceType *SpaceResourceResourceType `json:"ResourceType,omitempty"`
 }
 
 type SpaceTag struct {
@@ -8630,8 +8630,8 @@ type TemplateDefaultFreeFormLayoutConfiguration struct {
 }
 
 type TemplateGridLayoutScreenCanvasSizeOptions struct {
-	OptimizedViewPortWidth *string `json:"OptimizedViewPortWidth,omitempty"`
-	ResizeOption           *string `json:"ResizeOption,omitempty"`
+	OptimizedViewPortWidth *string               `json:"OptimizedViewPortWidth,omitempty"`
+	ResizeOption           *TemplateResizeOption `json:"ResizeOption,omitempty"`
 }
 
 type TemplateGridLayoutCanvasSizeOptions struct {
@@ -8655,9 +8655,9 @@ type TemplateSpacing struct {
 }
 
 type TemplateSectionBasedLayoutPaperCanvasSizeOptions struct {
-	PaperMargin      *TemplateSpacing `json:"PaperMargin,omitempty"`
-	PaperOrientation *string          `json:"PaperOrientation,omitempty"`
-	PaperSize        *string          `json:"PaperSize,omitempty"`
+	PaperMargin      *TemplateSpacing          `json:"PaperMargin,omitempty"`
+	PaperOrientation *TemplatePaperOrientation `json:"PaperOrientation,omitempty"`
+	PaperSize        *TemplatePaperSize        `json:"PaperSize,omitempty"`
 }
 
 type TemplateSectionBasedLayoutCanvasSizeOptions struct {
@@ -8675,7 +8675,7 @@ type TemplateDefaultPaginatedLayoutConfiguration struct {
 type TemplateDefaultNewSheetConfiguration struct {
 	InteractiveLayoutConfiguration *TemplateDefaultInteractiveLayoutConfiguration `json:"InteractiveLayoutConfiguration,omitempty"`
 	PaginatedLayoutConfiguration   *TemplateDefaultPaginatedLayoutConfiguration   `json:"PaginatedLayoutConfiguration,omitempty"`
-	SheetContentType               *string                                        `json:"SheetContentType,omitempty"`
+	SheetContentType               *TemplateSheetContentType                      `json:"SheetContentType,omitempty"`
 }
 
 type TemplateAnalysisDefaults struct {
@@ -8689,9 +8689,9 @@ type TemplateCalculatedField struct {
 }
 
 type TemplateCustomColor struct {
-	Color        *string `json:"Color,omitempty"`
-	FieldValue   *string `json:"FieldValue,omitempty"`
-	SpecialValue *string `json:"SpecialValue,omitempty"`
+	Color        *string               `json:"Color,omitempty"`
+	FieldValue   *string               `json:"FieldValue,omitempty"`
+	SpecialValue *TemplateSpecialValue `json:"SpecialValue,omitempty"`
 }
 
 type TemplateColorsConfiguration struct {
@@ -8712,17 +8712,17 @@ type TemplateDecimalPlacesConfiguration struct {
 }
 
 type TemplateNegativeValueConfiguration struct {
-	DisplayMode *string `json:"DisplayMode,omitempty"`
+	DisplayMode *TemplateNegativeValueDisplayMode `json:"DisplayMode,omitempty"`
 }
 
 type TemplateThousandSeparatorOptions struct {
-	GroupingStyle *string `json:"GroupingStyle,omitempty"`
-	Symbol        *string `json:"Symbol,omitempty"`
-	Visibility    *string `json:"Visibility,omitempty"`
+	GroupingStyle *TemplateDigitGroupingStyle     `json:"GroupingStyle,omitempty"`
+	Symbol        *TemplateNumericSeparatorSymbol `json:"Symbol,omitempty"`
+	Visibility    *TemplateVisibility             `json:"Visibility,omitempty"`
 }
 
 type TemplateNumericSeparatorConfiguration struct {
-	DecimalSeparator   *string                           `json:"DecimalSeparator,omitempty"`
+	DecimalSeparator   *TemplateNumericSeparatorSymbol   `json:"DecimalSeparator,omitempty"`
 	ThousandsSeparator *TemplateThousandSeparatorOptions `json:"ThousandsSeparator,omitempty"`
 }
 
@@ -8730,7 +8730,7 @@ type TemplateCurrencyDisplayFormatConfiguration struct {
 	DecimalPlacesConfiguration   *TemplateDecimalPlacesConfiguration    `json:"DecimalPlacesConfiguration,omitempty"`
 	NegativeValueConfiguration   *TemplateNegativeValueConfiguration    `json:"NegativeValueConfiguration,omitempty"`
 	NullValueFormatConfiguration *TemplateNullValueFormatConfiguration  `json:"NullValueFormatConfiguration,omitempty"`
-	NumberScale                  *string                                `json:"NumberScale,omitempty"`
+	NumberScale                  *TemplateNumberScale                   `json:"NumberScale,omitempty"`
 	Prefix                       *string                                `json:"Prefix,omitempty"`
 	SeparatorConfiguration       *TemplateNumericSeparatorConfiguration `json:"SeparatorConfiguration,omitempty"`
 	Suffix                       *string                                `json:"Suffix,omitempty"`
@@ -8741,7 +8741,7 @@ type TemplateNumberDisplayFormatConfiguration struct {
 	DecimalPlacesConfiguration   *TemplateDecimalPlacesConfiguration    `json:"DecimalPlacesConfiguration,omitempty"`
 	NegativeValueConfiguration   *TemplateNegativeValueConfiguration    `json:"NegativeValueConfiguration,omitempty"`
 	NullValueFormatConfiguration *TemplateNullValueFormatConfiguration  `json:"NullValueFormatConfiguration,omitempty"`
-	NumberScale                  *string                                `json:"NumberScale,omitempty"`
+	NumberScale                  *TemplateNumberScale                   `json:"NumberScale,omitempty"`
 	Prefix                       *string                                `json:"Prefix,omitempty"`
 	SeparatorConfiguration       *TemplateNumericSeparatorConfiguration `json:"SeparatorConfiguration,omitempty"`
 	Suffix                       *string                                `json:"Suffix,omitempty"`
@@ -8787,7 +8787,7 @@ type TemplateColumnConfiguration struct {
 	ColorsConfiguration *TemplateColorsConfiguration `json:"ColorsConfiguration,omitempty"`
 	Column              *TemplateColumnIdentifier    `json:"Column,omitempty"`
 	FormatConfiguration *TemplateFormatConfiguration `json:"FormatConfiguration,omitempty"`
-	Role                *string                      `json:"Role,omitempty"`
+	Role                *TemplateColumnRole          `json:"Role,omitempty"`
 }
 
 type ColumnGroupColumnSchema struct {
@@ -8816,25 +8816,25 @@ type DataSetConfiguration struct {
 }
 
 type TemplateCustomFilterConfiguration struct {
-	CategoryValue    *string `json:"CategoryValue,omitempty"`
-	MatchOperator    *string `json:"MatchOperator,omitempty"`
-	NullOption       *string `json:"NullOption,omitempty"`
-	ParameterName    *string `json:"ParameterName,omitempty"`
-	SelectAllOptions *string `json:"SelectAllOptions,omitempty"`
+	CategoryValue    *string                                 `json:"CategoryValue,omitempty"`
+	MatchOperator    *TemplateCategoryFilterMatchOperator    `json:"MatchOperator,omitempty"`
+	NullOption       *TemplateFilterNullOption               `json:"NullOption,omitempty"`
+	ParameterName    *string                                 `json:"ParameterName,omitempty"`
+	SelectAllOptions *TemplateCategoryFilterSelectAllOptions `json:"SelectAllOptions,omitempty"`
 }
 
 type TemplateCustomFilterListConfiguration struct {
-	CategoryValues   []string `json:"CategoryValues,omitempty"`
-	MatchOperator    *string  `json:"MatchOperator,omitempty"`
-	NullOption       *string  `json:"NullOption,omitempty"`
-	SelectAllOptions *string  `json:"SelectAllOptions,omitempty"`
+	CategoryValues   []string                                `json:"CategoryValues,omitempty"`
+	MatchOperator    *TemplateCategoryFilterMatchOperator    `json:"MatchOperator,omitempty"`
+	NullOption       *TemplateFilterNullOption               `json:"NullOption,omitempty"`
+	SelectAllOptions *TemplateCategoryFilterSelectAllOptions `json:"SelectAllOptions,omitempty"`
 }
 
 type TemplateFilterListConfiguration struct {
-	CategoryValues   []string `json:"CategoryValues,omitempty"`
-	MatchOperator    *string  `json:"MatchOperator,omitempty"`
-	NullOption       *string  `json:"NullOption,omitempty"`
-	SelectAllOptions *string  `json:"SelectAllOptions,omitempty"`
+	CategoryValues   []string                                `json:"CategoryValues,omitempty"`
+	MatchOperator    *TemplateCategoryFilterMatchOperator    `json:"MatchOperator,omitempty"`
+	NullOption       *TemplateFilterNullOption               `json:"NullOption,omitempty"`
+	SelectAllOptions *TemplateCategoryFilterSelectAllOptions `json:"SelectAllOptions,omitempty"`
 }
 
 type TemplateCategoryFilterConfiguration struct {
@@ -8844,50 +8844,50 @@ type TemplateCategoryFilterConfiguration struct {
 }
 
 type TemplateSheetControlInfoIconLabelOptions struct {
-	InfoIconText *string `json:"InfoIconText,omitempty"`
-	Visibility   *string `json:"Visibility,omitempty"`
+	InfoIconText *string             `json:"InfoIconText,omitempty"`
+	Visibility   *TemplateVisibility `json:"Visibility,omitempty"`
 }
 
 type TemplateFontSize struct {
-	Absolute *string `json:"Absolute,omitempty"`
-	Relative *string `json:"Relative,omitempty"`
+	Absolute *string                   `json:"Absolute,omitempty"`
+	Relative *TemplateRelativeFontSize `json:"Relative,omitempty"`
 }
 
 type TemplateFontWeight struct {
-	Name *string `json:"Name,omitempty"`
+	Name *TemplateFontWeightName `json:"Name,omitempty"`
 }
 
 type TemplateFontConfiguration struct {
-	FontColor      *string             `json:"FontColor,omitempty"`
-	FontDecoration *string             `json:"FontDecoration,omitempty"`
-	FontFamily     *string             `json:"FontFamily,omitempty"`
-	FontSize       *TemplateFontSize   `json:"FontSize,omitempty"`
-	FontStyle      *string             `json:"FontStyle,omitempty"`
-	FontWeight     *TemplateFontWeight `json:"FontWeight,omitempty"`
+	FontColor      *string                 `json:"FontColor,omitempty"`
+	FontDecoration *TemplateFontDecoration `json:"FontDecoration,omitempty"`
+	FontFamily     *string                 `json:"FontFamily,omitempty"`
+	FontSize       *TemplateFontSize       `json:"FontSize,omitempty"`
+	FontStyle      *TemplateFontStyle      `json:"FontStyle,omitempty"`
+	FontWeight     *TemplateFontWeight     `json:"FontWeight,omitempty"`
 }
 
 type TemplateLabelOptions struct {
 	CustomLabel       *string                    `json:"CustomLabel,omitempty"`
 	FontConfiguration *TemplateFontConfiguration `json:"FontConfiguration,omitempty"`
-	Visibility        *string                    `json:"Visibility,omitempty"`
+	Visibility        *TemplateVisibility        `json:"Visibility,omitempty"`
 }
 
 type TemplateDateTimePickerControlDisplayOptions struct {
-	DateIconVisibility   *string                                   `json:"DateIconVisibility,omitempty"`
+	DateIconVisibility   *TemplateVisibility                       `json:"DateIconVisibility,omitempty"`
 	DateTimeFormat       *string                                   `json:"DateTimeFormat,omitempty"`
-	HelperTextVisibility *string                                   `json:"HelperTextVisibility,omitempty"`
+	HelperTextVisibility *TemplateVisibility                       `json:"HelperTextVisibility,omitempty"`
 	InfoIconLabelOptions *TemplateSheetControlInfoIconLabelOptions `json:"InfoIconLabelOptions,omitempty"`
 	TitleOptions         *TemplateLabelOptions                     `json:"TitleOptions,omitempty"`
 }
 
 type TemplateDefaultDateTimePickerControlOptions struct {
-	CommitMode     *string                                      `json:"CommitMode,omitempty"`
+	CommitMode     *TemplateCommitMode                          `json:"CommitMode,omitempty"`
 	DisplayOptions *TemplateDateTimePickerControlDisplayOptions `json:"DisplayOptions,omitempty"`
-	Type           *string                                      `json:"Type,omitempty"`
+	Type           *TemplateSheetControlDateTimePickerType      `json:"Type,omitempty"`
 }
 
 type TemplateListControlSelectAllOptions struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *TemplateVisibility `json:"Visibility,omitempty"`
 }
 
 type TemplateDropDownControlDisplayOptions struct {
@@ -8901,14 +8901,14 @@ type TemplateFilterSelectableValues struct {
 }
 
 type TemplateDefaultFilterDropDownControlOptions struct {
-	CommitMode       *string                                `json:"CommitMode,omitempty"`
+	CommitMode       *TemplateCommitMode                    `json:"CommitMode,omitempty"`
 	DisplayOptions   *TemplateDropDownControlDisplayOptions `json:"DisplayOptions,omitempty"`
 	SelectableValues *TemplateFilterSelectableValues        `json:"SelectableValues,omitempty"`
-	Type             *string                                `json:"Type,omitempty"`
+	Type             *TemplateSheetControlListType          `json:"Type,omitempty"`
 }
 
 type TemplateListControlSearchOptions struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *TemplateVisibility `json:"Visibility,omitempty"`
 }
 
 type TemplateListControlDisplayOptions struct {
@@ -8921,7 +8921,7 @@ type TemplateListControlDisplayOptions struct {
 type TemplateDefaultFilterListControlOptions struct {
 	DisplayOptions   *TemplateListControlDisplayOptions `json:"DisplayOptions,omitempty"`
 	SelectableValues *TemplateFilterSelectableValues    `json:"SelectableValues,omitempty"`
-	Type             *string                            `json:"Type,omitempty"`
+	Type             *TemplateSheetControlListType      `json:"Type,omitempty"`
 }
 
 type TemplateRelativeDateTimeControlDisplayOptions struct {
@@ -8931,7 +8931,7 @@ type TemplateRelativeDateTimeControlDisplayOptions struct {
 }
 
 type TemplateDefaultRelativeDateTimeControlOptions struct {
-	CommitMode     *string                                        `json:"CommitMode,omitempty"`
+	CommitMode     *TemplateCommitMode                            `json:"CommitMode,omitempty"`
 	DisplayOptions *TemplateRelativeDateTimeControlDisplayOptions `json:"DisplayOptions,omitempty"`
 }
 
@@ -8945,11 +8945,11 @@ type TemplateDefaultSliderControlOptions struct {
 	MaximumValue   *float64                             `json:"MaximumValue,omitempty"`
 	MinimumValue   *float64                             `json:"MinimumValue,omitempty"`
 	StepSize       *float64                             `json:"StepSize,omitempty"`
-	Type           *string                              `json:"Type,omitempty"`
+	Type           *TemplateSheetControlSliderType      `json:"Type,omitempty"`
 }
 
 type TemplateTextControlPlaceholderOptions struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *TemplateVisibility `json:"Visibility,omitempty"`
 }
 
 type TemplateTextAreaControlDisplayOptions struct {
@@ -9013,8 +9013,8 @@ type TemplateNestedFilter struct {
 }
 
 type TemplateAttributeAggregationFunction struct {
-	SimpleAttributeAggregation *string `json:"SimpleAttributeAggregation,omitempty"`
-	ValueForMultipleValues     *string `json:"ValueForMultipleValues,omitempty"`
+	SimpleAttributeAggregation *TemplateSimpleAttributeAggregationFunction `json:"SimpleAttributeAggregation,omitempty"`
+	ValueForMultipleValues     *string                                     `json:"ValueForMultipleValues,omitempty"`
 }
 
 type TemplatePercentileAggregation struct {
@@ -9022,15 +9022,15 @@ type TemplatePercentileAggregation struct {
 }
 
 type TemplateNumericalAggregationFunction struct {
-	PercentileAggregation      *TemplatePercentileAggregation `json:"PercentileAggregation,omitempty"`
-	SimpleNumericalAggregation *string                        `json:"SimpleNumericalAggregation,omitempty"`
+	PercentileAggregation      *TemplatePercentileAggregation              `json:"PercentileAggregation,omitempty"`
+	SimpleNumericalAggregation *TemplateSimpleNumericalAggregationFunction `json:"SimpleNumericalAggregation,omitempty"`
 }
 
 type TemplateAggregationFunction struct {
-	AttributeAggregationFunction   *TemplateAttributeAggregationFunction `json:"AttributeAggregationFunction,omitempty"`
-	CategoricalAggregationFunction *string                               `json:"CategoricalAggregationFunction,omitempty"`
-	DateAggregationFunction        *string                               `json:"DateAggregationFunction,omitempty"`
-	NumericalAggregationFunction   *TemplateNumericalAggregationFunction `json:"NumericalAggregationFunction,omitempty"`
+	AttributeAggregationFunction   *TemplateAttributeAggregationFunction   `json:"AttributeAggregationFunction,omitempty"`
+	CategoricalAggregationFunction *TemplateCategoricalAggregationFunction `json:"CategoricalAggregationFunction,omitempty"`
+	DateAggregationFunction        *TemplateDateAggregationFunction        `json:"DateAggregationFunction,omitempty"`
+	NumericalAggregationFunction   *TemplateNumericalAggregationFunction   `json:"NumericalAggregationFunction,omitempty"`
 }
 
 type TemplateNumericEqualityFilter struct {
@@ -9038,10 +9038,10 @@ type TemplateNumericEqualityFilter struct {
 	Column                            *TemplateColumnIdentifier                  `json:"Column,omitempty"`
 	DefaultFilterControlConfiguration *TemplateDefaultFilterControlConfiguration `json:"DefaultFilterControlConfiguration,omitempty"`
 	FilterId                          *string                                    `json:"FilterId,omitempty"`
-	MatchOperator                     *string                                    `json:"MatchOperator,omitempty"`
-	NullOption                        *string                                    `json:"NullOption,omitempty"`
+	MatchOperator                     *TemplateNumericEqualityMatchOperator      `json:"MatchOperator,omitempty"`
+	NullOption                        *TemplateFilterNullOption                  `json:"NullOption,omitempty"`
 	ParameterName                     *string                                    `json:"ParameterName,omitempty"`
-	SelectAllOptions                  *string                                    `json:"SelectAllOptions,omitempty"`
+	SelectAllOptions                  *TemplateNumericFilterSelectAllOptions     `json:"SelectAllOptions,omitempty"`
 	Value                             *float64                                   `json:"Value,omitempty"`
 }
 
@@ -9057,21 +9057,21 @@ type TemplateNumericRangeFilter struct {
 	FilterId                          *string                                    `json:"FilterId,omitempty"`
 	IncludeMaximum                    *bool                                      `json:"IncludeMaximum,omitempty"`
 	IncludeMinimum                    *bool                                      `json:"IncludeMinimum,omitempty"`
-	NullOption                        *string                                    `json:"NullOption,omitempty"`
+	NullOption                        *TemplateFilterNullOption                  `json:"NullOption,omitempty"`
 	RangeMaximum                      *TemplateNumericRangeFilterValue           `json:"RangeMaximum,omitempty"`
 	RangeMinimum                      *TemplateNumericRangeFilterValue           `json:"RangeMinimum,omitempty"`
-	SelectAllOptions                  *string                                    `json:"SelectAllOptions,omitempty"`
+	SelectAllOptions                  *TemplateNumericFilterSelectAllOptions     `json:"SelectAllOptions,omitempty"`
 }
 
 type TemplateAnchorDateConfiguration struct {
-	AnchorOption  *string `json:"AnchorOption,omitempty"`
-	ParameterName *string `json:"ParameterName,omitempty"`
+	AnchorOption  *TemplateAnchorOption `json:"AnchorOption,omitempty"`
+	ParameterName *string               `json:"ParameterName,omitempty"`
 }
 
 type TemplateExcludePeriodConfiguration struct {
-	Amount      *float64 `json:"Amount,omitempty"`
-	Granularity *string  `json:"Granularity,omitempty"`
-	Status      *string  `json:"Status,omitempty"`
+	Amount      *float64                 `json:"Amount,omitempty"`
+	Granularity *TemplateTimeGranularity `json:"Granularity,omitempty"`
+	Status      *TemplateWidgetStatus    `json:"Status,omitempty"`
 }
 
 type TemplateRelativeDatesFilter struct {
@@ -9080,12 +9080,12 @@ type TemplateRelativeDatesFilter struct {
 	DefaultFilterControlConfiguration *TemplateDefaultFilterControlConfiguration `json:"DefaultFilterControlConfiguration,omitempty"`
 	ExcludePeriodConfiguration        *TemplateExcludePeriodConfiguration        `json:"ExcludePeriodConfiguration,omitempty"`
 	FilterId                          *string                                    `json:"FilterId,omitempty"`
-	MinimumGranularity                *string                                    `json:"MinimumGranularity,omitempty"`
-	NullOption                        *string                                    `json:"NullOption,omitempty"`
+	MinimumGranularity                *TemplateTimeGranularity                   `json:"MinimumGranularity,omitempty"`
+	NullOption                        *TemplateFilterNullOption                  `json:"NullOption,omitempty"`
 	ParameterName                     *string                                    `json:"ParameterName,omitempty"`
-	RelativeDateType                  *string                                    `json:"RelativeDateType,omitempty"`
+	RelativeDateType                  *TemplateRelativeDateType                  `json:"RelativeDateType,omitempty"`
 	RelativeDateValue                 *float64                                   `json:"RelativeDateValue,omitempty"`
-	TimeGranularity                   *string                                    `json:"TimeGranularity,omitempty"`
+	TimeGranularity                   *TemplateTimeGranularity                   `json:"TimeGranularity,omitempty"`
 }
 
 type TemplateRollingDateConfiguration struct {
@@ -9099,7 +9099,7 @@ type TemplateTimeEqualityFilter struct {
 	FilterId                          *string                                    `json:"FilterId,omitempty"`
 	ParameterName                     *string                                    `json:"ParameterName,omitempty"`
 	RollingDate                       *TemplateRollingDateConfiguration          `json:"RollingDate,omitempty"`
-	TimeGranularity                   *string                                    `json:"TimeGranularity,omitempty"`
+	TimeGranularity                   *TemplateTimeGranularity                   `json:"TimeGranularity,omitempty"`
 	Value                             *string                                    `json:"Value,omitempty"`
 }
 
@@ -9116,16 +9116,16 @@ type TemplateTimeRangeFilter struct {
 	FilterId                          *string                                    `json:"FilterId,omitempty"`
 	IncludeMaximum                    *bool                                      `json:"IncludeMaximum,omitempty"`
 	IncludeMinimum                    *bool                                      `json:"IncludeMinimum,omitempty"`
-	NullOption                        *string                                    `json:"NullOption,omitempty"`
+	NullOption                        *TemplateFilterNullOption                  `json:"NullOption,omitempty"`
 	RangeMaximumValue                 *TemplateTimeRangeFilterValue              `json:"RangeMaximumValue,omitempty"`
 	RangeMinimumValue                 *TemplateTimeRangeFilterValue              `json:"RangeMinimumValue,omitempty"`
-	TimeGranularity                   *string                                    `json:"TimeGranularity,omitempty"`
+	TimeGranularity                   *TemplateTimeGranularity                   `json:"TimeGranularity,omitempty"`
 }
 
 type TemplateAggregationSortConfiguration struct {
 	AggregationFunction *TemplateAggregationFunction `json:"AggregationFunction,omitempty"`
 	Column              *TemplateColumnIdentifier    `json:"Column,omitempty"`
-	SortDirection       *string                      `json:"SortDirection,omitempty"`
+	SortDirection       *TemplateSortDirection       `json:"SortDirection,omitempty"`
 }
 
 type TemplateTopBottomFilter struct {
@@ -9135,7 +9135,7 @@ type TemplateTopBottomFilter struct {
 	FilterId                          *string                                    `json:"FilterId,omitempty"`
 	Limit                             *float64                                   `json:"Limit,omitempty"`
 	ParameterName                     *string                                    `json:"ParameterName,omitempty"`
-	TimeGranularity                   *string                                    `json:"TimeGranularity,omitempty"`
+	TimeGranularity                   *TemplateTimeGranularity                   `json:"TimeGranularity,omitempty"`
 }
 
 type TemplateFilter struct {
@@ -9150,9 +9150,9 @@ type TemplateFilter struct {
 }
 
 type TemplateSheetVisualScopingConfiguration struct {
-	Scope     *string  `json:"Scope,omitempty"`
-	SheetId   *string  `json:"SheetId,omitempty"`
-	VisualIds []string `json:"VisualIds,omitempty"`
+	Scope     *TemplateFilterVisualScope `json:"Scope,omitempty"`
+	SheetId   *string                    `json:"SheetId,omitempty"`
+	VisualIds []string                   `json:"VisualIds,omitempty"`
 }
 
 type TemplateSelectedSheetsFilterScopeConfiguration struct {
@@ -9165,16 +9165,16 @@ type TemplateFilterScopeConfiguration struct {
 }
 
 type TemplateFilterGroup struct {
-	CrossDataset       *string                           `json:"CrossDataset,omitempty"`
+	CrossDataset       *TemplateCrossDatasetTypes        `json:"CrossDataset,omitempty"`
 	FilterGroupId      *string                           `json:"FilterGroupId,omitempty"`
 	Filters            []TemplateFilter                  `json:"Filters,omitempty"`
 	ScopeConfiguration *TemplateFilterScopeConfiguration `json:"ScopeConfiguration,omitempty"`
-	Status             *string                           `json:"Status,omitempty"`
+	Status             *TemplateWidgetStatus             `json:"Status,omitempty"`
 }
 
 type TemplateAssetOptions struct {
-	Timezone  *string `json:"Timezone,omitempty"`
-	WeekStart *string `json:"WeekStart,omitempty"`
+	Timezone  *string               `json:"Timezone,omitempty"`
+	WeekStart *TemplateDayOfTheWeek `json:"WeekStart,omitempty"`
 }
 
 type TemplateDynamicDefaultValue struct {
@@ -9195,15 +9195,15 @@ type TemplateMappedDataSetParameter struct {
 }
 
 type TemplateDateTimeValueWhenUnsetConfiguration struct {
-	CustomValue          *string `json:"CustomValue,omitempty"`
-	ValueWhenUnsetOption *string `json:"ValueWhenUnsetOption,omitempty"`
+	CustomValue          *string                       `json:"CustomValue,omitempty"`
+	ValueWhenUnsetOption *TemplateValueWhenUnsetOption `json:"ValueWhenUnsetOption,omitempty"`
 }
 
 type TemplateDateTimeParameterDeclaration struct {
 	DefaultValues           *TemplateDateTimeDefaultValues               `json:"DefaultValues,omitempty"`
 	MappedDataSetParameters []TemplateMappedDataSetParameter             `json:"MappedDataSetParameters,omitempty"`
 	Name                    *string                                      `json:"Name,omitempty"`
-	TimeGranularity         *string                                      `json:"TimeGranularity,omitempty"`
+	TimeGranularity         *TemplateTimeGranularity                     `json:"TimeGranularity,omitempty"`
 	ValueWhenUnset          *TemplateDateTimeValueWhenUnsetConfiguration `json:"ValueWhenUnset,omitempty"`
 }
 
@@ -9213,15 +9213,15 @@ type TemplateDecimalDefaultValues struct {
 }
 
 type TemplateDecimalValueWhenUnsetConfiguration struct {
-	CustomValue          *float64 `json:"CustomValue,omitempty"`
-	ValueWhenUnsetOption *string  `json:"ValueWhenUnsetOption,omitempty"`
+	CustomValue          *float64                      `json:"CustomValue,omitempty"`
+	ValueWhenUnsetOption *TemplateValueWhenUnsetOption `json:"ValueWhenUnsetOption,omitempty"`
 }
 
 type TemplateDecimalParameterDeclaration struct {
 	DefaultValues           *TemplateDecimalDefaultValues               `json:"DefaultValues,omitempty"`
 	MappedDataSetParameters []TemplateMappedDataSetParameter            `json:"MappedDataSetParameters,omitempty"`
 	Name                    *string                                     `json:"Name,omitempty"`
-	ParameterValueType      *string                                     `json:"ParameterValueType,omitempty"`
+	ParameterValueType      *TemplateParameterValueType                 `json:"ParameterValueType,omitempty"`
 	ValueWhenUnset          *TemplateDecimalValueWhenUnsetConfiguration `json:"ValueWhenUnset,omitempty"`
 }
 
@@ -9231,15 +9231,15 @@ type TemplateIntegerDefaultValues struct {
 }
 
 type TemplateIntegerValueWhenUnsetConfiguration struct {
-	CustomValue          *float64 `json:"CustomValue,omitempty"`
-	ValueWhenUnsetOption *string  `json:"ValueWhenUnsetOption,omitempty"`
+	CustomValue          *float64                      `json:"CustomValue,omitempty"`
+	ValueWhenUnsetOption *TemplateValueWhenUnsetOption `json:"ValueWhenUnsetOption,omitempty"`
 }
 
 type TemplateIntegerParameterDeclaration struct {
 	DefaultValues           *TemplateIntegerDefaultValues               `json:"DefaultValues,omitempty"`
 	MappedDataSetParameters []TemplateMappedDataSetParameter            `json:"MappedDataSetParameters,omitempty"`
 	Name                    *string                                     `json:"Name,omitempty"`
-	ParameterValueType      *string                                     `json:"ParameterValueType,omitempty"`
+	ParameterValueType      *TemplateParameterValueType                 `json:"ParameterValueType,omitempty"`
 	ValueWhenUnset          *TemplateIntegerValueWhenUnsetConfiguration `json:"ValueWhenUnset,omitempty"`
 }
 
@@ -9249,15 +9249,15 @@ type TemplateStringDefaultValues struct {
 }
 
 type TemplateStringValueWhenUnsetConfiguration struct {
-	CustomValue          *string `json:"CustomValue,omitempty"`
-	ValueWhenUnsetOption *string `json:"ValueWhenUnsetOption,omitempty"`
+	CustomValue          *string                       `json:"CustomValue,omitempty"`
+	ValueWhenUnsetOption *TemplateValueWhenUnsetOption `json:"ValueWhenUnsetOption,omitempty"`
 }
 
 type TemplateStringParameterDeclaration struct {
 	DefaultValues           *TemplateStringDefaultValues               `json:"DefaultValues,omitempty"`
 	MappedDataSetParameters []TemplateMappedDataSetParameter           `json:"MappedDataSetParameters,omitempty"`
 	Name                    *string                                    `json:"Name,omitempty"`
-	ParameterValueType      *string                                    `json:"ParameterValueType,omitempty"`
+	ParameterValueType      *TemplateParameterValueType                `json:"ParameterValueType,omitempty"`
 	ValueWhenUnset          *TemplateStringValueWhenUnsetConfiguration `json:"ValueWhenUnset,omitempty"`
 }
 
@@ -9269,7 +9269,7 @@ type TemplateParameterDeclaration struct {
 }
 
 type TemplateQueryExecutionOptions struct {
-	QueryExecutionMode *string `json:"QueryExecutionMode,omitempty"`
+	QueryExecutionMode *TemplateQueryExecutionMode `json:"QueryExecutionMode,omitempty"`
 }
 
 type TemplateCascadingControlSource struct {
@@ -9288,23 +9288,23 @@ type TemplateFilterCrossSheetControl struct {
 }
 
 type TemplateFilterDateTimePickerControl struct {
-	CommitMode      *string                                      `json:"CommitMode,omitempty"`
+	CommitMode      *TemplateCommitMode                          `json:"CommitMode,omitempty"`
 	DisplayOptions  *TemplateDateTimePickerControlDisplayOptions `json:"DisplayOptions,omitempty"`
 	FilterControlId *string                                      `json:"FilterControlId,omitempty"`
 	SourceFilterId  *string                                      `json:"SourceFilterId,omitempty"`
 	Title           *string                                      `json:"Title,omitempty"`
-	Type            *string                                      `json:"Type,omitempty"`
+	Type            *TemplateSheetControlDateTimePickerType      `json:"Type,omitempty"`
 }
 
 type TemplateFilterDropDownControl struct {
 	CascadingControlConfiguration *TemplateCascadingControlConfiguration `json:"CascadingControlConfiguration,omitempty"`
-	CommitMode                    *string                                `json:"CommitMode,omitempty"`
+	CommitMode                    *TemplateCommitMode                    `json:"CommitMode,omitempty"`
 	DisplayOptions                *TemplateDropDownControlDisplayOptions `json:"DisplayOptions,omitempty"`
 	FilterControlId               *string                                `json:"FilterControlId,omitempty"`
 	SelectableValues              *TemplateFilterSelectableValues        `json:"SelectableValues,omitempty"`
 	SourceFilterId                *string                                `json:"SourceFilterId,omitempty"`
 	Title                         *string                                `json:"Title,omitempty"`
-	Type                          *string                                `json:"Type,omitempty"`
+	Type                          *TemplateSheetControlListType          `json:"Type,omitempty"`
 }
 
 type TemplateFilterListControl struct {
@@ -9314,11 +9314,11 @@ type TemplateFilterListControl struct {
 	SelectableValues              *TemplateFilterSelectableValues        `json:"SelectableValues,omitempty"`
 	SourceFilterId                *string                                `json:"SourceFilterId,omitempty"`
 	Title                         *string                                `json:"Title,omitempty"`
-	Type                          *string                                `json:"Type,omitempty"`
+	Type                          *TemplateSheetControlListType          `json:"Type,omitempty"`
 }
 
 type TemplateFilterRelativeDateTimeControl struct {
-	CommitMode      *string                                        `json:"CommitMode,omitempty"`
+	CommitMode      *TemplateCommitMode                            `json:"CommitMode,omitempty"`
 	DisplayOptions  *TemplateRelativeDateTimeControlDisplayOptions `json:"DisplayOptions,omitempty"`
 	FilterControlId *string                                        `json:"FilterControlId,omitempty"`
 	SourceFilterId  *string                                        `json:"SourceFilterId,omitempty"`
@@ -9333,7 +9333,7 @@ type TemplateFilterSliderControl struct {
 	SourceFilterId  *string                              `json:"SourceFilterId,omitempty"`
 	StepSize        *float64                             `json:"StepSize,omitempty"`
 	Title           *string                              `json:"Title,omitempty"`
-	Type            *string                              `json:"Type,omitempty"`
+	Type            *TemplateSheetControlSliderType      `json:"Type,omitempty"`
 }
 
 type TemplateFilterTextAreaControl struct {
@@ -9384,7 +9384,7 @@ type TemplateCustomValuesConfiguration struct {
 
 type TemplateDestinationParameterValueConfiguration struct {
 	CustomValuesConfiguration *TemplateCustomValuesConfiguration `json:"CustomValuesConfiguration,omitempty"`
-	SelectAllValueOptions     *string                            `json:"SelectAllValueOptions,omitempty"`
+	SelectAllValueOptions     *TemplateSelectAllValueOptions     `json:"SelectAllValueOptions,omitempty"`
 	SourceColumn              *TemplateColumnIdentifier          `json:"SourceColumn,omitempty"`
 	SourceField               *string                            `json:"SourceField,omitempty"`
 	SourceParameterName       *string                            `json:"SourceParameterName,omitempty"`
@@ -9400,8 +9400,8 @@ type TemplateCustomActionSetParametersOperation struct {
 }
 
 type TemplateCustomActionURLOperation struct {
-	URLTarget   *string `json:"URLTarget,omitempty"`
-	URLTemplate *string `json:"URLTemplate,omitempty"`
+	URLTarget   *TemplateURLTargetConfiguration `json:"URLTarget,omitempty"`
+	URLTemplate *string                         `json:"URLTemplate,omitempty"`
 }
 
 type TemplateImageCustomActionOperation struct {
@@ -9414,12 +9414,12 @@ type TemplateImageCustomAction struct {
 	ActionOperations []TemplateImageCustomActionOperation `json:"ActionOperations,omitempty"`
 	CustomActionId   *string                              `json:"CustomActionId,omitempty"`
 	Name             *string                              `json:"Name,omitempty"`
-	Status           *string                              `json:"Status,omitempty"`
-	Trigger          *string                              `json:"Trigger,omitempty"`
+	Status           *TemplateWidgetStatus                `json:"Status,omitempty"`
+	Trigger          *TemplateImageCustomActionTrigger    `json:"Trigger,omitempty"`
 }
 
 type TemplateImageMenuOption struct {
-	AvailabilityStatus *string `json:"AvailabilityStatus,omitempty"`
+	AvailabilityStatus *TemplateDashboardBehavior `json:"AvailabilityStatus,omitempty"`
 }
 
 type TemplateImageInteractionOptions struct {
@@ -9427,7 +9427,7 @@ type TemplateImageInteractionOptions struct {
 }
 
 type TemplateSheetImageScalingConfiguration struct {
-	ScalingType *string `json:"ScalingType,omitempty"`
+	ScalingType *TemplateSheetImageScalingType `json:"ScalingType,omitempty"`
 }
 
 type TemplateSheetImageStaticFileSource struct {
@@ -9444,7 +9444,7 @@ type TemplateSheetImageTooltipText struct {
 
 type TemplateSheetImageTooltipConfiguration struct {
 	TooltipText *TemplateSheetImageTooltipText `json:"TooltipText,omitempty"`
-	Visibility  *string                        `json:"Visibility,omitempty"`
+	Visibility  *TemplateVisibility            `json:"Visibility,omitempty"`
 }
 
 type TemplateSheetImage struct {
@@ -9458,21 +9458,21 @@ type TemplateSheetImage struct {
 }
 
 type TemplateFreeFormLayoutElementBackgroundStyle struct {
-	Color      *string `json:"Color,omitempty"`
-	Visibility *string `json:"Visibility,omitempty"`
+	Color      *string             `json:"Color,omitempty"`
+	Visibility *TemplateVisibility `json:"Visibility,omitempty"`
 }
 
 type TemplateFreeFormLayoutElementBorderStyle struct {
-	Color      *string `json:"Color,omitempty"`
-	Visibility *string `json:"Visibility,omitempty"`
+	Color      *string             `json:"Color,omitempty"`
+	Visibility *TemplateVisibility `json:"Visibility,omitempty"`
 }
 
 type TemplateLoadingAnimation struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *TemplateVisibility `json:"Visibility,omitempty"`
 }
 
 type TemplateSheetElementConfigurationOverrides struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *TemplateVisibility `json:"Visibility,omitempty"`
 }
 
 type TemplateSheetElementRenderingRule struct {
@@ -9484,12 +9484,12 @@ type TemplateFreeFormLayoutElement struct {
 	BackgroundStyle     *TemplateFreeFormLayoutElementBackgroundStyle `json:"BackgroundStyle,omitempty"`
 	BorderStyle         *TemplateFreeFormLayoutElementBorderStyle     `json:"BorderStyle,omitempty"`
 	ElementId           *string                                       `json:"ElementId,omitempty"`
-	ElementType         *string                                       `json:"ElementType,omitempty"`
+	ElementType         *TemplateLayoutElementType                    `json:"ElementType,omitempty"`
 	Height              *string                                       `json:"Height,omitempty"`
 	LoadingAnimation    *TemplateLoadingAnimation                     `json:"LoadingAnimation,omitempty"`
 	RenderingRules      []TemplateSheetElementRenderingRule           `json:"RenderingRules,omitempty"`
 	SelectedBorderStyle *TemplateFreeFormLayoutElementBorderStyle     `json:"SelectedBorderStyle,omitempty"`
-	Visibility          *string                                       `json:"Visibility,omitempty"`
+	Visibility          *TemplateVisibility                           `json:"Visibility,omitempty"`
 	Width               *string                                       `json:"Width,omitempty"`
 	XAxisLocation       *string                                       `json:"XAxisLocation,omitempty"`
 	YAxisLocation       *string                                       `json:"YAxisLocation,omitempty"`
@@ -9501,12 +9501,12 @@ type TemplateFreeFormLayoutConfiguration struct {
 }
 
 type TemplateGridLayoutElement struct {
-	ColumnIndex *float64 `json:"ColumnIndex,omitempty"`
-	ColumnSpan  *float64 `json:"ColumnSpan,omitempty"`
-	ElementId   *string  `json:"ElementId,omitempty"`
-	ElementType *string  `json:"ElementType,omitempty"`
-	RowIndex    *float64 `json:"RowIndex,omitempty"`
-	RowSpan     *float64 `json:"RowSpan,omitempty"`
+	ColumnIndex *float64                   `json:"ColumnIndex,omitempty"`
+	ColumnSpan  *float64                   `json:"ColumnSpan,omitempty"`
+	ElementId   *string                    `json:"ElementId,omitempty"`
+	ElementType *TemplateLayoutElementType `json:"ElementType,omitempty"`
+	RowIndex    *float64                   `json:"RowIndex,omitempty"`
+	RowSpan     *float64                   `json:"RowSpan,omitempty"`
 }
 
 type TemplateGridLayoutConfiguration struct {
@@ -9527,7 +9527,7 @@ type TemplateBodySectionContent struct {
 }
 
 type TemplateSectionAfterPageBreak struct {
-	Status *string `json:"Status,omitempty"`
+	Status *TemplateSectionPageBreakStatus `json:"Status,omitempty"`
 }
 
 type TemplateSectionPageBreakConfiguration struct {
@@ -9536,7 +9536,7 @@ type TemplateSectionPageBreakConfiguration struct {
 
 type TemplateColumnSort struct {
 	AggregationFunction *TemplateAggregationFunction `json:"AggregationFunction,omitempty"`
-	Direction           *string                      `json:"Direction,omitempty"`
+	Direction           *TemplateSortDirection       `json:"Direction,omitempty"`
 	SortBy              *TemplateColumnIdentifier    `json:"SortBy,omitempty"`
 }
 
@@ -9617,13 +9617,13 @@ type TemplateParameterSelectableValues struct {
 
 type TemplateParameterDropDownControl struct {
 	CascadingControlConfiguration *TemplateCascadingControlConfiguration `json:"CascadingControlConfiguration,omitempty"`
-	CommitMode                    *string                                `json:"CommitMode,omitempty"`
+	CommitMode                    *TemplateCommitMode                    `json:"CommitMode,omitempty"`
 	DisplayOptions                *TemplateDropDownControlDisplayOptions `json:"DisplayOptions,omitempty"`
 	ParameterControlId            *string                                `json:"ParameterControlId,omitempty"`
 	SelectableValues              *TemplateParameterSelectableValues     `json:"SelectableValues,omitempty"`
 	SourceParameterName           *string                                `json:"SourceParameterName,omitempty"`
 	Title                         *string                                `json:"Title,omitempty"`
-	Type                          *string                                `json:"Type,omitempty"`
+	Type                          *TemplateSheetControlListType          `json:"Type,omitempty"`
 }
 
 type TemplateParameterListControl struct {
@@ -9633,7 +9633,7 @@ type TemplateParameterListControl struct {
 	SelectableValues              *TemplateParameterSelectableValues     `json:"SelectableValues,omitempty"`
 	SourceParameterName           *string                                `json:"SourceParameterName,omitempty"`
 	Title                         *string                                `json:"Title,omitempty"`
-	Type                          *string                                `json:"Type,omitempty"`
+	Type                          *TemplateSheetControlListType          `json:"Type,omitempty"`
 }
 
 type TemplateParameterSliderControl struct {
@@ -9684,14 +9684,14 @@ type TemplateSheetTextBox struct {
 }
 
 type TemplateFilterOperationSelectedFieldsConfiguration struct {
-	SelectedColumns      []TemplateColumnIdentifier `json:"SelectedColumns,omitempty"`
-	SelectedFieldOptions *string                    `json:"SelectedFieldOptions,omitempty"`
-	SelectedFields       []string                   `json:"SelectedFields,omitempty"`
+	SelectedColumns      []TemplateColumnIdentifier    `json:"SelectedColumns,omitempty"`
+	SelectedFieldOptions *TemplateSelectedFieldOptions `json:"SelectedFieldOptions,omitempty"`
+	SelectedFields       []string                      `json:"SelectedFields,omitempty"`
 }
 
 type TemplateSameSheetTargetVisualConfiguration struct {
-	TargetVisualOptions *string  `json:"TargetVisualOptions,omitempty"`
-	TargetVisuals       []string `json:"TargetVisuals,omitempty"`
+	TargetVisualOptions *TemplateTargetVisualOptions `json:"TargetVisualOptions,omitempty"`
+	TargetVisuals       []string                     `json:"TargetVisuals,omitempty"`
 }
 
 type TemplateFilterOperationTargetVisualsConfiguration struct {
@@ -9714,12 +9714,12 @@ type TemplateVisualCustomAction struct {
 	ActionOperations []TemplateVisualCustomActionOperation `json:"ActionOperations,omitempty"`
 	CustomActionId   *string                               `json:"CustomActionId,omitempty"`
 	Name             *string                               `json:"Name,omitempty"`
-	Status           *string                               `json:"Status,omitempty"`
-	Trigger          *string                               `json:"Trigger,omitempty"`
+	Status           *TemplateWidgetStatus                 `json:"Status,omitempty"`
+	Trigger          *TemplateVisualCustomActionTrigger    `json:"Trigger,omitempty"`
 }
 
 type TemplateDateAxisOptions struct {
-	MissingDateVisibility *string `json:"MissingDateVisibility,omitempty"`
+	MissingDateVisibility *TemplateVisibility `json:"MissingDateVisibility,omitempty"`
 }
 
 type TemplateAxisDisplayMinMaxRange struct {
@@ -9766,7 +9766,7 @@ type TemplateVisibleRangeOptions struct {
 }
 
 type TemplateScrollBarOptions struct {
-	Visibility   *string                      `json:"Visibility,omitempty"`
+	Visibility   *TemplateVisibility          `json:"Visibility,omitempty"`
 	VisibleRange *TemplateVisibleRangeOptions `json:"VisibleRange,omitempty"`
 }
 
@@ -9776,10 +9776,10 @@ type TemplateAxisTickLabelOptions struct {
 }
 
 type TemplateAxisDisplayOptions struct {
-	AxisLineVisibility *string                       `json:"AxisLineVisibility,omitempty"`
+	AxisLineVisibility *TemplateVisibility           `json:"AxisLineVisibility,omitempty"`
 	AxisOffset         *string                       `json:"AxisOffset,omitempty"`
 	DataOptions        *TemplateAxisDataOptions      `json:"DataOptions,omitempty"`
-	GridLineVisibility *string                       `json:"GridLineVisibility,omitempty"`
+	GridLineVisibility *TemplateVisibility           `json:"GridLineVisibility,omitempty"`
 	ScrollbarOptions   *TemplateScrollBarOptions     `json:"ScrollbarOptions,omitempty"`
 	TickLabelOptions   *TemplateAxisTickLabelOptions `json:"TickLabelOptions,omitempty"`
 }
@@ -9797,8 +9797,8 @@ type TemplateAxisLabelOptions struct {
 
 type TemplateChartAxisLabelOptions struct {
 	AxisLabelOptions   []TemplateAxisLabelOptions `json:"AxisLabelOptions,omitempty"`
-	SortIconVisibility *string                    `json:"SortIconVisibility,omitempty"`
-	Visibility         *string                    `json:"Visibility,omitempty"`
+	SortIconVisibility *TemplateVisibility        `json:"SortIconVisibility,omitempty"`
+	Visibility         *TemplateVisibility        `json:"Visibility,omitempty"`
 }
 
 type TemplateContributionAnalysisDefault struct {
@@ -9807,26 +9807,26 @@ type TemplateContributionAnalysisDefault struct {
 }
 
 type TemplateDataPathLabelType struct {
-	FieldId    *string `json:"FieldId,omitempty"`
-	FieldValue *string `json:"FieldValue,omitempty"`
-	Visibility *string `json:"Visibility,omitempty"`
+	FieldId    *string             `json:"FieldId,omitempty"`
+	FieldValue *string             `json:"FieldValue,omitempty"`
+	Visibility *TemplateVisibility `json:"Visibility,omitempty"`
 }
 
 type TemplateFieldLabelType struct {
-	FieldId    *string `json:"FieldId,omitempty"`
-	Visibility *string `json:"Visibility,omitempty"`
+	FieldId    *string             `json:"FieldId,omitempty"`
+	Visibility *TemplateVisibility `json:"Visibility,omitempty"`
 }
 
 type TemplateMaximumLabelType struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *TemplateVisibility `json:"Visibility,omitempty"`
 }
 
 type TemplateMinimumLabelType struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *TemplateVisibility `json:"Visibility,omitempty"`
 }
 
 type TemplateRangeEndsLabelType struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *TemplateVisibility `json:"Visibility,omitempty"`
 }
 
 type TemplateDataLabelType struct {
@@ -9838,16 +9838,16 @@ type TemplateDataLabelType struct {
 }
 
 type TemplateDataLabelOptions struct {
-	CategoryLabelVisibility *string                    `json:"CategoryLabelVisibility,omitempty"`
+	CategoryLabelVisibility *TemplateVisibility        `json:"CategoryLabelVisibility,omitempty"`
 	DataLabelTypes          []TemplateDataLabelType    `json:"DataLabelTypes,omitempty"`
 	LabelColor              *string                    `json:"LabelColor,omitempty"`
-	LabelContent            *string                    `json:"LabelContent,omitempty"`
+	LabelContent            *TemplateDataLabelContent  `json:"LabelContent,omitempty"`
 	LabelFontConfiguration  *TemplateFontConfiguration `json:"LabelFontConfiguration,omitempty"`
-	MeasureLabelVisibility  *string                    `json:"MeasureLabelVisibility,omitempty"`
-	Overlap                 *string                    `json:"Overlap,omitempty"`
-	Position                *string                    `json:"Position,omitempty"`
-	TotalsVisibility        *string                    `json:"TotalsVisibility,omitempty"`
-	Visibility              *string                    `json:"Visibility,omitempty"`
+	MeasureLabelVisibility  *TemplateVisibility        `json:"MeasureLabelVisibility,omitempty"`
+	Overlap                 *TemplateDataLabelOverlap  `json:"Overlap,omitempty"`
+	Position                *TemplateDataLabelPosition `json:"Position,omitempty"`
+	TotalsVisibility        *TemplateVisibility        `json:"TotalsVisibility,omitempty"`
+	Visibility              *TemplateVisibility        `json:"Visibility,omitempty"`
 }
 
 type TemplateCategoricalDimensionField struct {
@@ -9859,7 +9859,7 @@ type TemplateCategoricalDimensionField struct {
 
 type TemplateDateDimensionField struct {
 	Column              *TemplateColumnIdentifier            `json:"Column,omitempty"`
-	DateGranularity     *string                              `json:"DateGranularity,omitempty"`
+	DateGranularity     *TemplateTimeGranularity             `json:"DateGranularity,omitempty"`
 	FieldId             *string                              `json:"FieldId,omitempty"`
 	FormatConfiguration *TemplateDateTimeFormatConfiguration `json:"FormatConfiguration,omitempty"`
 	HierarchyId         *string                              `json:"HierarchyId,omitempty"`
@@ -9884,14 +9884,14 @@ type TemplateCalculatedMeasureField struct {
 }
 
 type TemplateCategoricalMeasureField struct {
-	AggregationFunction *string                            `json:"AggregationFunction,omitempty"`
-	Column              *TemplateColumnIdentifier          `json:"Column,omitempty"`
-	FieldId             *string                            `json:"FieldId,omitempty"`
-	FormatConfiguration *TemplateStringFormatConfiguration `json:"FormatConfiguration,omitempty"`
+	AggregationFunction *TemplateCategoricalAggregationFunction `json:"AggregationFunction,omitempty"`
+	Column              *TemplateColumnIdentifier               `json:"Column,omitempty"`
+	FieldId             *string                                 `json:"FieldId,omitempty"`
+	FormatConfiguration *TemplateStringFormatConfiguration      `json:"FormatConfiguration,omitempty"`
 }
 
 type TemplateDateMeasureField struct {
-	AggregationFunction *string                              `json:"AggregationFunction,omitempty"`
+	AggregationFunction *TemplateDateAggregationFunction     `json:"AggregationFunction,omitempty"`
 	Column              *TemplateColumnIdentifier            `json:"Column,omitempty"`
 	FieldId             *string                              `json:"FieldId,omitempty"`
 	FormatConfiguration *TemplateDateTimeFormatConfiguration `json:"FormatConfiguration,omitempty"`
@@ -9923,11 +9923,11 @@ type TemplateBarChartFieldWells struct {
 }
 
 type TemplateContextMenuOption struct {
-	AvailabilityStatus *string `json:"AvailabilityStatus,omitempty"`
+	AvailabilityStatus *TemplateDashboardBehavior `json:"AvailabilityStatus,omitempty"`
 }
 
 type TemplateVisualMenuOption struct {
-	AvailabilityStatus *string `json:"AvailabilityStatus,omitempty"`
+	AvailabilityStatus *TemplateDashboardBehavior `json:"AvailabilityStatus,omitempty"`
 }
 
 type TemplateVisualInteractionOptions struct {
@@ -9937,10 +9937,10 @@ type TemplateVisualInteractionOptions struct {
 
 type TemplateLegendOptions struct {
 	Height                 *string                    `json:"Height,omitempty"`
-	Position               *string                    `json:"Position,omitempty"`
+	Position               *TemplateLegendPosition    `json:"Position,omitempty"`
 	Title                  *TemplateLabelOptions      `json:"Title,omitempty"`
 	ValueFontConfiguration *TemplateFontConfiguration `json:"ValueFontConfiguration,omitempty"`
-	Visibility             *string                    `json:"Visibility,omitempty"`
+	Visibility             *TemplateVisibility        `json:"Visibility,omitempty"`
 	Width                  *string                    `json:"Width,omitempty"`
 }
 
@@ -9955,9 +9955,9 @@ type TemplateReferenceLineStaticDataConfiguration struct {
 }
 
 type TemplateReferenceLineDataConfiguration struct {
-	AxisBinding          *string                                        `json:"AxisBinding,omitempty"`
+	AxisBinding          *TemplateAxisBinding                           `json:"AxisBinding,omitempty"`
 	DynamicConfiguration *TemplateReferenceLineDynamicDataConfiguration `json:"DynamicConfiguration,omitempty"`
-	SeriesType           *string                                        `json:"SeriesType,omitempty"`
+	SeriesType           *TemplateReferenceLineSeriesType               `json:"SeriesType,omitempty"`
 	StaticConfiguration  *TemplateReferenceLineStaticDataConfiguration  `json:"StaticConfiguration,omitempty"`
 }
 
@@ -9966,52 +9966,52 @@ type TemplateReferenceLineCustomLabelConfiguration struct {
 }
 
 type TemplateReferenceLineValueLabelConfiguration struct {
-	FormatConfiguration *TemplateNumericFormatConfiguration `json:"FormatConfiguration,omitempty"`
-	RelativePosition    *string                             `json:"RelativePosition,omitempty"`
+	FormatConfiguration *TemplateNumericFormatConfiguration              `json:"FormatConfiguration,omitempty"`
+	RelativePosition    *TemplateReferenceLineValueLabelRelativePosition `json:"RelativePosition,omitempty"`
 }
 
 type TemplateReferenceLineLabelConfiguration struct {
 	CustomLabelConfiguration *TemplateReferenceLineCustomLabelConfiguration `json:"CustomLabelConfiguration,omitempty"`
 	FontColor                *string                                        `json:"FontColor,omitempty"`
 	FontConfiguration        *TemplateFontConfiguration                     `json:"FontConfiguration,omitempty"`
-	HorizontalPosition       *string                                        `json:"HorizontalPosition,omitempty"`
+	HorizontalPosition       *TemplateReferenceLineLabelHorizontalPosition  `json:"HorizontalPosition,omitempty"`
 	ValueLabelConfiguration  *TemplateReferenceLineValueLabelConfiguration  `json:"ValueLabelConfiguration,omitempty"`
-	VerticalPosition         *string                                        `json:"VerticalPosition,omitempty"`
+	VerticalPosition         *TemplateReferenceLineLabelVerticalPosition    `json:"VerticalPosition,omitempty"`
 }
 
 type TemplateReferenceLineStyleConfiguration struct {
-	Color   *string `json:"Color,omitempty"`
-	Pattern *string `json:"Pattern,omitempty"`
+	Color   *string                           `json:"Color,omitempty"`
+	Pattern *TemplateReferenceLinePatternType `json:"Pattern,omitempty"`
 }
 
 type TemplateReferenceLine struct {
 	DataConfiguration  *TemplateReferenceLineDataConfiguration  `json:"DataConfiguration,omitempty"`
 	LabelConfiguration *TemplateReferenceLineLabelConfiguration `json:"LabelConfiguration,omitempty"`
-	Status             *string                                  `json:"Status,omitempty"`
+	Status             *TemplateWidgetStatus                    `json:"Status,omitempty"`
 	StyleConfiguration *TemplateReferenceLineStyleConfiguration `json:"StyleConfiguration,omitempty"`
 }
 
 type TemplatePanelTitleOptions struct {
-	FontConfiguration       *TemplateFontConfiguration `json:"FontConfiguration,omitempty"`
-	HorizontalTextAlignment *string                    `json:"HorizontalTextAlignment,omitempty"`
-	Visibility              *string                    `json:"Visibility,omitempty"`
+	FontConfiguration       *TemplateFontConfiguration       `json:"FontConfiguration,omitempty"`
+	HorizontalTextAlignment *TemplateHorizontalTextAlignment `json:"HorizontalTextAlignment,omitempty"`
+	Visibility              *TemplateVisibility              `json:"Visibility,omitempty"`
 }
 
 type TemplatePanelConfiguration struct {
 	BackgroundColor      *string                    `json:"BackgroundColor,omitempty"`
-	BackgroundVisibility *string                    `json:"BackgroundVisibility,omitempty"`
+	BackgroundVisibility *TemplateVisibility        `json:"BackgroundVisibility,omitempty"`
 	BorderColor          *string                    `json:"BorderColor,omitempty"`
-	BorderStyle          *string                    `json:"BorderStyle,omitempty"`
+	BorderStyle          *TemplatePanelBorderStyle  `json:"BorderStyle,omitempty"`
 	BorderThickness      *string                    `json:"BorderThickness,omitempty"`
-	BorderVisibility     *string                    `json:"BorderVisibility,omitempty"`
+	BorderVisibility     *TemplateVisibility        `json:"BorderVisibility,omitempty"`
 	GutterSpacing        *string                    `json:"GutterSpacing,omitempty"`
-	GutterVisibility     *string                    `json:"GutterVisibility,omitempty"`
+	GutterVisibility     *TemplateVisibility        `json:"GutterVisibility,omitempty"`
 	Title                *TemplatePanelTitleOptions `json:"Title,omitempty"`
 }
 
 type TemplateSmallMultiplesAxisProperties struct {
-	Placement *string `json:"Placement,omitempty"`
-	Scale     *string `json:"Scale,omitempty"`
+	Placement *TemplateSmallMultiplesAxisPlacement `json:"Placement,omitempty"`
+	Scale     *TemplateSmallMultiplesAxisScale     `json:"Scale,omitempty"`
 }
 
 type TemplateSmallMultiplesOptions struct {
@@ -10023,13 +10023,13 @@ type TemplateSmallMultiplesOptions struct {
 }
 
 type TemplateItemsLimitConfiguration struct {
-	ItemsLimit      *float64 `json:"ItemsLimit,omitempty"`
-	OtherCategories *string  `json:"OtherCategories,omitempty"`
+	ItemsLimit      *float64                 `json:"ItemsLimit,omitempty"`
+	OtherCategories *TemplateOtherCategories `json:"OtherCategories,omitempty"`
 }
 
 type TemplateFieldSort struct {
-	Direction *string `json:"Direction,omitempty"`
-	FieldId   *string `json:"FieldId,omitempty"`
+	Direction *TemplateSortDirection `json:"Direction,omitempty"`
+	FieldId   *string                `json:"FieldId,omitempty"`
 }
 
 type TemplateFieldSortOptions struct {
@@ -10050,15 +10050,15 @@ type TemplateColumnTooltipItem struct {
 	Aggregation   *TemplateAggregationFunction `json:"Aggregation,omitempty"`
 	Column        *TemplateColumnIdentifier    `json:"Column,omitempty"`
 	Label         *string                      `json:"Label,omitempty"`
-	TooltipTarget *string                      `json:"TooltipTarget,omitempty"`
-	Visibility    *string                      `json:"Visibility,omitempty"`
+	TooltipTarget *TemplateTooltipTarget       `json:"TooltipTarget,omitempty"`
+	Visibility    *TemplateVisibility          `json:"Visibility,omitempty"`
 }
 
 type TemplateFieldTooltipItem struct {
-	FieldId       *string `json:"FieldId,omitempty"`
-	Label         *string `json:"Label,omitempty"`
-	TooltipTarget *string `json:"TooltipTarget,omitempty"`
-	Visibility    *string `json:"Visibility,omitempty"`
+	FieldId       *string                `json:"FieldId,omitempty"`
+	Label         *string                `json:"Label,omitempty"`
+	TooltipTarget *TemplateTooltipTarget `json:"TooltipTarget,omitempty"`
+	Visibility    *TemplateVisibility    `json:"Visibility,omitempty"`
 }
 
 type TemplateTooltipItem struct {
@@ -10067,19 +10067,19 @@ type TemplateTooltipItem struct {
 }
 
 type TemplateFieldBasedTooltip struct {
-	AggregationVisibility *string               `json:"AggregationVisibility,omitempty"`
-	TooltipFields         []TemplateTooltipItem `json:"TooltipFields,omitempty"`
-	TooltipTitleType      *string               `json:"TooltipTitleType,omitempty"`
+	AggregationVisibility *TemplateVisibility       `json:"AggregationVisibility,omitempty"`
+	TooltipFields         []TemplateTooltipItem     `json:"TooltipFields,omitempty"`
+	TooltipTitleType      *TemplateTooltipTitleType `json:"TooltipTitleType,omitempty"`
 }
 
 type TemplateTooltipOptions struct {
-	FieldBasedTooltip   *TemplateFieldBasedTooltip `json:"FieldBasedTooltip,omitempty"`
-	SelectedTooltipType *string                    `json:"SelectedTooltipType,omitempty"`
-	TooltipVisibility   *string                    `json:"TooltipVisibility,omitempty"`
+	FieldBasedTooltip   *TemplateFieldBasedTooltip   `json:"FieldBasedTooltip,omitempty"`
+	SelectedTooltipType *TemplateSelectedTooltipType `json:"SelectedTooltipType,omitempty"`
+	TooltipVisibility   *TemplateVisibility          `json:"TooltipVisibility,omitempty"`
 }
 
 type TemplateDataPathType struct {
-	PivotTableDataPathType *string `json:"PivotTableDataPathType,omitempty"`
+	PivotTableDataPathType *TemplatePivotTableDataPathType `json:"PivotTableDataPathType,omitempty"`
 }
 
 type TemplateDataPathValue struct {
@@ -10089,9 +10089,9 @@ type TemplateDataPathValue struct {
 }
 
 type TemplateDataPathColor struct {
-	Color           *string                `json:"Color,omitempty"`
-	Element         *TemplateDataPathValue `json:"Element,omitempty"`
-	TimeGranularity *string                `json:"TimeGranularity,omitempty"`
+	Color           *string                  `json:"Color,omitempty"`
+	Element         *TemplateDataPathValue   `json:"Element,omitempty"`
+	TimeGranularity *TemplateTimeGranularity `json:"TimeGranularity,omitempty"`
 }
 
 type TemplateVisualPalette struct {
@@ -10100,7 +10100,7 @@ type TemplateVisualPalette struct {
 }
 
 type TemplateBarChartConfiguration struct {
-	BarsArrangement              *string                               `json:"BarsArrangement,omitempty"`
+	BarsArrangement              *TemplateBarsArrangement              `json:"BarsArrangement,omitempty"`
 	CategoryAxis                 *TemplateAxisDisplayOptions           `json:"CategoryAxis,omitempty"`
 	CategoryLabelOptions         *TemplateChartAxisLabelOptions        `json:"CategoryLabelOptions,omitempty"`
 	ColorLabelOptions            *TemplateChartAxisLabelOptions        `json:"ColorLabelOptions,omitempty"`
@@ -10109,7 +10109,7 @@ type TemplateBarChartConfiguration struct {
 	FieldWells                   *TemplateBarChartFieldWells           `json:"FieldWells,omitempty"`
 	Interactions                 *TemplateVisualInteractionOptions     `json:"Interactions,omitempty"`
 	Legend                       *TemplateLegendOptions                `json:"Legend,omitempty"`
-	Orientation                  *string                               `json:"Orientation,omitempty"`
+	Orientation                  *TemplateBarChartOrientation          `json:"Orientation,omitempty"`
 	ReferenceLines               []TemplateReferenceLine               `json:"ReferenceLines,omitempty"`
 	SmallMultiplesOptions        *TemplateSmallMultiplesOptions        `json:"SmallMultiplesOptions,omitempty"`
 	SortConfiguration            *TemplateBarChartSortConfiguration    `json:"SortConfiguration,omitempty"`
@@ -10133,7 +10133,7 @@ type TemplateTimeRangeDrillDownFilter struct {
 	Column          *TemplateColumnIdentifier `json:"Column,omitempty"`
 	RangeMaximum    *string                   `json:"RangeMaximum,omitempty"`
 	RangeMinimum    *string                   `json:"RangeMinimum,omitempty"`
-	TimeGranularity *string                   `json:"TimeGranularity,omitempty"`
+	TimeGranularity *TemplateTimeGranularity  `json:"TimeGranularity,omitempty"`
 }
 
 type TemplateDrillDownFilter struct {
@@ -10172,7 +10172,7 @@ type TemplateLongFormatText struct {
 
 type TemplateVisualSubtitleLabelOptions struct {
 	FormatText *TemplateLongFormatText `json:"FormatText,omitempty"`
-	Visibility *string                 `json:"Visibility,omitempty"`
+	Visibility *TemplateVisibility     `json:"Visibility,omitempty"`
 }
 
 type TemplateShortFormatText struct {
@@ -10182,7 +10182,7 @@ type TemplateShortFormatText struct {
 
 type TemplateVisualTitleLabelOptions struct {
 	FormatText *TemplateShortFormatText `json:"FormatText,omitempty"`
-	Visibility *string                  `json:"Visibility,omitempty"`
+	Visibility *TemplateVisibility      `json:"Visibility,omitempty"`
 }
 
 type TemplateBarChartVisual struct {
@@ -10196,12 +10196,12 @@ type TemplateBarChartVisual struct {
 }
 
 type TemplateBoxPlotStyleOptions struct {
-	FillStyle *string `json:"FillStyle,omitempty"`
+	FillStyle *TemplateBoxPlotFillStyle `json:"FillStyle,omitempty"`
 }
 
 type TemplateBoxPlotOptions struct {
-	AllDataPointsVisibility *string                      `json:"AllDataPointsVisibility,omitempty"`
-	OutlierVisibility       *string                      `json:"OutlierVisibility,omitempty"`
+	AllDataPointsVisibility *TemplateVisibility          `json:"AllDataPointsVisibility,omitempty"`
+	OutlierVisibility       *TemplateVisibility          `json:"OutlierVisibility,omitempty"`
 	StyleOptions            *TemplateBoxPlotStyleOptions `json:"StyleOptions,omitempty"`
 }
 
@@ -10261,7 +10261,7 @@ type TemplateComboChartFieldWells struct {
 }
 
 type TemplateYAxisOptions struct {
-	YAxis *string `json:"YAxis,omitempty"`
+	YAxis *TemplateSingleYAxisOption `json:"YAxis,omitempty"`
 }
 
 type TemplateSingleAxisOptions struct {
@@ -10277,7 +10277,7 @@ type TemplateComboChartSortConfiguration struct {
 
 type TemplateComboChartConfiguration struct {
 	BarDataLabels                *TemplateDataLabelOptions            `json:"BarDataLabels,omitempty"`
-	BarsArrangement              *string                              `json:"BarsArrangement,omitempty"`
+	BarsArrangement              *TemplateBarsArrangement             `json:"BarsArrangement,omitempty"`
 	CategoryAxis                 *TemplateAxisDisplayOptions          `json:"CategoryAxis,omitempty"`
 	CategoryLabelOptions         *TemplateChartAxisLabelOptions       `json:"CategoryLabelOptions,omitempty"`
 	ColorLabelOptions            *TemplateChartAxisLabelOptions       `json:"ColorLabelOptions,omitempty"`
@@ -10307,10 +10307,10 @@ type TemplateComboChartVisual struct {
 }
 
 type TemplateCustomContentConfiguration struct {
-	ContentType  *string                           `json:"ContentType,omitempty"`
-	ContentUrl   *string                           `json:"ContentUrl,omitempty"`
-	ImageScaling *string                           `json:"ImageScaling,omitempty"`
-	Interactions *TemplateVisualInteractionOptions `json:"Interactions,omitempty"`
+	ContentType  *TemplateCustomContentType                      `json:"ContentType,omitempty"`
+	ContentUrl   *string                                         `json:"ContentUrl,omitempty"`
+	ImageScaling *TemplateCustomContentImageScalingConfiguration `json:"ImageScaling,omitempty"`
+	Interactions *TemplateVisualInteractionOptions               `json:"Interactions,omitempty"`
 }
 
 type TemplateCustomContentVisual struct {
@@ -10339,7 +10339,7 @@ type TemplateFilledMapFieldWells struct {
 }
 
 type TemplateGeospatialMapStyleOptions struct {
-	BaseMapStyle *string `json:"BaseMapStyle,omitempty"`
+	BaseMapStyle *TemplateBaseMapStyleType `json:"BaseMapStyle,omitempty"`
 }
 
 type TemplateFilledMapSortConfiguration struct {
@@ -10355,7 +10355,7 @@ type TemplateGeospatialCoordinateBounds struct {
 
 type TemplateGeospatialWindowOptions struct {
 	Bounds      *TemplateGeospatialCoordinateBounds `json:"Bounds,omitempty"`
-	MapZoomMode *string                             `json:"MapZoomMode,omitempty"`
+	MapZoomMode *TemplateMapZoomMode                `json:"MapZoomMode,omitempty"`
 }
 
 type TemplateFilledMapConfiguration struct {
@@ -10422,13 +10422,13 @@ type TemplateFilledMapVisual struct {
 }
 
 type TemplateFunnelChartDataLabelOptions struct {
-	CategoryLabelVisibility *string                    `json:"CategoryLabelVisibility,omitempty"`
-	LabelColor              *string                    `json:"LabelColor,omitempty"`
-	LabelFontConfiguration  *TemplateFontConfiguration `json:"LabelFontConfiguration,omitempty"`
-	MeasureDataLabelStyle   *string                    `json:"MeasureDataLabelStyle,omitempty"`
-	MeasureLabelVisibility  *string                    `json:"MeasureLabelVisibility,omitempty"`
-	Position                *string                    `json:"Position,omitempty"`
-	Visibility              *string                    `json:"Visibility,omitempty"`
+	CategoryLabelVisibility *TemplateVisibility                       `json:"CategoryLabelVisibility,omitempty"`
+	LabelColor              *string                                   `json:"LabelColor,omitempty"`
+	LabelFontConfiguration  *TemplateFontConfiguration                `json:"LabelFontConfiguration,omitempty"`
+	MeasureDataLabelStyle   *TemplateFunnelChartMeasureDataLabelStyle `json:"MeasureDataLabelStyle,omitempty"`
+	MeasureLabelVisibility  *TemplateVisibility                       `json:"MeasureLabelVisibility,omitempty"`
+	Position                *TemplateDataLabelPosition                `json:"Position,omitempty"`
+	Visibility              *TemplateVisibility                       `json:"Visibility,omitempty"`
 }
 
 type TemplateFunnelChartAggregatedFieldWells struct {
@@ -10477,8 +10477,8 @@ type TemplateGaugeChartFieldWells struct {
 }
 
 type TemplateArcConfiguration struct {
-	ArcAngle     *float64 `json:"ArcAngle,omitempty"`
-	ArcThickness *string  `json:"ArcThickness,omitempty"`
+	ArcAngle     *float64                     `json:"ArcAngle,omitempty"`
+	ArcThickness *TemplateArcThicknessOptions `json:"ArcThickness,omitempty"`
 }
 
 type TemplateArcAxisDisplayRange struct {
@@ -10498,14 +10498,14 @@ type TemplateComparisonFormatConfiguration struct {
 
 type TemplateComparisonConfiguration struct {
 	ComparisonFormat *TemplateComparisonFormatConfiguration `json:"ComparisonFormat,omitempty"`
-	ComparisonMethod *string                                `json:"ComparisonMethod,omitempty"`
+	ComparisonMethod *TemplateComparisonMethod              `json:"ComparisonMethod,omitempty"`
 }
 
 type TemplateGaugeChartOptions struct {
 	Arc                           *TemplateArcConfiguration        `json:"Arc,omitempty"`
 	ArcAxis                       *TemplateArcAxisConfiguration    `json:"ArcAxis,omitempty"`
 	Comparison                    *TemplateComparisonConfiguration `json:"Comparison,omitempty"`
-	PrimaryValueDisplayType       *string                          `json:"PrimaryValueDisplayType,omitempty"`
+	PrimaryValueDisplayType       *TemplatePrimaryValueDisplayType `json:"PrimaryValueDisplayType,omitempty"`
 	PrimaryValueFontConfiguration *TemplateFontConfiguration       `json:"PrimaryValueFontConfiguration,omitempty"`
 }
 
@@ -10524,12 +10524,12 @@ type TemplateGaugeChartArcConditionalFormatting struct {
 }
 
 type TemplateConditionalFormattingIconDisplayConfiguration struct {
-	IconDisplayOption *string `json:"IconDisplayOption,omitempty"`
+	IconDisplayOption *TemplateConditionalFormattingIconDisplayOption `json:"IconDisplayOption,omitempty"`
 }
 
 type TemplateConditionalFormattingCustomIconOptions struct {
-	Icon        *string `json:"Icon,omitempty"`
-	UnicodeIcon *string `json:"UnicodeIcon,omitempty"`
+	Icon        *TemplateIcon `json:"Icon,omitempty"`
+	UnicodeIcon *string       `json:"UnicodeIcon,omitempty"`
 }
 
 type TemplateConditionalFormattingCustomIconCondition struct {
@@ -10540,8 +10540,8 @@ type TemplateConditionalFormattingCustomIconCondition struct {
 }
 
 type TemplateConditionalFormattingIconSet struct {
-	Expression  *string `json:"Expression,omitempty"`
-	IconSetType *string `json:"IconSetType,omitempty"`
+	Expression  *string                                   `json:"Expression,omitempty"`
+	IconSetType *TemplateConditionalFormattingIconSetType `json:"IconSetType,omitempty"`
 }
 
 type TemplateConditionalFormattingIcon struct {
@@ -10610,7 +10610,7 @@ type TemplateGeospatialHeatmapConfiguration struct {
 type TemplateGeospatialPointStyleOptions struct {
 	ClusterMarkerConfiguration *TemplateClusterMarkerConfiguration     `json:"ClusterMarkerConfiguration,omitempty"`
 	HeatmapConfiguration       *TemplateGeospatialHeatmapConfiguration `json:"HeatmapConfiguration,omitempty"`
-	SelectedPointStyle         *string                                 `json:"SelectedPointStyle,omitempty"`
+	SelectedPointStyle         *TemplateGeospatialSelectedPointStyle   `json:"SelectedPointStyle,omitempty"`
 }
 
 type TemplateGeospatialMapConfiguration struct {
@@ -10639,9 +10639,9 @@ type TemplateDataColor struct {
 }
 
 type TemplateColorScale struct {
-	ColorFillType  *string             `json:"ColorFillType,omitempty"`
-	Colors         []TemplateDataColor `json:"Colors,omitempty"`
-	NullValueColor *TemplateDataColor  `json:"NullValueColor,omitempty"`
+	ColorFillType  *TemplateColorFillType `json:"ColorFillType,omitempty"`
+	Colors         []TemplateDataColor    `json:"Colors,omitempty"`
+	NullValueColor *TemplateDataColor     `json:"NullValueColor,omitempty"`
 }
 
 type TemplateHeatMapAggregatedFieldWells struct {
@@ -10693,10 +10693,10 @@ type TemplateBinWidthOptions struct {
 }
 
 type TemplateHistogramBinOptions struct {
-	BinCount        *TemplateBinCountOptions `json:"BinCount,omitempty"`
-	BinWidth        *TemplateBinWidthOptions `json:"BinWidth,omitempty"`
-	SelectedBinType *string                  `json:"SelectedBinType,omitempty"`
-	StartValue      *float64                 `json:"StartValue,omitempty"`
+	BinCount        *TemplateBinCountOptions  `json:"BinCount,omitempty"`
+	BinWidth        *TemplateBinWidthOptions  `json:"BinWidth,omitempty"`
+	SelectedBinType *TemplateHistogramBinType `json:"SelectedBinType,omitempty"`
+	StartValue      *float64                  `json:"StartValue,omitempty"`
 }
 
 type TemplateHistogramAggregatedFieldWells struct {
@@ -10729,17 +10729,17 @@ type TemplateHistogramVisual struct {
 }
 
 type TemplateForecastComputation struct {
-	ComputationId          *string                 `json:"ComputationId,omitempty"`
-	CustomSeasonalityValue *float64                `json:"CustomSeasonalityValue,omitempty"`
-	LowerBoundary          *float64                `json:"LowerBoundary,omitempty"`
-	Name                   *string                 `json:"Name,omitempty"`
-	PeriodsBackward        *float64                `json:"PeriodsBackward,omitempty"`
-	PeriodsForward         *float64                `json:"PeriodsForward,omitempty"`
-	PredictionInterval     *float64                `json:"PredictionInterval,omitempty"`
-	Seasonality            *string                 `json:"Seasonality,omitempty"`
-	Time                   *TemplateDimensionField `json:"Time,omitempty"`
-	UpperBoundary          *float64                `json:"UpperBoundary,omitempty"`
-	Value                  *TemplateMeasureField   `json:"Value,omitempty"`
+	ComputationId          *string                                 `json:"ComputationId,omitempty"`
+	CustomSeasonalityValue *float64                                `json:"CustomSeasonalityValue,omitempty"`
+	LowerBoundary          *float64                                `json:"LowerBoundary,omitempty"`
+	Name                   *string                                 `json:"Name,omitempty"`
+	PeriodsBackward        *float64                                `json:"PeriodsBackward,omitempty"`
+	PeriodsForward         *float64                                `json:"PeriodsForward,omitempty"`
+	PredictionInterval     *float64                                `json:"PredictionInterval,omitempty"`
+	Seasonality            *TemplateForecastComputationSeasonality `json:"Seasonality,omitempty"`
+	Time                   *TemplateDimensionField                 `json:"Time,omitempty"`
+	UpperBoundary          *float64                                `json:"UpperBoundary,omitempty"`
+	Value                  *TemplateMeasureField                   `json:"Value,omitempty"`
 }
 
 type TemplateGrowthRateComputation struct {
@@ -10751,11 +10751,11 @@ type TemplateGrowthRateComputation struct {
 }
 
 type TemplateMaximumMinimumComputation struct {
-	ComputationId *string                 `json:"ComputationId,omitempty"`
-	Name          *string                 `json:"Name,omitempty"`
-	Time          *TemplateDimensionField `json:"Time,omitempty"`
-	Type          *string                 `json:"Type,omitempty"`
-	Value         *TemplateMeasureField   `json:"Value,omitempty"`
+	ComputationId *string                                `json:"ComputationId,omitempty"`
+	Name          *string                                `json:"Name,omitempty"`
+	Time          *TemplateDimensionField                `json:"Time,omitempty"`
+	Type          *TemplateMaximumMinimumComputationType `json:"Type,omitempty"`
+	Value         *TemplateMeasureField                  `json:"Value,omitempty"`
 }
 
 type TemplateMetricComparisonComputation struct {
@@ -10774,31 +10774,31 @@ type TemplatePeriodOverPeriodComputation struct {
 }
 
 type TemplatePeriodToDateComputation struct {
-	ComputationId         *string                 `json:"ComputationId,omitempty"`
-	Name                  *string                 `json:"Name,omitempty"`
-	PeriodTimeGranularity *string                 `json:"PeriodTimeGranularity,omitempty"`
-	Time                  *TemplateDimensionField `json:"Time,omitempty"`
-	Value                 *TemplateMeasureField   `json:"Value,omitempty"`
+	ComputationId         *string                  `json:"ComputationId,omitempty"`
+	Name                  *string                  `json:"Name,omitempty"`
+	PeriodTimeGranularity *TemplateTimeGranularity `json:"PeriodTimeGranularity,omitempty"`
+	Time                  *TemplateDimensionField  `json:"Time,omitempty"`
+	Value                 *TemplateMeasureField    `json:"Value,omitempty"`
 }
 
 type TemplateTopBottomMoversComputation struct {
-	Category      *TemplateDimensionField `json:"Category,omitempty"`
-	ComputationId *string                 `json:"ComputationId,omitempty"`
-	MoverSize     *float64                `json:"MoverSize,omitempty"`
-	Name          *string                 `json:"Name,omitempty"`
-	SortOrder     *string                 `json:"SortOrder,omitempty"`
-	Time          *TemplateDimensionField `json:"Time,omitempty"`
-	Type          *string                 `json:"Type,omitempty"`
-	Value         *TemplateMeasureField   `json:"Value,omitempty"`
+	Category      *TemplateDimensionField           `json:"Category,omitempty"`
+	ComputationId *string                           `json:"ComputationId,omitempty"`
+	MoverSize     *float64                          `json:"MoverSize,omitempty"`
+	Name          *string                           `json:"Name,omitempty"`
+	SortOrder     *TemplateTopBottomSortOrder       `json:"SortOrder,omitempty"`
+	Time          *TemplateDimensionField           `json:"Time,omitempty"`
+	Type          *TemplateTopBottomComputationType `json:"Type,omitempty"`
+	Value         *TemplateMeasureField             `json:"Value,omitempty"`
 }
 
 type TemplateTopBottomRankedComputation struct {
-	Category      *TemplateDimensionField `json:"Category,omitempty"`
-	ComputationId *string                 `json:"ComputationId,omitempty"`
-	Name          *string                 `json:"Name,omitempty"`
-	ResultSize    *float64                `json:"ResultSize,omitempty"`
-	Type          *string                 `json:"Type,omitempty"`
-	Value         *TemplateMeasureField   `json:"Value,omitempty"`
+	Category      *TemplateDimensionField           `json:"Category,omitempty"`
+	ComputationId *string                           `json:"ComputationId,omitempty"`
+	Name          *string                           `json:"Name,omitempty"`
+	ResultSize    *float64                          `json:"ResultSize,omitempty"`
+	Type          *TemplateTopBottomComputationType `json:"Type,omitempty"`
+	Value         *TemplateMeasureField             `json:"Value,omitempty"`
 }
 
 type TemplateTotalAggregationComputation struct {
@@ -10853,26 +10853,26 @@ type TemplateKPIFieldWells struct {
 }
 
 type TemplateProgressBarOptions struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *TemplateVisibility `json:"Visibility,omitempty"`
 }
 
 type TemplateSecondaryValueOptions struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *TemplateVisibility `json:"Visibility,omitempty"`
 }
 
 type TemplateKPISparklineOptions struct {
-	Color             *string `json:"Color,omitempty"`
-	TooltipVisibility *string `json:"TooltipVisibility,omitempty"`
-	Type              *string `json:"Type,omitempty"`
-	Visibility        *string `json:"Visibility,omitempty"`
+	Color             *string                   `json:"Color,omitempty"`
+	TooltipVisibility *TemplateVisibility       `json:"TooltipVisibility,omitempty"`
+	Type              *TemplateKPISparklineType `json:"Type,omitempty"`
+	Visibility        *TemplateVisibility       `json:"Visibility,omitempty"`
 }
 
 type TemplateTrendArrowOptions struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *TemplateVisibility `json:"Visibility,omitempty"`
 }
 
 type TemplateKPIVisualStandardLayout struct {
-	Type *string `json:"Type,omitempty"`
+	Type *TemplateKPIVisualStandardLayoutType `json:"Type,omitempty"`
 }
 
 type TemplateKPIVisualLayoutOptions struct {
@@ -10881,7 +10881,7 @@ type TemplateKPIVisualLayoutOptions struct {
 
 type TemplateKPIOptions struct {
 	Comparison                      *TemplateComparisonConfiguration `json:"Comparison,omitempty"`
-	PrimaryValueDisplayType         *string                          `json:"PrimaryValueDisplayType,omitempty"`
+	PrimaryValueDisplayType         *TemplatePrimaryValueDisplayType `json:"PrimaryValueDisplayType,omitempty"`
 	PrimaryValueFontConfiguration   *TemplateFontConfiguration       `json:"PrimaryValueFontConfiguration,omitempty"`
 	ProgressBar                     *TemplateProgressBarOptions      `json:"ProgressBar,omitempty"`
 	SecondaryValue                  *TemplateSecondaryValueOptions   `json:"SecondaryValue,omitempty"`
@@ -10944,21 +10944,21 @@ type TemplateKPIVisual struct {
 }
 
 type TemplateLineChartLineStyleSettings struct {
-	LineInterpolation *string `json:"LineInterpolation,omitempty"`
-	LineStyle         *string `json:"LineStyle,omitempty"`
-	LineVisibility    *string `json:"LineVisibility,omitempty"`
-	LineWidth         *string `json:"LineWidth,omitempty"`
+	LineInterpolation *TemplateLineInterpolation  `json:"LineInterpolation,omitempty"`
+	LineStyle         *TemplateLineChartLineStyle `json:"LineStyle,omitempty"`
+	LineVisibility    *TemplateVisibility         `json:"LineVisibility,omitempty"`
+	LineWidth         *string                     `json:"LineWidth,omitempty"`
 }
 
 type TemplateLineChartMarkerStyleSettings struct {
-	MarkerColor      *string `json:"MarkerColor,omitempty"`
-	MarkerShape      *string `json:"MarkerShape,omitempty"`
-	MarkerSize       *string `json:"MarkerSize,omitempty"`
-	MarkerVisibility *string `json:"MarkerVisibility,omitempty"`
+	MarkerColor      *string                       `json:"MarkerColor,omitempty"`
+	MarkerShape      *TemplateLineChartMarkerShape `json:"MarkerShape,omitempty"`
+	MarkerSize       *string                       `json:"MarkerSize,omitempty"`
+	MarkerVisibility *TemplateVisibility           `json:"MarkerVisibility,omitempty"`
 }
 
 type TemplateLineChartDefaultSeriesSettings struct {
-	AxisBinding         *string                               `json:"AxisBinding,omitempty"`
+	AxisBinding         *TemplateAxisBinding                  `json:"AxisBinding,omitempty"`
 	LineStyleSettings   *TemplateLineChartLineStyleSettings   `json:"LineStyleSettings,omitempty"`
 	MarkerStyleSettings *TemplateLineChartMarkerStyleSettings `json:"MarkerStyleSettings,omitempty"`
 }
@@ -11005,7 +11005,7 @@ type TemplateForecastConfiguration struct {
 }
 
 type TemplateMissingDataConfiguration struct {
-	TreatmentOption *string `json:"TreatmentOption,omitempty"`
+	TreatmentOption *TemplateMissingDataTreatmentOption `json:"TreatmentOption,omitempty"`
 }
 
 type TemplateLineSeriesAxisDisplayOptions struct {
@@ -11019,14 +11019,14 @@ type TemplateLineChartSeriesSettings struct {
 }
 
 type TemplateDataFieldSeriesItem struct {
-	AxisBinding *string                          `json:"AxisBinding,omitempty"`
+	AxisBinding *TemplateAxisBinding             `json:"AxisBinding,omitempty"`
 	FieldId     *string                          `json:"FieldId,omitempty"`
 	FieldValue  *string                          `json:"FieldValue,omitempty"`
 	Settings    *TemplateLineChartSeriesSettings `json:"Settings,omitempty"`
 }
 
 type TemplateFieldSeriesItem struct {
-	AxisBinding *string                          `json:"AxisBinding,omitempty"`
+	AxisBinding *TemplateAxisBinding             `json:"AxisBinding,omitempty"`
 	FieldId     *string                          `json:"FieldId,omitempty"`
 	Settings    *TemplateLineChartSeriesSettings `json:"Settings,omitempty"`
 }
@@ -11062,7 +11062,7 @@ type TemplateLineChartConfiguration struct {
 	SmallMultiplesOptions        *TemplateSmallMultiplesOptions          `json:"SmallMultiplesOptions,omitempty"`
 	SortConfiguration            *TemplateLineChartSortConfiguration     `json:"SortConfiguration,omitempty"`
 	Tooltip                      *TemplateTooltipOptions                 `json:"Tooltip,omitempty"`
-	Type                         *string                                 `json:"Type,omitempty"`
+	Type                         *TemplateLineChartType                  `json:"Type,omitempty"`
 	VisualPalette                *TemplateVisualPalette                  `json:"VisualPalette,omitempty"`
 	XAxisDisplayOptions          *TemplateAxisDisplayOptions             `json:"XAxisDisplayOptions,omitempty"`
 	XAxisLabelOptions            *TemplateChartAxisLabelOptions          `json:"XAxisLabelOptions,omitempty"`
@@ -11079,11 +11079,11 @@ type TemplateLineChartVisual struct {
 }
 
 type TemplateArcOptions struct {
-	ArcThickness *string `json:"ArcThickness,omitempty"`
+	ArcThickness *TemplateArcThickness `json:"ArcThickness,omitempty"`
 }
 
 type TemplateDonutCenterOptions struct {
-	LabelVisibility *string `json:"LabelVisibility,omitempty"`
+	LabelVisibility *TemplateVisibility `json:"LabelVisibility,omitempty"`
 }
 
 type TemplateDonutOptions struct {
@@ -11139,7 +11139,7 @@ type TemplatePivotTableFieldCollapseStateTarget struct {
 }
 
 type TemplatePivotTableFieldCollapseStateOption struct {
-	State  *string                                     `json:"State,omitempty"`
+	State  *TemplatePivotTableFieldCollapseState       `json:"State,omitempty"`
 	Target *TemplatePivotTableFieldCollapseStateTarget `json:"Target,omitempty"`
 }
 
@@ -11149,9 +11149,9 @@ type TemplatePivotTableDataPathOption struct {
 }
 
 type TemplatePivotTableFieldOption struct {
-	CustomLabel *string `json:"CustomLabel,omitempty"`
-	FieldId     *string `json:"FieldId,omitempty"`
-	Visibility  *string `json:"Visibility,omitempty"`
+	CustomLabel *string             `json:"CustomLabel,omitempty"`
+	FieldId     *string             `json:"FieldId,omitempty"`
+	Visibility  *TemplateVisibility `json:"Visibility,omitempty"`
 }
 
 type TemplatePivotTableFieldOptions struct {
@@ -11171,12 +11171,12 @@ type TemplatePivotTableFieldWells struct {
 }
 
 type TemplatePivotTablePaginatedReportOptions struct {
-	OverflowColumnHeaderVisibility *string `json:"OverflowColumnHeaderVisibility,omitempty"`
-	VerticalOverflowVisibility     *string `json:"VerticalOverflowVisibility,omitempty"`
+	OverflowColumnHeaderVisibility *TemplateVisibility `json:"OverflowColumnHeaderVisibility,omitempty"`
+	VerticalOverflowVisibility     *TemplateVisibility `json:"VerticalOverflowVisibility,omitempty"`
 }
 
 type TemplateDataPathSort struct {
-	Direction *string                 `json:"Direction,omitempty"`
+	Direction *TemplateSortDirection  `json:"Direction,omitempty"`
 	SortPaths []TemplateDataPathValue `json:"SortPaths,omitempty"`
 }
 
@@ -11196,9 +11196,9 @@ type TemplatePivotTableSortConfiguration struct {
 }
 
 type TemplateTableBorderOptions struct {
-	Color     *string  `json:"Color,omitempty"`
-	Style     *string  `json:"Style,omitempty"`
-	Thickness *float64 `json:"Thickness,omitempty"`
+	Color     *string                   `json:"Color,omitempty"`
+	Style     *TemplateTableBorderStyle `json:"Style,omitempty"`
+	Thickness *float64                  `json:"Thickness,omitempty"`
 }
 
 type TemplateTableSideBorderOptions struct {
@@ -11220,37 +11220,37 @@ type TemplateTableCellStyle struct {
 	Border                  *TemplateGlobalTableBorderOptions `json:"Border,omitempty"`
 	FontConfiguration       *TemplateFontConfiguration        `json:"FontConfiguration,omitempty"`
 	Height                  *float64                          `json:"Height,omitempty"`
-	HorizontalTextAlignment *string                           `json:"HorizontalTextAlignment,omitempty"`
-	TextWrap                *string                           `json:"TextWrap,omitempty"`
-	VerticalTextAlignment   *string                           `json:"VerticalTextAlignment,omitempty"`
-	Visibility              *string                           `json:"Visibility,omitempty"`
+	HorizontalTextAlignment *TemplateHorizontalTextAlignment  `json:"HorizontalTextAlignment,omitempty"`
+	TextWrap                *TemplateTextWrap                 `json:"TextWrap,omitempty"`
+	VerticalTextAlignment   *TemplateVerticalTextAlignment    `json:"VerticalTextAlignment,omitempty"`
+	Visibility              *TemplateVisibility               `json:"Visibility,omitempty"`
 }
 
 type TemplateRowAlternateColorOptions struct {
-	RowAlternateColors        []string `json:"RowAlternateColors,omitempty"`
-	Status                    *string  `json:"Status,omitempty"`
-	UsePrimaryBackgroundColor *string  `json:"UsePrimaryBackgroundColor,omitempty"`
+	RowAlternateColors        []string              `json:"RowAlternateColors,omitempty"`
+	Status                    *TemplateWidgetStatus `json:"Status,omitempty"`
+	UsePrimaryBackgroundColor *TemplateWidgetStatus `json:"UsePrimaryBackgroundColor,omitempty"`
 }
 
 type TemplatePivotTableRowsLabelOptions struct {
-	CustomLabel *string `json:"CustomLabel,omitempty"`
-	Visibility  *string `json:"Visibility,omitempty"`
+	CustomLabel *string             `json:"CustomLabel,omitempty"`
+	Visibility  *TemplateVisibility `json:"Visibility,omitempty"`
 }
 
 type TemplatePivotTableOptions struct {
 	CellStyle                        *TemplateTableCellStyle             `json:"CellStyle,omitempty"`
-	CollapsedRowDimensionsVisibility *string                             `json:"CollapsedRowDimensionsVisibility,omitempty"`
+	CollapsedRowDimensionsVisibility *TemplateVisibility                 `json:"CollapsedRowDimensionsVisibility,omitempty"`
 	ColumnHeaderStyle                *TemplateTableCellStyle             `json:"ColumnHeaderStyle,omitempty"`
-	ColumnNamesVisibility            *string                             `json:"ColumnNamesVisibility,omitempty"`
+	ColumnNamesVisibility            *TemplateVisibility                 `json:"ColumnNamesVisibility,omitempty"`
 	DefaultCellWidth                 *string                             `json:"DefaultCellWidth,omitempty"`
-	MetricPlacement                  *string                             `json:"MetricPlacement,omitempty"`
+	MetricPlacement                  *TemplatePivotTableMetricPlacement  `json:"MetricPlacement,omitempty"`
 	RowAlternateColorOptions         *TemplateRowAlternateColorOptions   `json:"RowAlternateColorOptions,omitempty"`
 	RowFieldNamesStyle               *TemplateTableCellStyle             `json:"RowFieldNamesStyle,omitempty"`
 	RowHeaderStyle                   *TemplateTableCellStyle             `json:"RowHeaderStyle,omitempty"`
 	RowsLabelOptions                 *TemplatePivotTableRowsLabelOptions `json:"RowsLabelOptions,omitempty"`
-	RowsLayout                       *string                             `json:"RowsLayout,omitempty"`
-	SingleMetricVisibility           *string                             `json:"SingleMetricVisibility,omitempty"`
-	ToggleButtonsVisibility          *string                             `json:"ToggleButtonsVisibility,omitempty"`
+	RowsLayout                       *TemplatePivotTableRowsLayout       `json:"RowsLayout,omitempty"`
+	SingleMetricVisibility           *TemplateVisibility                 `json:"SingleMetricVisibility,omitempty"`
+	ToggleButtonsVisibility          *TemplateVisibility                 `json:"ToggleButtonsVisibility,omitempty"`
 }
 
 type TemplatePivotTableFieldSubtotalOptions struct {
@@ -11258,22 +11258,22 @@ type TemplatePivotTableFieldSubtotalOptions struct {
 }
 
 type TemplateTableStyleTarget struct {
-	CellType *string `json:"CellType,omitempty"`
+	CellType *TemplateStyledCellType `json:"CellType,omitempty"`
 }
 
 type TemplateSubtotalOptions struct {
 	CustomLabel           *string                                  `json:"CustomLabel,omitempty"`
-	FieldLevel            *string                                  `json:"FieldLevel,omitempty"`
+	FieldLevel            *TemplatePivotTableSubtotalLevel         `json:"FieldLevel,omitempty"`
 	FieldLevelOptions     []TemplatePivotTableFieldSubtotalOptions `json:"FieldLevelOptions,omitempty"`
 	MetricHeaderCellStyle *TemplateTableCellStyle                  `json:"MetricHeaderCellStyle,omitempty"`
 	StyleTargets          []TemplateTableStyleTarget               `json:"StyleTargets,omitempty"`
 	TotalCellStyle        *TemplateTableCellStyle                  `json:"TotalCellStyle,omitempty"`
-	TotalsVisibility      *string                                  `json:"TotalsVisibility,omitempty"`
+	TotalsVisibility      *TemplateVisibility                      `json:"TotalsVisibility,omitempty"`
 	ValueCellStyle        *TemplateTableCellStyle                  `json:"ValueCellStyle,omitempty"`
 }
 
 type TemplateTotalAggregationFunction struct {
-	SimpleTotalAggregationFunction *string `json:"SimpleTotalAggregationFunction,omitempty"`
+	SimpleTotalAggregationFunction *TemplateSimpleTotalAggregationFunction `json:"SimpleTotalAggregationFunction,omitempty"`
 }
 
 type TemplateTotalAggregationOption struct {
@@ -11284,11 +11284,11 @@ type TemplateTotalAggregationOption struct {
 type TemplatePivotTotalOptions struct {
 	CustomLabel             *string                          `json:"CustomLabel,omitempty"`
 	MetricHeaderCellStyle   *TemplateTableCellStyle          `json:"MetricHeaderCellStyle,omitempty"`
-	Placement               *string                          `json:"Placement,omitempty"`
-	ScrollStatus            *string                          `json:"ScrollStatus,omitempty"`
+	Placement               *TemplateTableTotalsPlacement    `json:"Placement,omitempty"`
+	ScrollStatus            *TemplateTableTotalsScrollStatus `json:"ScrollStatus,omitempty"`
 	TotalAggregationOptions []TemplateTotalAggregationOption `json:"TotalAggregationOptions,omitempty"`
 	TotalCellStyle          *TemplateTableCellStyle          `json:"TotalCellStyle,omitempty"`
-	TotalsVisibility        *string                          `json:"TotalsVisibility,omitempty"`
+	TotalsVisibility        *TemplateVisibility              `json:"TotalsVisibility,omitempty"`
 	ValueCellStyle          *TemplateTableCellStyle          `json:"ValueCellStyle,omitempty"`
 }
 
@@ -11310,7 +11310,7 @@ type TemplatePivotTableConfiguration struct {
 }
 
 type TemplatePivotTableConditionalFormattingScope struct {
-	Role *string `json:"Role,omitempty"`
+	Role *TemplatePivotTableConditionalFormattingScopeRole `json:"Role,omitempty"`
 }
 
 type TemplateTextConditionalFormat struct {
@@ -11351,10 +11351,10 @@ type TemplateUnaggregatedField struct {
 }
 
 type TemplatePluginVisualFieldWell struct {
-	AxisName     *string                     `json:"AxisName,omitempty"`
-	Dimensions   []TemplateDimensionField    `json:"Dimensions,omitempty"`
-	Measures     []TemplateMeasureField      `json:"Measures,omitempty"`
-	Unaggregated []TemplateUnaggregatedField `json:"Unaggregated,omitempty"`
+	AxisName     *TemplatePluginVisualAxisName `json:"AxisName,omitempty"`
+	Dimensions   []TemplateDimensionField      `json:"Dimensions,omitempty"`
+	Measures     []TemplateMeasureField        `json:"Measures,omitempty"`
+	Unaggregated []TemplateUnaggregatedField   `json:"Unaggregated,omitempty"`
 }
 
 type TemplatePluginVisualItemsLimitConfiguration struct {
@@ -11395,7 +11395,7 @@ type TemplatePluginVisual struct {
 }
 
 type TemplateRadarChartAreaStyleSettings struct {
-	Visibility *string `json:"Visibility,omitempty"`
+	Visibility *TemplateVisibility `json:"Visibility,omitempty"`
 }
 
 type TemplateRadarChartSeriesSettings struct {
@@ -11420,10 +11420,10 @@ type TemplateRadarChartSortConfiguration struct {
 }
 
 type TemplateRadarChartConfiguration struct {
-	AlternateBandColorsVisibility *string                              `json:"AlternateBandColorsVisibility,omitempty"`
+	AlternateBandColorsVisibility *TemplateVisibility                  `json:"AlternateBandColorsVisibility,omitempty"`
 	AlternateBandEvenColor        *string                              `json:"AlternateBandEvenColor,omitempty"`
 	AlternateBandOddColor         *string                              `json:"AlternateBandOddColor,omitempty"`
-	AxesRangeScale                *string                              `json:"AxesRangeScale,omitempty"`
+	AxesRangeScale                *TemplateRadarChartAxesRangeScale    `json:"AxesRangeScale,omitempty"`
 	BaseSeriesSettings            *TemplateRadarChartSeriesSettings    `json:"BaseSeriesSettings,omitempty"`
 	CategoryAxis                  *TemplateAxisDisplayOptions          `json:"CategoryAxis,omitempty"`
 	CategoryLabelOptions          *TemplateChartAxisLabelOptions       `json:"CategoryLabelOptions,omitempty"`
@@ -11432,7 +11432,7 @@ type TemplateRadarChartConfiguration struct {
 	FieldWells                    *TemplateRadarChartFieldWells        `json:"FieldWells,omitempty"`
 	Interactions                  *TemplateVisualInteractionOptions    `json:"Interactions,omitempty"`
 	Legend                        *TemplateLegendOptions               `json:"Legend,omitempty"`
-	Shape                         *string                              `json:"Shape,omitempty"`
+	Shape                         *TemplateRadarChartShape             `json:"Shape,omitempty"`
 	SortConfiguration             *TemplateRadarChartSortConfiguration `json:"SortConfiguration,omitempty"`
 	StartAngle                    *float64                             `json:"StartAngle,omitempty"`
 	VisualPalette                 *TemplateVisualPalette               `json:"VisualPalette,omitempty"`
@@ -11534,7 +11534,7 @@ type TemplateTablePinnedFieldOptions struct {
 }
 
 type TemplateTableCellImageSizingConfiguration struct {
-	TableCellImageScalingConfiguration *string `json:"TableCellImageScalingConfiguration,omitempty"`
+	TableCellImageScalingConfiguration *TemplateTableCellImageScalingConfiguration `json:"TableCellImageScalingConfiguration,omitempty"`
 }
 
 type TemplateTableFieldImageConfiguration struct {
@@ -11542,7 +11542,7 @@ type TemplateTableFieldImageConfiguration struct {
 }
 
 type TemplateTableFieldCustomIconContent struct {
-	Icon *string `json:"Icon,omitempty"`
+	Icon *TemplateTableFieldIconSetType `json:"Icon,omitempty"`
 }
 
 type TemplateTableFieldCustomTextContent struct {
@@ -11557,7 +11557,7 @@ type TemplateTableFieldLinkContentConfiguration struct {
 
 type TemplateTableFieldLinkConfiguration struct {
 	Content *TemplateTableFieldLinkContentConfiguration `json:"Content,omitempty"`
-	Target  *string                                     `json:"Target,omitempty"`
+	Target  *TemplateURLTargetConfiguration             `json:"Target,omitempty"`
 }
 
 type TemplateTableFieldURLConfiguration struct {
@@ -11569,14 +11569,14 @@ type TemplateTableFieldOption struct {
 	CustomLabel *string                             `json:"CustomLabel,omitempty"`
 	FieldId     *string                             `json:"FieldId,omitempty"`
 	URLStyling  *TemplateTableFieldURLConfiguration `json:"URLStyling,omitempty"`
-	Visibility  *string                             `json:"Visibility,omitempty"`
+	Visibility  *TemplateVisibility                 `json:"Visibility,omitempty"`
 	Width       *string                             `json:"Width,omitempty"`
 }
 
 type TemplateTransposedTableOption struct {
-	ColumnIndex *float64 `json:"ColumnIndex,omitempty"`
-	ColumnType  *string  `json:"ColumnType,omitempty"`
-	ColumnWidth *string  `json:"ColumnWidth,omitempty"`
+	ColumnIndex *float64                      `json:"ColumnIndex,omitempty"`
+	ColumnType  *TemplateTransposedColumnType `json:"ColumnType,omitempty"`
+	ColumnWidth *string                       `json:"ColumnWidth,omitempty"`
 }
 
 type TemplateTableFieldOptions struct {
@@ -11601,8 +11601,8 @@ type TemplateTableFieldWells struct {
 }
 
 type TemplateTablePaginatedReportOptions struct {
-	OverflowColumnHeaderVisibility *string `json:"OverflowColumnHeaderVisibility,omitempty"`
-	VerticalOverflowVisibility     *string `json:"VerticalOverflowVisibility,omitempty"`
+	OverflowColumnHeaderVisibility *TemplateVisibility `json:"OverflowColumnHeaderVisibility,omitempty"`
+	VerticalOverflowVisibility     *TemplateVisibility `json:"VerticalOverflowVisibility,omitempty"`
 }
 
 type TemplateTableSortConfiguration struct {
@@ -11623,17 +11623,17 @@ type TemplateTableInlineVisualization struct {
 type TemplateTableOptions struct {
 	CellStyle                *TemplateTableCellStyle           `json:"CellStyle,omitempty"`
 	HeaderStyle              *TemplateTableCellStyle           `json:"HeaderStyle,omitempty"`
-	Orientation              *string                           `json:"Orientation,omitempty"`
+	Orientation              *TemplateTableOrientation         `json:"Orientation,omitempty"`
 	RowAlternateColorOptions *TemplateRowAlternateColorOptions `json:"RowAlternateColorOptions,omitempty"`
 }
 
 type TemplateTotalOptions struct {
 	CustomLabel             *string                          `json:"CustomLabel,omitempty"`
-	Placement               *string                          `json:"Placement,omitempty"`
-	ScrollStatus            *string                          `json:"ScrollStatus,omitempty"`
+	Placement               *TemplateTableTotalsPlacement    `json:"Placement,omitempty"`
+	ScrollStatus            *TemplateTableTotalsScrollStatus `json:"ScrollStatus,omitempty"`
 	TotalAggregationOptions []TemplateTotalAggregationOption `json:"TotalAggregationOptions,omitempty"`
 	TotalCellStyle          *TemplateTableCellStyle          `json:"TotalCellStyle,omitempty"`
-	TotalsVisibility        *string                          `json:"TotalsVisibility,omitempty"`
+	TotalsVisibility        *TemplateVisibility              `json:"TotalsVisibility,omitempty"`
 }
 
 type TemplateTableConfiguration struct {
@@ -11783,12 +11783,12 @@ type TemplateWordCloudSortConfiguration struct {
 }
 
 type TemplateWordCloudOptions struct {
-	CloudLayout         *string  `json:"CloudLayout,omitempty"`
-	MaximumStringLength *float64 `json:"MaximumStringLength,omitempty"`
-	WordCasing          *string  `json:"WordCasing,omitempty"`
-	WordOrientation     *string  `json:"WordOrientation,omitempty"`
-	WordPadding         *string  `json:"WordPadding,omitempty"`
-	WordScaling         *string  `json:"WordScaling,omitempty"`
+	CloudLayout         *TemplateWordCloudCloudLayout     `json:"CloudLayout,omitempty"`
+	MaximumStringLength *float64                          `json:"MaximumStringLength,omitempty"`
+	WordCasing          *TemplateWordCloudWordCasing      `json:"WordCasing,omitempty"`
+	WordOrientation     *TemplateWordCloudWordOrientation `json:"WordOrientation,omitempty"`
+	WordPadding         *TemplateWordCloudWordPadding     `json:"WordPadding,omitempty"`
+	WordScaling         *TemplateWordCloudWordScaling     `json:"WordScaling,omitempty"`
 }
 
 type TemplateWordCloudChartConfiguration struct {
@@ -11837,7 +11837,7 @@ type TemplateVisual struct {
 }
 
 type TemplateSheetDefinition struct {
-	ContentType         *string                      `json:"ContentType,omitempty"`
+	ContentType         *TemplateSheetContentType    `json:"ContentType,omitempty"`
 	Description         *string                      `json:"Description,omitempty"`
 	FilterControls      []TemplateFilterControl      `json:"FilterControls,omitempty"`
 	Images              []TemplateSheetImage         `json:"Images,omitempty"`
@@ -11893,7 +11893,7 @@ type TemplateTag struct {
 }
 
 type TemplateValidationStrategy struct {
-	Mode *string `json:"Mode,omitempty"`
+	Mode *TemplateValidationStrategyMode `json:"Mode,omitempty"`
 }
 
 type TemplateEntity struct {
@@ -11901,9 +11901,9 @@ type TemplateEntity struct {
 }
 
 type TemplateError struct {
-	Message          *string          `json:"Message,omitempty"`
-	Type             *string          `json:"Type,omitempty"`
-	ViolatedEntities []TemplateEntity `json:"ViolatedEntities,omitempty"`
+	Message          *string            `json:"Message,omitempty"`
+	Type             *TemplateErrorType `json:"Type,omitempty"`
+	ViolatedEntities []TemplateEntity   `json:"ViolatedEntities,omitempty"`
 }
 
 type TemplateSheet struct {
@@ -11912,15 +11912,15 @@ type TemplateSheet struct {
 }
 
 type TemplateVersion struct {
-	CreatedTime           *string                `json:"CreatedTime,omitempty"`
-	DataSetConfigurations []DataSetConfiguration `json:"DataSetConfigurations,omitempty"`
-	Description           *string                `json:"Description,omitempty"`
-	Errors                []TemplateError        `json:"Errors,omitempty"`
-	Sheets                []TemplateSheet        `json:"Sheets,omitempty"`
-	SourceEntityArn       *string                `json:"SourceEntityArn,omitempty"`
-	Status                *string                `json:"Status,omitempty"`
-	ThemeArn              *string                `json:"ThemeArn,omitempty"`
-	VersionNumber         *float64               `json:"VersionNumber,omitempty"`
+	CreatedTime           *string                 `json:"CreatedTime,omitempty"`
+	DataSetConfigurations []DataSetConfiguration  `json:"DataSetConfigurations,omitempty"`
+	Description           *string                 `json:"Description,omitempty"`
+	Errors                []TemplateError         `json:"Errors,omitempty"`
+	Sheets                []TemplateSheet         `json:"Sheets,omitempty"`
+	SourceEntityArn       *string                 `json:"SourceEntityArn,omitempty"`
+	Status                *TemplateResourceStatus `json:"Status,omitempty"`
+	ThemeArn              *string                 `json:"ThemeArn,omitempty"`
+	VersionNumber         *float64                `json:"VersionNumber,omitempty"`
 }
 
 type Template struct {
@@ -12018,19 +12018,19 @@ type ThemeTag struct {
 }
 
 type ThemeError struct {
-	Message *string `json:"Message,omitempty"`
-	Type    *string `json:"Type,omitempty"`
+	Message *string         `json:"Message,omitempty"`
+	Type    *ThemeErrorType `json:"Type,omitempty"`
 }
 
 type ThemeVersion struct {
-	Arn           *string             `json:"Arn,omitempty"`
-	BaseThemeId   *string             `json:"BaseThemeId,omitempty"`
-	Configuration *ThemeConfiguration `json:"Configuration,omitempty"`
-	CreatedTime   *string             `json:"CreatedTime,omitempty"`
-	Description   *string             `json:"Description,omitempty"`
-	Errors        []ThemeError        `json:"Errors,omitempty"`
-	Status        *string             `json:"Status,omitempty"`
-	VersionNumber *float64            `json:"VersionNumber,omitempty"`
+	Arn           *string              `json:"Arn,omitempty"`
+	BaseThemeId   *string              `json:"BaseThemeId,omitempty"`
+	Configuration *ThemeConfiguration  `json:"Configuration,omitempty"`
+	CreatedTime   *string              `json:"CreatedTime,omitempty"`
+	Description   *string              `json:"Description,omitempty"`
+	Errors        []ThemeError         `json:"Errors,omitempty"`
+	Status        *ThemeResourceStatus `json:"Status,omitempty"`
+	VersionNumber *float64             `json:"VersionNumber,omitempty"`
 }
 
 type Theme struct {
@@ -12044,7 +12044,7 @@ type Theme struct {
 	Permissions        []ThemeResourcePermission `json:"Permissions,omitempty"`
 	Tags               []ThemeTag                `json:"Tags,omitempty"`
 	ThemeId            *string                   `json:"ThemeId,omitempty"`
-	Type               *string                   `json:"Type,omitempty"`
+	Type               *ThemeType                `json:"Type,omitempty"`
 	Version            *ThemeVersion             `json:"Version,omitempty"`
 	VersionDescription *string                   `json:"VersionDescription,omitempty"`
 }
@@ -12065,9 +12065,9 @@ type CellValueSynonym struct {
 }
 
 type ComparativeOrder struct {
-	SpecifedOrder                 []string `json:"SpecifedOrder,omitempty"`
-	TreatUndefinedSpecifiedValues *string  `json:"TreatUndefinedSpecifiedValues,omitempty"`
-	UseOrdering                   *string  `json:"UseOrdering,omitempty"`
+	SpecifedOrder                 []string                     `json:"SpecifedOrder,omitempty"`
+	TreatUndefinedSpecifiedValues *UndefinedSpecifiedValueType `json:"TreatUndefinedSpecifiedValues,omitempty"`
+	UseOrdering                   *ColumnOrderingType          `json:"UseOrdering,omitempty"`
 }
 
 type NegativeFormat struct {
@@ -12076,22 +12076,22 @@ type NegativeFormat struct {
 }
 
 type DisplayFormatOptions struct {
-	BlankCellFormat    *string         `json:"BlankCellFormat,omitempty"`
-	CurrencySymbol     *string         `json:"CurrencySymbol,omitempty"`
-	DateFormat         *string         `json:"DateFormat,omitempty"`
-	DecimalSeparator   *string         `json:"DecimalSeparator,omitempty"`
-	FractionDigits     *float64        `json:"FractionDigits,omitempty"`
-	GroupingSeparator  *string         `json:"GroupingSeparator,omitempty"`
-	NegativeFormat     *NegativeFormat `json:"NegativeFormat,omitempty"`
-	Prefix             *string         `json:"Prefix,omitempty"`
-	Suffix             *string         `json:"Suffix,omitempty"`
-	UnitScaler         *string         `json:"UnitScaler,omitempty"`
-	UseBlankCellFormat *bool           `json:"UseBlankCellFormat,omitempty"`
-	UseGrouping        *bool           `json:"UseGrouping,omitempty"`
+	BlankCellFormat    *string                      `json:"BlankCellFormat,omitempty"`
+	CurrencySymbol     *string                      `json:"CurrencySymbol,omitempty"`
+	DateFormat         *string                      `json:"DateFormat,omitempty"`
+	DecimalSeparator   *TopicNumericSeparatorSymbol `json:"DecimalSeparator,omitempty"`
+	FractionDigits     *float64                     `json:"FractionDigits,omitempty"`
+	GroupingSeparator  *string                      `json:"GroupingSeparator,omitempty"`
+	NegativeFormat     *NegativeFormat              `json:"NegativeFormat,omitempty"`
+	Prefix             *string                      `json:"Prefix,omitempty"`
+	Suffix             *string                      `json:"Suffix,omitempty"`
+	UnitScaler         *TopicNumberScale            `json:"UnitScaler,omitempty"`
+	UseBlankCellFormat *bool                        `json:"UseBlankCellFormat,omitempty"`
+	UseGrouping        *bool                        `json:"UseGrouping,omitempty"`
 }
 
 type DefaultFormatting struct {
-	DisplayFormat        *string               `json:"DisplayFormat,omitempty"`
+	DisplayFormat        *DisplayFormat        `json:"DisplayFormat,omitempty"`
 	DisplayFormatOptions *DisplayFormatOptions `json:"DisplayFormatOptions,omitempty"`
 }
 
@@ -12106,48 +12106,48 @@ type SemanticType struct {
 }
 
 type TopicCalculatedField struct {
-	Aggregation                *string            `json:"Aggregation,omitempty"`
-	AllowedAggregations        []string           `json:"AllowedAggregations,omitempty"`
-	CalculatedFieldDescription *string            `json:"CalculatedFieldDescription,omitempty"`
-	CalculatedFieldName        *string            `json:"CalculatedFieldName,omitempty"`
-	CalculatedFieldSynonyms    []string           `json:"CalculatedFieldSynonyms,omitempty"`
-	CellValueSynonyms          []CellValueSynonym `json:"CellValueSynonyms,omitempty"`
-	ColumnDataRole             *string            `json:"ColumnDataRole,omitempty"`
-	ComparativeOrder           *ComparativeOrder  `json:"ComparativeOrder,omitempty"`
-	DefaultFormatting          *DefaultFormatting `json:"DefaultFormatting,omitempty"`
-	DisableIndexing            *bool              `json:"DisableIndexing,omitempty"`
-	Expression                 *string            `json:"Expression,omitempty"`
-	IsIncludedInTopic          *bool              `json:"IsIncludedInTopic,omitempty"`
-	NeverAggregateInFilter     *bool              `json:"NeverAggregateInFilter,omitempty"`
-	NonAdditive                *bool              `json:"NonAdditive,omitempty"`
-	NotAllowedAggregations     []string           `json:"NotAllowedAggregations,omitempty"`
-	SemanticType               *SemanticType      `json:"SemanticType,omitempty"`
-	TimeGranularity            *string            `json:"TimeGranularity,omitempty"`
+	Aggregation                *DefaultAggregation          `json:"Aggregation,omitempty"`
+	AllowedAggregations        []AuthorSpecifiedAggregation `json:"AllowedAggregations,omitempty"`
+	CalculatedFieldDescription *string                      `json:"CalculatedFieldDescription,omitempty"`
+	CalculatedFieldName        *string                      `json:"CalculatedFieldName,omitempty"`
+	CalculatedFieldSynonyms    []string                     `json:"CalculatedFieldSynonyms,omitempty"`
+	CellValueSynonyms          []CellValueSynonym           `json:"CellValueSynonyms,omitempty"`
+	ColumnDataRole             *ColumnDataRole              `json:"ColumnDataRole,omitempty"`
+	ComparativeOrder           *ComparativeOrder            `json:"ComparativeOrder,omitempty"`
+	DefaultFormatting          *DefaultFormatting           `json:"DefaultFormatting,omitempty"`
+	DisableIndexing            *bool                        `json:"DisableIndexing,omitempty"`
+	Expression                 *string                      `json:"Expression,omitempty"`
+	IsIncludedInTopic          *bool                        `json:"IsIncludedInTopic,omitempty"`
+	NeverAggregateInFilter     *bool                        `json:"NeverAggregateInFilter,omitempty"`
+	NonAdditive                *bool                        `json:"NonAdditive,omitempty"`
+	NotAllowedAggregations     []AuthorSpecifiedAggregation `json:"NotAllowedAggregations,omitempty"`
+	SemanticType               *SemanticType                `json:"SemanticType,omitempty"`
+	TimeGranularity            *TopicTimeGranularity        `json:"TimeGranularity,omitempty"`
 }
 
 type TopicColumn struct {
-	Aggregation            *string            `json:"Aggregation,omitempty"`
-	AllowedAggregations    []string           `json:"AllowedAggregations,omitempty"`
-	CellValueSynonyms      []CellValueSynonym `json:"CellValueSynonyms,omitempty"`
-	ColumnDataRole         *string            `json:"ColumnDataRole,omitempty"`
-	ColumnDescription      *string            `json:"ColumnDescription,omitempty"`
-	ColumnFriendlyName     *string            `json:"ColumnFriendlyName,omitempty"`
-	ColumnName             *string            `json:"ColumnName,omitempty"`
-	ColumnSynonyms         []string           `json:"ColumnSynonyms,omitempty"`
-	ComparativeOrder       *ComparativeOrder  `json:"ComparativeOrder,omitempty"`
-	DefaultFormatting      *DefaultFormatting `json:"DefaultFormatting,omitempty"`
-	DisableIndexing        *bool              `json:"DisableIndexing,omitempty"`
-	IsIncludedInTopic      *bool              `json:"IsIncludedInTopic,omitempty"`
-	NeverAggregateInFilter *bool              `json:"NeverAggregateInFilter,omitempty"`
-	NonAdditive            *bool              `json:"NonAdditive,omitempty"`
-	NotAllowedAggregations []string           `json:"NotAllowedAggregations,omitempty"`
-	SemanticType           *SemanticType      `json:"SemanticType,omitempty"`
-	TimeGranularity        *string            `json:"TimeGranularity,omitempty"`
+	Aggregation            *DefaultAggregation          `json:"Aggregation,omitempty"`
+	AllowedAggregations    []AuthorSpecifiedAggregation `json:"AllowedAggregations,omitempty"`
+	CellValueSynonyms      []CellValueSynonym           `json:"CellValueSynonyms,omitempty"`
+	ColumnDataRole         *ColumnDataRole              `json:"ColumnDataRole,omitempty"`
+	ColumnDescription      *string                      `json:"ColumnDescription,omitempty"`
+	ColumnFriendlyName     *string                      `json:"ColumnFriendlyName,omitempty"`
+	ColumnName             *string                      `json:"ColumnName,omitempty"`
+	ColumnSynonyms         []string                     `json:"ColumnSynonyms,omitempty"`
+	ComparativeOrder       *ComparativeOrder            `json:"ComparativeOrder,omitempty"`
+	DefaultFormatting      *DefaultFormatting           `json:"DefaultFormatting,omitempty"`
+	DisableIndexing        *bool                        `json:"DisableIndexing,omitempty"`
+	IsIncludedInTopic      *bool                        `json:"IsIncludedInTopic,omitempty"`
+	NeverAggregateInFilter *bool                        `json:"NeverAggregateInFilter,omitempty"`
+	NonAdditive            *bool                        `json:"NonAdditive,omitempty"`
+	NotAllowedAggregations []AuthorSpecifiedAggregation `json:"NotAllowedAggregations,omitempty"`
+	SemanticType           *SemanticType                `json:"SemanticType,omitempty"`
+	TimeGranularity        *TopicTimeGranularity        `json:"TimeGranularity,omitempty"`
 }
 
 type DataAggregation struct {
-	DatasetRowDateGranularity *string `json:"DatasetRowDateGranularity,omitempty"`
-	DefaultDateColumnName     *string `json:"DefaultDateColumnName,omitempty"`
+	DatasetRowDateGranularity *TopicTimeGranularity `json:"DatasetRowDateGranularity,omitempty"`
+	DefaultDateColumnName     *string               `json:"DefaultDateColumnName,omitempty"`
 }
 
 type CollectiveConstant struct {
@@ -12156,13 +12156,13 @@ type CollectiveConstant struct {
 
 type TopicCategoryFilterConstant struct {
 	CollectiveConstant *CollectiveConstant `json:"CollectiveConstant,omitempty"`
-	ConstantType       *string             `json:"ConstantType,omitempty"`
+	ConstantType       *ConstantType       `json:"ConstantType,omitempty"`
 	SingularConstant   *string             `json:"SingularConstant,omitempty"`
 }
 
 type TopicCategoryFilter struct {
-	CategoryFilterFunction *string                      `json:"CategoryFilterFunction,omitempty"`
-	CategoryFilterType     *string                      `json:"CategoryFilterType,omitempty"`
+	CategoryFilterFunction *CategoryFilterFunction      `json:"CategoryFilterFunction,omitempty"`
+	CategoryFilterType     *CategoryFilterType          `json:"CategoryFilterType,omitempty"`
 	Constant               *TopicCategoryFilterConstant `json:"Constant,omitempty"`
 	Inverse                *bool                        `json:"Inverse,omitempty"`
 }
@@ -12173,7 +12173,7 @@ type RangeConstant struct {
 }
 
 type TopicRangeFilterConstant struct {
-	ConstantType  *string        `json:"ConstantType,omitempty"`
+	ConstantType  *ConstantType  `json:"ConstantType,omitempty"`
 	RangeConstant *RangeConstant `json:"RangeConstant,omitempty"`
 }
 
@@ -12183,35 +12183,35 @@ type TopicDateRangeFilter struct {
 }
 
 type TopicSingularFilterConstant struct {
-	ConstantType     *string `json:"ConstantType,omitempty"`
-	SingularConstant *string `json:"SingularConstant,omitempty"`
+	ConstantType     *ConstantType `json:"ConstantType,omitempty"`
+	SingularConstant *string       `json:"SingularConstant,omitempty"`
 }
 
 type TopicNumericEqualityFilter struct {
-	Aggregation *string                      `json:"Aggregation,omitempty"`
+	Aggregation *NamedFilterAggType          `json:"Aggregation,omitempty"`
 	Constant    *TopicSingularFilterConstant `json:"Constant,omitempty"`
 }
 
 type TopicNumericRangeFilter struct {
-	Aggregation *string                   `json:"Aggregation,omitempty"`
+	Aggregation *NamedFilterAggType       `json:"Aggregation,omitempty"`
 	Constant    *TopicRangeFilterConstant `json:"Constant,omitempty"`
 	Inclusive   *bool                     `json:"Inclusive,omitempty"`
 }
 
 type TopicRelativeDateFilter struct {
-	Constant                   *TopicSingularFilterConstant `json:"Constant,omitempty"`
-	RelativeDateFilterFunction *string                      `json:"RelativeDateFilterFunction,omitempty"`
-	TimeGranularity            *string                      `json:"TimeGranularity,omitempty"`
+	Constant                   *TopicSingularFilterConstant     `json:"Constant,omitempty"`
+	RelativeDateFilterFunction *TopicRelativeDateFilterFunction `json:"RelativeDateFilterFunction,omitempty"`
+	TimeGranularity            *TopicTimeGranularity            `json:"TimeGranularity,omitempty"`
 }
 
 type TopicFilter struct {
 	CategoryFilter        *TopicCategoryFilter        `json:"CategoryFilter,omitempty"`
 	DateRangeFilter       *TopicDateRangeFilter       `json:"DateRangeFilter,omitempty"`
-	FilterClass           *string                     `json:"FilterClass,omitempty"`
+	FilterClass           *FilterClass                `json:"FilterClass,omitempty"`
 	FilterDescription     *string                     `json:"FilterDescription,omitempty"`
 	FilterName            *string                     `json:"FilterName,omitempty"`
 	FilterSynonyms        []string                    `json:"FilterSynonyms,omitempty"`
-	FilterType            *string                     `json:"FilterType,omitempty"`
+	FilterType            *NamedFilterType            `json:"FilterType,omitempty"`
 	NumericEqualityFilter *TopicNumericEqualityFilter `json:"NumericEqualityFilter,omitempty"`
 	NumericRangeFilter    *TopicNumericRangeFilter    `json:"NumericRangeFilter,omitempty"`
 	OperandFieldName      *string                     `json:"OperandFieldName,omitempty"`
@@ -12219,16 +12219,16 @@ type TopicFilter struct {
 }
 
 type NamedEntityDefinitionMetric struct {
-	Aggregation                   *string           `json:"Aggregation,omitempty"`
-	AggregationFunctionParameters map[string]string `json:"AggregationFunctionParameters,omitempty"`
+	Aggregation                   *NamedEntityAggType `json:"Aggregation,omitempty"`
+	AggregationFunctionParameters map[string]string   `json:"AggregationFunctionParameters,omitempty"`
 }
 
 type NamedEntityDefinition struct {
 	FieldName     *string                      `json:"FieldName,omitempty"`
 	Metric        *NamedEntityDefinitionMetric `json:"Metric,omitempty"`
 	PropertyName  *string                      `json:"PropertyName,omitempty"`
-	PropertyRole  *string                      `json:"PropertyRole,omitempty"`
-	PropertyUsage *string                      `json:"PropertyUsage,omitempty"`
+	PropertyRole  *PropertyRole                `json:"PropertyRole,omitempty"`
+	PropertyUsage *PropertyUsage               `json:"PropertyUsage,omitempty"`
 }
 
 type SemanticEntityType struct {
@@ -12262,17 +12262,17 @@ type TopicTag struct {
 }
 
 type Topic struct {
-	Arn                   *string             `json:"Arn,omitempty"`
-	AwsAccountId          *string             `json:"AwsAccountId,omitempty"`
-	ConfigOptions         *TopicConfigOptions `json:"ConfigOptions,omitempty"`
-	CustomInstructions    *CustomInstructions `json:"CustomInstructions,omitempty"`
-	DataSets              []DatasetMetadata   `json:"DataSets,omitempty"`
-	Description           *string             `json:"Description,omitempty"`
-	FolderArns            []string            `json:"FolderArns,omitempty"`
-	Name                  *string             `json:"Name,omitempty"`
-	Tags                  []TopicTag          `json:"Tags,omitempty"`
-	TopicId               *string             `json:"TopicId,omitempty"`
-	UserExperienceVersion *string             `json:"UserExperienceVersion,omitempty"`
+	Arn                   *string                     `json:"Arn,omitempty"`
+	AwsAccountId          *string                     `json:"AwsAccountId,omitempty"`
+	ConfigOptions         *TopicConfigOptions         `json:"ConfigOptions,omitempty"`
+	CustomInstructions    *CustomInstructions         `json:"CustomInstructions,omitempty"`
+	DataSets              []DatasetMetadata           `json:"DataSets,omitempty"`
+	Description           *string                     `json:"Description,omitempty"`
+	FolderArns            []string                    `json:"FolderArns,omitempty"`
+	Name                  *string                     `json:"Name,omitempty"`
+	Tags                  []TopicTag                  `json:"Tags,omitempty"`
+	TopicId               *string                     `json:"TopicId,omitempty"`
+	UserExperienceVersion *TopicUserExperienceVersion `json:"UserExperienceVersion,omitempty"`
 }
 
 func (Topic) CloudControlType() string { return "AWS::QuickSight::Topic" }
@@ -12323,11 +12323,11 @@ type TopicV2 struct {
 func (TopicV2) CloudControlType() string { return "AWS::QuickSight::TopicV2" }
 
 type NetworkInterface struct {
-	AvailabilityZone   *string `json:"AvailabilityZone,omitempty"`
-	ErrorMessage       *string `json:"ErrorMessage,omitempty"`
-	NetworkInterfaceId *string `json:"NetworkInterfaceId,omitempty"`
-	Status             *string `json:"Status,omitempty"`
-	SubnetId           *string `json:"SubnetId,omitempty"`
+	AvailabilityZone   *string                 `json:"AvailabilityZone,omitempty"`
+	ErrorMessage       *string                 `json:"ErrorMessage,omitempty"`
+	NetworkInterfaceId *string                 `json:"NetworkInterfaceId,omitempty"`
+	Status             *NetworkInterfaceStatus `json:"Status,omitempty"`
+	SubnetId           *string                 `json:"SubnetId,omitempty"`
 }
 
 type VPCConnectionTag struct {
@@ -12336,21 +12336,3955 @@ type VPCConnectionTag struct {
 }
 
 type VPCConnection struct {
-	Arn                *string            `json:"Arn,omitempty"`
-	AvailabilityStatus *string            `json:"AvailabilityStatus,omitempty"`
-	AwsAccountId       *string            `json:"AwsAccountId,omitempty"`
-	CreatedTime        *string            `json:"CreatedTime,omitempty"`
-	DnsResolvers       []string           `json:"DnsResolvers,omitempty"`
-	LastUpdatedTime    *string            `json:"LastUpdatedTime,omitempty"`
-	Name               *string            `json:"Name,omitempty"`
-	NetworkInterfaces  []NetworkInterface `json:"NetworkInterfaces,omitempty"`
-	RoleArn            *string            `json:"RoleArn,omitempty"`
-	SecurityGroupIds   []string           `json:"SecurityGroupIds,omitempty"`
-	Status             *string            `json:"Status,omitempty"`
-	SubnetIds          []string           `json:"SubnetIds,omitempty"`
-	Tags               []VPCConnectionTag `json:"Tags,omitempty"`
-	VPCConnectionId    *string            `json:"VPCConnectionId,omitempty"`
-	VPCId              *string            `json:"VPCId,omitempty"`
+	Arn                *string                          `json:"Arn,omitempty"`
+	AvailabilityStatus *VPCConnectionAvailabilityStatus `json:"AvailabilityStatus,omitempty"`
+	AwsAccountId       *string                          `json:"AwsAccountId,omitempty"`
+	CreatedTime        *string                          `json:"CreatedTime,omitempty"`
+	DnsResolvers       []string                         `json:"DnsResolvers,omitempty"`
+	LastUpdatedTime    *string                          `json:"LastUpdatedTime,omitempty"`
+	Name               *string                          `json:"Name,omitempty"`
+	NetworkInterfaces  []NetworkInterface               `json:"NetworkInterfaces,omitempty"`
+	RoleArn            *string                          `json:"RoleArn,omitempty"`
+	SecurityGroupIds   []string                         `json:"SecurityGroupIds,omitempty"`
+	Status             *VPCConnectionResourceStatus     `json:"Status,omitempty"`
+	SubnetIds          []string                         `json:"SubnetIds,omitempty"`
+	Tags               []VPCConnectionTag               `json:"Tags,omitempty"`
+	VPCConnectionId    *string                          `json:"VPCConnectionId,omitempty"`
+	VPCId              *string                          `json:"VPCId,omitempty"`
 }
 
 func (VPCConnection) CloudControlType() string { return "AWS::QuickSight::VPCConnection" }
+
+type ConnectionAuthType string
+
+const (
+	ConnectionAuthTypeBASIC                   ConnectionAuthType = "BASIC"
+	ConnectionAuthTypeAPIKEY                  ConnectionAuthType = "API_KEY"
+	ConnectionAuthTypeOAUTH2CLIENTCREDENTIALS ConnectionAuthType = "OAUTH2_CLIENT_CREDENTIALS"
+	ConnectionAuthTypeNONE                    ConnectionAuthType = "NONE"
+	ConnectionAuthTypeIAM                     ConnectionAuthType = "IAM"
+	ConnectionAuthTypeOAUTH2AUTHORIZATIONCODE ConnectionAuthType = "OAUTH2_AUTHORIZATION_CODE"
+)
+
+type ResourceStatus string
+
+const (
+	ResourceStatusCREATIONINPROGRESS ResourceStatus = "CREATION_IN_PROGRESS"
+	ResourceStatusCREATIONSUCCESSFUL ResourceStatus = "CREATION_SUCCESSFUL"
+	ResourceStatusCREATIONFAILED     ResourceStatus = "CREATION_FAILED"
+	ResourceStatusUPDATEINPROGRESS   ResourceStatus = "UPDATE_IN_PROGRESS"
+	ResourceStatusUPDATESUCCESSFUL   ResourceStatus = "UPDATE_SUCCESSFUL"
+	ResourceStatusUPDATEFAILED       ResourceStatus = "UPDATE_FAILED"
+	ResourceStatusPENDINGUPDATE      ResourceStatus = "PENDING_UPDATE"
+	ResourceStatusDELETED            ResourceStatus = "DELETED"
+)
+
+type ActionConnectorType string
+
+const (
+	ActionConnectorTypeGENERICHTTP                        ActionConnectorType = "GENERIC_HTTP"
+	ActionConnectorTypeSERVICENOWNOWPLATFORM              ActionConnectorType = "SERVICENOW_NOW_PLATFORM"
+	ActionConnectorTypeSALESFORCECRM                      ActionConnectorType = "SALESFORCE_CRM"
+	ActionConnectorTypeMICROSOFTOUTLOOK                   ActionConnectorType = "MICROSOFT_OUTLOOK"
+	ActionConnectorTypePAGERDUTYADVANCE                   ActionConnectorType = "PAGERDUTY_ADVANCE"
+	ActionConnectorTypeJIRACLOUD                          ActionConnectorType = "JIRA_CLOUD"
+	ActionConnectorTypeATLASSIANCONFLUENCE                ActionConnectorType = "ATLASSIAN_CONFLUENCE"
+	ActionConnectorTypeAMAZONS3                           ActionConnectorType = "AMAZON_S3"
+	ActionConnectorTypeAMAZONBEDROCKAGENTRUNTIME          ActionConnectorType = "AMAZON_BEDROCK_AGENT_RUNTIME"
+	ActionConnectorTypeAMAZONBEDROCKRUNTIME               ActionConnectorType = "AMAZON_BEDROCK_RUNTIME"
+	ActionConnectorTypeAMAZONBEDROCKDATAAUTOMATIONRUNTIME ActionConnectorType = "AMAZON_BEDROCK_DATA_AUTOMATION_RUNTIME"
+	ActionConnectorTypeAMAZONTEXTRACT                     ActionConnectorType = "AMAZON_TEXTRACT"
+	ActionConnectorTypeAMAZONCOMPREHEND                   ActionConnectorType = "AMAZON_COMPREHEND"
+	ActionConnectorTypeAMAZONCOMPREHENDMEDICAL            ActionConnectorType = "AMAZON_COMPREHEND_MEDICAL"
+	ActionConnectorTypeMICROSOFTONEDRIVE                  ActionConnectorType = "MICROSOFT_ONEDRIVE"
+	ActionConnectorTypeMICROSOFTSHAREPOINT                ActionConnectorType = "MICROSOFT_SHAREPOINT"
+	ActionConnectorTypeMICROSOFTTEAMS                     ActionConnectorType = "MICROSOFT_TEAMS"
+	ActionConnectorTypeSAPBUSINESSPARTNER                 ActionConnectorType = "SAP_BUSINESSPARTNER"
+	ActionConnectorTypeSAPPRODUCTMASTERDATA               ActionConnectorType = "SAP_PRODUCTMASTERDATA"
+	ActionConnectorTypeSAPPHYSICALINVENTORY               ActionConnectorType = "SAP_PHYSICALINVENTORY"
+	ActionConnectorTypeSAPBILLOFMATERIALS                 ActionConnectorType = "SAP_BILLOFMATERIALS"
+	ActionConnectorTypeSAPMATERIALSTOCK                   ActionConnectorType = "SAP_MATERIALSTOCK"
+	ActionConnectorTypeZENDESKSUITE                       ActionConnectorType = "ZENDESK_SUITE"
+	ActionConnectorTypeSMARTSHEET                         ActionConnectorType = "SMARTSHEET"
+	ActionConnectorTypeSLACK                              ActionConnectorType = "SLACK"
+	ActionConnectorTypeASANA                              ActionConnectorType = "ASANA"
+	ActionConnectorTypeBAMBOOHR                           ActionConnectorType = "BAMBOO_HR"
+)
+
+type AgentAgentLifecycle string
+
+const (
+	AgentAgentLifecyclePREVIEW   AgentAgentLifecycle = "PREVIEW"
+	AgentAgentLifecyclePUBLISHED AgentAgentLifecycle = "PUBLISHED"
+)
+
+type AgentAgentStatus string
+
+const (
+	AgentAgentStatusACTIVE   AgentAgentStatus = "ACTIVE"
+	AgentAgentStatusCREATING AgentAgentStatus = "CREATING"
+	AgentAgentStatusUPDATING AgentAgentStatus = "UPDATING"
+	AgentAgentStatusFAILED   AgentAgentStatus = "FAILED"
+)
+
+type ResizeOption string
+
+const (
+	ResizeOptionFIXED      ResizeOption = "FIXED"
+	ResizeOptionRESPONSIVE ResizeOption = "RESPONSIVE"
+)
+
+type PaperOrientation string
+
+const (
+	PaperOrientationPORTRAIT  PaperOrientation = "PORTRAIT"
+	PaperOrientationLANDSCAPE PaperOrientation = "LANDSCAPE"
+)
+
+type PaperSize string
+
+const (
+	PaperSizeUSLETTER        PaperSize = "US_LETTER"
+	PaperSizeUSLEGAL         PaperSize = "US_LEGAL"
+	PaperSizeUSTABLOIDLEDGER PaperSize = "US_TABLOID_LEDGER"
+	PaperSizeA0              PaperSize = "A0"
+	PaperSizeA1              PaperSize = "A1"
+	PaperSizeA2              PaperSize = "A2"
+	PaperSizeA3              PaperSize = "A3"
+	PaperSizeA4              PaperSize = "A4"
+	PaperSizeA5              PaperSize = "A5"
+	PaperSizeJISB4           PaperSize = "JIS_B4"
+	PaperSizeJISB5           PaperSize = "JIS_B5"
+)
+
+type SheetContentType string
+
+const (
+	SheetContentTypePAGINATED   SheetContentType = "PAGINATED"
+	SheetContentTypeINTERACTIVE SheetContentType = "INTERACTIVE"
+)
+
+type SpecialValue string
+
+const (
+	SpecialValueEMPTY SpecialValue = "EMPTY"
+	SpecialValueNULL  SpecialValue = "NULL"
+	SpecialValueOTHER SpecialValue = "OTHER"
+)
+
+type NegativeValueDisplayMode string
+
+const (
+	NegativeValueDisplayModePOSITIVE NegativeValueDisplayMode = "POSITIVE"
+	NegativeValueDisplayModeNEGATIVE NegativeValueDisplayMode = "NEGATIVE"
+)
+
+type NumberScale string
+
+const (
+	NumberScaleNONE      NumberScale = "NONE"
+	NumberScaleAUTO      NumberScale = "AUTO"
+	NumberScaleTHOUSANDS NumberScale = "THOUSANDS"
+	NumberScaleMILLIONS  NumberScale = "MILLIONS"
+	NumberScaleBILLIONS  NumberScale = "BILLIONS"
+	NumberScaleTRILLIONS NumberScale = "TRILLIONS"
+	NumberScaleLAKHS     NumberScale = "LAKHS"
+	NumberScaleCRORES    NumberScale = "CRORES"
+)
+
+type NumericSeparatorSymbol string
+
+const (
+	NumericSeparatorSymbolCOMMA NumericSeparatorSymbol = "COMMA"
+	NumericSeparatorSymbolDOT   NumericSeparatorSymbol = "DOT"
+	NumericSeparatorSymbolSPACE NumericSeparatorSymbol = "SPACE"
+)
+
+type DigitGroupingStyle string
+
+const (
+	DigitGroupingStyleDEFAULT DigitGroupingStyle = "DEFAULT"
+	DigitGroupingStyleLAKHS   DigitGroupingStyle = "LAKHS"
+)
+
+type Visibility string
+
+const (
+	VisibilityHIDDEN  Visibility = "HIDDEN"
+	VisibilityVISIBLE Visibility = "VISIBLE"
+)
+
+type ColumnRole string
+
+const (
+	ColumnRoleDIMENSION ColumnRole = "DIMENSION"
+	ColumnRoleMEASURE   ColumnRole = "MEASURE"
+)
+
+type CrossDatasetTypes string
+
+const (
+	CrossDatasetTypesALLDATASETS   CrossDatasetTypes = "ALL_DATASETS"
+	CrossDatasetTypesSINGLEDATASET CrossDatasetTypes = "SINGLE_DATASET"
+)
+
+type CategoryFilterMatchOperator string
+
+const (
+	CategoryFilterMatchOperatorEQUALS         CategoryFilterMatchOperator = "EQUALS"
+	CategoryFilterMatchOperatorDOESNOTEQUAL   CategoryFilterMatchOperator = "DOES_NOT_EQUAL"
+	CategoryFilterMatchOperatorCONTAINS       CategoryFilterMatchOperator = "CONTAINS"
+	CategoryFilterMatchOperatorDOESNOTCONTAIN CategoryFilterMatchOperator = "DOES_NOT_CONTAIN"
+	CategoryFilterMatchOperatorSTARTSWITH     CategoryFilterMatchOperator = "STARTS_WITH"
+	CategoryFilterMatchOperatorENDSWITH       CategoryFilterMatchOperator = "ENDS_WITH"
+)
+
+type FilterNullOption string
+
+const (
+	FilterNullOptionALLVALUES    FilterNullOption = "ALL_VALUES"
+	FilterNullOptionNULLSONLY    FilterNullOption = "NULLS_ONLY"
+	FilterNullOptionNONNULLSONLY FilterNullOption = "NON_NULLS_ONLY"
+)
+
+type CategoryFilterSelectAllOptions string
+
+const (
+	CategoryFilterSelectAllOptionsFILTERALLVALUES CategoryFilterSelectAllOptions = "FILTER_ALL_VALUES"
+)
+
+type CommitMode string
+
+const (
+	CommitModeAUTO   CommitMode = "AUTO"
+	CommitModeMANUAL CommitMode = "MANUAL"
+)
+
+type FontDecoration string
+
+const (
+	FontDecorationUNDERLINE FontDecoration = "UNDERLINE"
+	FontDecorationNONE      FontDecoration = "NONE"
+)
+
+type RelativeFontSize string
+
+const (
+	RelativeFontSizeEXTRASMALL RelativeFontSize = "EXTRA_SMALL"
+	RelativeFontSizeSMALL      RelativeFontSize = "SMALL"
+	RelativeFontSizeMEDIUM     RelativeFontSize = "MEDIUM"
+	RelativeFontSizeLARGE      RelativeFontSize = "LARGE"
+	RelativeFontSizeEXTRALARGE RelativeFontSize = "EXTRA_LARGE"
+)
+
+type FontStyle string
+
+const (
+	FontStyleNORMAL FontStyle = "NORMAL"
+	FontStyleITALIC FontStyle = "ITALIC"
+)
+
+type FontWeightName string
+
+const (
+	FontWeightNameNORMAL FontWeightName = "NORMAL"
+	FontWeightNameBOLD   FontWeightName = "BOLD"
+)
+
+type SheetControlDateTimePickerType string
+
+const (
+	SheetControlDateTimePickerTypeSINGLEVALUED SheetControlDateTimePickerType = "SINGLE_VALUED"
+	SheetControlDateTimePickerTypeDATERANGE    SheetControlDateTimePickerType = "DATE_RANGE"
+)
+
+type SheetControlListType string
+
+const (
+	SheetControlListTypeMULTISELECT  SheetControlListType = "MULTI_SELECT"
+	SheetControlListTypeSINGLESELECT SheetControlListType = "SINGLE_SELECT"
+)
+
+type SheetControlSliderType string
+
+const (
+	SheetControlSliderTypeSINGLEPOINT SheetControlSliderType = "SINGLE_POINT"
+	SheetControlSliderTypeRANGE       SheetControlSliderType = "RANGE"
+)
+
+type SimpleAttributeAggregationFunction string
+
+const (
+	SimpleAttributeAggregationFunctionUNIQUEVALUE SimpleAttributeAggregationFunction = "UNIQUE_VALUE"
+)
+
+type CategoricalAggregationFunction string
+
+const (
+	CategoricalAggregationFunctionCOUNT         CategoricalAggregationFunction = "COUNT"
+	CategoricalAggregationFunctionDISTINCTCOUNT CategoricalAggregationFunction = "DISTINCT_COUNT"
+)
+
+type DateAggregationFunction string
+
+const (
+	DateAggregationFunctionCOUNT         DateAggregationFunction = "COUNT"
+	DateAggregationFunctionDISTINCTCOUNT DateAggregationFunction = "DISTINCT_COUNT"
+	DateAggregationFunctionMIN           DateAggregationFunction = "MIN"
+	DateAggregationFunctionMAX           DateAggregationFunction = "MAX"
+)
+
+type SimpleNumericalAggregationFunction string
+
+const (
+	SimpleNumericalAggregationFunctionSUM           SimpleNumericalAggregationFunction = "SUM"
+	SimpleNumericalAggregationFunctionAVERAGE       SimpleNumericalAggregationFunction = "AVERAGE"
+	SimpleNumericalAggregationFunctionMIN           SimpleNumericalAggregationFunction = "MIN"
+	SimpleNumericalAggregationFunctionMAX           SimpleNumericalAggregationFunction = "MAX"
+	SimpleNumericalAggregationFunctionCOUNT         SimpleNumericalAggregationFunction = "COUNT"
+	SimpleNumericalAggregationFunctionDISTINCTCOUNT SimpleNumericalAggregationFunction = "DISTINCT_COUNT"
+	SimpleNumericalAggregationFunctionVAR           SimpleNumericalAggregationFunction = "VAR"
+	SimpleNumericalAggregationFunctionVARP          SimpleNumericalAggregationFunction = "VARP"
+	SimpleNumericalAggregationFunctionSTDEV         SimpleNumericalAggregationFunction = "STDEV"
+	SimpleNumericalAggregationFunctionSTDEVP        SimpleNumericalAggregationFunction = "STDEVP"
+	SimpleNumericalAggregationFunctionMEDIAN        SimpleNumericalAggregationFunction = "MEDIAN"
+)
+
+type NumericEqualityMatchOperator string
+
+const (
+	NumericEqualityMatchOperatorEQUALS       NumericEqualityMatchOperator = "EQUALS"
+	NumericEqualityMatchOperatorDOESNOTEQUAL NumericEqualityMatchOperator = "DOES_NOT_EQUAL"
+)
+
+type NumericFilterSelectAllOptions string
+
+const (
+	NumericFilterSelectAllOptionsFILTERALLVALUES NumericFilterSelectAllOptions = "FILTER_ALL_VALUES"
+)
+
+type AnchorOption string
+
+const (
+	AnchorOptionNOW AnchorOption = "NOW"
+)
+
+type TimeGranularity string
+
+const (
+	TimeGranularityYEAR        TimeGranularity = "YEAR"
+	TimeGranularityQUARTER     TimeGranularity = "QUARTER"
+	TimeGranularityMONTH       TimeGranularity = "MONTH"
+	TimeGranularityWEEK        TimeGranularity = "WEEK"
+	TimeGranularityDAY         TimeGranularity = "DAY"
+	TimeGranularityHOUR        TimeGranularity = "HOUR"
+	TimeGranularityMINUTE      TimeGranularity = "MINUTE"
+	TimeGranularitySECOND      TimeGranularity = "SECOND"
+	TimeGranularityMILLISECOND TimeGranularity = "MILLISECOND"
+)
+
+type WidgetStatus string
+
+const (
+	WidgetStatusENABLED  WidgetStatus = "ENABLED"
+	WidgetStatusDISABLED WidgetStatus = "DISABLED"
+)
+
+type RelativeDateType string
+
+const (
+	RelativeDateTypePREVIOUS RelativeDateType = "PREVIOUS"
+	RelativeDateTypeTHIS     RelativeDateType = "THIS"
+	RelativeDateTypeLAST     RelativeDateType = "LAST"
+	RelativeDateTypeNOW      RelativeDateType = "NOW"
+	RelativeDateTypeNEXT     RelativeDateType = "NEXT"
+)
+
+type SortDirection string
+
+const (
+	SortDirectionASC  SortDirection = "ASC"
+	SortDirectionDESC SortDirection = "DESC"
+)
+
+type FilterVisualScope string
+
+const (
+	FilterVisualScopeALLVISUALS      FilterVisualScope = "ALL_VISUALS"
+	FilterVisualScopeSELECTEDVISUALS FilterVisualScope = "SELECTED_VISUALS"
+)
+
+type DayOfTheWeek string
+
+const (
+	DayOfTheWeekSUNDAY    DayOfTheWeek = "SUNDAY"
+	DayOfTheWeekMONDAY    DayOfTheWeek = "MONDAY"
+	DayOfTheWeekTUESDAY   DayOfTheWeek = "TUESDAY"
+	DayOfTheWeekWEDNESDAY DayOfTheWeek = "WEDNESDAY"
+	DayOfTheWeekTHURSDAY  DayOfTheWeek = "THURSDAY"
+	DayOfTheWeekFRIDAY    DayOfTheWeek = "FRIDAY"
+	DayOfTheWeekSATURDAY  DayOfTheWeek = "SATURDAY"
+)
+
+type ValueWhenUnsetOption string
+
+const (
+	ValueWhenUnsetOptionRECOMMENDEDVALUE ValueWhenUnsetOption = "RECOMMENDED_VALUE"
+	ValueWhenUnsetOptionNULL             ValueWhenUnsetOption = "NULL"
+)
+
+type ParameterValueType string
+
+const (
+	ParameterValueTypeMULTIVALUED  ParameterValueType = "MULTI_VALUED"
+	ParameterValueTypeSINGLEVALUED ParameterValueType = "SINGLE_VALUED"
+)
+
+type QueryExecutionMode string
+
+const (
+	QueryExecutionModeAUTO   QueryExecutionMode = "AUTO"
+	QueryExecutionModeMANUAL QueryExecutionMode = "MANUAL"
+)
+
+type SelectAllValueOptions string
+
+const (
+	SelectAllValueOptionsALLVALUES SelectAllValueOptions = "ALL_VALUES"
+)
+
+type URLTargetConfiguration string
+
+const (
+	URLTargetConfigurationNEWTAB    URLTargetConfiguration = "NEW_TAB"
+	URLTargetConfigurationNEWWINDOW URLTargetConfiguration = "NEW_WINDOW"
+	URLTargetConfigurationSAMETAB   URLTargetConfiguration = "SAME_TAB"
+)
+
+type ImageCustomActionTrigger string
+
+const (
+	ImageCustomActionTriggerCLICK ImageCustomActionTrigger = "CLICK"
+	ImageCustomActionTriggerMENU  ImageCustomActionTrigger = "MENU"
+)
+
+type DashboardBehavior string
+
+const (
+	DashboardBehaviorENABLED  DashboardBehavior = "ENABLED"
+	DashboardBehaviorDISABLED DashboardBehavior = "DISABLED"
+)
+
+type SheetImageScalingType string
+
+const (
+	SheetImageScalingTypeSCALETOWIDTH     SheetImageScalingType = "SCALE_TO_WIDTH"
+	SheetImageScalingTypeSCALETOHEIGHT    SheetImageScalingType = "SCALE_TO_HEIGHT"
+	SheetImageScalingTypeSCALETOCONTAINER SheetImageScalingType = "SCALE_TO_CONTAINER"
+	SheetImageScalingTypeSCALENONE        SheetImageScalingType = "SCALE_NONE"
+)
+
+type LayoutElementType string
+
+const (
+	LayoutElementTypeVISUAL           LayoutElementType = "VISUAL"
+	LayoutElementTypeFILTERCONTROL    LayoutElementType = "FILTER_CONTROL"
+	LayoutElementTypePARAMETERCONTROL LayoutElementType = "PARAMETER_CONTROL"
+	LayoutElementTypeTEXTBOX          LayoutElementType = "TEXT_BOX"
+	LayoutElementTypeIMAGE            LayoutElementType = "IMAGE"
+)
+
+type SectionPageBreakStatus string
+
+const (
+	SectionPageBreakStatusENABLED  SectionPageBreakStatus = "ENABLED"
+	SectionPageBreakStatusDISABLED SectionPageBreakStatus = "DISABLED"
+)
+
+type SelectedFieldOptions string
+
+const (
+	SelectedFieldOptionsALLFIELDS SelectedFieldOptions = "ALL_FIELDS"
+)
+
+type TargetVisualOptions string
+
+const (
+	TargetVisualOptionsALLVISUALS TargetVisualOptions = "ALL_VISUALS"
+)
+
+type VisualCustomActionTrigger string
+
+const (
+	VisualCustomActionTriggerDATAPOINTCLICK VisualCustomActionTrigger = "DATA_POINT_CLICK"
+	VisualCustomActionTriggerDATAPOINTMENU  VisualCustomActionTrigger = "DATA_POINT_MENU"
+)
+
+type BarsArrangement string
+
+const (
+	BarsArrangementCLUSTERED      BarsArrangement = "CLUSTERED"
+	BarsArrangementSTACKED        BarsArrangement = "STACKED"
+	BarsArrangementSTACKEDPERCENT BarsArrangement = "STACKED_PERCENT"
+)
+
+type DataLabelContent string
+
+const (
+	DataLabelContentVALUE           DataLabelContent = "VALUE"
+	DataLabelContentPERCENT         DataLabelContent = "PERCENT"
+	DataLabelContentVALUEANDPERCENT DataLabelContent = "VALUE_AND_PERCENT"
+)
+
+type DataLabelOverlap string
+
+const (
+	DataLabelOverlapDISABLEOVERLAP DataLabelOverlap = "DISABLE_OVERLAP"
+	DataLabelOverlapENABLEOVERLAP  DataLabelOverlap = "ENABLE_OVERLAP"
+)
+
+type DataLabelPosition string
+
+const (
+	DataLabelPositionINSIDE  DataLabelPosition = "INSIDE"
+	DataLabelPositionOUTSIDE DataLabelPosition = "OUTSIDE"
+	DataLabelPositionLEFT    DataLabelPosition = "LEFT"
+	DataLabelPositionTOP     DataLabelPosition = "TOP"
+	DataLabelPositionBOTTOM  DataLabelPosition = "BOTTOM"
+	DataLabelPositionRIGHT   DataLabelPosition = "RIGHT"
+)
+
+type LegendPosition string
+
+const (
+	LegendPositionAUTO   LegendPosition = "AUTO"
+	LegendPositionRIGHT  LegendPosition = "RIGHT"
+	LegendPositionBOTTOM LegendPosition = "BOTTOM"
+	LegendPositionTOP    LegendPosition = "TOP"
+)
+
+type BarChartOrientation string
+
+const (
+	BarChartOrientationHORIZONTAL BarChartOrientation = "HORIZONTAL"
+	BarChartOrientationVERTICAL   BarChartOrientation = "VERTICAL"
+)
+
+type AxisBinding string
+
+const (
+	AxisBindingPRIMARYYAXIS   AxisBinding = "PRIMARY_YAXIS"
+	AxisBindingSECONDARYYAXIS AxisBinding = "SECONDARY_YAXIS"
+)
+
+type ReferenceLineSeriesType string
+
+const (
+	ReferenceLineSeriesTypeBAR  ReferenceLineSeriesType = "BAR"
+	ReferenceLineSeriesTypeLINE ReferenceLineSeriesType = "LINE"
+)
+
+type ReferenceLineLabelHorizontalPosition string
+
+const (
+	ReferenceLineLabelHorizontalPositionLEFT   ReferenceLineLabelHorizontalPosition = "LEFT"
+	ReferenceLineLabelHorizontalPositionCENTER ReferenceLineLabelHorizontalPosition = "CENTER"
+	ReferenceLineLabelHorizontalPositionRIGHT  ReferenceLineLabelHorizontalPosition = "RIGHT"
+)
+
+type ReferenceLineValueLabelRelativePosition string
+
+const (
+	ReferenceLineValueLabelRelativePositionBEFORECUSTOMLABEL ReferenceLineValueLabelRelativePosition = "BEFORE_CUSTOM_LABEL"
+	ReferenceLineValueLabelRelativePositionAFTERCUSTOMLABEL  ReferenceLineValueLabelRelativePosition = "AFTER_CUSTOM_LABEL"
+)
+
+type ReferenceLineLabelVerticalPosition string
+
+const (
+	ReferenceLineLabelVerticalPositionABOVE ReferenceLineLabelVerticalPosition = "ABOVE"
+	ReferenceLineLabelVerticalPositionBELOW ReferenceLineLabelVerticalPosition = "BELOW"
+)
+
+type ReferenceLinePatternType string
+
+const (
+	ReferenceLinePatternTypeSOLID  ReferenceLinePatternType = "SOLID"
+	ReferenceLinePatternTypeDASHED ReferenceLinePatternType = "DASHED"
+	ReferenceLinePatternTypeDOTTED ReferenceLinePatternType = "DOTTED"
+)
+
+type PanelBorderStyle string
+
+const (
+	PanelBorderStyleSOLID  PanelBorderStyle = "SOLID"
+	PanelBorderStyleDASHED PanelBorderStyle = "DASHED"
+	PanelBorderStyleDOTTED PanelBorderStyle = "DOTTED"
+)
+
+type HorizontalTextAlignment string
+
+const (
+	HorizontalTextAlignmentLEFT   HorizontalTextAlignment = "LEFT"
+	HorizontalTextAlignmentCENTER HorizontalTextAlignment = "CENTER"
+	HorizontalTextAlignmentRIGHT  HorizontalTextAlignment = "RIGHT"
+	HorizontalTextAlignmentAUTO   HorizontalTextAlignment = "AUTO"
+)
+
+type SmallMultiplesAxisPlacement string
+
+const (
+	SmallMultiplesAxisPlacementOUTSIDE SmallMultiplesAxisPlacement = "OUTSIDE"
+	SmallMultiplesAxisPlacementINSIDE  SmallMultiplesAxisPlacement = "INSIDE"
+)
+
+type SmallMultiplesAxisScale string
+
+const (
+	SmallMultiplesAxisScaleSHARED      SmallMultiplesAxisScale = "SHARED"
+	SmallMultiplesAxisScaleINDEPENDENT SmallMultiplesAxisScale = "INDEPENDENT"
+)
+
+type OtherCategories string
+
+const (
+	OtherCategoriesINCLUDE OtherCategories = "INCLUDE"
+	OtherCategoriesEXCLUDE OtherCategories = "EXCLUDE"
+)
+
+type TooltipTarget string
+
+const (
+	TooltipTargetBOTH TooltipTarget = "BOTH"
+	TooltipTargetBAR  TooltipTarget = "BAR"
+	TooltipTargetLINE TooltipTarget = "LINE"
+)
+
+type TooltipTitleType string
+
+const (
+	TooltipTitleTypeNONE         TooltipTitleType = "NONE"
+	TooltipTitleTypePRIMARYVALUE TooltipTitleType = "PRIMARY_VALUE"
+)
+
+type SelectedTooltipType string
+
+const (
+	SelectedTooltipTypeBASIC    SelectedTooltipType = "BASIC"
+	SelectedTooltipTypeDETAILED SelectedTooltipType = "DETAILED"
+)
+
+type PivotTableDataPathType string
+
+const (
+	PivotTableDataPathTypeHIERARCHYROWSLAYOUTCOLUMN PivotTableDataPathType = "HIERARCHY_ROWS_LAYOUT_COLUMN"
+	PivotTableDataPathTypeMULTIPLEROWMETRICSCOLUMN  PivotTableDataPathType = "MULTIPLE_ROW_METRICS_COLUMN"
+	PivotTableDataPathTypeEMPTYCOLUMNHEADER         PivotTableDataPathType = "EMPTY_COLUMN_HEADER"
+	PivotTableDataPathTypeCOUNTMETRICCOLUMN         PivotTableDataPathType = "COUNT_METRIC_COLUMN"
+)
+
+type BoxPlotFillStyle string
+
+const (
+	BoxPlotFillStyleSOLID       BoxPlotFillStyle = "SOLID"
+	BoxPlotFillStyleTRANSPARENT BoxPlotFillStyle = "TRANSPARENT"
+)
+
+type SingleYAxisOption string
+
+const (
+	SingleYAxisOptionPRIMARYYAXIS SingleYAxisOption = "PRIMARY_Y_AXIS"
+)
+
+type CustomContentType string
+
+const (
+	CustomContentTypeIMAGE                CustomContentType = "IMAGE"
+	CustomContentTypeOTHEREMBEDDEDCONTENT CustomContentType = "OTHER_EMBEDDED_CONTENT"
+)
+
+type CustomContentImageScalingConfiguration string
+
+const (
+	CustomContentImageScalingConfigurationFITTOHEIGHT   CustomContentImageScalingConfiguration = "FIT_TO_HEIGHT"
+	CustomContentImageScalingConfigurationFITTOWIDTH    CustomContentImageScalingConfiguration = "FIT_TO_WIDTH"
+	CustomContentImageScalingConfigurationDONOTSCALE    CustomContentImageScalingConfiguration = "DO_NOT_SCALE"
+	CustomContentImageScalingConfigurationSCALETOVISUAL CustomContentImageScalingConfiguration = "SCALE_TO_VISUAL"
+)
+
+type BaseMapStyleType string
+
+const (
+	BaseMapStyleTypeLIGHTGRAY BaseMapStyleType = "LIGHT_GRAY"
+	BaseMapStyleTypeDARKGRAY  BaseMapStyleType = "DARK_GRAY"
+	BaseMapStyleTypeSTREET    BaseMapStyleType = "STREET"
+	BaseMapStyleTypeIMAGERY   BaseMapStyleType = "IMAGERY"
+)
+
+type MapZoomMode string
+
+const (
+	MapZoomModeAUTO   MapZoomMode = "AUTO"
+	MapZoomModeMANUAL MapZoomMode = "MANUAL"
+)
+
+type FunnelChartMeasureDataLabelStyle string
+
+const (
+	FunnelChartMeasureDataLabelStyleVALUEONLY                         FunnelChartMeasureDataLabelStyle = "VALUE_ONLY"
+	FunnelChartMeasureDataLabelStylePERCENTAGEBYFIRSTSTAGE            FunnelChartMeasureDataLabelStyle = "PERCENTAGE_BY_FIRST_STAGE"
+	FunnelChartMeasureDataLabelStylePERCENTAGEBYPREVIOUSSTAGE         FunnelChartMeasureDataLabelStyle = "PERCENTAGE_BY_PREVIOUS_STAGE"
+	FunnelChartMeasureDataLabelStyleVALUEANDPERCENTAGEBYFIRSTSTAGE    FunnelChartMeasureDataLabelStyle = "VALUE_AND_PERCENTAGE_BY_FIRST_STAGE"
+	FunnelChartMeasureDataLabelStyleVALUEANDPERCENTAGEBYPREVIOUSSTAGE FunnelChartMeasureDataLabelStyle = "VALUE_AND_PERCENTAGE_BY_PREVIOUS_STAGE"
+)
+
+type ArcThicknessOptions string
+
+const (
+	ArcThicknessOptionsSMALL  ArcThicknessOptions = "SMALL"
+	ArcThicknessOptionsMEDIUM ArcThicknessOptions = "MEDIUM"
+	ArcThicknessOptionsLARGE  ArcThicknessOptions = "LARGE"
+)
+
+type ComparisonMethod string
+
+const (
+	ComparisonMethodDIFFERENCE        ComparisonMethod = "DIFFERENCE"
+	ComparisonMethodPERCENTDIFFERENCE ComparisonMethod = "PERCENT_DIFFERENCE"
+	ComparisonMethodPERCENT           ComparisonMethod = "PERCENT"
+)
+
+type PrimaryValueDisplayType string
+
+const (
+	PrimaryValueDisplayTypeHIDDEN     PrimaryValueDisplayType = "HIDDEN"
+	PrimaryValueDisplayTypeCOMPARISON PrimaryValueDisplayType = "COMPARISON"
+	PrimaryValueDisplayTypeACTUAL     PrimaryValueDisplayType = "ACTUAL"
+)
+
+type ConditionalFormattingIconDisplayOption string
+
+const (
+	ConditionalFormattingIconDisplayOptionICONONLY ConditionalFormattingIconDisplayOption = "ICON_ONLY"
+)
+
+type Icon string
+
+const (
+	IconCARETUP        Icon = "CARET_UP"
+	IconCARETDOWN      Icon = "CARET_DOWN"
+	IconPLUS           Icon = "PLUS"
+	IconMINUS          Icon = "MINUS"
+	IconARROWUP        Icon = "ARROW_UP"
+	IconARROWDOWN      Icon = "ARROW_DOWN"
+	IconARROWLEFT      Icon = "ARROW_LEFT"
+	IconARROWUPLEFT    Icon = "ARROW_UP_LEFT"
+	IconARROWDOWNLEFT  Icon = "ARROW_DOWN_LEFT"
+	IconARROWRIGHT     Icon = "ARROW_RIGHT"
+	IconARROWUPRIGHT   Icon = "ARROW_UP_RIGHT"
+	IconARROWDOWNRIGHT Icon = "ARROW_DOWN_RIGHT"
+	IconFACEUP         Icon = "FACE_UP"
+	IconFACEDOWN       Icon = "FACE_DOWN"
+	IconFACEFLAT       Icon = "FACE_FLAT"
+	IconONEBAR         Icon = "ONE_BAR"
+	IconTWOBAR         Icon = "TWO_BAR"
+	IconTHREEBAR       Icon = "THREE_BAR"
+	IconCIRCLE         Icon = "CIRCLE"
+	IconTRIANGLE       Icon = "TRIANGLE"
+	IconSQUARE         Icon = "SQUARE"
+	IconFLAG           Icon = "FLAG"
+	IconTHUMBSUP       Icon = "THUMBS_UP"
+	IconTHUMBSDOWN     Icon = "THUMBS_DOWN"
+	IconCHECKMARK      Icon = "CHECKMARK"
+	IconX              Icon = "X"
+)
+
+type ConditionalFormattingIconSetType string
+
+const (
+	ConditionalFormattingIconSetTypePLUSMINUS        ConditionalFormattingIconSetType = "PLUS_MINUS"
+	ConditionalFormattingIconSetTypeCHECKX           ConditionalFormattingIconSetType = "CHECK_X"
+	ConditionalFormattingIconSetTypeTHREECOLORARROW  ConditionalFormattingIconSetType = "THREE_COLOR_ARROW"
+	ConditionalFormattingIconSetTypeTHREEGRAYARROW   ConditionalFormattingIconSetType = "THREE_GRAY_ARROW"
+	ConditionalFormattingIconSetTypeCARETUPMINUSDOWN ConditionalFormattingIconSetType = "CARET_UP_MINUS_DOWN"
+	ConditionalFormattingIconSetTypeTHREESHAPE       ConditionalFormattingIconSetType = "THREE_SHAPE"
+	ConditionalFormattingIconSetTypeTHREECIRCLE      ConditionalFormattingIconSetType = "THREE_CIRCLE"
+	ConditionalFormattingIconSetTypeFLAGS            ConditionalFormattingIconSetType = "FLAGS"
+	ConditionalFormattingIconSetTypeBARS             ConditionalFormattingIconSetType = "BARS"
+	ConditionalFormattingIconSetTypeFOURCOLORARROW   ConditionalFormattingIconSetType = "FOUR_COLOR_ARROW"
+	ConditionalFormattingIconSetTypeFOURGRAYARROW    ConditionalFormattingIconSetType = "FOUR_GRAY_ARROW"
+)
+
+type GeospatialSelectedPointStyle string
+
+const (
+	GeospatialSelectedPointStylePOINT   GeospatialSelectedPointStyle = "POINT"
+	GeospatialSelectedPointStyleCLUSTER GeospatialSelectedPointStyle = "CLUSTER"
+	GeospatialSelectedPointStyleHEATMAP GeospatialSelectedPointStyle = "HEATMAP"
+)
+
+type ColorFillType string
+
+const (
+	ColorFillTypeDISCRETE ColorFillType = "DISCRETE"
+	ColorFillTypeGRADIENT ColorFillType = "GRADIENT"
+)
+
+type HistogramBinType string
+
+const (
+	HistogramBinTypeBINCOUNT HistogramBinType = "BIN_COUNT"
+	HistogramBinTypeBINWIDTH HistogramBinType = "BIN_WIDTH"
+)
+
+type ForecastComputationSeasonality string
+
+const (
+	ForecastComputationSeasonalityAUTOMATIC ForecastComputationSeasonality = "AUTOMATIC"
+	ForecastComputationSeasonalityCUSTOM    ForecastComputationSeasonality = "CUSTOM"
+)
+
+type MaximumMinimumComputationType string
+
+const (
+	MaximumMinimumComputationTypeMAXIMUM MaximumMinimumComputationType = "MAXIMUM"
+	MaximumMinimumComputationTypeMINIMUM MaximumMinimumComputationType = "MINIMUM"
+)
+
+type TopBottomSortOrder string
+
+const (
+	TopBottomSortOrderPERCENTDIFFERENCE  TopBottomSortOrder = "PERCENT_DIFFERENCE"
+	TopBottomSortOrderABSOLUTEDIFFERENCE TopBottomSortOrder = "ABSOLUTE_DIFFERENCE"
+)
+
+type TopBottomComputationType string
+
+const (
+	TopBottomComputationTypeTOP    TopBottomComputationType = "TOP"
+	TopBottomComputationTypeBOTTOM TopBottomComputationType = "BOTTOM"
+)
+
+type KPISparklineType string
+
+const (
+	KPISparklineTypeLINE KPISparklineType = "LINE"
+	KPISparklineTypeAREA KPISparklineType = "AREA"
+)
+
+type KPIVisualStandardLayoutType string
+
+const (
+	KPIVisualStandardLayoutTypeCLASSIC  KPIVisualStandardLayoutType = "CLASSIC"
+	KPIVisualStandardLayoutTypeVERTICAL KPIVisualStandardLayoutType = "VERTICAL"
+)
+
+type LayerCustomActionTrigger string
+
+const (
+	LayerCustomActionTriggerDATAPOINTCLICK LayerCustomActionTrigger = "DATA_POINT_CLICK"
+	LayerCustomActionTriggerDATAPOINTMENU  LayerCustomActionTrigger = "DATA_POINT_MENU"
+)
+
+type GeospatialColorState string
+
+const (
+	GeospatialColorStateENABLED  GeospatialColorState = "ENABLED"
+	GeospatialColorStateDISABLED GeospatialColorState = "DISABLED"
+)
+
+type GeospatialLayerType string
+
+const (
+	GeospatialLayerTypePOINT   GeospatialLayerType = "POINT"
+	GeospatialLayerTypeLINE    GeospatialLayerType = "LINE"
+	GeospatialLayerTypePOLYGON GeospatialLayerType = "POLYGON"
+)
+
+type GeospatialMapNavigation string
+
+const (
+	GeospatialMapNavigationENABLED  GeospatialMapNavigation = "ENABLED"
+	GeospatialMapNavigationDISABLED GeospatialMapNavigation = "DISABLED"
+)
+
+type LineInterpolation string
+
+const (
+	LineInterpolationLINEAR  LineInterpolation = "LINEAR"
+	LineInterpolationSMOOTH  LineInterpolation = "SMOOTH"
+	LineInterpolationSTEPPED LineInterpolation = "STEPPED"
+)
+
+type LineChartLineStyle string
+
+const (
+	LineChartLineStyleSOLID  LineChartLineStyle = "SOLID"
+	LineChartLineStyleDOTTED LineChartLineStyle = "DOTTED"
+	LineChartLineStyleDASHED LineChartLineStyle = "DASHED"
+)
+
+type LineChartMarkerShape string
+
+const (
+	LineChartMarkerShapeCIRCLE        LineChartMarkerShape = "CIRCLE"
+	LineChartMarkerShapeTRIANGLE      LineChartMarkerShape = "TRIANGLE"
+	LineChartMarkerShapeSQUARE        LineChartMarkerShape = "SQUARE"
+	LineChartMarkerShapeDIAMOND       LineChartMarkerShape = "DIAMOND"
+	LineChartMarkerShapeROUNDEDSQUARE LineChartMarkerShape = "ROUNDED_SQUARE"
+)
+
+type MissingDataTreatmentOption string
+
+const (
+	MissingDataTreatmentOptionINTERPOLATE MissingDataTreatmentOption = "INTERPOLATE"
+	MissingDataTreatmentOptionSHOWASZERO  MissingDataTreatmentOption = "SHOW_AS_ZERO"
+	MissingDataTreatmentOptionSHOWASBLANK MissingDataTreatmentOption = "SHOW_AS_BLANK"
+)
+
+type LineChartType string
+
+const (
+	LineChartTypeLINE        LineChartType = "LINE"
+	LineChartTypeAREA        LineChartType = "AREA"
+	LineChartTypeSTACKEDAREA LineChartType = "STACKED_AREA"
+)
+
+type ArcThickness string
+
+const (
+	ArcThicknessSMALL  ArcThickness = "SMALL"
+	ArcThicknessMEDIUM ArcThickness = "MEDIUM"
+	ArcThicknessLARGE  ArcThickness = "LARGE"
+	ArcThicknessWHOLE  ArcThickness = "WHOLE"
+)
+
+type PivotTableFieldCollapseState string
+
+const (
+	PivotTableFieldCollapseStateCOLLAPSED PivotTableFieldCollapseState = "COLLAPSED"
+	PivotTableFieldCollapseStateEXPANDED  PivotTableFieldCollapseState = "EXPANDED"
+)
+
+type TableBorderStyle string
+
+const (
+	TableBorderStyleNONE  TableBorderStyle = "NONE"
+	TableBorderStyleSOLID TableBorderStyle = "SOLID"
+)
+
+type TextWrap string
+
+const (
+	TextWrapNONE TextWrap = "NONE"
+	TextWrapWRAP TextWrap = "WRAP"
+)
+
+type VerticalTextAlignment string
+
+const (
+	VerticalTextAlignmentTOP    VerticalTextAlignment = "TOP"
+	VerticalTextAlignmentMIDDLE VerticalTextAlignment = "MIDDLE"
+	VerticalTextAlignmentBOTTOM VerticalTextAlignment = "BOTTOM"
+	VerticalTextAlignmentAUTO   VerticalTextAlignment = "AUTO"
+)
+
+type PivotTableMetricPlacement string
+
+const (
+	PivotTableMetricPlacementROW    PivotTableMetricPlacement = "ROW"
+	PivotTableMetricPlacementCOLUMN PivotTableMetricPlacement = "COLUMN"
+)
+
+type PivotTableRowsLayout string
+
+const (
+	PivotTableRowsLayoutTABULAR   PivotTableRowsLayout = "TABULAR"
+	PivotTableRowsLayoutHIERARCHY PivotTableRowsLayout = "HIERARCHY"
+)
+
+type PivotTableSubtotalLevel string
+
+const (
+	PivotTableSubtotalLevelALL    PivotTableSubtotalLevel = "ALL"
+	PivotTableSubtotalLevelCUSTOM PivotTableSubtotalLevel = "CUSTOM"
+	PivotTableSubtotalLevelLAST   PivotTableSubtotalLevel = "LAST"
+)
+
+type StyledCellType string
+
+const (
+	StyledCellTypeTOTAL        StyledCellType = "TOTAL"
+	StyledCellTypeMETRICHEADER StyledCellType = "METRIC_HEADER"
+	StyledCellTypeVALUE        StyledCellType = "VALUE"
+)
+
+type TableTotalsPlacement string
+
+const (
+	TableTotalsPlacementSTART TableTotalsPlacement = "START"
+	TableTotalsPlacementEND   TableTotalsPlacement = "END"
+	TableTotalsPlacementAUTO  TableTotalsPlacement = "AUTO"
+)
+
+type TableTotalsScrollStatus string
+
+const (
+	TableTotalsScrollStatusPINNED   TableTotalsScrollStatus = "PINNED"
+	TableTotalsScrollStatusSCROLLED TableTotalsScrollStatus = "SCROLLED"
+)
+
+type SimpleTotalAggregationFunction string
+
+const (
+	SimpleTotalAggregationFunctionDEFAULT SimpleTotalAggregationFunction = "DEFAULT"
+	SimpleTotalAggregationFunctionSUM     SimpleTotalAggregationFunction = "SUM"
+	SimpleTotalAggregationFunctionAVERAGE SimpleTotalAggregationFunction = "AVERAGE"
+	SimpleTotalAggregationFunctionMIN     SimpleTotalAggregationFunction = "MIN"
+	SimpleTotalAggregationFunctionMAX     SimpleTotalAggregationFunction = "MAX"
+	SimpleTotalAggregationFunctionNONE    SimpleTotalAggregationFunction = "NONE"
+)
+
+type PivotTableConditionalFormattingScopeRole string
+
+const (
+	PivotTableConditionalFormattingScopeRoleFIELD      PivotTableConditionalFormattingScopeRole = "FIELD"
+	PivotTableConditionalFormattingScopeRoleFIELDTOTAL PivotTableConditionalFormattingScopeRole = "FIELD_TOTAL"
+	PivotTableConditionalFormattingScopeRoleGRANDTOTAL PivotTableConditionalFormattingScopeRole = "GRAND_TOTAL"
+)
+
+type PluginVisualAxisName string
+
+const (
+	PluginVisualAxisNameGROUPBY PluginVisualAxisName = "GROUP_BY"
+	PluginVisualAxisNameVALUE   PluginVisualAxisName = "VALUE"
+)
+
+type RadarChartAxesRangeScale string
+
+const (
+	RadarChartAxesRangeScaleAUTO        RadarChartAxesRangeScale = "AUTO"
+	RadarChartAxesRangeScaleINDEPENDENT RadarChartAxesRangeScale = "INDEPENDENT"
+	RadarChartAxesRangeScaleSHARED      RadarChartAxesRangeScale = "SHARED"
+)
+
+type RadarChartShape string
+
+const (
+	RadarChartShapeCIRCLE  RadarChartShape = "CIRCLE"
+	RadarChartShapePOLYGON RadarChartShape = "POLYGON"
+)
+
+type TableCellImageScalingConfiguration string
+
+const (
+	TableCellImageScalingConfigurationFITTOCELLHEIGHT TableCellImageScalingConfiguration = "FIT_TO_CELL_HEIGHT"
+	TableCellImageScalingConfigurationFITTOCELLWIDTH  TableCellImageScalingConfiguration = "FIT_TO_CELL_WIDTH"
+	TableCellImageScalingConfigurationDONOTSCALE      TableCellImageScalingConfiguration = "DO_NOT_SCALE"
+)
+
+type TableFieldIconSetType string
+
+const (
+	TableFieldIconSetTypeLINK TableFieldIconSetType = "LINK"
+)
+
+type TransposedColumnType string
+
+const (
+	TransposedColumnTypeROWHEADERCOLUMN TransposedColumnType = "ROW_HEADER_COLUMN"
+	TransposedColumnTypeVALUECOLUMN     TransposedColumnType = "VALUE_COLUMN"
+)
+
+type TableOrientation string
+
+const (
+	TableOrientationVERTICAL   TableOrientation = "VERTICAL"
+	TableOrientationHORIZONTAL TableOrientation = "HORIZONTAL"
+)
+
+type WordCloudCloudLayout string
+
+const (
+	WordCloudCloudLayoutFLUID  WordCloudCloudLayout = "FLUID"
+	WordCloudCloudLayoutNORMAL WordCloudCloudLayout = "NORMAL"
+)
+
+type WordCloudWordCasing string
+
+const (
+	WordCloudWordCasingLOWERCASE    WordCloudWordCasing = "LOWER_CASE"
+	WordCloudWordCasingEXISTINGCASE WordCloudWordCasing = "EXISTING_CASE"
+)
+
+type WordCloudWordOrientation string
+
+const (
+	WordCloudWordOrientationHORIZONTAL            WordCloudWordOrientation = "HORIZONTAL"
+	WordCloudWordOrientationHORIZONTALANDVERTICAL WordCloudWordOrientation = "HORIZONTAL_AND_VERTICAL"
+)
+
+type WordCloudWordPadding string
+
+const (
+	WordCloudWordPaddingNONE   WordCloudWordPadding = "NONE"
+	WordCloudWordPaddingSMALL  WordCloudWordPadding = "SMALL"
+	WordCloudWordPaddingMEDIUM WordCloudWordPadding = "MEDIUM"
+	WordCloudWordPaddingLARGE  WordCloudWordPadding = "LARGE"
+)
+
+type WordCloudWordScaling string
+
+const (
+	WordCloudWordScalingEMPHASIZE WordCloudWordScaling = "EMPHASIZE"
+	WordCloudWordScalingNORMAL    WordCloudWordScaling = "NORMAL"
+)
+
+type AnalysisErrorType string
+
+const (
+	AnalysisErrorTypeACCESSDENIED                 AnalysisErrorType = "ACCESS_DENIED"
+	AnalysisErrorTypeSOURCENOTFOUND               AnalysisErrorType = "SOURCE_NOT_FOUND"
+	AnalysisErrorTypeDATASETNOTFOUND              AnalysisErrorType = "DATA_SET_NOT_FOUND"
+	AnalysisErrorTypeINTERNALFAILURE              AnalysisErrorType = "INTERNAL_FAILURE"
+	AnalysisErrorTypePARAMETERVALUEINCOMPATIBLE   AnalysisErrorType = "PARAMETER_VALUE_INCOMPATIBLE"
+	AnalysisErrorTypePARAMETERTYPEINVALID         AnalysisErrorType = "PARAMETER_TYPE_INVALID"
+	AnalysisErrorTypePARAMETERNOTFOUND            AnalysisErrorType = "PARAMETER_NOT_FOUND"
+	AnalysisErrorTypeCOLUMNTYPEMISMATCH           AnalysisErrorType = "COLUMN_TYPE_MISMATCH"
+	AnalysisErrorTypeCOLUMNGEOGRAPHICROLEMISMATCH AnalysisErrorType = "COLUMN_GEOGRAPHIC_ROLE_MISMATCH"
+	AnalysisErrorTypeCOLUMNREPLACEMENTMISSING     AnalysisErrorType = "COLUMN_REPLACEMENT_MISSING"
+)
+
+type AnalysisResourceStatus string
+
+const (
+	AnalysisResourceStatusCREATIONINPROGRESS AnalysisResourceStatus = "CREATION_IN_PROGRESS"
+	AnalysisResourceStatusCREATIONSUCCESSFUL AnalysisResourceStatus = "CREATION_SUCCESSFUL"
+	AnalysisResourceStatusCREATIONFAILED     AnalysisResourceStatus = "CREATION_FAILED"
+	AnalysisResourceStatusUPDATEINPROGRESS   AnalysisResourceStatus = "UPDATE_IN_PROGRESS"
+	AnalysisResourceStatusUPDATESUCCESSFUL   AnalysisResourceStatus = "UPDATE_SUCCESSFUL"
+	AnalysisResourceStatusUPDATEFAILED       AnalysisResourceStatus = "UPDATE_FAILED"
+	AnalysisResourceStatusPENDINGUPDATE      AnalysisResourceStatus = "PENDING_UPDATE"
+	AnalysisResourceStatusDELETED            AnalysisResourceStatus = "DELETED"
+)
+
+type ValidationStrategyMode string
+
+const (
+	ValidationStrategyModeSTRICT  ValidationStrategyMode = "STRICT"
+	ValidationStrategyModeLENIENT ValidationStrategyMode = "LENIENT"
+)
+
+type CapabilityState string
+
+const (
+	CapabilityStateDENY CapabilityState = "DENY"
+)
+
+type DashboardDashboardBehavior string
+
+const (
+	DashboardDashboardBehaviorENABLED  DashboardDashboardBehavior = "ENABLED"
+	DashboardDashboardBehaviorDISABLED DashboardDashboardBehavior = "DISABLED"
+)
+
+type DashboardUIState string
+
+const (
+	DashboardUIStateEXPANDED  DashboardUIState = "EXPANDED"
+	DashboardUIStateCOLLAPSED DashboardUIState = "COLLAPSED"
+)
+
+type DashboardResizeOption string
+
+const (
+	DashboardResizeOptionFIXED      DashboardResizeOption = "FIXED"
+	DashboardResizeOptionRESPONSIVE DashboardResizeOption = "RESPONSIVE"
+)
+
+type DashboardPaperOrientation string
+
+const (
+	DashboardPaperOrientationPORTRAIT  DashboardPaperOrientation = "PORTRAIT"
+	DashboardPaperOrientationLANDSCAPE DashboardPaperOrientation = "LANDSCAPE"
+)
+
+type DashboardPaperSize string
+
+const (
+	DashboardPaperSizeUSLETTER        DashboardPaperSize = "US_LETTER"
+	DashboardPaperSizeUSLEGAL         DashboardPaperSize = "US_LEGAL"
+	DashboardPaperSizeUSTABLOIDLEDGER DashboardPaperSize = "US_TABLOID_LEDGER"
+	DashboardPaperSizeA0              DashboardPaperSize = "A0"
+	DashboardPaperSizeA1              DashboardPaperSize = "A1"
+	DashboardPaperSizeA2              DashboardPaperSize = "A2"
+	DashboardPaperSizeA3              DashboardPaperSize = "A3"
+	DashboardPaperSizeA4              DashboardPaperSize = "A4"
+	DashboardPaperSizeA5              DashboardPaperSize = "A5"
+	DashboardPaperSizeJISB4           DashboardPaperSize = "JIS_B4"
+	DashboardPaperSizeJISB5           DashboardPaperSize = "JIS_B5"
+)
+
+type DashboardSheetContentType string
+
+const (
+	DashboardSheetContentTypePAGINATED   DashboardSheetContentType = "PAGINATED"
+	DashboardSheetContentTypeINTERACTIVE DashboardSheetContentType = "INTERACTIVE"
+)
+
+type DashboardSpecialValue string
+
+const (
+	DashboardSpecialValueEMPTY DashboardSpecialValue = "EMPTY"
+	DashboardSpecialValueNULL  DashboardSpecialValue = "NULL"
+	DashboardSpecialValueOTHER DashboardSpecialValue = "OTHER"
+)
+
+type DashboardNegativeValueDisplayMode string
+
+const (
+	DashboardNegativeValueDisplayModePOSITIVE DashboardNegativeValueDisplayMode = "POSITIVE"
+	DashboardNegativeValueDisplayModeNEGATIVE DashboardNegativeValueDisplayMode = "NEGATIVE"
+)
+
+type DashboardNumberScale string
+
+const (
+	DashboardNumberScaleNONE      DashboardNumberScale = "NONE"
+	DashboardNumberScaleAUTO      DashboardNumberScale = "AUTO"
+	DashboardNumberScaleTHOUSANDS DashboardNumberScale = "THOUSANDS"
+	DashboardNumberScaleMILLIONS  DashboardNumberScale = "MILLIONS"
+	DashboardNumberScaleBILLIONS  DashboardNumberScale = "BILLIONS"
+	DashboardNumberScaleTRILLIONS DashboardNumberScale = "TRILLIONS"
+	DashboardNumberScaleLAKHS     DashboardNumberScale = "LAKHS"
+	DashboardNumberScaleCRORES    DashboardNumberScale = "CRORES"
+)
+
+type DashboardNumericSeparatorSymbol string
+
+const (
+	DashboardNumericSeparatorSymbolCOMMA DashboardNumericSeparatorSymbol = "COMMA"
+	DashboardNumericSeparatorSymbolDOT   DashboardNumericSeparatorSymbol = "DOT"
+	DashboardNumericSeparatorSymbolSPACE DashboardNumericSeparatorSymbol = "SPACE"
+)
+
+type DashboardDigitGroupingStyle string
+
+const (
+	DashboardDigitGroupingStyleDEFAULT DashboardDigitGroupingStyle = "DEFAULT"
+	DashboardDigitGroupingStyleLAKHS   DashboardDigitGroupingStyle = "LAKHS"
+)
+
+type DashboardVisibility string
+
+const (
+	DashboardVisibilityHIDDEN  DashboardVisibility = "HIDDEN"
+	DashboardVisibilityVISIBLE DashboardVisibility = "VISIBLE"
+)
+
+type DashboardColumnRole string
+
+const (
+	DashboardColumnRoleDIMENSION DashboardColumnRole = "DIMENSION"
+	DashboardColumnRoleMEASURE   DashboardColumnRole = "MEASURE"
+)
+
+type DashboardCrossDatasetTypes string
+
+const (
+	DashboardCrossDatasetTypesALLDATASETS   DashboardCrossDatasetTypes = "ALL_DATASETS"
+	DashboardCrossDatasetTypesSINGLEDATASET DashboardCrossDatasetTypes = "SINGLE_DATASET"
+)
+
+type DashboardCategoryFilterMatchOperator string
+
+const (
+	DashboardCategoryFilterMatchOperatorEQUALS         DashboardCategoryFilterMatchOperator = "EQUALS"
+	DashboardCategoryFilterMatchOperatorDOESNOTEQUAL   DashboardCategoryFilterMatchOperator = "DOES_NOT_EQUAL"
+	DashboardCategoryFilterMatchOperatorCONTAINS       DashboardCategoryFilterMatchOperator = "CONTAINS"
+	DashboardCategoryFilterMatchOperatorDOESNOTCONTAIN DashboardCategoryFilterMatchOperator = "DOES_NOT_CONTAIN"
+	DashboardCategoryFilterMatchOperatorSTARTSWITH     DashboardCategoryFilterMatchOperator = "STARTS_WITH"
+	DashboardCategoryFilterMatchOperatorENDSWITH       DashboardCategoryFilterMatchOperator = "ENDS_WITH"
+)
+
+type DashboardFilterNullOption string
+
+const (
+	DashboardFilterNullOptionALLVALUES    DashboardFilterNullOption = "ALL_VALUES"
+	DashboardFilterNullOptionNULLSONLY    DashboardFilterNullOption = "NULLS_ONLY"
+	DashboardFilterNullOptionNONNULLSONLY DashboardFilterNullOption = "NON_NULLS_ONLY"
+)
+
+type DashboardCategoryFilterSelectAllOptions string
+
+const (
+	DashboardCategoryFilterSelectAllOptionsFILTERALLVALUES DashboardCategoryFilterSelectAllOptions = "FILTER_ALL_VALUES"
+)
+
+type DashboardCommitMode string
+
+const (
+	DashboardCommitModeAUTO   DashboardCommitMode = "AUTO"
+	DashboardCommitModeMANUAL DashboardCommitMode = "MANUAL"
+)
+
+type DashboardFontDecoration string
+
+const (
+	DashboardFontDecorationUNDERLINE DashboardFontDecoration = "UNDERLINE"
+	DashboardFontDecorationNONE      DashboardFontDecoration = "NONE"
+)
+
+type DashboardRelativeFontSize string
+
+const (
+	DashboardRelativeFontSizeEXTRASMALL DashboardRelativeFontSize = "EXTRA_SMALL"
+	DashboardRelativeFontSizeSMALL      DashboardRelativeFontSize = "SMALL"
+	DashboardRelativeFontSizeMEDIUM     DashboardRelativeFontSize = "MEDIUM"
+	DashboardRelativeFontSizeLARGE      DashboardRelativeFontSize = "LARGE"
+	DashboardRelativeFontSizeEXTRALARGE DashboardRelativeFontSize = "EXTRA_LARGE"
+)
+
+type DashboardFontStyle string
+
+const (
+	DashboardFontStyleNORMAL DashboardFontStyle = "NORMAL"
+	DashboardFontStyleITALIC DashboardFontStyle = "ITALIC"
+)
+
+type DashboardFontWeightName string
+
+const (
+	DashboardFontWeightNameNORMAL DashboardFontWeightName = "NORMAL"
+	DashboardFontWeightNameBOLD   DashboardFontWeightName = "BOLD"
+)
+
+type DashboardSheetControlDateTimePickerType string
+
+const (
+	DashboardSheetControlDateTimePickerTypeSINGLEVALUED DashboardSheetControlDateTimePickerType = "SINGLE_VALUED"
+	DashboardSheetControlDateTimePickerTypeDATERANGE    DashboardSheetControlDateTimePickerType = "DATE_RANGE"
+)
+
+type DashboardSheetControlListType string
+
+const (
+	DashboardSheetControlListTypeMULTISELECT  DashboardSheetControlListType = "MULTI_SELECT"
+	DashboardSheetControlListTypeSINGLESELECT DashboardSheetControlListType = "SINGLE_SELECT"
+)
+
+type DashboardSheetControlSliderType string
+
+const (
+	DashboardSheetControlSliderTypeSINGLEPOINT DashboardSheetControlSliderType = "SINGLE_POINT"
+	DashboardSheetControlSliderTypeRANGE       DashboardSheetControlSliderType = "RANGE"
+)
+
+type DashboardSimpleAttributeAggregationFunction string
+
+const (
+	DashboardSimpleAttributeAggregationFunctionUNIQUEVALUE DashboardSimpleAttributeAggregationFunction = "UNIQUE_VALUE"
+)
+
+type DashboardCategoricalAggregationFunction string
+
+const (
+	DashboardCategoricalAggregationFunctionCOUNT         DashboardCategoricalAggregationFunction = "COUNT"
+	DashboardCategoricalAggregationFunctionDISTINCTCOUNT DashboardCategoricalAggregationFunction = "DISTINCT_COUNT"
+)
+
+type DashboardDateAggregationFunction string
+
+const (
+	DashboardDateAggregationFunctionCOUNT         DashboardDateAggregationFunction = "COUNT"
+	DashboardDateAggregationFunctionDISTINCTCOUNT DashboardDateAggregationFunction = "DISTINCT_COUNT"
+	DashboardDateAggregationFunctionMIN           DashboardDateAggregationFunction = "MIN"
+	DashboardDateAggregationFunctionMAX           DashboardDateAggregationFunction = "MAX"
+)
+
+type DashboardSimpleNumericalAggregationFunction string
+
+const (
+	DashboardSimpleNumericalAggregationFunctionSUM           DashboardSimpleNumericalAggregationFunction = "SUM"
+	DashboardSimpleNumericalAggregationFunctionAVERAGE       DashboardSimpleNumericalAggregationFunction = "AVERAGE"
+	DashboardSimpleNumericalAggregationFunctionMIN           DashboardSimpleNumericalAggregationFunction = "MIN"
+	DashboardSimpleNumericalAggregationFunctionMAX           DashboardSimpleNumericalAggregationFunction = "MAX"
+	DashboardSimpleNumericalAggregationFunctionCOUNT         DashboardSimpleNumericalAggregationFunction = "COUNT"
+	DashboardSimpleNumericalAggregationFunctionDISTINCTCOUNT DashboardSimpleNumericalAggregationFunction = "DISTINCT_COUNT"
+	DashboardSimpleNumericalAggregationFunctionVAR           DashboardSimpleNumericalAggregationFunction = "VAR"
+	DashboardSimpleNumericalAggregationFunctionVARP          DashboardSimpleNumericalAggregationFunction = "VARP"
+	DashboardSimpleNumericalAggregationFunctionSTDEV         DashboardSimpleNumericalAggregationFunction = "STDEV"
+	DashboardSimpleNumericalAggregationFunctionSTDEVP        DashboardSimpleNumericalAggregationFunction = "STDEVP"
+	DashboardSimpleNumericalAggregationFunctionMEDIAN        DashboardSimpleNumericalAggregationFunction = "MEDIAN"
+)
+
+type DashboardNumericEqualityMatchOperator string
+
+const (
+	DashboardNumericEqualityMatchOperatorEQUALS       DashboardNumericEqualityMatchOperator = "EQUALS"
+	DashboardNumericEqualityMatchOperatorDOESNOTEQUAL DashboardNumericEqualityMatchOperator = "DOES_NOT_EQUAL"
+)
+
+type DashboardNumericFilterSelectAllOptions string
+
+const (
+	DashboardNumericFilterSelectAllOptionsFILTERALLVALUES DashboardNumericFilterSelectAllOptions = "FILTER_ALL_VALUES"
+)
+
+type DashboardAnchorOption string
+
+const (
+	DashboardAnchorOptionNOW DashboardAnchorOption = "NOW"
+)
+
+type DashboardTimeGranularity string
+
+const (
+	DashboardTimeGranularityYEAR        DashboardTimeGranularity = "YEAR"
+	DashboardTimeGranularityQUARTER     DashboardTimeGranularity = "QUARTER"
+	DashboardTimeGranularityMONTH       DashboardTimeGranularity = "MONTH"
+	DashboardTimeGranularityWEEK        DashboardTimeGranularity = "WEEK"
+	DashboardTimeGranularityDAY         DashboardTimeGranularity = "DAY"
+	DashboardTimeGranularityHOUR        DashboardTimeGranularity = "HOUR"
+	DashboardTimeGranularityMINUTE      DashboardTimeGranularity = "MINUTE"
+	DashboardTimeGranularitySECOND      DashboardTimeGranularity = "SECOND"
+	DashboardTimeGranularityMILLISECOND DashboardTimeGranularity = "MILLISECOND"
+)
+
+type DashboardWidgetStatus string
+
+const (
+	DashboardWidgetStatusENABLED  DashboardWidgetStatus = "ENABLED"
+	DashboardWidgetStatusDISABLED DashboardWidgetStatus = "DISABLED"
+)
+
+type DashboardRelativeDateType string
+
+const (
+	DashboardRelativeDateTypePREVIOUS DashboardRelativeDateType = "PREVIOUS"
+	DashboardRelativeDateTypeTHIS     DashboardRelativeDateType = "THIS"
+	DashboardRelativeDateTypeLAST     DashboardRelativeDateType = "LAST"
+	DashboardRelativeDateTypeNOW      DashboardRelativeDateType = "NOW"
+	DashboardRelativeDateTypeNEXT     DashboardRelativeDateType = "NEXT"
+)
+
+type DashboardSortDirection string
+
+const (
+	DashboardSortDirectionASC  DashboardSortDirection = "ASC"
+	DashboardSortDirectionDESC DashboardSortDirection = "DESC"
+)
+
+type DashboardFilterVisualScope string
+
+const (
+	DashboardFilterVisualScopeALLVISUALS      DashboardFilterVisualScope = "ALL_VISUALS"
+	DashboardFilterVisualScopeSELECTEDVISUALS DashboardFilterVisualScope = "SELECTED_VISUALS"
+)
+
+type QBusinessInsightsStatus string
+
+const (
+	QBusinessInsightsStatusENABLED  QBusinessInsightsStatus = "ENABLED"
+	QBusinessInsightsStatusDISABLED QBusinessInsightsStatus = "DISABLED"
+)
+
+type DashboardDayOfTheWeek string
+
+const (
+	DashboardDayOfTheWeekSUNDAY    DashboardDayOfTheWeek = "SUNDAY"
+	DashboardDayOfTheWeekMONDAY    DashboardDayOfTheWeek = "MONDAY"
+	DashboardDayOfTheWeekTUESDAY   DashboardDayOfTheWeek = "TUESDAY"
+	DashboardDayOfTheWeekWEDNESDAY DashboardDayOfTheWeek = "WEDNESDAY"
+	DashboardDayOfTheWeekTHURSDAY  DashboardDayOfTheWeek = "THURSDAY"
+	DashboardDayOfTheWeekFRIDAY    DashboardDayOfTheWeek = "FRIDAY"
+	DashboardDayOfTheWeekSATURDAY  DashboardDayOfTheWeek = "SATURDAY"
+)
+
+type DashboardValueWhenUnsetOption string
+
+const (
+	DashboardValueWhenUnsetOptionRECOMMENDEDVALUE DashboardValueWhenUnsetOption = "RECOMMENDED_VALUE"
+	DashboardValueWhenUnsetOptionNULL             DashboardValueWhenUnsetOption = "NULL"
+)
+
+type DashboardParameterValueType string
+
+const (
+	DashboardParameterValueTypeMULTIVALUED  DashboardParameterValueType = "MULTI_VALUED"
+	DashboardParameterValueTypeSINGLEVALUED DashboardParameterValueType = "SINGLE_VALUED"
+)
+
+type DashboardSelectAllValueOptions string
+
+const (
+	DashboardSelectAllValueOptionsALLVALUES DashboardSelectAllValueOptions = "ALL_VALUES"
+)
+
+type DashboardURLTargetConfiguration string
+
+const (
+	DashboardURLTargetConfigurationNEWTAB    DashboardURLTargetConfiguration = "NEW_TAB"
+	DashboardURLTargetConfigurationNEWWINDOW DashboardURLTargetConfiguration = "NEW_WINDOW"
+	DashboardURLTargetConfigurationSAMETAB   DashboardURLTargetConfiguration = "SAME_TAB"
+)
+
+type DashboardImageCustomActionTrigger string
+
+const (
+	DashboardImageCustomActionTriggerCLICK DashboardImageCustomActionTrigger = "CLICK"
+	DashboardImageCustomActionTriggerMENU  DashboardImageCustomActionTrigger = "MENU"
+)
+
+type DashboardSheetImageScalingType string
+
+const (
+	DashboardSheetImageScalingTypeSCALETOWIDTH     DashboardSheetImageScalingType = "SCALE_TO_WIDTH"
+	DashboardSheetImageScalingTypeSCALETOHEIGHT    DashboardSheetImageScalingType = "SCALE_TO_HEIGHT"
+	DashboardSheetImageScalingTypeSCALETOCONTAINER DashboardSheetImageScalingType = "SCALE_TO_CONTAINER"
+	DashboardSheetImageScalingTypeSCALENONE        DashboardSheetImageScalingType = "SCALE_NONE"
+)
+
+type DashboardLayoutElementType string
+
+const (
+	DashboardLayoutElementTypeVISUAL           DashboardLayoutElementType = "VISUAL"
+	DashboardLayoutElementTypeFILTERCONTROL    DashboardLayoutElementType = "FILTER_CONTROL"
+	DashboardLayoutElementTypePARAMETERCONTROL DashboardLayoutElementType = "PARAMETER_CONTROL"
+	DashboardLayoutElementTypeTEXTBOX          DashboardLayoutElementType = "TEXT_BOX"
+	DashboardLayoutElementTypeIMAGE            DashboardLayoutElementType = "IMAGE"
+)
+
+type DashboardSectionPageBreakStatus string
+
+const (
+	DashboardSectionPageBreakStatusENABLED  DashboardSectionPageBreakStatus = "ENABLED"
+	DashboardSectionPageBreakStatusDISABLED DashboardSectionPageBreakStatus = "DISABLED"
+)
+
+type DashboardSelectedFieldOptions string
+
+const (
+	DashboardSelectedFieldOptionsALLFIELDS DashboardSelectedFieldOptions = "ALL_FIELDS"
+)
+
+type DashboardTargetVisualOptions string
+
+const (
+	DashboardTargetVisualOptionsALLVISUALS DashboardTargetVisualOptions = "ALL_VISUALS"
+)
+
+type DashboardVisualCustomActionTrigger string
+
+const (
+	DashboardVisualCustomActionTriggerDATAPOINTCLICK DashboardVisualCustomActionTrigger = "DATA_POINT_CLICK"
+	DashboardVisualCustomActionTriggerDATAPOINTMENU  DashboardVisualCustomActionTrigger = "DATA_POINT_MENU"
+)
+
+type DashboardBarsArrangement string
+
+const (
+	DashboardBarsArrangementCLUSTERED      DashboardBarsArrangement = "CLUSTERED"
+	DashboardBarsArrangementSTACKED        DashboardBarsArrangement = "STACKED"
+	DashboardBarsArrangementSTACKEDPERCENT DashboardBarsArrangement = "STACKED_PERCENT"
+)
+
+type DashboardDataLabelContent string
+
+const (
+	DashboardDataLabelContentVALUE           DashboardDataLabelContent = "VALUE"
+	DashboardDataLabelContentPERCENT         DashboardDataLabelContent = "PERCENT"
+	DashboardDataLabelContentVALUEANDPERCENT DashboardDataLabelContent = "VALUE_AND_PERCENT"
+)
+
+type DashboardDataLabelOverlap string
+
+const (
+	DashboardDataLabelOverlapDISABLEOVERLAP DashboardDataLabelOverlap = "DISABLE_OVERLAP"
+	DashboardDataLabelOverlapENABLEOVERLAP  DashboardDataLabelOverlap = "ENABLE_OVERLAP"
+)
+
+type DashboardDataLabelPosition string
+
+const (
+	DashboardDataLabelPositionINSIDE  DashboardDataLabelPosition = "INSIDE"
+	DashboardDataLabelPositionOUTSIDE DashboardDataLabelPosition = "OUTSIDE"
+	DashboardDataLabelPositionLEFT    DashboardDataLabelPosition = "LEFT"
+	DashboardDataLabelPositionTOP     DashboardDataLabelPosition = "TOP"
+	DashboardDataLabelPositionBOTTOM  DashboardDataLabelPosition = "BOTTOM"
+	DashboardDataLabelPositionRIGHT   DashboardDataLabelPosition = "RIGHT"
+)
+
+type DashboardLegendPosition string
+
+const (
+	DashboardLegendPositionAUTO   DashboardLegendPosition = "AUTO"
+	DashboardLegendPositionRIGHT  DashboardLegendPosition = "RIGHT"
+	DashboardLegendPositionBOTTOM DashboardLegendPosition = "BOTTOM"
+	DashboardLegendPositionTOP    DashboardLegendPosition = "TOP"
+)
+
+type DashboardBarChartOrientation string
+
+const (
+	DashboardBarChartOrientationHORIZONTAL DashboardBarChartOrientation = "HORIZONTAL"
+	DashboardBarChartOrientationVERTICAL   DashboardBarChartOrientation = "VERTICAL"
+)
+
+type DashboardAxisBinding string
+
+const (
+	DashboardAxisBindingPRIMARYYAXIS   DashboardAxisBinding = "PRIMARY_YAXIS"
+	DashboardAxisBindingSECONDARYYAXIS DashboardAxisBinding = "SECONDARY_YAXIS"
+)
+
+type DashboardReferenceLineSeriesType string
+
+const (
+	DashboardReferenceLineSeriesTypeBAR  DashboardReferenceLineSeriesType = "BAR"
+	DashboardReferenceLineSeriesTypeLINE DashboardReferenceLineSeriesType = "LINE"
+)
+
+type DashboardReferenceLineLabelHorizontalPosition string
+
+const (
+	DashboardReferenceLineLabelHorizontalPositionLEFT   DashboardReferenceLineLabelHorizontalPosition = "LEFT"
+	DashboardReferenceLineLabelHorizontalPositionCENTER DashboardReferenceLineLabelHorizontalPosition = "CENTER"
+	DashboardReferenceLineLabelHorizontalPositionRIGHT  DashboardReferenceLineLabelHorizontalPosition = "RIGHT"
+)
+
+type DashboardReferenceLineValueLabelRelativePosition string
+
+const (
+	DashboardReferenceLineValueLabelRelativePositionBEFORECUSTOMLABEL DashboardReferenceLineValueLabelRelativePosition = "BEFORE_CUSTOM_LABEL"
+	DashboardReferenceLineValueLabelRelativePositionAFTERCUSTOMLABEL  DashboardReferenceLineValueLabelRelativePosition = "AFTER_CUSTOM_LABEL"
+)
+
+type DashboardReferenceLineLabelVerticalPosition string
+
+const (
+	DashboardReferenceLineLabelVerticalPositionABOVE DashboardReferenceLineLabelVerticalPosition = "ABOVE"
+	DashboardReferenceLineLabelVerticalPositionBELOW DashboardReferenceLineLabelVerticalPosition = "BELOW"
+)
+
+type DashboardReferenceLinePatternType string
+
+const (
+	DashboardReferenceLinePatternTypeSOLID  DashboardReferenceLinePatternType = "SOLID"
+	DashboardReferenceLinePatternTypeDASHED DashboardReferenceLinePatternType = "DASHED"
+	DashboardReferenceLinePatternTypeDOTTED DashboardReferenceLinePatternType = "DOTTED"
+)
+
+type DashboardPanelBorderStyle string
+
+const (
+	DashboardPanelBorderStyleSOLID  DashboardPanelBorderStyle = "SOLID"
+	DashboardPanelBorderStyleDASHED DashboardPanelBorderStyle = "DASHED"
+	DashboardPanelBorderStyleDOTTED DashboardPanelBorderStyle = "DOTTED"
+)
+
+type DashboardHorizontalTextAlignment string
+
+const (
+	DashboardHorizontalTextAlignmentLEFT   DashboardHorizontalTextAlignment = "LEFT"
+	DashboardHorizontalTextAlignmentCENTER DashboardHorizontalTextAlignment = "CENTER"
+	DashboardHorizontalTextAlignmentRIGHT  DashboardHorizontalTextAlignment = "RIGHT"
+	DashboardHorizontalTextAlignmentAUTO   DashboardHorizontalTextAlignment = "AUTO"
+)
+
+type DashboardSmallMultiplesAxisPlacement string
+
+const (
+	DashboardSmallMultiplesAxisPlacementOUTSIDE DashboardSmallMultiplesAxisPlacement = "OUTSIDE"
+	DashboardSmallMultiplesAxisPlacementINSIDE  DashboardSmallMultiplesAxisPlacement = "INSIDE"
+)
+
+type DashboardSmallMultiplesAxisScale string
+
+const (
+	DashboardSmallMultiplesAxisScaleSHARED      DashboardSmallMultiplesAxisScale = "SHARED"
+	DashboardSmallMultiplesAxisScaleINDEPENDENT DashboardSmallMultiplesAxisScale = "INDEPENDENT"
+)
+
+type DashboardOtherCategories string
+
+const (
+	DashboardOtherCategoriesINCLUDE DashboardOtherCategories = "INCLUDE"
+	DashboardOtherCategoriesEXCLUDE DashboardOtherCategories = "EXCLUDE"
+)
+
+type DashboardTooltipTarget string
+
+const (
+	DashboardTooltipTargetBOTH DashboardTooltipTarget = "BOTH"
+	DashboardTooltipTargetBAR  DashboardTooltipTarget = "BAR"
+	DashboardTooltipTargetLINE DashboardTooltipTarget = "LINE"
+)
+
+type DashboardTooltipTitleType string
+
+const (
+	DashboardTooltipTitleTypeNONE         DashboardTooltipTitleType = "NONE"
+	DashboardTooltipTitleTypePRIMARYVALUE DashboardTooltipTitleType = "PRIMARY_VALUE"
+)
+
+type DashboardSelectedTooltipType string
+
+const (
+	DashboardSelectedTooltipTypeBASIC    DashboardSelectedTooltipType = "BASIC"
+	DashboardSelectedTooltipTypeDETAILED DashboardSelectedTooltipType = "DETAILED"
+)
+
+type DashboardPivotTableDataPathType string
+
+const (
+	DashboardPivotTableDataPathTypeHIERARCHYROWSLAYOUTCOLUMN DashboardPivotTableDataPathType = "HIERARCHY_ROWS_LAYOUT_COLUMN"
+	DashboardPivotTableDataPathTypeMULTIPLEROWMETRICSCOLUMN  DashboardPivotTableDataPathType = "MULTIPLE_ROW_METRICS_COLUMN"
+	DashboardPivotTableDataPathTypeEMPTYCOLUMNHEADER         DashboardPivotTableDataPathType = "EMPTY_COLUMN_HEADER"
+	DashboardPivotTableDataPathTypeCOUNTMETRICCOLUMN         DashboardPivotTableDataPathType = "COUNT_METRIC_COLUMN"
+)
+
+type DashboardBoxPlotFillStyle string
+
+const (
+	DashboardBoxPlotFillStyleSOLID       DashboardBoxPlotFillStyle = "SOLID"
+	DashboardBoxPlotFillStyleTRANSPARENT DashboardBoxPlotFillStyle = "TRANSPARENT"
+)
+
+type DashboardSingleYAxisOption string
+
+const (
+	DashboardSingleYAxisOptionPRIMARYYAXIS DashboardSingleYAxisOption = "PRIMARY_Y_AXIS"
+)
+
+type DashboardCustomContentType string
+
+const (
+	DashboardCustomContentTypeIMAGE                DashboardCustomContentType = "IMAGE"
+	DashboardCustomContentTypeOTHEREMBEDDEDCONTENT DashboardCustomContentType = "OTHER_EMBEDDED_CONTENT"
+)
+
+type DashboardCustomContentImageScalingConfiguration string
+
+const (
+	DashboardCustomContentImageScalingConfigurationFITTOHEIGHT   DashboardCustomContentImageScalingConfiguration = "FIT_TO_HEIGHT"
+	DashboardCustomContentImageScalingConfigurationFITTOWIDTH    DashboardCustomContentImageScalingConfiguration = "FIT_TO_WIDTH"
+	DashboardCustomContentImageScalingConfigurationDONOTSCALE    DashboardCustomContentImageScalingConfiguration = "DO_NOT_SCALE"
+	DashboardCustomContentImageScalingConfigurationSCALETOVISUAL DashboardCustomContentImageScalingConfiguration = "SCALE_TO_VISUAL"
+)
+
+type DashboardBaseMapStyleType string
+
+const (
+	DashboardBaseMapStyleTypeLIGHTGRAY DashboardBaseMapStyleType = "LIGHT_GRAY"
+	DashboardBaseMapStyleTypeDARKGRAY  DashboardBaseMapStyleType = "DARK_GRAY"
+	DashboardBaseMapStyleTypeSTREET    DashboardBaseMapStyleType = "STREET"
+	DashboardBaseMapStyleTypeIMAGERY   DashboardBaseMapStyleType = "IMAGERY"
+)
+
+type DashboardMapZoomMode string
+
+const (
+	DashboardMapZoomModeAUTO   DashboardMapZoomMode = "AUTO"
+	DashboardMapZoomModeMANUAL DashboardMapZoomMode = "MANUAL"
+)
+
+type DashboardFunnelChartMeasureDataLabelStyle string
+
+const (
+	DashboardFunnelChartMeasureDataLabelStyleVALUEONLY                         DashboardFunnelChartMeasureDataLabelStyle = "VALUE_ONLY"
+	DashboardFunnelChartMeasureDataLabelStylePERCENTAGEBYFIRSTSTAGE            DashboardFunnelChartMeasureDataLabelStyle = "PERCENTAGE_BY_FIRST_STAGE"
+	DashboardFunnelChartMeasureDataLabelStylePERCENTAGEBYPREVIOUSSTAGE         DashboardFunnelChartMeasureDataLabelStyle = "PERCENTAGE_BY_PREVIOUS_STAGE"
+	DashboardFunnelChartMeasureDataLabelStyleVALUEANDPERCENTAGEBYFIRSTSTAGE    DashboardFunnelChartMeasureDataLabelStyle = "VALUE_AND_PERCENTAGE_BY_FIRST_STAGE"
+	DashboardFunnelChartMeasureDataLabelStyleVALUEANDPERCENTAGEBYPREVIOUSSTAGE DashboardFunnelChartMeasureDataLabelStyle = "VALUE_AND_PERCENTAGE_BY_PREVIOUS_STAGE"
+)
+
+type DashboardArcThicknessOptions string
+
+const (
+	DashboardArcThicknessOptionsSMALL  DashboardArcThicknessOptions = "SMALL"
+	DashboardArcThicknessOptionsMEDIUM DashboardArcThicknessOptions = "MEDIUM"
+	DashboardArcThicknessOptionsLARGE  DashboardArcThicknessOptions = "LARGE"
+)
+
+type DashboardComparisonMethod string
+
+const (
+	DashboardComparisonMethodDIFFERENCE        DashboardComparisonMethod = "DIFFERENCE"
+	DashboardComparisonMethodPERCENTDIFFERENCE DashboardComparisonMethod = "PERCENT_DIFFERENCE"
+	DashboardComparisonMethodPERCENT           DashboardComparisonMethod = "PERCENT"
+)
+
+type DashboardPrimaryValueDisplayType string
+
+const (
+	DashboardPrimaryValueDisplayTypeHIDDEN     DashboardPrimaryValueDisplayType = "HIDDEN"
+	DashboardPrimaryValueDisplayTypeCOMPARISON DashboardPrimaryValueDisplayType = "COMPARISON"
+	DashboardPrimaryValueDisplayTypeACTUAL     DashboardPrimaryValueDisplayType = "ACTUAL"
+)
+
+type DashboardConditionalFormattingIconDisplayOption string
+
+const (
+	DashboardConditionalFormattingIconDisplayOptionICONONLY DashboardConditionalFormattingIconDisplayOption = "ICON_ONLY"
+)
+
+type DashboardIcon string
+
+const (
+	DashboardIconCARETUP        DashboardIcon = "CARET_UP"
+	DashboardIconCARETDOWN      DashboardIcon = "CARET_DOWN"
+	DashboardIconPLUS           DashboardIcon = "PLUS"
+	DashboardIconMINUS          DashboardIcon = "MINUS"
+	DashboardIconARROWUP        DashboardIcon = "ARROW_UP"
+	DashboardIconARROWDOWN      DashboardIcon = "ARROW_DOWN"
+	DashboardIconARROWLEFT      DashboardIcon = "ARROW_LEFT"
+	DashboardIconARROWUPLEFT    DashboardIcon = "ARROW_UP_LEFT"
+	DashboardIconARROWDOWNLEFT  DashboardIcon = "ARROW_DOWN_LEFT"
+	DashboardIconARROWRIGHT     DashboardIcon = "ARROW_RIGHT"
+	DashboardIconARROWUPRIGHT   DashboardIcon = "ARROW_UP_RIGHT"
+	DashboardIconARROWDOWNRIGHT DashboardIcon = "ARROW_DOWN_RIGHT"
+	DashboardIconFACEUP         DashboardIcon = "FACE_UP"
+	DashboardIconFACEDOWN       DashboardIcon = "FACE_DOWN"
+	DashboardIconFACEFLAT       DashboardIcon = "FACE_FLAT"
+	DashboardIconONEBAR         DashboardIcon = "ONE_BAR"
+	DashboardIconTWOBAR         DashboardIcon = "TWO_BAR"
+	DashboardIconTHREEBAR       DashboardIcon = "THREE_BAR"
+	DashboardIconCIRCLE         DashboardIcon = "CIRCLE"
+	DashboardIconTRIANGLE       DashboardIcon = "TRIANGLE"
+	DashboardIconSQUARE         DashboardIcon = "SQUARE"
+	DashboardIconFLAG           DashboardIcon = "FLAG"
+	DashboardIconTHUMBSUP       DashboardIcon = "THUMBS_UP"
+	DashboardIconTHUMBSDOWN     DashboardIcon = "THUMBS_DOWN"
+	DashboardIconCHECKMARK      DashboardIcon = "CHECKMARK"
+	DashboardIconX              DashboardIcon = "X"
+)
+
+type DashboardConditionalFormattingIconSetType string
+
+const (
+	DashboardConditionalFormattingIconSetTypePLUSMINUS        DashboardConditionalFormattingIconSetType = "PLUS_MINUS"
+	DashboardConditionalFormattingIconSetTypeCHECKX           DashboardConditionalFormattingIconSetType = "CHECK_X"
+	DashboardConditionalFormattingIconSetTypeTHREECOLORARROW  DashboardConditionalFormattingIconSetType = "THREE_COLOR_ARROW"
+	DashboardConditionalFormattingIconSetTypeTHREEGRAYARROW   DashboardConditionalFormattingIconSetType = "THREE_GRAY_ARROW"
+	DashboardConditionalFormattingIconSetTypeCARETUPMINUSDOWN DashboardConditionalFormattingIconSetType = "CARET_UP_MINUS_DOWN"
+	DashboardConditionalFormattingIconSetTypeTHREESHAPE       DashboardConditionalFormattingIconSetType = "THREE_SHAPE"
+	DashboardConditionalFormattingIconSetTypeTHREECIRCLE      DashboardConditionalFormattingIconSetType = "THREE_CIRCLE"
+	DashboardConditionalFormattingIconSetTypeFLAGS            DashboardConditionalFormattingIconSetType = "FLAGS"
+	DashboardConditionalFormattingIconSetTypeBARS             DashboardConditionalFormattingIconSetType = "BARS"
+	DashboardConditionalFormattingIconSetTypeFOURCOLORARROW   DashboardConditionalFormattingIconSetType = "FOUR_COLOR_ARROW"
+	DashboardConditionalFormattingIconSetTypeFOURGRAYARROW    DashboardConditionalFormattingIconSetType = "FOUR_GRAY_ARROW"
+)
+
+type DashboardGeospatialSelectedPointStyle string
+
+const (
+	DashboardGeospatialSelectedPointStylePOINT   DashboardGeospatialSelectedPointStyle = "POINT"
+	DashboardGeospatialSelectedPointStyleCLUSTER DashboardGeospatialSelectedPointStyle = "CLUSTER"
+	DashboardGeospatialSelectedPointStyleHEATMAP DashboardGeospatialSelectedPointStyle = "HEATMAP"
+)
+
+type DashboardColorFillType string
+
+const (
+	DashboardColorFillTypeDISCRETE DashboardColorFillType = "DISCRETE"
+	DashboardColorFillTypeGRADIENT DashboardColorFillType = "GRADIENT"
+)
+
+type DashboardHistogramBinType string
+
+const (
+	DashboardHistogramBinTypeBINCOUNT DashboardHistogramBinType = "BIN_COUNT"
+	DashboardHistogramBinTypeBINWIDTH DashboardHistogramBinType = "BIN_WIDTH"
+)
+
+type DashboardForecastComputationSeasonality string
+
+const (
+	DashboardForecastComputationSeasonalityAUTOMATIC DashboardForecastComputationSeasonality = "AUTOMATIC"
+	DashboardForecastComputationSeasonalityCUSTOM    DashboardForecastComputationSeasonality = "CUSTOM"
+)
+
+type DashboardMaximumMinimumComputationType string
+
+const (
+	DashboardMaximumMinimumComputationTypeMAXIMUM DashboardMaximumMinimumComputationType = "MAXIMUM"
+	DashboardMaximumMinimumComputationTypeMINIMUM DashboardMaximumMinimumComputationType = "MINIMUM"
+)
+
+type DashboardTopBottomSortOrder string
+
+const (
+	DashboardTopBottomSortOrderPERCENTDIFFERENCE  DashboardTopBottomSortOrder = "PERCENT_DIFFERENCE"
+	DashboardTopBottomSortOrderABSOLUTEDIFFERENCE DashboardTopBottomSortOrder = "ABSOLUTE_DIFFERENCE"
+)
+
+type DashboardTopBottomComputationType string
+
+const (
+	DashboardTopBottomComputationTypeTOP    DashboardTopBottomComputationType = "TOP"
+	DashboardTopBottomComputationTypeBOTTOM DashboardTopBottomComputationType = "BOTTOM"
+)
+
+type DashboardKPISparklineType string
+
+const (
+	DashboardKPISparklineTypeLINE DashboardKPISparklineType = "LINE"
+	DashboardKPISparklineTypeAREA DashboardKPISparklineType = "AREA"
+)
+
+type DashboardKPIVisualStandardLayoutType string
+
+const (
+	DashboardKPIVisualStandardLayoutTypeCLASSIC  DashboardKPIVisualStandardLayoutType = "CLASSIC"
+	DashboardKPIVisualStandardLayoutTypeVERTICAL DashboardKPIVisualStandardLayoutType = "VERTICAL"
+)
+
+type DashboardLayerCustomActionTrigger string
+
+const (
+	DashboardLayerCustomActionTriggerDATAPOINTCLICK DashboardLayerCustomActionTrigger = "DATA_POINT_CLICK"
+	DashboardLayerCustomActionTriggerDATAPOINTMENU  DashboardLayerCustomActionTrigger = "DATA_POINT_MENU"
+)
+
+type DashboardGeospatialColorState string
+
+const (
+	DashboardGeospatialColorStateENABLED  DashboardGeospatialColorState = "ENABLED"
+	DashboardGeospatialColorStateDISABLED DashboardGeospatialColorState = "DISABLED"
+)
+
+type DashboardGeospatialLayerType string
+
+const (
+	DashboardGeospatialLayerTypePOINT   DashboardGeospatialLayerType = "POINT"
+	DashboardGeospatialLayerTypeLINE    DashboardGeospatialLayerType = "LINE"
+	DashboardGeospatialLayerTypePOLYGON DashboardGeospatialLayerType = "POLYGON"
+)
+
+type DashboardGeospatialMapNavigation string
+
+const (
+	DashboardGeospatialMapNavigationENABLED  DashboardGeospatialMapNavigation = "ENABLED"
+	DashboardGeospatialMapNavigationDISABLED DashboardGeospatialMapNavigation = "DISABLED"
+)
+
+type DashboardLineInterpolation string
+
+const (
+	DashboardLineInterpolationLINEAR  DashboardLineInterpolation = "LINEAR"
+	DashboardLineInterpolationSMOOTH  DashboardLineInterpolation = "SMOOTH"
+	DashboardLineInterpolationSTEPPED DashboardLineInterpolation = "STEPPED"
+)
+
+type DashboardLineChartLineStyle string
+
+const (
+	DashboardLineChartLineStyleSOLID  DashboardLineChartLineStyle = "SOLID"
+	DashboardLineChartLineStyleDOTTED DashboardLineChartLineStyle = "DOTTED"
+	DashboardLineChartLineStyleDASHED DashboardLineChartLineStyle = "DASHED"
+)
+
+type DashboardLineChartMarkerShape string
+
+const (
+	DashboardLineChartMarkerShapeCIRCLE        DashboardLineChartMarkerShape = "CIRCLE"
+	DashboardLineChartMarkerShapeTRIANGLE      DashboardLineChartMarkerShape = "TRIANGLE"
+	DashboardLineChartMarkerShapeSQUARE        DashboardLineChartMarkerShape = "SQUARE"
+	DashboardLineChartMarkerShapeDIAMOND       DashboardLineChartMarkerShape = "DIAMOND"
+	DashboardLineChartMarkerShapeROUNDEDSQUARE DashboardLineChartMarkerShape = "ROUNDED_SQUARE"
+)
+
+type DashboardMissingDataTreatmentOption string
+
+const (
+	DashboardMissingDataTreatmentOptionINTERPOLATE DashboardMissingDataTreatmentOption = "INTERPOLATE"
+	DashboardMissingDataTreatmentOptionSHOWASZERO  DashboardMissingDataTreatmentOption = "SHOW_AS_ZERO"
+	DashboardMissingDataTreatmentOptionSHOWASBLANK DashboardMissingDataTreatmentOption = "SHOW_AS_BLANK"
+)
+
+type DashboardLineChartType string
+
+const (
+	DashboardLineChartTypeLINE        DashboardLineChartType = "LINE"
+	DashboardLineChartTypeAREA        DashboardLineChartType = "AREA"
+	DashboardLineChartTypeSTACKEDAREA DashboardLineChartType = "STACKED_AREA"
+)
+
+type DashboardArcThickness string
+
+const (
+	DashboardArcThicknessSMALL  DashboardArcThickness = "SMALL"
+	DashboardArcThicknessMEDIUM DashboardArcThickness = "MEDIUM"
+	DashboardArcThicknessLARGE  DashboardArcThickness = "LARGE"
+	DashboardArcThicknessWHOLE  DashboardArcThickness = "WHOLE"
+)
+
+type DashboardPivotTableFieldCollapseState string
+
+const (
+	DashboardPivotTableFieldCollapseStateCOLLAPSED DashboardPivotTableFieldCollapseState = "COLLAPSED"
+	DashboardPivotTableFieldCollapseStateEXPANDED  DashboardPivotTableFieldCollapseState = "EXPANDED"
+)
+
+type DashboardTableBorderStyle string
+
+const (
+	DashboardTableBorderStyleNONE  DashboardTableBorderStyle = "NONE"
+	DashboardTableBorderStyleSOLID DashboardTableBorderStyle = "SOLID"
+)
+
+type DashboardTextWrap string
+
+const (
+	DashboardTextWrapNONE DashboardTextWrap = "NONE"
+	DashboardTextWrapWRAP DashboardTextWrap = "WRAP"
+)
+
+type DashboardVerticalTextAlignment string
+
+const (
+	DashboardVerticalTextAlignmentTOP    DashboardVerticalTextAlignment = "TOP"
+	DashboardVerticalTextAlignmentMIDDLE DashboardVerticalTextAlignment = "MIDDLE"
+	DashboardVerticalTextAlignmentBOTTOM DashboardVerticalTextAlignment = "BOTTOM"
+	DashboardVerticalTextAlignmentAUTO   DashboardVerticalTextAlignment = "AUTO"
+)
+
+type DashboardPivotTableMetricPlacement string
+
+const (
+	DashboardPivotTableMetricPlacementROW    DashboardPivotTableMetricPlacement = "ROW"
+	DashboardPivotTableMetricPlacementCOLUMN DashboardPivotTableMetricPlacement = "COLUMN"
+)
+
+type DashboardPivotTableRowsLayout string
+
+const (
+	DashboardPivotTableRowsLayoutTABULAR   DashboardPivotTableRowsLayout = "TABULAR"
+	DashboardPivotTableRowsLayoutHIERARCHY DashboardPivotTableRowsLayout = "HIERARCHY"
+)
+
+type DashboardPivotTableSubtotalLevel string
+
+const (
+	DashboardPivotTableSubtotalLevelALL    DashboardPivotTableSubtotalLevel = "ALL"
+	DashboardPivotTableSubtotalLevelCUSTOM DashboardPivotTableSubtotalLevel = "CUSTOM"
+	DashboardPivotTableSubtotalLevelLAST   DashboardPivotTableSubtotalLevel = "LAST"
+)
+
+type DashboardStyledCellType string
+
+const (
+	DashboardStyledCellTypeTOTAL        DashboardStyledCellType = "TOTAL"
+	DashboardStyledCellTypeMETRICHEADER DashboardStyledCellType = "METRIC_HEADER"
+	DashboardStyledCellTypeVALUE        DashboardStyledCellType = "VALUE"
+)
+
+type DashboardTableTotalsPlacement string
+
+const (
+	DashboardTableTotalsPlacementSTART DashboardTableTotalsPlacement = "START"
+	DashboardTableTotalsPlacementEND   DashboardTableTotalsPlacement = "END"
+	DashboardTableTotalsPlacementAUTO  DashboardTableTotalsPlacement = "AUTO"
+)
+
+type DashboardTableTotalsScrollStatus string
+
+const (
+	DashboardTableTotalsScrollStatusPINNED   DashboardTableTotalsScrollStatus = "PINNED"
+	DashboardTableTotalsScrollStatusSCROLLED DashboardTableTotalsScrollStatus = "SCROLLED"
+)
+
+type DashboardSimpleTotalAggregationFunction string
+
+const (
+	DashboardSimpleTotalAggregationFunctionDEFAULT DashboardSimpleTotalAggregationFunction = "DEFAULT"
+	DashboardSimpleTotalAggregationFunctionSUM     DashboardSimpleTotalAggregationFunction = "SUM"
+	DashboardSimpleTotalAggregationFunctionAVERAGE DashboardSimpleTotalAggregationFunction = "AVERAGE"
+	DashboardSimpleTotalAggregationFunctionMIN     DashboardSimpleTotalAggregationFunction = "MIN"
+	DashboardSimpleTotalAggregationFunctionMAX     DashboardSimpleTotalAggregationFunction = "MAX"
+	DashboardSimpleTotalAggregationFunctionNONE    DashboardSimpleTotalAggregationFunction = "NONE"
+)
+
+type DashboardPivotTableConditionalFormattingScopeRole string
+
+const (
+	DashboardPivotTableConditionalFormattingScopeRoleFIELD      DashboardPivotTableConditionalFormattingScopeRole = "FIELD"
+	DashboardPivotTableConditionalFormattingScopeRoleFIELDTOTAL DashboardPivotTableConditionalFormattingScopeRole = "FIELD_TOTAL"
+	DashboardPivotTableConditionalFormattingScopeRoleGRANDTOTAL DashboardPivotTableConditionalFormattingScopeRole = "GRAND_TOTAL"
+)
+
+type DashboardPluginVisualAxisName string
+
+const (
+	DashboardPluginVisualAxisNameGROUPBY DashboardPluginVisualAxisName = "GROUP_BY"
+	DashboardPluginVisualAxisNameVALUE   DashboardPluginVisualAxisName = "VALUE"
+)
+
+type DashboardRadarChartAxesRangeScale string
+
+const (
+	DashboardRadarChartAxesRangeScaleAUTO        DashboardRadarChartAxesRangeScale = "AUTO"
+	DashboardRadarChartAxesRangeScaleINDEPENDENT DashboardRadarChartAxesRangeScale = "INDEPENDENT"
+	DashboardRadarChartAxesRangeScaleSHARED      DashboardRadarChartAxesRangeScale = "SHARED"
+)
+
+type DashboardRadarChartShape string
+
+const (
+	DashboardRadarChartShapeCIRCLE  DashboardRadarChartShape = "CIRCLE"
+	DashboardRadarChartShapePOLYGON DashboardRadarChartShape = "POLYGON"
+)
+
+type DashboardTableCellImageScalingConfiguration string
+
+const (
+	DashboardTableCellImageScalingConfigurationFITTOCELLHEIGHT DashboardTableCellImageScalingConfiguration = "FIT_TO_CELL_HEIGHT"
+	DashboardTableCellImageScalingConfigurationFITTOCELLWIDTH  DashboardTableCellImageScalingConfiguration = "FIT_TO_CELL_WIDTH"
+	DashboardTableCellImageScalingConfigurationDONOTSCALE      DashboardTableCellImageScalingConfiguration = "DO_NOT_SCALE"
+)
+
+type DashboardTableFieldIconSetType string
+
+const (
+	DashboardTableFieldIconSetTypeLINK DashboardTableFieldIconSetType = "LINK"
+)
+
+type DashboardTransposedColumnType string
+
+const (
+	DashboardTransposedColumnTypeROWHEADERCOLUMN DashboardTransposedColumnType = "ROW_HEADER_COLUMN"
+	DashboardTransposedColumnTypeVALUECOLUMN     DashboardTransposedColumnType = "VALUE_COLUMN"
+)
+
+type DashboardTableOrientation string
+
+const (
+	DashboardTableOrientationVERTICAL   DashboardTableOrientation = "VERTICAL"
+	DashboardTableOrientationHORIZONTAL DashboardTableOrientation = "HORIZONTAL"
+)
+
+type DashboardWordCloudCloudLayout string
+
+const (
+	DashboardWordCloudCloudLayoutFLUID  DashboardWordCloudCloudLayout = "FLUID"
+	DashboardWordCloudCloudLayoutNORMAL DashboardWordCloudCloudLayout = "NORMAL"
+)
+
+type DashboardWordCloudWordCasing string
+
+const (
+	DashboardWordCloudWordCasingLOWERCASE    DashboardWordCloudWordCasing = "LOWER_CASE"
+	DashboardWordCloudWordCasingEXISTINGCASE DashboardWordCloudWordCasing = "EXISTING_CASE"
+)
+
+type DashboardWordCloudWordOrientation string
+
+const (
+	DashboardWordCloudWordOrientationHORIZONTAL            DashboardWordCloudWordOrientation = "HORIZONTAL"
+	DashboardWordCloudWordOrientationHORIZONTALANDVERTICAL DashboardWordCloudWordOrientation = "HORIZONTAL_AND_VERTICAL"
+)
+
+type DashboardWordCloudWordPadding string
+
+const (
+	DashboardWordCloudWordPaddingNONE   DashboardWordCloudWordPadding = "NONE"
+	DashboardWordCloudWordPaddingSMALL  DashboardWordCloudWordPadding = "SMALL"
+	DashboardWordCloudWordPaddingMEDIUM DashboardWordCloudWordPadding = "MEDIUM"
+	DashboardWordCloudWordPaddingLARGE  DashboardWordCloudWordPadding = "LARGE"
+)
+
+type DashboardWordCloudWordScaling string
+
+const (
+	DashboardWordCloudWordScalingEMPHASIZE DashboardWordCloudWordScaling = "EMPHASIZE"
+	DashboardWordCloudWordScalingNORMAL    DashboardWordCloudWordScaling = "NORMAL"
+)
+
+type DashboardValidationStrategyMode string
+
+const (
+	DashboardValidationStrategyModeSTRICT  DashboardValidationStrategyMode = "STRICT"
+	DashboardValidationStrategyModeLENIENT DashboardValidationStrategyMode = "LENIENT"
+)
+
+type DashboardErrorType string
+
+const (
+	DashboardErrorTypeACCESSDENIED                 DashboardErrorType = "ACCESS_DENIED"
+	DashboardErrorTypeSOURCENOTFOUND               DashboardErrorType = "SOURCE_NOT_FOUND"
+	DashboardErrorTypeDATASETNOTFOUND              DashboardErrorType = "DATA_SET_NOT_FOUND"
+	DashboardErrorTypeINTERNALFAILURE              DashboardErrorType = "INTERNAL_FAILURE"
+	DashboardErrorTypePARAMETERVALUEINCOMPATIBLE   DashboardErrorType = "PARAMETER_VALUE_INCOMPATIBLE"
+	DashboardErrorTypePARAMETERTYPEINVALID         DashboardErrorType = "PARAMETER_TYPE_INVALID"
+	DashboardErrorTypePARAMETERNOTFOUND            DashboardErrorType = "PARAMETER_NOT_FOUND"
+	DashboardErrorTypeCOLUMNTYPEMISMATCH           DashboardErrorType = "COLUMN_TYPE_MISMATCH"
+	DashboardErrorTypeCOLUMNGEOGRAPHICROLEMISMATCH DashboardErrorType = "COLUMN_GEOGRAPHIC_ROLE_MISMATCH"
+	DashboardErrorTypeCOLUMNREPLACEMENTMISSING     DashboardErrorType = "COLUMN_REPLACEMENT_MISSING"
+)
+
+type DashboardResourceStatus string
+
+const (
+	DashboardResourceStatusCREATIONINPROGRESS DashboardResourceStatus = "CREATION_IN_PROGRESS"
+	DashboardResourceStatusCREATIONSUCCESSFUL DashboardResourceStatus = "CREATION_SUCCESSFUL"
+	DashboardResourceStatusCREATIONFAILED     DashboardResourceStatus = "CREATION_FAILED"
+	DashboardResourceStatusUPDATEINPROGRESS   DashboardResourceStatus = "UPDATE_IN_PROGRESS"
+	DashboardResourceStatusUPDATESUCCESSFUL   DashboardResourceStatus = "UPDATE_SUCCESSFUL"
+	DashboardResourceStatusUPDATEFAILED       DashboardResourceStatus = "UPDATE_FAILED"
+	DashboardResourceStatusPENDINGUPDATE      DashboardResourceStatus = "PENDING_UPDATE"
+	DashboardResourceStatusDELETED            DashboardResourceStatus = "DELETED"
+)
+
+type GeoSpatialCountryCode string
+
+const (
+	GeoSpatialCountryCodeUS GeoSpatialCountryCode = "US"
+)
+
+type ColumnDataSubType string
+
+const (
+	ColumnDataSubTypeFLOAT ColumnDataSubType = "FLOAT"
+	ColumnDataSubTypeFIXED ColumnDataSubType = "FIXED"
+)
+
+type InputColumnDataType string
+
+const (
+	InputColumnDataTypeSTRING     InputColumnDataType = "STRING"
+	InputColumnDataTypeINTEGER    InputColumnDataType = "INTEGER"
+	InputColumnDataTypeDECIMAL    InputColumnDataType = "DECIMAL"
+	InputColumnDataTypeDATETIME   InputColumnDataType = "DATETIME"
+	InputColumnDataTypeBIT        InputColumnDataType = "BIT"
+	InputColumnDataTypeBOOLEAN    InputColumnDataType = "BOOLEAN"
+	InputColumnDataTypeJSON       InputColumnDataType = "JSON"
+	InputColumnDataTypeSEMISTRUCT InputColumnDataType = "SEMISTRUCT"
+)
+
+type DataPrepSimpleAggregationFunctionType string
+
+const (
+	DataPrepSimpleAggregationFunctionTypeCOUNT             DataPrepSimpleAggregationFunctionType = "COUNT"
+	DataPrepSimpleAggregationFunctionTypeDISTINCTCOUNT     DataPrepSimpleAggregationFunctionType = "DISTINCT_COUNT"
+	DataPrepSimpleAggregationFunctionTypeSUM               DataPrepSimpleAggregationFunctionType = "SUM"
+	DataPrepSimpleAggregationFunctionTypeAVERAGE           DataPrepSimpleAggregationFunctionType = "AVERAGE"
+	DataPrepSimpleAggregationFunctionTypeMEDIAN            DataPrepSimpleAggregationFunctionType = "MEDIAN"
+	DataPrepSimpleAggregationFunctionTypeMAX               DataPrepSimpleAggregationFunctionType = "MAX"
+	DataPrepSimpleAggregationFunctionTypeMIN               DataPrepSimpleAggregationFunctionType = "MIN"
+	DataPrepSimpleAggregationFunctionTypeVARIANCE          DataPrepSimpleAggregationFunctionType = "VARIANCE"
+	DataPrepSimpleAggregationFunctionTypeSTANDARDDEVIATION DataPrepSimpleAggregationFunctionType = "STANDARD_DEVIATION"
+)
+
+type ColumnDataType string
+
+const (
+	ColumnDataTypeSTRING   ColumnDataType = "STRING"
+	ColumnDataTypeINTEGER  ColumnDataType = "INTEGER"
+	ColumnDataTypeDECIMAL  ColumnDataType = "DECIMAL"
+	ColumnDataTypeDATETIME ColumnDataType = "DATETIME"
+)
+
+type DataSetDateComparisonFilterOperator string
+
+const (
+	DataSetDateComparisonFilterOperatorBEFORE           DataSetDateComparisonFilterOperator = "BEFORE"
+	DataSetDateComparisonFilterOperatorBEFOREOREQUALSTO DataSetDateComparisonFilterOperator = "BEFORE_OR_EQUALS_TO"
+	DataSetDateComparisonFilterOperatorAFTER            DataSetDateComparisonFilterOperator = "AFTER"
+	DataSetDateComparisonFilterOperatorAFTEROREQUALSTO  DataSetDateComparisonFilterOperator = "AFTER_OR_EQUALS_TO"
+)
+
+type DataSetNumericComparisonFilterOperator string
+
+const (
+	DataSetNumericComparisonFilterOperatorEQUALS                DataSetNumericComparisonFilterOperator = "EQUALS"
+	DataSetNumericComparisonFilterOperatorDOESNOTEQUAL          DataSetNumericComparisonFilterOperator = "DOES_NOT_EQUAL"
+	DataSetNumericComparisonFilterOperatorGREATERTHAN           DataSetNumericComparisonFilterOperator = "GREATER_THAN"
+	DataSetNumericComparisonFilterOperatorGREATERTHANOREQUALSTO DataSetNumericComparisonFilterOperator = "GREATER_THAN_OR_EQUALS_TO"
+	DataSetNumericComparisonFilterOperatorLESSTHAN              DataSetNumericComparisonFilterOperator = "LESS_THAN"
+	DataSetNumericComparisonFilterOperatorLESSTHANOREQUALSTO    DataSetNumericComparisonFilterOperator = "LESS_THAN_OR_EQUALS_TO"
+)
+
+type DataSetStringComparisonFilterOperator string
+
+const (
+	DataSetStringComparisonFilterOperatorEQUALS         DataSetStringComparisonFilterOperator = "EQUALS"
+	DataSetStringComparisonFilterOperatorDOESNOTEQUAL   DataSetStringComparisonFilterOperator = "DOES_NOT_EQUAL"
+	DataSetStringComparisonFilterOperatorCONTAINS       DataSetStringComparisonFilterOperator = "CONTAINS"
+	DataSetStringComparisonFilterOperatorDOESNOTCONTAIN DataSetStringComparisonFilterOperator = "DOES_NOT_CONTAIN"
+	DataSetStringComparisonFilterOperatorSTARTSWITH     DataSetStringComparisonFilterOperator = "STARTS_WITH"
+	DataSetStringComparisonFilterOperatorENDSWITH       DataSetStringComparisonFilterOperator = "ENDS_WITH"
+)
+
+type DataSetStringListFilterOperator string
+
+const (
+	DataSetStringListFilterOperatorINCLUDE DataSetStringListFilterOperator = "INCLUDE"
+	DataSetStringListFilterOperatorEXCLUDE DataSetStringListFilterOperator = "EXCLUDE"
+)
+
+type JoinOperationType string
+
+const (
+	JoinOperationTypeINNER JoinOperationType = "INNER"
+	JoinOperationTypeOUTER JoinOperationType = "OUTER"
+	JoinOperationTypeLEFT  JoinOperationType = "LEFT"
+	JoinOperationTypeRIGHT JoinOperationType = "RIGHT"
+)
+
+type RefreshFailureAlertStatus string
+
+const (
+	RefreshFailureAlertStatusENABLED  RefreshFailureAlertStatus = "ENABLED"
+	RefreshFailureAlertStatusDISABLED RefreshFailureAlertStatus = "DISABLED"
+)
+
+type LookbackWindowSizeUnit string
+
+const (
+	LookbackWindowSizeUnitHOUR LookbackWindowSizeUnit = "HOUR"
+	LookbackWindowSizeUnitDAY  LookbackWindowSizeUnit = "DAY"
+	LookbackWindowSizeUnitWEEK LookbackWindowSizeUnit = "WEEK"
+)
+
+type DataSetTimeGranularity string
+
+const (
+	DataSetTimeGranularityYEAR        DataSetTimeGranularity = "YEAR"
+	DataSetTimeGranularityQUARTER     DataSetTimeGranularity = "QUARTER"
+	DataSetTimeGranularityMONTH       DataSetTimeGranularity = "MONTH"
+	DataSetTimeGranularityWEEK        DataSetTimeGranularity = "WEEK"
+	DataSetTimeGranularityDAY         DataSetTimeGranularity = "DAY"
+	DataSetTimeGranularityHOUR        DataSetTimeGranularity = "HOUR"
+	DataSetTimeGranularityMINUTE      DataSetTimeGranularity = "MINUTE"
+	DataSetTimeGranularitySECOND      DataSetTimeGranularity = "SECOND"
+	DataSetTimeGranularityMILLISECOND DataSetTimeGranularity = "MILLISECOND"
+)
+
+type DatasetParameterValueType string
+
+const (
+	DatasetParameterValueTypeMULTIVALUED  DatasetParameterValueType = "MULTI_VALUED"
+	DatasetParameterValueTypeSINGLEVALUED DatasetParameterValueType = "SINGLE_VALUED"
+)
+
+type DataSetImportMode string
+
+const (
+	DataSetImportModeSPICE       DataSetImportMode = "SPICE"
+	DataSetImportModeDIRECTQUERY DataSetImportMode = "DIRECT_QUERY"
+)
+
+type GeoSpatialDataRole string
+
+const (
+	GeoSpatialDataRoleCOUNTRY          GeoSpatialDataRole = "COUNTRY"
+	GeoSpatialDataRoleSTATE            GeoSpatialDataRole = "STATE"
+	GeoSpatialDataRoleCOUNTY           GeoSpatialDataRole = "COUNTY"
+	GeoSpatialDataRoleCITY             GeoSpatialDataRole = "CITY"
+	GeoSpatialDataRolePOSTCODE         GeoSpatialDataRole = "POSTCODE"
+	GeoSpatialDataRoleLONGITUDE        GeoSpatialDataRole = "LONGITUDE"
+	GeoSpatialDataRoleLATITUDE         GeoSpatialDataRole = "LATITUDE"
+	GeoSpatialDataRolePOLITICAL1       GeoSpatialDataRole = "POLITICAL1"
+	GeoSpatialDataRoleCENSUSTRACT      GeoSpatialDataRole = "CENSUS_TRACT"
+	GeoSpatialDataRoleCENSUSBLOCKGROUP GeoSpatialDataRole = "CENSUS_BLOCK_GROUP"
+	GeoSpatialDataRoleCENSUSBLOCK      GeoSpatialDataRole = "CENSUS_BLOCK"
+)
+
+type ColumnTagName string
+
+const (
+	ColumnTagNameCOLUMNGEOGRAPHICROLE ColumnTagName = "COLUMN_GEOGRAPHIC_ROLE"
+	ColumnTagNameCOLUMNDESCRIPTION    ColumnTagName = "COLUMN_DESCRIPTION"
+)
+
+type JoinType string
+
+const (
+	JoinTypeINNER JoinType = "INNER"
+	JoinTypeOUTER JoinType = "OUTER"
+	JoinTypeLEFT  JoinType = "LEFT"
+	JoinTypeRIGHT JoinType = "RIGHT"
+)
+
+type FileFormat string
+
+const (
+	FileFormatCSV  FileFormat = "CSV"
+	FileFormatTSV  FileFormat = "TSV"
+	FileFormatCLF  FileFormat = "CLF"
+	FileFormatELF  FileFormat = "ELF"
+	FileFormatXLSX FileFormat = "XLSX"
+	FileFormatJSON FileFormat = "JSON"
+)
+
+type TextQualifier string
+
+const (
+	TextQualifierDOUBLEQUOTE TextQualifier = "DOUBLE_QUOTE"
+	TextQualifierSINGLEQUOTE TextQualifier = "SINGLE_QUOTE"
+)
+
+type RowLevelPermissionFormatVersion string
+
+const (
+	RowLevelPermissionFormatVersionVERSION1 RowLevelPermissionFormatVersion = "VERSION_1"
+	RowLevelPermissionFormatVersionVERSION2 RowLevelPermissionFormatVersion = "VERSION_2"
+)
+
+type RowLevelPermissionPolicy string
+
+const (
+	RowLevelPermissionPolicyGRANTACCESS RowLevelPermissionPolicy = "GRANT_ACCESS"
+	RowLevelPermissionPolicyDENYACCESS  RowLevelPermissionPolicy = "DENY_ACCESS"
+)
+
+type Status string
+
+const (
+	StatusENABLED  Status = "ENABLED"
+	StatusDISABLED Status = "DISABLED"
+)
+
+type DataSetUseAs string
+
+const (
+	DataSetUseAsRLSRULES DataSetUseAs = "RLS_RULES"
+)
+
+type AuthenticationType string
+
+const (
+	AuthenticationTypePASSWORD AuthenticationType = "PASSWORD"
+	AuthenticationTypeTOKEN    AuthenticationType = "TOKEN"
+	AuthenticationTypeX509     AuthenticationType = "X509"
+	AuthenticationTypeKEYPAIR  AuthenticationType = "KEYPAIR"
+)
+
+type StarburstProductType string
+
+const (
+	StarburstProductTypeGALAXY     StarburstProductType = "GALAXY"
+	StarburstProductTypeENTERPRISE StarburstProductType = "ENTERPRISE"
+)
+
+type DataSourceErrorInfoType string
+
+const (
+	DataSourceErrorInfoTypeACCESSDENIED              DataSourceErrorInfoType = "ACCESS_DENIED"
+	DataSourceErrorInfoTypeCOPYSOURCENOTFOUND        DataSourceErrorInfoType = "COPY_SOURCE_NOT_FOUND"
+	DataSourceErrorInfoTypeTIMEOUT                   DataSourceErrorInfoType = "TIMEOUT"
+	DataSourceErrorInfoTypeENGINEVERSIONNOTSUPPORTED DataSourceErrorInfoType = "ENGINE_VERSION_NOT_SUPPORTED"
+	DataSourceErrorInfoTypeUNKNOWNHOST               DataSourceErrorInfoType = "UNKNOWN_HOST"
+	DataSourceErrorInfoTypeGENERICSQLFAILURE         DataSourceErrorInfoType = "GENERIC_SQL_FAILURE"
+	DataSourceErrorInfoTypeCONFLICT                  DataSourceErrorInfoType = "CONFLICT"
+	DataSourceErrorInfoTypeUNKNOWN                   DataSourceErrorInfoType = "UNKNOWN"
+)
+
+type DataSourceResourceStatus string
+
+const (
+	DataSourceResourceStatusCREATIONINPROGRESS DataSourceResourceStatus = "CREATION_IN_PROGRESS"
+	DataSourceResourceStatusCREATIONSUCCESSFUL DataSourceResourceStatus = "CREATION_SUCCESSFUL"
+	DataSourceResourceStatusCREATIONFAILED     DataSourceResourceStatus = "CREATION_FAILED"
+	DataSourceResourceStatusUPDATEINPROGRESS   DataSourceResourceStatus = "UPDATE_IN_PROGRESS"
+	DataSourceResourceStatusUPDATESUCCESSFUL   DataSourceResourceStatus = "UPDATE_SUCCESSFUL"
+	DataSourceResourceStatusUPDATEFAILED       DataSourceResourceStatus = "UPDATE_FAILED"
+	DataSourceResourceStatusPENDINGUPDATE      DataSourceResourceStatus = "PENDING_UPDATE"
+	DataSourceResourceStatusDELETED            DataSourceResourceStatus = "DELETED"
+)
+
+type DataSourceType string
+
+const (
+	DataSourceTypeADOBEANALYTICS               DataSourceType = "ADOBE_ANALYTICS"
+	DataSourceTypeAMAZONELASTICSEARCH          DataSourceType = "AMAZON_ELASTICSEARCH"
+	DataSourceTypeAMAZONOPENSEARCH             DataSourceType = "AMAZON_OPENSEARCH"
+	DataSourceTypeATHENA                       DataSourceType = "ATHENA"
+	DataSourceTypeAURORA                       DataSourceType = "AURORA"
+	DataSourceTypeAURORAPOSTGRESQL             DataSourceType = "AURORA_POSTGRESQL"
+	DataSourceTypeAWSIOTANALYTICS              DataSourceType = "AWS_IOT_ANALYTICS"
+	DataSourceTypeDATABRICKS                   DataSourceType = "DATABRICKS"
+	DataSourceTypeDENODO                       DataSourceType = "DENODO"
+	DataSourceTypeDREMIO                       DataSourceType = "DREMIO"
+	DataSourceTypeDYNAMODB                     DataSourceType = "DYNAMODB"
+	DataSourceTypeSAPHANA                      DataSourceType = "SAPHANA"
+	DataSourceTypeDB2AS400                     DataSourceType = "DB2_AS400"
+	DataSourceTypeEXASOL                       DataSourceType = "EXASOL"
+	DataSourceTypeFILE                         DataSourceType = "FILE"
+	DataSourceTypeFULLYMANAGEDKNOWLEDGEBASE    DataSourceType = "FULLY_MANAGED_KNOWLEDGE_BASE"
+	DataSourceTypeGITHUB                       DataSourceType = "GITHUB"
+	DataSourceTypeINTERNATIONALDATACORPORATION DataSourceType = "INTERNATIONAL_DATA_CORPORATION"
+	DataSourceTypeJIRA                         DataSourceType = "JIRA"
+	DataSourceTypeMARIADB                      DataSourceType = "MARIADB"
+	DataSourceTypeMYSQL                        DataSourceType = "MYSQL"
+	DataSourceTypeORACLE                       DataSourceType = "ORACLE"
+	DataSourceTypePOSTGRESQL                   DataSourceType = "POSTGRESQL"
+	DataSourceTypePRESTO                       DataSourceType = "PRESTO"
+	DataSourceTypeQBUSINESS                    DataSourceType = "QBUSINESS"
+	DataSourceTypeREDSHIFT                     DataSourceType = "REDSHIFT"
+	DataSourceTypeS3                           DataSourceType = "S3"
+	DataSourceTypeS3TABLES                     DataSourceType = "S3_TABLES"
+	DataSourceTypeS3KNOWLEDGEBASE              DataSourceType = "S3_KNOWLEDGE_BASE"
+	DataSourceTypeSALESFORCE                   DataSourceType = "SALESFORCE"
+	DataSourceTypeSERVICENOW                   DataSourceType = "SERVICENOW"
+	DataSourceTypeSNOWFLAKE                    DataSourceType = "SNOWFLAKE"
+	DataSourceTypeSPARK                        DataSourceType = "SPARK"
+	DataSourceTypeSPICE                        DataSourceType = "SPICE"
+	DataSourceTypeSQLSERVER                    DataSourceType = "SQLSERVER"
+	DataSourceTypeTERADATA                     DataSourceType = "TERADATA"
+	DataSourceTypeTIMESTREAM                   DataSourceType = "TIMESTREAM"
+	DataSourceTypeTWITTER                      DataSourceType = "TWITTER"
+	DataSourceTypeBIGQUERY                     DataSourceType = "BIGQUERY"
+	DataSourceTypeGOOGLEANALYTICS              DataSourceType = "GOOGLE_ANALYTICS"
+	DataSourceTypeTRINO                        DataSourceType = "TRINO"
+	DataSourceTypeSTARBURST                    DataSourceType = "STARBURST"
+	DataSourceTypeMONGO                        DataSourceType = "MONGO"
+	DataSourceTypeMONGOATLAS                   DataSourceType = "MONGO_ATLAS"
+	DataSourceTypeDOCUMENTDB                   DataSourceType = "DOCUMENTDB"
+	DataSourceTypeAPPFLOW                      DataSourceType = "APPFLOW"
+	DataSourceTypeIMPALA                       DataSourceType = "IMPALA"
+	DataSourceTypeGLUE                         DataSourceType = "GLUE"
+	DataSourceTypeGOOGLEDRIVE                  DataSourceType = "GOOGLE_DRIVE"
+	DataSourceTypeCONFLUENCE                   DataSourceType = "CONFLUENCE"
+	DataSourceTypeSHAREPOINT                   DataSourceType = "SHAREPOINT"
+	DataSourceTypeONEDRIVE                     DataSourceType = "ONE_DRIVE"
+	DataSourceTypeWEBCRAWLER                   DataSourceType = "WEB_CRAWLER"
+	DataSourceTypeBOX                          DataSourceType = "BOX"
+	DataSourceTypeGOOGLESHEETS                 DataSourceType = "GOOGLESHEETS"
+)
+
+type FlowPublishState string
+
+const (
+	FlowPublishStatePUBLISHED       FlowPublishState = "PUBLISHED"
+	FlowPublishStateDRAFT           FlowPublishState = "DRAFT"
+	FlowPublishStatePENDINGAPPROVAL FlowPublishState = "PENDING_APPROVAL"
+)
+
+type FolderType string
+
+const (
+	FolderTypeSHARED     FolderType = "SHARED"
+	FolderTypeRESTRICTED FolderType = "RESTRICTED"
+)
+
+type SharingModel string
+
+const (
+	SharingModelACCOUNT   SharingModel = "ACCOUNT"
+	SharingModelNAMESPACE SharingModel = "NAMESPACE"
+)
+
+type AudioExtractionStatus string
+
+const (
+	AudioExtractionStatusENABLED  AudioExtractionStatus = "ENABLED"
+	AudioExtractionStatusDISABLED AudioExtractionStatus = "DISABLED"
+)
+
+type ImageExtractionStatus string
+
+const (
+	ImageExtractionStatusENABLED  ImageExtractionStatus = "ENABLED"
+	ImageExtractionStatusDISABLED ImageExtractionStatus = "DISABLED"
+)
+
+type VideoExtractionStatus string
+
+const (
+	VideoExtractionStatusENABLED  VideoExtractionStatus = "ENABLED"
+	VideoExtractionStatusDISABLED VideoExtractionStatus = "DISABLED"
+)
+
+type VideoExtractionType string
+
+const (
+	VideoExtractionTypeAUDIOTRANSCRIPTIONONLY             VideoExtractionType = "AUDIO_TRANSCRIPTION_ONLY"
+	VideoExtractionTypeVISUALCONTENTANDAUDIOTRANSCRIPTION VideoExtractionType = "VISUAL_CONTENT_AND_AUDIO_TRANSCRIPTION"
+)
+
+type DataSetStatus string
+
+const (
+	DataSetStatusCREATING DataSetStatus = "CREATING"
+	DataSetStatusUPDATING DataSetStatus = "UPDATING"
+	DataSetStatusACTIVE   DataSetStatus = "ACTIVE"
+	DataSetStatusFAILED   DataSetStatus = "FAILED"
+	DataSetStatusDELETING DataSetStatus = "DELETING"
+)
+
+type OAuthClientApplicationDataSourceType string
+
+const (
+	OAuthClientApplicationDataSourceTypeADOBEANALYTICS      OAuthClientApplicationDataSourceType = "ADOBE_ANALYTICS"
+	OAuthClientApplicationDataSourceTypeAMAZONELASTICSEARCH OAuthClientApplicationDataSourceType = "AMAZON_ELASTICSEARCH"
+	OAuthClientApplicationDataSourceTypeAMAZONOPENSEARCH    OAuthClientApplicationDataSourceType = "AMAZON_OPENSEARCH"
+	OAuthClientApplicationDataSourceTypeATHENA              OAuthClientApplicationDataSourceType = "ATHENA"
+	OAuthClientApplicationDataSourceTypeAURORA              OAuthClientApplicationDataSourceType = "AURORA"
+	OAuthClientApplicationDataSourceTypeAURORAPOSTGRESQL    OAuthClientApplicationDataSourceType = "AURORA_POSTGRESQL"
+	OAuthClientApplicationDataSourceTypeAWSIOTANALYTICS     OAuthClientApplicationDataSourceType = "AWS_IOT_ANALYTICS"
+	OAuthClientApplicationDataSourceTypeBIGQUERY            OAuthClientApplicationDataSourceType = "BIGQUERY"
+	OAuthClientApplicationDataSourceTypeCONFLUENCE          OAuthClientApplicationDataSourceType = "CONFLUENCE"
+	OAuthClientApplicationDataSourceTypeDATABRICKS          OAuthClientApplicationDataSourceType = "DATABRICKS"
+	OAuthClientApplicationDataSourceTypeEXASOL              OAuthClientApplicationDataSourceType = "EXASOL"
+	OAuthClientApplicationDataSourceTypeGITHUB              OAuthClientApplicationDataSourceType = "GITHUB"
+	OAuthClientApplicationDataSourceTypeGOOGLESHEETS        OAuthClientApplicationDataSourceType = "GOOGLESHEETS"
+	OAuthClientApplicationDataSourceTypeGOOGLEDRIVE         OAuthClientApplicationDataSourceType = "GOOGLE_DRIVE"
+	OAuthClientApplicationDataSourceTypeJIRA                OAuthClientApplicationDataSourceType = "JIRA"
+	OAuthClientApplicationDataSourceTypeMARIADB             OAuthClientApplicationDataSourceType = "MARIADB"
+	OAuthClientApplicationDataSourceTypeMYSQL               OAuthClientApplicationDataSourceType = "MYSQL"
+	OAuthClientApplicationDataSourceTypeONEDRIVE            OAuthClientApplicationDataSourceType = "ONE_DRIVE"
+	OAuthClientApplicationDataSourceTypeORACLE              OAuthClientApplicationDataSourceType = "ORACLE"
+	OAuthClientApplicationDataSourceTypePOSTGRESQL          OAuthClientApplicationDataSourceType = "POSTGRESQL"
+	OAuthClientApplicationDataSourceTypePRESTO              OAuthClientApplicationDataSourceType = "PRESTO"
+	OAuthClientApplicationDataSourceTypeQBUSINESS           OAuthClientApplicationDataSourceType = "QBUSINESS"
+	OAuthClientApplicationDataSourceTypeREDSHIFT            OAuthClientApplicationDataSourceType = "REDSHIFT"
+	OAuthClientApplicationDataSourceTypeS3                  OAuthClientApplicationDataSourceType = "S3"
+	OAuthClientApplicationDataSourceTypeS3KNOWLEDGEBASE     OAuthClientApplicationDataSourceType = "S3_KNOWLEDGE_BASE"
+	OAuthClientApplicationDataSourceTypeS3TABLES            OAuthClientApplicationDataSourceType = "S3_TABLES"
+	OAuthClientApplicationDataSourceTypeSALESFORCE          OAuthClientApplicationDataSourceType = "SALESFORCE"
+	OAuthClientApplicationDataSourceTypeSERVICENOW          OAuthClientApplicationDataSourceType = "SERVICENOW"
+	OAuthClientApplicationDataSourceTypeSHAREPOINT          OAuthClientApplicationDataSourceType = "SHAREPOINT"
+	OAuthClientApplicationDataSourceTypeSNOWFLAKE           OAuthClientApplicationDataSourceType = "SNOWFLAKE"
+	OAuthClientApplicationDataSourceTypeSPARK               OAuthClientApplicationDataSourceType = "SPARK"
+	OAuthClientApplicationDataSourceTypeSQLSERVER           OAuthClientApplicationDataSourceType = "SQLSERVER"
+	OAuthClientApplicationDataSourceTypeSTARBURST           OAuthClientApplicationDataSourceType = "STARBURST"
+	OAuthClientApplicationDataSourceTypeTERADATA            OAuthClientApplicationDataSourceType = "TERADATA"
+	OAuthClientApplicationDataSourceTypeTIMESTREAM          OAuthClientApplicationDataSourceType = "TIMESTREAM"
+	OAuthClientApplicationDataSourceTypeTRINO               OAuthClientApplicationDataSourceType = "TRINO"
+	OAuthClientApplicationDataSourceTypeTWITTER             OAuthClientApplicationDataSourceType = "TWITTER"
+	OAuthClientApplicationDataSourceTypeWEBCRAWLER          OAuthClientApplicationDataSourceType = "WEB_CRAWLER"
+)
+
+type OAuthClientApplicationOAuthClientAuthenticationType string
+
+const (
+	OAuthClientApplicationOAuthClientAuthenticationTypeTOKEN OAuthClientApplicationOAuthClientAuthenticationType = "TOKEN"
+)
+
+type RefreshScheduleMapRefreshType string
+
+const (
+	RefreshScheduleMapRefreshTypeFULLREFRESH        RefreshScheduleMapRefreshType = "FULL_REFRESH"
+	RefreshScheduleMapRefreshTypeINCREMENTALREFRESH RefreshScheduleMapRefreshType = "INCREMENTAL_REFRESH"
+)
+
+type RefreshScheduleMapScheduleFrequencyInterval string
+
+const (
+	RefreshScheduleMapScheduleFrequencyIntervalMINUTE15 RefreshScheduleMapScheduleFrequencyInterval = "MINUTE15"
+	RefreshScheduleMapScheduleFrequencyIntervalMINUTE30 RefreshScheduleMapScheduleFrequencyInterval = "MINUTE30"
+	RefreshScheduleMapScheduleFrequencyIntervalHOURLY   RefreshScheduleMapScheduleFrequencyInterval = "HOURLY"
+	RefreshScheduleMapScheduleFrequencyIntervalDAILY    RefreshScheduleMapScheduleFrequencyInterval = "DAILY"
+	RefreshScheduleMapScheduleFrequencyIntervalWEEKLY   RefreshScheduleMapScheduleFrequencyInterval = "WEEKLY"
+	RefreshScheduleMapScheduleFrequencyIntervalMONTHLY  RefreshScheduleMapScheduleFrequencyInterval = "MONTHLY"
+)
+
+type RefreshScheduleMapScheduleFrequencyRefreshOnDayDayOfWeek string
+
+const (
+	RefreshScheduleMapScheduleFrequencyRefreshOnDayDayOfWeekSUNDAY    RefreshScheduleMapScheduleFrequencyRefreshOnDayDayOfWeek = "SUNDAY"
+	RefreshScheduleMapScheduleFrequencyRefreshOnDayDayOfWeekMONDAY    RefreshScheduleMapScheduleFrequencyRefreshOnDayDayOfWeek = "MONDAY"
+	RefreshScheduleMapScheduleFrequencyRefreshOnDayDayOfWeekTUESDAY   RefreshScheduleMapScheduleFrequencyRefreshOnDayDayOfWeek = "TUESDAY"
+	RefreshScheduleMapScheduleFrequencyRefreshOnDayDayOfWeekWEDNESDAY RefreshScheduleMapScheduleFrequencyRefreshOnDayDayOfWeek = "WEDNESDAY"
+	RefreshScheduleMapScheduleFrequencyRefreshOnDayDayOfWeekTHURSDAY  RefreshScheduleMapScheduleFrequencyRefreshOnDayDayOfWeek = "THURSDAY"
+	RefreshScheduleMapScheduleFrequencyRefreshOnDayDayOfWeekFRIDAY    RefreshScheduleMapScheduleFrequencyRefreshOnDayDayOfWeek = "FRIDAY"
+	RefreshScheduleMapScheduleFrequencyRefreshOnDayDayOfWeekSATURDAY  RefreshScheduleMapScheduleFrequencyRefreshOnDayDayOfWeek = "SATURDAY"
+)
+
+type SpaceResourceResourceType string
+
+const (
+	SpaceResourceResourceTypeTOPIC           SpaceResourceResourceType = "TOPIC"
+	SpaceResourceResourceTypeDASHBOARD       SpaceResourceResourceType = "DASHBOARD"
+	SpaceResourceResourceTypeKNOWLEDGEBASE   SpaceResourceResourceType = "KNOWLEDGE_BASE"
+	SpaceResourceResourceTypeACTIONCONNECTOR SpaceResourceResourceType = "ACTION_CONNECTOR"
+	SpaceResourceResourceTypeDATASET         SpaceResourceResourceType = "DATA_SET"
+)
+
+type TemplateResizeOption string
+
+const (
+	TemplateResizeOptionFIXED      TemplateResizeOption = "FIXED"
+	TemplateResizeOptionRESPONSIVE TemplateResizeOption = "RESPONSIVE"
+)
+
+type TemplatePaperOrientation string
+
+const (
+	TemplatePaperOrientationPORTRAIT  TemplatePaperOrientation = "PORTRAIT"
+	TemplatePaperOrientationLANDSCAPE TemplatePaperOrientation = "LANDSCAPE"
+)
+
+type TemplatePaperSize string
+
+const (
+	TemplatePaperSizeUSLETTER        TemplatePaperSize = "US_LETTER"
+	TemplatePaperSizeUSLEGAL         TemplatePaperSize = "US_LEGAL"
+	TemplatePaperSizeUSTABLOIDLEDGER TemplatePaperSize = "US_TABLOID_LEDGER"
+	TemplatePaperSizeA0              TemplatePaperSize = "A0"
+	TemplatePaperSizeA1              TemplatePaperSize = "A1"
+	TemplatePaperSizeA2              TemplatePaperSize = "A2"
+	TemplatePaperSizeA3              TemplatePaperSize = "A3"
+	TemplatePaperSizeA4              TemplatePaperSize = "A4"
+	TemplatePaperSizeA5              TemplatePaperSize = "A5"
+	TemplatePaperSizeJISB4           TemplatePaperSize = "JIS_B4"
+	TemplatePaperSizeJISB5           TemplatePaperSize = "JIS_B5"
+)
+
+type TemplateSheetContentType string
+
+const (
+	TemplateSheetContentTypePAGINATED   TemplateSheetContentType = "PAGINATED"
+	TemplateSheetContentTypeINTERACTIVE TemplateSheetContentType = "INTERACTIVE"
+)
+
+type TemplateSpecialValue string
+
+const (
+	TemplateSpecialValueEMPTY TemplateSpecialValue = "EMPTY"
+	TemplateSpecialValueNULL  TemplateSpecialValue = "NULL"
+	TemplateSpecialValueOTHER TemplateSpecialValue = "OTHER"
+)
+
+type TemplateNegativeValueDisplayMode string
+
+const (
+	TemplateNegativeValueDisplayModePOSITIVE TemplateNegativeValueDisplayMode = "POSITIVE"
+	TemplateNegativeValueDisplayModeNEGATIVE TemplateNegativeValueDisplayMode = "NEGATIVE"
+)
+
+type TemplateNumberScale string
+
+const (
+	TemplateNumberScaleNONE      TemplateNumberScale = "NONE"
+	TemplateNumberScaleAUTO      TemplateNumberScale = "AUTO"
+	TemplateNumberScaleTHOUSANDS TemplateNumberScale = "THOUSANDS"
+	TemplateNumberScaleMILLIONS  TemplateNumberScale = "MILLIONS"
+	TemplateNumberScaleBILLIONS  TemplateNumberScale = "BILLIONS"
+	TemplateNumberScaleTRILLIONS TemplateNumberScale = "TRILLIONS"
+	TemplateNumberScaleLAKHS     TemplateNumberScale = "LAKHS"
+	TemplateNumberScaleCRORES    TemplateNumberScale = "CRORES"
+)
+
+type TemplateNumericSeparatorSymbol string
+
+const (
+	TemplateNumericSeparatorSymbolCOMMA TemplateNumericSeparatorSymbol = "COMMA"
+	TemplateNumericSeparatorSymbolDOT   TemplateNumericSeparatorSymbol = "DOT"
+	TemplateNumericSeparatorSymbolSPACE TemplateNumericSeparatorSymbol = "SPACE"
+)
+
+type TemplateDigitGroupingStyle string
+
+const (
+	TemplateDigitGroupingStyleDEFAULT TemplateDigitGroupingStyle = "DEFAULT"
+	TemplateDigitGroupingStyleLAKHS   TemplateDigitGroupingStyle = "LAKHS"
+)
+
+type TemplateVisibility string
+
+const (
+	TemplateVisibilityHIDDEN  TemplateVisibility = "HIDDEN"
+	TemplateVisibilityVISIBLE TemplateVisibility = "VISIBLE"
+)
+
+type TemplateColumnRole string
+
+const (
+	TemplateColumnRoleDIMENSION TemplateColumnRole = "DIMENSION"
+	TemplateColumnRoleMEASURE   TemplateColumnRole = "MEASURE"
+)
+
+type TemplateCrossDatasetTypes string
+
+const (
+	TemplateCrossDatasetTypesALLDATASETS   TemplateCrossDatasetTypes = "ALL_DATASETS"
+	TemplateCrossDatasetTypesSINGLEDATASET TemplateCrossDatasetTypes = "SINGLE_DATASET"
+)
+
+type TemplateCategoryFilterMatchOperator string
+
+const (
+	TemplateCategoryFilterMatchOperatorEQUALS         TemplateCategoryFilterMatchOperator = "EQUALS"
+	TemplateCategoryFilterMatchOperatorDOESNOTEQUAL   TemplateCategoryFilterMatchOperator = "DOES_NOT_EQUAL"
+	TemplateCategoryFilterMatchOperatorCONTAINS       TemplateCategoryFilterMatchOperator = "CONTAINS"
+	TemplateCategoryFilterMatchOperatorDOESNOTCONTAIN TemplateCategoryFilterMatchOperator = "DOES_NOT_CONTAIN"
+	TemplateCategoryFilterMatchOperatorSTARTSWITH     TemplateCategoryFilterMatchOperator = "STARTS_WITH"
+	TemplateCategoryFilterMatchOperatorENDSWITH       TemplateCategoryFilterMatchOperator = "ENDS_WITH"
+)
+
+type TemplateFilterNullOption string
+
+const (
+	TemplateFilterNullOptionALLVALUES    TemplateFilterNullOption = "ALL_VALUES"
+	TemplateFilterNullOptionNULLSONLY    TemplateFilterNullOption = "NULLS_ONLY"
+	TemplateFilterNullOptionNONNULLSONLY TemplateFilterNullOption = "NON_NULLS_ONLY"
+)
+
+type TemplateCategoryFilterSelectAllOptions string
+
+const (
+	TemplateCategoryFilterSelectAllOptionsFILTERALLVALUES TemplateCategoryFilterSelectAllOptions = "FILTER_ALL_VALUES"
+)
+
+type TemplateCommitMode string
+
+const (
+	TemplateCommitModeAUTO   TemplateCommitMode = "AUTO"
+	TemplateCommitModeMANUAL TemplateCommitMode = "MANUAL"
+)
+
+type TemplateFontDecoration string
+
+const (
+	TemplateFontDecorationUNDERLINE TemplateFontDecoration = "UNDERLINE"
+	TemplateFontDecorationNONE      TemplateFontDecoration = "NONE"
+)
+
+type TemplateRelativeFontSize string
+
+const (
+	TemplateRelativeFontSizeEXTRASMALL TemplateRelativeFontSize = "EXTRA_SMALL"
+	TemplateRelativeFontSizeSMALL      TemplateRelativeFontSize = "SMALL"
+	TemplateRelativeFontSizeMEDIUM     TemplateRelativeFontSize = "MEDIUM"
+	TemplateRelativeFontSizeLARGE      TemplateRelativeFontSize = "LARGE"
+	TemplateRelativeFontSizeEXTRALARGE TemplateRelativeFontSize = "EXTRA_LARGE"
+)
+
+type TemplateFontStyle string
+
+const (
+	TemplateFontStyleNORMAL TemplateFontStyle = "NORMAL"
+	TemplateFontStyleITALIC TemplateFontStyle = "ITALIC"
+)
+
+type TemplateFontWeightName string
+
+const (
+	TemplateFontWeightNameNORMAL TemplateFontWeightName = "NORMAL"
+	TemplateFontWeightNameBOLD   TemplateFontWeightName = "BOLD"
+)
+
+type TemplateSheetControlDateTimePickerType string
+
+const (
+	TemplateSheetControlDateTimePickerTypeSINGLEVALUED TemplateSheetControlDateTimePickerType = "SINGLE_VALUED"
+	TemplateSheetControlDateTimePickerTypeDATERANGE    TemplateSheetControlDateTimePickerType = "DATE_RANGE"
+)
+
+type TemplateSheetControlListType string
+
+const (
+	TemplateSheetControlListTypeMULTISELECT  TemplateSheetControlListType = "MULTI_SELECT"
+	TemplateSheetControlListTypeSINGLESELECT TemplateSheetControlListType = "SINGLE_SELECT"
+)
+
+type TemplateSheetControlSliderType string
+
+const (
+	TemplateSheetControlSliderTypeSINGLEPOINT TemplateSheetControlSliderType = "SINGLE_POINT"
+	TemplateSheetControlSliderTypeRANGE       TemplateSheetControlSliderType = "RANGE"
+)
+
+type TemplateSimpleAttributeAggregationFunction string
+
+const (
+	TemplateSimpleAttributeAggregationFunctionUNIQUEVALUE TemplateSimpleAttributeAggregationFunction = "UNIQUE_VALUE"
+)
+
+type TemplateCategoricalAggregationFunction string
+
+const (
+	TemplateCategoricalAggregationFunctionCOUNT         TemplateCategoricalAggregationFunction = "COUNT"
+	TemplateCategoricalAggregationFunctionDISTINCTCOUNT TemplateCategoricalAggregationFunction = "DISTINCT_COUNT"
+)
+
+type TemplateDateAggregationFunction string
+
+const (
+	TemplateDateAggregationFunctionCOUNT         TemplateDateAggregationFunction = "COUNT"
+	TemplateDateAggregationFunctionDISTINCTCOUNT TemplateDateAggregationFunction = "DISTINCT_COUNT"
+	TemplateDateAggregationFunctionMIN           TemplateDateAggregationFunction = "MIN"
+	TemplateDateAggregationFunctionMAX           TemplateDateAggregationFunction = "MAX"
+)
+
+type TemplateSimpleNumericalAggregationFunction string
+
+const (
+	TemplateSimpleNumericalAggregationFunctionSUM           TemplateSimpleNumericalAggregationFunction = "SUM"
+	TemplateSimpleNumericalAggregationFunctionAVERAGE       TemplateSimpleNumericalAggregationFunction = "AVERAGE"
+	TemplateSimpleNumericalAggregationFunctionMIN           TemplateSimpleNumericalAggregationFunction = "MIN"
+	TemplateSimpleNumericalAggregationFunctionMAX           TemplateSimpleNumericalAggregationFunction = "MAX"
+	TemplateSimpleNumericalAggregationFunctionCOUNT         TemplateSimpleNumericalAggregationFunction = "COUNT"
+	TemplateSimpleNumericalAggregationFunctionDISTINCTCOUNT TemplateSimpleNumericalAggregationFunction = "DISTINCT_COUNT"
+	TemplateSimpleNumericalAggregationFunctionVAR           TemplateSimpleNumericalAggregationFunction = "VAR"
+	TemplateSimpleNumericalAggregationFunctionVARP          TemplateSimpleNumericalAggregationFunction = "VARP"
+	TemplateSimpleNumericalAggregationFunctionSTDEV         TemplateSimpleNumericalAggregationFunction = "STDEV"
+	TemplateSimpleNumericalAggregationFunctionSTDEVP        TemplateSimpleNumericalAggregationFunction = "STDEVP"
+	TemplateSimpleNumericalAggregationFunctionMEDIAN        TemplateSimpleNumericalAggregationFunction = "MEDIAN"
+)
+
+type TemplateNumericEqualityMatchOperator string
+
+const (
+	TemplateNumericEqualityMatchOperatorEQUALS       TemplateNumericEqualityMatchOperator = "EQUALS"
+	TemplateNumericEqualityMatchOperatorDOESNOTEQUAL TemplateNumericEqualityMatchOperator = "DOES_NOT_EQUAL"
+)
+
+type TemplateNumericFilterSelectAllOptions string
+
+const (
+	TemplateNumericFilterSelectAllOptionsFILTERALLVALUES TemplateNumericFilterSelectAllOptions = "FILTER_ALL_VALUES"
+)
+
+type TemplateAnchorOption string
+
+const (
+	TemplateAnchorOptionNOW TemplateAnchorOption = "NOW"
+)
+
+type TemplateTimeGranularity string
+
+const (
+	TemplateTimeGranularityYEAR        TemplateTimeGranularity = "YEAR"
+	TemplateTimeGranularityQUARTER     TemplateTimeGranularity = "QUARTER"
+	TemplateTimeGranularityMONTH       TemplateTimeGranularity = "MONTH"
+	TemplateTimeGranularityWEEK        TemplateTimeGranularity = "WEEK"
+	TemplateTimeGranularityDAY         TemplateTimeGranularity = "DAY"
+	TemplateTimeGranularityHOUR        TemplateTimeGranularity = "HOUR"
+	TemplateTimeGranularityMINUTE      TemplateTimeGranularity = "MINUTE"
+	TemplateTimeGranularitySECOND      TemplateTimeGranularity = "SECOND"
+	TemplateTimeGranularityMILLISECOND TemplateTimeGranularity = "MILLISECOND"
+)
+
+type TemplateWidgetStatus string
+
+const (
+	TemplateWidgetStatusENABLED  TemplateWidgetStatus = "ENABLED"
+	TemplateWidgetStatusDISABLED TemplateWidgetStatus = "DISABLED"
+)
+
+type TemplateRelativeDateType string
+
+const (
+	TemplateRelativeDateTypePREVIOUS TemplateRelativeDateType = "PREVIOUS"
+	TemplateRelativeDateTypeTHIS     TemplateRelativeDateType = "THIS"
+	TemplateRelativeDateTypeLAST     TemplateRelativeDateType = "LAST"
+	TemplateRelativeDateTypeNOW      TemplateRelativeDateType = "NOW"
+	TemplateRelativeDateTypeNEXT     TemplateRelativeDateType = "NEXT"
+)
+
+type TemplateSortDirection string
+
+const (
+	TemplateSortDirectionASC  TemplateSortDirection = "ASC"
+	TemplateSortDirectionDESC TemplateSortDirection = "DESC"
+)
+
+type TemplateFilterVisualScope string
+
+const (
+	TemplateFilterVisualScopeALLVISUALS      TemplateFilterVisualScope = "ALL_VISUALS"
+	TemplateFilterVisualScopeSELECTEDVISUALS TemplateFilterVisualScope = "SELECTED_VISUALS"
+)
+
+type TemplateDayOfTheWeek string
+
+const (
+	TemplateDayOfTheWeekSUNDAY    TemplateDayOfTheWeek = "SUNDAY"
+	TemplateDayOfTheWeekMONDAY    TemplateDayOfTheWeek = "MONDAY"
+	TemplateDayOfTheWeekTUESDAY   TemplateDayOfTheWeek = "TUESDAY"
+	TemplateDayOfTheWeekWEDNESDAY TemplateDayOfTheWeek = "WEDNESDAY"
+	TemplateDayOfTheWeekTHURSDAY  TemplateDayOfTheWeek = "THURSDAY"
+	TemplateDayOfTheWeekFRIDAY    TemplateDayOfTheWeek = "FRIDAY"
+	TemplateDayOfTheWeekSATURDAY  TemplateDayOfTheWeek = "SATURDAY"
+)
+
+type TemplateValueWhenUnsetOption string
+
+const (
+	TemplateValueWhenUnsetOptionRECOMMENDEDVALUE TemplateValueWhenUnsetOption = "RECOMMENDED_VALUE"
+	TemplateValueWhenUnsetOptionNULL             TemplateValueWhenUnsetOption = "NULL"
+)
+
+type TemplateParameterValueType string
+
+const (
+	TemplateParameterValueTypeMULTIVALUED  TemplateParameterValueType = "MULTI_VALUED"
+	TemplateParameterValueTypeSINGLEVALUED TemplateParameterValueType = "SINGLE_VALUED"
+)
+
+type TemplateQueryExecutionMode string
+
+const (
+	TemplateQueryExecutionModeAUTO   TemplateQueryExecutionMode = "AUTO"
+	TemplateQueryExecutionModeMANUAL TemplateQueryExecutionMode = "MANUAL"
+)
+
+type TemplateSelectAllValueOptions string
+
+const (
+	TemplateSelectAllValueOptionsALLVALUES TemplateSelectAllValueOptions = "ALL_VALUES"
+)
+
+type TemplateURLTargetConfiguration string
+
+const (
+	TemplateURLTargetConfigurationNEWTAB    TemplateURLTargetConfiguration = "NEW_TAB"
+	TemplateURLTargetConfigurationNEWWINDOW TemplateURLTargetConfiguration = "NEW_WINDOW"
+	TemplateURLTargetConfigurationSAMETAB   TemplateURLTargetConfiguration = "SAME_TAB"
+)
+
+type TemplateImageCustomActionTrigger string
+
+const (
+	TemplateImageCustomActionTriggerCLICK TemplateImageCustomActionTrigger = "CLICK"
+	TemplateImageCustomActionTriggerMENU  TemplateImageCustomActionTrigger = "MENU"
+)
+
+type TemplateDashboardBehavior string
+
+const (
+	TemplateDashboardBehaviorENABLED  TemplateDashboardBehavior = "ENABLED"
+	TemplateDashboardBehaviorDISABLED TemplateDashboardBehavior = "DISABLED"
+)
+
+type TemplateSheetImageScalingType string
+
+const (
+	TemplateSheetImageScalingTypeSCALETOWIDTH     TemplateSheetImageScalingType = "SCALE_TO_WIDTH"
+	TemplateSheetImageScalingTypeSCALETOHEIGHT    TemplateSheetImageScalingType = "SCALE_TO_HEIGHT"
+	TemplateSheetImageScalingTypeSCALETOCONTAINER TemplateSheetImageScalingType = "SCALE_TO_CONTAINER"
+	TemplateSheetImageScalingTypeSCALENONE        TemplateSheetImageScalingType = "SCALE_NONE"
+)
+
+type TemplateLayoutElementType string
+
+const (
+	TemplateLayoutElementTypeVISUAL           TemplateLayoutElementType = "VISUAL"
+	TemplateLayoutElementTypeFILTERCONTROL    TemplateLayoutElementType = "FILTER_CONTROL"
+	TemplateLayoutElementTypePARAMETERCONTROL TemplateLayoutElementType = "PARAMETER_CONTROL"
+	TemplateLayoutElementTypeTEXTBOX          TemplateLayoutElementType = "TEXT_BOX"
+	TemplateLayoutElementTypeIMAGE            TemplateLayoutElementType = "IMAGE"
+)
+
+type TemplateSectionPageBreakStatus string
+
+const (
+	TemplateSectionPageBreakStatusENABLED  TemplateSectionPageBreakStatus = "ENABLED"
+	TemplateSectionPageBreakStatusDISABLED TemplateSectionPageBreakStatus = "DISABLED"
+)
+
+type TemplateSelectedFieldOptions string
+
+const (
+	TemplateSelectedFieldOptionsALLFIELDS TemplateSelectedFieldOptions = "ALL_FIELDS"
+)
+
+type TemplateTargetVisualOptions string
+
+const (
+	TemplateTargetVisualOptionsALLVISUALS TemplateTargetVisualOptions = "ALL_VISUALS"
+)
+
+type TemplateVisualCustomActionTrigger string
+
+const (
+	TemplateVisualCustomActionTriggerDATAPOINTCLICK TemplateVisualCustomActionTrigger = "DATA_POINT_CLICK"
+	TemplateVisualCustomActionTriggerDATAPOINTMENU  TemplateVisualCustomActionTrigger = "DATA_POINT_MENU"
+)
+
+type TemplateBarsArrangement string
+
+const (
+	TemplateBarsArrangementCLUSTERED      TemplateBarsArrangement = "CLUSTERED"
+	TemplateBarsArrangementSTACKED        TemplateBarsArrangement = "STACKED"
+	TemplateBarsArrangementSTACKEDPERCENT TemplateBarsArrangement = "STACKED_PERCENT"
+)
+
+type TemplateDataLabelContent string
+
+const (
+	TemplateDataLabelContentVALUE           TemplateDataLabelContent = "VALUE"
+	TemplateDataLabelContentPERCENT         TemplateDataLabelContent = "PERCENT"
+	TemplateDataLabelContentVALUEANDPERCENT TemplateDataLabelContent = "VALUE_AND_PERCENT"
+)
+
+type TemplateDataLabelOverlap string
+
+const (
+	TemplateDataLabelOverlapDISABLEOVERLAP TemplateDataLabelOverlap = "DISABLE_OVERLAP"
+	TemplateDataLabelOverlapENABLEOVERLAP  TemplateDataLabelOverlap = "ENABLE_OVERLAP"
+)
+
+type TemplateDataLabelPosition string
+
+const (
+	TemplateDataLabelPositionINSIDE  TemplateDataLabelPosition = "INSIDE"
+	TemplateDataLabelPositionOUTSIDE TemplateDataLabelPosition = "OUTSIDE"
+	TemplateDataLabelPositionLEFT    TemplateDataLabelPosition = "LEFT"
+	TemplateDataLabelPositionTOP     TemplateDataLabelPosition = "TOP"
+	TemplateDataLabelPositionBOTTOM  TemplateDataLabelPosition = "BOTTOM"
+	TemplateDataLabelPositionRIGHT   TemplateDataLabelPosition = "RIGHT"
+)
+
+type TemplateLegendPosition string
+
+const (
+	TemplateLegendPositionAUTO   TemplateLegendPosition = "AUTO"
+	TemplateLegendPositionRIGHT  TemplateLegendPosition = "RIGHT"
+	TemplateLegendPositionBOTTOM TemplateLegendPosition = "BOTTOM"
+	TemplateLegendPositionTOP    TemplateLegendPosition = "TOP"
+)
+
+type TemplateBarChartOrientation string
+
+const (
+	TemplateBarChartOrientationHORIZONTAL TemplateBarChartOrientation = "HORIZONTAL"
+	TemplateBarChartOrientationVERTICAL   TemplateBarChartOrientation = "VERTICAL"
+)
+
+type TemplateAxisBinding string
+
+const (
+	TemplateAxisBindingPRIMARYYAXIS   TemplateAxisBinding = "PRIMARY_YAXIS"
+	TemplateAxisBindingSECONDARYYAXIS TemplateAxisBinding = "SECONDARY_YAXIS"
+)
+
+type TemplateReferenceLineSeriesType string
+
+const (
+	TemplateReferenceLineSeriesTypeBAR  TemplateReferenceLineSeriesType = "BAR"
+	TemplateReferenceLineSeriesTypeLINE TemplateReferenceLineSeriesType = "LINE"
+)
+
+type TemplateReferenceLineLabelHorizontalPosition string
+
+const (
+	TemplateReferenceLineLabelHorizontalPositionLEFT   TemplateReferenceLineLabelHorizontalPosition = "LEFT"
+	TemplateReferenceLineLabelHorizontalPositionCENTER TemplateReferenceLineLabelHorizontalPosition = "CENTER"
+	TemplateReferenceLineLabelHorizontalPositionRIGHT  TemplateReferenceLineLabelHorizontalPosition = "RIGHT"
+)
+
+type TemplateReferenceLineValueLabelRelativePosition string
+
+const (
+	TemplateReferenceLineValueLabelRelativePositionBEFORECUSTOMLABEL TemplateReferenceLineValueLabelRelativePosition = "BEFORE_CUSTOM_LABEL"
+	TemplateReferenceLineValueLabelRelativePositionAFTERCUSTOMLABEL  TemplateReferenceLineValueLabelRelativePosition = "AFTER_CUSTOM_LABEL"
+)
+
+type TemplateReferenceLineLabelVerticalPosition string
+
+const (
+	TemplateReferenceLineLabelVerticalPositionABOVE TemplateReferenceLineLabelVerticalPosition = "ABOVE"
+	TemplateReferenceLineLabelVerticalPositionBELOW TemplateReferenceLineLabelVerticalPosition = "BELOW"
+)
+
+type TemplateReferenceLinePatternType string
+
+const (
+	TemplateReferenceLinePatternTypeSOLID  TemplateReferenceLinePatternType = "SOLID"
+	TemplateReferenceLinePatternTypeDASHED TemplateReferenceLinePatternType = "DASHED"
+	TemplateReferenceLinePatternTypeDOTTED TemplateReferenceLinePatternType = "DOTTED"
+)
+
+type TemplatePanelBorderStyle string
+
+const (
+	TemplatePanelBorderStyleSOLID  TemplatePanelBorderStyle = "SOLID"
+	TemplatePanelBorderStyleDASHED TemplatePanelBorderStyle = "DASHED"
+	TemplatePanelBorderStyleDOTTED TemplatePanelBorderStyle = "DOTTED"
+)
+
+type TemplateHorizontalTextAlignment string
+
+const (
+	TemplateHorizontalTextAlignmentLEFT   TemplateHorizontalTextAlignment = "LEFT"
+	TemplateHorizontalTextAlignmentCENTER TemplateHorizontalTextAlignment = "CENTER"
+	TemplateHorizontalTextAlignmentRIGHT  TemplateHorizontalTextAlignment = "RIGHT"
+	TemplateHorizontalTextAlignmentAUTO   TemplateHorizontalTextAlignment = "AUTO"
+)
+
+type TemplateSmallMultiplesAxisPlacement string
+
+const (
+	TemplateSmallMultiplesAxisPlacementOUTSIDE TemplateSmallMultiplesAxisPlacement = "OUTSIDE"
+	TemplateSmallMultiplesAxisPlacementINSIDE  TemplateSmallMultiplesAxisPlacement = "INSIDE"
+)
+
+type TemplateSmallMultiplesAxisScale string
+
+const (
+	TemplateSmallMultiplesAxisScaleSHARED      TemplateSmallMultiplesAxisScale = "SHARED"
+	TemplateSmallMultiplesAxisScaleINDEPENDENT TemplateSmallMultiplesAxisScale = "INDEPENDENT"
+)
+
+type TemplateOtherCategories string
+
+const (
+	TemplateOtherCategoriesINCLUDE TemplateOtherCategories = "INCLUDE"
+	TemplateOtherCategoriesEXCLUDE TemplateOtherCategories = "EXCLUDE"
+)
+
+type TemplateTooltipTarget string
+
+const (
+	TemplateTooltipTargetBOTH TemplateTooltipTarget = "BOTH"
+	TemplateTooltipTargetBAR  TemplateTooltipTarget = "BAR"
+	TemplateTooltipTargetLINE TemplateTooltipTarget = "LINE"
+)
+
+type TemplateTooltipTitleType string
+
+const (
+	TemplateTooltipTitleTypeNONE         TemplateTooltipTitleType = "NONE"
+	TemplateTooltipTitleTypePRIMARYVALUE TemplateTooltipTitleType = "PRIMARY_VALUE"
+)
+
+type TemplateSelectedTooltipType string
+
+const (
+	TemplateSelectedTooltipTypeBASIC    TemplateSelectedTooltipType = "BASIC"
+	TemplateSelectedTooltipTypeDETAILED TemplateSelectedTooltipType = "DETAILED"
+)
+
+type TemplatePivotTableDataPathType string
+
+const (
+	TemplatePivotTableDataPathTypeHIERARCHYROWSLAYOUTCOLUMN TemplatePivotTableDataPathType = "HIERARCHY_ROWS_LAYOUT_COLUMN"
+	TemplatePivotTableDataPathTypeMULTIPLEROWMETRICSCOLUMN  TemplatePivotTableDataPathType = "MULTIPLE_ROW_METRICS_COLUMN"
+	TemplatePivotTableDataPathTypeEMPTYCOLUMNHEADER         TemplatePivotTableDataPathType = "EMPTY_COLUMN_HEADER"
+	TemplatePivotTableDataPathTypeCOUNTMETRICCOLUMN         TemplatePivotTableDataPathType = "COUNT_METRIC_COLUMN"
+)
+
+type TemplateBoxPlotFillStyle string
+
+const (
+	TemplateBoxPlotFillStyleSOLID       TemplateBoxPlotFillStyle = "SOLID"
+	TemplateBoxPlotFillStyleTRANSPARENT TemplateBoxPlotFillStyle = "TRANSPARENT"
+)
+
+type TemplateSingleYAxisOption string
+
+const (
+	TemplateSingleYAxisOptionPRIMARYYAXIS TemplateSingleYAxisOption = "PRIMARY_Y_AXIS"
+)
+
+type TemplateCustomContentType string
+
+const (
+	TemplateCustomContentTypeIMAGE                TemplateCustomContentType = "IMAGE"
+	TemplateCustomContentTypeOTHEREMBEDDEDCONTENT TemplateCustomContentType = "OTHER_EMBEDDED_CONTENT"
+)
+
+type TemplateCustomContentImageScalingConfiguration string
+
+const (
+	TemplateCustomContentImageScalingConfigurationFITTOHEIGHT   TemplateCustomContentImageScalingConfiguration = "FIT_TO_HEIGHT"
+	TemplateCustomContentImageScalingConfigurationFITTOWIDTH    TemplateCustomContentImageScalingConfiguration = "FIT_TO_WIDTH"
+	TemplateCustomContentImageScalingConfigurationDONOTSCALE    TemplateCustomContentImageScalingConfiguration = "DO_NOT_SCALE"
+	TemplateCustomContentImageScalingConfigurationSCALETOVISUAL TemplateCustomContentImageScalingConfiguration = "SCALE_TO_VISUAL"
+)
+
+type TemplateBaseMapStyleType string
+
+const (
+	TemplateBaseMapStyleTypeLIGHTGRAY TemplateBaseMapStyleType = "LIGHT_GRAY"
+	TemplateBaseMapStyleTypeDARKGRAY  TemplateBaseMapStyleType = "DARK_GRAY"
+	TemplateBaseMapStyleTypeSTREET    TemplateBaseMapStyleType = "STREET"
+	TemplateBaseMapStyleTypeIMAGERY   TemplateBaseMapStyleType = "IMAGERY"
+)
+
+type TemplateMapZoomMode string
+
+const (
+	TemplateMapZoomModeAUTO   TemplateMapZoomMode = "AUTO"
+	TemplateMapZoomModeMANUAL TemplateMapZoomMode = "MANUAL"
+)
+
+type TemplateFunnelChartMeasureDataLabelStyle string
+
+const (
+	TemplateFunnelChartMeasureDataLabelStyleVALUEONLY                         TemplateFunnelChartMeasureDataLabelStyle = "VALUE_ONLY"
+	TemplateFunnelChartMeasureDataLabelStylePERCENTAGEBYFIRSTSTAGE            TemplateFunnelChartMeasureDataLabelStyle = "PERCENTAGE_BY_FIRST_STAGE"
+	TemplateFunnelChartMeasureDataLabelStylePERCENTAGEBYPREVIOUSSTAGE         TemplateFunnelChartMeasureDataLabelStyle = "PERCENTAGE_BY_PREVIOUS_STAGE"
+	TemplateFunnelChartMeasureDataLabelStyleVALUEANDPERCENTAGEBYFIRSTSTAGE    TemplateFunnelChartMeasureDataLabelStyle = "VALUE_AND_PERCENTAGE_BY_FIRST_STAGE"
+	TemplateFunnelChartMeasureDataLabelStyleVALUEANDPERCENTAGEBYPREVIOUSSTAGE TemplateFunnelChartMeasureDataLabelStyle = "VALUE_AND_PERCENTAGE_BY_PREVIOUS_STAGE"
+)
+
+type TemplateArcThicknessOptions string
+
+const (
+	TemplateArcThicknessOptionsSMALL  TemplateArcThicknessOptions = "SMALL"
+	TemplateArcThicknessOptionsMEDIUM TemplateArcThicknessOptions = "MEDIUM"
+	TemplateArcThicknessOptionsLARGE  TemplateArcThicknessOptions = "LARGE"
+)
+
+type TemplateComparisonMethod string
+
+const (
+	TemplateComparisonMethodDIFFERENCE        TemplateComparisonMethod = "DIFFERENCE"
+	TemplateComparisonMethodPERCENTDIFFERENCE TemplateComparisonMethod = "PERCENT_DIFFERENCE"
+	TemplateComparisonMethodPERCENT           TemplateComparisonMethod = "PERCENT"
+)
+
+type TemplatePrimaryValueDisplayType string
+
+const (
+	TemplatePrimaryValueDisplayTypeHIDDEN     TemplatePrimaryValueDisplayType = "HIDDEN"
+	TemplatePrimaryValueDisplayTypeCOMPARISON TemplatePrimaryValueDisplayType = "COMPARISON"
+	TemplatePrimaryValueDisplayTypeACTUAL     TemplatePrimaryValueDisplayType = "ACTUAL"
+)
+
+type TemplateConditionalFormattingIconDisplayOption string
+
+const (
+	TemplateConditionalFormattingIconDisplayOptionICONONLY TemplateConditionalFormattingIconDisplayOption = "ICON_ONLY"
+)
+
+type TemplateIcon string
+
+const (
+	TemplateIconCARETUP        TemplateIcon = "CARET_UP"
+	TemplateIconCARETDOWN      TemplateIcon = "CARET_DOWN"
+	TemplateIconPLUS           TemplateIcon = "PLUS"
+	TemplateIconMINUS          TemplateIcon = "MINUS"
+	TemplateIconARROWUP        TemplateIcon = "ARROW_UP"
+	TemplateIconARROWDOWN      TemplateIcon = "ARROW_DOWN"
+	TemplateIconARROWLEFT      TemplateIcon = "ARROW_LEFT"
+	TemplateIconARROWUPLEFT    TemplateIcon = "ARROW_UP_LEFT"
+	TemplateIconARROWDOWNLEFT  TemplateIcon = "ARROW_DOWN_LEFT"
+	TemplateIconARROWRIGHT     TemplateIcon = "ARROW_RIGHT"
+	TemplateIconARROWUPRIGHT   TemplateIcon = "ARROW_UP_RIGHT"
+	TemplateIconARROWDOWNRIGHT TemplateIcon = "ARROW_DOWN_RIGHT"
+	TemplateIconFACEUP         TemplateIcon = "FACE_UP"
+	TemplateIconFACEDOWN       TemplateIcon = "FACE_DOWN"
+	TemplateIconFACEFLAT       TemplateIcon = "FACE_FLAT"
+	TemplateIconONEBAR         TemplateIcon = "ONE_BAR"
+	TemplateIconTWOBAR         TemplateIcon = "TWO_BAR"
+	TemplateIconTHREEBAR       TemplateIcon = "THREE_BAR"
+	TemplateIconCIRCLE         TemplateIcon = "CIRCLE"
+	TemplateIconTRIANGLE       TemplateIcon = "TRIANGLE"
+	TemplateIconSQUARE         TemplateIcon = "SQUARE"
+	TemplateIconFLAG           TemplateIcon = "FLAG"
+	TemplateIconTHUMBSUP       TemplateIcon = "THUMBS_UP"
+	TemplateIconTHUMBSDOWN     TemplateIcon = "THUMBS_DOWN"
+	TemplateIconCHECKMARK      TemplateIcon = "CHECKMARK"
+	TemplateIconX              TemplateIcon = "X"
+)
+
+type TemplateConditionalFormattingIconSetType string
+
+const (
+	TemplateConditionalFormattingIconSetTypePLUSMINUS        TemplateConditionalFormattingIconSetType = "PLUS_MINUS"
+	TemplateConditionalFormattingIconSetTypeCHECKX           TemplateConditionalFormattingIconSetType = "CHECK_X"
+	TemplateConditionalFormattingIconSetTypeTHREECOLORARROW  TemplateConditionalFormattingIconSetType = "THREE_COLOR_ARROW"
+	TemplateConditionalFormattingIconSetTypeTHREEGRAYARROW   TemplateConditionalFormattingIconSetType = "THREE_GRAY_ARROW"
+	TemplateConditionalFormattingIconSetTypeCARETUPMINUSDOWN TemplateConditionalFormattingIconSetType = "CARET_UP_MINUS_DOWN"
+	TemplateConditionalFormattingIconSetTypeTHREESHAPE       TemplateConditionalFormattingIconSetType = "THREE_SHAPE"
+	TemplateConditionalFormattingIconSetTypeTHREECIRCLE      TemplateConditionalFormattingIconSetType = "THREE_CIRCLE"
+	TemplateConditionalFormattingIconSetTypeFLAGS            TemplateConditionalFormattingIconSetType = "FLAGS"
+	TemplateConditionalFormattingIconSetTypeBARS             TemplateConditionalFormattingIconSetType = "BARS"
+	TemplateConditionalFormattingIconSetTypeFOURCOLORARROW   TemplateConditionalFormattingIconSetType = "FOUR_COLOR_ARROW"
+	TemplateConditionalFormattingIconSetTypeFOURGRAYARROW    TemplateConditionalFormattingIconSetType = "FOUR_GRAY_ARROW"
+)
+
+type TemplateGeospatialSelectedPointStyle string
+
+const (
+	TemplateGeospatialSelectedPointStylePOINT   TemplateGeospatialSelectedPointStyle = "POINT"
+	TemplateGeospatialSelectedPointStyleCLUSTER TemplateGeospatialSelectedPointStyle = "CLUSTER"
+	TemplateGeospatialSelectedPointStyleHEATMAP TemplateGeospatialSelectedPointStyle = "HEATMAP"
+)
+
+type TemplateColorFillType string
+
+const (
+	TemplateColorFillTypeDISCRETE TemplateColorFillType = "DISCRETE"
+	TemplateColorFillTypeGRADIENT TemplateColorFillType = "GRADIENT"
+)
+
+type TemplateHistogramBinType string
+
+const (
+	TemplateHistogramBinTypeBINCOUNT TemplateHistogramBinType = "BIN_COUNT"
+	TemplateHistogramBinTypeBINWIDTH TemplateHistogramBinType = "BIN_WIDTH"
+)
+
+type TemplateForecastComputationSeasonality string
+
+const (
+	TemplateForecastComputationSeasonalityAUTOMATIC TemplateForecastComputationSeasonality = "AUTOMATIC"
+	TemplateForecastComputationSeasonalityCUSTOM    TemplateForecastComputationSeasonality = "CUSTOM"
+)
+
+type TemplateMaximumMinimumComputationType string
+
+const (
+	TemplateMaximumMinimumComputationTypeMAXIMUM TemplateMaximumMinimumComputationType = "MAXIMUM"
+	TemplateMaximumMinimumComputationTypeMINIMUM TemplateMaximumMinimumComputationType = "MINIMUM"
+)
+
+type TemplateTopBottomSortOrder string
+
+const (
+	TemplateTopBottomSortOrderPERCENTDIFFERENCE  TemplateTopBottomSortOrder = "PERCENT_DIFFERENCE"
+	TemplateTopBottomSortOrderABSOLUTEDIFFERENCE TemplateTopBottomSortOrder = "ABSOLUTE_DIFFERENCE"
+)
+
+type TemplateTopBottomComputationType string
+
+const (
+	TemplateTopBottomComputationTypeTOP    TemplateTopBottomComputationType = "TOP"
+	TemplateTopBottomComputationTypeBOTTOM TemplateTopBottomComputationType = "BOTTOM"
+)
+
+type TemplateKPISparklineType string
+
+const (
+	TemplateKPISparklineTypeLINE TemplateKPISparklineType = "LINE"
+	TemplateKPISparklineTypeAREA TemplateKPISparklineType = "AREA"
+)
+
+type TemplateKPIVisualStandardLayoutType string
+
+const (
+	TemplateKPIVisualStandardLayoutTypeCLASSIC  TemplateKPIVisualStandardLayoutType = "CLASSIC"
+	TemplateKPIVisualStandardLayoutTypeVERTICAL TemplateKPIVisualStandardLayoutType = "VERTICAL"
+)
+
+type TemplateLineInterpolation string
+
+const (
+	TemplateLineInterpolationLINEAR  TemplateLineInterpolation = "LINEAR"
+	TemplateLineInterpolationSMOOTH  TemplateLineInterpolation = "SMOOTH"
+	TemplateLineInterpolationSTEPPED TemplateLineInterpolation = "STEPPED"
+)
+
+type TemplateLineChartLineStyle string
+
+const (
+	TemplateLineChartLineStyleSOLID  TemplateLineChartLineStyle = "SOLID"
+	TemplateLineChartLineStyleDOTTED TemplateLineChartLineStyle = "DOTTED"
+	TemplateLineChartLineStyleDASHED TemplateLineChartLineStyle = "DASHED"
+)
+
+type TemplateLineChartMarkerShape string
+
+const (
+	TemplateLineChartMarkerShapeCIRCLE        TemplateLineChartMarkerShape = "CIRCLE"
+	TemplateLineChartMarkerShapeTRIANGLE      TemplateLineChartMarkerShape = "TRIANGLE"
+	TemplateLineChartMarkerShapeSQUARE        TemplateLineChartMarkerShape = "SQUARE"
+	TemplateLineChartMarkerShapeDIAMOND       TemplateLineChartMarkerShape = "DIAMOND"
+	TemplateLineChartMarkerShapeROUNDEDSQUARE TemplateLineChartMarkerShape = "ROUNDED_SQUARE"
+)
+
+type TemplateMissingDataTreatmentOption string
+
+const (
+	TemplateMissingDataTreatmentOptionINTERPOLATE TemplateMissingDataTreatmentOption = "INTERPOLATE"
+	TemplateMissingDataTreatmentOptionSHOWASZERO  TemplateMissingDataTreatmentOption = "SHOW_AS_ZERO"
+	TemplateMissingDataTreatmentOptionSHOWASBLANK TemplateMissingDataTreatmentOption = "SHOW_AS_BLANK"
+)
+
+type TemplateLineChartType string
+
+const (
+	TemplateLineChartTypeLINE        TemplateLineChartType = "LINE"
+	TemplateLineChartTypeAREA        TemplateLineChartType = "AREA"
+	TemplateLineChartTypeSTACKEDAREA TemplateLineChartType = "STACKED_AREA"
+)
+
+type TemplateArcThickness string
+
+const (
+	TemplateArcThicknessSMALL  TemplateArcThickness = "SMALL"
+	TemplateArcThicknessMEDIUM TemplateArcThickness = "MEDIUM"
+	TemplateArcThicknessLARGE  TemplateArcThickness = "LARGE"
+	TemplateArcThicknessWHOLE  TemplateArcThickness = "WHOLE"
+)
+
+type TemplatePivotTableFieldCollapseState string
+
+const (
+	TemplatePivotTableFieldCollapseStateCOLLAPSED TemplatePivotTableFieldCollapseState = "COLLAPSED"
+	TemplatePivotTableFieldCollapseStateEXPANDED  TemplatePivotTableFieldCollapseState = "EXPANDED"
+)
+
+type TemplateTableBorderStyle string
+
+const (
+	TemplateTableBorderStyleNONE  TemplateTableBorderStyle = "NONE"
+	TemplateTableBorderStyleSOLID TemplateTableBorderStyle = "SOLID"
+)
+
+type TemplateTextWrap string
+
+const (
+	TemplateTextWrapNONE TemplateTextWrap = "NONE"
+	TemplateTextWrapWRAP TemplateTextWrap = "WRAP"
+)
+
+type TemplateVerticalTextAlignment string
+
+const (
+	TemplateVerticalTextAlignmentTOP    TemplateVerticalTextAlignment = "TOP"
+	TemplateVerticalTextAlignmentMIDDLE TemplateVerticalTextAlignment = "MIDDLE"
+	TemplateVerticalTextAlignmentBOTTOM TemplateVerticalTextAlignment = "BOTTOM"
+	TemplateVerticalTextAlignmentAUTO   TemplateVerticalTextAlignment = "AUTO"
+)
+
+type TemplatePivotTableMetricPlacement string
+
+const (
+	TemplatePivotTableMetricPlacementROW    TemplatePivotTableMetricPlacement = "ROW"
+	TemplatePivotTableMetricPlacementCOLUMN TemplatePivotTableMetricPlacement = "COLUMN"
+)
+
+type TemplatePivotTableRowsLayout string
+
+const (
+	TemplatePivotTableRowsLayoutTABULAR   TemplatePivotTableRowsLayout = "TABULAR"
+	TemplatePivotTableRowsLayoutHIERARCHY TemplatePivotTableRowsLayout = "HIERARCHY"
+)
+
+type TemplatePivotTableSubtotalLevel string
+
+const (
+	TemplatePivotTableSubtotalLevelALL    TemplatePivotTableSubtotalLevel = "ALL"
+	TemplatePivotTableSubtotalLevelCUSTOM TemplatePivotTableSubtotalLevel = "CUSTOM"
+	TemplatePivotTableSubtotalLevelLAST   TemplatePivotTableSubtotalLevel = "LAST"
+)
+
+type TemplateStyledCellType string
+
+const (
+	TemplateStyledCellTypeTOTAL        TemplateStyledCellType = "TOTAL"
+	TemplateStyledCellTypeMETRICHEADER TemplateStyledCellType = "METRIC_HEADER"
+	TemplateStyledCellTypeVALUE        TemplateStyledCellType = "VALUE"
+)
+
+type TemplateTableTotalsPlacement string
+
+const (
+	TemplateTableTotalsPlacementSTART TemplateTableTotalsPlacement = "START"
+	TemplateTableTotalsPlacementEND   TemplateTableTotalsPlacement = "END"
+	TemplateTableTotalsPlacementAUTO  TemplateTableTotalsPlacement = "AUTO"
+)
+
+type TemplateTableTotalsScrollStatus string
+
+const (
+	TemplateTableTotalsScrollStatusPINNED   TemplateTableTotalsScrollStatus = "PINNED"
+	TemplateTableTotalsScrollStatusSCROLLED TemplateTableTotalsScrollStatus = "SCROLLED"
+)
+
+type TemplateSimpleTotalAggregationFunction string
+
+const (
+	TemplateSimpleTotalAggregationFunctionDEFAULT TemplateSimpleTotalAggregationFunction = "DEFAULT"
+	TemplateSimpleTotalAggregationFunctionSUM     TemplateSimpleTotalAggregationFunction = "SUM"
+	TemplateSimpleTotalAggregationFunctionAVERAGE TemplateSimpleTotalAggregationFunction = "AVERAGE"
+	TemplateSimpleTotalAggregationFunctionMIN     TemplateSimpleTotalAggregationFunction = "MIN"
+	TemplateSimpleTotalAggregationFunctionMAX     TemplateSimpleTotalAggregationFunction = "MAX"
+	TemplateSimpleTotalAggregationFunctionNONE    TemplateSimpleTotalAggregationFunction = "NONE"
+)
+
+type TemplatePivotTableConditionalFormattingScopeRole string
+
+const (
+	TemplatePivotTableConditionalFormattingScopeRoleFIELD      TemplatePivotTableConditionalFormattingScopeRole = "FIELD"
+	TemplatePivotTableConditionalFormattingScopeRoleFIELDTOTAL TemplatePivotTableConditionalFormattingScopeRole = "FIELD_TOTAL"
+	TemplatePivotTableConditionalFormattingScopeRoleGRANDTOTAL TemplatePivotTableConditionalFormattingScopeRole = "GRAND_TOTAL"
+)
+
+type TemplatePluginVisualAxisName string
+
+const (
+	TemplatePluginVisualAxisNameGROUPBY TemplatePluginVisualAxisName = "GROUP_BY"
+	TemplatePluginVisualAxisNameVALUE   TemplatePluginVisualAxisName = "VALUE"
+)
+
+type TemplateRadarChartAxesRangeScale string
+
+const (
+	TemplateRadarChartAxesRangeScaleAUTO        TemplateRadarChartAxesRangeScale = "AUTO"
+	TemplateRadarChartAxesRangeScaleINDEPENDENT TemplateRadarChartAxesRangeScale = "INDEPENDENT"
+	TemplateRadarChartAxesRangeScaleSHARED      TemplateRadarChartAxesRangeScale = "SHARED"
+)
+
+type TemplateRadarChartShape string
+
+const (
+	TemplateRadarChartShapeCIRCLE  TemplateRadarChartShape = "CIRCLE"
+	TemplateRadarChartShapePOLYGON TemplateRadarChartShape = "POLYGON"
+)
+
+type TemplateTableCellImageScalingConfiguration string
+
+const (
+	TemplateTableCellImageScalingConfigurationFITTOCELLHEIGHT TemplateTableCellImageScalingConfiguration = "FIT_TO_CELL_HEIGHT"
+	TemplateTableCellImageScalingConfigurationFITTOCELLWIDTH  TemplateTableCellImageScalingConfiguration = "FIT_TO_CELL_WIDTH"
+	TemplateTableCellImageScalingConfigurationDONOTSCALE      TemplateTableCellImageScalingConfiguration = "DO_NOT_SCALE"
+)
+
+type TemplateTableFieldIconSetType string
+
+const (
+	TemplateTableFieldIconSetTypeLINK TemplateTableFieldIconSetType = "LINK"
+)
+
+type TemplateTransposedColumnType string
+
+const (
+	TemplateTransposedColumnTypeROWHEADERCOLUMN TemplateTransposedColumnType = "ROW_HEADER_COLUMN"
+	TemplateTransposedColumnTypeVALUECOLUMN     TemplateTransposedColumnType = "VALUE_COLUMN"
+)
+
+type TemplateTableOrientation string
+
+const (
+	TemplateTableOrientationVERTICAL   TemplateTableOrientation = "VERTICAL"
+	TemplateTableOrientationHORIZONTAL TemplateTableOrientation = "HORIZONTAL"
+)
+
+type TemplateWordCloudCloudLayout string
+
+const (
+	TemplateWordCloudCloudLayoutFLUID  TemplateWordCloudCloudLayout = "FLUID"
+	TemplateWordCloudCloudLayoutNORMAL TemplateWordCloudCloudLayout = "NORMAL"
+)
+
+type TemplateWordCloudWordCasing string
+
+const (
+	TemplateWordCloudWordCasingLOWERCASE    TemplateWordCloudWordCasing = "LOWER_CASE"
+	TemplateWordCloudWordCasingEXISTINGCASE TemplateWordCloudWordCasing = "EXISTING_CASE"
+)
+
+type TemplateWordCloudWordOrientation string
+
+const (
+	TemplateWordCloudWordOrientationHORIZONTAL            TemplateWordCloudWordOrientation = "HORIZONTAL"
+	TemplateWordCloudWordOrientationHORIZONTALANDVERTICAL TemplateWordCloudWordOrientation = "HORIZONTAL_AND_VERTICAL"
+)
+
+type TemplateWordCloudWordPadding string
+
+const (
+	TemplateWordCloudWordPaddingNONE   TemplateWordCloudWordPadding = "NONE"
+	TemplateWordCloudWordPaddingSMALL  TemplateWordCloudWordPadding = "SMALL"
+	TemplateWordCloudWordPaddingMEDIUM TemplateWordCloudWordPadding = "MEDIUM"
+	TemplateWordCloudWordPaddingLARGE  TemplateWordCloudWordPadding = "LARGE"
+)
+
+type TemplateWordCloudWordScaling string
+
+const (
+	TemplateWordCloudWordScalingEMPHASIZE TemplateWordCloudWordScaling = "EMPHASIZE"
+	TemplateWordCloudWordScalingNORMAL    TemplateWordCloudWordScaling = "NORMAL"
+)
+
+type TemplateValidationStrategyMode string
+
+const (
+	TemplateValidationStrategyModeSTRICT  TemplateValidationStrategyMode = "STRICT"
+	TemplateValidationStrategyModeLENIENT TemplateValidationStrategyMode = "LENIENT"
+)
+
+type TemplateErrorType string
+
+const (
+	TemplateErrorTypeSOURCENOTFOUND  TemplateErrorType = "SOURCE_NOT_FOUND"
+	TemplateErrorTypeDATASETNOTFOUND TemplateErrorType = "DATA_SET_NOT_FOUND"
+	TemplateErrorTypeINTERNALFAILURE TemplateErrorType = "INTERNAL_FAILURE"
+	TemplateErrorTypeACCESSDENIED    TemplateErrorType = "ACCESS_DENIED"
+)
+
+type TemplateResourceStatus string
+
+const (
+	TemplateResourceStatusCREATIONINPROGRESS TemplateResourceStatus = "CREATION_IN_PROGRESS"
+	TemplateResourceStatusCREATIONSUCCESSFUL TemplateResourceStatus = "CREATION_SUCCESSFUL"
+	TemplateResourceStatusCREATIONFAILED     TemplateResourceStatus = "CREATION_FAILED"
+	TemplateResourceStatusUPDATEINPROGRESS   TemplateResourceStatus = "UPDATE_IN_PROGRESS"
+	TemplateResourceStatusUPDATESUCCESSFUL   TemplateResourceStatus = "UPDATE_SUCCESSFUL"
+	TemplateResourceStatusUPDATEFAILED       TemplateResourceStatus = "UPDATE_FAILED"
+	TemplateResourceStatusPENDINGUPDATE      TemplateResourceStatus = "PENDING_UPDATE"
+	TemplateResourceStatusDELETED            TemplateResourceStatus = "DELETED"
+)
+
+type ThemeType string
+
+const (
+	ThemeTypeQUICKSIGHT ThemeType = "QUICKSIGHT"
+	ThemeTypeCUSTOM     ThemeType = "CUSTOM"
+	ThemeTypeALL        ThemeType = "ALL"
+)
+
+type ThemeErrorType string
+
+const (
+	ThemeErrorTypeINTERNALFAILURE ThemeErrorType = "INTERNAL_FAILURE"
+)
+
+type ThemeResourceStatus string
+
+const (
+	ThemeResourceStatusCREATIONINPROGRESS ThemeResourceStatus = "CREATION_IN_PROGRESS"
+	ThemeResourceStatusCREATIONSUCCESSFUL ThemeResourceStatus = "CREATION_SUCCESSFUL"
+	ThemeResourceStatusCREATIONFAILED     ThemeResourceStatus = "CREATION_FAILED"
+	ThemeResourceStatusUPDATEINPROGRESS   ThemeResourceStatus = "UPDATE_IN_PROGRESS"
+	ThemeResourceStatusUPDATESUCCESSFUL   ThemeResourceStatus = "UPDATE_SUCCESSFUL"
+	ThemeResourceStatusUPDATEFAILED       ThemeResourceStatus = "UPDATE_FAILED"
+	ThemeResourceStatusPENDINGUPDATE      ThemeResourceStatus = "PENDING_UPDATE"
+	ThemeResourceStatusDELETED            ThemeResourceStatus = "DELETED"
+)
+
+type DefaultAggregation string
+
+const (
+	DefaultAggregationSUM           DefaultAggregation = "SUM"
+	DefaultAggregationMAX           DefaultAggregation = "MAX"
+	DefaultAggregationMIN           DefaultAggregation = "MIN"
+	DefaultAggregationCOUNT         DefaultAggregation = "COUNT"
+	DefaultAggregationDISTINCTCOUNT DefaultAggregation = "DISTINCT_COUNT"
+	DefaultAggregationAVERAGE       DefaultAggregation = "AVERAGE"
+	DefaultAggregationMEDIAN        DefaultAggregation = "MEDIAN"
+	DefaultAggregationSTDEV         DefaultAggregation = "STDEV"
+	DefaultAggregationSTDEVP        DefaultAggregation = "STDEVP"
+	DefaultAggregationVAR           DefaultAggregation = "VAR"
+	DefaultAggregationVARP          DefaultAggregation = "VARP"
+)
+
+type AuthorSpecifiedAggregation string
+
+const (
+	AuthorSpecifiedAggregationCOUNT         AuthorSpecifiedAggregation = "COUNT"
+	AuthorSpecifiedAggregationDISTINCTCOUNT AuthorSpecifiedAggregation = "DISTINCT_COUNT"
+	AuthorSpecifiedAggregationMIN           AuthorSpecifiedAggregation = "MIN"
+	AuthorSpecifiedAggregationMAX           AuthorSpecifiedAggregation = "MAX"
+	AuthorSpecifiedAggregationMEDIAN        AuthorSpecifiedAggregation = "MEDIAN"
+	AuthorSpecifiedAggregationSUM           AuthorSpecifiedAggregation = "SUM"
+	AuthorSpecifiedAggregationAVERAGE       AuthorSpecifiedAggregation = "AVERAGE"
+	AuthorSpecifiedAggregationSTDEV         AuthorSpecifiedAggregation = "STDEV"
+	AuthorSpecifiedAggregationSTDEVP        AuthorSpecifiedAggregation = "STDEVP"
+	AuthorSpecifiedAggregationVAR           AuthorSpecifiedAggregation = "VAR"
+	AuthorSpecifiedAggregationVARP          AuthorSpecifiedAggregation = "VARP"
+	AuthorSpecifiedAggregationPERCENTILE    AuthorSpecifiedAggregation = "PERCENTILE"
+)
+
+type ColumnDataRole string
+
+const (
+	ColumnDataRoleDIMENSION ColumnDataRole = "DIMENSION"
+	ColumnDataRoleMEASURE   ColumnDataRole = "MEASURE"
+)
+
+type UndefinedSpecifiedValueType string
+
+const (
+	UndefinedSpecifiedValueTypeLEAST UndefinedSpecifiedValueType = "LEAST"
+	UndefinedSpecifiedValueTypeMOST  UndefinedSpecifiedValueType = "MOST"
+)
+
+type ColumnOrderingType string
+
+const (
+	ColumnOrderingTypeGREATERISBETTER ColumnOrderingType = "GREATER_IS_BETTER"
+	ColumnOrderingTypeLESSERISBETTER  ColumnOrderingType = "LESSER_IS_BETTER"
+	ColumnOrderingTypeSPECIFIED       ColumnOrderingType = "SPECIFIED"
+)
+
+type DisplayFormat string
+
+const (
+	DisplayFormatAUTO     DisplayFormat = "AUTO"
+	DisplayFormatPERCENT  DisplayFormat = "PERCENT"
+	DisplayFormatCURRENCY DisplayFormat = "CURRENCY"
+	DisplayFormatNUMBER   DisplayFormat = "NUMBER"
+	DisplayFormatDATE     DisplayFormat = "DATE"
+	DisplayFormatSTRING   DisplayFormat = "STRING"
+)
+
+type TopicNumericSeparatorSymbol string
+
+const (
+	TopicNumericSeparatorSymbolCOMMA TopicNumericSeparatorSymbol = "COMMA"
+	TopicNumericSeparatorSymbolDOT   TopicNumericSeparatorSymbol = "DOT"
+)
+
+type TopicNumberScale string
+
+const (
+	TopicNumberScaleNONE      TopicNumberScale = "NONE"
+	TopicNumberScaleAUTO      TopicNumberScale = "AUTO"
+	TopicNumberScaleTHOUSANDS TopicNumberScale = "THOUSANDS"
+	TopicNumberScaleMILLIONS  TopicNumberScale = "MILLIONS"
+	TopicNumberScaleBILLIONS  TopicNumberScale = "BILLIONS"
+	TopicNumberScaleTRILLIONS TopicNumberScale = "TRILLIONS"
+	TopicNumberScaleLAKHS     TopicNumberScale = "LAKHS"
+	TopicNumberScaleCRORES    TopicNumberScale = "CRORES"
+)
+
+type TopicTimeGranularity string
+
+const (
+	TopicTimeGranularitySECOND  TopicTimeGranularity = "SECOND"
+	TopicTimeGranularityMINUTE  TopicTimeGranularity = "MINUTE"
+	TopicTimeGranularityHOUR    TopicTimeGranularity = "HOUR"
+	TopicTimeGranularityDAY     TopicTimeGranularity = "DAY"
+	TopicTimeGranularityWEEK    TopicTimeGranularity = "WEEK"
+	TopicTimeGranularityMONTH   TopicTimeGranularity = "MONTH"
+	TopicTimeGranularityQUARTER TopicTimeGranularity = "QUARTER"
+	TopicTimeGranularityYEAR    TopicTimeGranularity = "YEAR"
+)
+
+type CategoryFilterFunction string
+
+const (
+	CategoryFilterFunctionEXACT    CategoryFilterFunction = "EXACT"
+	CategoryFilterFunctionCONTAINS CategoryFilterFunction = "CONTAINS"
+)
+
+type CategoryFilterType string
+
+const (
+	CategoryFilterTypeCUSTOMFILTER     CategoryFilterType = "CUSTOM_FILTER"
+	CategoryFilterTypeCUSTOMFILTERLIST CategoryFilterType = "CUSTOM_FILTER_LIST"
+	CategoryFilterTypeFILTERLIST       CategoryFilterType = "FILTER_LIST"
+)
+
+type ConstantType string
+
+const (
+	ConstantTypeSINGULAR   ConstantType = "SINGULAR"
+	ConstantTypeRANGE      ConstantType = "RANGE"
+	ConstantTypeCOLLECTIVE ConstantType = "COLLECTIVE"
+)
+
+type FilterClass string
+
+const (
+	FilterClassENFORCEDVALUEFILTER    FilterClass = "ENFORCED_VALUE_FILTER"
+	FilterClassCONDITIONALVALUEFILTER FilterClass = "CONDITIONAL_VALUE_FILTER"
+	FilterClassNAMEDVALUEFILTER       FilterClass = "NAMED_VALUE_FILTER"
+	FilterClassDASHBOARDDEFAULTFILTER FilterClass = "DASHBOARD_DEFAULT_FILTER"
+)
+
+type NamedFilterType string
+
+const (
+	NamedFilterTypeCATEGORYFILTER        NamedFilterType = "CATEGORY_FILTER"
+	NamedFilterTypeNUMERICEQUALITYFILTER NamedFilterType = "NUMERIC_EQUALITY_FILTER"
+	NamedFilterTypeNUMERICRANGEFILTER    NamedFilterType = "NUMERIC_RANGE_FILTER"
+	NamedFilterTypeDATERANGEFILTER       NamedFilterType = "DATE_RANGE_FILTER"
+	NamedFilterTypeRELATIVEDATEFILTER    NamedFilterType = "RELATIVE_DATE_FILTER"
+	NamedFilterTypeNULLFILTER            NamedFilterType = "NULL_FILTER"
+)
+
+type NamedFilterAggType string
+
+const (
+	NamedFilterAggTypeNOAGGREGATION NamedFilterAggType = "NO_AGGREGATION"
+	NamedFilterAggTypeSUM           NamedFilterAggType = "SUM"
+	NamedFilterAggTypeAVERAGE       NamedFilterAggType = "AVERAGE"
+	NamedFilterAggTypeCOUNT         NamedFilterAggType = "COUNT"
+	NamedFilterAggTypeDISTINCTCOUNT NamedFilterAggType = "DISTINCT_COUNT"
+	NamedFilterAggTypeMAX           NamedFilterAggType = "MAX"
+	NamedFilterAggTypeMEDIAN        NamedFilterAggType = "MEDIAN"
+	NamedFilterAggTypeMIN           NamedFilterAggType = "MIN"
+	NamedFilterAggTypeSTDEV         NamedFilterAggType = "STDEV"
+	NamedFilterAggTypeSTDEVP        NamedFilterAggType = "STDEVP"
+	NamedFilterAggTypeVAR           NamedFilterAggType = "VAR"
+	NamedFilterAggTypeVARP          NamedFilterAggType = "VARP"
+)
+
+type TopicRelativeDateFilterFunction string
+
+const (
+	TopicRelativeDateFilterFunctionPREVIOUS TopicRelativeDateFilterFunction = "PREVIOUS"
+	TopicRelativeDateFilterFunctionTHIS     TopicRelativeDateFilterFunction = "THIS"
+	TopicRelativeDateFilterFunctionLAST     TopicRelativeDateFilterFunction = "LAST"
+	TopicRelativeDateFilterFunctionNEXT     TopicRelativeDateFilterFunction = "NEXT"
+	TopicRelativeDateFilterFunctionNOW      TopicRelativeDateFilterFunction = "NOW"
+)
+
+type NamedEntityAggType string
+
+const (
+	NamedEntityAggTypeSUM           NamedEntityAggType = "SUM"
+	NamedEntityAggTypeMIN           NamedEntityAggType = "MIN"
+	NamedEntityAggTypeMAX           NamedEntityAggType = "MAX"
+	NamedEntityAggTypeCOUNT         NamedEntityAggType = "COUNT"
+	NamedEntityAggTypeAVERAGE       NamedEntityAggType = "AVERAGE"
+	NamedEntityAggTypeDISTINCTCOUNT NamedEntityAggType = "DISTINCT_COUNT"
+	NamedEntityAggTypeSTDEV         NamedEntityAggType = "STDEV"
+	NamedEntityAggTypeSTDEVP        NamedEntityAggType = "STDEVP"
+	NamedEntityAggTypeVAR           NamedEntityAggType = "VAR"
+	NamedEntityAggTypeVARP          NamedEntityAggType = "VARP"
+	NamedEntityAggTypePERCENTILE    NamedEntityAggType = "PERCENTILE"
+	NamedEntityAggTypeMEDIAN        NamedEntityAggType = "MEDIAN"
+	NamedEntityAggTypeCUSTOM        NamedEntityAggType = "CUSTOM"
+)
+
+type PropertyRole string
+
+const (
+	PropertyRolePRIMARY PropertyRole = "PRIMARY"
+	PropertyRoleID      PropertyRole = "ID"
+)
+
+type PropertyUsage string
+
+const (
+	PropertyUsageINHERIT   PropertyUsage = "INHERIT"
+	PropertyUsageDIMENSION PropertyUsage = "DIMENSION"
+	PropertyUsageMEASURE   PropertyUsage = "MEASURE"
+)
+
+type TopicUserExperienceVersion string
+
+const (
+	TopicUserExperienceVersionLEGACY              TopicUserExperienceVersion = "LEGACY"
+	TopicUserExperienceVersionNEWREADEREXPERIENCE TopicUserExperienceVersion = "NEW_READER_EXPERIENCE"
+)
+
+type VPCConnectionAvailabilityStatus string
+
+const (
+	VPCConnectionAvailabilityStatusAVAILABLE          VPCConnectionAvailabilityStatus = "AVAILABLE"
+	VPCConnectionAvailabilityStatusUNAVAILABLE        VPCConnectionAvailabilityStatus = "UNAVAILABLE"
+	VPCConnectionAvailabilityStatusPARTIALLYAVAILABLE VPCConnectionAvailabilityStatus = "PARTIALLY_AVAILABLE"
+)
+
+type NetworkInterfaceStatus string
+
+const (
+	NetworkInterfaceStatusCREATING                       NetworkInterfaceStatus = "CREATING"
+	NetworkInterfaceStatusAVAILABLE                      NetworkInterfaceStatus = "AVAILABLE"
+	NetworkInterfaceStatusCREATIONFAILED                 NetworkInterfaceStatus = "CREATION_FAILED"
+	NetworkInterfaceStatusUPDATING                       NetworkInterfaceStatus = "UPDATING"
+	NetworkInterfaceStatusUPDATEFAILED                   NetworkInterfaceStatus = "UPDATE_FAILED"
+	NetworkInterfaceStatusDELETING                       NetworkInterfaceStatus = "DELETING"
+	NetworkInterfaceStatusDELETED                        NetworkInterfaceStatus = "DELETED"
+	NetworkInterfaceStatusDELETIONFAILED                 NetworkInterfaceStatus = "DELETION_FAILED"
+	NetworkInterfaceStatusDELETIONSCHEDULED              NetworkInterfaceStatus = "DELETION_SCHEDULED"
+	NetworkInterfaceStatusATTACHMENTFAILEDROLLBACKFAILED NetworkInterfaceStatus = "ATTACHMENT_FAILED_ROLLBACK_FAILED"
+)
+
+type VPCConnectionResourceStatus string
+
+const (
+	VPCConnectionResourceStatusCREATIONINPROGRESS VPCConnectionResourceStatus = "CREATION_IN_PROGRESS"
+	VPCConnectionResourceStatusCREATIONSUCCESSFUL VPCConnectionResourceStatus = "CREATION_SUCCESSFUL"
+	VPCConnectionResourceStatusCREATIONFAILED     VPCConnectionResourceStatus = "CREATION_FAILED"
+	VPCConnectionResourceStatusUPDATEINPROGRESS   VPCConnectionResourceStatus = "UPDATE_IN_PROGRESS"
+	VPCConnectionResourceStatusUPDATESUCCESSFUL   VPCConnectionResourceStatus = "UPDATE_SUCCESSFUL"
+	VPCConnectionResourceStatusUPDATEFAILED       VPCConnectionResourceStatus = "UPDATE_FAILED"
+	VPCConnectionResourceStatusDELETIONINPROGRESS VPCConnectionResourceStatus = "DELETION_IN_PROGRESS"
+	VPCConnectionResourceStatusDELETIONFAILED     VPCConnectionResourceStatus = "DELETION_FAILED"
+	VPCConnectionResourceStatusDELETED            VPCConnectionResourceStatus = "DELETED"
+)

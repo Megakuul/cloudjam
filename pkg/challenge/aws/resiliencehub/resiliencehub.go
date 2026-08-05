@@ -4,15 +4,15 @@
 package resiliencehub
 
 type EventSubscription struct {
-	EventType   *string `json:"EventType,omitempty"`
-	Name        *string `json:"Name,omitempty"`
-	SnsTopicArn *string `json:"SnsTopicArn,omitempty"`
+	EventType   *EventSubscriptionEventType `json:"EventType,omitempty"`
+	Name        *string                     `json:"Name,omitempty"`
+	SnsTopicArn *string                     `json:"SnsTopicArn,omitempty"`
 }
 
 type PermissionModel struct {
-	CrossAccountRoleArns []string `json:"CrossAccountRoleArns,omitempty"`
-	InvokerRoleName      *string  `json:"InvokerRoleName,omitempty"`
-	Type                 *string  `json:"Type,omitempty"`
+	CrossAccountRoleArns []string             `json:"CrossAccountRoleArns,omitempty"`
+	InvokerRoleName      *string              `json:"InvokerRoleName,omitempty"`
+	Type                 *PermissionModelType `json:"Type,omitempty"`
 }
 
 type PhysicalResourceId struct {
@@ -32,17 +32,17 @@ type ResourceMapping struct {
 }
 
 type App struct {
-	AppArn                *string             `json:"AppArn,omitempty"`
-	AppAssessmentSchedule *string             `json:"AppAssessmentSchedule,omitempty"`
-	AppTemplateBody       *string             `json:"AppTemplateBody,omitempty"`
-	Description           *string             `json:"Description,omitempty"`
-	DriftStatus           *string             `json:"DriftStatus,omitempty"`
-	EventSubscriptions    []EventSubscription `json:"EventSubscriptions,omitempty"`
-	Name                  *string             `json:"Name,omitempty"`
-	PermissionModel       *PermissionModel    `json:"PermissionModel,omitempty"`
-	ResiliencyPolicyArn   *string             `json:"ResiliencyPolicyArn,omitempty"`
-	ResourceMappings      []ResourceMapping   `json:"ResourceMappings,omitempty"`
-	Tags                  map[string]string   `json:"Tags,omitempty"`
+	AppArn                *string                   `json:"AppArn,omitempty"`
+	AppAssessmentSchedule *AppAppAssessmentSchedule `json:"AppAssessmentSchedule,omitempty"`
+	AppTemplateBody       *string                   `json:"AppTemplateBody,omitempty"`
+	Description           *string                   `json:"Description,omitempty"`
+	DriftStatus           *AppDriftStatus           `json:"DriftStatus,omitempty"`
+	EventSubscriptions    []EventSubscription       `json:"EventSubscriptions,omitempty"`
+	Name                  *string                   `json:"Name,omitempty"`
+	PermissionModel       *PermissionModel          `json:"PermissionModel,omitempty"`
+	ResiliencyPolicyArn   *string                   `json:"ResiliencyPolicyArn,omitempty"`
+	ResourceMappings      []ResourceMapping         `json:"ResourceMappings,omitempty"`
+	Tags                  map[string]string         `json:"Tags,omitempty"`
 }
 
 func (App) CloudControlType() string { return "AWS::ResilienceHub::App" }
@@ -60,13 +60,60 @@ type PolicyMap struct {
 }
 
 type ResiliencyPolicy struct {
-	DataLocationConstraint *string           `json:"DataLocationConstraint,omitempty"`
-	Policy                 *PolicyMap        `json:"Policy,omitempty"`
-	PolicyArn              *string           `json:"PolicyArn,omitempty"`
-	PolicyDescription      *string           `json:"PolicyDescription,omitempty"`
-	PolicyName             *string           `json:"PolicyName,omitempty"`
-	Tags                   map[string]string `json:"Tags,omitempty"`
-	Tier                   *string           `json:"Tier,omitempty"`
+	DataLocationConstraint *ResiliencyPolicyDataLocationConstraint `json:"DataLocationConstraint,omitempty"`
+	Policy                 *PolicyMap                              `json:"Policy,omitempty"`
+	PolicyArn              *string                                 `json:"PolicyArn,omitempty"`
+	PolicyDescription      *string                                 `json:"PolicyDescription,omitempty"`
+	PolicyName             *string                                 `json:"PolicyName,omitempty"`
+	Tags                   map[string]string                       `json:"Tags,omitempty"`
+	Tier                   *ResiliencyPolicyTier                   `json:"Tier,omitempty"`
 }
 
 func (ResiliencyPolicy) CloudControlType() string { return "AWS::ResilienceHub::ResiliencyPolicy" }
+
+type AppAppAssessmentSchedule string
+
+const (
+	AppAppAssessmentScheduleDisabled AppAppAssessmentSchedule = "Disabled"
+	AppAppAssessmentScheduleDaily    AppAppAssessmentSchedule = "Daily"
+)
+
+type AppDriftStatus string
+
+const (
+	AppDriftStatusNotChecked  AppDriftStatus = "NotChecked"
+	AppDriftStatusNotDetected AppDriftStatus = "NotDetected"
+	AppDriftStatusDetected    AppDriftStatus = "Detected"
+)
+
+type EventSubscriptionEventType string
+
+const (
+	EventSubscriptionEventTypeScheduledAssessmentFailure EventSubscriptionEventType = "ScheduledAssessmentFailure"
+	EventSubscriptionEventTypeDriftDetected              EventSubscriptionEventType = "DriftDetected"
+)
+
+type PermissionModelType string
+
+const (
+	PermissionModelTypeLegacyIAMUser PermissionModelType = "LegacyIAMUser"
+	PermissionModelTypeRoleBased     PermissionModelType = "RoleBased"
+)
+
+type ResiliencyPolicyDataLocationConstraint string
+
+const (
+	ResiliencyPolicyDataLocationConstraintAnyLocation   ResiliencyPolicyDataLocationConstraint = "AnyLocation"
+	ResiliencyPolicyDataLocationConstraintSameContinent ResiliencyPolicyDataLocationConstraint = "SameContinent"
+	ResiliencyPolicyDataLocationConstraintSameCountry   ResiliencyPolicyDataLocationConstraint = "SameCountry"
+)
+
+type ResiliencyPolicyTier string
+
+const (
+	ResiliencyPolicyTierMissionCritical ResiliencyPolicyTier = "MissionCritical"
+	ResiliencyPolicyTierCritical        ResiliencyPolicyTier = "Critical"
+	ResiliencyPolicyTierImportant       ResiliencyPolicyTier = "Important"
+	ResiliencyPolicyTierCoreServices    ResiliencyPolicyTier = "CoreServices"
+	ResiliencyPolicyTierNonCritical     ResiliencyPolicyTier = "NonCritical"
+)

@@ -26,15 +26,15 @@ type AccessPointTag struct {
 }
 
 type AccessPoint struct {
-	AccessPointArn *string          `json:"AccessPointArn,omitempty"`
-	AccessPointId  *string          `json:"AccessPointId,omitempty"`
-	ClientToken    *string          `json:"ClientToken,omitempty"`
-	FileSystemId   *string          `json:"FileSystemId,omitempty"`
-	OwnerId        *string          `json:"OwnerId,omitempty"`
-	PosixUser      *PosixUser       `json:"PosixUser,omitempty"`
-	RootDirectory  *RootDirectory   `json:"RootDirectory,omitempty"`
-	Status         *string          `json:"Status,omitempty"`
-	Tags           []AccessPointTag `json:"Tags,omitempty"`
+	AccessPointArn *string            `json:"AccessPointArn,omitempty"`
+	AccessPointId  *string            `json:"AccessPointId,omitempty"`
+	ClientToken    *string            `json:"ClientToken,omitempty"`
+	FileSystemId   *string            `json:"FileSystemId,omitempty"`
+	OwnerId        *string            `json:"OwnerId,omitempty"`
+	PosixUser      *PosixUser         `json:"PosixUser,omitempty"`
+	RootDirectory  *RootDirectory     `json:"RootDirectory,omitempty"`
+	Status         *AccessPointStatus `json:"Status,omitempty"`
+	Tags           []AccessPointTag   `json:"Tags,omitempty"`
 }
 
 func (AccessPoint) CloudControlType() string { return "AWS::S3Files::AccessPoint" }
@@ -44,9 +44,9 @@ type ExpirationDataRule struct {
 }
 
 type ImportDataRule struct {
-	Prefix       *string `json:"Prefix,omitempty"`
-	SizeLessThan *int    `json:"SizeLessThan,omitempty"`
-	Trigger      *string `json:"Trigger,omitempty"`
+	Prefix       *string                `json:"Prefix,omitempty"`
+	SizeLessThan *int                   `json:"SizeLessThan,omitempty"`
+	Trigger      *ImportDataRuleTrigger `json:"Trigger,omitempty"`
 }
 
 type SynchronizationConfiguration struct {
@@ -71,7 +71,7 @@ type FileSystem struct {
 	OwnerId                      *string                       `json:"OwnerId,omitempty"`
 	Prefix                       *string                       `json:"Prefix,omitempty"`
 	RoleArn                      *string                       `json:"RoleArn,omitempty"`
-	Status                       *string                       `json:"Status,omitempty"`
+	Status                       *FileSystemStatus             `json:"Status,omitempty"`
 	StatusMessage                *string                       `json:"StatusMessage,omitempty"`
 	SynchronizationConfiguration *SynchronizationConfiguration `json:"SynchronizationConfiguration,omitempty"`
 	Tags                         []Tag                         `json:"Tags,omitempty"`
@@ -87,19 +87,67 @@ type FileSystemPolicy struct {
 func (FileSystemPolicy) CloudControlType() string { return "AWS::S3Files::FileSystemPolicy" }
 
 type MountTarget struct {
-	AvailabilityZoneId *string  `json:"AvailabilityZoneId,omitempty"`
-	FileSystemId       *string  `json:"FileSystemId,omitempty"`
-	IpAddressType      *string  `json:"IpAddressType,omitempty"`
-	Ipv4Address        *string  `json:"Ipv4Address,omitempty"`
-	Ipv6Address        *string  `json:"Ipv6Address,omitempty"`
-	MountTargetId      *string  `json:"MountTargetId,omitempty"`
-	NetworkInterfaceId *string  `json:"NetworkInterfaceId,omitempty"`
-	OwnerId            *string  `json:"OwnerId,omitempty"`
-	SecurityGroups     []string `json:"SecurityGroups,omitempty"`
-	Status             *string  `json:"Status,omitempty"`
-	StatusMessage      *string  `json:"StatusMessage,omitempty"`
-	SubnetId           *string  `json:"SubnetId,omitempty"`
-	VpcId              *string  `json:"VpcId,omitempty"`
+	AvailabilityZoneId *string                   `json:"AvailabilityZoneId,omitempty"`
+	FileSystemId       *string                   `json:"FileSystemId,omitempty"`
+	IpAddressType      *MountTargetIpAddressType `json:"IpAddressType,omitempty"`
+	Ipv4Address        *string                   `json:"Ipv4Address,omitempty"`
+	Ipv6Address        *string                   `json:"Ipv6Address,omitempty"`
+	MountTargetId      *string                   `json:"MountTargetId,omitempty"`
+	NetworkInterfaceId *string                   `json:"NetworkInterfaceId,omitempty"`
+	OwnerId            *string                   `json:"OwnerId,omitempty"`
+	SecurityGroups     []string                  `json:"SecurityGroups,omitempty"`
+	Status             *MountTargetStatus        `json:"Status,omitempty"`
+	StatusMessage      *string                   `json:"StatusMessage,omitempty"`
+	SubnetId           *string                   `json:"SubnetId,omitempty"`
+	VpcId              *string                   `json:"VpcId,omitempty"`
 }
 
 func (MountTarget) CloudControlType() string { return "AWS::S3Files::MountTarget" }
+
+type AccessPointStatus string
+
+const (
+	AccessPointStatusAvailable AccessPointStatus = "available"
+	AccessPointStatusCreating  AccessPointStatus = "creating"
+	AccessPointStatusUpdating  AccessPointStatus = "updating"
+	AccessPointStatusDeleting  AccessPointStatus = "deleting"
+	AccessPointStatusDeleted   AccessPointStatus = "deleted"
+	AccessPointStatusError     AccessPointStatus = "error"
+)
+
+type FileSystemStatus string
+
+const (
+	FileSystemStatusCreating  FileSystemStatus = "creating"
+	FileSystemStatusAvailable FileSystemStatus = "available"
+	FileSystemStatusUpdating  FileSystemStatus = "updating"
+	FileSystemStatusDeleting  FileSystemStatus = "deleting"
+	FileSystemStatusDeleted   FileSystemStatus = "deleted"
+	FileSystemStatusError     FileSystemStatus = "error"
+)
+
+type ImportDataRuleTrigger string
+
+const (
+	ImportDataRuleTriggerONDIRECTORYFIRSTACCESS ImportDataRuleTrigger = "ON_DIRECTORY_FIRST_ACCESS"
+	ImportDataRuleTriggerONFILEACCESS           ImportDataRuleTrigger = "ON_FILE_ACCESS"
+)
+
+type MountTargetIpAddressType string
+
+const (
+	MountTargetIpAddressTypeIPV4ONLY  MountTargetIpAddressType = "IPV4_ONLY"
+	MountTargetIpAddressTypeIPV6ONLY  MountTargetIpAddressType = "IPV6_ONLY"
+	MountTargetIpAddressTypeDUALSTACK MountTargetIpAddressType = "DUAL_STACK"
+)
+
+type MountTargetStatus string
+
+const (
+	MountTargetStatusAvailable MountTargetStatus = "available"
+	MountTargetStatusCreating  MountTargetStatus = "creating"
+	MountTargetStatusUpdating  MountTargetStatus = "updating"
+	MountTargetStatusDeleting  MountTargetStatus = "deleting"
+	MountTargetStatusDeleted   MountTargetStatus = "deleted"
+	MountTargetStatusError     MountTargetStatus = "error"
+)

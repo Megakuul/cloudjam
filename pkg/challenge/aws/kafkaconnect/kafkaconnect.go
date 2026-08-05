@@ -45,11 +45,11 @@ type KafkaCluster struct {
 }
 
 type KafkaClusterClientAuthentication struct {
-	AuthenticationType *string `json:"AuthenticationType,omitempty"`
+	AuthenticationType *KafkaClusterClientAuthenticationType `json:"AuthenticationType,omitempty"`
 }
 
 type KafkaClusterEncryptionInTransit struct {
-	EncryptionType *string `json:"EncryptionType,omitempty"`
+	EncryptionType *KafkaClusterEncryptionInTransitType `json:"EncryptionType,omitempty"`
 }
 
 type CloudWatchLogsLogDelivery struct {
@@ -108,7 +108,7 @@ type Connector struct {
 	KafkaClusterEncryptionInTransit  *KafkaClusterEncryptionInTransit  `json:"KafkaClusterEncryptionInTransit,omitempty"`
 	KafkaConnectVersion              *string                           `json:"KafkaConnectVersion,omitempty"`
 	LogDelivery                      *LogDelivery                      `json:"LogDelivery,omitempty"`
-	NetworkType                      *string                           `json:"NetworkType,omitempty"`
+	NetworkType                      *ConnectorNetworkType             `json:"NetworkType,omitempty"`
 	Plugins                          []Plugin                          `json:"Plugins,omitempty"`
 	ServiceExecutionRoleArn          *string                           `json:"ServiceExecutionRoleArn,omitempty"`
 	Tags                             []Tag                             `json:"Tags,omitempty"`
@@ -138,14 +138,14 @@ type CustomPluginTag struct {
 }
 
 type CustomPluginCustomPlugin struct {
-	ContentType     *string                      `json:"ContentType,omitempty"`
-	CustomPluginArn *string                      `json:"CustomPluginArn,omitempty"`
-	Description     *string                      `json:"Description,omitempty"`
-	FileDescription *CustomPluginFileDescription `json:"FileDescription,omitempty"`
-	Location        *CustomPluginLocation        `json:"Location,omitempty"`
-	Name            *string                      `json:"Name,omitempty"`
-	Revision        *int                         `json:"Revision,omitempty"`
-	Tags            []CustomPluginTag            `json:"Tags,omitempty"`
+	ContentType     *CustomPluginCustomPluginContentType `json:"ContentType,omitempty"`
+	CustomPluginArn *string                              `json:"CustomPluginArn,omitempty"`
+	Description     *string                              `json:"Description,omitempty"`
+	FileDescription *CustomPluginFileDescription         `json:"FileDescription,omitempty"`
+	Location        *CustomPluginLocation                `json:"Location,omitempty"`
+	Name            *string                              `json:"Name,omitempty"`
+	Revision        *int                                 `json:"Revision,omitempty"`
+	Tags            []CustomPluginTag                    `json:"Tags,omitempty"`
 }
 
 func (CustomPluginCustomPlugin) CloudControlType() string { return "AWS::KafkaConnect::CustomPlugin" }
@@ -167,3 +167,31 @@ type WorkerConfigurationWorkerConfiguration struct {
 func (WorkerConfigurationWorkerConfiguration) CloudControlType() string {
 	return "AWS::KafkaConnect::WorkerConfiguration"
 }
+
+type KafkaClusterClientAuthenticationType string
+
+const (
+	KafkaClusterClientAuthenticationTypeNONE KafkaClusterClientAuthenticationType = "NONE"
+	KafkaClusterClientAuthenticationTypeIAM  KafkaClusterClientAuthenticationType = "IAM"
+)
+
+type KafkaClusterEncryptionInTransitType string
+
+const (
+	KafkaClusterEncryptionInTransitTypePLAINTEXT KafkaClusterEncryptionInTransitType = "PLAINTEXT"
+	KafkaClusterEncryptionInTransitTypeTLS       KafkaClusterEncryptionInTransitType = "TLS"
+)
+
+type ConnectorNetworkType string
+
+const (
+	ConnectorNetworkTypeIPV4 ConnectorNetworkType = "IPV4"
+	ConnectorNetworkTypeDUAL ConnectorNetworkType = "DUAL"
+)
+
+type CustomPluginCustomPluginContentType string
+
+const (
+	CustomPluginCustomPluginContentTypeJAR CustomPluginCustomPluginContentType = "JAR"
+	CustomPluginCustomPluginContentTypeZIP CustomPluginCustomPluginContentType = "ZIP"
+)

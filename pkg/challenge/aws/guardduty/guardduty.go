@@ -37,7 +37,7 @@ type CFNFeatureAdditionalConfiguration struct {
 type CFNFeatureConfiguration struct {
 	AdditionalConfiguration []CFNFeatureAdditionalConfiguration `json:"AdditionalConfiguration,omitempty"`
 	Name                    *string                             `json:"Name,omitempty"`
-	Status                  *string                             `json:"Status,omitempty"`
+	Status                  *CFNFeatureConfigurationStatus      `json:"Status,omitempty"`
 }
 
 type TagItem struct {
@@ -211,7 +211,7 @@ type ThreatEntitySet struct {
 	Id                  *string                  `json:"Id,omitempty"`
 	Location            *string                  `json:"Location,omitempty"`
 	Name                *string                  `json:"Name,omitempty"`
-	Status              *string                  `json:"Status,omitempty"`
+	Status              *ThreatEntitySetStatus   `json:"Status,omitempty"`
 	Tags                []ThreatEntitySetTagItem `json:"Tags,omitempty"`
 	UpdatedAt           *string                  `json:"UpdatedAt,omitempty"`
 }
@@ -251,9 +251,40 @@ type TrustedEntitySet struct {
 	Id                  *string                   `json:"Id,omitempty"`
 	Location            *string                   `json:"Location,omitempty"`
 	Name                *string                   `json:"Name,omitempty"`
-	Status              *string                   `json:"Status,omitempty"`
+	Status              *TrustedEntitySetStatus   `json:"Status,omitempty"`
 	Tags                []TrustedEntitySetTagItem `json:"Tags,omitempty"`
 	UpdatedAt           *string                   `json:"UpdatedAt,omitempty"`
 }
 
 func (TrustedEntitySet) CloudControlType() string { return "AWS::GuardDuty::TrustedEntitySet" }
+
+type CFNFeatureConfigurationStatus string
+
+const (
+	CFNFeatureConfigurationStatusENABLED  CFNFeatureConfigurationStatus = "ENABLED"
+	CFNFeatureConfigurationStatusDISABLED CFNFeatureConfigurationStatus = "DISABLED"
+)
+
+type ThreatEntitySetStatus string
+
+const (
+	ThreatEntitySetStatusINACTIVE      ThreatEntitySetStatus = "INACTIVE"
+	ThreatEntitySetStatusACTIVATING    ThreatEntitySetStatus = "ACTIVATING"
+	ThreatEntitySetStatusACTIVE        ThreatEntitySetStatus = "ACTIVE"
+	ThreatEntitySetStatusDEACTIVATING  ThreatEntitySetStatus = "DEACTIVATING"
+	ThreatEntitySetStatusERROR         ThreatEntitySetStatus = "ERROR"
+	ThreatEntitySetStatusDELETEPENDING ThreatEntitySetStatus = "DELETE_PENDING"
+	ThreatEntitySetStatusDELETED       ThreatEntitySetStatus = "DELETED"
+)
+
+type TrustedEntitySetStatus string
+
+const (
+	TrustedEntitySetStatusINACTIVE      TrustedEntitySetStatus = "INACTIVE"
+	TrustedEntitySetStatusACTIVATING    TrustedEntitySetStatus = "ACTIVATING"
+	TrustedEntitySetStatusACTIVE        TrustedEntitySetStatus = "ACTIVE"
+	TrustedEntitySetStatusDEACTIVATING  TrustedEntitySetStatus = "DEACTIVATING"
+	TrustedEntitySetStatusERROR         TrustedEntitySetStatus = "ERROR"
+	TrustedEntitySetStatusDELETEPENDING TrustedEntitySetStatus = "DELETE_PENDING"
+	TrustedEntitySetStatusDELETED       TrustedEntitySetStatus = "DELETED"
+)

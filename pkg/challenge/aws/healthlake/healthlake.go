@@ -28,15 +28,15 @@ type Tag struct {
 }
 
 type DataTransformationProfile struct {
-	Arn                *string `json:"Arn,omitempty"`
-	KmsKeyId           *string `json:"KmsKeyId,omitempty"`
-	ProfileDescription *string `json:"ProfileDescription,omitempty"`
-	ProfileId          *string `json:"ProfileId,omitempty"`
-	ProfileName        *string `json:"ProfileName,omitempty"`
-	Source             *Source `json:"Source,omitempty"`
-	SourceFormat       *string `json:"SourceFormat,omitempty"`
-	Tags               []Tag   `json:"Tags,omitempty"`
-	TargetFormat       *string `json:"TargetFormat,omitempty"`
+	Arn                *string                                `json:"Arn,omitempty"`
+	KmsKeyId           *string                                `json:"KmsKeyId,omitempty"`
+	ProfileDescription *string                                `json:"ProfileDescription,omitempty"`
+	ProfileId          *string                                `json:"ProfileId,omitempty"`
+	ProfileName        *string                                `json:"ProfileName,omitempty"`
+	Source             *Source                                `json:"Source,omitempty"`
+	SourceFormat       *DataTransformationProfileSourceFormat `json:"SourceFormat,omitempty"`
+	Tags               []Tag                                  `json:"Tags,omitempty"`
+	TargetFormat       *DataTransformationProfileTargetFormat `json:"TargetFormat,omitempty"`
 }
 
 func (DataTransformationProfile) CloudControlType() string {
@@ -49,19 +49,19 @@ type CreatedAt struct {
 }
 
 type IdentityProviderConfiguration struct {
-	AuthorizationStrategy           *string `json:"AuthorizationStrategy,omitempty"`
-	FineGrainedAuthorizationEnabled *bool   `json:"FineGrainedAuthorizationEnabled,omitempty"`
-	IdpLambdaArn                    *string `json:"IdpLambdaArn,omitempty"`
-	Metadata                        *string `json:"Metadata,omitempty"`
+	AuthorizationStrategy           *IdentityProviderConfigurationAuthorizationStrategy `json:"AuthorizationStrategy,omitempty"`
+	FineGrainedAuthorizationEnabled *bool                                               `json:"FineGrainedAuthorizationEnabled,omitempty"`
+	IdpLambdaArn                    *string                                             `json:"IdpLambdaArn,omitempty"`
+	Metadata                        *string                                             `json:"Metadata,omitempty"`
 }
 
 type PreloadDataConfig struct {
-	PreloadDataType *string `json:"PreloadDataType,omitempty"`
+	PreloadDataType *PreloadDataConfigPreloadDataType `json:"PreloadDataType,omitempty"`
 }
 
 type KmsEncryptionConfig struct {
-	CmkType  *string `json:"CmkType,omitempty"`
-	KmsKeyId *string `json:"KmsKeyId,omitempty"`
+	CmkType  *KmsEncryptionConfigCmkType `json:"CmkType,omitempty"`
+	KmsKeyId *string                     `json:"KmsKeyId,omitempty"`
 }
 
 type SseConfiguration struct {
@@ -79,8 +79,8 @@ type FHIRDatastore struct {
 	DatastoreEndpoint             *string                        `json:"DatastoreEndpoint,omitempty"`
 	DatastoreId                   *string                        `json:"DatastoreId,omitempty"`
 	DatastoreName                 *string                        `json:"DatastoreName,omitempty"`
-	DatastoreStatus               *string                        `json:"DatastoreStatus,omitempty"`
-	DatastoreTypeVersion          *string                        `json:"DatastoreTypeVersion,omitempty"`
+	DatastoreStatus               *DatastoreStatus               `json:"DatastoreStatus,omitempty"`
+	DatastoreTypeVersion          *DatastoreTypeVersion          `json:"DatastoreTypeVersion,omitempty"`
 	IdentityProviderConfiguration *IdentityProviderConfiguration `json:"IdentityProviderConfiguration,omitempty"`
 	PreloadDataConfig             *PreloadDataConfig             `json:"PreloadDataConfig,omitempty"`
 	SseConfiguration              *SseConfiguration              `json:"SseConfiguration,omitempty"`
@@ -88,3 +88,52 @@ type FHIRDatastore struct {
 }
 
 func (FHIRDatastore) CloudControlType() string { return "AWS::HealthLake::FHIRDatastore" }
+
+type DataTransformationProfileSourceFormat string
+
+const (
+	DataTransformationProfileSourceFormatCCDA DataTransformationProfileSourceFormat = "CCDA"
+	DataTransformationProfileSourceFormatCSV  DataTransformationProfileSourceFormat = "CSV"
+)
+
+type DataTransformationProfileTargetFormat string
+
+const (
+	DataTransformationProfileTargetFormatFHIRR4 DataTransformationProfileTargetFormat = "FHIR_R4"
+)
+
+type DatastoreStatus string
+
+const (
+	DatastoreStatusCREATING DatastoreStatus = "CREATING"
+	DatastoreStatusACTIVE   DatastoreStatus = "ACTIVE"
+	DatastoreStatusDELETING DatastoreStatus = "DELETING"
+	DatastoreStatusDELETED  DatastoreStatus = "DELETED"
+)
+
+type DatastoreTypeVersion string
+
+const (
+	DatastoreTypeVersionR4 DatastoreTypeVersion = "R4"
+)
+
+type IdentityProviderConfigurationAuthorizationStrategy string
+
+const (
+	IdentityProviderConfigurationAuthorizationStrategySMARTONFHIRV1 IdentityProviderConfigurationAuthorizationStrategy = "SMART_ON_FHIR_V1"
+	IdentityProviderConfigurationAuthorizationStrategyAWSAUTH       IdentityProviderConfigurationAuthorizationStrategy = "AWS_AUTH"
+	IdentityProviderConfigurationAuthorizationStrategySMARTONFHIR   IdentityProviderConfigurationAuthorizationStrategy = "SMART_ON_FHIR"
+)
+
+type PreloadDataConfigPreloadDataType string
+
+const (
+	PreloadDataConfigPreloadDataTypeSYNTHEA PreloadDataConfigPreloadDataType = "SYNTHEA"
+)
+
+type KmsEncryptionConfigCmkType string
+
+const (
+	KmsEncryptionConfigCmkTypeCUSTOMERMANAGEDKMSKEY KmsEncryptionConfigCmkType = "CUSTOMER_MANAGED_KMS_KEY"
+	KmsEncryptionConfigCmkTypeAWSOWNEDKMSKEY        KmsEncryptionConfigCmkType = "AWS_OWNED_KMS_KEY"
+)

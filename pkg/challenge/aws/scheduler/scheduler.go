@@ -4,8 +4,8 @@
 package scheduler
 
 type FlexibleTimeWindow struct {
-	MaximumWindowInMinutes *float64 `json:"MaximumWindowInMinutes,omitempty"`
-	Mode                   *string  `json:"Mode,omitempty"`
+	MaximumWindowInMinutes *float64                `json:"MaximumWindowInMinutes,omitempty"`
+	Mode                   *FlexibleTimeWindowMode `json:"Mode,omitempty"`
 }
 
 type DeadLetterConfig struct {
@@ -19,9 +19,9 @@ type CapacityProviderStrategyItem struct {
 }
 
 type AwsVpcConfiguration struct {
-	AssignPublicIp *string  `json:"AssignPublicIp,omitempty"`
-	SecurityGroups []string `json:"SecurityGroups,omitempty"`
-	Subnets        []string `json:"Subnets,omitempty"`
+	AssignPublicIp *AssignPublicIp `json:"AssignPublicIp,omitempty"`
+	SecurityGroups []string        `json:"SecurityGroups,omitempty"`
+	Subnets        []string        `json:"Subnets,omitempty"`
 }
 
 type NetworkConfiguration struct {
@@ -29,13 +29,13 @@ type NetworkConfiguration struct {
 }
 
 type PlacementConstraint struct {
-	Expression *string `json:"Expression,omitempty"`
-	Type       *string `json:"Type,omitempty"`
+	Expression *string                  `json:"Expression,omitempty"`
+	Type       *PlacementConstraintType `json:"Type,omitempty"`
 }
 
 type PlacementStrategy struct {
-	Field *string `json:"Field,omitempty"`
-	Type  *string `json:"Type,omitempty"`
+	Field *string                `json:"Field,omitempty"`
+	Type  *PlacementStrategyType `json:"Type,omitempty"`
 }
 
 type EcsParameters struct {
@@ -43,12 +43,12 @@ type EcsParameters struct {
 	EnableECSManagedTags     *bool                          `json:"EnableECSManagedTags,omitempty"`
 	EnableExecuteCommand     *bool                          `json:"EnableExecuteCommand,omitempty"`
 	Group                    *string                        `json:"Group,omitempty"`
-	LaunchType               *string                        `json:"LaunchType,omitempty"`
+	LaunchType               *LaunchType                    `json:"LaunchType,omitempty"`
 	NetworkConfiguration     *NetworkConfiguration          `json:"NetworkConfiguration,omitempty"`
 	PlacementConstraints     []PlacementConstraint          `json:"PlacementConstraints,omitempty"`
 	PlacementStrategy        []PlacementStrategy            `json:"PlacementStrategy,omitempty"`
 	PlatformVersion          *string                        `json:"PlatformVersion,omitempty"`
-	PropagateTags            *string                        `json:"PropagateTags,omitempty"`
+	PropagateTags            *PropagateTags                 `json:"PropagateTags,omitempty"`
 	ReferenceId              *string                        `json:"ReferenceId,omitempty"`
 	Tags                     []map[string]string            `json:"Tags,omitempty"`
 	TaskCount                *float64                       `json:"TaskCount,omitempty"`
@@ -106,7 +106,7 @@ type Schedule struct {
 	ScheduleExpression         *string             `json:"ScheduleExpression,omitempty"`
 	ScheduleExpressionTimezone *string             `json:"ScheduleExpressionTimezone,omitempty"`
 	StartDate                  *string             `json:"StartDate,omitempty"`
-	State                      *string             `json:"State,omitempty"`
+	State                      *ScheduleState      `json:"State,omitempty"`
 	Target                     *Target             `json:"Target,omitempty"`
 }
 
@@ -118,12 +118,69 @@ type Tag struct {
 }
 
 type ScheduleGroup struct {
-	Arn                  *string `json:"Arn,omitempty"`
-	CreationDate         *string `json:"CreationDate,omitempty"`
-	LastModificationDate *string `json:"LastModificationDate,omitempty"`
-	Name                 *string `json:"Name,omitempty"`
-	State                *string `json:"State,omitempty"`
-	Tags                 []Tag   `json:"Tags,omitempty"`
+	Arn                  *string             `json:"Arn,omitempty"`
+	CreationDate         *string             `json:"CreationDate,omitempty"`
+	LastModificationDate *string             `json:"LastModificationDate,omitempty"`
+	Name                 *string             `json:"Name,omitempty"`
+	State                *ScheduleGroupState `json:"State,omitempty"`
+	Tags                 []Tag               `json:"Tags,omitempty"`
 }
 
 func (ScheduleGroup) CloudControlType() string { return "AWS::Scheduler::ScheduleGroup" }
+
+type FlexibleTimeWindowMode string
+
+const (
+	FlexibleTimeWindowModeOFF      FlexibleTimeWindowMode = "OFF"
+	FlexibleTimeWindowModeFLEXIBLE FlexibleTimeWindowMode = "FLEXIBLE"
+)
+
+type ScheduleState string
+
+const (
+	ScheduleStateENABLED  ScheduleState = "ENABLED"
+	ScheduleStateDISABLED ScheduleState = "DISABLED"
+)
+
+type LaunchType string
+
+const (
+	LaunchTypeEC2      LaunchType = "EC2"
+	LaunchTypeFARGATE  LaunchType = "FARGATE"
+	LaunchTypeEXTERNAL LaunchType = "EXTERNAL"
+)
+
+type AssignPublicIp string
+
+const (
+	AssignPublicIpENABLED  AssignPublicIp = "ENABLED"
+	AssignPublicIpDISABLED AssignPublicIp = "DISABLED"
+)
+
+type PlacementConstraintType string
+
+const (
+	PlacementConstraintTypeDistinctInstance PlacementConstraintType = "distinctInstance"
+	PlacementConstraintTypeMemberOf         PlacementConstraintType = "memberOf"
+)
+
+type PlacementStrategyType string
+
+const (
+	PlacementStrategyTypeRandom  PlacementStrategyType = "random"
+	PlacementStrategyTypeSpread  PlacementStrategyType = "spread"
+	PlacementStrategyTypeBinpack PlacementStrategyType = "binpack"
+)
+
+type PropagateTags string
+
+const (
+	PropagateTagsTASKDEFINITION PropagateTags = "TASK_DEFINITION"
+)
+
+type ScheduleGroupState string
+
+const (
+	ScheduleGroupStateACTIVE   ScheduleGroupState = "ACTIVE"
+	ScheduleGroupStateDELETING ScheduleGroupState = "DELETING"
+)

@@ -1,8 +1,7 @@
-// Command generate writes typed cloud control resource structs from the public
-// cloudformation resource schema bundle, one package per service.
-//
-//	go run ./internal/generate -out .
-//	go run ./internal/generate -out . -services s3,ec2,iam
+// schemagen generates typesafe structures for service providers specific format.
+// The output schemas are required for plugin developers.
+// TODO: this package is very sloppy and only does cloud control right now.
+// -> should be rewritten with proper cobra structure, maybe use a codegenerator like jen and support different providers.
 package main
 
 import (
@@ -38,12 +37,13 @@ type schema struct {
 
 // node is one json schema node.
 type node struct {
-	Type                 json.RawMessage `json:"type"`
-	Ref                  string          `json:"$ref"`
-	Items                *node           `json:"items"`
-	Properties           map[string]node `json:"properties"`
-	PatternProperties    map[string]node `json:"patternProperties"`
-	AdditionalProperties json.RawMessage `json:"additionalProperties"`
+	Type                 json.RawMessage   `json:"type"`
+	Ref                  string            `json:"$ref"`
+	Enum                 []json.RawMessage `json:"enum"`
+	Items                *node             `json:"items"`
+	Properties           map[string]node   `json:"properties"`
+	PatternProperties    map[string]node   `json:"patternProperties"`
+	AdditionalProperties json.RawMessage   `json:"additionalProperties"`
 }
 
 // kind returns the json schema type, or "" when the node is a union, a
@@ -149,9 +149,21 @@ type field struct {
 	jsonTag string
 }
 
+// enum is a string property with a fixed set of values.
+type enum struct {
+	name      string
+	constants []constant
+}
+
+type constant struct {
+	name  string
+	value string
+}
+
 type generator struct {
 	service string
 	objects []object
+	enums   []enum
 
 	// names maps a schema definition to the go type it became, taken records
 	// every go type name already handed out in this package.
@@ -190,6 +202,9 @@ func (g *generator) goType(n node, inline string) string {
 	}
 	switch n.kind() {
 	case "string":
+		if named := g.enum(inline, inline, n.Enum); named != "" {
+			return named
+		}
 		return "*string"
 	case "boolean":
 		return "*bool"
@@ -237,6 +252,11 @@ func (g *generator) ref(definition string) string {
 		return g.rawType()
 	}
 	if len(n.Properties) == 0 {
+		// A definition that is just an enum keeps its own name, so every
+		// reference to it lands on the same type.
+		if named := g.enum(key, definition, n.Enum); named != "" {
+			return named
+		}
 		// Not a struct — an alias for a scalar, an array or a map. Register the
 		// key first so a self referencing definition cannot recurse forever.
 		g.names[key] = ""
@@ -246,6 +266,38 @@ func (g *generator) ref(definition string) string {
 	name := g.name(key, definition)
 	g.object(name, n.Properties, "")
 	return "*" + name
+}
+
+// enum emits a named string type with one constant per value and returns the
+// field type for it. It returns "" when there is nothing enumerable, so the
+// caller can fall back to a plain string.
+func (g *generator) enum(key, candidate string, values []json.RawMessage) string {
+	if name := g.names[key]; name != "" {
+		return "*" + name
+	}
+	unique := []string{}
+	seen := map[string]bool{}
+	for _, raw := range values {
+		var value string
+		if json.Unmarshal(raw, &value) != nil || value == "" || seen[value] {
+			continue
+		}
+		seen[value] = true
+		unique = append(unique, value)
+	}
+	if len(unique) == 0 {
+		return ""
+	}
+
+	e := enum{name: g.name(key, candidate)}
+	for _, value := range unique {
+		e.constants = append(e.constants, constant{
+			name:  g.name(e.name+"."+value, e.name+camel(value)),
+			value: value,
+		})
+	}
+	g.enums = append(g.enums, e)
+	return "*" + e.name
 }
 
 // name hands out a unique go type name and remembers it for key.
@@ -286,7 +338,29 @@ func (g *generator) render() []byte {
 			fmt.Fprintf(out, "func (%s) CloudControlType() string { return %q }\n\n", o.name, o.typeName)
 		}
 	}
+	for _, e := range g.enums {
+		fmt.Fprintf(out, "type %s string\n\nconst (\n", e.name)
+		for _, c := range e.constants {
+			fmt.Fprintf(out, "\t%s %s = %q\n", c.name, e.name, c.value)
+		}
+		fmt.Fprintf(out, ")\n\n")
+	}
 	return out.Bytes()
+}
+
+// camel turns an enum value into an identifier fragment: "us-east-1" becomes
+// "UsEast1", "AES256" stays "AES256".
+func camel(value string) string {
+	out := ""
+	for _, part := range strings.FieldsFunc(value, func(r rune) bool {
+		return !(r >= 'a' && r <= 'z' || r >= 'A' && r <= 'Z' || r >= '0' && r <= '9')
+	}) {
+		out += strings.ToUpper(part[:1]) + part[1:]
+	}
+	if out == "" || out[0] >= '0' && out[0] <= '9' {
+		out = "X" + out
+	}
+	return out
 }
 
 // identifier turns a property name into an exported go identifier.

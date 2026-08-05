@@ -41,13 +41,19 @@ func (AttributeGroupAssociation) CloudControlType() string {
 }
 
 type ResourceAssociation struct {
-	Application    *string `json:"Application,omitempty"`
-	ApplicationArn *string `json:"ApplicationArn,omitempty"`
-	Resource       *string `json:"Resource,omitempty"`
-	ResourceArn    *string `json:"ResourceArn,omitempty"`
-	ResourceType   *string `json:"ResourceType,omitempty"`
+	Application    *string                          `json:"Application,omitempty"`
+	ApplicationArn *string                          `json:"ApplicationArn,omitempty"`
+	Resource       *string                          `json:"Resource,omitempty"`
+	ResourceArn    *string                          `json:"ResourceArn,omitempty"`
+	ResourceType   *ResourceAssociationResourceType `json:"ResourceType,omitempty"`
 }
 
 func (ResourceAssociation) CloudControlType() string {
 	return "AWS::ServiceCatalogAppRegistry::ResourceAssociation"
 }
+
+type ResourceAssociationResourceType string
+
+const (
+	ResourceAssociationResourceTypeCFNSTACK ResourceAssociationResourceType = "CFN_STACK"
+)

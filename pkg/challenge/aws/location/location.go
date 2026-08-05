@@ -54,7 +54,7 @@ type GeofenceCollection struct {
 	CreateTime            *string                 `json:"CreateTime,omitempty"`
 	Description           *string                 `json:"Description,omitempty"`
 	KmsKeyId              *string                 `json:"KmsKeyId,omitempty"`
-	PricingPlan           *string                 `json:"PricingPlan,omitempty"`
+	PricingPlan           *PricingPlan            `json:"PricingPlan,omitempty"`
 	PricingPlanDataSource *string                 `json:"PricingPlanDataSource,omitempty"`
 	Tags                  []GeofenceCollectionTag `json:"Tags,omitempty"`
 	UpdateTime            *string                 `json:"UpdateTime,omitempty"`
@@ -80,7 +80,7 @@ type Map struct {
 	Description   *string           `json:"Description,omitempty"`
 	MapArn        *string           `json:"MapArn,omitempty"`
 	MapName       *string           `json:"MapName,omitempty"`
-	PricingPlan   *string           `json:"PricingPlan,omitempty"`
+	PricingPlan   *MapPricingPlan   `json:"PricingPlan,omitempty"`
 	Tags          []MapTag          `json:"Tags,omitempty"`
 	UpdateTime    *string           `json:"UpdateTime,omitempty"`
 }
@@ -88,7 +88,7 @@ type Map struct {
 func (Map) CloudControlType() string { return "AWS::Location::Map" }
 
 type DataSourceConfiguration struct {
-	IntendedUse *string `json:"IntendedUse,omitempty"`
+	IntendedUse *IntendedUse `json:"IntendedUse,omitempty"`
 }
 
 type PlaceIndexTag struct {
@@ -104,7 +104,7 @@ type PlaceIndex struct {
 	Description             *string                  `json:"Description,omitempty"`
 	IndexArn                *string                  `json:"IndexArn,omitempty"`
 	IndexName               *string                  `json:"IndexName,omitempty"`
-	PricingPlan             *string                  `json:"PricingPlan,omitempty"`
+	PricingPlan             *PlaceIndexPricingPlan   `json:"PricingPlan,omitempty"`
 	Tags                    []PlaceIndexTag          `json:"Tags,omitempty"`
 	UpdateTime              *string                  `json:"UpdateTime,omitempty"`
 }
@@ -117,15 +117,15 @@ type RouteCalculatorTag struct {
 }
 
 type RouteCalculator struct {
-	Arn            *string              `json:"Arn,omitempty"`
-	CalculatorArn  *string              `json:"CalculatorArn,omitempty"`
-	CalculatorName *string              `json:"CalculatorName,omitempty"`
-	CreateTime     *string              `json:"CreateTime,omitempty"`
-	DataSource     *string              `json:"DataSource,omitempty"`
-	Description    *string              `json:"Description,omitempty"`
-	PricingPlan    *string              `json:"PricingPlan,omitempty"`
-	Tags           []RouteCalculatorTag `json:"Tags,omitempty"`
-	UpdateTime     *string              `json:"UpdateTime,omitempty"`
+	Arn            *string                     `json:"Arn,omitempty"`
+	CalculatorArn  *string                     `json:"CalculatorArn,omitempty"`
+	CalculatorName *string                     `json:"CalculatorName,omitempty"`
+	CreateTime     *string                     `json:"CreateTime,omitempty"`
+	DataSource     *string                     `json:"DataSource,omitempty"`
+	Description    *string                     `json:"Description,omitempty"`
+	PricingPlan    *RouteCalculatorPricingPlan `json:"PricingPlan,omitempty"`
+	Tags           []RouteCalculatorTag        `json:"Tags,omitempty"`
+	UpdateTime     *string                     `json:"UpdateTime,omitempty"`
 }
 
 func (RouteCalculator) CloudControlType() string { return "AWS::Location::RouteCalculator" }
@@ -136,19 +136,19 @@ type TrackerTag struct {
 }
 
 type Tracker struct {
-	Arn                           *string      `json:"Arn,omitempty"`
-	CreateTime                    *string      `json:"CreateTime,omitempty"`
-	Description                   *string      `json:"Description,omitempty"`
-	EventBridgeEnabled            *bool        `json:"EventBridgeEnabled,omitempty"`
-	KmsKeyEnableGeospatialQueries *bool        `json:"KmsKeyEnableGeospatialQueries,omitempty"`
-	KmsKeyId                      *string      `json:"KmsKeyId,omitempty"`
-	PositionFiltering             *string      `json:"PositionFiltering,omitempty"`
-	PricingPlan                   *string      `json:"PricingPlan,omitempty"`
-	PricingPlanDataSource         *string      `json:"PricingPlanDataSource,omitempty"`
-	Tags                          []TrackerTag `json:"Tags,omitempty"`
-	TrackerArn                    *string      `json:"TrackerArn,omitempty"`
-	TrackerName                   *string      `json:"TrackerName,omitempty"`
-	UpdateTime                    *string      `json:"UpdateTime,omitempty"`
+	Arn                           *string             `json:"Arn,omitempty"`
+	CreateTime                    *string             `json:"CreateTime,omitempty"`
+	Description                   *string             `json:"Description,omitempty"`
+	EventBridgeEnabled            *bool               `json:"EventBridgeEnabled,omitempty"`
+	KmsKeyEnableGeospatialQueries *bool               `json:"KmsKeyEnableGeospatialQueries,omitempty"`
+	KmsKeyId                      *string             `json:"KmsKeyId,omitempty"`
+	PositionFiltering             *PositionFiltering  `json:"PositionFiltering,omitempty"`
+	PricingPlan                   *TrackerPricingPlan `json:"PricingPlan,omitempty"`
+	PricingPlanDataSource         *string             `json:"PricingPlanDataSource,omitempty"`
+	Tags                          []TrackerTag        `json:"Tags,omitempty"`
+	TrackerArn                    *string             `json:"TrackerArn,omitempty"`
+	TrackerName                   *string             `json:"TrackerName,omitempty"`
+	UpdateTime                    *string             `json:"UpdateTime,omitempty"`
 }
 
 func (Tracker) CloudControlType() string { return "AWS::Location::Tracker" }
@@ -159,3 +159,48 @@ type TrackerConsumer struct {
 }
 
 func (TrackerConsumer) CloudControlType() string { return "AWS::Location::TrackerConsumer" }
+
+type PricingPlan string
+
+const (
+	PricingPlanRequestBasedUsage PricingPlan = "RequestBasedUsage"
+)
+
+type MapPricingPlan string
+
+const (
+	MapPricingPlanRequestBasedUsage MapPricingPlan = "RequestBasedUsage"
+)
+
+type IntendedUse string
+
+const (
+	IntendedUseSingleUse IntendedUse = "SingleUse"
+	IntendedUseStorage   IntendedUse = "Storage"
+)
+
+type PlaceIndexPricingPlan string
+
+const (
+	PlaceIndexPricingPlanRequestBasedUsage PlaceIndexPricingPlan = "RequestBasedUsage"
+)
+
+type RouteCalculatorPricingPlan string
+
+const (
+	RouteCalculatorPricingPlanRequestBasedUsage RouteCalculatorPricingPlan = "RequestBasedUsage"
+)
+
+type PositionFiltering string
+
+const (
+	PositionFilteringTimeBased     PositionFiltering = "TimeBased"
+	PositionFilteringDistanceBased PositionFiltering = "DistanceBased"
+	PositionFilteringAccuracyBased PositionFiltering = "AccuracyBased"
+)
+
+type TrackerPricingPlan string
+
+const (
+	TrackerPricingPlanRequestBasedUsage TrackerPricingPlan = "RequestBasedUsage"
+)

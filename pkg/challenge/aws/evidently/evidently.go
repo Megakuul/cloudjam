@@ -4,12 +4,12 @@
 package evidently
 
 type MetricGoalObject struct {
-	DesiredChange *string `json:"DesiredChange,omitempty"`
-	EntityIdKey   *string `json:"EntityIdKey,omitempty"`
-	EventPattern  *string `json:"EventPattern,omitempty"`
-	MetricName    *string `json:"MetricName,omitempty"`
-	UnitLabel     *string `json:"UnitLabel,omitempty"`
-	ValueKey      *string `json:"ValueKey,omitempty"`
+	DesiredChange *MetricGoalObjectDesiredChange `json:"DesiredChange,omitempty"`
+	EntityIdKey   *string                        `json:"EntityIdKey,omitempty"`
+	EventPattern  *string                        `json:"EventPattern,omitempty"`
+	MetricName    *string                        `json:"MetricName,omitempty"`
+	UnitLabel     *string                        `json:"UnitLabel,omitempty"`
+	ValueKey      *string                        `json:"ValueKey,omitempty"`
 }
 
 type TreatmentToWeight struct {
@@ -78,15 +78,15 @@ type VariationObject struct {
 }
 
 type Feature struct {
-	Arn                *string           `json:"Arn,omitempty"`
-	DefaultVariation   *string           `json:"DefaultVariation,omitempty"`
-	Description        *string           `json:"Description,omitempty"`
-	EntityOverrides    []EntityOverride  `json:"EntityOverrides,omitempty"`
-	EvaluationStrategy *string           `json:"EvaluationStrategy,omitempty"`
-	Name               *string           `json:"Name,omitempty"`
-	Project            *string           `json:"Project,omitempty"`
-	Tags               []FeatureTag      `json:"Tags,omitempty"`
-	Variations         []VariationObject `json:"Variations,omitempty"`
+	Arn                *string                    `json:"Arn,omitempty"`
+	DefaultVariation   *string                    `json:"DefaultVariation,omitempty"`
+	Description        *string                    `json:"Description,omitempty"`
+	EntityOverrides    []EntityOverride           `json:"EntityOverrides,omitempty"`
+	EvaluationStrategy *FeatureEvaluationStrategy `json:"EvaluationStrategy,omitempty"`
+	Name               *string                    `json:"Name,omitempty"`
+	Project            *string                    `json:"Project,omitempty"`
+	Tags               []FeatureTag               `json:"Tags,omitempty"`
+	Variations         []VariationObject          `json:"Variations,omitempty"`
 }
 
 func (Feature) CloudControlType() string { return "AWS::Evidently::Feature" }
@@ -194,3 +194,17 @@ type Segment struct {
 }
 
 func (Segment) CloudControlType() string { return "AWS::Evidently::Segment" }
+
+type MetricGoalObjectDesiredChange string
+
+const (
+	MetricGoalObjectDesiredChangeINCREASE MetricGoalObjectDesiredChange = "INCREASE"
+	MetricGoalObjectDesiredChangeDECREASE MetricGoalObjectDesiredChange = "DECREASE"
+)
+
+type FeatureEvaluationStrategy string
+
+const (
+	FeatureEvaluationStrategyALLRULES         FeatureEvaluationStrategy = "ALL_RULES"
+	FeatureEvaluationStrategyDEFAULTVARIATION FeatureEvaluationStrategy = "DEFAULT_VARIATION"
+)

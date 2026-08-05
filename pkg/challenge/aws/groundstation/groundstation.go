@@ -4,19 +4,19 @@
 package groundstation
 
 type FrequencyBandwidth struct {
-	Units *string  `json:"Units,omitempty"`
-	Value *float64 `json:"Value,omitempty"`
+	Units *BandwidthUnits `json:"Units,omitempty"`
+	Value *float64        `json:"Value,omitempty"`
 }
 
 type Frequency struct {
-	Units *string  `json:"Units,omitempty"`
-	Value *float64 `json:"Value,omitempty"`
+	Units *FrequencyUnits `json:"Units,omitempty"`
+	Value *float64        `json:"Value,omitempty"`
 }
 
 type SpectrumConfig struct {
 	Bandwidth       *FrequencyBandwidth `json:"Bandwidth,omitempty"`
 	CenterFrequency *Frequency          `json:"CenterFrequency,omitempty"`
-	Polarization    *string             `json:"Polarization,omitempty"`
+	Polarization    *Polarization       `json:"Polarization,omitempty"`
 }
 
 type AntennaDownlinkConfig struct {
@@ -38,13 +38,13 @@ type AntennaDownlinkDemodDecodeConfig struct {
 }
 
 type UplinkSpectrumConfig struct {
-	CenterFrequency *Frequency `json:"CenterFrequency,omitempty"`
-	Polarization    *string    `json:"Polarization,omitempty"`
+	CenterFrequency *Frequency    `json:"CenterFrequency,omitempty"`
+	Polarization    *Polarization `json:"Polarization,omitempty"`
 }
 
 type Eirp struct {
-	Units *string  `json:"Units,omitempty"`
-	Value *float64 `json:"Value,omitempty"`
+	Units *EirpUnits `json:"Units,omitempty"`
+	Value *float64   `json:"Value,omitempty"`
 }
 
 type AntennaUplinkConfig struct {
@@ -75,11 +75,11 @@ type TelemetrySinkData struct {
 
 type TelemetrySinkConfig struct {
 	TelemetrySinkData *TelemetrySinkData `json:"TelemetrySinkData,omitempty"`
-	TelemetrySinkType *string            `json:"TelemetrySinkType,omitempty"`
+	TelemetrySinkType *TelemetrySinkType `json:"TelemetrySinkType,omitempty"`
 }
 
 type TrackingConfig struct {
-	Autotrack *string `json:"Autotrack,omitempty"`
+	Autotrack *TrackingConfigAutotrack `json:"Autotrack,omitempty"`
 }
 
 type UplinkEchoConfig struct {
@@ -140,8 +140,8 @@ type RangedConnectionDetails struct {
 }
 
 type AwsGroundStationAgentEndpoint struct {
-	AgentStatus    *string                  `json:"AgentStatus,omitempty"`
-	AuditResults   *string                  `json:"AuditResults,omitempty"`
+	AgentStatus    *AgentStatus             `json:"AgentStatus,omitempty"`
+	AuditResults   *AuditResults            `json:"AuditResults,omitempty"`
 	EgressAddress  *ConnectionDetails       `json:"EgressAddress,omitempty"`
 	IngressAddress *RangedConnectionDetails `json:"IngressAddress,omitempty"`
 	Name           *string                  `json:"Name,omitempty"`
@@ -218,10 +218,10 @@ type DownlinkDataflowDetails struct {
 }
 
 type DownlinkAwsGroundStationAgentEndpointDetails struct {
-	AgentStatus     *string                  `json:"AgentStatus,omitempty"`
-	AuditResults    *string                  `json:"AuditResults,omitempty"`
-	DataflowDetails *DownlinkDataflowDetails `json:"DataflowDetails,omitempty"`
-	Name            *string                  `json:"Name,omitempty"`
+	AgentStatus     *DataflowEndpointGroupV2AgentStatus  `json:"AgentStatus,omitempty"`
+	AuditResults    *DataflowEndpointGroupV2AuditResults `json:"AuditResults,omitempty"`
+	DataflowDetails *DownlinkDataflowDetails             `json:"DataflowDetails,omitempty"`
+	Name            *string                              `json:"Name,omitempty"`
 }
 
 type UplinkConnectionDetails struct {
@@ -234,10 +234,10 @@ type UplinkDataflowDetails struct {
 }
 
 type UplinkAwsGroundStationAgentEndpointDetails struct {
-	AgentStatus     *string                `json:"AgentStatus,omitempty"`
-	AuditResults    *string                `json:"AuditResults,omitempty"`
-	DataflowDetails *UplinkDataflowDetails `json:"DataflowDetails,omitempty"`
-	Name            *string                `json:"Name,omitempty"`
+	AgentStatus     *DataflowEndpointGroupV2AgentStatus  `json:"AgentStatus,omitempty"`
+	AuditResults    *DataflowEndpointGroupV2AuditResults `json:"AuditResults,omitempty"`
+	DataflowDetails *UplinkDataflowDetails               `json:"DataflowDetails,omitempty"`
+	Name            *string                              `json:"Name,omitempty"`
 }
 
 type DataflowEndpointGroupV2EndpointDetails struct {
@@ -312,3 +312,79 @@ type MissionProfile struct {
 }
 
 func (MissionProfile) CloudControlType() string { return "AWS::GroundStation::MissionProfile" }
+
+type BandwidthUnits string
+
+const (
+	BandwidthUnitsGHz BandwidthUnits = "GHz"
+	BandwidthUnitsMHz BandwidthUnits = "MHz"
+	BandwidthUnitsKHz BandwidthUnits = "kHz"
+)
+
+type FrequencyUnits string
+
+const (
+	FrequencyUnitsGHz FrequencyUnits = "GHz"
+	FrequencyUnitsMHz FrequencyUnits = "MHz"
+	FrequencyUnitsKHz FrequencyUnits = "kHz"
+)
+
+type Polarization string
+
+const (
+	PolarizationLEFTHAND  Polarization = "LEFT_HAND"
+	PolarizationRIGHTHAND Polarization = "RIGHT_HAND"
+	PolarizationNONE      Polarization = "NONE"
+)
+
+type EirpUnits string
+
+const (
+	EirpUnitsDBW EirpUnits = "dBW"
+)
+
+type TelemetrySinkType string
+
+const (
+	TelemetrySinkTypeKINESISDATASTREAM TelemetrySinkType = "KINESIS_DATA_STREAM"
+)
+
+type TrackingConfigAutotrack string
+
+const (
+	TrackingConfigAutotrackREQUIRED  TrackingConfigAutotrack = "REQUIRED"
+	TrackingConfigAutotrackPREFERRED TrackingConfigAutotrack = "PREFERRED"
+	TrackingConfigAutotrackREMOVED   TrackingConfigAutotrack = "REMOVED"
+)
+
+type AgentStatus string
+
+const (
+	AgentStatusSUCCESS  AgentStatus = "SUCCESS"
+	AgentStatusFAILED   AgentStatus = "FAILED"
+	AgentStatusACTIVE   AgentStatus = "ACTIVE"
+	AgentStatusINACTIVE AgentStatus = "INACTIVE"
+)
+
+type AuditResults string
+
+const (
+	AuditResultsHEALTHY   AuditResults = "HEALTHY"
+	AuditResultsUNHEALTHY AuditResults = "UNHEALTHY"
+)
+
+type DataflowEndpointGroupV2AgentStatus string
+
+const (
+	DataflowEndpointGroupV2AgentStatusSUCCESS  DataflowEndpointGroupV2AgentStatus = "SUCCESS"
+	DataflowEndpointGroupV2AgentStatusFAILED   DataflowEndpointGroupV2AgentStatus = "FAILED"
+	DataflowEndpointGroupV2AgentStatusACTIVE   DataflowEndpointGroupV2AgentStatus = "ACTIVE"
+	DataflowEndpointGroupV2AgentStatusINACTIVE DataflowEndpointGroupV2AgentStatus = "INACTIVE"
+)
+
+type DataflowEndpointGroupV2AuditResults string
+
+const (
+	DataflowEndpointGroupV2AuditResultsHEALTHY   DataflowEndpointGroupV2AuditResults = "HEALTHY"
+	DataflowEndpointGroupV2AuditResultsUNHEALTHY DataflowEndpointGroupV2AuditResults = "UNHEALTHY"
+)

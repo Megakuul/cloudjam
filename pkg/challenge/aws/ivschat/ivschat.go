@@ -27,19 +27,19 @@ type Tag struct {
 }
 
 type LoggingConfiguration struct {
-	Arn                      *string                   `json:"Arn,omitempty"`
-	DestinationConfiguration *DestinationConfiguration `json:"DestinationConfiguration,omitempty"`
-	Id                       *string                   `json:"Id,omitempty"`
-	Name                     *string                   `json:"Name,omitempty"`
-	State                    *string                   `json:"State,omitempty"`
-	Tags                     []Tag                     `json:"Tags,omitempty"`
+	Arn                      *string                    `json:"Arn,omitempty"`
+	DestinationConfiguration *DestinationConfiguration  `json:"DestinationConfiguration,omitempty"`
+	Id                       *string                    `json:"Id,omitempty"`
+	Name                     *string                    `json:"Name,omitempty"`
+	State                    *LoggingConfigurationState `json:"State,omitempty"`
+	Tags                     []Tag                      `json:"Tags,omitempty"`
 }
 
 func (LoggingConfiguration) CloudControlType() string { return "AWS::IVSChat::LoggingConfiguration" }
 
 type MessageReviewHandler struct {
-	FallbackResult *string `json:"FallbackResult,omitempty"`
-	Uri            *string `json:"Uri,omitempty"`
+	FallbackResult *MessageReviewHandlerFallbackResult `json:"FallbackResult,omitempty"`
+	Uri            *string                             `json:"Uri,omitempty"`
 }
 
 type RoomTag struct {
@@ -59,3 +59,22 @@ type Room struct {
 }
 
 func (Room) CloudControlType() string { return "AWS::IVSChat::Room" }
+
+type LoggingConfigurationState string
+
+const (
+	LoggingConfigurationStateCREATING       LoggingConfigurationState = "CREATING"
+	LoggingConfigurationStateCREATEFAILED   LoggingConfigurationState = "CREATE_FAILED"
+	LoggingConfigurationStateDELETING       LoggingConfigurationState = "DELETING"
+	LoggingConfigurationStateDELETEFAILED   LoggingConfigurationState = "DELETE_FAILED"
+	LoggingConfigurationStateUPDATING       LoggingConfigurationState = "UPDATING"
+	LoggingConfigurationStateUPDATINGFAILED LoggingConfigurationState = "UPDATING_FAILED"
+	LoggingConfigurationStateACTIVE         LoggingConfigurationState = "ACTIVE"
+)
+
+type MessageReviewHandlerFallbackResult string
+
+const (
+	MessageReviewHandlerFallbackResultALLOW MessageReviewHandlerFallbackResult = "ALLOW"
+	MessageReviewHandlerFallbackResultDENY  MessageReviewHandlerFallbackResult = "DENY"
+)

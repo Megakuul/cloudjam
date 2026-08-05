@@ -28,19 +28,19 @@ type OpenIDConnectConfig struct {
 }
 
 type AuthProvider struct {
-	AuthType               *string                 `json:"AuthType,omitempty"`
+	AuthType               *AuthenticationType     `json:"AuthType,omitempty"`
 	CognitoConfig          *CognitoConfig          `json:"CognitoConfig,omitempty"`
 	LambdaAuthorizerConfig *LambdaAuthorizerConfig `json:"LambdaAuthorizerConfig,omitempty"`
 	OpenIDConnectConfig    *OpenIDConnectConfig    `json:"OpenIDConnectConfig,omitempty"`
 }
 
 type AuthMode struct {
-	AuthType *string `json:"AuthType,omitempty"`
+	AuthType *AuthenticationType `json:"AuthType,omitempty"`
 }
 
 type EventLogConfig struct {
-	CloudWatchLogsRoleArn *string `json:"CloudWatchLogsRoleArn,omitempty"`
-	LogLevel              *string `json:"LogLevel,omitempty"`
+	CloudWatchLogsRoleArn *string        `json:"CloudWatchLogsRoleArn,omitempty"`
+	LogLevel              *EventLogLevel `json:"LogLevel,omitempty"`
 }
 
 type EventConfig struct {
@@ -93,7 +93,7 @@ type ApiKey struct {
 func (ApiKey) CloudControlType() string { return "AWS::AppSync::ApiKey" }
 
 type LambdaConfig struct {
-	InvokeType *string `json:"InvokeType,omitempty"`
+	InvokeType *InvokeType `json:"InvokeType,omitempty"`
 }
 
 type Integration struct {
@@ -102,8 +102,8 @@ type Integration struct {
 }
 
 type HandlerConfig struct {
-	Behavior    *string      `json:"Behavior,omitempty"`
-	Integration *Integration `json:"Integration,omitempty"`
+	Behavior    *HandlerBehavior `json:"Behavior,omitempty"`
+	Integration *Integration     `json:"Integration,omitempty"`
 }
 
 type HandlerConfigs struct {
@@ -112,7 +112,7 @@ type HandlerConfigs struct {
 }
 
 type ChannelNamespaceAuthMode struct {
-	AuthType *string `json:"AuthType,omitempty"`
+	AuthType *ChannelNamespaceAuthenticationType `json:"AuthType,omitempty"`
 }
 
 type ChannelNamespaceTag struct {
@@ -203,7 +203,7 @@ type DataSource struct {
 	EventBridgeConfig        *EventBridgeConfig        `json:"EventBridgeConfig,omitempty"`
 	HttpConfig               *HttpConfig               `json:"HttpConfig,omitempty"`
 	LambdaConfig             *DataSourceLambdaConfig   `json:"LambdaConfig,omitempty"`
-	MetricsConfig            *string                   `json:"MetricsConfig,omitempty"`
+	MetricsConfig            *DataSourceMetricsConfig  `json:"MetricsConfig,omitempty"`
 	Name                     *string                   `json:"Name,omitempty"`
 	OpenSearchServiceConfig  *OpenSearchServiceConfig  `json:"OpenSearchServiceConfig,omitempty"`
 	RelationalDatabaseConfig *RelationalDatabaseConfig `json:"RelationalDatabaseConfig,omitempty"`
@@ -398,7 +398,7 @@ type Resolver struct {
 	FieldName                         *string                 `json:"FieldName,omitempty"`
 	Kind                              *string                 `json:"Kind,omitempty"`
 	MaxBatchSize                      *int                    `json:"MaxBatchSize,omitempty"`
-	MetricsConfig                     *string                 `json:"MetricsConfig,omitempty"`
+	MetricsConfig                     *ResolverMetricsConfig  `json:"MetricsConfig,omitempty"`
 	PipelineConfig                    *PipelineConfig         `json:"PipelineConfig,omitempty"`
 	RequestMappingTemplate            *string                 `json:"RequestMappingTemplate,omitempty"`
 	RequestMappingTemplateS3Location  *string                 `json:"RequestMappingTemplateS3Location,omitempty"`
@@ -413,23 +413,101 @@ type Resolver struct {
 func (Resolver) CloudControlType() string { return "AWS::AppSync::Resolver" }
 
 type SourceApiAssociationConfig struct {
-	MergeType *string `json:"MergeType,omitempty"`
+	MergeType *SourceApiAssociationConfigMergeType `json:"MergeType,omitempty"`
 }
 
 type SourceApiAssociation struct {
-	AssociationArn                   *string                     `json:"AssociationArn,omitempty"`
-	AssociationId                    *string                     `json:"AssociationId,omitempty"`
-	Description                      *string                     `json:"Description,omitempty"`
-	LastSuccessfulMergeDate          *string                     `json:"LastSuccessfulMergeDate,omitempty"`
-	MergedApiArn                     *string                     `json:"MergedApiArn,omitempty"`
-	MergedApiId                      *string                     `json:"MergedApiId,omitempty"`
-	MergedApiIdentifier              *string                     `json:"MergedApiIdentifier,omitempty"`
-	SourceApiArn                     *string                     `json:"SourceApiArn,omitempty"`
-	SourceApiAssociationConfig       *SourceApiAssociationConfig `json:"SourceApiAssociationConfig,omitempty"`
-	SourceApiAssociationStatus       *string                     `json:"SourceApiAssociationStatus,omitempty"`
-	SourceApiAssociationStatusDetail *string                     `json:"SourceApiAssociationStatusDetail,omitempty"`
-	SourceApiId                      *string                     `json:"SourceApiId,omitempty"`
-	SourceApiIdentifier              *string                     `json:"SourceApiIdentifier,omitempty"`
+	AssociationArn                   *string                                         `json:"AssociationArn,omitempty"`
+	AssociationId                    *string                                         `json:"AssociationId,omitempty"`
+	Description                      *string                                         `json:"Description,omitempty"`
+	LastSuccessfulMergeDate          *string                                         `json:"LastSuccessfulMergeDate,omitempty"`
+	MergedApiArn                     *string                                         `json:"MergedApiArn,omitempty"`
+	MergedApiId                      *string                                         `json:"MergedApiId,omitempty"`
+	MergedApiIdentifier              *string                                         `json:"MergedApiIdentifier,omitempty"`
+	SourceApiArn                     *string                                         `json:"SourceApiArn,omitempty"`
+	SourceApiAssociationConfig       *SourceApiAssociationConfig                     `json:"SourceApiAssociationConfig,omitempty"`
+	SourceApiAssociationStatus       *SourceApiAssociationSourceApiAssociationStatus `json:"SourceApiAssociationStatus,omitempty"`
+	SourceApiAssociationStatusDetail *string                                         `json:"SourceApiAssociationStatusDetail,omitempty"`
+	SourceApiId                      *string                                         `json:"SourceApiId,omitempty"`
+	SourceApiIdentifier              *string                                         `json:"SourceApiIdentifier,omitempty"`
 }
 
 func (SourceApiAssociation) CloudControlType() string { return "AWS::AppSync::SourceApiAssociation" }
+
+type AuthenticationType string
+
+const (
+	AuthenticationTypeAMAZONCOGNITOUSERPOOLS AuthenticationType = "AMAZON_COGNITO_USER_POOLS"
+	AuthenticationTypeAWSIAM                 AuthenticationType = "AWS_IAM"
+	AuthenticationTypeAPIKEY                 AuthenticationType = "API_KEY"
+	AuthenticationTypeOPENIDCONNECT          AuthenticationType = "OPENID_CONNECT"
+	AuthenticationTypeAWSLAMBDA              AuthenticationType = "AWS_LAMBDA"
+)
+
+type EventLogLevel string
+
+const (
+	EventLogLevelNONE  EventLogLevel = "NONE"
+	EventLogLevelERROR EventLogLevel = "ERROR"
+	EventLogLevelALL   EventLogLevel = "ALL"
+	EventLogLevelINFO  EventLogLevel = "INFO"
+	EventLogLevelDEBUG EventLogLevel = "DEBUG"
+)
+
+type HandlerBehavior string
+
+const (
+	HandlerBehaviorCODE   HandlerBehavior = "CODE"
+	HandlerBehaviorDIRECT HandlerBehavior = "DIRECT"
+)
+
+type InvokeType string
+
+const (
+	InvokeTypeREQUESTRESPONSE InvokeType = "REQUEST_RESPONSE"
+	InvokeTypeEVENT           InvokeType = "EVENT"
+)
+
+type ChannelNamespaceAuthenticationType string
+
+const (
+	ChannelNamespaceAuthenticationTypeAMAZONCOGNITOUSERPOOLS ChannelNamespaceAuthenticationType = "AMAZON_COGNITO_USER_POOLS"
+	ChannelNamespaceAuthenticationTypeAWSIAM                 ChannelNamespaceAuthenticationType = "AWS_IAM"
+	ChannelNamespaceAuthenticationTypeAPIKEY                 ChannelNamespaceAuthenticationType = "API_KEY"
+	ChannelNamespaceAuthenticationTypeOPENIDCONNECT          ChannelNamespaceAuthenticationType = "OPENID_CONNECT"
+	ChannelNamespaceAuthenticationTypeAWSLAMBDA              ChannelNamespaceAuthenticationType = "AWS_LAMBDA"
+)
+
+type DataSourceMetricsConfig string
+
+const (
+	DataSourceMetricsConfigDISABLED DataSourceMetricsConfig = "DISABLED"
+	DataSourceMetricsConfigENABLED  DataSourceMetricsConfig = "ENABLED"
+)
+
+type ResolverMetricsConfig string
+
+const (
+	ResolverMetricsConfigENABLED  ResolverMetricsConfig = "ENABLED"
+	ResolverMetricsConfigDISABLED ResolverMetricsConfig = "DISABLED"
+)
+
+type SourceApiAssociationConfigMergeType string
+
+const (
+	SourceApiAssociationConfigMergeTypeAUTOMERGE   SourceApiAssociationConfigMergeType = "AUTO_MERGE"
+	SourceApiAssociationConfigMergeTypeMANUALMERGE SourceApiAssociationConfigMergeType = "MANUAL_MERGE"
+)
+
+type SourceApiAssociationSourceApiAssociationStatus string
+
+const (
+	SourceApiAssociationSourceApiAssociationStatusMERGESCHEDULED          SourceApiAssociationSourceApiAssociationStatus = "MERGE_SCHEDULED"
+	SourceApiAssociationSourceApiAssociationStatusMERGEFAILED             SourceApiAssociationSourceApiAssociationStatus = "MERGE_FAILED"
+	SourceApiAssociationSourceApiAssociationStatusMERGESUCCESS            SourceApiAssociationSourceApiAssociationStatus = "MERGE_SUCCESS"
+	SourceApiAssociationSourceApiAssociationStatusMERGEINPROGRESS         SourceApiAssociationSourceApiAssociationStatus = "MERGE_IN_PROGRESS"
+	SourceApiAssociationSourceApiAssociationStatusAUTOMERGESCHEDULEFAILED SourceApiAssociationSourceApiAssociationStatus = "AUTO_MERGE_SCHEDULE_FAILED"
+	SourceApiAssociationSourceApiAssociationStatusDELETIONSCHEDULED       SourceApiAssociationSourceApiAssociationStatus = "DELETION_SCHEDULED"
+	SourceApiAssociationSourceApiAssociationStatusDELETIONINPROGRESS      SourceApiAssociationSourceApiAssociationStatus = "DELETION_IN_PROGRESS"
+	SourceApiAssociationSourceApiAssociationStatusDELETIONFAILED          SourceApiAssociationSourceApiAssociationStatus = "DELETION_FAILED"
+)

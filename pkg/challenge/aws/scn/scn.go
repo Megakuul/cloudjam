@@ -4,7 +4,7 @@
 package scn
 
 type DataLakeDatasetPartitionFieldTransform struct {
-	Type *string `json:"Type,omitempty"`
+	Type *DataLakeDatasetPartitionFieldTransformType `json:"Type,omitempty"`
 }
 
 type DataLakeDatasetPartitionField struct {
@@ -17,9 +17,9 @@ type DatasetPartitionSpec struct {
 }
 
 type DataLakeDatasetSchemaField struct {
-	IsRequired *bool   `json:"IsRequired,omitempty"`
-	Name       *string `json:"Name,omitempty"`
-	Type       *string `json:"Type,omitempty"`
+	IsRequired *bool                           `json:"IsRequired,omitempty"`
+	Name       *string                         `json:"Name,omitempty"`
+	Type       *DataLakeDatasetSchemaFieldType `json:"Type,omitempty"`
 }
 
 type DataLakeDatasetPrimaryKeyField struct {
@@ -68,3 +68,23 @@ type Namespace struct {
 }
 
 func (Namespace) CloudControlType() string { return "AWS::SCN::Namespace" }
+
+type DataLakeDatasetPartitionFieldTransformType string
+
+const (
+	DataLakeDatasetPartitionFieldTransformTypeYEAR     DataLakeDatasetPartitionFieldTransformType = "YEAR"
+	DataLakeDatasetPartitionFieldTransformTypeMONTH    DataLakeDatasetPartitionFieldTransformType = "MONTH"
+	DataLakeDatasetPartitionFieldTransformTypeDAY      DataLakeDatasetPartitionFieldTransformType = "DAY"
+	DataLakeDatasetPartitionFieldTransformTypeHOUR     DataLakeDatasetPartitionFieldTransformType = "HOUR"
+	DataLakeDatasetPartitionFieldTransformTypeIDENTITY DataLakeDatasetPartitionFieldTransformType = "IDENTITY"
+)
+
+type DataLakeDatasetSchemaFieldType string
+
+const (
+	DataLakeDatasetSchemaFieldTypeINT       DataLakeDatasetSchemaFieldType = "INT"
+	DataLakeDatasetSchemaFieldTypeDOUBLE    DataLakeDatasetSchemaFieldType = "DOUBLE"
+	DataLakeDatasetSchemaFieldTypeSTRING    DataLakeDatasetSchemaFieldType = "STRING"
+	DataLakeDatasetSchemaFieldTypeTIMESTAMP DataLakeDatasetSchemaFieldType = "TIMESTAMP"
+	DataLakeDatasetSchemaFieldTypeLONG      DataLakeDatasetSchemaFieldType = "LONG"
+)

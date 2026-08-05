@@ -66,9 +66,9 @@ type CacheCluster struct {
 func (CacheCluster) CloudControlType() string { return "AWS::ElastiCache::CacheCluster" }
 
 type GlobalReplicationGroupMember struct {
-	ReplicationGroupId     *string `json:"ReplicationGroupId,omitempty"`
-	ReplicationGroupRegion *string `json:"ReplicationGroupRegion,omitempty"`
-	Role                   *string `json:"Role,omitempty"`
+	ReplicationGroupId     *string                           `json:"ReplicationGroupId,omitempty"`
+	ReplicationGroupRegion *string                           `json:"ReplicationGroupRegion,omitempty"`
+	Role                   *GlobalReplicationGroupMemberRole `json:"Role,omitempty"`
 }
 
 type ReshardingConfiguration struct {
@@ -173,8 +173,8 @@ type ReplicationGroup struct {
 	ClusterMode                 *string                                           `json:"ClusterMode,omitempty"`
 	ConfigurationEndPoint       *ReplicationGroupEndpoint                         `json:"ConfigurationEndPoint,omitempty"`
 	DataTieringEnabled          *bool                                             `json:"DataTieringEnabled,omitempty"`
-	Durability                  *string                                           `json:"Durability,omitempty"`
-	EffectiveDurability         *string                                           `json:"EffectiveDurability,omitempty"`
+	Durability                  *ReplicationGroupDurability                       `json:"Durability,omitempty"`
+	EffectiveDurability         *ReplicationGroupEffectiveDurability              `json:"EffectiveDurability,omitempty"`
 	Engine                      *string                                           `json:"Engine,omitempty"`
 	EngineVersion               *string                                           `json:"EngineVersion,omitempty"`
 	GlobalReplicationGroupId    *string                                           `json:"GlobalReplicationGroupId,omitempty"`
@@ -236,9 +236,9 @@ func (SecurityGroupIngress) CloudControlType() string {
 }
 
 type DataStorage struct {
-	Maximum *int    `json:"Maximum,omitempty"`
-	Minimum *int    `json:"Minimum,omitempty"`
-	Unit    *string `json:"Unit,omitempty"`
+	Maximum *int             `json:"Maximum,omitempty"`
+	Minimum *int             `json:"Minimum,omitempty"`
+	Unit    *DataStorageUnit `json:"Unit,omitempty"`
 }
 
 type ECPUPerSecond struct {
@@ -301,8 +301,8 @@ type SubnetGroup struct {
 func (SubnetGroup) CloudControlType() string { return "AWS::ElastiCache::SubnetGroup" }
 
 type UserAuthenticationMode struct {
-	Passwords []string `json:"Passwords,omitempty"`
-	Type      *string  `json:"Type,omitempty"`
+	Passwords []string                    `json:"Passwords,omitempty"`
+	Type      *UserAuthenticationModeType `json:"Type,omitempty"`
 }
 
 type UserTag struct {
@@ -314,7 +314,7 @@ type User struct {
 	AccessString       *string                 `json:"AccessString,omitempty"`
 	Arn                *string                 `json:"Arn,omitempty"`
 	AuthenticationMode *UserAuthenticationMode `json:"AuthenticationMode,omitempty"`
-	Engine             *string                 `json:"Engine,omitempty"`
+	Engine             *UserEngine             `json:"Engine,omitempty"`
 	NoPasswordRequired *bool                   `json:"NoPasswordRequired,omitempty"`
 	Passwords          []string                `json:"Passwords,omitempty"`
 	Status             *string                 `json:"Status,omitempty"`
@@ -331,12 +331,64 @@ type UserGroupTag struct {
 }
 
 type UserGroup struct {
-	Arn         *string        `json:"Arn,omitempty"`
-	Engine      *string        `json:"Engine,omitempty"`
-	Status      *string        `json:"Status,omitempty"`
-	Tags        []UserGroupTag `json:"Tags,omitempty"`
-	UserGroupId *string        `json:"UserGroupId,omitempty"`
-	UserIds     []string       `json:"UserIds,omitempty"`
+	Arn         *string          `json:"Arn,omitempty"`
+	Engine      *UserGroupEngine `json:"Engine,omitempty"`
+	Status      *string          `json:"Status,omitempty"`
+	Tags        []UserGroupTag   `json:"Tags,omitempty"`
+	UserGroupId *string          `json:"UserGroupId,omitempty"`
+	UserIds     []string         `json:"UserIds,omitempty"`
 }
 
 func (UserGroup) CloudControlType() string { return "AWS::ElastiCache::UserGroup" }
+
+type GlobalReplicationGroupMemberRole string
+
+const (
+	GlobalReplicationGroupMemberRolePRIMARY   GlobalReplicationGroupMemberRole = "PRIMARY"
+	GlobalReplicationGroupMemberRoleSECONDARY GlobalReplicationGroupMemberRole = "SECONDARY"
+)
+
+type ReplicationGroupDurability string
+
+const (
+	ReplicationGroupDurabilityDefault  ReplicationGroupDurability = "default"
+	ReplicationGroupDurabilityAsync    ReplicationGroupDurability = "async"
+	ReplicationGroupDurabilitySync     ReplicationGroupDurability = "sync"
+	ReplicationGroupDurabilityDisabled ReplicationGroupDurability = "disabled"
+)
+
+type ReplicationGroupEffectiveDurability string
+
+const (
+	ReplicationGroupEffectiveDurabilityAsync    ReplicationGroupEffectiveDurability = "async"
+	ReplicationGroupEffectiveDurabilitySync     ReplicationGroupEffectiveDurability = "sync"
+	ReplicationGroupEffectiveDurabilityDisabled ReplicationGroupEffectiveDurability = "disabled"
+)
+
+type DataStorageUnit string
+
+const (
+	DataStorageUnitGB DataStorageUnit = "GB"
+)
+
+type UserAuthenticationModeType string
+
+const (
+	UserAuthenticationModeTypePassword           UserAuthenticationModeType = "password"
+	UserAuthenticationModeTypeNoPasswordRequired UserAuthenticationModeType = "no-password-required"
+	UserAuthenticationModeTypeIam                UserAuthenticationModeType = "iam"
+)
+
+type UserEngine string
+
+const (
+	UserEngineRedis  UserEngine = "redis"
+	UserEngineValkey UserEngine = "valkey"
+)
+
+type UserGroupEngine string
+
+const (
+	UserGroupEngineRedis  UserGroupEngine = "redis"
+	UserGroupEngineValkey UserGroupEngine = "valkey"
+)

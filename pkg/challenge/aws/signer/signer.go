@@ -14,8 +14,8 @@ type ProfilePermission struct {
 func (ProfilePermission) CloudControlType() string { return "AWS::Signer::ProfilePermission" }
 
 type SignatureValidityPeriod struct {
-	Type  *string `json:"Type,omitempty"`
-	Value *int    `json:"Value,omitempty"`
+	Type  *SignatureValidityPeriodType `json:"Type,omitempty"`
+	Value *int                         `json:"Value,omitempty"`
 }
 
 type Tag struct {
@@ -25,7 +25,7 @@ type Tag struct {
 
 type SigningProfile struct {
 	Arn                     *string                  `json:"Arn,omitempty"`
-	PlatformId              *string                  `json:"PlatformId,omitempty"`
+	PlatformId              *PlatformId              `json:"PlatformId,omitempty"`
 	ProfileName             *string                  `json:"ProfileName,omitempty"`
 	ProfileVersion          *string                  `json:"ProfileVersion,omitempty"`
 	ProfileVersionArn       *string                  `json:"ProfileVersionArn,omitempty"`
@@ -34,3 +34,18 @@ type SigningProfile struct {
 }
 
 func (SigningProfile) CloudControlType() string { return "AWS::Signer::SigningProfile" }
+
+type PlatformId string
+
+const (
+	PlatformIdAWSLambdaSHA384ECDSA   PlatformId = "AWSLambda-SHA384-ECDSA"
+	PlatformIdNotationOCISHA384ECDSA PlatformId = "Notation-OCI-SHA384-ECDSA"
+)
+
+type SignatureValidityPeriodType string
+
+const (
+	SignatureValidityPeriodTypeDAYS   SignatureValidityPeriodType = "DAYS"
+	SignatureValidityPeriodTypeMONTHS SignatureValidityPeriodType = "MONTHS"
+	SignatureValidityPeriodTypeYEARS  SignatureValidityPeriodType = "YEARS"
+)

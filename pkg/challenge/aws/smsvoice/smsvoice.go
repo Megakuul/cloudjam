@@ -66,9 +66,9 @@ type PhoneNumberMandatoryKeywords struct {
 }
 
 type OptionalKeyword struct {
-	Action  *string `json:"Action,omitempty"`
-	Keyword *string `json:"Keyword,omitempty"`
-	Message *string `json:"Message,omitempty"`
+	Action  *OptionalKeywordAction `json:"Action,omitempty"`
+	Keyword *string                `json:"Keyword,omitempty"`
+	Message *string                `json:"Message,omitempty"`
 }
 
 type PhoneNumberTag struct {
@@ -83,19 +83,19 @@ type PhoneNumberTwoWay struct {
 }
 
 type PhoneNumber struct {
-	Arn                       *string                       `json:"Arn,omitempty"`
-	DeletionProtectionEnabled *bool                         `json:"DeletionProtectionEnabled,omitempty"`
-	IsoCountryCode            *string                       `json:"IsoCountryCode,omitempty"`
-	MandatoryKeywords         *PhoneNumberMandatoryKeywords `json:"MandatoryKeywords,omitempty"`
-	NumberCapabilities        []string                      `json:"NumberCapabilities,omitempty"`
-	NumberType                *string                       `json:"NumberType,omitempty"`
-	OptOutListName            *string                       `json:"OptOutListName,omitempty"`
-	OptionalKeywords          []OptionalKeyword             `json:"OptionalKeywords,omitempty"`
-	PhoneNumber               *string                       `json:"PhoneNumber,omitempty"`
-	PhoneNumberId             *string                       `json:"PhoneNumberId,omitempty"`
-	SelfManagedOptOutsEnabled *bool                         `json:"SelfManagedOptOutsEnabled,omitempty"`
-	Tags                      []PhoneNumberTag              `json:"Tags,omitempty"`
-	TwoWay                    *PhoneNumberTwoWay            `json:"TwoWay,omitempty"`
+	Arn                       *string                             `json:"Arn,omitempty"`
+	DeletionProtectionEnabled *bool                               `json:"DeletionProtectionEnabled,omitempty"`
+	IsoCountryCode            *string                             `json:"IsoCountryCode,omitempty"`
+	MandatoryKeywords         *PhoneNumberMandatoryKeywords       `json:"MandatoryKeywords,omitempty"`
+	NumberCapabilities        []PhoneNumberNumberCapabilitiesItem `json:"NumberCapabilities,omitempty"`
+	NumberType                *PhoneNumberNumberType              `json:"NumberType,omitempty"`
+	OptOutListName            *string                             `json:"OptOutListName,omitempty"`
+	OptionalKeywords          []OptionalKeyword                   `json:"OptionalKeywords,omitempty"`
+	PhoneNumber               *string                             `json:"PhoneNumber,omitempty"`
+	PhoneNumberId             *string                             `json:"PhoneNumberId,omitempty"`
+	SelfManagedOptOutsEnabled *bool                               `json:"SelfManagedOptOutsEnabled,omitempty"`
+	Tags                      []PhoneNumberTag                    `json:"Tags,omitempty"`
+	TwoWay                    *PhoneNumberTwoWay                  `json:"TwoWay,omitempty"`
 }
 
 func (PhoneNumber) CloudControlType() string { return "AWS::SMSVOICE::PhoneNumber" }
@@ -110,9 +110,9 @@ type PoolMandatoryKeywords struct {
 }
 
 type PoolOptionalKeyword struct {
-	Action  *string `json:"Action,omitempty"`
-	Keyword *string `json:"Keyword,omitempty"`
-	Message *string `json:"Message,omitempty"`
+	Action  *PoolOptionalKeywordAction `json:"Action,omitempty"`
+	Keyword *string                    `json:"Keyword,omitempty"`
+	Message *string                    `json:"Message,omitempty"`
 }
 
 type PoolTag struct {
@@ -143,8 +143,8 @@ type Pool struct {
 func (Pool) CloudControlType() string { return "AWS::SMSVOICE::Pool" }
 
 type CountryRule struct {
-	CountryCode   *string `json:"CountryCode,omitempty"`
-	ProtectStatus *string `json:"ProtectStatus,omitempty"`
+	CountryCode   *string                   `json:"CountryCode,omitempty"`
+	ProtectStatus *CountryRuleProtectStatus `json:"ProtectStatus,omitempty"`
 }
 
 type CountryRuleSet struct {
@@ -174,13 +174,13 @@ type RegistrationTag struct {
 }
 
 type Registration struct {
-	CreatedTimestamp     *string           `json:"CreatedTimestamp,omitempty"`
-	CurrentVersionNumber *int              `json:"CurrentVersionNumber,omitempty"`
-	RegistrationArn      *string           `json:"RegistrationArn,omitempty"`
-	RegistrationId       *string           `json:"RegistrationId,omitempty"`
-	RegistrationStatus   *string           `json:"RegistrationStatus,omitempty"`
-	RegistrationType     *string           `json:"RegistrationType,omitempty"`
-	Tags                 []RegistrationTag `json:"Tags,omitempty"`
+	CreatedTimestamp     *string                         `json:"CreatedTimestamp,omitempty"`
+	CurrentVersionNumber *int                            `json:"CurrentVersionNumber,omitempty"`
+	RegistrationArn      *string                         `json:"RegistrationArn,omitempty"`
+	RegistrationId       *string                         `json:"RegistrationId,omitempty"`
+	RegistrationStatus   *RegistrationRegistrationStatus `json:"RegistrationStatus,omitempty"`
+	RegistrationType     *string                         `json:"RegistrationType,omitempty"`
+	Tags                 []RegistrationTag               `json:"Tags,omitempty"`
 }
 
 func (Registration) CloudControlType() string { return "AWS::SMSVOICE::Registration" }
@@ -206,3 +206,60 @@ type SenderId struct {
 }
 
 func (SenderId) CloudControlType() string { return "AWS::SMSVOICE::SenderId" }
+
+type PhoneNumberNumberCapabilitiesItem string
+
+const (
+	PhoneNumberNumberCapabilitiesItemSMS   PhoneNumberNumberCapabilitiesItem = "SMS"
+	PhoneNumberNumberCapabilitiesItemVOICE PhoneNumberNumberCapabilitiesItem = "VOICE"
+	PhoneNumberNumberCapabilitiesItemMMS   PhoneNumberNumberCapabilitiesItem = "MMS"
+)
+
+type PhoneNumberNumberType string
+
+const (
+	PhoneNumberNumberTypeLONGCODE  PhoneNumberNumberType = "LONG_CODE"
+	PhoneNumberNumberTypeTOLLFREE  PhoneNumberNumberType = "TOLL_FREE"
+	PhoneNumberNumberTypeTENDLC    PhoneNumberNumberType = "TEN_DLC"
+	PhoneNumberNumberTypeSIMULATOR PhoneNumberNumberType = "SIMULATOR"
+)
+
+type OptionalKeywordAction string
+
+const (
+	OptionalKeywordActionAUTOMATICRESPONSE OptionalKeywordAction = "AUTOMATIC_RESPONSE"
+	OptionalKeywordActionOPTOUT            OptionalKeywordAction = "OPT_OUT"
+	OptionalKeywordActionOPTIN             OptionalKeywordAction = "OPT_IN"
+)
+
+type PoolOptionalKeywordAction string
+
+const (
+	PoolOptionalKeywordActionAUTOMATICRESPONSE PoolOptionalKeywordAction = "AUTOMATIC_RESPONSE"
+	PoolOptionalKeywordActionOPTOUT            PoolOptionalKeywordAction = "OPT_OUT"
+	PoolOptionalKeywordActionOPTIN             PoolOptionalKeywordAction = "OPT_IN"
+)
+
+type CountryRuleProtectStatus string
+
+const (
+	CountryRuleProtectStatusALLOW   CountryRuleProtectStatus = "ALLOW"
+	CountryRuleProtectStatusBLOCK   CountryRuleProtectStatus = "BLOCK"
+	CountryRuleProtectStatusMONITOR CountryRuleProtectStatus = "MONITOR"
+	CountryRuleProtectStatusFILTER  CountryRuleProtectStatus = "FILTER"
+)
+
+type RegistrationRegistrationStatus string
+
+const (
+	RegistrationRegistrationStatusCREATED                RegistrationRegistrationStatus = "CREATED"
+	RegistrationRegistrationStatusSUBMITTED              RegistrationRegistrationStatus = "SUBMITTED"
+	RegistrationRegistrationStatusAWSREVIEWING           RegistrationRegistrationStatus = "AWS_REVIEWING"
+	RegistrationRegistrationStatusREVIEWING              RegistrationRegistrationStatus = "REVIEWING"
+	RegistrationRegistrationStatusREQUIRESAUTHENTICATION RegistrationRegistrationStatus = "REQUIRES_AUTHENTICATION"
+	RegistrationRegistrationStatusPROVISIONING           RegistrationRegistrationStatus = "PROVISIONING"
+	RegistrationRegistrationStatusCOMPLETE               RegistrationRegistrationStatus = "COMPLETE"
+	RegistrationRegistrationStatusREQUIRESUPDATES        RegistrationRegistrationStatus = "REQUIRES_UPDATES"
+	RegistrationRegistrationStatusCLOSED                 RegistrationRegistrationStatus = "CLOSED"
+	RegistrationRegistrationStatusDELETED                RegistrationRegistrationStatus = "DELETED"
+)

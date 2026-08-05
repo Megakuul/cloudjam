@@ -15,7 +15,7 @@ type AIAgent struct {
 	ModifiedTimeSeconds *float64          `json:"ModifiedTimeSeconds,omitempty"`
 	Name                *string           `json:"Name,omitempty"`
 	Tags                map[string]string `json:"Tags,omitempty"`
-	Type                *string           `json:"Type,omitempty"`
+	Type                *AIAgentType      `json:"Type,omitempty"`
 }
 
 func (AIAgent) CloudControlType() string { return "AWS::Wisdom::AIAgent" }
@@ -33,9 +33,9 @@ type AIAgentVersion struct {
 func (AIAgentVersion) CloudControlType() string { return "AWS::Wisdom::AIAgentVersion" }
 
 type GuardrailContentFilterConfig struct {
-	InputStrength  *string `json:"InputStrength,omitempty"`
-	OutputStrength *string `json:"OutputStrength,omitempty"`
-	Type           *string `json:"Type,omitempty"`
+	InputStrength  *GuardrailFilterStrength    `json:"InputStrength,omitempty"`
+	OutputStrength *GuardrailFilterStrength    `json:"OutputStrength,omitempty"`
+	Type           *GuardrailContentFilterType `json:"Type,omitempty"`
 }
 
 type AIGuardrailContentPolicyConfig struct {
@@ -43,8 +43,8 @@ type AIGuardrailContentPolicyConfig struct {
 }
 
 type GuardrailContextualGroundingFilterConfig struct {
-	Threshold *float64 `json:"Threshold,omitempty"`
-	Type      *string  `json:"Type,omitempty"`
+	Threshold *float64                                `json:"Threshold,omitempty"`
+	Type      *GuardrailContextualGroundingFilterType `json:"Type,omitempty"`
 }
 
 type AIGuardrailContextualGroundingPolicyConfig struct {
@@ -52,15 +52,15 @@ type AIGuardrailContextualGroundingPolicyConfig struct {
 }
 
 type GuardrailPiiEntityConfig struct {
-	Action *string `json:"Action,omitempty"`
-	Type   *string `json:"Type,omitempty"`
+	Action *GuardrailSensitiveInformationAction `json:"Action,omitempty"`
+	Type   *GuardrailPiiEntityType              `json:"Type,omitempty"`
 }
 
 type GuardrailRegexConfig struct {
-	Action      *string `json:"Action,omitempty"`
-	Description *string `json:"Description,omitempty"`
-	Name        *string `json:"Name,omitempty"`
-	Pattern     *string `json:"Pattern,omitempty"`
+	Action      *GuardrailSensitiveInformationAction `json:"Action,omitempty"`
+	Description *string                              `json:"Description,omitempty"`
+	Name        *string                              `json:"Name,omitempty"`
+	Pattern     *string                              `json:"Pattern,omitempty"`
 }
 
 type AIGuardrailSensitiveInformationPolicyConfig struct {
@@ -69,10 +69,10 @@ type AIGuardrailSensitiveInformationPolicyConfig struct {
 }
 
 type GuardrailTopicConfig struct {
-	Definition *string  `json:"Definition,omitempty"`
-	Examples   []string `json:"Examples,omitempty"`
-	Name       *string  `json:"Name,omitempty"`
-	Type       *string  `json:"Type,omitempty"`
+	Definition *string             `json:"Definition,omitempty"`
+	Examples   []string            `json:"Examples,omitempty"`
+	Name       *string             `json:"Name,omitempty"`
+	Type       *GuardrailTopicType `json:"Type,omitempty"`
 }
 
 type AIGuardrailTopicPolicyConfig struct {
@@ -80,7 +80,7 @@ type AIGuardrailTopicPolicyConfig struct {
 }
 
 type GuardrailManagedWordsConfig struct {
-	Type *string `json:"Type,omitempty"`
+	Type *GuardrailManagedWordsType `json:"Type,omitempty"`
 }
 
 type GuardrailWordConfig struct {
@@ -125,19 +125,19 @@ type AIGuardrailVersion struct {
 func (AIGuardrailVersion) CloudControlType() string { return "AWS::Wisdom::AIGuardrailVersion" }
 
 type AIPrompt struct {
-	AIPromptArn           *string           `json:"AIPromptArn,omitempty"`
-	AIPromptId            *string           `json:"AIPromptId,omitempty"`
-	ApiFormat             *string           `json:"ApiFormat,omitempty"`
-	AssistantArn          *string           `json:"AssistantArn,omitempty"`
-	AssistantId           *string           `json:"AssistantId,omitempty"`
-	Description           *string           `json:"Description,omitempty"`
-	ModelId               *string           `json:"ModelId,omitempty"`
-	ModifiedTimeSeconds   *float64          `json:"ModifiedTimeSeconds,omitempty"`
-	Name                  *string           `json:"Name,omitempty"`
-	Tags                  map[string]string `json:"Tags,omitempty"`
-	TemplateConfiguration map[string]any    `json:"TemplateConfiguration,omitempty"`
-	TemplateType          *string           `json:"TemplateType,omitempty"`
-	Type                  *string           `json:"Type,omitempty"`
+	AIPromptArn           *string               `json:"AIPromptArn,omitempty"`
+	AIPromptId            *string               `json:"AIPromptId,omitempty"`
+	ApiFormat             *AIPromptAPIFormat    `json:"ApiFormat,omitempty"`
+	AssistantArn          *string               `json:"AssistantArn,omitempty"`
+	AssistantId           *string               `json:"AssistantId,omitempty"`
+	Description           *string               `json:"Description,omitempty"`
+	ModelId               *string               `json:"ModelId,omitempty"`
+	ModifiedTimeSeconds   *float64              `json:"ModifiedTimeSeconds,omitempty"`
+	Name                  *string               `json:"Name,omitempty"`
+	Tags                  map[string]string     `json:"Tags,omitempty"`
+	TemplateConfiguration map[string]any        `json:"TemplateConfiguration,omitempty"`
+	TemplateType          *AIPromptTemplateType `json:"TemplateType,omitempty"`
+	Type                  *AIPromptType         `json:"Type,omitempty"`
 }
 
 func (AIPrompt) CloudControlType() string { return "AWS::Wisdom::AIPrompt" }
@@ -170,7 +170,7 @@ type Assistant struct {
 	Name                              *string                            `json:"Name,omitempty"`
 	ServerSideEncryptionConfiguration *ServerSideEncryptionConfiguration `json:"ServerSideEncryptionConfiguration,omitempty"`
 	Tags                              []Tag                              `json:"Tags,omitempty"`
-	Type                              *string                            `json:"Type,omitempty"`
+	Type                              *AssistantType                     `json:"Type,omitempty"`
 }
 
 func (Assistant) CloudControlType() string { return "AWS::Wisdom::Assistant" }
@@ -186,7 +186,7 @@ type AssistantAssociation struct {
 	AssistantAssociationId  *string                   `json:"AssistantAssociationId,omitempty"`
 	AssistantId             *string                   `json:"AssistantId,omitempty"`
 	Association             json.RawMessage           `json:"Association,omitempty"`
-	AssociationType         *string                   `json:"AssociationType,omitempty"`
+	AssociationType         *AssociationType          `json:"AssociationType,omitempty"`
 	Tags                    []AssistantAssociationTag `json:"Tags,omitempty"`
 }
 
@@ -226,10 +226,10 @@ type SemanticChunkingConfiguration struct {
 }
 
 type VectorIngestionConfigurationChunkingConfiguration struct {
-	ChunkingStrategy                  *string                            `json:"ChunkingStrategy,omitempty"`
-	FixedSizeChunkingConfiguration    *FixedSizeChunkingConfiguration    `json:"FixedSizeChunkingConfiguration,omitempty"`
-	HierarchicalChunkingConfiguration *HierarchicalChunkingConfiguration `json:"HierarchicalChunkingConfiguration,omitempty"`
-	SemanticChunkingConfiguration     *SemanticChunkingConfiguration     `json:"SemanticChunkingConfiguration,omitempty"`
+	ChunkingStrategy                  *VectorIngestionConfigurationChunkingConfigurationChunkingStrategy `json:"ChunkingStrategy,omitempty"`
+	FixedSizeChunkingConfiguration    *FixedSizeChunkingConfiguration                                    `json:"FixedSizeChunkingConfiguration,omitempty"`
+	HierarchicalChunkingConfiguration *HierarchicalChunkingConfiguration                                 `json:"HierarchicalChunkingConfiguration,omitempty"`
+	SemanticChunkingConfiguration     *SemanticChunkingConfiguration                                     `json:"SemanticChunkingConfiguration,omitempty"`
 }
 
 type BedrockFoundationModelConfigurationParsingPrompt struct {
@@ -242,8 +242,8 @@ type BedrockFoundationModelConfiguration struct {
 }
 
 type VectorIngestionConfigurationParsingConfiguration struct {
-	BedrockFoundationModelConfiguration *BedrockFoundationModelConfiguration `json:"BedrockFoundationModelConfiguration,omitempty"`
-	ParsingStrategy                     *string                              `json:"ParsingStrategy,omitempty"`
+	BedrockFoundationModelConfiguration *BedrockFoundationModelConfiguration                             `json:"BedrockFoundationModelConfiguration,omitempty"`
+	ParsingStrategy                     *VectorIngestionConfigurationParsingConfigurationParsingStrategy `json:"ParsingStrategy,omitempty"`
 }
 
 type VectorIngestionConfiguration struct {
@@ -255,7 +255,7 @@ type KnowledgeBase struct {
 	Description                       *string                                         `json:"Description,omitempty"`
 	KnowledgeBaseArn                  *string                                         `json:"KnowledgeBaseArn,omitempty"`
 	KnowledgeBaseId                   *string                                         `json:"KnowledgeBaseId,omitempty"`
-	KnowledgeBaseType                 *string                                         `json:"KnowledgeBaseType,omitempty"`
+	KnowledgeBaseType                 *KnowledgeBaseType                              `json:"KnowledgeBaseType,omitempty"`
 	Name                              *string                                         `json:"Name,omitempty"`
 	RenderingConfiguration            *RenderingConfiguration                         `json:"RenderingConfiguration,omitempty"`
 	ServerSideEncryptionConfiguration *KnowledgeBaseServerSideEncryptionConfiguration `json:"ServerSideEncryptionConfiguration,omitempty"`
@@ -399,7 +399,7 @@ type MessageTemplateTag struct {
 }
 
 type MessageTemplate struct {
-	ChannelSubtype               *string                     `json:"ChannelSubtype,omitempty"`
+	ChannelSubtype               *ChannelSubtype             `json:"ChannelSubtype,omitempty"`
 	Content                      *Content                    `json:"Content,omitempty"`
 	DefaultAttributes            *MessageTemplateAttributes  `json:"DefaultAttributes,omitempty"`
 	Description                  *string                     `json:"Description,omitempty"`
@@ -445,7 +445,7 @@ type QuickResponseTag struct {
 }
 
 type QuickResponse struct {
-	Channels              []string                            `json:"Channels,omitempty"`
+	Channels              []ChannelType                       `json:"Channels,omitempty"`
 	Content               *QuickResponseContentProvider       `json:"Content,omitempty"`
 	ContentType           *string                             `json:"ContentType,omitempty"`
 	Contents              *QuickResponseContents              `json:"Contents,omitempty"`
@@ -458,8 +458,201 @@ type QuickResponse struct {
 	QuickResponseArn      *string                             `json:"QuickResponseArn,omitempty"`
 	QuickResponseId       *string                             `json:"QuickResponseId,omitempty"`
 	ShortcutKey           *string                             `json:"ShortcutKey,omitempty"`
-	Status                *string                             `json:"Status,omitempty"`
+	Status                *Status                             `json:"Status,omitempty"`
 	Tags                  []QuickResponseTag                  `json:"Tags,omitempty"`
 }
 
 func (QuickResponse) CloudControlType() string { return "AWS::Wisdom::QuickResponse" }
+
+type AIAgentType string
+
+const (
+	AIAgentTypeMANUALSEARCH          AIAgentType = "MANUAL_SEARCH"
+	AIAgentTypeANSWERRECOMMENDATION  AIAgentType = "ANSWER_RECOMMENDATION"
+	AIAgentTypeSELFSERVICE           AIAgentType = "SELF_SERVICE"
+	AIAgentTypeEMAILRESPONSE         AIAgentType = "EMAIL_RESPONSE"
+	AIAgentTypeEMAILOVERVIEW         AIAgentType = "EMAIL_OVERVIEW"
+	AIAgentTypeEMAILGENERATIVEANSWER AIAgentType = "EMAIL_GENERATIVE_ANSWER"
+	AIAgentTypeORCHESTRATION         AIAgentType = "ORCHESTRATION"
+	AIAgentTypeNOTETAKING            AIAgentType = "NOTE_TAKING"
+	AIAgentTypeCASESUMMARIZATION     AIAgentType = "CASE_SUMMARIZATION"
+)
+
+type GuardrailFilterStrength string
+
+const (
+	GuardrailFilterStrengthNONE   GuardrailFilterStrength = "NONE"
+	GuardrailFilterStrengthLOW    GuardrailFilterStrength = "LOW"
+	GuardrailFilterStrengthMEDIUM GuardrailFilterStrength = "MEDIUM"
+	GuardrailFilterStrengthHIGH   GuardrailFilterStrength = "HIGH"
+)
+
+type GuardrailContentFilterType string
+
+const (
+	GuardrailContentFilterTypeSEXUAL       GuardrailContentFilterType = "SEXUAL"
+	GuardrailContentFilterTypeVIOLENCE     GuardrailContentFilterType = "VIOLENCE"
+	GuardrailContentFilterTypeHATE         GuardrailContentFilterType = "HATE"
+	GuardrailContentFilterTypeINSULTS      GuardrailContentFilterType = "INSULTS"
+	GuardrailContentFilterTypeMISCONDUCT   GuardrailContentFilterType = "MISCONDUCT"
+	GuardrailContentFilterTypePROMPTATTACK GuardrailContentFilterType = "PROMPT_ATTACK"
+)
+
+type GuardrailContextualGroundingFilterType string
+
+const (
+	GuardrailContextualGroundingFilterTypeGROUNDING GuardrailContextualGroundingFilterType = "GROUNDING"
+	GuardrailContextualGroundingFilterTypeRELEVANCE GuardrailContextualGroundingFilterType = "RELEVANCE"
+)
+
+type GuardrailSensitiveInformationAction string
+
+const (
+	GuardrailSensitiveInformationActionBLOCK     GuardrailSensitiveInformationAction = "BLOCK"
+	GuardrailSensitiveInformationActionANONYMIZE GuardrailSensitiveInformationAction = "ANONYMIZE"
+)
+
+type GuardrailPiiEntityType string
+
+const (
+	GuardrailPiiEntityTypeADDRESS                             GuardrailPiiEntityType = "ADDRESS"
+	GuardrailPiiEntityTypeAGE                                 GuardrailPiiEntityType = "AGE"
+	GuardrailPiiEntityTypeAWSACCESSKEY                        GuardrailPiiEntityType = "AWS_ACCESS_KEY"
+	GuardrailPiiEntityTypeAWSSECRETKEY                        GuardrailPiiEntityType = "AWS_SECRET_KEY"
+	GuardrailPiiEntityTypeCAHEALTHNUMBER                      GuardrailPiiEntityType = "CA_HEALTH_NUMBER"
+	GuardrailPiiEntityTypeCASOCIALINSURANCENUMBER             GuardrailPiiEntityType = "CA_SOCIAL_INSURANCE_NUMBER"
+	GuardrailPiiEntityTypeCREDITDEBITCARDCVV                  GuardrailPiiEntityType = "CREDIT_DEBIT_CARD_CVV"
+	GuardrailPiiEntityTypeCREDITDEBITCARDEXPIRY               GuardrailPiiEntityType = "CREDIT_DEBIT_CARD_EXPIRY"
+	GuardrailPiiEntityTypeCREDITDEBITCARDNUMBER               GuardrailPiiEntityType = "CREDIT_DEBIT_CARD_NUMBER"
+	GuardrailPiiEntityTypeDRIVERID                            GuardrailPiiEntityType = "DRIVER_ID"
+	GuardrailPiiEntityTypeEMAIL                               GuardrailPiiEntityType = "EMAIL"
+	GuardrailPiiEntityTypeINTERNATIONALBANKACCOUNTNUMBER      GuardrailPiiEntityType = "INTERNATIONAL_BANK_ACCOUNT_NUMBER"
+	GuardrailPiiEntityTypeIPADDRESS                           GuardrailPiiEntityType = "IP_ADDRESS"
+	GuardrailPiiEntityTypeLICENSEPLATE                        GuardrailPiiEntityType = "LICENSE_PLATE"
+	GuardrailPiiEntityTypeMACADDRESS                          GuardrailPiiEntityType = "MAC_ADDRESS"
+	GuardrailPiiEntityTypeNAME                                GuardrailPiiEntityType = "NAME"
+	GuardrailPiiEntityTypePASSWORD                            GuardrailPiiEntityType = "PASSWORD"
+	GuardrailPiiEntityTypePHONE                               GuardrailPiiEntityType = "PHONE"
+	GuardrailPiiEntityTypePIN                                 GuardrailPiiEntityType = "PIN"
+	GuardrailPiiEntityTypeSWIFTCODE                           GuardrailPiiEntityType = "SWIFT_CODE"
+	GuardrailPiiEntityTypeUKNATIONALHEALTHSERVICENUMBER       GuardrailPiiEntityType = "UK_NATIONAL_HEALTH_SERVICE_NUMBER"
+	GuardrailPiiEntityTypeUKNATIONALINSURANCENUMBER           GuardrailPiiEntityType = "UK_NATIONAL_INSURANCE_NUMBER"
+	GuardrailPiiEntityTypeUKUNIQUETAXPAYERREFERENCENUMBER     GuardrailPiiEntityType = "UK_UNIQUE_TAXPAYER_REFERENCE_NUMBER"
+	GuardrailPiiEntityTypeURL                                 GuardrailPiiEntityType = "URL"
+	GuardrailPiiEntityTypeUSERNAME                            GuardrailPiiEntityType = "USERNAME"
+	GuardrailPiiEntityTypeUSBANKACCOUNTNUMBER                 GuardrailPiiEntityType = "US_BANK_ACCOUNT_NUMBER"
+	GuardrailPiiEntityTypeUSBANKROUTINGNUMBER                 GuardrailPiiEntityType = "US_BANK_ROUTING_NUMBER"
+	GuardrailPiiEntityTypeUSINDIVIDUALTAXIDENTIFICATIONNUMBER GuardrailPiiEntityType = "US_INDIVIDUAL_TAX_IDENTIFICATION_NUMBER"
+	GuardrailPiiEntityTypeUSPASSPORTNUMBER                    GuardrailPiiEntityType = "US_PASSPORT_NUMBER"
+	GuardrailPiiEntityTypeUSSOCIALSECURITYNUMBER              GuardrailPiiEntityType = "US_SOCIAL_SECURITY_NUMBER"
+	GuardrailPiiEntityTypeVEHICLEIDENTIFICATIONNUMBER         GuardrailPiiEntityType = "VEHICLE_IDENTIFICATION_NUMBER"
+)
+
+type GuardrailTopicType string
+
+const (
+	GuardrailTopicTypeDENY GuardrailTopicType = "DENY"
+)
+
+type GuardrailManagedWordsType string
+
+const (
+	GuardrailManagedWordsTypePROFANITY GuardrailManagedWordsType = "PROFANITY"
+)
+
+type AIPromptAPIFormat string
+
+const (
+	AIPromptAPIFormatANTHROPICCLAUDEMESSAGES        AIPromptAPIFormat = "ANTHROPIC_CLAUDE_MESSAGES"
+	AIPromptAPIFormatANTHROPICCLAUDETEXTCOMPLETIONS AIPromptAPIFormat = "ANTHROPIC_CLAUDE_TEXT_COMPLETIONS"
+	AIPromptAPIFormatMESSAGES                       AIPromptAPIFormat = "MESSAGES"
+	AIPromptAPIFormatTEXTCOMPLETIONS                AIPromptAPIFormat = "TEXT_COMPLETIONS"
+)
+
+type AIPromptTemplateType string
+
+const (
+	AIPromptTemplateTypeTEXT AIPromptTemplateType = "TEXT"
+)
+
+type AIPromptType string
+
+const (
+	AIPromptTypeANSWERGENERATION            AIPromptType = "ANSWER_GENERATION"
+	AIPromptTypeINTENTLABELINGGENERATION    AIPromptType = "INTENT_LABELING_GENERATION"
+	AIPromptTypeQUERYREFORMULATION          AIPromptType = "QUERY_REFORMULATION"
+	AIPromptTypeSELFSERVICEPREPROCESSING    AIPromptType = "SELF_SERVICE_PRE_PROCESSING"
+	AIPromptTypeSELFSERVICEANSWERGENERATION AIPromptType = "SELF_SERVICE_ANSWER_GENERATION"
+	AIPromptTypeEMAILRESPONSE               AIPromptType = "EMAIL_RESPONSE"
+	AIPromptTypeEMAILOVERVIEW               AIPromptType = "EMAIL_OVERVIEW"
+	AIPromptTypeEMAILGENERATIVEANSWER       AIPromptType = "EMAIL_GENERATIVE_ANSWER"
+	AIPromptTypeEMAILQUERYREFORMULATION     AIPromptType = "EMAIL_QUERY_REFORMULATION"
+	AIPromptTypeORCHESTRATION               AIPromptType = "ORCHESTRATION"
+	AIPromptTypeNOTETAKING                  AIPromptType = "NOTE_TAKING"
+	AIPromptTypeCASESUMMARIZATION           AIPromptType = "CASE_SUMMARIZATION"
+)
+
+type AssistantType string
+
+const (
+	AssistantTypeAGENT AssistantType = "AGENT"
+)
+
+type AssociationType string
+
+const (
+	AssociationTypeKNOWLEDGEBASE                AssociationType = "KNOWLEDGE_BASE"
+	AssociationTypeEXTERNALBEDROCKKNOWLEDGEBASE AssociationType = "EXTERNAL_BEDROCK_KNOWLEDGE_BASE"
+)
+
+type KnowledgeBaseType string
+
+const (
+	KnowledgeBaseTypeEXTERNAL         KnowledgeBaseType = "EXTERNAL"
+	KnowledgeBaseTypeCUSTOM           KnowledgeBaseType = "CUSTOM"
+	KnowledgeBaseTypeMESSAGETEMPLATES KnowledgeBaseType = "MESSAGE_TEMPLATES"
+	KnowledgeBaseTypeMANAGED          KnowledgeBaseType = "MANAGED"
+	KnowledgeBaseTypeQUICKRESPONSES   KnowledgeBaseType = "QUICK_RESPONSES"
+)
+
+type VectorIngestionConfigurationChunkingConfigurationChunkingStrategy string
+
+const (
+	VectorIngestionConfigurationChunkingConfigurationChunkingStrategyFIXEDSIZE    VectorIngestionConfigurationChunkingConfigurationChunkingStrategy = "FIXED_SIZE"
+	VectorIngestionConfigurationChunkingConfigurationChunkingStrategyNONE         VectorIngestionConfigurationChunkingConfigurationChunkingStrategy = "NONE"
+	VectorIngestionConfigurationChunkingConfigurationChunkingStrategyHIERARCHICAL VectorIngestionConfigurationChunkingConfigurationChunkingStrategy = "HIERARCHICAL"
+	VectorIngestionConfigurationChunkingConfigurationChunkingStrategySEMANTIC     VectorIngestionConfigurationChunkingConfigurationChunkingStrategy = "SEMANTIC"
+)
+
+type VectorIngestionConfigurationParsingConfigurationParsingStrategy string
+
+const (
+	VectorIngestionConfigurationParsingConfigurationParsingStrategyBEDROCKFOUNDATIONMODEL VectorIngestionConfigurationParsingConfigurationParsingStrategy = "BEDROCK_FOUNDATION_MODEL"
+)
+
+type ChannelSubtype string
+
+const (
+	ChannelSubtypeEMAIL ChannelSubtype = "EMAIL"
+	ChannelSubtypeSMS   ChannelSubtype = "SMS"
+)
+
+type ChannelType string
+
+const (
+	ChannelTypeChat  ChannelType = "Chat"
+	ChannelTypeEmail ChannelType = "Email"
+)
+
+type Status string
+
+const (
+	StatusCREATEINPROGRESS Status = "CREATE_IN_PROGRESS"
+	StatusCREATEFAILED     Status = "CREATE_FAILED"
+	StatusCREATED          Status = "CREATED"
+	StatusDELETEINPROGRESS Status = "DELETE_IN_PROGRESS"
+	StatusDELETEFAILED     Status = "DELETE_FAILED"
+	StatusDELETED          Status = "DELETED"
+	StatusUPDATEINPROGRESS Status = "UPDATE_IN_PROGRESS"
+	StatusUPDATEFAILED     Status = "UPDATE_FAILED"
+)

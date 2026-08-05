@@ -6,8 +6,8 @@ package apptest
 import "encoding/json"
 
 type TestCaseLatestVersion struct {
-	Status  *string  `json:"Status,omitempty"`
-	Version *float64 `json:"Version,omitempty"`
+	Status  *TestCaseLifecycle `json:"Status,omitempty"`
+	Version *float64           `json:"Version,omitempty"`
 }
 
 type Step struct {
@@ -22,7 +22,7 @@ type TestCase struct {
 	LastUpdateTime  *string                `json:"LastUpdateTime,omitempty"`
 	LatestVersion   *TestCaseLatestVersion `json:"LatestVersion,omitempty"`
 	Name            *string                `json:"Name,omitempty"`
-	Status          *string                `json:"Status,omitempty"`
+	Status          *TestCaseLifecycle     `json:"Status,omitempty"`
 	Steps           []Step                 `json:"Steps,omitempty"`
 	Tags            map[string]string      `json:"Tags,omitempty"`
 	TestCaseArn     *string                `json:"TestCaseArn,omitempty"`
@@ -31,3 +31,10 @@ type TestCase struct {
 }
 
 func (TestCase) CloudControlType() string { return "AWS::AppTest::TestCase" }
+
+type TestCaseLifecycle string
+
+const (
+	TestCaseLifecycleActive   TestCaseLifecycle = "Active"
+	TestCaseLifecycleDeleting TestCaseLifecycle = "Deleting"
+)

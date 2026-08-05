@@ -13,8 +13,8 @@ type PublicAccessBlockConfiguration struct {
 }
 
 type Scope struct {
-	Permissions []string `json:"Permissions,omitempty"`
-	Prefixes    []string `json:"Prefixes,omitempty"`
+	Permissions []ScopePermissionsItem `json:"Permissions,omitempty"`
+	Prefixes    []string               `json:"Prefixes,omitempty"`
 }
 
 type Tag struct {
@@ -31,7 +31,7 @@ type AccessPoint struct {
 	Bucket                         *string                         `json:"Bucket,omitempty"`
 	BucketAccountId                *string                         `json:"BucketAccountId,omitempty"`
 	Name                           *string                         `json:"Name,omitempty"`
-	NetworkOrigin                  *string                         `json:"NetworkOrigin,omitempty"`
+	NetworkOrigin                  *AccessPointNetworkOrigin       `json:"NetworkOrigin,omitempty"`
 	Policy                         map[string]any                  `json:"Policy,omitempty"`
 	PublicAccessBlockConfiguration *PublicAccessBlockConfiguration `json:"PublicAccessBlockConfiguration,omitempty"`
 	Scope                          *Scope                          `json:"Scope,omitempty"`
@@ -49,8 +49,8 @@ type BucketPolicy struct {
 func (BucketPolicy) CloudControlType() string { return "AWS::S3Express::BucketPolicy" }
 
 type ServerSideEncryptionByDefault struct {
-	KMSMasterKeyID *string `json:"KMSMasterKeyID,omitempty"`
-	SSEAlgorithm   *string `json:"SSEAlgorithm,omitempty"`
+	KMSMasterKeyID *string                                    `json:"KMSMasterKeyID,omitempty"`
+	SSEAlgorithm   *ServerSideEncryptionByDefaultSSEAlgorithm `json:"SSEAlgorithm,omitempty"`
 }
 
 type ServerSideEncryptionRule struct {
@@ -63,20 +63,20 @@ type BucketEncryption struct {
 }
 
 type Destination struct {
-	BucketAccountId *string `json:"BucketAccountId,omitempty"`
-	BucketArn       *string `json:"BucketArn,omitempty"`
-	Format          *string `json:"Format,omitempty"`
-	Prefix          *string `json:"Prefix,omitempty"`
+	BucketAccountId *string            `json:"BucketAccountId,omitempty"`
+	BucketArn       *string            `json:"BucketArn,omitempty"`
+	Format          *DestinationFormat `json:"Format,omitempty"`
+	Prefix          *string            `json:"Prefix,omitempty"`
 }
 
 type InventoryConfiguration struct {
-	Destination            *Destination `json:"Destination,omitempty"`
-	Enabled                *bool        `json:"Enabled,omitempty"`
-	Id                     *string      `json:"Id,omitempty"`
-	IncludedObjectVersions *string      `json:"IncludedObjectVersions,omitempty"`
-	OptionalFields         []string     `json:"OptionalFields,omitempty"`
-	Prefix                 *string      `json:"Prefix,omitempty"`
-	ScheduleFrequency      *string      `json:"ScheduleFrequency,omitempty"`
+	Destination            *Destination                                  `json:"Destination,omitempty"`
+	Enabled                *bool                                         `json:"Enabled,omitempty"`
+	Id                     *string                                       `json:"Id,omitempty"`
+	IncludedObjectVersions *InventoryConfigurationIncludedObjectVersions `json:"IncludedObjectVersions,omitempty"`
+	OptionalFields         []InventoryConfigurationOptionalFieldsItem    `json:"OptionalFields,omitempty"`
+	Prefix                 *string                                       `json:"Prefix,omitempty"`
+	ScheduleFrequency      *InventoryConfigurationScheduleFrequency      `json:"ScheduleFrequency,omitempty"`
 }
 
 type AbortIncompleteMultipartUpload struct {
@@ -90,7 +90,7 @@ type Rule struct {
 	ObjectSizeGreaterThan          *string                         `json:"ObjectSizeGreaterThan,omitempty"`
 	ObjectSizeLessThan             *string                         `json:"ObjectSizeLessThan,omitempty"`
 	Prefix                         *string                         `json:"Prefix,omitempty"`
-	Status                         *string                         `json:"Status,omitempty"`
+	Status                         *RuleStatus                     `json:"Status,omitempty"`
 }
 
 type LifecycleConfiguration struct {
@@ -109,16 +109,93 @@ type DirectoryBucketTag struct {
 }
 
 type DirectoryBucket struct {
-	Arn                     *string                  `json:"Arn,omitempty"`
-	AvailabilityZoneName    *string                  `json:"AvailabilityZoneName,omitempty"`
-	BucketEncryption        *BucketEncryption        `json:"BucketEncryption,omitempty"`
-	BucketName              *string                  `json:"BucketName,omitempty"`
-	DataRedundancy          *string                  `json:"DataRedundancy,omitempty"`
-	InventoryConfigurations []InventoryConfiguration `json:"InventoryConfigurations,omitempty"`
-	LifecycleConfiguration  *LifecycleConfiguration  `json:"LifecycleConfiguration,omitempty"`
-	LocationName            *string                  `json:"LocationName,omitempty"`
-	MetricsConfigurations   []MetricsConfiguration   `json:"MetricsConfigurations,omitempty"`
-	Tags                    []DirectoryBucketTag     `json:"Tags,omitempty"`
+	Arn                     *string                        `json:"Arn,omitempty"`
+	AvailabilityZoneName    *string                        `json:"AvailabilityZoneName,omitempty"`
+	BucketEncryption        *BucketEncryption              `json:"BucketEncryption,omitempty"`
+	BucketName              *string                        `json:"BucketName,omitempty"`
+	DataRedundancy          *DirectoryBucketDataRedundancy `json:"DataRedundancy,omitempty"`
+	InventoryConfigurations []InventoryConfiguration       `json:"InventoryConfigurations,omitempty"`
+	LifecycleConfiguration  *LifecycleConfiguration        `json:"LifecycleConfiguration,omitempty"`
+	LocationName            *string                        `json:"LocationName,omitempty"`
+	MetricsConfigurations   []MetricsConfiguration         `json:"MetricsConfigurations,omitempty"`
+	Tags                    []DirectoryBucketTag           `json:"Tags,omitempty"`
 }
 
 func (DirectoryBucket) CloudControlType() string { return "AWS::S3Express::DirectoryBucket" }
+
+type AccessPointNetworkOrigin string
+
+const (
+	AccessPointNetworkOriginInternet AccessPointNetworkOrigin = "Internet"
+	AccessPointNetworkOriginVPC      AccessPointNetworkOrigin = "VPC"
+)
+
+type ScopePermissionsItem string
+
+const (
+	ScopePermissionsItemGetObject                  ScopePermissionsItem = "GetObject"
+	ScopePermissionsItemGetObjectAttributes        ScopePermissionsItem = "GetObjectAttributes"
+	ScopePermissionsItemListMultipartUploadParts   ScopePermissionsItem = "ListMultipartUploadParts"
+	ScopePermissionsItemListBucket                 ScopePermissionsItem = "ListBucket"
+	ScopePermissionsItemListBucketMultipartUploads ScopePermissionsItem = "ListBucketMultipartUploads"
+	ScopePermissionsItemPutObject                  ScopePermissionsItem = "PutObject"
+	ScopePermissionsItemDeleteObject               ScopePermissionsItem = "DeleteObject"
+	ScopePermissionsItemAbortMultipartUpload       ScopePermissionsItem = "AbortMultipartUpload"
+)
+
+type ServerSideEncryptionByDefaultSSEAlgorithm string
+
+const (
+	ServerSideEncryptionByDefaultSSEAlgorithmAwsKms ServerSideEncryptionByDefaultSSEAlgorithm = "aws:kms"
+	ServerSideEncryptionByDefaultSSEAlgorithmAES256 ServerSideEncryptionByDefaultSSEAlgorithm = "AES256"
+)
+
+type DirectoryBucketDataRedundancy string
+
+const (
+	DirectoryBucketDataRedundancySingleAvailabilityZone DirectoryBucketDataRedundancy = "SingleAvailabilityZone"
+	DirectoryBucketDataRedundancySingleLocalZone        DirectoryBucketDataRedundancy = "SingleLocalZone"
+)
+
+type DestinationFormat string
+
+const (
+	DestinationFormatCSV     DestinationFormat = "CSV"
+	DestinationFormatORC     DestinationFormat = "ORC"
+	DestinationFormatParquet DestinationFormat = "Parquet"
+)
+
+type InventoryConfigurationIncludedObjectVersions string
+
+const (
+	InventoryConfigurationIncludedObjectVersionsAll     InventoryConfigurationIncludedObjectVersions = "All"
+	InventoryConfigurationIncludedObjectVersionsCurrent InventoryConfigurationIncludedObjectVersions = "Current"
+)
+
+type InventoryConfigurationOptionalFieldsItem string
+
+const (
+	InventoryConfigurationOptionalFieldsItemSize                    InventoryConfigurationOptionalFieldsItem = "Size"
+	InventoryConfigurationOptionalFieldsItemLastModifiedDate        InventoryConfigurationOptionalFieldsItem = "LastModifiedDate"
+	InventoryConfigurationOptionalFieldsItemStorageClass            InventoryConfigurationOptionalFieldsItem = "StorageClass"
+	InventoryConfigurationOptionalFieldsItemETag                    InventoryConfigurationOptionalFieldsItem = "ETag"
+	InventoryConfigurationOptionalFieldsItemIsMultipartUploaded     InventoryConfigurationOptionalFieldsItem = "IsMultipartUploaded"
+	InventoryConfigurationOptionalFieldsItemEncryptionStatus        InventoryConfigurationOptionalFieldsItem = "EncryptionStatus"
+	InventoryConfigurationOptionalFieldsItemBucketKeyStatus         InventoryConfigurationOptionalFieldsItem = "BucketKeyStatus"
+	InventoryConfigurationOptionalFieldsItemChecksumAlgorithm       InventoryConfigurationOptionalFieldsItem = "ChecksumAlgorithm"
+	InventoryConfigurationOptionalFieldsItemLifecycleExpirationDate InventoryConfigurationOptionalFieldsItem = "LifecycleExpirationDate"
+)
+
+type InventoryConfigurationScheduleFrequency string
+
+const (
+	InventoryConfigurationScheduleFrequencyDaily  InventoryConfigurationScheduleFrequency = "Daily"
+	InventoryConfigurationScheduleFrequencyWeekly InventoryConfigurationScheduleFrequency = "Weekly"
+)
+
+type RuleStatus string
+
+const (
+	RuleStatusEnabled  RuleStatus = "Enabled"
+	RuleStatusDisabled RuleStatus = "Disabled"
+)

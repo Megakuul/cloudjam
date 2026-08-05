@@ -28,7 +28,7 @@ type BillingGroup struct {
 	Name                  *string                `json:"Name,omitempty"`
 	PrimaryAccountId      *string                `json:"PrimaryAccountId,omitempty"`
 	Size                  *int                   `json:"Size,omitempty"`
-	Status                *string                `json:"Status,omitempty"`
+	Status                *BillingGroupStatus    `json:"Status,omitempty"`
 	StatusReason          *string                `json:"StatusReason,omitempty"`
 	Tags                  []Tag                  `json:"Tags,omitempty"`
 }
@@ -45,10 +45,10 @@ type CustomLineItemFlatChargeDetails struct {
 }
 
 type LineItemFilter struct {
-	Attribute       *string  `json:"Attribute,omitempty"`
-	AttributeValues []string `json:"AttributeValues,omitempty"`
-	MatchOption     *string  `json:"MatchOption,omitempty"`
-	Values          []string `json:"Values,omitempty"`
+	Attribute       *LineItemFilterAttribute   `json:"Attribute,omitempty"`
+	AttributeValues []string                   `json:"AttributeValues,omitempty"`
+	MatchOption     *LineItemFilterMatchOption `json:"MatchOption,omitempty"`
+	Values          []LineItemFilterValue      `json:"Values,omitempty"`
 }
 
 type CustomLineItemPercentageChargeDetails struct {
@@ -60,7 +60,7 @@ type CustomLineItemChargeDetails struct {
 	Flat            *CustomLineItemFlatChargeDetails       `json:"Flat,omitempty"`
 	LineItemFilters []LineItemFilter                       `json:"LineItemFilters,omitempty"`
 	Percentage      *CustomLineItemPercentageChargeDetails `json:"Percentage,omitempty"`
-	Type            *string                                `json:"Type,omitempty"`
+	Type            *Type                                  `json:"Type,omitempty"`
 }
 
 type CustomLineItemPresentationDetails struct {
@@ -78,9 +78,9 @@ type CustomLineItem struct {
 	AssociationSize             *int                               `json:"AssociationSize,omitempty"`
 	BillingGroupArn             *string                            `json:"BillingGroupArn,omitempty"`
 	BillingPeriodRange          *BillingPeriodRange                `json:"BillingPeriodRange,omitempty"`
-	ComputationRule             *string                            `json:"ComputationRule,omitempty"`
+	ComputationRule             *CustomLineItemComputationRule     `json:"ComputationRule,omitempty"`
 	CreationTime                *int                               `json:"CreationTime,omitempty"`
-	CurrencyCode                *string                            `json:"CurrencyCode,omitempty"`
+	CurrencyCode                *CustomLineItemCurrencyCode        `json:"CurrencyCode,omitempty"`
 	CustomLineItemChargeDetails *CustomLineItemChargeDetails       `json:"CustomLineItemChargeDetails,omitempty"`
 	Description                 *string                            `json:"Description,omitempty"`
 	LastModifiedTime            *int                               `json:"LastModifiedTime,omitempty"`
@@ -124,21 +124,94 @@ type PricingRuleTiering struct {
 }
 
 type PricingRule struct {
-	Arn                        *string             `json:"Arn,omitempty"`
-	AssociatedPricingPlanCount *int                `json:"AssociatedPricingPlanCount,omitempty"`
-	BillingEntity              *string             `json:"BillingEntity,omitempty"`
-	CreationTime               *int                `json:"CreationTime,omitempty"`
-	Description                *string             `json:"Description,omitempty"`
-	LastModifiedTime           *int                `json:"LastModifiedTime,omitempty"`
-	ModifierPercentage         *float64            `json:"ModifierPercentage,omitempty"`
-	Name                       *string             `json:"Name,omitempty"`
-	Operation                  *string             `json:"Operation,omitempty"`
-	Scope                      *string             `json:"Scope,omitempty"`
-	Service                    *string             `json:"Service,omitempty"`
-	Tags                       []PricingRuleTag    `json:"Tags,omitempty"`
-	Tiering                    *PricingRuleTiering `json:"Tiering,omitempty"`
-	Type                       *string             `json:"Type,omitempty"`
-	UsageType                  *string             `json:"UsageType,omitempty"`
+	Arn                        *string                   `json:"Arn,omitempty"`
+	AssociatedPricingPlanCount *int                      `json:"AssociatedPricingPlanCount,omitempty"`
+	BillingEntity              *PricingRuleBillingEntity `json:"BillingEntity,omitempty"`
+	CreationTime               *int                      `json:"CreationTime,omitempty"`
+	Description                *string                   `json:"Description,omitempty"`
+	LastModifiedTime           *int                      `json:"LastModifiedTime,omitempty"`
+	ModifierPercentage         *float64                  `json:"ModifierPercentage,omitempty"`
+	Name                       *string                   `json:"Name,omitempty"`
+	Operation                  *string                   `json:"Operation,omitempty"`
+	Scope                      *PricingRuleScope         `json:"Scope,omitempty"`
+	Service                    *string                   `json:"Service,omitempty"`
+	Tags                       []PricingRuleTag          `json:"Tags,omitempty"`
+	Tiering                    *PricingRuleTiering       `json:"Tiering,omitempty"`
+	Type                       *PricingRuleType          `json:"Type,omitempty"`
+	UsageType                  *string                   `json:"UsageType,omitempty"`
 }
 
 func (PricingRule) CloudControlType() string { return "AWS::BillingConductor::PricingRule" }
+
+type BillingGroupStatus string
+
+const (
+	BillingGroupStatusACTIVE                BillingGroupStatus = "ACTIVE"
+	BillingGroupStatusPRIMARYACCOUNTMISSING BillingGroupStatus = "PRIMARY_ACCOUNT_MISSING"
+)
+
+type CustomLineItemComputationRule string
+
+const (
+	CustomLineItemComputationRuleCONSOLIDATED CustomLineItemComputationRule = "CONSOLIDATED"
+	CustomLineItemComputationRuleITEMIZED     CustomLineItemComputationRule = "ITEMIZED"
+)
+
+type CustomLineItemCurrencyCode string
+
+const (
+	CustomLineItemCurrencyCodeUSD CustomLineItemCurrencyCode = "USD"
+	CustomLineItemCurrencyCodeCNY CustomLineItemCurrencyCode = "CNY"
+)
+
+type LineItemFilterAttribute string
+
+const (
+	LineItemFilterAttributeLINEITEMTYPE LineItemFilterAttribute = "LINE_ITEM_TYPE"
+	LineItemFilterAttributeSERVICE      LineItemFilterAttribute = "SERVICE"
+)
+
+type LineItemFilterMatchOption string
+
+const (
+	LineItemFilterMatchOptionNOTEQUAL LineItemFilterMatchOption = "NOT_EQUAL"
+	LineItemFilterMatchOptionEQUAL    LineItemFilterMatchOption = "EQUAL"
+)
+
+type LineItemFilterValue string
+
+const (
+	LineItemFilterValueSAVINGSPLANNEGATION LineItemFilterValue = "SAVINGS_PLAN_NEGATION"
+)
+
+type Type string
+
+const (
+	TypeFEE    Type = "FEE"
+	TypeCREDIT Type = "CREDIT"
+)
+
+type PricingRuleBillingEntity string
+
+const (
+	PricingRuleBillingEntityAWS            PricingRuleBillingEntity = "AWS"
+	PricingRuleBillingEntityAWSMarketplace PricingRuleBillingEntity = "AWS Marketplace"
+	PricingRuleBillingEntityAISPL          PricingRuleBillingEntity = "AISPL"
+)
+
+type PricingRuleScope string
+
+const (
+	PricingRuleScopeGLOBAL        PricingRuleScope = "GLOBAL"
+	PricingRuleScopeSERVICE       PricingRuleScope = "SERVICE"
+	PricingRuleScopeBILLINGENTITY PricingRuleScope = "BILLING_ENTITY"
+	PricingRuleScopeSKU           PricingRuleScope = "SKU"
+)
+
+type PricingRuleType string
+
+const (
+	PricingRuleTypeMARKUP   PricingRuleType = "MARKUP"
+	PricingRuleTypeDISCOUNT PricingRuleType = "DISCOUNT"
+	PricingRuleTypeTIERING  PricingRuleType = "TIERING"
+)

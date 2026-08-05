@@ -114,9 +114,9 @@ type AlarmEventActions struct {
 }
 
 type SimpleRule struct {
-	ComparisonOperator *string `json:"ComparisonOperator,omitempty"`
-	InputProperty      *string `json:"InputProperty,omitempty"`
-	Threshold          *string `json:"Threshold,omitempty"`
+	ComparisonOperator *SimpleRuleComparisonOperator `json:"ComparisonOperator,omitempty"`
+	InputProperty      *string                       `json:"InputProperty,omitempty"`
+	Threshold          *string                       `json:"Threshold,omitempty"`
 }
 
 type AlarmRule struct {
@@ -302,13 +302,13 @@ type DetectorModelTag struct {
 }
 
 type DetectorModel struct {
-	DetectorModelDefinition  *DetectorModelDefinition `json:"DetectorModelDefinition,omitempty"`
-	DetectorModelDescription *string                  `json:"DetectorModelDescription,omitempty"`
-	DetectorModelName        *string                  `json:"DetectorModelName,omitempty"`
-	EvaluationMethod         *string                  `json:"EvaluationMethod,omitempty"`
-	Key                      *string                  `json:"Key,omitempty"`
-	RoleArn                  *string                  `json:"RoleArn,omitempty"`
-	Tags                     []DetectorModelTag       `json:"Tags,omitempty"`
+	DetectorModelDefinition  *DetectorModelDefinition       `json:"DetectorModelDefinition,omitempty"`
+	DetectorModelDescription *string                        `json:"DetectorModelDescription,omitempty"`
+	DetectorModelName        *string                        `json:"DetectorModelName,omitempty"`
+	EvaluationMethod         *DetectorModelEvaluationMethod `json:"EvaluationMethod,omitempty"`
+	Key                      *string                        `json:"Key,omitempty"`
+	RoleArn                  *string                        `json:"RoleArn,omitempty"`
+	Tags                     []DetectorModelTag             `json:"Tags,omitempty"`
 }
 
 func (DetectorModel) CloudControlType() string { return "AWS::IoTEvents::DetectorModel" }
@@ -334,3 +334,21 @@ type Input struct {
 }
 
 func (Input) CloudControlType() string { return "AWS::IoTEvents::Input" }
+
+type SimpleRuleComparisonOperator string
+
+const (
+	SimpleRuleComparisonOperatorGREATER        SimpleRuleComparisonOperator = "GREATER"
+	SimpleRuleComparisonOperatorGREATEROREQUAL SimpleRuleComparisonOperator = "GREATER_OR_EQUAL"
+	SimpleRuleComparisonOperatorLESS           SimpleRuleComparisonOperator = "LESS"
+	SimpleRuleComparisonOperatorLESSOREQUAL    SimpleRuleComparisonOperator = "LESS_OR_EQUAL"
+	SimpleRuleComparisonOperatorEQUAL          SimpleRuleComparisonOperator = "EQUAL"
+	SimpleRuleComparisonOperatorNOTEQUAL       SimpleRuleComparisonOperator = "NOT_EQUAL"
+)
+
+type DetectorModelEvaluationMethod string
+
+const (
+	DetectorModelEvaluationMethodBATCH  DetectorModelEvaluationMethod = "BATCH"
+	DetectorModelEvaluationMethodSERIAL DetectorModelEvaluationMethod = "SERIAL"
+)

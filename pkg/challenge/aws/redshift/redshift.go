@@ -196,20 +196,20 @@ type EventSubscriptionTag struct {
 }
 
 type EventSubscription struct {
-	CustSubscriptionId       *string                `json:"CustSubscriptionId,omitempty"`
-	CustomerAwsId            *string                `json:"CustomerAwsId,omitempty"`
-	Enabled                  *bool                  `json:"Enabled,omitempty"`
-	EventCategories          []string               `json:"EventCategories,omitempty"`
-	EventCategoriesList      []string               `json:"EventCategoriesList,omitempty"`
-	Severity                 *string                `json:"Severity,omitempty"`
-	SnsTopicArn              *string                `json:"SnsTopicArn,omitempty"`
-	SourceIds                []string               `json:"SourceIds,omitempty"`
-	SourceIdsList            []string               `json:"SourceIdsList,omitempty"`
-	SourceType               *string                `json:"SourceType,omitempty"`
-	Status                   *string                `json:"Status,omitempty"`
-	SubscriptionCreationTime *string                `json:"SubscriptionCreationTime,omitempty"`
-	SubscriptionName         *string                `json:"SubscriptionName,omitempty"`
-	Tags                     []EventSubscriptionTag `json:"Tags,omitempty"`
+	CustSubscriptionId       *string                                `json:"CustSubscriptionId,omitempty"`
+	CustomerAwsId            *string                                `json:"CustomerAwsId,omitempty"`
+	Enabled                  *bool                                  `json:"Enabled,omitempty"`
+	EventCategories          []EventSubscriptionEventCategoriesItem `json:"EventCategories,omitempty"`
+	EventCategoriesList      []string                               `json:"EventCategoriesList,omitempty"`
+	Severity                 *EventSubscriptionSeverity             `json:"Severity,omitempty"`
+	SnsTopicArn              *string                                `json:"SnsTopicArn,omitempty"`
+	SourceIds                []string                               `json:"SourceIds,omitempty"`
+	SourceIdsList            []string                               `json:"SourceIdsList,omitempty"`
+	SourceType               *EventSubscriptionSourceType           `json:"SourceType,omitempty"`
+	Status                   *EventSubscriptionStatus               `json:"Status,omitempty"`
+	SubscriptionCreationTime *string                                `json:"SubscriptionCreationTime,omitempty"`
+	SubscriptionName         *string                                `json:"SubscriptionName,omitempty"`
+	Tags                     []EventSubscriptionTag                 `json:"Tags,omitempty"`
 }
 
 func (EventSubscription) CloudControlType() string { return "AWS::Redshift::EventSubscription" }
@@ -233,16 +233,16 @@ type Integration struct {
 func (Integration) CloudControlType() string { return "AWS::Redshift::Integration" }
 
 type ScheduledAction struct {
-	Enable                     *bool          `json:"Enable,omitempty"`
-	EndTime                    *string        `json:"EndTime,omitempty"`
-	IamRole                    *string        `json:"IamRole,omitempty"`
-	NextInvocations            []string       `json:"NextInvocations,omitempty"`
-	Schedule                   *string        `json:"Schedule,omitempty"`
-	ScheduledActionDescription *string        `json:"ScheduledActionDescription,omitempty"`
-	ScheduledActionName        *string        `json:"ScheduledActionName,omitempty"`
-	StartTime                  *string        `json:"StartTime,omitempty"`
-	State                      *string        `json:"State,omitempty"`
-	TargetAction               map[string]any `json:"TargetAction,omitempty"`
+	Enable                     *bool                 `json:"Enable,omitempty"`
+	EndTime                    *string               `json:"EndTime,omitempty"`
+	IamRole                    *string               `json:"IamRole,omitempty"`
+	NextInvocations            []string              `json:"NextInvocations,omitempty"`
+	Schedule                   *string               `json:"Schedule,omitempty"`
+	ScheduledActionDescription *string               `json:"ScheduledActionDescription,omitempty"`
+	ScheduledActionName        *string               `json:"ScheduledActionName,omitempty"`
+	StartTime                  *string               `json:"StartTime,omitempty"`
+	State                      *ScheduledActionState `json:"State,omitempty"`
+	TargetAction               map[string]any        `json:"TargetAction,omitempty"`
 }
 
 func (ScheduledAction) CloudControlType() string { return "AWS::Redshift::ScheduledAction" }
@@ -262,3 +262,45 @@ type SnapshotSchedule struct {
 }
 
 func (SnapshotSchedule) CloudControlType() string { return "AWS::Redshift::SnapshotSchedule" }
+
+type EventSubscriptionEventCategoriesItem string
+
+const (
+	EventSubscriptionEventCategoriesItemConfiguration EventSubscriptionEventCategoriesItem = "configuration"
+	EventSubscriptionEventCategoriesItemManagement    EventSubscriptionEventCategoriesItem = "management"
+	EventSubscriptionEventCategoriesItemMonitoring    EventSubscriptionEventCategoriesItem = "monitoring"
+	EventSubscriptionEventCategoriesItemSecurity      EventSubscriptionEventCategoriesItem = "security"
+	EventSubscriptionEventCategoriesItemPending       EventSubscriptionEventCategoriesItem = "pending"
+)
+
+type EventSubscriptionSeverity string
+
+const (
+	EventSubscriptionSeverityERROR EventSubscriptionSeverity = "ERROR"
+	EventSubscriptionSeverityINFO  EventSubscriptionSeverity = "INFO"
+)
+
+type EventSubscriptionSourceType string
+
+const (
+	EventSubscriptionSourceTypeCluster               EventSubscriptionSourceType = "cluster"
+	EventSubscriptionSourceTypeClusterParameterGroup EventSubscriptionSourceType = "cluster-parameter-group"
+	EventSubscriptionSourceTypeClusterSecurityGroup  EventSubscriptionSourceType = "cluster-security-group"
+	EventSubscriptionSourceTypeClusterSnapshot       EventSubscriptionSourceType = "cluster-snapshot"
+	EventSubscriptionSourceTypeScheduledAction       EventSubscriptionSourceType = "scheduled-action"
+)
+
+type EventSubscriptionStatus string
+
+const (
+	EventSubscriptionStatusActive        EventSubscriptionStatus = "active"
+	EventSubscriptionStatusNoPermission  EventSubscriptionStatus = "no-permission"
+	EventSubscriptionStatusTopicNotExist EventSubscriptionStatus = "topic-not-exist"
+)
+
+type ScheduledActionState string
+
+const (
+	ScheduledActionStateACTIVE   ScheduledActionState = "ACTIVE"
+	ScheduledActionStateDISABLED ScheduledActionState = "DISABLED"
+)

@@ -12,8 +12,8 @@ type ExperimentTemplateAction struct {
 }
 
 type ExperimentTemplateExperimentOptions struct {
-	AccountTargeting          *string `json:"AccountTargeting,omitempty"`
-	EmptyTargetResolutionMode *string `json:"EmptyTargetResolutionMode,omitempty"`
+	AccountTargeting          *ExperimentTemplateExperimentOptionsAccountTargeting          `json:"AccountTargeting,omitempty"`
+	EmptyTargetResolutionMode *ExperimentTemplateExperimentOptionsEmptyTargetResolutionMode `json:"EmptyTargetResolutionMode,omitempty"`
 }
 
 type CloudWatchDashboard struct {
@@ -99,3 +99,17 @@ type TargetAccountConfiguration struct {
 func (TargetAccountConfiguration) CloudControlType() string {
 	return "AWS::FIS::TargetAccountConfiguration"
 }
+
+type ExperimentTemplateExperimentOptionsAccountTargeting string
+
+const (
+	ExperimentTemplateExperimentOptionsAccountTargetingMultiAccount  ExperimentTemplateExperimentOptionsAccountTargeting = "multi-account"
+	ExperimentTemplateExperimentOptionsAccountTargetingSingleAccount ExperimentTemplateExperimentOptionsAccountTargeting = "single-account"
+)
+
+type ExperimentTemplateExperimentOptionsEmptyTargetResolutionMode string
+
+const (
+	ExperimentTemplateExperimentOptionsEmptyTargetResolutionModeFail ExperimentTemplateExperimentOptionsEmptyTargetResolutionMode = "fail"
+	ExperimentTemplateExperimentOptionsEmptyTargetResolutionModeSkip ExperimentTemplateExperimentOptionsEmptyTargetResolutionMode = "skip"
+)

@@ -24,8 +24,15 @@ type Connector struct {
 	MobileDeviceManagement  map[string]any       `json:"MobileDeviceManagement,omitempty"`
 	OpenIdConfiguration     *OpenIdConfiguration `json:"OpenIdConfiguration,omitempty"`
 	Tags                    map[string]string    `json:"Tags,omitempty"`
-	Type                    *string              `json:"Type,omitempty"`
+	Type                    *ConnectorType       `json:"Type,omitempty"`
 	VpcEndpointId           *string              `json:"VpcEndpointId,omitempty"`
 }
 
 func (Connector) CloudControlType() string { return "AWS::PCAConnectorSCEP::Connector" }
+
+type ConnectorType string
+
+const (
+	ConnectorTypeGENERALPURPOSE ConnectorType = "GENERAL_PURPOSE"
+	ConnectorTypeINTUNE         ConnectorType = "INTUNE"
+)

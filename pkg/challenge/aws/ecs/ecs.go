@@ -6,22 +6,22 @@ package ecs
 import "encoding/json"
 
 type ManagedScaling struct {
-	InstanceWarmupPeriod   *int    `json:"InstanceWarmupPeriod,omitempty"`
-	MaximumScalingStepSize *int    `json:"MaximumScalingStepSize,omitempty"`
-	MinimumScalingStepSize *int    `json:"MinimumScalingStepSize,omitempty"`
-	Status                 *string `json:"Status,omitempty"`
-	TargetCapacity         *int    `json:"TargetCapacity,omitempty"`
+	InstanceWarmupPeriod   *int                  `json:"InstanceWarmupPeriod,omitempty"`
+	MaximumScalingStepSize *int                  `json:"MaximumScalingStepSize,omitempty"`
+	MinimumScalingStepSize *int                  `json:"MinimumScalingStepSize,omitempty"`
+	Status                 *ManagedScalingStatus `json:"Status,omitempty"`
+	TargetCapacity         *int                  `json:"TargetCapacity,omitempty"`
 }
 
 type AutoScalingGroupProvider struct {
-	AutoScalingGroupArn          *string         `json:"AutoScalingGroupArn,omitempty"`
-	ManagedDraining              *string         `json:"ManagedDraining,omitempty"`
-	ManagedScaling               *ManagedScaling `json:"ManagedScaling,omitempty"`
-	ManagedTerminationProtection *string         `json:"ManagedTerminationProtection,omitempty"`
+	AutoScalingGroupArn          *string                                               `json:"AutoScalingGroupArn,omitempty"`
+	ManagedDraining              *AutoScalingGroupProviderManagedDraining              `json:"ManagedDraining,omitempty"`
+	ManagedScaling               *ManagedScaling                                       `json:"ManagedScaling,omitempty"`
+	ManagedTerminationProtection *AutoScalingGroupProviderManagedTerminationProtection `json:"ManagedTerminationProtection,omitempty"`
 }
 
 type AutoRepairConfiguration struct {
-	ActionsStatus *string `json:"ActionsStatus,omitempty"`
+	ActionsStatus *AutoRepairConfigurationActionsStatus `json:"ActionsStatus,omitempty"`
 }
 
 type ManagedInstancesProviderInfrastructureOptimization struct {
@@ -29,8 +29,8 @@ type ManagedInstancesProviderInfrastructureOptimization struct {
 }
 
 type CapacityReservationRequest struct {
-	ReservationGroupArn   *string `json:"ReservationGroupArn,omitempty"`
-	ReservationPreference *string `json:"ReservationPreference,omitempty"`
+	ReservationGroupArn   *string                                          `json:"ReservationGroupArn,omitempty"`
+	ReservationPreference *CapacityReservationRequestReservationPreference `json:"ReservationPreference,omitempty"`
 }
 
 type AcceleratorCountRequest struct {
@@ -79,30 +79,30 @@ type VCpuCountRangeRequest struct {
 }
 
 type InstanceRequirementsRequest struct {
-	AcceleratorCount                               *AcceleratorCountRequest          `json:"AcceleratorCount,omitempty"`
-	AcceleratorManufacturers                       []string                          `json:"AcceleratorManufacturers,omitempty"`
-	AcceleratorNames                               []string                          `json:"AcceleratorNames,omitempty"`
-	AcceleratorTotalMemoryMiB                      *AcceleratorTotalMemoryMiBRequest `json:"AcceleratorTotalMemoryMiB,omitempty"`
-	AcceleratorTypes                               []string                          `json:"AcceleratorTypes,omitempty"`
-	AllowedInstanceTypes                           []string                          `json:"AllowedInstanceTypes,omitempty"`
-	BareMetal                                      *string                           `json:"BareMetal,omitempty"`
-	BaselineEbsBandwidthMbps                       *BaselineEbsBandwidthMbpsRequest  `json:"BaselineEbsBandwidthMbps,omitempty"`
-	BurstablePerformance                           *string                           `json:"BurstablePerformance,omitempty"`
-	CpuManufacturers                               []string                          `json:"CpuManufacturers,omitempty"`
-	ExcludedInstanceTypes                          []string                          `json:"ExcludedInstanceTypes,omitempty"`
-	InstanceGenerations                            []string                          `json:"InstanceGenerations,omitempty"`
-	LocalStorage                                   *string                           `json:"LocalStorage,omitempty"`
-	LocalStorageTypes                              []string                          `json:"LocalStorageTypes,omitempty"`
-	MaxSpotPriceAsPercentageOfOptimalOnDemandPrice *int                              `json:"MaxSpotPriceAsPercentageOfOptimalOnDemandPrice,omitempty"`
-	MemoryGiBPerVCpu                               *MemoryGiBPerVCpuRequest          `json:"MemoryGiBPerVCpu,omitempty"`
-	MemoryMiB                                      *MemoryMiBRequest                 `json:"MemoryMiB,omitempty"`
-	NetworkBandwidthGbps                           *NetworkBandwidthGbpsRequest      `json:"NetworkBandwidthGbps,omitempty"`
-	NetworkInterfaceCount                          *NetworkInterfaceCountRequest     `json:"NetworkInterfaceCount,omitempty"`
-	OnDemandMaxPricePercentageOverLowestPrice      *int                              `json:"OnDemandMaxPricePercentageOverLowestPrice,omitempty"`
-	RequireHibernateSupport                        *bool                             `json:"RequireHibernateSupport,omitempty"`
-	SpotMaxPricePercentageOverLowestPrice          *int                              `json:"SpotMaxPricePercentageOverLowestPrice,omitempty"`
-	TotalLocalStorageGB                            *TotalLocalStorageGBRequest       `json:"TotalLocalStorageGB,omitempty"`
-	VCpuCount                                      *VCpuCountRangeRequest            `json:"VCpuCount,omitempty"`
+	AcceleratorCount                               *AcceleratorCountRequest                                  `json:"AcceleratorCount,omitempty"`
+	AcceleratorManufacturers                       []InstanceRequirementsRequestAcceleratorManufacturersItem `json:"AcceleratorManufacturers,omitempty"`
+	AcceleratorNames                               []InstanceRequirementsRequestAcceleratorNamesItem         `json:"AcceleratorNames,omitempty"`
+	AcceleratorTotalMemoryMiB                      *AcceleratorTotalMemoryMiBRequest                         `json:"AcceleratorTotalMemoryMiB,omitempty"`
+	AcceleratorTypes                               []InstanceRequirementsRequestAcceleratorTypesItem         `json:"AcceleratorTypes,omitempty"`
+	AllowedInstanceTypes                           []string                                                  `json:"AllowedInstanceTypes,omitempty"`
+	BareMetal                                      *InstanceRequirementsRequestBareMetal                     `json:"BareMetal,omitempty"`
+	BaselineEbsBandwidthMbps                       *BaselineEbsBandwidthMbpsRequest                          `json:"BaselineEbsBandwidthMbps,omitempty"`
+	BurstablePerformance                           *InstanceRequirementsRequestBurstablePerformance          `json:"BurstablePerformance,omitempty"`
+	CpuManufacturers                               []InstanceRequirementsRequestCpuManufacturersItem         `json:"CpuManufacturers,omitempty"`
+	ExcludedInstanceTypes                          []string                                                  `json:"ExcludedInstanceTypes,omitempty"`
+	InstanceGenerations                            []InstanceRequirementsRequestInstanceGenerationsItem      `json:"InstanceGenerations,omitempty"`
+	LocalStorage                                   *InstanceRequirementsRequestLocalStorage                  `json:"LocalStorage,omitempty"`
+	LocalStorageTypes                              []InstanceRequirementsRequestLocalStorageTypesItem        `json:"LocalStorageTypes,omitempty"`
+	MaxSpotPriceAsPercentageOfOptimalOnDemandPrice *int                                                      `json:"MaxSpotPriceAsPercentageOfOptimalOnDemandPrice,omitempty"`
+	MemoryGiBPerVCpu                               *MemoryGiBPerVCpuRequest                                  `json:"MemoryGiBPerVCpu,omitempty"`
+	MemoryMiB                                      *MemoryMiBRequest                                         `json:"MemoryMiB,omitempty"`
+	NetworkBandwidthGbps                           *NetworkBandwidthGbpsRequest                              `json:"NetworkBandwidthGbps,omitempty"`
+	NetworkInterfaceCount                          *NetworkInterfaceCountRequest                             `json:"NetworkInterfaceCount,omitempty"`
+	OnDemandMaxPricePercentageOverLowestPrice      *int                                                      `json:"OnDemandMaxPricePercentageOverLowestPrice,omitempty"`
+	RequireHibernateSupport                        *bool                                                     `json:"RequireHibernateSupport,omitempty"`
+	SpotMaxPricePercentageOverLowestPrice          *int                                                      `json:"SpotMaxPricePercentageOverLowestPrice,omitempty"`
+	TotalLocalStorageGB                            *TotalLocalStorageGBRequest                               `json:"TotalLocalStorageGB,omitempty"`
+	VCpuCount                                      *VCpuCountRangeRequest                                    `json:"VCpuCount,omitempty"`
 }
 
 type ManagedInstancesLocalStorageConfiguration struct {
@@ -119,14 +119,14 @@ type ManagedInstancesStorageConfiguration struct {
 }
 
 type InstanceLaunchTemplate struct {
-	CapacityOptionType              *string                                    `json:"CapacityOptionType,omitempty"`
+	CapacityOptionType              *InstanceLaunchTemplateCapacityOptionType  `json:"CapacityOptionType,omitempty"`
 	CapacityReservations            *CapacityReservationRequest                `json:"CapacityReservations,omitempty"`
 	Ec2InstanceProfileArn           *string                                    `json:"Ec2InstanceProfileArn,omitempty"`
 	FipsEnabled                     *bool                                      `json:"FipsEnabled,omitempty"`
 	InstanceMetadataTagsPropagation *bool                                      `json:"InstanceMetadataTagsPropagation,omitempty"`
 	InstanceRequirements            *InstanceRequirementsRequest               `json:"InstanceRequirements,omitempty"`
 	LocalStorageConfiguration       *ManagedInstancesLocalStorageConfiguration `json:"LocalStorageConfiguration,omitempty"`
-	Monitoring                      *string                                    `json:"Monitoring,omitempty"`
+	Monitoring                      *ManagedInstancesMonitoringOptions         `json:"Monitoring,omitempty"`
 	NetworkConfiguration            *ManagedInstancesNetworkConfiguration      `json:"NetworkConfiguration,omitempty"`
 	StorageConfiguration            *ManagedInstancesStorageConfiguration      `json:"StorageConfiguration,omitempty"`
 }
@@ -136,7 +136,7 @@ type ManagedInstancesProvider struct {
 	InfrastructureOptimization *ManagedInstancesProviderInfrastructureOptimization `json:"InfrastructureOptimization,omitempty"`
 	InfrastructureRoleArn      *string                                             `json:"InfrastructureRoleArn,omitempty"`
 	InstanceLaunchTemplate     *InstanceLaunchTemplate                             `json:"InstanceLaunchTemplate,omitempty"`
-	PropagateTags              *string                                             `json:"PropagateTags,omitempty"`
+	PropagateTags              *ManagedInstancesProviderPropagateTags              `json:"PropagateTags,omitempty"`
 }
 
 type Tag struct {
@@ -212,14 +212,14 @@ type Cluster struct {
 func (Cluster) CloudControlType() string { return "AWS::ECS::Cluster" }
 
 type CapacityProviderStrategy struct {
-	Base             *int    `json:"Base,omitempty"`
-	CapacityProvider *string `json:"CapacityProvider,omitempty"`
-	Weight           *int    `json:"Weight,omitempty"`
+	Base             *int              `json:"Base,omitempty"`
+	CapacityProvider *CapacityProvider `json:"CapacityProvider,omitempty"`
+	Weight           *int              `json:"Weight,omitempty"`
 }
 
 type ClusterCapacityProviderAssociations struct {
-	CapacityProviders               []string                   `json:"CapacityProviders,omitempty"`
-	Cluster                         *string                    `json:"Cluster,omitempty"`
+	CapacityProviders               []CapacityProvider         `json:"CapacityProviders,omitempty"`
+	Cluster                         *Cluster                   `json:"Cluster,omitempty"`
 	DefaultCapacityProviderStrategy []CapacityProviderStrategy `json:"DefaultCapacityProviderStrategy,omitempty"`
 }
 
@@ -249,13 +249,13 @@ type Daemon struct {
 	CreatedAt               *string                        `json:"CreatedAt,omitempty"`
 	DaemonArn               *string                        `json:"DaemonArn,omitempty"`
 	DaemonName              *string                        `json:"DaemonName,omitempty"`
-	DaemonStatus            *string                        `json:"DaemonStatus,omitempty"`
+	DaemonStatus            *DaemonStatus                  `json:"DaemonStatus,omitempty"`
 	DaemonTaskDefinitionArn *string                        `json:"DaemonTaskDefinitionArn,omitempty"`
 	DeploymentArn           *string                        `json:"DeploymentArn,omitempty"`
 	DeploymentConfiguration *DaemonDeploymentConfiguration `json:"DeploymentConfiguration,omitempty"`
 	EnableECSManagedTags    *bool                          `json:"EnableECSManagedTags,omitempty"`
 	EnableExecuteCommand    *bool                          `json:"EnableExecuteCommand,omitempty"`
-	PropagateTags           *string                        `json:"PropagateTags,omitempty"`
+	PropagateTags           *DaemonPropagateTags           `json:"PropagateTags,omitempty"`
 	Tags                    []DaemonTag                    `json:"Tags,omitempty"`
 	UpdatedAt               *string                        `json:"UpdatedAt,omitempty"`
 }
@@ -415,8 +415,8 @@ type DaemonTaskDefinition struct {
 func (DaemonTaskDefinition) CloudControlType() string { return "AWS::ECS::DaemonTaskDefinition" }
 
 type IngressPathSummary struct {
-	AccessType *string `json:"AccessType,omitempty"`
-	Endpoint   *string `json:"Endpoint,omitempty"`
+	AccessType *AccessType `json:"AccessType,omitempty"`
+	Endpoint   *string     `json:"Endpoint,omitempty"`
 }
 
 type ExpressGatewayServiceNetworkConfiguration struct {
@@ -454,10 +454,10 @@ type ExpressGatewayContainer struct {
 }
 
 type ExpressGatewayScalingTarget struct {
-	AutoScalingMetric      *string `json:"AutoScalingMetric,omitempty"`
-	AutoScalingTargetValue *int    `json:"AutoScalingTargetValue,omitempty"`
-	MaxTaskCount           *int    `json:"MaxTaskCount,omitempty"`
-	MinTaskCount           *int    `json:"MinTaskCount,omitempty"`
+	AutoScalingMetric      *ExpressGatewayServiceScalingMetric `json:"AutoScalingMetric,omitempty"`
+	AutoScalingTargetValue *int                                `json:"AutoScalingTargetValue,omitempty"`
+	MaxTaskCount           *int                                `json:"MaxTaskCount,omitempty"`
+	MinTaskCount           *int                                `json:"MinTaskCount,omitempty"`
 }
 
 type ExpressGatewayServiceConfiguration struct {
@@ -498,7 +498,7 @@ type ECSManagedResourceArns struct {
 }
 
 type ExpressGatewayServiceStatus struct {
-	StatusCode *string `json:"StatusCode,omitempty"`
+	StatusCode *ExpressGatewayServiceStatusCode `json:"StatusCode,omitempty"`
 }
 
 type ExpressGatewayServiceTag struct {
@@ -557,8 +557,8 @@ type CanaryConfiguration struct {
 }
 
 type ThresholdConfiguration struct {
-	Type  *string `json:"Type,omitempty"`
-	Value *int    `json:"Value,omitempty"`
+	Type  *ThresholdConfigurationType `json:"Type,omitempty"`
+	Value *int                        `json:"Value,omitempty"`
 }
 
 type DeploymentCircuitBreaker struct {
@@ -569,17 +569,17 @@ type DeploymentCircuitBreaker struct {
 }
 
 type HookTimeoutConfig struct {
-	Action           *string `json:"Action,omitempty"`
-	TimeoutInMinutes *int    `json:"TimeoutInMinutes,omitempty"`
+	Action           *HookTimeoutConfigAction `json:"Action,omitempty"`
+	TimeoutInMinutes *int                     `json:"TimeoutInMinutes,omitempty"`
 }
 
 type DeploymentLifecycleHook struct {
-	HookDetails          json.RawMessage    `json:"HookDetails,omitempty"`
-	HookTargetArn        *string            `json:"HookTargetArn,omitempty"`
-	LifecycleStages      []string           `json:"LifecycleStages,omitempty"`
-	RoleArn              *string            `json:"RoleArn,omitempty"`
-	TargetType           *string            `json:"TargetType,omitempty"`
-	TimeoutConfiguration *HookTimeoutConfig `json:"TimeoutConfiguration,omitempty"`
+	HookDetails          json.RawMessage                              `json:"HookDetails,omitempty"`
+	HookTargetArn        *string                                      `json:"HookTargetArn,omitempty"`
+	LifecycleStages      []DeploymentLifecycleHookLifecycleStagesItem `json:"LifecycleStages,omitempty"`
+	RoleArn              *string                                      `json:"RoleArn,omitempty"`
+	TargetType           *DeploymentLifecycleHookTargetType           `json:"TargetType,omitempty"`
+	TimeoutConfiguration *HookTimeoutConfig                           `json:"TimeoutConfiguration,omitempty"`
 }
 
 type LinearConfiguration struct {
@@ -588,19 +588,19 @@ type LinearConfiguration struct {
 }
 
 type DeploymentConfiguration struct {
-	Alarms                   *DeploymentAlarms         `json:"Alarms,omitempty"`
-	BakeTimeInMinutes        *int                      `json:"BakeTimeInMinutes,omitempty"`
-	CanaryConfiguration      *CanaryConfiguration      `json:"CanaryConfiguration,omitempty"`
-	DeploymentCircuitBreaker *DeploymentCircuitBreaker `json:"DeploymentCircuitBreaker,omitempty"`
-	LifecycleHooks           []DeploymentLifecycleHook `json:"LifecycleHooks,omitempty"`
-	LinearConfiguration      *LinearConfiguration      `json:"LinearConfiguration,omitempty"`
-	MaximumPercent           *int                      `json:"MaximumPercent,omitempty"`
-	MinimumHealthyPercent    *int                      `json:"MinimumHealthyPercent,omitempty"`
-	Strategy                 *string                   `json:"Strategy,omitempty"`
+	Alarms                   *DeploymentAlarms                `json:"Alarms,omitempty"`
+	BakeTimeInMinutes        *int                             `json:"BakeTimeInMinutes,omitempty"`
+	CanaryConfiguration      *CanaryConfiguration             `json:"CanaryConfiguration,omitempty"`
+	DeploymentCircuitBreaker *DeploymentCircuitBreaker        `json:"DeploymentCircuitBreaker,omitempty"`
+	LifecycleHooks           []DeploymentLifecycleHook        `json:"LifecycleHooks,omitempty"`
+	LinearConfiguration      *LinearConfiguration             `json:"LinearConfiguration,omitempty"`
+	MaximumPercent           *int                             `json:"MaximumPercent,omitempty"`
+	MinimumHealthyPercent    *int                             `json:"MinimumHealthyPercent,omitempty"`
+	Strategy                 *DeploymentConfigurationStrategy `json:"Strategy,omitempty"`
 }
 
 type DeploymentController struct {
-	Type *string `json:"Type,omitempty"`
+	Type *DeploymentControllerType `json:"Type,omitempty"`
 }
 
 type ForceNewDeployment struct {
@@ -624,8 +624,8 @@ type LoadBalancer struct {
 }
 
 type MetricConfiguration struct {
-	MetricNames       []string `json:"MetricNames,omitempty"`
-	ResolutionSeconds *int     `json:"ResolutionSeconds,omitempty"`
+	MetricNames       []MetricConfigurationMetricNamesItem `json:"MetricNames,omitempty"`
+	ResolutionSeconds *int                                 `json:"ResolutionSeconds,omitempty"`
 }
 
 type MonitoringConfiguration struct {
@@ -633,9 +633,9 @@ type MonitoringConfiguration struct {
 }
 
 type AwsVpcConfiguration struct {
-	AssignPublicIp *string  `json:"AssignPublicIp,omitempty"`
-	SecurityGroups []string `json:"SecurityGroups,omitempty"`
-	Subnets        []string `json:"Subnets,omitempty"`
+	AssignPublicIp *AwsVpcConfigurationAssignPublicIp `json:"AssignPublicIp,omitempty"`
+	SecurityGroups []string                           `json:"SecurityGroups,omitempty"`
+	Subnets        []string                           `json:"Subnets,omitempty"`
 }
 
 type NetworkConfiguration struct {
@@ -643,18 +643,18 @@ type NetworkConfiguration struct {
 }
 
 type PlacementConstraint struct {
-	Expression *string `json:"Expression,omitempty"`
-	Type       *string `json:"Type,omitempty"`
+	Expression *string                  `json:"Expression,omitempty"`
+	Type       *PlacementConstraintType `json:"Type,omitempty"`
 }
 
 type PlacementStrategy struct {
-	Field *string `json:"Field,omitempty"`
-	Type  *string `json:"Type,omitempty"`
+	Field *string                `json:"Field,omitempty"`
+	Type  *PlacementStrategyType `json:"Type,omitempty"`
 }
 
 type ServiceConnectAccessLogConfiguration struct {
-	Format                 *string `json:"Format,omitempty"`
-	IncludeQueryParameters *string `json:"IncludeQueryParameters,omitempty"`
+	Format                 *ServiceConnectAccessLogConfigurationFormat                 `json:"Format,omitempty"`
+	IncludeQueryParameters *ServiceConnectAccessLogConfigurationIncludeQueryParameters `json:"IncludeQueryParameters,omitempty"`
 }
 
 type ServiceSecret struct {
@@ -732,9 +732,9 @@ type ServiceTag struct {
 }
 
 type EBSTagSpecification struct {
-	PropagateTags *string      `json:"PropagateTags,omitempty"`
-	ResourceType  *string      `json:"ResourceType,omitempty"`
-	Tags          []ServiceTag `json:"Tags,omitempty"`
+	PropagateTags *EBSTagSpecificationPropagateTags `json:"PropagateTags,omitempty"`
+	ResourceType  *string                           `json:"ResourceType,omitempty"`
+	Tags          []ServiceTag                      `json:"Tags,omitempty"`
 }
 
 type ServiceManagedEBSVolumeConfiguration struct {
@@ -763,7 +763,7 @@ type VpcLatticeConfiguration struct {
 }
 
 type Service struct {
-	AvailabilityZoneRebalancing   *string                               `json:"AvailabilityZoneRebalancing,omitempty"`
+	AvailabilityZoneRebalancing   *ServiceAvailabilityZoneRebalancing   `json:"AvailabilityZoneRebalancing,omitempty"`
 	CapacityProviderStrategy      []ServiceCapacityProviderStrategyItem `json:"CapacityProviderStrategy,omitempty"`
 	Cluster                       *string                               `json:"Cluster,omitempty"`
 	DeploymentConfiguration       *DeploymentConfiguration              `json:"DeploymentConfiguration,omitempty"`
@@ -773,7 +773,7 @@ type Service struct {
 	EnableExecuteCommand          *bool                                 `json:"EnableExecuteCommand,omitempty"`
 	ForceNewDeployment            *ForceNewDeployment                   `json:"ForceNewDeployment,omitempty"`
 	HealthCheckGracePeriodSeconds *int                                  `json:"HealthCheckGracePeriodSeconds,omitempty"`
-	LaunchType                    *string                               `json:"LaunchType,omitempty"`
+	LaunchType                    *ServiceLaunchType                    `json:"LaunchType,omitempty"`
 	LoadBalancers                 []LoadBalancer                        `json:"LoadBalancers,omitempty"`
 	Monitoring                    *MonitoringConfiguration              `json:"Monitoring,omitempty"`
 	Name                          *string                               `json:"Name,omitempty"`
@@ -781,9 +781,9 @@ type Service struct {
 	PlacementConstraints          []PlacementConstraint                 `json:"PlacementConstraints,omitempty"`
 	PlacementStrategies           []PlacementStrategy                   `json:"PlacementStrategies,omitempty"`
 	PlatformVersion               *string                               `json:"PlatformVersion,omitempty"`
-	PropagateTags                 *string                               `json:"PropagateTags,omitempty"`
+	PropagateTags                 *ServicePropagateTags                 `json:"PropagateTags,omitempty"`
 	Role                          *string                               `json:"Role,omitempty"`
-	SchedulingStrategy            *string                               `json:"SchedulingStrategy,omitempty"`
+	SchedulingStrategy            *ServiceSchedulingStrategy            `json:"SchedulingStrategy,omitempty"`
 	ServiceArn                    *string                               `json:"ServiceArn,omitempty"`
 	ServiceConnectConfiguration   *ServiceConnectConfiguration          `json:"ServiceConnectConfiguration,omitempty"`
 	ServiceName                   *string                               `json:"ServiceName,omitempty"`
@@ -874,12 +874,12 @@ type TaskDefinitionMountPoint struct {
 }
 
 type PortMapping struct {
-	AppProtocol        *string `json:"AppProtocol,omitempty"`
-	ContainerPort      *int    `json:"ContainerPort,omitempty"`
-	ContainerPortRange *string `json:"ContainerPortRange,omitempty"`
-	HostPort           *int    `json:"HostPort,omitempty"`
-	Name               *string `json:"Name,omitempty"`
-	Protocol           *string `json:"Protocol,omitempty"`
+	AppProtocol        *PortMappingAppProtocol `json:"AppProtocol,omitempty"`
+	ContainerPort      *int                    `json:"ContainerPort,omitempty"`
+	ContainerPortRange *string                 `json:"ContainerPortRange,omitempty"`
+	HostPort           *int                    `json:"HostPort,omitempty"`
+	Name               *string                 `json:"Name,omitempty"`
+	Protocol           *string                 `json:"Protocol,omitempty"`
 }
 
 type TaskDefinitionRepositoryCredentials struct {
@@ -914,48 +914,48 @@ type VolumeFrom struct {
 }
 
 type ContainerDefinition struct {
-	Command                []string                             `json:"Command,omitempty"`
-	Cpu                    *int                                 `json:"Cpu,omitempty"`
-	CredentialSpecs        []string                             `json:"CredentialSpecs,omitempty"`
-	DependsOn              []TaskDefinitionContainerDependency  `json:"DependsOn,omitempty"`
-	DisableNetworking      *bool                                `json:"DisableNetworking,omitempty"`
-	DnsSearchDomains       []string                             `json:"DnsSearchDomains,omitempty"`
-	DnsServers             []string                             `json:"DnsServers,omitempty"`
-	DockerLabels           map[string]string                    `json:"DockerLabels,omitempty"`
-	DockerSecurityOptions  []string                             `json:"DockerSecurityOptions,omitempty"`
-	EntryPoint             []string                             `json:"EntryPoint,omitempty"`
-	Environment            []TaskDefinitionKeyValuePair         `json:"Environment,omitempty"`
-	EnvironmentFiles       []TaskDefinitionEnvironmentFile      `json:"EnvironmentFiles,omitempty"`
-	Essential              *bool                                `json:"Essential,omitempty"`
-	ExtraHosts             []HostEntry                          `json:"ExtraHosts,omitempty"`
-	FirelensConfiguration  *TaskDefinitionFirelensConfiguration `json:"FirelensConfiguration,omitempty"`
-	HealthCheck            *TaskDefinitionHealthCheck           `json:"HealthCheck,omitempty"`
-	Hostname               *string                              `json:"Hostname,omitempty"`
-	Image                  *string                              `json:"Image,omitempty"`
-	Interactive            *bool                                `json:"Interactive,omitempty"`
-	Links                  []string                             `json:"Links,omitempty"`
-	LinuxParameters        *TaskDefinitionLinuxParameters       `json:"LinuxParameters,omitempty"`
-	LogConfiguration       *TaskDefinitionLogConfiguration      `json:"LogConfiguration,omitempty"`
-	Memory                 *int                                 `json:"Memory,omitempty"`
-	MemoryReservation      *int                                 `json:"MemoryReservation,omitempty"`
-	MountPoints            []TaskDefinitionMountPoint           `json:"MountPoints,omitempty"`
-	Name                   *string                              `json:"Name,omitempty"`
-	PortMappings           []PortMapping                        `json:"PortMappings,omitempty"`
-	Privileged             *bool                                `json:"Privileged,omitempty"`
-	PseudoTerminal         *bool                                `json:"PseudoTerminal,omitempty"`
-	ReadonlyRootFilesystem *bool                                `json:"ReadonlyRootFilesystem,omitempty"`
-	RepositoryCredentials  *TaskDefinitionRepositoryCredentials `json:"RepositoryCredentials,omitempty"`
-	ResourceRequirements   []ResourceRequirement                `json:"ResourceRequirements,omitempty"`
-	RestartPolicy          *TaskDefinitionRestartPolicy         `json:"RestartPolicy,omitempty"`
-	Secrets                []TaskDefinitionSecret               `json:"Secrets,omitempty"`
-	StartTimeout           *int                                 `json:"StartTimeout,omitempty"`
-	StopTimeout            *int                                 `json:"StopTimeout,omitempty"`
-	SystemControls         []TaskDefinitionSystemControl        `json:"SystemControls,omitempty"`
-	Ulimits                []TaskDefinitionUlimit               `json:"Ulimits,omitempty"`
-	User                   *string                              `json:"User,omitempty"`
-	VersionConsistency     *string                              `json:"VersionConsistency,omitempty"`
-	VolumesFrom            []VolumeFrom                         `json:"VolumesFrom,omitempty"`
-	WorkingDirectory       *string                              `json:"WorkingDirectory,omitempty"`
+	Command                []string                               `json:"Command,omitempty"`
+	Cpu                    *int                                   `json:"Cpu,omitempty"`
+	CredentialSpecs        []string                               `json:"CredentialSpecs,omitempty"`
+	DependsOn              []TaskDefinitionContainerDependency    `json:"DependsOn,omitempty"`
+	DisableNetworking      *bool                                  `json:"DisableNetworking,omitempty"`
+	DnsSearchDomains       []string                               `json:"DnsSearchDomains,omitempty"`
+	DnsServers             []string                               `json:"DnsServers,omitempty"`
+	DockerLabels           map[string]string                      `json:"DockerLabels,omitempty"`
+	DockerSecurityOptions  []string                               `json:"DockerSecurityOptions,omitempty"`
+	EntryPoint             []string                               `json:"EntryPoint,omitempty"`
+	Environment            []TaskDefinitionKeyValuePair           `json:"Environment,omitempty"`
+	EnvironmentFiles       []TaskDefinitionEnvironmentFile        `json:"EnvironmentFiles,omitempty"`
+	Essential              *bool                                  `json:"Essential,omitempty"`
+	ExtraHosts             []HostEntry                            `json:"ExtraHosts,omitempty"`
+	FirelensConfiguration  *TaskDefinitionFirelensConfiguration   `json:"FirelensConfiguration,omitempty"`
+	HealthCheck            *TaskDefinitionHealthCheck             `json:"HealthCheck,omitempty"`
+	Hostname               *string                                `json:"Hostname,omitempty"`
+	Image                  *string                                `json:"Image,omitempty"`
+	Interactive            *bool                                  `json:"Interactive,omitempty"`
+	Links                  []string                               `json:"Links,omitempty"`
+	LinuxParameters        *TaskDefinitionLinuxParameters         `json:"LinuxParameters,omitempty"`
+	LogConfiguration       *TaskDefinitionLogConfiguration        `json:"LogConfiguration,omitempty"`
+	Memory                 *int                                   `json:"Memory,omitempty"`
+	MemoryReservation      *int                                   `json:"MemoryReservation,omitempty"`
+	MountPoints            []TaskDefinitionMountPoint             `json:"MountPoints,omitempty"`
+	Name                   *string                                `json:"Name,omitempty"`
+	PortMappings           []PortMapping                          `json:"PortMappings,omitempty"`
+	Privileged             *bool                                  `json:"Privileged,omitempty"`
+	PseudoTerminal         *bool                                  `json:"PseudoTerminal,omitempty"`
+	ReadonlyRootFilesystem *bool                                  `json:"ReadonlyRootFilesystem,omitempty"`
+	RepositoryCredentials  *TaskDefinitionRepositoryCredentials   `json:"RepositoryCredentials,omitempty"`
+	ResourceRequirements   []ResourceRequirement                  `json:"ResourceRequirements,omitempty"`
+	RestartPolicy          *TaskDefinitionRestartPolicy           `json:"RestartPolicy,omitempty"`
+	Secrets                []TaskDefinitionSecret                 `json:"Secrets,omitempty"`
+	StartTimeout           *int                                   `json:"StartTimeout,omitempty"`
+	StopTimeout            *int                                   `json:"StopTimeout,omitempty"`
+	SystemControls         []TaskDefinitionSystemControl          `json:"SystemControls,omitempty"`
+	Ulimits                []TaskDefinitionUlimit                 `json:"Ulimits,omitempty"`
+	User                   *string                                `json:"User,omitempty"`
+	VersionConsistency     *ContainerDefinitionVersionConsistency `json:"VersionConsistency,omitempty"`
+	VolumesFrom            []VolumeFrom                           `json:"VolumesFrom,omitempty"`
+	WorkingDirectory       *string                                `json:"WorkingDirectory,omitempty"`
 }
 
 type EphemeralStorage struct {
@@ -997,16 +997,16 @@ type DockerVolumeConfiguration struct {
 }
 
 type AuthorizationConfig struct {
-	AccessPointId *string `json:"AccessPointId,omitempty"`
-	IAM           *string `json:"IAM,omitempty"`
+	AccessPointId *string                 `json:"AccessPointId,omitempty"`
+	IAM           *AuthorizationConfigIAM `json:"IAM,omitempty"`
 }
 
 type EFSVolumeConfiguration struct {
-	AuthorizationConfig   *AuthorizationConfig `json:"AuthorizationConfig,omitempty"`
-	FilesystemId          *string              `json:"FilesystemId,omitempty"`
-	RootDirectory         *string              `json:"RootDirectory,omitempty"`
-	TransitEncryption     *string              `json:"TransitEncryption,omitempty"`
-	TransitEncryptionPort *int                 `json:"TransitEncryptionPort,omitempty"`
+	AuthorizationConfig   *AuthorizationConfig                     `json:"AuthorizationConfig,omitempty"`
+	FilesystemId          *string                                  `json:"FilesystemId,omitempty"`
+	RootDirectory         *string                                  `json:"RootDirectory,omitempty"`
+	TransitEncryption     *EFSVolumeConfigurationTransitEncryption `json:"TransitEncryption,omitempty"`
+	TransitEncryptionPort *int                                     `json:"TransitEncryptionPort,omitempty"`
 }
 
 type FSxAuthorizationConfig struct {
@@ -1078,9 +1078,9 @@ type TaskSetLoadBalancer struct {
 }
 
 type TaskSetAwsVpcConfiguration struct {
-	AssignPublicIp *string  `json:"AssignPublicIp,omitempty"`
-	SecurityGroups []string `json:"SecurityGroups,omitempty"`
-	Subnets        []string `json:"Subnets,omitempty"`
+	AssignPublicIp *TaskSetAwsVpcConfigurationAssignPublicIp `json:"AssignPublicIp,omitempty"`
+	SecurityGroups []string                                  `json:"SecurityGroups,omitempty"`
+	Subnets        []string                                  `json:"Subnets,omitempty"`
 }
 
 type TaskSetNetworkConfiguration struct {
@@ -1088,8 +1088,8 @@ type TaskSetNetworkConfiguration struct {
 }
 
 type Scale struct {
-	Unit  *string  `json:"Unit,omitempty"`
-	Value *float64 `json:"Value,omitempty"`
+	Unit  *ScaleUnit `json:"Unit,omitempty"`
+	Value *float64   `json:"Value,omitempty"`
 }
 
 type TaskSetServiceRegistry struct {
@@ -1109,7 +1109,7 @@ type TaskSet struct {
 	Cluster                  *string                               `json:"Cluster,omitempty"`
 	ExternalId               *string                               `json:"ExternalId,omitempty"`
 	Id                       *string                               `json:"Id,omitempty"`
-	LaunchType               *string                               `json:"LaunchType,omitempty"`
+	LaunchType               *TaskSetLaunchType                    `json:"LaunchType,omitempty"`
 	LoadBalancers            []TaskSetLoadBalancer                 `json:"LoadBalancers,omitempty"`
 	NetworkConfiguration     *TaskSetNetworkConfiguration          `json:"NetworkConfiguration,omitempty"`
 	PlatformVersion          *string                               `json:"PlatformVersion,omitempty"`
@@ -1121,3 +1121,366 @@ type TaskSet struct {
 }
 
 func (TaskSet) CloudControlType() string { return "AWS::ECS::TaskSet" }
+
+type AutoScalingGroupProviderManagedDraining string
+
+const (
+	AutoScalingGroupProviderManagedDrainingDISABLED AutoScalingGroupProviderManagedDraining = "DISABLED"
+	AutoScalingGroupProviderManagedDrainingENABLED  AutoScalingGroupProviderManagedDraining = "ENABLED"
+)
+
+type ManagedScalingStatus string
+
+const (
+	ManagedScalingStatusDISABLED ManagedScalingStatus = "DISABLED"
+	ManagedScalingStatusENABLED  ManagedScalingStatus = "ENABLED"
+)
+
+type AutoScalingGroupProviderManagedTerminationProtection string
+
+const (
+	AutoScalingGroupProviderManagedTerminationProtectionDISABLED AutoScalingGroupProviderManagedTerminationProtection = "DISABLED"
+	AutoScalingGroupProviderManagedTerminationProtectionENABLED  AutoScalingGroupProviderManagedTerminationProtection = "ENABLED"
+)
+
+type AutoRepairConfigurationActionsStatus string
+
+const (
+	AutoRepairConfigurationActionsStatusENABLED  AutoRepairConfigurationActionsStatus = "ENABLED"
+	AutoRepairConfigurationActionsStatusDISABLED AutoRepairConfigurationActionsStatus = "DISABLED"
+)
+
+type InstanceLaunchTemplateCapacityOptionType string
+
+const (
+	InstanceLaunchTemplateCapacityOptionTypeONDEMAND InstanceLaunchTemplateCapacityOptionType = "ON_DEMAND"
+	InstanceLaunchTemplateCapacityOptionTypeSPOT     InstanceLaunchTemplateCapacityOptionType = "SPOT"
+	InstanceLaunchTemplateCapacityOptionTypeRESERVED InstanceLaunchTemplateCapacityOptionType = "RESERVED"
+)
+
+type CapacityReservationRequestReservationPreference string
+
+const (
+	CapacityReservationRequestReservationPreferenceRESERVATIONSONLY     CapacityReservationRequestReservationPreference = "RESERVATIONS_ONLY"
+	CapacityReservationRequestReservationPreferenceRESERVATIONSFIRST    CapacityReservationRequestReservationPreference = "RESERVATIONS_FIRST"
+	CapacityReservationRequestReservationPreferenceRESERVATIONSEXCLUDED CapacityReservationRequestReservationPreference = "RESERVATIONS_EXCLUDED"
+)
+
+type InstanceRequirementsRequestAcceleratorManufacturersItem string
+
+const (
+	InstanceRequirementsRequestAcceleratorManufacturersItemAmazonWebServices InstanceRequirementsRequestAcceleratorManufacturersItem = "amazon-web-services"
+	InstanceRequirementsRequestAcceleratorManufacturersItemAmd               InstanceRequirementsRequestAcceleratorManufacturersItem = "amd"
+	InstanceRequirementsRequestAcceleratorManufacturersItemHabana            InstanceRequirementsRequestAcceleratorManufacturersItem = "habana"
+	InstanceRequirementsRequestAcceleratorManufacturersItemNvidia            InstanceRequirementsRequestAcceleratorManufacturersItem = "nvidia"
+	InstanceRequirementsRequestAcceleratorManufacturersItemXilinx            InstanceRequirementsRequestAcceleratorManufacturersItem = "xilinx"
+)
+
+type InstanceRequirementsRequestAcceleratorNamesItem string
+
+const (
+	InstanceRequirementsRequestAcceleratorNamesItemA10g          InstanceRequirementsRequestAcceleratorNamesItem = "a10g"
+	InstanceRequirementsRequestAcceleratorNamesItemA100          InstanceRequirementsRequestAcceleratorNamesItem = "a100"
+	InstanceRequirementsRequestAcceleratorNamesItemH100          InstanceRequirementsRequestAcceleratorNamesItem = "h100"
+	InstanceRequirementsRequestAcceleratorNamesItemInferentia    InstanceRequirementsRequestAcceleratorNamesItem = "inferentia"
+	InstanceRequirementsRequestAcceleratorNamesItemK520          InstanceRequirementsRequestAcceleratorNamesItem = "k520"
+	InstanceRequirementsRequestAcceleratorNamesItemK80           InstanceRequirementsRequestAcceleratorNamesItem = "k80"
+	InstanceRequirementsRequestAcceleratorNamesItemM60           InstanceRequirementsRequestAcceleratorNamesItem = "m60"
+	InstanceRequirementsRequestAcceleratorNamesItemRadeonProV520 InstanceRequirementsRequestAcceleratorNamesItem = "radeon-pro-v520"
+	InstanceRequirementsRequestAcceleratorNamesItemT4            InstanceRequirementsRequestAcceleratorNamesItem = "t4"
+	InstanceRequirementsRequestAcceleratorNamesItemT4g           InstanceRequirementsRequestAcceleratorNamesItem = "t4g"
+	InstanceRequirementsRequestAcceleratorNamesItemVu9p          InstanceRequirementsRequestAcceleratorNamesItem = "vu9p"
+	InstanceRequirementsRequestAcceleratorNamesItemV100          InstanceRequirementsRequestAcceleratorNamesItem = "v100"
+	InstanceRequirementsRequestAcceleratorNamesItemL40s          InstanceRequirementsRequestAcceleratorNamesItem = "l40s"
+	InstanceRequirementsRequestAcceleratorNamesItemL4            InstanceRequirementsRequestAcceleratorNamesItem = "l4"
+	InstanceRequirementsRequestAcceleratorNamesItemGaudiHl205    InstanceRequirementsRequestAcceleratorNamesItem = "gaudi-hl-205"
+	InstanceRequirementsRequestAcceleratorNamesItemInferentia2   InstanceRequirementsRequestAcceleratorNamesItem = "inferentia2"
+	InstanceRequirementsRequestAcceleratorNamesItemTrainium      InstanceRequirementsRequestAcceleratorNamesItem = "trainium"
+	InstanceRequirementsRequestAcceleratorNamesItemTrainium2     InstanceRequirementsRequestAcceleratorNamesItem = "trainium2"
+	InstanceRequirementsRequestAcceleratorNamesItemU30           InstanceRequirementsRequestAcceleratorNamesItem = "u30"
+)
+
+type InstanceRequirementsRequestAcceleratorTypesItem string
+
+const (
+	InstanceRequirementsRequestAcceleratorTypesItemGpu       InstanceRequirementsRequestAcceleratorTypesItem = "gpu"
+	InstanceRequirementsRequestAcceleratorTypesItemFpga      InstanceRequirementsRequestAcceleratorTypesItem = "fpga"
+	InstanceRequirementsRequestAcceleratorTypesItemInference InstanceRequirementsRequestAcceleratorTypesItem = "inference"
+)
+
+type InstanceRequirementsRequestBareMetal string
+
+const (
+	InstanceRequirementsRequestBareMetalIncluded InstanceRequirementsRequestBareMetal = "included"
+	InstanceRequirementsRequestBareMetalRequired InstanceRequirementsRequestBareMetal = "required"
+	InstanceRequirementsRequestBareMetalExcluded InstanceRequirementsRequestBareMetal = "excluded"
+)
+
+type InstanceRequirementsRequestBurstablePerformance string
+
+const (
+	InstanceRequirementsRequestBurstablePerformanceIncluded InstanceRequirementsRequestBurstablePerformance = "included"
+	InstanceRequirementsRequestBurstablePerformanceRequired InstanceRequirementsRequestBurstablePerformance = "required"
+	InstanceRequirementsRequestBurstablePerformanceExcluded InstanceRequirementsRequestBurstablePerformance = "excluded"
+)
+
+type InstanceRequirementsRequestCpuManufacturersItem string
+
+const (
+	InstanceRequirementsRequestCpuManufacturersItemIntel             InstanceRequirementsRequestCpuManufacturersItem = "intel"
+	InstanceRequirementsRequestCpuManufacturersItemAmd               InstanceRequirementsRequestCpuManufacturersItem = "amd"
+	InstanceRequirementsRequestCpuManufacturersItemAmazonWebServices InstanceRequirementsRequestCpuManufacturersItem = "amazon-web-services"
+)
+
+type InstanceRequirementsRequestInstanceGenerationsItem string
+
+const (
+	InstanceRequirementsRequestInstanceGenerationsItemCurrent  InstanceRequirementsRequestInstanceGenerationsItem = "current"
+	InstanceRequirementsRequestInstanceGenerationsItemPrevious InstanceRequirementsRequestInstanceGenerationsItem = "previous"
+)
+
+type InstanceRequirementsRequestLocalStorage string
+
+const (
+	InstanceRequirementsRequestLocalStorageIncluded InstanceRequirementsRequestLocalStorage = "included"
+	InstanceRequirementsRequestLocalStorageRequired InstanceRequirementsRequestLocalStorage = "required"
+	InstanceRequirementsRequestLocalStorageExcluded InstanceRequirementsRequestLocalStorage = "excluded"
+)
+
+type InstanceRequirementsRequestLocalStorageTypesItem string
+
+const (
+	InstanceRequirementsRequestLocalStorageTypesItemHdd InstanceRequirementsRequestLocalStorageTypesItem = "hdd"
+	InstanceRequirementsRequestLocalStorageTypesItemSsd InstanceRequirementsRequestLocalStorageTypesItem = "ssd"
+)
+
+type ManagedInstancesMonitoringOptions string
+
+const (
+	ManagedInstancesMonitoringOptionsBASIC    ManagedInstancesMonitoringOptions = "BASIC"
+	ManagedInstancesMonitoringOptionsDETAILED ManagedInstancesMonitoringOptions = "DETAILED"
+)
+
+type ManagedInstancesProviderPropagateTags string
+
+const (
+	ManagedInstancesProviderPropagateTagsCAPACITYPROVIDER ManagedInstancesProviderPropagateTags = "CAPACITY_PROVIDER"
+	ManagedInstancesProviderPropagateTagsNONE             ManagedInstancesProviderPropagateTags = "NONE"
+)
+
+type DaemonStatus string
+
+const (
+	DaemonStatusACTIVE           DaemonStatus = "ACTIVE"
+	DaemonStatusDELETEINPROGRESS DaemonStatus = "DELETE_IN_PROGRESS"
+)
+
+type DaemonPropagateTags string
+
+const (
+	DaemonPropagateTagsDAEMON DaemonPropagateTags = "DAEMON"
+	DaemonPropagateTagsNONE   DaemonPropagateTags = "NONE"
+)
+
+type AccessType string
+
+const (
+	AccessTypePUBLIC  AccessType = "PUBLIC"
+	AccessTypePRIVATE AccessType = "PRIVATE"
+)
+
+type ExpressGatewayServiceScalingMetric string
+
+const (
+	ExpressGatewayServiceScalingMetricAVERAGECPU            ExpressGatewayServiceScalingMetric = "AVERAGE_CPU"
+	ExpressGatewayServiceScalingMetricAVERAGEMEMORY         ExpressGatewayServiceScalingMetric = "AVERAGE_MEMORY"
+	ExpressGatewayServiceScalingMetricREQUESTCOUNTPERTARGET ExpressGatewayServiceScalingMetric = "REQUEST_COUNT_PER_TARGET"
+)
+
+type ExpressGatewayServiceStatusCode string
+
+const (
+	ExpressGatewayServiceStatusCodeACTIVE   ExpressGatewayServiceStatusCode = "ACTIVE"
+	ExpressGatewayServiceStatusCodeDRAINING ExpressGatewayServiceStatusCode = "DRAINING"
+	ExpressGatewayServiceStatusCodeINACTIVE ExpressGatewayServiceStatusCode = "INACTIVE"
+)
+
+type ServiceAvailabilityZoneRebalancing string
+
+const (
+	ServiceAvailabilityZoneRebalancingENABLED  ServiceAvailabilityZoneRebalancing = "ENABLED"
+	ServiceAvailabilityZoneRebalancingDISABLED ServiceAvailabilityZoneRebalancing = "DISABLED"
+)
+
+type ThresholdConfigurationType string
+
+const (
+	ThresholdConfigurationTypeCOUNT            ThresholdConfigurationType = "COUNT"
+	ThresholdConfigurationTypeBOUNDEDPERCENT   ThresholdConfigurationType = "BOUNDED_PERCENT"
+	ThresholdConfigurationTypeUNBOUNDEDPERCENT ThresholdConfigurationType = "UNBOUNDED_PERCENT"
+)
+
+type DeploymentLifecycleHookLifecycleStagesItem string
+
+const (
+	DeploymentLifecycleHookLifecycleStagesItemRECONCILESERVICE           DeploymentLifecycleHookLifecycleStagesItem = "RECONCILE_SERVICE"
+	DeploymentLifecycleHookLifecycleStagesItemPRESCALEUP                 DeploymentLifecycleHookLifecycleStagesItem = "PRE_SCALE_UP"
+	DeploymentLifecycleHookLifecycleStagesItemPOSTSCALEUP                DeploymentLifecycleHookLifecycleStagesItem = "POST_SCALE_UP"
+	DeploymentLifecycleHookLifecycleStagesItemTESTTRAFFICSHIFT           DeploymentLifecycleHookLifecycleStagesItem = "TEST_TRAFFIC_SHIFT"
+	DeploymentLifecycleHookLifecycleStagesItemPOSTTESTTRAFFICSHIFT       DeploymentLifecycleHookLifecycleStagesItem = "POST_TEST_TRAFFIC_SHIFT"
+	DeploymentLifecycleHookLifecycleStagesItemPREPRODUCTIONTRAFFICSHIFT  DeploymentLifecycleHookLifecycleStagesItem = "PRE_PRODUCTION_TRAFFIC_SHIFT"
+	DeploymentLifecycleHookLifecycleStagesItemPRODUCTIONTRAFFICSHIFT     DeploymentLifecycleHookLifecycleStagesItem = "PRODUCTION_TRAFFIC_SHIFT"
+	DeploymentLifecycleHookLifecycleStagesItemPOSTPRODUCTIONTRAFFICSHIFT DeploymentLifecycleHookLifecycleStagesItem = "POST_PRODUCTION_TRAFFIC_SHIFT"
+)
+
+type DeploymentLifecycleHookTargetType string
+
+const (
+	DeploymentLifecycleHookTargetTypeAWSLAMBDA DeploymentLifecycleHookTargetType = "AWS_LAMBDA"
+	DeploymentLifecycleHookTargetTypePAUSE     DeploymentLifecycleHookTargetType = "PAUSE"
+)
+
+type HookTimeoutConfigAction string
+
+const (
+	HookTimeoutConfigActionROLLBACK HookTimeoutConfigAction = "ROLLBACK"
+	HookTimeoutConfigActionCONTINUE HookTimeoutConfigAction = "CONTINUE"
+)
+
+type DeploymentConfigurationStrategy string
+
+const (
+	DeploymentConfigurationStrategyROLLING   DeploymentConfigurationStrategy = "ROLLING"
+	DeploymentConfigurationStrategyBLUEGREEN DeploymentConfigurationStrategy = "BLUE_GREEN"
+	DeploymentConfigurationStrategyLINEAR    DeploymentConfigurationStrategy = "LINEAR"
+	DeploymentConfigurationStrategyCANARY    DeploymentConfigurationStrategy = "CANARY"
+)
+
+type DeploymentControllerType string
+
+const (
+	DeploymentControllerTypeCODEDEPLOY DeploymentControllerType = "CODE_DEPLOY"
+	DeploymentControllerTypeECS        DeploymentControllerType = "ECS"
+	DeploymentControllerTypeEXTERNAL   DeploymentControllerType = "EXTERNAL"
+)
+
+type ServiceLaunchType string
+
+const (
+	ServiceLaunchTypeEC2      ServiceLaunchType = "EC2"
+	ServiceLaunchTypeFARGATE  ServiceLaunchType = "FARGATE"
+	ServiceLaunchTypeEXTERNAL ServiceLaunchType = "EXTERNAL"
+)
+
+type MetricConfigurationMetricNamesItem string
+
+const (
+	MetricConfigurationMetricNamesItemCPUUtilization    MetricConfigurationMetricNamesItem = "CPUUtilization"
+	MetricConfigurationMetricNamesItemMemoryUtilization MetricConfigurationMetricNamesItem = "MemoryUtilization"
+)
+
+type AwsVpcConfigurationAssignPublicIp string
+
+const (
+	AwsVpcConfigurationAssignPublicIpDISABLED AwsVpcConfigurationAssignPublicIp = "DISABLED"
+	AwsVpcConfigurationAssignPublicIpENABLED  AwsVpcConfigurationAssignPublicIp = "ENABLED"
+)
+
+type PlacementConstraintType string
+
+const (
+	PlacementConstraintTypeDistinctInstance PlacementConstraintType = "distinctInstance"
+	PlacementConstraintTypeMemberOf         PlacementConstraintType = "memberOf"
+)
+
+type PlacementStrategyType string
+
+const (
+	PlacementStrategyTypeBinpack PlacementStrategyType = "binpack"
+	PlacementStrategyTypeRandom  PlacementStrategyType = "random"
+	PlacementStrategyTypeSpread  PlacementStrategyType = "spread"
+)
+
+type ServicePropagateTags string
+
+const (
+	ServicePropagateTagsSERVICE        ServicePropagateTags = "SERVICE"
+	ServicePropagateTagsTASKDEFINITION ServicePropagateTags = "TASK_DEFINITION"
+)
+
+type ServiceSchedulingStrategy string
+
+const (
+	ServiceSchedulingStrategyDAEMON  ServiceSchedulingStrategy = "DAEMON"
+	ServiceSchedulingStrategyREPLICA ServiceSchedulingStrategy = "REPLICA"
+)
+
+type ServiceConnectAccessLogConfigurationFormat string
+
+const (
+	ServiceConnectAccessLogConfigurationFormatTEXT ServiceConnectAccessLogConfigurationFormat = "TEXT"
+	ServiceConnectAccessLogConfigurationFormatJSON ServiceConnectAccessLogConfigurationFormat = "JSON"
+)
+
+type ServiceConnectAccessLogConfigurationIncludeQueryParameters string
+
+const (
+	ServiceConnectAccessLogConfigurationIncludeQueryParametersDISABLED ServiceConnectAccessLogConfigurationIncludeQueryParameters = "DISABLED"
+	ServiceConnectAccessLogConfigurationIncludeQueryParametersENABLED  ServiceConnectAccessLogConfigurationIncludeQueryParameters = "ENABLED"
+)
+
+type EBSTagSpecificationPropagateTags string
+
+const (
+	EBSTagSpecificationPropagateTagsSERVICE        EBSTagSpecificationPropagateTags = "SERVICE"
+	EBSTagSpecificationPropagateTagsTASKDEFINITION EBSTagSpecificationPropagateTags = "TASK_DEFINITION"
+)
+
+type PortMappingAppProtocol string
+
+const (
+	PortMappingAppProtocolHttp  PortMappingAppProtocol = "http"
+	PortMappingAppProtocolHttp2 PortMappingAppProtocol = "http2"
+	PortMappingAppProtocolGrpc  PortMappingAppProtocol = "grpc"
+)
+
+type ContainerDefinitionVersionConsistency string
+
+const (
+	ContainerDefinitionVersionConsistencyEnabled  ContainerDefinitionVersionConsistency = "enabled"
+	ContainerDefinitionVersionConsistencyDisabled ContainerDefinitionVersionConsistency = "disabled"
+)
+
+type AuthorizationConfigIAM string
+
+const (
+	AuthorizationConfigIAMENABLED  AuthorizationConfigIAM = "ENABLED"
+	AuthorizationConfigIAMDISABLED AuthorizationConfigIAM = "DISABLED"
+)
+
+type EFSVolumeConfigurationTransitEncryption string
+
+const (
+	EFSVolumeConfigurationTransitEncryptionENABLED  EFSVolumeConfigurationTransitEncryption = "ENABLED"
+	EFSVolumeConfigurationTransitEncryptionDISABLED EFSVolumeConfigurationTransitEncryption = "DISABLED"
+)
+
+type TaskSetLaunchType string
+
+const (
+	TaskSetLaunchTypeEC2     TaskSetLaunchType = "EC2"
+	TaskSetLaunchTypeFARGATE TaskSetLaunchType = "FARGATE"
+)
+
+type TaskSetAwsVpcConfigurationAssignPublicIp string
+
+const (
+	TaskSetAwsVpcConfigurationAssignPublicIpDISABLED TaskSetAwsVpcConfigurationAssignPublicIp = "DISABLED"
+	TaskSetAwsVpcConfigurationAssignPublicIpENABLED  TaskSetAwsVpcConfigurationAssignPublicIp = "ENABLED"
+)
+
+type ScaleUnit string
+
+const (
+	ScaleUnitPERCENT ScaleUnit = "PERCENT"
+)

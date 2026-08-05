@@ -19,19 +19,19 @@ type Tag struct {
 }
 
 type Agreement struct {
-	AccessRole            *string                     `json:"AccessRole,omitempty"`
-	AgreementId           *string                     `json:"AgreementId,omitempty"`
-	Arn                   *string                     `json:"Arn,omitempty"`
-	BaseDirectory         *string                     `json:"BaseDirectory,omitempty"`
-	CustomDirectories     *AgreementCustomDirectories `json:"CustomDirectories,omitempty"`
-	Description           *string                     `json:"Description,omitempty"`
-	EnforceMessageSigning *string                     `json:"EnforceMessageSigning,omitempty"`
-	LocalProfileId        *string                     `json:"LocalProfileId,omitempty"`
-	PartnerProfileId      *string                     `json:"PartnerProfileId,omitempty"`
-	PreserveFilename      *string                     `json:"PreserveFilename,omitempty"`
-	ServerId              *string                     `json:"ServerId,omitempty"`
-	Status                *string                     `json:"Status,omitempty"`
-	Tags                  []Tag                       `json:"Tags,omitempty"`
+	AccessRole            *string                         `json:"AccessRole,omitempty"`
+	AgreementId           *string                         `json:"AgreementId,omitempty"`
+	Arn                   *string                         `json:"Arn,omitempty"`
+	BaseDirectory         *string                         `json:"BaseDirectory,omitempty"`
+	CustomDirectories     *AgreementCustomDirectories     `json:"CustomDirectories,omitempty"`
+	Description           *string                         `json:"Description,omitempty"`
+	EnforceMessageSigning *AgreementEnforceMessageSigning `json:"EnforceMessageSigning,omitempty"`
+	LocalProfileId        *string                         `json:"LocalProfileId,omitempty"`
+	PartnerProfileId      *string                         `json:"PartnerProfileId,omitempty"`
+	PreserveFilename      *AgreementPreserveFilename      `json:"PreserveFilename,omitempty"`
+	ServerId              *string                         `json:"ServerId,omitempty"`
+	Status                *AgreementStatus                `json:"Status,omitempty"`
+	Tags                  []Tag                           `json:"Tags,omitempty"`
 }
 
 func (Agreement) CloudControlType() string { return "AWS::Transfer::Agreement" }
@@ -42,21 +42,21 @@ type CertificateTag struct {
 }
 
 type Certificate struct {
-	ActiveDate       *string          `json:"ActiveDate,omitempty"`
-	Arn              *string          `json:"Arn,omitempty"`
-	Certificate      *string          `json:"Certificate,omitempty"`
-	CertificateChain *string          `json:"CertificateChain,omitempty"`
-	CertificateId    *string          `json:"CertificateId,omitempty"`
-	Description      *string          `json:"Description,omitempty"`
-	InactiveDate     *string          `json:"InactiveDate,omitempty"`
-	NotAfterDate     *string          `json:"NotAfterDate,omitempty"`
-	NotBeforeDate    *string          `json:"NotBeforeDate,omitempty"`
-	PrivateKey       *string          `json:"PrivateKey,omitempty"`
-	Serial           *string          `json:"Serial,omitempty"`
-	Status           *string          `json:"Status,omitempty"`
-	Tags             []CertificateTag `json:"Tags,omitempty"`
-	Type             *string          `json:"Type,omitempty"`
-	Usage            *string          `json:"Usage,omitempty"`
+	ActiveDate       *string            `json:"ActiveDate,omitempty"`
+	Arn              *string            `json:"Arn,omitempty"`
+	Certificate      *string            `json:"Certificate,omitempty"`
+	CertificateChain *string            `json:"CertificateChain,omitempty"`
+	CertificateId    *string            `json:"CertificateId,omitempty"`
+	Description      *string            `json:"Description,omitempty"`
+	InactiveDate     *string            `json:"InactiveDate,omitempty"`
+	NotAfterDate     *string            `json:"NotAfterDate,omitempty"`
+	NotBeforeDate    *string            `json:"NotBeforeDate,omitempty"`
+	PrivateKey       *string            `json:"PrivateKey,omitempty"`
+	Serial           *string            `json:"Serial,omitempty"`
+	Status           *CertificateStatus `json:"Status,omitempty"`
+	Tags             []CertificateTag   `json:"Tags,omitempty"`
+	Type             *CertificateType   `json:"Type,omitempty"`
+	Usage            *CertificateUsage  `json:"Usage,omitempty"`
 }
 
 func (Certificate) CloudControlType() string { return "AWS::Transfer::Certificate" }
@@ -67,17 +67,17 @@ type ConnectorAsyncMdnConfig struct {
 }
 
 type ConnectorAs2Config struct {
-	AsyncMdnConfig      *ConnectorAsyncMdnConfig `json:"AsyncMdnConfig,omitempty"`
-	BasicAuthSecretId   *string                  `json:"BasicAuthSecretId,omitempty"`
-	Compression         *string                  `json:"Compression,omitempty"`
-	EncryptionAlgorithm *string                  `json:"EncryptionAlgorithm,omitempty"`
-	LocalProfileId      *string                  `json:"LocalProfileId,omitempty"`
-	MdnResponse         *string                  `json:"MdnResponse,omitempty"`
-	MdnSigningAlgorithm *string                  `json:"MdnSigningAlgorithm,omitempty"`
-	MessageSubject      *string                  `json:"MessageSubject,omitempty"`
-	PartnerProfileId    *string                  `json:"PartnerProfileId,omitempty"`
-	PreserveContentType *string                  `json:"PreserveContentType,omitempty"`
-	SigningAlgorithm    *string                  `json:"SigningAlgorithm,omitempty"`
+	AsyncMdnConfig      *ConnectorAsyncMdnConfig               `json:"AsyncMdnConfig,omitempty"`
+	BasicAuthSecretId   *string                                `json:"BasicAuthSecretId,omitempty"`
+	Compression         *ConnectorAs2ConfigCompression         `json:"Compression,omitempty"`
+	EncryptionAlgorithm *ConnectorAs2ConfigEncryptionAlgorithm `json:"EncryptionAlgorithm,omitempty"`
+	LocalProfileId      *string                                `json:"LocalProfileId,omitempty"`
+	MdnResponse         *ConnectorAs2ConfigMdnResponse         `json:"MdnResponse,omitempty"`
+	MdnSigningAlgorithm *ConnectorAs2ConfigMdnSigningAlgorithm `json:"MdnSigningAlgorithm,omitempty"`
+	MessageSubject      *string                                `json:"MessageSubject,omitempty"`
+	PartnerProfileId    *string                                `json:"PartnerProfileId,omitempty"`
+	PreserveContentType *ConnectorAs2ConfigPreserveContentType `json:"PreserveContentType,omitempty"`
+	SigningAlgorithm    *ConnectorAs2ConfigSigningAlgorithm    `json:"SigningAlgorithm,omitempty"`
 }
 
 type ConnectorVpcLatticeEgressConfig struct {
@@ -106,14 +106,14 @@ type Connector struct {
 	As2Config                       *ConnectorAs2Config    `json:"As2Config,omitempty"`
 	ConnectorId                     *string                `json:"ConnectorId,omitempty"`
 	EgressConfig                    *ConnectorEgressConfig `json:"EgressConfig,omitempty"`
-	EgressType                      *string                `json:"EgressType,omitempty"`
+	EgressType                      *ConnectorEgressType   `json:"EgressType,omitempty"`
 	ErrorMessage                    *string                `json:"ErrorMessage,omitempty"`
-	IpAddressType                   *string                `json:"IpAddressType,omitempty"`
+	IpAddressType                   *IpAddressType         `json:"IpAddressType,omitempty"`
 	LoggingRole                     *string                `json:"LoggingRole,omitempty"`
 	SecurityPolicyName              *string                `json:"SecurityPolicyName,omitempty"`
 	ServiceManagedEgressIpAddresses []string               `json:"ServiceManagedEgressIpAddresses,omitempty"`
 	SftpConfig                      *ConnectorSftpConfig   `json:"SftpConfig,omitempty"`
-	Status                          *string                `json:"Status,omitempty"`
+	Status                          *ConnectorStatus       `json:"Status,omitempty"`
 	Tags                            []ConnectorTag         `json:"Tags,omitempty"`
 	Url                             *string                `json:"Url,omitempty"`
 }
@@ -126,12 +126,12 @@ type ProfileTag struct {
 }
 
 type Profile struct {
-	Arn            *string      `json:"Arn,omitempty"`
-	As2Id          *string      `json:"As2Id,omitempty"`
-	CertificateIds []string     `json:"CertificateIds,omitempty"`
-	ProfileId      *string      `json:"ProfileId,omitempty"`
-	ProfileType    *string      `json:"ProfileType,omitempty"`
-	Tags           []ProfileTag `json:"Tags,omitempty"`
+	Arn            *string             `json:"Arn,omitempty"`
+	As2Id          *string             `json:"As2Id,omitempty"`
+	CertificateIds []string            `json:"CertificateIds,omitempty"`
+	ProfileId      *string             `json:"ProfileId,omitempty"`
+	ProfileType    *ProfileProfileType `json:"ProfileType,omitempty"`
+	Tags           []ProfileTag        `json:"Tags,omitempty"`
 }
 
 func (Profile) CloudControlType() string { return "AWS::Transfer::Profile" }
@@ -145,22 +145,22 @@ type EndpointDetails struct {
 }
 
 type IdentityProviderDetails struct {
-	DirectoryId               *string `json:"DirectoryId,omitempty"`
-	Function                  *string `json:"Function,omitempty"`
-	InvocationRole            *string `json:"InvocationRole,omitempty"`
-	SftpAuthenticationMethods *string `json:"SftpAuthenticationMethods,omitempty"`
-	Url                       *string `json:"Url,omitempty"`
+	DirectoryId               *string                    `json:"DirectoryId,omitempty"`
+	Function                  *string                    `json:"Function,omitempty"`
+	InvocationRole            *string                    `json:"InvocationRole,omitempty"`
+	SftpAuthenticationMethods *SftpAuthenticationMethods `json:"SftpAuthenticationMethods,omitempty"`
+	Url                       *string                    `json:"Url,omitempty"`
 }
 
 type ProtocolDetails struct {
-	As2Transports            []string `json:"As2Transports,omitempty"`
-	PassiveIp                *string  `json:"PassiveIp,omitempty"`
-	SetStatOption            *string  `json:"SetStatOption,omitempty"`
-	TlsSessionResumptionMode *string  `json:"TlsSessionResumptionMode,omitempty"`
+	As2Transports            []As2Transport            `json:"As2Transports,omitempty"`
+	PassiveIp                *string                   `json:"PassiveIp,omitempty"`
+	SetStatOption            *SetStatOption            `json:"SetStatOption,omitempty"`
+	TlsSessionResumptionMode *TlsSessionResumptionMode `json:"TlsSessionResumptionMode,omitempty"`
 }
 
 type S3StorageOptions struct {
-	DirectoryListingOptimization *string `json:"DirectoryListingOptimization,omitempty"`
+	DirectoryListingOptimization *DirectoryListingOptimization `json:"DirectoryListingOptimization,omitempty"`
 }
 
 type ServerTag struct {
@@ -182,21 +182,21 @@ type Server struct {
 	Arn                                *string                  `json:"Arn,omitempty"`
 	As2ServiceManagedEgressIpAddresses []string                 `json:"As2ServiceManagedEgressIpAddresses,omitempty"`
 	Certificate                        *string                  `json:"Certificate,omitempty"`
-	Domain                             *string                  `json:"Domain,omitempty"`
+	Domain                             *Domain                  `json:"Domain,omitempty"`
 	EndpointDetails                    *EndpointDetails         `json:"EndpointDetails,omitempty"`
-	EndpointType                       *string                  `json:"EndpointType,omitempty"`
+	EndpointType                       *EndpointType            `json:"EndpointType,omitempty"`
 	IdentityProviderDetails            *IdentityProviderDetails `json:"IdentityProviderDetails,omitempty"`
-	IdentityProviderType               *string                  `json:"IdentityProviderType,omitempty"`
-	IpAddressType                      *string                  `json:"IpAddressType,omitempty"`
+	IdentityProviderType               *IdentityProviderType    `json:"IdentityProviderType,omitempty"`
+	IpAddressType                      *ServerIpAddressType     `json:"IpAddressType,omitempty"`
 	LoggingRole                        *string                  `json:"LoggingRole,omitempty"`
 	PostAuthenticationLoginBanner      *string                  `json:"PostAuthenticationLoginBanner,omitempty"`
 	PreAuthenticationLoginBanner       *string                  `json:"PreAuthenticationLoginBanner,omitempty"`
 	ProtocolDetails                    *ProtocolDetails         `json:"ProtocolDetails,omitempty"`
-	Protocols                          []string                 `json:"Protocols,omitempty"`
+	Protocols                          []Protocol               `json:"Protocols,omitempty"`
 	S3StorageOptions                   *S3StorageOptions        `json:"S3StorageOptions,omitempty"`
 	SecurityPolicyName                 *string                  `json:"SecurityPolicyName,omitempty"`
 	ServerId                           *string                  `json:"ServerId,omitempty"`
-	State                              *string                  `json:"State,omitempty"`
+	State                              *State                   `json:"State,omitempty"`
 	StructuredLogDestinations          []string                 `json:"StructuredLogDestinations,omitempty"`
 	Tags                               []ServerTag              `json:"Tags,omitempty"`
 	WorkflowDetails                    *WorkflowDetails         `json:"WorkflowDetails,omitempty"`
@@ -205,9 +205,9 @@ type Server struct {
 func (Server) CloudControlType() string { return "AWS::Transfer::Server" }
 
 type HomeDirectoryMapEntry struct {
-	Entry  *string `json:"Entry,omitempty"`
-	Target *string `json:"Target,omitempty"`
-	Type   *string `json:"Type,omitempty"`
+	Entry  *string  `json:"Entry,omitempty"`
+	Target *string  `json:"Target,omitempty"`
+	Type   *MapType `json:"Type,omitempty"`
 }
 
 type PosixProfile struct {
@@ -225,7 +225,7 @@ type User struct {
 	Arn                   *string                 `json:"Arn,omitempty"`
 	HomeDirectory         *string                 `json:"HomeDirectory,omitempty"`
 	HomeDirectoryMappings []HomeDirectoryMapEntry `json:"HomeDirectoryMappings,omitempty"`
-	HomeDirectoryType     *string                 `json:"HomeDirectoryType,omitempty"`
+	HomeDirectoryType     *HomeDirectoryType      `json:"HomeDirectoryType,omitempty"`
 	Policy                *string                 `json:"Policy,omitempty"`
 	PosixProfile          *PosixProfile           `json:"PosixProfile,omitempty"`
 	Role                  *string                 `json:"Role,omitempty"`
@@ -238,10 +238,10 @@ type User struct {
 func (User) CloudControlType() string { return "AWS::Transfer::User" }
 
 type Vpc struct {
-	IpAddressType    *string  `json:"IpAddressType,omitempty"`
-	SecurityGroupIds []string `json:"SecurityGroupIds,omitempty"`
-	SubnetIds        []string `json:"SubnetIds,omitempty"`
-	VpcId            *string  `json:"VpcId,omitempty"`
+	IpAddressType    *VpcIpAddressType `json:"IpAddressType,omitempty"`
+	SecurityGroupIds []string          `json:"SecurityGroupIds,omitempty"`
+	SubnetIds        []string          `json:"SubnetIds,omitempty"`
+	VpcId            *string           `json:"VpcId,omitempty"`
 }
 
 type WebAppEndpointDetails struct {
@@ -273,7 +273,7 @@ type WebApp struct {
 	Tags                    []WebAppTag                    `json:"Tags,omitempty"`
 	VpcEndpointId           *string                        `json:"VpcEndpointId,omitempty"`
 	WebAppCustomization     *WebAppCustomization           `json:"WebAppCustomization,omitempty"`
-	WebAppEndpointPolicy    *string                        `json:"WebAppEndpointPolicy,omitempty"`
+	WebAppEndpointPolicy    *WebAppEndpointPolicy          `json:"WebAppEndpointPolicy,omitempty"`
 	WebAppId                *string                        `json:"WebAppId,omitempty"`
 	WebAppUnits             json.RawMessage                `json:"WebAppUnits,omitempty"`
 }
@@ -290,10 +290,10 @@ type S3FileLocation struct {
 }
 
 type WorkflowStepCopyStepDetails struct {
-	DestinationFileLocation *S3FileLocation `json:"DestinationFileLocation,omitempty"`
-	Name                    *string         `json:"Name,omitempty"`
-	OverwriteExisting       *string         `json:"OverwriteExisting,omitempty"`
-	SourceFileLocation      *string         `json:"SourceFileLocation,omitempty"`
+	DestinationFileLocation *S3FileLocation                               `json:"DestinationFileLocation,omitempty"`
+	Name                    *string                                       `json:"Name,omitempty"`
+	OverwriteExisting       *WorkflowStepCopyStepDetailsOverwriteExisting `json:"OverwriteExisting,omitempty"`
+	SourceFileLocation      *string                                       `json:"SourceFileLocation,omitempty"`
 }
 
 type WorkflowStepCustomStepDetails struct {
@@ -314,11 +314,11 @@ type InputFileLocation struct {
 }
 
 type WorkflowStepDecryptStepDetails struct {
-	DestinationFileLocation *InputFileLocation `json:"DestinationFileLocation,omitempty"`
-	Name                    *string            `json:"Name,omitempty"`
-	OverwriteExisting       *string            `json:"OverwriteExisting,omitempty"`
-	SourceFileLocation      *string            `json:"SourceFileLocation,omitempty"`
-	Type                    *string            `json:"Type,omitempty"`
+	DestinationFileLocation *InputFileLocation                               `json:"DestinationFileLocation,omitempty"`
+	Name                    *string                                          `json:"Name,omitempty"`
+	OverwriteExisting       *WorkflowStepDecryptStepDetailsOverwriteExisting `json:"OverwriteExisting,omitempty"`
+	SourceFileLocation      *string                                          `json:"SourceFileLocation,omitempty"`
+	Type                    *WorkflowStepDecryptStepDetailsType              `json:"Type,omitempty"`
 }
 
 type WorkflowStepDeleteStepDetails struct {
@@ -343,7 +343,7 @@ type WorkflowStep struct {
 	DecryptStepDetails *WorkflowStepDecryptStepDetails `json:"DecryptStepDetails,omitempty"`
 	DeleteStepDetails  *WorkflowStepDeleteStepDetails  `json:"DeleteStepDetails,omitempty"`
 	TagStepDetails     *WorkflowStepTagStepDetails     `json:"TagStepDetails,omitempty"`
-	Type               *string                         `json:"Type,omitempty"`
+	Type               *WorkflowStepType               `json:"Type,omitempty"`
 }
 
 type WorkflowTag struct {
@@ -361,3 +361,275 @@ type Workflow struct {
 }
 
 func (Workflow) CloudControlType() string { return "AWS::Transfer::Workflow" }
+
+type AgreementEnforceMessageSigning string
+
+const (
+	AgreementEnforceMessageSigningENABLED  AgreementEnforceMessageSigning = "ENABLED"
+	AgreementEnforceMessageSigningDISABLED AgreementEnforceMessageSigning = "DISABLED"
+)
+
+type AgreementPreserveFilename string
+
+const (
+	AgreementPreserveFilenameENABLED  AgreementPreserveFilename = "ENABLED"
+	AgreementPreserveFilenameDISABLED AgreementPreserveFilename = "DISABLED"
+)
+
+type AgreementStatus string
+
+const (
+	AgreementStatusACTIVE   AgreementStatus = "ACTIVE"
+	AgreementStatusINACTIVE AgreementStatus = "INACTIVE"
+)
+
+type CertificateStatus string
+
+const (
+	CertificateStatusACTIVE   CertificateStatus = "ACTIVE"
+	CertificateStatusPENDING  CertificateStatus = "PENDING"
+	CertificateStatusINACTIVE CertificateStatus = "INACTIVE"
+)
+
+type CertificateType string
+
+const (
+	CertificateTypeCERTIFICATE               CertificateType = "CERTIFICATE"
+	CertificateTypeCERTIFICATEWITHPRIVATEKEY CertificateType = "CERTIFICATE_WITH_PRIVATE_KEY"
+)
+
+type CertificateUsage string
+
+const (
+	CertificateUsageSIGNING    CertificateUsage = "SIGNING"
+	CertificateUsageENCRYPTION CertificateUsage = "ENCRYPTION"
+	CertificateUsageTLS        CertificateUsage = "TLS"
+)
+
+type ConnectorAs2ConfigCompression string
+
+const (
+	ConnectorAs2ConfigCompressionZLIB     ConnectorAs2ConfigCompression = "ZLIB"
+	ConnectorAs2ConfigCompressionDISABLED ConnectorAs2ConfigCompression = "DISABLED"
+)
+
+type ConnectorAs2ConfigEncryptionAlgorithm string
+
+const (
+	ConnectorAs2ConfigEncryptionAlgorithmAES128CBC  ConnectorAs2ConfigEncryptionAlgorithm = "AES128_CBC"
+	ConnectorAs2ConfigEncryptionAlgorithmAES192CBC  ConnectorAs2ConfigEncryptionAlgorithm = "AES192_CBC"
+	ConnectorAs2ConfigEncryptionAlgorithmAES256CBC  ConnectorAs2ConfigEncryptionAlgorithm = "AES256_CBC"
+	ConnectorAs2ConfigEncryptionAlgorithmNONE       ConnectorAs2ConfigEncryptionAlgorithm = "NONE"
+	ConnectorAs2ConfigEncryptionAlgorithmDESEDE3CBC ConnectorAs2ConfigEncryptionAlgorithm = "DES_EDE3_CBC"
+)
+
+type ConnectorAs2ConfigMdnResponse string
+
+const (
+	ConnectorAs2ConfigMdnResponseSYNC  ConnectorAs2ConfigMdnResponse = "SYNC"
+	ConnectorAs2ConfigMdnResponseASYNC ConnectorAs2ConfigMdnResponse = "ASYNC"
+	ConnectorAs2ConfigMdnResponseNONE  ConnectorAs2ConfigMdnResponse = "NONE"
+)
+
+type ConnectorAs2ConfigMdnSigningAlgorithm string
+
+const (
+	ConnectorAs2ConfigMdnSigningAlgorithmSHA256  ConnectorAs2ConfigMdnSigningAlgorithm = "SHA256"
+	ConnectorAs2ConfigMdnSigningAlgorithmSHA384  ConnectorAs2ConfigMdnSigningAlgorithm = "SHA384"
+	ConnectorAs2ConfigMdnSigningAlgorithmSHA512  ConnectorAs2ConfigMdnSigningAlgorithm = "SHA512"
+	ConnectorAs2ConfigMdnSigningAlgorithmSHA1    ConnectorAs2ConfigMdnSigningAlgorithm = "SHA1"
+	ConnectorAs2ConfigMdnSigningAlgorithmNONE    ConnectorAs2ConfigMdnSigningAlgorithm = "NONE"
+	ConnectorAs2ConfigMdnSigningAlgorithmDEFAULT ConnectorAs2ConfigMdnSigningAlgorithm = "DEFAULT"
+)
+
+type ConnectorAs2ConfigPreserveContentType string
+
+const (
+	ConnectorAs2ConfigPreserveContentTypeENABLED  ConnectorAs2ConfigPreserveContentType = "ENABLED"
+	ConnectorAs2ConfigPreserveContentTypeDISABLED ConnectorAs2ConfigPreserveContentType = "DISABLED"
+)
+
+type ConnectorAs2ConfigSigningAlgorithm string
+
+const (
+	ConnectorAs2ConfigSigningAlgorithmSHA256 ConnectorAs2ConfigSigningAlgorithm = "SHA256"
+	ConnectorAs2ConfigSigningAlgorithmSHA384 ConnectorAs2ConfigSigningAlgorithm = "SHA384"
+	ConnectorAs2ConfigSigningAlgorithmSHA512 ConnectorAs2ConfigSigningAlgorithm = "SHA512"
+	ConnectorAs2ConfigSigningAlgorithmSHA1   ConnectorAs2ConfigSigningAlgorithm = "SHA1"
+	ConnectorAs2ConfigSigningAlgorithmNONE   ConnectorAs2ConfigSigningAlgorithm = "NONE"
+)
+
+type ConnectorEgressType string
+
+const (
+	ConnectorEgressTypeSERVICEMANAGED ConnectorEgressType = "SERVICE_MANAGED"
+	ConnectorEgressTypeVPCLATTICE     ConnectorEgressType = "VPC_LATTICE"
+)
+
+type IpAddressType string
+
+const (
+	IpAddressTypeIPV4      IpAddressType = "IPV4"
+	IpAddressTypeDUALSTACK IpAddressType = "DUALSTACK"
+)
+
+type ConnectorStatus string
+
+const (
+	ConnectorStatusACTIVE  ConnectorStatus = "ACTIVE"
+	ConnectorStatusPENDING ConnectorStatus = "PENDING"
+	ConnectorStatusERRORED ConnectorStatus = "ERRORED"
+)
+
+type ProfileProfileType string
+
+const (
+	ProfileProfileTypeLOCAL   ProfileProfileType = "LOCAL"
+	ProfileProfileTypePARTNER ProfileProfileType = "PARTNER"
+)
+
+type Domain string
+
+const (
+	DomainS3  Domain = "S3"
+	DomainEFS Domain = "EFS"
+)
+
+type EndpointType string
+
+const (
+	EndpointTypePUBLIC      EndpointType = "PUBLIC"
+	EndpointTypeVPC         EndpointType = "VPC"
+	EndpointTypeVPCENDPOINT EndpointType = "VPC_ENDPOINT"
+)
+
+type SftpAuthenticationMethods string
+
+const (
+	SftpAuthenticationMethodsPASSWORD             SftpAuthenticationMethods = "PASSWORD"
+	SftpAuthenticationMethodsPUBLICKEY            SftpAuthenticationMethods = "PUBLIC_KEY"
+	SftpAuthenticationMethodsPUBLICKEYORPASSWORD  SftpAuthenticationMethods = "PUBLIC_KEY_OR_PASSWORD"
+	SftpAuthenticationMethodsPUBLICKEYANDPASSWORD SftpAuthenticationMethods = "PUBLIC_KEY_AND_PASSWORD"
+)
+
+type IdentityProviderType string
+
+const (
+	IdentityProviderTypeSERVICEMANAGED      IdentityProviderType = "SERVICE_MANAGED"
+	IdentityProviderTypeAPIGATEWAY          IdentityProviderType = "API_GATEWAY"
+	IdentityProviderTypeAWSDIRECTORYSERVICE IdentityProviderType = "AWS_DIRECTORY_SERVICE"
+	IdentityProviderTypeAWSLAMBDA           IdentityProviderType = "AWS_LAMBDA"
+)
+
+type ServerIpAddressType string
+
+const (
+	ServerIpAddressTypeIPV4      ServerIpAddressType = "IPV4"
+	ServerIpAddressTypeDUALSTACK ServerIpAddressType = "DUALSTACK"
+)
+
+type As2Transport string
+
+const (
+	As2TransportHTTP As2Transport = "HTTP"
+)
+
+type SetStatOption string
+
+const (
+	SetStatOptionDEFAULT    SetStatOption = "DEFAULT"
+	SetStatOptionENABLENOOP SetStatOption = "ENABLE_NO_OP"
+)
+
+type TlsSessionResumptionMode string
+
+const (
+	TlsSessionResumptionModeDISABLED TlsSessionResumptionMode = "DISABLED"
+	TlsSessionResumptionModeENABLED  TlsSessionResumptionMode = "ENABLED"
+	TlsSessionResumptionModeENFORCED TlsSessionResumptionMode = "ENFORCED"
+)
+
+type Protocol string
+
+const (
+	ProtocolSFTP Protocol = "SFTP"
+	ProtocolFTP  Protocol = "FTP"
+	ProtocolFTPS Protocol = "FTPS"
+	ProtocolAS2  Protocol = "AS2"
+)
+
+type DirectoryListingOptimization string
+
+const (
+	DirectoryListingOptimizationENABLED  DirectoryListingOptimization = "ENABLED"
+	DirectoryListingOptimizationDISABLED DirectoryListingOptimization = "DISABLED"
+)
+
+type State string
+
+const (
+	StateOFFLINE     State = "OFFLINE"
+	StateONLINE      State = "ONLINE"
+	StateSTARTING    State = "STARTING"
+	StateSTOPPING    State = "STOPPING"
+	StateSTARTFAILED State = "START_FAILED"
+	StateSTOPFAILED  State = "STOP_FAILED"
+)
+
+type MapType string
+
+const (
+	MapTypeFILE      MapType = "FILE"
+	MapTypeDIRECTORY MapType = "DIRECTORY"
+)
+
+type HomeDirectoryType string
+
+const (
+	HomeDirectoryTypePATH    HomeDirectoryType = "PATH"
+	HomeDirectoryTypeLOGICAL HomeDirectoryType = "LOGICAL"
+)
+
+type VpcIpAddressType string
+
+const (
+	VpcIpAddressTypeIPV4      VpcIpAddressType = "IPV4"
+	VpcIpAddressTypeDUALSTACK VpcIpAddressType = "DUALSTACK"
+)
+
+type WebAppEndpointPolicy string
+
+const (
+	WebAppEndpointPolicySTANDARD WebAppEndpointPolicy = "STANDARD"
+	WebAppEndpointPolicyFIPS     WebAppEndpointPolicy = "FIPS"
+)
+
+type WorkflowStepCopyStepDetailsOverwriteExisting string
+
+const (
+	WorkflowStepCopyStepDetailsOverwriteExistingTRUE  WorkflowStepCopyStepDetailsOverwriteExisting = "TRUE"
+	WorkflowStepCopyStepDetailsOverwriteExistingFALSE WorkflowStepCopyStepDetailsOverwriteExisting = "FALSE"
+)
+
+type WorkflowStepDecryptStepDetailsOverwriteExisting string
+
+const (
+	WorkflowStepDecryptStepDetailsOverwriteExistingTRUE  WorkflowStepDecryptStepDetailsOverwriteExisting = "TRUE"
+	WorkflowStepDecryptStepDetailsOverwriteExistingFALSE WorkflowStepDecryptStepDetailsOverwriteExisting = "FALSE"
+)
+
+type WorkflowStepDecryptStepDetailsType string
+
+const (
+	WorkflowStepDecryptStepDetailsTypePGP WorkflowStepDecryptStepDetailsType = "PGP"
+)
+
+type WorkflowStepType string
+
+const (
+	WorkflowStepTypeCOPY    WorkflowStepType = "COPY"
+	WorkflowStepTypeCUSTOM  WorkflowStepType = "CUSTOM"
+	WorkflowStepTypeDECRYPT WorkflowStepType = "DECRYPT"
+	WorkflowStepTypeDELETE  WorkflowStepType = "DELETE"
+	WorkflowStepTypeTAG     WorkflowStepType = "TAG"
+)

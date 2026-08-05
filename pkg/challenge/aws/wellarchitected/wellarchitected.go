@@ -51,15 +51,22 @@ type ReviewTemplateTagsItem struct {
 }
 
 type ReviewTemplate struct {
-	Description  *string                  `json:"Description,omitempty"`
-	Lenses       []string                 `json:"Lenses,omitempty"`
-	Notes        *string                  `json:"Notes,omitempty"`
-	Owner        *string                  `json:"Owner,omitempty"`
-	Tags         []ReviewTemplateTagsItem `json:"Tags,omitempty"`
-	TemplateArn  *string                  `json:"TemplateArn,omitempty"`
-	TemplateName *string                  `json:"TemplateName,omitempty"`
-	UpdateStatus *string                  `json:"UpdateStatus,omitempty"`
-	UpdatedAt    *string                  `json:"UpdatedAt,omitempty"`
+	Description  *string                     `json:"Description,omitempty"`
+	Lenses       []string                    `json:"Lenses,omitempty"`
+	Notes        *string                     `json:"Notes,omitempty"`
+	Owner        *string                     `json:"Owner,omitempty"`
+	Tags         []ReviewTemplateTagsItem    `json:"Tags,omitempty"`
+	TemplateArn  *string                     `json:"TemplateArn,omitempty"`
+	TemplateName *string                     `json:"TemplateName,omitempty"`
+	UpdateStatus *ReviewTemplateUpdateStatus `json:"UpdateStatus,omitempty"`
+	UpdatedAt    *string                     `json:"UpdatedAt,omitempty"`
 }
 
 func (ReviewTemplate) CloudControlType() string { return "AWS::WellArchitected::ReviewTemplate" }
+
+type ReviewTemplateUpdateStatus string
+
+const (
+	ReviewTemplateUpdateStatusCURRENT        ReviewTemplateUpdateStatus = "CURRENT"
+	ReviewTemplateUpdateStatusLENSNOTCURRENT ReviewTemplateUpdateStatus = "LENS_NOT_CURRENT"
+)

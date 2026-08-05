@@ -4,12 +4,12 @@
 package notificationscontacts
 
 type EmailContactEmailContact struct {
-	Address      *string `json:"Address,omitempty"`
-	Arn          *string `json:"Arn,omitempty"`
-	CreationTime *string `json:"CreationTime,omitempty"`
-	Name         *string `json:"Name,omitempty"`
-	Status       *string `json:"Status,omitempty"`
-	UpdateTime   *string `json:"UpdateTime,omitempty"`
+	Address      *string             `json:"Address,omitempty"`
+	Arn          *string             `json:"Arn,omitempty"`
+	CreationTime *string             `json:"CreationTime,omitempty"`
+	Name         *string             `json:"Name,omitempty"`
+	Status       *EmailContactStatus `json:"Status,omitempty"`
+	UpdateTime   *string             `json:"UpdateTime,omitempty"`
 }
 
 type Tag struct {
@@ -26,3 +26,10 @@ type EmailContact struct {
 }
 
 func (EmailContact) CloudControlType() string { return "AWS::NotificationsContacts::EmailContact" }
+
+type EmailContactStatus string
+
+const (
+	EmailContactStatusInactive EmailContactStatus = "inactive"
+	EmailContactStatusActive   EmailContactStatus = "active"
+)

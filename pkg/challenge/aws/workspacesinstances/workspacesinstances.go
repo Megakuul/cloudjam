@@ -9,8 +9,8 @@ type Tag struct {
 }
 
 type TagSpecification struct {
-	ResourceType *string `json:"ResourceType,omitempty"`
-	Tags         []Tag   `json:"Tags,omitempty"`
+	ResourceType *TagSpecificationResourceType `json:"ResourceType,omitempty"`
+	Tags         []Tag                         `json:"Tags,omitempty"`
 }
 
 type Volume struct {
@@ -23,16 +23,16 @@ type Volume struct {
 	TagSpecifications []TagSpecification `json:"TagSpecifications,omitempty"`
 	Throughput        *int               `json:"Throughput,omitempty"`
 	VolumeId          *string            `json:"VolumeId,omitempty"`
-	VolumeType        *string            `json:"VolumeType,omitempty"`
+	VolumeType        *VolumeVolumeType  `json:"VolumeType,omitempty"`
 }
 
 func (Volume) CloudControlType() string { return "AWS::WorkspacesInstances::Volume" }
 
 type VolumeAssociation struct {
-	Device              *string `json:"Device,omitempty"`
-	DisassociateMode    *string `json:"DisassociateMode,omitempty"`
-	VolumeId            *string `json:"VolumeId,omitempty"`
-	WorkspaceInstanceId *string `json:"WorkspaceInstanceId,omitempty"`
+	Device              *string                            `json:"Device,omitempty"`
+	DisassociateMode    *VolumeAssociationDisassociateMode `json:"DisassociateMode,omitempty"`
+	VolumeId            *string                            `json:"VolumeId,omitempty"`
+	WorkspaceInstanceId *string                            `json:"WorkspaceInstanceId,omitempty"`
 }
 
 func (VolumeAssociation) CloudControlType() string {
@@ -44,12 +44,12 @@ type EC2ManagedInstance struct {
 }
 
 type EbsBlockDevice struct {
-	Encrypted  *bool   `json:"Encrypted,omitempty"`
-	Iops       *int    `json:"Iops,omitempty"`
-	KmsKeyId   *string `json:"KmsKeyId,omitempty"`
-	Throughput *int    `json:"Throughput,omitempty"`
-	VolumeSize *int    `json:"VolumeSize,omitempty"`
-	VolumeType *string `json:"VolumeType,omitempty"`
+	Encrypted  *bool                     `json:"Encrypted,omitempty"`
+	Iops       *int                      `json:"Iops,omitempty"`
+	KmsKeyId   *string                   `json:"KmsKeyId,omitempty"`
+	Throughput *int                      `json:"Throughput,omitempty"`
+	VolumeSize *int                      `json:"VolumeSize,omitempty"`
+	VolumeType *EbsBlockDeviceVolumeType `json:"VolumeType,omitempty"`
 }
 
 type BlockDeviceMapping struct {
@@ -65,8 +65,8 @@ type CapacityReservationTarget struct {
 }
 
 type CapacityReservationSpecification struct {
-	CapacityReservationPreference *string                    `json:"CapacityReservationPreference,omitempty"`
-	CapacityReservationTarget     *CapacityReservationTarget `json:"CapacityReservationTarget,omitempty"`
+	CapacityReservationPreference *CapacityReservationSpecificationCapacityReservationPreference `json:"CapacityReservationPreference,omitempty"`
+	CapacityReservationTarget     *CapacityReservationTarget                                     `json:"CapacityReservationTarget,omitempty"`
 }
 
 type CpuOptionsRequest struct {
@@ -75,7 +75,7 @@ type CpuOptionsRequest struct {
 }
 
 type CreditSpecificationRequest struct {
-	CpuCredits *string `json:"CpuCredits,omitempty"`
+	CpuCredits *CreditSpecificationRequestCpuCredits `json:"CpuCredits,omitempty"`
 }
 
 type EnclaveOptionsRequest struct {
@@ -96,15 +96,15 @@ type LicenseConfigurationRequest struct {
 }
 
 type InstanceMaintenanceOptionsRequest struct {
-	AutoRecovery *string `json:"AutoRecovery,omitempty"`
+	AutoRecovery *InstanceMaintenanceOptionsRequestAutoRecovery `json:"AutoRecovery,omitempty"`
 }
 
 type InstanceMetadataOptionsRequest struct {
-	HttpEndpoint            *string `json:"HttpEndpoint,omitempty"`
-	HttpProtocolIpv6        *string `json:"HttpProtocolIpv6,omitempty"`
-	HttpPutResponseHopLimit *int    `json:"HttpPutResponseHopLimit,omitempty"`
-	HttpTokens              *string `json:"HttpTokens,omitempty"`
-	InstanceMetadataTags    *string `json:"InstanceMetadataTags,omitempty"`
+	HttpEndpoint            *InstanceMetadataOptionsRequestHttpEndpoint         `json:"HttpEndpoint,omitempty"`
+	HttpProtocolIpv6        *InstanceMetadataOptionsRequestHttpProtocolIpv6     `json:"HttpProtocolIpv6,omitempty"`
+	HttpPutResponseHopLimit *int                                                `json:"HttpPutResponseHopLimit,omitempty"`
+	HttpTokens              *InstanceMetadataOptionsRequestHttpTokens           `json:"HttpTokens,omitempty"`
+	InstanceMetadataTags    *InstanceMetadataOptionsRequestInstanceMetadataTags `json:"InstanceMetadataTags,omitempty"`
 }
 
 type RunInstancesMonitoringEnabled struct {
@@ -119,21 +119,21 @@ type InstanceNetworkInterfaceSpecification struct {
 }
 
 type InstanceNetworkPerformanceOptionsRequest struct {
-	BandwidthWeighting *string `json:"BandwidthWeighting,omitempty"`
+	BandwidthWeighting *InstanceNetworkPerformanceOptionsRequestBandwidthWeighting `json:"BandwidthWeighting,omitempty"`
 }
 
 type Placement struct {
-	AvailabilityZone *string `json:"AvailabilityZone,omitempty"`
-	GroupId          *string `json:"GroupId,omitempty"`
-	GroupName        *string `json:"GroupName,omitempty"`
-	PartitionNumber  *int    `json:"PartitionNumber,omitempty"`
-	Tenancy          *string `json:"Tenancy,omitempty"`
+	AvailabilityZone *string           `json:"AvailabilityZone,omitempty"`
+	GroupId          *string           `json:"GroupId,omitempty"`
+	GroupName        *string           `json:"GroupName,omitempty"`
+	PartitionNumber  *int              `json:"PartitionNumber,omitempty"`
+	Tenancy          *PlacementTenancy `json:"Tenancy,omitempty"`
 }
 
 type PrivateDnsNameOptionsRequest struct {
-	EnableResourceNameDnsAAAARecord *bool   `json:"EnableResourceNameDnsAAAARecord,omitempty"`
-	EnableResourceNameDnsARecord    *bool   `json:"EnableResourceNameDnsARecord,omitempty"`
-	HostnameType                    *string `json:"HostnameType,omitempty"`
+	EnableResourceNameDnsAAAARecord *bool                                     `json:"EnableResourceNameDnsAAAARecord,omitempty"`
+	EnableResourceNameDnsARecord    *bool                                     `json:"EnableResourceNameDnsARecord,omitempty"`
+	HostnameType                    *PrivateDnsNameOptionsRequestHostnameType `json:"HostnameType,omitempty"`
 }
 
 type WorkspaceInstanceTag struct {
@@ -142,8 +142,8 @@ type WorkspaceInstanceTag struct {
 }
 
 type WorkspaceInstanceTagSpecification struct {
-	ResourceType *string                `json:"ResourceType,omitempty"`
-	Tags         []WorkspaceInstanceTag `json:"Tags,omitempty"`
+	ResourceType *WorkspaceInstanceTagSpecificationResourceType `json:"ResourceType,omitempty"`
+	Tags         []WorkspaceInstanceTag                         `json:"Tags,omitempty"`
 }
 
 type WorkspaceInstanceManagedInstance struct {
@@ -177,7 +177,7 @@ type WorkspaceInstanceManagedInstance struct {
 type WorkspaceInstance struct {
 	EC2ManagedInstance  *EC2ManagedInstance               `json:"EC2ManagedInstance,omitempty"`
 	ManagedInstance     *WorkspaceInstanceManagedInstance `json:"ManagedInstance,omitempty"`
-	ProvisionState      *string                           `json:"ProvisionState,omitempty"`
+	ProvisionState      *WorkspaceInstanceProvisionState  `json:"ProvisionState,omitempty"`
 	Tags                []WorkspaceInstanceTag            `json:"Tags,omitempty"`
 	WorkspaceInstanceId *string                           `json:"WorkspaceInstanceId,omitempty"`
 }
@@ -185,3 +185,136 @@ type WorkspaceInstance struct {
 func (WorkspaceInstance) CloudControlType() string {
 	return "AWS::WorkspacesInstances::WorkspaceInstance"
 }
+
+type TagSpecificationResourceType string
+
+const (
+	TagSpecificationResourceTypeInstance             TagSpecificationResourceType = "instance"
+	TagSpecificationResourceTypeVolume               TagSpecificationResourceType = "volume"
+	TagSpecificationResourceTypeSpotInstancesRequest TagSpecificationResourceType = "spot-instances-request"
+	TagSpecificationResourceTypeNetworkInterface     TagSpecificationResourceType = "network-interface"
+)
+
+type VolumeVolumeType string
+
+const (
+	VolumeVolumeTypeStandard VolumeVolumeType = "standard"
+	VolumeVolumeTypeIo1      VolumeVolumeType = "io1"
+	VolumeVolumeTypeIo2      VolumeVolumeType = "io2"
+	VolumeVolumeTypeGp2      VolumeVolumeType = "gp2"
+	VolumeVolumeTypeSc1      VolumeVolumeType = "sc1"
+	VolumeVolumeTypeSt1      VolumeVolumeType = "st1"
+	VolumeVolumeTypeGp3      VolumeVolumeType = "gp3"
+)
+
+type VolumeAssociationDisassociateMode string
+
+const (
+	VolumeAssociationDisassociateModeFORCE   VolumeAssociationDisassociateMode = "FORCE"
+	VolumeAssociationDisassociateModeNOFORCE VolumeAssociationDisassociateMode = "NO_FORCE"
+)
+
+type EbsBlockDeviceVolumeType string
+
+const (
+	EbsBlockDeviceVolumeTypeStandard EbsBlockDeviceVolumeType = "standard"
+	EbsBlockDeviceVolumeTypeIo1      EbsBlockDeviceVolumeType = "io1"
+	EbsBlockDeviceVolumeTypeIo2      EbsBlockDeviceVolumeType = "io2"
+	EbsBlockDeviceVolumeTypeGp2      EbsBlockDeviceVolumeType = "gp2"
+	EbsBlockDeviceVolumeTypeSc1      EbsBlockDeviceVolumeType = "sc1"
+	EbsBlockDeviceVolumeTypeSt1      EbsBlockDeviceVolumeType = "st1"
+	EbsBlockDeviceVolumeTypeGp3      EbsBlockDeviceVolumeType = "gp3"
+)
+
+type CapacityReservationSpecificationCapacityReservationPreference string
+
+const (
+	CapacityReservationSpecificationCapacityReservationPreferenceCapacityReservationsOnly CapacityReservationSpecificationCapacityReservationPreference = "capacity-reservations-only"
+	CapacityReservationSpecificationCapacityReservationPreferenceOpen                     CapacityReservationSpecificationCapacityReservationPreference = "open"
+	CapacityReservationSpecificationCapacityReservationPreferenceNone                     CapacityReservationSpecificationCapacityReservationPreference = "none"
+)
+
+type CreditSpecificationRequestCpuCredits string
+
+const (
+	CreditSpecificationRequestCpuCreditsStandard  CreditSpecificationRequestCpuCredits = "standard"
+	CreditSpecificationRequestCpuCreditsUnlimited CreditSpecificationRequestCpuCredits = "unlimited"
+)
+
+type InstanceMaintenanceOptionsRequestAutoRecovery string
+
+const (
+	InstanceMaintenanceOptionsRequestAutoRecoveryDisabled InstanceMaintenanceOptionsRequestAutoRecovery = "disabled"
+	InstanceMaintenanceOptionsRequestAutoRecoveryDefault  InstanceMaintenanceOptionsRequestAutoRecovery = "default"
+)
+
+type InstanceMetadataOptionsRequestHttpEndpoint string
+
+const (
+	InstanceMetadataOptionsRequestHttpEndpointEnabled  InstanceMetadataOptionsRequestHttpEndpoint = "enabled"
+	InstanceMetadataOptionsRequestHttpEndpointDisabled InstanceMetadataOptionsRequestHttpEndpoint = "disabled"
+)
+
+type InstanceMetadataOptionsRequestHttpProtocolIpv6 string
+
+const (
+	InstanceMetadataOptionsRequestHttpProtocolIpv6Enabled  InstanceMetadataOptionsRequestHttpProtocolIpv6 = "enabled"
+	InstanceMetadataOptionsRequestHttpProtocolIpv6Disabled InstanceMetadataOptionsRequestHttpProtocolIpv6 = "disabled"
+)
+
+type InstanceMetadataOptionsRequestHttpTokens string
+
+const (
+	InstanceMetadataOptionsRequestHttpTokensOptional InstanceMetadataOptionsRequestHttpTokens = "optional"
+	InstanceMetadataOptionsRequestHttpTokensRequired InstanceMetadataOptionsRequestHttpTokens = "required"
+)
+
+type InstanceMetadataOptionsRequestInstanceMetadataTags string
+
+const (
+	InstanceMetadataOptionsRequestInstanceMetadataTagsEnabled  InstanceMetadataOptionsRequestInstanceMetadataTags = "enabled"
+	InstanceMetadataOptionsRequestInstanceMetadataTagsDisabled InstanceMetadataOptionsRequestInstanceMetadataTags = "disabled"
+)
+
+type InstanceNetworkPerformanceOptionsRequestBandwidthWeighting string
+
+const (
+	InstanceNetworkPerformanceOptionsRequestBandwidthWeightingDefault InstanceNetworkPerformanceOptionsRequestBandwidthWeighting = "default"
+	InstanceNetworkPerformanceOptionsRequestBandwidthWeightingVpc1    InstanceNetworkPerformanceOptionsRequestBandwidthWeighting = "vpc-1"
+	InstanceNetworkPerformanceOptionsRequestBandwidthWeightingEbs1    InstanceNetworkPerformanceOptionsRequestBandwidthWeighting = "ebs-1"
+)
+
+type PlacementTenancy string
+
+const (
+	PlacementTenancyDefault   PlacementTenancy = "default"
+	PlacementTenancyDedicated PlacementTenancy = "dedicated"
+	PlacementTenancyHost      PlacementTenancy = "host"
+)
+
+type PrivateDnsNameOptionsRequestHostnameType string
+
+const (
+	PrivateDnsNameOptionsRequestHostnameTypeIpName       PrivateDnsNameOptionsRequestHostnameType = "ip-name"
+	PrivateDnsNameOptionsRequestHostnameTypeResourceName PrivateDnsNameOptionsRequestHostnameType = "resource-name"
+)
+
+type WorkspaceInstanceTagSpecificationResourceType string
+
+const (
+	WorkspaceInstanceTagSpecificationResourceTypeInstance             WorkspaceInstanceTagSpecificationResourceType = "instance"
+	WorkspaceInstanceTagSpecificationResourceTypeVolume               WorkspaceInstanceTagSpecificationResourceType = "volume"
+	WorkspaceInstanceTagSpecificationResourceTypeSpotInstancesRequest WorkspaceInstanceTagSpecificationResourceType = "spot-instances-request"
+	WorkspaceInstanceTagSpecificationResourceTypeNetworkInterface     WorkspaceInstanceTagSpecificationResourceType = "network-interface"
+)
+
+type WorkspaceInstanceProvisionState string
+
+const (
+	WorkspaceInstanceProvisionStateALLOCATING        WorkspaceInstanceProvisionState = "ALLOCATING"
+	WorkspaceInstanceProvisionStateALLOCATED         WorkspaceInstanceProvisionState = "ALLOCATED"
+	WorkspaceInstanceProvisionStateDEALLOCATING      WorkspaceInstanceProvisionState = "DEALLOCATING"
+	WorkspaceInstanceProvisionStateDEALLOCATED       WorkspaceInstanceProvisionState = "DEALLOCATED"
+	WorkspaceInstanceProvisionStateERRORALLOCATING   WorkspaceInstanceProvisionState = "ERROR_ALLOCATING"
+	WorkspaceInstanceProvisionStateERRORDEALLOCATING WorkspaceInstanceProvisionState = "ERROR_DEALLOCATING"
+)

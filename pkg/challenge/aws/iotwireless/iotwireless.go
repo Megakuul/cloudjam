@@ -9,13 +9,13 @@ type Tag struct {
 }
 
 type Destination struct {
-	Arn            *string `json:"Arn,omitempty"`
-	Description    *string `json:"Description,omitempty"`
-	Expression     *string `json:"Expression,omitempty"`
-	ExpressionType *string `json:"ExpressionType,omitempty"`
-	Name           *string `json:"Name,omitempty"`
-	RoleArn        *string `json:"RoleArn,omitempty"`
-	Tags           []Tag   `json:"Tags,omitempty"`
+	Arn            *string                    `json:"Arn,omitempty"`
+	Description    *string                    `json:"Description,omitempty"`
+	Expression     *string                    `json:"Expression,omitempty"`
+	ExpressionType *DestinationExpressionType `json:"ExpressionType,omitempty"`
+	Name           *string                    `json:"Name,omitempty"`
+	RoleArn        *string                    `json:"RoleArn,omitempty"`
+	Tags           []Tag                      `json:"Tags,omitempty"`
 }
 
 func (Destination) CloudControlType() string { return "AWS::IoTWireless::Destination" }
@@ -117,8 +117,8 @@ type NetworkAnalyzerConfigurationTag struct {
 }
 
 type NetworkAnalyzerConfigurationTraceContent struct {
-	LogLevel                *string `json:"LogLevel,omitempty"`
-	WirelessDeviceFrameInfo *string `json:"WirelessDeviceFrameInfo,omitempty"`
+	LogLevel                *LogLevel                `json:"LogLevel,omitempty"`
+	WirelessDeviceFrameInfo *WirelessDeviceFrameInfo `json:"WirelessDeviceFrameInfo,omitempty"`
 }
 
 type NetworkAnalyzerConfiguration struct {
@@ -159,7 +159,7 @@ type PartnerAccount struct {
 	Arn              *string                             `json:"Arn,omitempty"`
 	Fingerprint      *string                             `json:"Fingerprint,omitempty"`
 	PartnerAccountId *string                             `json:"PartnerAccountId,omitempty"`
-	PartnerType      *string                             `json:"PartnerType,omitempty"`
+	PartnerType      *PartnerAccountPartnerType          `json:"PartnerType,omitempty"`
 	Sidewalk         *SidewalkAccountInfo                `json:"Sidewalk,omitempty"`
 	SidewalkResponse *SidewalkAccountInfoWithFingerprint `json:"SidewalkResponse,omitempty"`
 	SidewalkUpdate   *SidewalkUpdateAccount              `json:"SidewalkUpdate,omitempty"`
@@ -235,14 +235,14 @@ type UpdateWirelessGatewayTaskCreate struct {
 }
 
 type TaskDefinition struct {
-	Arn                           *string                          `json:"Arn,omitempty"`
-	AutoCreateTasks               *bool                            `json:"AutoCreateTasks,omitempty"`
-	Id                            *string                          `json:"Id,omitempty"`
-	LoRaWANUpdateGatewayTaskEntry *LoRaWANUpdateGatewayTaskEntry   `json:"LoRaWANUpdateGatewayTaskEntry,omitempty"`
-	Name                          *string                          `json:"Name,omitempty"`
-	Tags                          []TaskDefinitionTag              `json:"Tags,omitempty"`
-	TaskDefinitionType            *string                          `json:"TaskDefinitionType,omitempty"`
-	Update                        *UpdateWirelessGatewayTaskCreate `json:"Update,omitempty"`
+	Arn                           *string                           `json:"Arn,omitempty"`
+	AutoCreateTasks               *bool                             `json:"AutoCreateTasks,omitempty"`
+	Id                            *string                           `json:"Id,omitempty"`
+	LoRaWANUpdateGatewayTaskEntry *LoRaWANUpdateGatewayTaskEntry    `json:"LoRaWANUpdateGatewayTaskEntry,omitempty"`
+	Name                          *string                           `json:"Name,omitempty"`
+	Tags                          []TaskDefinitionTag               `json:"Tags,omitempty"`
+	TaskDefinitionType            *TaskDefinitionTaskDefinitionType `json:"TaskDefinitionType,omitempty"`
+	Update                        *UpdateWirelessGatewayTaskCreate  `json:"Update,omitempty"`
 }
 
 func (TaskDefinition) CloudControlType() string { return "AWS::IoTWireless::TaskDefinition" }
@@ -270,9 +270,9 @@ type AbpV11 struct {
 }
 
 type Application struct {
-	DestinationName *string `json:"DestinationName,omitempty"`
-	FPort           *int    `json:"FPort,omitempty"`
-	Type            *string `json:"Type,omitempty"`
+	DestinationName *string          `json:"DestinationName,omitempty"`
+	FPort           *int             `json:"FPort,omitempty"`
+	Type            *ApplicationType `json:"Type,omitempty"`
 }
 
 type FPorts struct {
@@ -307,18 +307,18 @@ type WirelessDeviceTag struct {
 }
 
 type WirelessDevice struct {
-	Arn                  *string             `json:"Arn,omitempty"`
-	Description          *string             `json:"Description,omitempty"`
-	DestinationName      *string             `json:"DestinationName,omitempty"`
-	Id                   *string             `json:"Id,omitempty"`
-	LastUplinkReceivedAt *string             `json:"LastUplinkReceivedAt,omitempty"`
-	LoRaWAN              *LoRaWANDevice      `json:"LoRaWAN,omitempty"`
-	Name                 *string             `json:"Name,omitempty"`
-	Positioning          *string             `json:"Positioning,omitempty"`
-	Tags                 []WirelessDeviceTag `json:"Tags,omitempty"`
-	ThingArn             *string             `json:"ThingArn,omitempty"`
-	ThingName            *string             `json:"ThingName,omitempty"`
-	Type                 *string             `json:"Type,omitempty"`
+	Arn                  *string                    `json:"Arn,omitempty"`
+	Description          *string                    `json:"Description,omitempty"`
+	DestinationName      *string                    `json:"DestinationName,omitempty"`
+	Id                   *string                    `json:"Id,omitempty"`
+	LastUplinkReceivedAt *string                    `json:"LastUplinkReceivedAt,omitempty"`
+	LoRaWAN              *LoRaWANDevice             `json:"LoRaWAN,omitempty"`
+	Name                 *string                    `json:"Name,omitempty"`
+	Positioning          *WirelessDevicePositioning `json:"Positioning,omitempty"`
+	Tags                 []WirelessDeviceTag        `json:"Tags,omitempty"`
+	ThingArn             *string                    `json:"ThingArn,omitempty"`
+	ThingName            *string                    `json:"ThingName,omitempty"`
+	Type                 *WirelessDeviceType        `json:"Type,omitempty"`
 }
 
 func (WirelessDevice) CloudControlType() string { return "AWS::IoTWireless::WirelessDevice" }
@@ -345,7 +345,7 @@ type WirelessDeviceImportTask struct {
 	OnboardedImportedDevicesCount   *int                              `json:"OnboardedImportedDevicesCount,omitempty"`
 	PendingImportedDevicesCount     *int                              `json:"PendingImportedDevicesCount,omitempty"`
 	Sidewalk                        *WirelessDeviceImportTaskSidewalk `json:"Sidewalk,omitempty"`
-	Status                          *string                           `json:"Status,omitempty"`
+	Status                          *WirelessDeviceImportTaskStatus   `json:"Status,omitempty"`
 	StatusReason                    *string                           `json:"StatusReason,omitempty"`
 	Tags                            []WirelessDeviceImportTaskTag     `json:"Tags,omitempty"`
 }
@@ -377,3 +377,72 @@ type WirelessGateway struct {
 }
 
 func (WirelessGateway) CloudControlType() string { return "AWS::IoTWireless::WirelessGateway" }
+
+type DestinationExpressionType string
+
+const (
+	DestinationExpressionTypeRuleName  DestinationExpressionType = "RuleName"
+	DestinationExpressionTypeMqttTopic DestinationExpressionType = "MqttTopic"
+	DestinationExpressionTypeSnsTopic  DestinationExpressionType = "SnsTopic"
+)
+
+type LogLevel string
+
+const (
+	LogLevelINFO     LogLevel = "INFO"
+	LogLevelERROR    LogLevel = "ERROR"
+	LogLevelDISABLED LogLevel = "DISABLED"
+)
+
+type WirelessDeviceFrameInfo string
+
+const (
+	WirelessDeviceFrameInfoENABLED  WirelessDeviceFrameInfo = "ENABLED"
+	WirelessDeviceFrameInfoDISABLED WirelessDeviceFrameInfo = "DISABLED"
+)
+
+type PartnerAccountPartnerType string
+
+const (
+	PartnerAccountPartnerTypeSidewalk PartnerAccountPartnerType = "Sidewalk"
+)
+
+type TaskDefinitionTaskDefinitionType string
+
+const (
+	TaskDefinitionTaskDefinitionTypeUPDATE TaskDefinitionTaskDefinitionType = "UPDATE"
+)
+
+type ApplicationType string
+
+const (
+	ApplicationTypeSemtechGeolocation ApplicationType = "SemtechGeolocation"
+	ApplicationTypeSemtechGNSS        ApplicationType = "SemtechGNSS"
+	ApplicationTypeSemtechGNSSNG      ApplicationType = "SemtechGNSSNG"
+	ApplicationTypeSemtechWiFi        ApplicationType = "SemtechWiFi"
+)
+
+type WirelessDevicePositioning string
+
+const (
+	WirelessDevicePositioningEnabled  WirelessDevicePositioning = "Enabled"
+	WirelessDevicePositioningDisabled WirelessDevicePositioning = "Disabled"
+)
+
+type WirelessDeviceType string
+
+const (
+	WirelessDeviceTypeSidewalk WirelessDeviceType = "Sidewalk"
+	WirelessDeviceTypeLoRaWAN  WirelessDeviceType = "LoRaWAN"
+)
+
+type WirelessDeviceImportTaskStatus string
+
+const (
+	WirelessDeviceImportTaskStatusINITIALIZING WirelessDeviceImportTaskStatus = "INITIALIZING"
+	WirelessDeviceImportTaskStatusINITIALIZED  WirelessDeviceImportTaskStatus = "INITIALIZED"
+	WirelessDeviceImportTaskStatusPENDING      WirelessDeviceImportTaskStatus = "PENDING"
+	WirelessDeviceImportTaskStatusCOMPLETE     WirelessDeviceImportTaskStatus = "COMPLETE"
+	WirelessDeviceImportTaskStatusFAILED       WirelessDeviceImportTaskStatus = "FAILED"
+	WirelessDeviceImportTaskStatusDELETING     WirelessDeviceImportTaskStatus = "DELETING"
+)

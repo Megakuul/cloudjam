@@ -1442,14 +1442,14 @@ type Tags struct {
 }
 
 type ChannelPlacementGroup struct {
-	Arn       *string  `json:"Arn,omitempty"`
-	Channels  []string `json:"Channels,omitempty"`
-	ClusterId *string  `json:"ClusterId,omitempty"`
-	Id        *string  `json:"Id,omitempty"`
-	Name      *string  `json:"Name,omitempty"`
-	Nodes     []string `json:"Nodes,omitempty"`
-	State     *string  `json:"State,omitempty"`
-	Tags      []Tags   `json:"Tags,omitempty"`
+	Arn       *string                     `json:"Arn,omitempty"`
+	Channels  []string                    `json:"Channels,omitempty"`
+	ClusterId *string                     `json:"ClusterId,omitempty"`
+	Id        *string                     `json:"Id,omitempty"`
+	Name      *string                     `json:"Name,omitempty"`
+	Nodes     []string                    `json:"Nodes,omitempty"`
+	State     *ChannelPlacementGroupState `json:"State,omitempty"`
+	Tags      []Tags                      `json:"Tags,omitempty"`
 }
 
 func (ChannelPlacementGroup) CloudControlType() string {
@@ -1457,25 +1457,25 @@ func (ChannelPlacementGroup) CloudControlType() string {
 }
 
 type CloudWatchAlarmTemplate struct {
-	Arn                *string           `json:"Arn,omitempty"`
-	ComparisonOperator *string           `json:"ComparisonOperator,omitempty"`
-	CreatedAt          *string           `json:"CreatedAt,omitempty"`
-	DatapointsToAlarm  *float64          `json:"DatapointsToAlarm,omitempty"`
-	Description        *string           `json:"Description,omitempty"`
-	EvaluationPeriods  *float64          `json:"EvaluationPeriods,omitempty"`
-	GroupId            *string           `json:"GroupId,omitempty"`
-	GroupIdentifier    *string           `json:"GroupIdentifier,omitempty"`
-	Id                 *string           `json:"Id,omitempty"`
-	Identifier         *string           `json:"Identifier,omitempty"`
-	MetricName         *string           `json:"MetricName,omitempty"`
-	ModifiedAt         *string           `json:"ModifiedAt,omitempty"`
-	Name               *string           `json:"Name,omitempty"`
-	Period             *float64          `json:"Period,omitempty"`
-	Statistic          *string           `json:"Statistic,omitempty"`
-	Tags               map[string]string `json:"Tags,omitempty"`
-	TargetResourceType *string           `json:"TargetResourceType,omitempty"`
-	Threshold          *float64          `json:"Threshold,omitempty"`
-	TreatMissingData   *string           `json:"TreatMissingData,omitempty"`
+	Arn                *string                                    `json:"Arn,omitempty"`
+	ComparisonOperator *CloudWatchAlarmTemplateComparisonOperator `json:"ComparisonOperator,omitempty"`
+	CreatedAt          *string                                    `json:"CreatedAt,omitempty"`
+	DatapointsToAlarm  *float64                                   `json:"DatapointsToAlarm,omitempty"`
+	Description        *string                                    `json:"Description,omitempty"`
+	EvaluationPeriods  *float64                                   `json:"EvaluationPeriods,omitempty"`
+	GroupId            *string                                    `json:"GroupId,omitempty"`
+	GroupIdentifier    *string                                    `json:"GroupIdentifier,omitempty"`
+	Id                 *string                                    `json:"Id,omitempty"`
+	Identifier         *string                                    `json:"Identifier,omitempty"`
+	MetricName         *string                                    `json:"MetricName,omitempty"`
+	ModifiedAt         *string                                    `json:"ModifiedAt,omitempty"`
+	Name               *string                                    `json:"Name,omitempty"`
+	Period             *float64                                   `json:"Period,omitempty"`
+	Statistic          *CloudWatchAlarmTemplateStatistic          `json:"Statistic,omitempty"`
+	Tags               map[string]string                          `json:"Tags,omitempty"`
+	TargetResourceType *CloudWatchAlarmTemplateTargetResourceType `json:"TargetResourceType,omitempty"`
+	Threshold          *float64                                   `json:"Threshold,omitempty"`
+	TreatMissingData   *CloudWatchAlarmTemplateTreatMissingData   `json:"TreatMissingData,omitempty"`
 }
 
 func (CloudWatchAlarmTemplate) CloudControlType() string {
@@ -1515,12 +1515,12 @@ type ClusterTags struct {
 type Cluster struct {
 	Arn             *string                 `json:"Arn,omitempty"`
 	ChannelIds      []string                `json:"ChannelIds,omitempty"`
-	ClusterType     *string                 `json:"ClusterType,omitempty"`
+	ClusterType     *ClusterType            `json:"ClusterType,omitempty"`
 	Id              *string                 `json:"Id,omitempty"`
 	InstanceRoleArn *string                 `json:"InstanceRoleArn,omitempty"`
 	Name            *string                 `json:"Name,omitempty"`
 	NetworkSettings *ClusterNetworkSettings `json:"NetworkSettings,omitempty"`
-	State           *string                 `json:"State,omitempty"`
+	State           *ClusterState           `json:"State,omitempty"`
 	Tags            []ClusterTags           `json:"Tags,omitempty"`
 }
 
@@ -1531,18 +1531,18 @@ type EventBridgeRuleTemplateTarget struct {
 }
 
 type EventBridgeRuleTemplate struct {
-	Arn             *string                         `json:"Arn,omitempty"`
-	CreatedAt       *string                         `json:"CreatedAt,omitempty"`
-	Description     *string                         `json:"Description,omitempty"`
-	EventTargets    []EventBridgeRuleTemplateTarget `json:"EventTargets,omitempty"`
-	EventType       *string                         `json:"EventType,omitempty"`
-	GroupId         *string                         `json:"GroupId,omitempty"`
-	GroupIdentifier *string                         `json:"GroupIdentifier,omitempty"`
-	Id              *string                         `json:"Id,omitempty"`
-	Identifier      *string                         `json:"Identifier,omitempty"`
-	ModifiedAt      *string                         `json:"ModifiedAt,omitempty"`
-	Name            *string                         `json:"Name,omitempty"`
-	Tags            map[string]string               `json:"Tags,omitempty"`
+	Arn             *string                           `json:"Arn,omitempty"`
+	CreatedAt       *string                           `json:"CreatedAt,omitempty"`
+	Description     *string                           `json:"Description,omitempty"`
+	EventTargets    []EventBridgeRuleTemplateTarget   `json:"EventTargets,omitempty"`
+	EventType       *EventBridgeRuleTemplateEventType `json:"EventType,omitempty"`
+	GroupId         *string                           `json:"GroupId,omitempty"`
+	GroupIdentifier *string                           `json:"GroupIdentifier,omitempty"`
+	Id              *string                           `json:"Id,omitempty"`
+	Identifier      *string                           `json:"Identifier,omitempty"`
+	ModifiedAt      *string                           `json:"ModifiedAt,omitempty"`
+	Name            *string                           `json:"Name,omitempty"`
+	Tags            map[string]string                 `json:"Tags,omitempty"`
 }
 
 func (EventBridgeRuleTemplate) CloudControlType() string {
@@ -1723,7 +1723,7 @@ type Multiplex struct {
 	Name                  *string                      `json:"Name,omitempty"`
 	PipelinesRunningCount *int                         `json:"PipelinesRunningCount,omitempty"`
 	ProgramCount          *int                         `json:"ProgramCount,omitempty"`
-	State                 *string                      `json:"State,omitempty"`
+	State                 *MultiplexState              `json:"State,omitempty"`
 	Tags                  []MultiplexTags              `json:"Tags,omitempty"`
 }
 
@@ -1735,7 +1735,7 @@ type MultiplexProgramServiceDescriptor struct {
 }
 
 type MultiplexProgramSettings struct {
-	PreferredChannelPipeline *string                            `json:"PreferredChannelPipeline,omitempty"`
+	PreferredChannelPipeline *PreferredChannelPipeline          `json:"PreferredChannelPipeline,omitempty"`
 	ProgramNumber            *int                               `json:"ProgramNumber,omitempty"`
 	ServiceDescriptor        *MultiplexProgramServiceDescriptor `json:"ServiceDescriptor,omitempty"`
 	VideoSettings            map[string]any                     `json:"VideoSettings,omitempty"`
@@ -1768,7 +1768,7 @@ type Multiplexprogram struct {
 	MultiplexProgramSettings *MultiplexProgramSettings             `json:"MultiplexProgramSettings,omitempty"`
 	PacketIdentifiersMap     *MultiplexProgramPacketIdentifiersMap `json:"PacketIdentifiersMap,omitempty"`
 	PipelineDetails          []MultiplexProgramPipelineDetail      `json:"PipelineDetails,omitempty"`
-	PreferredChannelPipeline *string                               `json:"PreferredChannelPipeline,omitempty"`
+	PreferredChannelPipeline *PreferredChannelPipeline             `json:"PreferredChannelPipeline,omitempty"`
 	ProgramName              *string                               `json:"ProgramName,omitempty"`
 }
 
@@ -1795,16 +1795,16 @@ type Network struct {
 	IpPools              []IpPool      `json:"IpPools,omitempty"`
 	Name                 *string       `json:"Name,omitempty"`
 	Routes               []Route       `json:"Routes,omitempty"`
-	State                *string       `json:"State,omitempty"`
+	State                *NetworkState `json:"State,omitempty"`
 	Tags                 []NetworkTags `json:"Tags,omitempty"`
 }
 
 func (Network) CloudControlType() string { return "AWS::MediaLive::Network" }
 
 type NodeInterfaceMapping struct {
-	LogicalInterfaceName  *string `json:"LogicalInterfaceName,omitempty"`
-	NetworkInterfaceMode  *string `json:"NetworkInterfaceMode,omitempty"`
-	PhysicalInterfaceName *string `json:"PhysicalInterfaceName,omitempty"`
+	LogicalInterfaceName  *string                                   `json:"LogicalInterfaceName,omitempty"`
+	NetworkInterfaceMode  *NodeInterfaceMappingNetworkInterfaceMode `json:"NetworkInterfaceMode,omitempty"`
+	PhysicalInterfaceName *string                                   `json:"PhysicalInterfaceName,omitempty"`
 }
 
 type SdiSourceMapping struct {
@@ -1822,14 +1822,14 @@ type Node struct {
 	Arn                    *string                `json:"Arn,omitempty"`
 	ChannelPlacementGroups []string               `json:"ChannelPlacementGroups,omitempty"`
 	ClusterId              *string                `json:"ClusterId,omitempty"`
-	ConnectionState        *string                `json:"ConnectionState,omitempty"`
+	ConnectionState        *NodeConnectionState   `json:"ConnectionState,omitempty"`
 	Id                     *string                `json:"Id,omitempty"`
 	InstanceArn            *string                `json:"InstanceArn,omitempty"`
 	Name                   *string                `json:"Name,omitempty"`
 	NodeInterfaceMappings  []NodeInterfaceMapping `json:"NodeInterfaceMappings,omitempty"`
-	Role                   *string                `json:"Role,omitempty"`
+	Role                   *NodeRole              `json:"Role,omitempty"`
 	SdiSourceMappings      []SdiSourceMapping     `json:"SdiSourceMappings,omitempty"`
-	State                  *string                `json:"State,omitempty"`
+	State                  *NodeState             `json:"State,omitempty"`
 	Tags                   []Tag                  `json:"Tags,omitempty"`
 }
 
@@ -1844,11 +1844,11 @@ type SdiSource struct {
 	Arn    *string         `json:"Arn,omitempty"`
 	Id     *string         `json:"Id,omitempty"`
 	Inputs []string        `json:"Inputs,omitempty"`
-	Mode   *string         `json:"Mode,omitempty"`
+	Mode   *SdiSourceMode  `json:"Mode,omitempty"`
 	Name   *string         `json:"Name,omitempty"`
-	State  *string         `json:"State,omitempty"`
+	State  *SdiSourceState `json:"State,omitempty"`
 	Tags   []SdiSourceTags `json:"Tags,omitempty"`
-	Type   *string         `json:"Type,omitempty"`
+	Type   *SdiSourceType  `json:"Type,omitempty"`
 }
 
 func (SdiSource) CloudControlType() string { return "AWS::MediaLive::SdiSource" }
@@ -1865,14 +1865,14 @@ type MediaResource struct {
 }
 
 type SuccessfulMonitorDeployment struct {
-	DetailsUri *string `json:"DetailsUri,omitempty"`
-	Status     *string `json:"Status,omitempty"`
+	DetailsUri *string                           `json:"DetailsUri,omitempty"`
+	Status     *SignalMapMonitorDeploymentStatus `json:"Status,omitempty"`
 }
 
 type MonitorDeployment struct {
-	DetailsUri   *string `json:"DetailsUri,omitempty"`
-	ErrorMessage *string `json:"ErrorMessage,omitempty"`
-	Status       *string `json:"Status,omitempty"`
+	DetailsUri   *string                           `json:"DetailsUri,omitempty"`
+	ErrorMessage *string                           `json:"ErrorMessage,omitempty"`
+	Status       *SignalMapMonitorDeploymentStatus `json:"Status,omitempty"`
 }
 
 type SignalMap struct {
@@ -1896,8 +1896,223 @@ type SignalMap struct {
 	MonitorChangesPendingDeployment         *bool                        `json:"MonitorChangesPendingDeployment,omitempty"`
 	MonitorDeployment                       *MonitorDeployment           `json:"MonitorDeployment,omitempty"`
 	Name                                    *string                      `json:"Name,omitempty"`
-	Status                                  *string                      `json:"Status,omitempty"`
+	Status                                  *SignalMapStatus             `json:"Status,omitempty"`
 	Tags                                    map[string]string            `json:"Tags,omitempty"`
 }
 
 func (SignalMap) CloudControlType() string { return "AWS::MediaLive::SignalMap" }
+
+type ChannelPlacementGroupState string
+
+const (
+	ChannelPlacementGroupStateUNASSIGNED  ChannelPlacementGroupState = "UNASSIGNED"
+	ChannelPlacementGroupStateASSIGNING   ChannelPlacementGroupState = "ASSIGNING"
+	ChannelPlacementGroupStateASSIGNED    ChannelPlacementGroupState = "ASSIGNED"
+	ChannelPlacementGroupStateDELETING    ChannelPlacementGroupState = "DELETING"
+	ChannelPlacementGroupStateDELETED     ChannelPlacementGroupState = "DELETED"
+	ChannelPlacementGroupStateUNASSIGNING ChannelPlacementGroupState = "UNASSIGNING"
+)
+
+type CloudWatchAlarmTemplateComparisonOperator string
+
+const (
+	CloudWatchAlarmTemplateComparisonOperatorGreaterThanOrEqualToThreshold CloudWatchAlarmTemplateComparisonOperator = "GreaterThanOrEqualToThreshold"
+	CloudWatchAlarmTemplateComparisonOperatorGreaterThanThreshold          CloudWatchAlarmTemplateComparisonOperator = "GreaterThanThreshold"
+	CloudWatchAlarmTemplateComparisonOperatorLessThanThreshold             CloudWatchAlarmTemplateComparisonOperator = "LessThanThreshold"
+	CloudWatchAlarmTemplateComparisonOperatorLessThanOrEqualToThreshold    CloudWatchAlarmTemplateComparisonOperator = "LessThanOrEqualToThreshold"
+)
+
+type CloudWatchAlarmTemplateStatistic string
+
+const (
+	CloudWatchAlarmTemplateStatisticSampleCount CloudWatchAlarmTemplateStatistic = "SampleCount"
+	CloudWatchAlarmTemplateStatisticAverage     CloudWatchAlarmTemplateStatistic = "Average"
+	CloudWatchAlarmTemplateStatisticSum         CloudWatchAlarmTemplateStatistic = "Sum"
+	CloudWatchAlarmTemplateStatisticMinimum     CloudWatchAlarmTemplateStatistic = "Minimum"
+	CloudWatchAlarmTemplateStatisticMaximum     CloudWatchAlarmTemplateStatistic = "Maximum"
+)
+
+type CloudWatchAlarmTemplateTargetResourceType string
+
+const (
+	CloudWatchAlarmTemplateTargetResourceTypeCLOUDFRONTDISTRIBUTION           CloudWatchAlarmTemplateTargetResourceType = "CLOUDFRONT_DISTRIBUTION"
+	CloudWatchAlarmTemplateTargetResourceTypeMEDIALIVEMULTIPLEX               CloudWatchAlarmTemplateTargetResourceType = "MEDIALIVE_MULTIPLEX"
+	CloudWatchAlarmTemplateTargetResourceTypeMEDIALIVECHANNEL                 CloudWatchAlarmTemplateTargetResourceType = "MEDIALIVE_CHANNEL"
+	CloudWatchAlarmTemplateTargetResourceTypeMEDIALIVEINPUTDEVICE             CloudWatchAlarmTemplateTargetResourceType = "MEDIALIVE_INPUT_DEVICE"
+	CloudWatchAlarmTemplateTargetResourceTypeMEDIAPACKAGECHANNEL              CloudWatchAlarmTemplateTargetResourceType = "MEDIAPACKAGE_CHANNEL"
+	CloudWatchAlarmTemplateTargetResourceTypeMEDIAPACKAGEORIGINENDPOINT       CloudWatchAlarmTemplateTargetResourceType = "MEDIAPACKAGE_ORIGIN_ENDPOINT"
+	CloudWatchAlarmTemplateTargetResourceTypeMEDIACONNECTFLOW                 CloudWatchAlarmTemplateTargetResourceType = "MEDIACONNECT_FLOW"
+	CloudWatchAlarmTemplateTargetResourceTypeMEDIATAILORPLAYBACKCONFIGURATION CloudWatchAlarmTemplateTargetResourceType = "MEDIATAILOR_PLAYBACK_CONFIGURATION"
+	CloudWatchAlarmTemplateTargetResourceTypeS3BUCKET                         CloudWatchAlarmTemplateTargetResourceType = "S3_BUCKET"
+)
+
+type CloudWatchAlarmTemplateTreatMissingData string
+
+const (
+	CloudWatchAlarmTemplateTreatMissingDataNotBreaching CloudWatchAlarmTemplateTreatMissingData = "notBreaching"
+	CloudWatchAlarmTemplateTreatMissingDataBreaching    CloudWatchAlarmTemplateTreatMissingData = "breaching"
+	CloudWatchAlarmTemplateTreatMissingDataIgnore       CloudWatchAlarmTemplateTreatMissingData = "ignore"
+	CloudWatchAlarmTemplateTreatMissingDataMissing      CloudWatchAlarmTemplateTreatMissingData = "missing"
+)
+
+type ClusterType string
+
+const (
+	ClusterTypeONPREMISES     ClusterType = "ON_PREMISES"
+	ClusterTypeOUTPOSTSRACK   ClusterType = "OUTPOSTS_RACK"
+	ClusterTypeOUTPOSTSSERVER ClusterType = "OUTPOSTS_SERVER"
+	ClusterTypeEC2            ClusterType = "EC2"
+)
+
+type ClusterState string
+
+const (
+	ClusterStateCREATING     ClusterState = "CREATING"
+	ClusterStateCREATEFAILED ClusterState = "CREATE_FAILED"
+	ClusterStateACTIVE       ClusterState = "ACTIVE"
+	ClusterStateDELETING     ClusterState = "DELETING"
+	ClusterStateDELETED      ClusterState = "DELETED"
+)
+
+type EventBridgeRuleTemplateEventType string
+
+const (
+	EventBridgeRuleTemplateEventTypeMEDIALIVEMULTIPLEXALERT             EventBridgeRuleTemplateEventType = "MEDIALIVE_MULTIPLEX_ALERT"
+	EventBridgeRuleTemplateEventTypeMEDIALIVEMULTIPLEXSTATECHANGE       EventBridgeRuleTemplateEventType = "MEDIALIVE_MULTIPLEX_STATE_CHANGE"
+	EventBridgeRuleTemplateEventTypeMEDIALIVECHANNELALERT               EventBridgeRuleTemplateEventType = "MEDIALIVE_CHANNEL_ALERT"
+	EventBridgeRuleTemplateEventTypeMEDIALIVECHANNELINPUTCHANGE         EventBridgeRuleTemplateEventType = "MEDIALIVE_CHANNEL_INPUT_CHANGE"
+	EventBridgeRuleTemplateEventTypeMEDIALIVECHANNELSTATECHANGE         EventBridgeRuleTemplateEventType = "MEDIALIVE_CHANNEL_STATE_CHANGE"
+	EventBridgeRuleTemplateEventTypeMEDIAPACKAGEINPUTNOTIFICATION       EventBridgeRuleTemplateEventType = "MEDIAPACKAGE_INPUT_NOTIFICATION"
+	EventBridgeRuleTemplateEventTypeMEDIAPACKAGEKEYPROVIDERNOTIFICATION EventBridgeRuleTemplateEventType = "MEDIAPACKAGE_KEY_PROVIDER_NOTIFICATION"
+	EventBridgeRuleTemplateEventTypeMEDIAPACKAGEHARVESTJOBNOTIFICATION  EventBridgeRuleTemplateEventType = "MEDIAPACKAGE_HARVEST_JOB_NOTIFICATION"
+	EventBridgeRuleTemplateEventTypeSIGNALMAPACTIVEALARM                EventBridgeRuleTemplateEventType = "SIGNAL_MAP_ACTIVE_ALARM"
+	EventBridgeRuleTemplateEventTypeMEDIACONNECTALERT                   EventBridgeRuleTemplateEventType = "MEDIACONNECT_ALERT"
+	EventBridgeRuleTemplateEventTypeMEDIACONNECTSOURCEHEALTH            EventBridgeRuleTemplateEventType = "MEDIACONNECT_SOURCE_HEALTH"
+	EventBridgeRuleTemplateEventTypeMEDIACONNECTOUTPUTHEALTH            EventBridgeRuleTemplateEventType = "MEDIACONNECT_OUTPUT_HEALTH"
+	EventBridgeRuleTemplateEventTypeMEDIACONNECTFLOWSTATUSCHANGE        EventBridgeRuleTemplateEventType = "MEDIACONNECT_FLOW_STATUS_CHANGE"
+)
+
+type MultiplexState string
+
+const (
+	MultiplexStateCREATING     MultiplexState = "CREATING"
+	MultiplexStateCREATEFAILED MultiplexState = "CREATE_FAILED"
+	MultiplexStateIDLE         MultiplexState = "IDLE"
+	MultiplexStateSTARTING     MultiplexState = "STARTING"
+	MultiplexStateRUNNING      MultiplexState = "RUNNING"
+	MultiplexStateRECOVERING   MultiplexState = "RECOVERING"
+	MultiplexStateSTOPPING     MultiplexState = "STOPPING"
+	MultiplexStateDELETING     MultiplexState = "DELETING"
+	MultiplexStateDELETED      MultiplexState = "DELETED"
+)
+
+type PreferredChannelPipeline string
+
+const (
+	PreferredChannelPipelineCURRENTLYACTIVE PreferredChannelPipeline = "CURRENTLY_ACTIVE"
+	PreferredChannelPipelinePIPELINE0       PreferredChannelPipeline = "PIPELINE_0"
+	PreferredChannelPipelinePIPELINE1       PreferredChannelPipeline = "PIPELINE_1"
+)
+
+type NetworkState string
+
+const (
+	NetworkStateCREATING     NetworkState = "CREATING"
+	NetworkStateCREATEFAILED NetworkState = "CREATE_FAILED"
+	NetworkStateACTIVE       NetworkState = "ACTIVE"
+	NetworkStateDELETING     NetworkState = "DELETING"
+	NetworkStateIDLE         NetworkState = "IDLE"
+	NetworkStateINUSE        NetworkState = "IN_USE"
+	NetworkStateUPDATING     NetworkState = "UPDATING"
+	NetworkStateDELETED      NetworkState = "DELETED"
+	NetworkStateDELETEFAILED NetworkState = "DELETE_FAILED"
+)
+
+type NodeConnectionState string
+
+const (
+	NodeConnectionStateCONNECTED    NodeConnectionState = "CONNECTED"
+	NodeConnectionStateDISCONNECTED NodeConnectionState = "DISCONNECTED"
+)
+
+type NodeInterfaceMappingNetworkInterfaceMode string
+
+const (
+	NodeInterfaceMappingNetworkInterfaceModeNAT    NodeInterfaceMappingNetworkInterfaceMode = "NAT"
+	NodeInterfaceMappingNetworkInterfaceModeBRIDGE NodeInterfaceMappingNetworkInterfaceMode = "BRIDGE"
+)
+
+type NodeRole string
+
+const (
+	NodeRoleBACKUP NodeRole = "BACKUP"
+	NodeRoleACTIVE NodeRole = "ACTIVE"
+)
+
+type NodeState string
+
+const (
+	NodeStateCREATED              NodeState = "CREATED"
+	NodeStateREGISTERING          NodeState = "REGISTERING"
+	NodeStateREADYTOACTIVATE      NodeState = "READY_TO_ACTIVATE"
+	NodeStateREGISTRATIONFAILED   NodeState = "REGISTRATION_FAILED"
+	NodeStateACTIVATIONFAILED     NodeState = "ACTIVATION_FAILED"
+	NodeStateACTIVE               NodeState = "ACTIVE"
+	NodeStateREADY                NodeState = "READY"
+	NodeStateINUSE                NodeState = "IN_USE"
+	NodeStateDEREGISTERING        NodeState = "DEREGISTERING"
+	NodeStateDRAINING             NodeState = "DRAINING"
+	NodeStateDEREGISTRATIONFAILED NodeState = "DEREGISTRATION_FAILED"
+	NodeStateDEREGISTERED         NodeState = "DEREGISTERED"
+)
+
+type SdiSourceMode string
+
+const (
+	SdiSourceModeQUADRANT   SdiSourceMode = "QUADRANT"
+	SdiSourceModeINTERLEAVE SdiSourceMode = "INTERLEAVE"
+)
+
+type SdiSourceState string
+
+const (
+	SdiSourceStateIDLE    SdiSourceState = "IDLE"
+	SdiSourceStateINUSE   SdiSourceState = "IN_USE"
+	SdiSourceStateDELETED SdiSourceState = "DELETED"
+)
+
+type SdiSourceType string
+
+const (
+	SdiSourceTypeSINGLE SdiSourceType = "SINGLE"
+	SdiSourceTypeQUAD   SdiSourceType = "QUAD"
+)
+
+type SignalMapMonitorDeploymentStatus string
+
+const (
+	SignalMapMonitorDeploymentStatusNOTDEPLOYED                SignalMapMonitorDeploymentStatus = "NOT_DEPLOYED"
+	SignalMapMonitorDeploymentStatusDRYRUNDEPLOYMENTCOMPLETE   SignalMapMonitorDeploymentStatus = "DRY_RUN_DEPLOYMENT_COMPLETE"
+	SignalMapMonitorDeploymentStatusDRYRUNDEPLOYMENTFAILED     SignalMapMonitorDeploymentStatus = "DRY_RUN_DEPLOYMENT_FAILED"
+	SignalMapMonitorDeploymentStatusDRYRUNDEPLOYMENTINPROGRESS SignalMapMonitorDeploymentStatus = "DRY_RUN_DEPLOYMENT_IN_PROGRESS"
+	SignalMapMonitorDeploymentStatusDEPLOYMENTCOMPLETE         SignalMapMonitorDeploymentStatus = "DEPLOYMENT_COMPLETE"
+	SignalMapMonitorDeploymentStatusDEPLOYMENTFAILED           SignalMapMonitorDeploymentStatus = "DEPLOYMENT_FAILED"
+	SignalMapMonitorDeploymentStatusDEPLOYMENTINPROGRESS       SignalMapMonitorDeploymentStatus = "DEPLOYMENT_IN_PROGRESS"
+	SignalMapMonitorDeploymentStatusDELETECOMPLETE             SignalMapMonitorDeploymentStatus = "DELETE_COMPLETE"
+	SignalMapMonitorDeploymentStatusDELETEFAILED               SignalMapMonitorDeploymentStatus = "DELETE_FAILED"
+	SignalMapMonitorDeploymentStatusDELETEINPROGRESS           SignalMapMonitorDeploymentStatus = "DELETE_IN_PROGRESS"
+)
+
+type SignalMapStatus string
+
+const (
+	SignalMapStatusCREATEINPROGRESS SignalMapStatus = "CREATE_IN_PROGRESS"
+	SignalMapStatusCREATECOMPLETE   SignalMapStatus = "CREATE_COMPLETE"
+	SignalMapStatusCREATEFAILED     SignalMapStatus = "CREATE_FAILED"
+	SignalMapStatusUPDATEINPROGRESS SignalMapStatus = "UPDATE_IN_PROGRESS"
+	SignalMapStatusUPDATECOMPLETE   SignalMapStatus = "UPDATE_COMPLETE"
+	SignalMapStatusUPDATEREVERTED   SignalMapStatus = "UPDATE_REVERTED"
+	SignalMapStatusUPDATEFAILED     SignalMapStatus = "UPDATE_FAILED"
+	SignalMapStatusREADY            SignalMapStatus = "READY"
+	SignalMapStatusNOTREADY         SignalMapStatus = "NOT_READY"
+)

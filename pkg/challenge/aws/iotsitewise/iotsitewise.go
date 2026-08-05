@@ -52,12 +52,12 @@ type AssetHierarchy struct {
 }
 
 type AssetProperty struct {
-	Alias             *string `json:"Alias,omitempty"`
-	ExternalId        *string `json:"ExternalId,omitempty"`
-	Id                *string `json:"Id,omitempty"`
-	LogicalId         *string `json:"LogicalId,omitempty"`
-	NotificationState *string `json:"NotificationState,omitempty"`
-	Unit              *string `json:"Unit,omitempty"`
+	Alias             *string                         `json:"Alias,omitempty"`
+	ExternalId        *string                         `json:"ExternalId,omitempty"`
+	Id                *string                         `json:"Id,omitempty"`
+	LogicalId         *string                         `json:"LogicalId,omitempty"`
+	NotificationState *AssetPropertyNotificationState `json:"NotificationState,omitempty"`
+	Unit              *string                         `json:"Unit,omitempty"`
 }
 
 type Tag struct {
@@ -126,12 +126,12 @@ type PropertyType struct {
 	Attribute *Attribute `json:"Attribute,omitempty"`
 	Metric    *Metric    `json:"Metric,omitempty"`
 	Transform *Transform `json:"Transform,omitempty"`
-	TypeName  *string    `json:"TypeName,omitempty"`
+	TypeName  *TypeName  `json:"TypeName,omitempty"`
 }
 
 type AssetModelProperty struct {
-	DataType     *string       `json:"DataType,omitempty"`
-	DataTypeSpec *string       `json:"DataTypeSpec,omitempty"`
+	DataType     *DataType     `json:"DataType,omitempty"`
+	DataTypeSpec *DataTypeSpec `json:"DataTypeSpec,omitempty"`
 	ExternalId   *string       `json:"ExternalId,omitempty"`
 	Id           *string       `json:"Id,omitempty"`
 	LogicalId    *string       `json:"LogicalId,omitempty"`
@@ -261,9 +261,9 @@ type SourceDetail struct {
 }
 
 type DatasetSource struct {
-	SourceDetail *SourceDetail `json:"SourceDetail,omitempty"`
-	SourceFormat *string       `json:"SourceFormat,omitempty"`
-	SourceType   *string       `json:"SourceType,omitempty"`
+	SourceDetail *SourceDetail              `json:"SourceDetail,omitempty"`
+	SourceFormat *DatasetSourceSourceFormat `json:"SourceFormat,omitempty"`
+	SourceType   *DatasetSourceSourceType   `json:"SourceType,omitempty"`
 }
 
 type DatasetTag struct {
@@ -288,8 +288,8 @@ type GatewayCapabilitySummary struct {
 }
 
 type GreengrassV2 struct {
-	CoreDeviceOperatingSystem *string `json:"CoreDeviceOperatingSystem,omitempty"`
-	CoreDeviceThingName       *string `json:"CoreDeviceThingName,omitempty"`
+	CoreDeviceOperatingSystem *GreengrassV2CoreDeviceOperatingSystem `json:"CoreDeviceOperatingSystem,omitempty"`
+	CoreDeviceThingName       *string                                `json:"CoreDeviceThingName,omitempty"`
 }
 
 type SiemensIE struct {
@@ -342,7 +342,7 @@ type PortalPortal struct {
 	PortalId                *string                    `json:"PortalId,omitempty"`
 	PortalName              *string                    `json:"PortalName,omitempty"`
 	PortalStartUrl          *string                    `json:"PortalStartUrl,omitempty"`
-	PortalType              *string                    `json:"PortalType,omitempty"`
+	PortalType              *PortalPortalPortalType    `json:"PortalType,omitempty"`
 	PortalTypeConfiguration map[string]PortalTypeEntry `json:"PortalTypeConfiguration,omitempty"`
 	RoleArn                 *string                    `json:"RoleArn,omitempty"`
 	Tags                    []PortalTag                `json:"Tags,omitempty"`
@@ -366,3 +366,62 @@ type ProjectProject struct {
 }
 
 func (ProjectProject) CloudControlType() string { return "AWS::IoTSiteWise::Project" }
+
+type AssetPropertyNotificationState string
+
+const (
+	AssetPropertyNotificationStateENABLED  AssetPropertyNotificationState = "ENABLED"
+	AssetPropertyNotificationStateDISABLED AssetPropertyNotificationState = "DISABLED"
+)
+
+type DataType string
+
+const (
+	DataTypeSTRING  DataType = "STRING"
+	DataTypeINTEGER DataType = "INTEGER"
+	DataTypeDOUBLE  DataType = "DOUBLE"
+	DataTypeBOOLEAN DataType = "BOOLEAN"
+	DataTypeSTRUCT  DataType = "STRUCT"
+)
+
+type DataTypeSpec string
+
+const (
+	DataTypeSpecAWSALARMSTATE DataTypeSpec = "AWS/ALARM_STATE"
+)
+
+type TypeName string
+
+const (
+	TypeNameMeasurement TypeName = "Measurement"
+	TypeNameAttribute   TypeName = "Attribute"
+	TypeNameTransform   TypeName = "Transform"
+	TypeNameMetric      TypeName = "Metric"
+)
+
+type DatasetSourceSourceFormat string
+
+const (
+	DatasetSourceSourceFormatKNOWLEDGEBASE DatasetSourceSourceFormat = "KNOWLEDGE_BASE"
+)
+
+type DatasetSourceSourceType string
+
+const (
+	DatasetSourceSourceTypeKENDRA DatasetSourceSourceType = "KENDRA"
+)
+
+type GreengrassV2CoreDeviceOperatingSystem string
+
+const (
+	GreengrassV2CoreDeviceOperatingSystemLINUXAARCH64 GreengrassV2CoreDeviceOperatingSystem = "LINUX_AARCH64"
+	GreengrassV2CoreDeviceOperatingSystemLINUXAMD64   GreengrassV2CoreDeviceOperatingSystem = "LINUX_AMD64"
+	GreengrassV2CoreDeviceOperatingSystemWINDOWSAMD64 GreengrassV2CoreDeviceOperatingSystem = "WINDOWS_AMD64"
+)
+
+type PortalPortalPortalType string
+
+const (
+	PortalPortalPortalTypeSITEWISEPORTALV1 PortalPortalPortalType = "SITEWISE_PORTAL_V1"
+	PortalPortalPortalTypeSITEWISEPORTALV2 PortalPortalPortalType = "SITEWISE_PORTAL_V2"
+)

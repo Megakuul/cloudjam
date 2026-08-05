@@ -4,9 +4,9 @@
 package evs
 
 type Check struct {
-	ImpairedSince *string `json:"ImpairedSince,omitempty"`
-	Result        *string `json:"Result,omitempty"`
-	Type          *string `json:"Type,omitempty"`
+	ImpairedSince *string      `json:"ImpairedSince,omitempty"`
+	Result        *CheckResult `json:"Result,omitempty"`
+	Type          *CheckType   `json:"Type,omitempty"`
 }
 
 type EnvironmentConnectivityInfo struct {
@@ -18,11 +18,11 @@ type Secret struct {
 }
 
 type HostInfoForCreate struct {
-	DedicatedHostId  *string `json:"DedicatedHostId,omitempty"`
-	HostName         *string `json:"HostName,omitempty"`
-	InstanceType     *string `json:"InstanceType,omitempty"`
-	KeyName          *string `json:"KeyName,omitempty"`
-	PlacementGroupId *string `json:"PlacementGroupId,omitempty"`
+	DedicatedHostId  *string                        `json:"DedicatedHostId,omitempty"`
+	HostName         *string                        `json:"HostName,omitempty"`
+	InstanceType     *HostInfoForCreateInstanceType `json:"InstanceType,omitempty"`
+	KeyName          *string                        `json:"KeyName,omitempty"`
+	PlacementGroupId *string                        `json:"PlacementGroupId,omitempty"`
 }
 
 type InitialVlanInfo struct {
@@ -78,7 +78,7 @@ type Environment struct {
 	EnvironmentArn              *string                                 `json:"EnvironmentArn,omitempty"`
 	EnvironmentId               *string                                 `json:"EnvironmentId,omitempty"`
 	EnvironmentName             *string                                 `json:"EnvironmentName,omitempty"`
-	EnvironmentState            *string                                 `json:"EnvironmentState,omitempty"`
+	EnvironmentState            *EnvironmentState                       `json:"EnvironmentState,omitempty"`
 	Hosts                       []HostInfoForCreate                     `json:"Hosts,omitempty"`
 	InitialVlans                *EnvironmentInitialVlans                `json:"InitialVlans,omitempty"`
 	KmsKeyId                    *string                                 `json:"KmsKeyId,omitempty"`
@@ -91,8 +91,51 @@ type Environment struct {
 	Tags                        []Tag                                   `json:"Tags,omitempty"`
 	TermsAccepted               *bool                                   `json:"TermsAccepted,omitempty"`
 	VcfHostnames                *EnvironmentVcfHostnames                `json:"VcfHostnames,omitempty"`
-	VcfVersion                  *string                                 `json:"VcfVersion,omitempty"`
+	VcfVersion                  *EnvironmentVcfVersion                  `json:"VcfVersion,omitempty"`
 	VpcId                       *string                                 `json:"VpcId,omitempty"`
 }
 
 func (Environment) CloudControlType() string { return "AWS::EVS::Environment" }
+
+type CheckResult string
+
+const (
+	CheckResultPASSED  CheckResult = "PASSED"
+	CheckResultFAILED  CheckResult = "FAILED"
+	CheckResultUNKNOWN CheckResult = "UNKNOWN"
+)
+
+type CheckType string
+
+const (
+	CheckTypeKEYREUSE     CheckType = "KEY_REUSE"
+	CheckTypeKEYCOVERAGE  CheckType = "KEY_COVERAGE"
+	CheckTypeREACHABILITY CheckType = "REACHABILITY"
+	CheckTypeVCFVERSION   CheckType = "VCF_VERSION"
+	CheckTypeHOSTCOUNT    CheckType = "HOST_COUNT"
+)
+
+type EnvironmentState string
+
+const (
+	EnvironmentStateCREATING     EnvironmentState = "CREATING"
+	EnvironmentStateCREATED      EnvironmentState = "CREATED"
+	EnvironmentStateDELETING     EnvironmentState = "DELETING"
+	EnvironmentStateDELETED      EnvironmentState = "DELETED"
+	EnvironmentStateCREATEFAILED EnvironmentState = "CREATE_FAILED"
+)
+
+type HostInfoForCreateInstanceType string
+
+const (
+	HostInfoForCreateInstanceTypeI4iMetal     HostInfoForCreateInstanceType = "i4i.metal"
+	HostInfoForCreateInstanceTypeI7iMetal24xl HostInfoForCreateInstanceType = "i7i.metal-24xl"
+)
+
+type EnvironmentVcfVersion string
+
+const (
+	EnvironmentVcfVersionVCF521       EnvironmentVcfVersion = "VCF-5.2.1"
+	EnvironmentVcfVersionVCF522       EnvironmentVcfVersion = "VCF-5.2.2"
+	EnvironmentVcfVersionSELFDEPLOYED EnvironmentVcfVersion = "SELF_DEPLOYED"
+)

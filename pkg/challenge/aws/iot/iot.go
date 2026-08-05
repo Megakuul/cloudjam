@@ -79,7 +79,7 @@ type Authorizer struct {
 	AuthorizerName         *string           `json:"AuthorizerName,omitempty"`
 	EnableCachingForHttp   *bool             `json:"EnableCachingForHttp,omitempty"`
 	SigningDisabled        *bool             `json:"SigningDisabled,omitempty"`
-	Status                 *string           `json:"Status,omitempty"`
+	Status                 *AuthorizerStatus `json:"Status,omitempty"`
 	Tags                   []Tag             `json:"Tags,omitempty"`
 	TokenKeyName           *string           `json:"TokenKeyName,omitempty"`
 	TokenSigningPublicKeys map[string]string `json:"TokenSigningPublicKeys,omitempty"`
@@ -118,28 +118,28 @@ type CACertificateTag struct {
 }
 
 type CACertificate struct {
-	Arn                        *string             `json:"Arn,omitempty"`
-	AutoRegistrationStatus     *string             `json:"AutoRegistrationStatus,omitempty"`
-	CACertificatePem           *string             `json:"CACertificatePem,omitempty"`
-	CertificateMode            *string             `json:"CertificateMode,omitempty"`
-	Id                         *string             `json:"Id,omitempty"`
-	RegistrationConfig         *RegistrationConfig `json:"RegistrationConfig,omitempty"`
-	RemoveAutoRegistration     *bool               `json:"RemoveAutoRegistration,omitempty"`
-	Status                     *string             `json:"Status,omitempty"`
-	Tags                       []CACertificateTag  `json:"Tags,omitempty"`
-	VerificationCertificatePem *string             `json:"VerificationCertificatePem,omitempty"`
+	Arn                        *string                              `json:"Arn,omitempty"`
+	AutoRegistrationStatus     *CACertificateAutoRegistrationStatus `json:"AutoRegistrationStatus,omitempty"`
+	CACertificatePem           *string                              `json:"CACertificatePem,omitempty"`
+	CertificateMode            *CACertificateCertificateMode        `json:"CertificateMode,omitempty"`
+	Id                         *string                              `json:"Id,omitempty"`
+	RegistrationConfig         *RegistrationConfig                  `json:"RegistrationConfig,omitempty"`
+	RemoveAutoRegistration     *bool                                `json:"RemoveAutoRegistration,omitempty"`
+	Status                     *CACertificateStatus                 `json:"Status,omitempty"`
+	Tags                       []CACertificateTag                   `json:"Tags,omitempty"`
+	VerificationCertificatePem *string                              `json:"VerificationCertificatePem,omitempty"`
 }
 
 func (CACertificate) CloudControlType() string { return "AWS::IoT::CACertificate" }
 
 type Certificate struct {
-	Arn                       *string `json:"Arn,omitempty"`
-	CACertificatePem          *string `json:"CACertificatePem,omitempty"`
-	CertificateMode           *string `json:"CertificateMode,omitempty"`
-	CertificatePem            *string `json:"CertificatePem,omitempty"`
-	CertificateSigningRequest *string `json:"CertificateSigningRequest,omitempty"`
-	Id                        *string `json:"Id,omitempty"`
-	Status                    *string `json:"Status,omitempty"`
+	Arn                       *string                     `json:"Arn,omitempty"`
+	CACertificatePem          *string                     `json:"CACertificatePem,omitempty"`
+	CertificateMode           *CertificateCertificateMode `json:"CertificateMode,omitempty"`
+	CertificatePem            *string                     `json:"CertificatePem,omitempty"`
+	CertificateSigningRequest *string                     `json:"CertificateSigningRequest,omitempty"`
+	Id                        *string                     `json:"Id,omitempty"`
+	Status                    *CertificateStatus          `json:"Status,omitempty"`
 }
 
 func (Certificate) CloudControlType() string { return "AWS::IoT::Certificate" }
@@ -150,11 +150,11 @@ type CertificateProviderTag struct {
 }
 
 type CertificateProvider struct {
-	AccountDefaultForOperations []string                 `json:"AccountDefaultForOperations,omitempty"`
-	Arn                         *string                  `json:"Arn,omitempty"`
-	CertificateProviderName     *string                  `json:"CertificateProviderName,omitempty"`
-	LambdaFunctionArn           *string                  `json:"LambdaFunctionArn,omitempty"`
-	Tags                        []CertificateProviderTag `json:"Tags,omitempty"`
+	AccountDefaultForOperations []CertificateProviderOperation `json:"AccountDefaultForOperations,omitempty"`
+	Arn                         *string                        `json:"Arn,omitempty"`
+	CertificateProviderName     *string                        `json:"CertificateProviderName,omitempty"`
+	LambdaFunctionArn           *string                        `json:"LambdaFunctionArn,omitempty"`
+	Tags                        []CertificateProviderTag       `json:"Tags,omitempty"`
 }
 
 func (CertificateProvider) CloudControlType() string { return "AWS::IoT::CertificateProvider" }
@@ -183,15 +183,15 @@ type CommandParameterValueComparisonOperand struct {
 }
 
 type CommandParameterValueCondition struct {
-	ComparisonOperator *string                                 `json:"ComparisonOperator,omitempty"`
-	Operand            *CommandParameterValueComparisonOperand `json:"Operand,omitempty"`
+	ComparisonOperator *CommandParameterValueComparisonOperator `json:"ComparisonOperator,omitempty"`
+	Operand            *CommandParameterValueComparisonOperand  `json:"Operand,omitempty"`
 }
 
 type CommandParameter struct {
 	DefaultValue    *CommandParameterValue           `json:"DefaultValue,omitempty"`
 	Description     *string                          `json:"Description,omitempty"`
 	Name            *string                          `json:"Name,omitempty"`
-	Type            *string                          `json:"Type,omitempty"`
+	Type            *CommandParameterType            `json:"Type,omitempty"`
 	Value           *CommandParameterValue           `json:"Value,omitempty"`
 	ValueConditions []CommandParameterValueCondition `json:"ValueConditions,omitempty"`
 }
@@ -202,7 +202,7 @@ type CommandPayload struct {
 }
 
 type AwsJsonSubstitutionCommandPreprocessorConfig struct {
-	OutputFormat *string `json:"OutputFormat,omitempty"`
+	OutputFormat *OutputFormat `json:"OutputFormat,omitempty"`
 }
 
 type CommandPreprocessor struct {
@@ -223,7 +223,7 @@ type Command struct {
 	DisplayName         *string              `json:"DisplayName,omitempty"`
 	LastUpdatedAt       *string              `json:"LastUpdatedAt,omitempty"`
 	MandatoryParameters []CommandParameter   `json:"MandatoryParameters,omitempty"`
-	Namespace           *string              `json:"Namespace,omitempty"`
+	Namespace           *CommandNamespace    `json:"Namespace,omitempty"`
 	Payload             *CommandPayload      `json:"Payload,omitempty"`
 	PayloadTemplate     *string              `json:"PayloadTemplate,omitempty"`
 	PendingDeletion     *bool                `json:"PendingDeletion,omitempty"`
@@ -240,11 +240,11 @@ type CustomMetricTag struct {
 }
 
 type CustomMetric struct {
-	DisplayName *string           `json:"DisplayName,omitempty"`
-	MetricArn   *string           `json:"MetricArn,omitempty"`
-	MetricName  *string           `json:"MetricName,omitempty"`
-	MetricType  *string           `json:"MetricType,omitempty"`
-	Tags        []CustomMetricTag `json:"Tags,omitempty"`
+	DisplayName *string                 `json:"DisplayName,omitempty"`
+	MetricArn   *string                 `json:"MetricArn,omitempty"`
+	MetricName  *string                 `json:"MetricName,omitempty"`
+	MetricType  *CustomMetricMetricType `json:"MetricType,omitempty"`
+	Tags        []CustomMetricTag       `json:"Tags,omitempty"`
 }
 
 func (CustomMetric) CloudControlType() string { return "AWS::IoT::CustomMetric" }
@@ -259,7 +259,7 @@ type Dimension struct {
 	Name         *string        `json:"Name,omitempty"`
 	StringValues []string       `json:"StringValues,omitempty"`
 	Tags         []DimensionTag `json:"Tags,omitempty"`
-	Type         *string        `json:"Type,omitempty"`
+	Type         *DimensionType `json:"Type,omitempty"`
 }
 
 func (Dimension) CloudControlType() string { return "AWS::IoT::Dimension" }
@@ -280,9 +280,9 @@ type ServerCertificateConfig struct {
 }
 
 type ServerCertificateSummary struct {
-	ServerCertificateArn          *string `json:"ServerCertificateArn,omitempty"`
-	ServerCertificateStatus       *string `json:"ServerCertificateStatus,omitempty"`
-	ServerCertificateStatusDetail *string `json:"ServerCertificateStatusDetail,omitempty"`
+	ServerCertificateArn          *string                                          `json:"ServerCertificateArn,omitempty"`
+	ServerCertificateStatus       *ServerCertificateSummaryServerCertificateStatus `json:"ServerCertificateStatus,omitempty"`
+	ServerCertificateStatusDetail *string                                          `json:"ServerCertificateStatusDetail,omitempty"`
 }
 
 type DomainConfigurationTag struct {
@@ -295,36 +295,36 @@ type TlsConfig struct {
 }
 
 type DomainConfiguration struct {
-	ApplicationProtocol       *string                    `json:"ApplicationProtocol,omitempty"`
-	Arn                       *string                    `json:"Arn,omitempty"`
-	AuthenticationType        *string                    `json:"AuthenticationType,omitempty"`
-	AuthorizerConfig          *AuthorizerConfig          `json:"AuthorizerConfig,omitempty"`
-	ClientCertificateConfig   *ClientCertificateConfig   `json:"ClientCertificateConfig,omitempty"`
-	DomainConfigurationName   *string                    `json:"DomainConfigurationName,omitempty"`
-	DomainConfigurationStatus *string                    `json:"DomainConfigurationStatus,omitempty"`
-	DomainName                *string                    `json:"DomainName,omitempty"`
-	DomainType                *string                    `json:"DomainType,omitempty"`
-	ServerCertificateArns     []string                   `json:"ServerCertificateArns,omitempty"`
-	ServerCertificateConfig   *ServerCertificateConfig   `json:"ServerCertificateConfig,omitempty"`
-	ServerCertificates        []ServerCertificateSummary `json:"ServerCertificates,omitempty"`
-	ServiceType               *string                    `json:"ServiceType,omitempty"`
-	Tags                      []DomainConfigurationTag   `json:"Tags,omitempty"`
-	TlsConfig                 *TlsConfig                 `json:"TlsConfig,omitempty"`
-	ValidationCertificateArn  *string                    `json:"ValidationCertificateArn,omitempty"`
+	ApplicationProtocol       *DomainConfigurationApplicationProtocol       `json:"ApplicationProtocol,omitempty"`
+	Arn                       *string                                       `json:"Arn,omitempty"`
+	AuthenticationType        *DomainConfigurationAuthenticationType        `json:"AuthenticationType,omitempty"`
+	AuthorizerConfig          *AuthorizerConfig                             `json:"AuthorizerConfig,omitempty"`
+	ClientCertificateConfig   *ClientCertificateConfig                      `json:"ClientCertificateConfig,omitempty"`
+	DomainConfigurationName   *string                                       `json:"DomainConfigurationName,omitempty"`
+	DomainConfigurationStatus *DomainConfigurationDomainConfigurationStatus `json:"DomainConfigurationStatus,omitempty"`
+	DomainName                *string                                       `json:"DomainName,omitempty"`
+	DomainType                *DomainConfigurationDomainType                `json:"DomainType,omitempty"`
+	ServerCertificateArns     []string                                      `json:"ServerCertificateArns,omitempty"`
+	ServerCertificateConfig   *ServerCertificateConfig                      `json:"ServerCertificateConfig,omitempty"`
+	ServerCertificates        []ServerCertificateSummary                    `json:"ServerCertificates,omitempty"`
+	ServiceType               *DomainConfigurationServiceType               `json:"ServiceType,omitempty"`
+	Tags                      []DomainConfigurationTag                      `json:"Tags,omitempty"`
+	TlsConfig                 *TlsConfig                                    `json:"TlsConfig,omitempty"`
+	ValidationCertificateArn  *string                                       `json:"ValidationCertificateArn,omitempty"`
 }
 
 func (DomainConfiguration) CloudControlType() string { return "AWS::IoT::DomainConfiguration" }
 
 type EncryptionConfigurationConfigurationDetails struct {
-	ConfigurationStatus *string `json:"ConfigurationStatus,omitempty"`
-	ErrorCode           *string `json:"ErrorCode,omitempty"`
-	ErrorMessage        *string `json:"ErrorMessage,omitempty"`
+	ConfigurationStatus *EncryptionConfigurationConfigurationDetailsConfigurationStatus `json:"ConfigurationStatus,omitempty"`
+	ErrorCode           *string                                                         `json:"ErrorCode,omitempty"`
+	ErrorMessage        *string                                                         `json:"ErrorMessage,omitempty"`
 }
 
 type EncryptionConfiguration struct {
 	AccountId            *string                                      `json:"AccountId,omitempty"`
 	ConfigurationDetails *EncryptionConfigurationConfigurationDetails `json:"ConfigurationDetails,omitempty"`
-	EncryptionType       *string                                      `json:"EncryptionType,omitempty"`
+	EncryptionType       *EncryptionConfigurationEncryptionType       `json:"EncryptionType,omitempty"`
 	KmsAccessRoleArn     *string                                      `json:"KmsAccessRoleArn,omitempty"`
 	KmsKeyArn            *string                                      `json:"KmsKeyArn,omitempty"`
 	LastModifiedDate     *string                                      `json:"LastModifiedDate,omitempty"`
@@ -362,10 +362,10 @@ type FleetMetric struct {
 func (FleetMetric) CloudControlType() string { return "AWS::IoT::FleetMetric" }
 
 type AbortCriteria struct {
-	Action                    *string  `json:"Action,omitempty"`
-	FailureType               *string  `json:"FailureType,omitempty"`
-	MinNumberOfExecutedThings *int     `json:"MinNumberOfExecutedThings,omitempty"`
-	ThresholdPercentage       *float64 `json:"ThresholdPercentage,omitempty"`
+	Action                    *Action      `json:"Action,omitempty"`
+	FailureType               *FailureType `json:"FailureType,omitempty"`
+	MinNumberOfExecutedThings *int         `json:"MinNumberOfExecutedThings,omitempty"`
+	ThresholdPercentage       *float64     `json:"ThresholdPercentage,omitempty"`
 }
 
 type JobTemplateAbortConfig struct {
@@ -373,8 +373,8 @@ type JobTemplateAbortConfig struct {
 }
 
 type RetryCriteria struct {
-	FailureType     *string `json:"FailureType,omitempty"`
-	NumberOfRetries *int    `json:"NumberOfRetries,omitempty"`
+	FailureType     *JobRetryFailureType `json:"FailureType,omitempty"`
+	NumberOfRetries *int                 `json:"NumberOfRetries,omitempty"`
 }
 
 type JobTemplateJobExecutionsRetryConfig struct {
@@ -436,16 +436,16 @@ type JobTemplate struct {
 func (JobTemplate) CloudControlType() string { return "AWS::IoT::JobTemplate" }
 
 type EventConfiguration struct {
-	EventType      *string `json:"EventType,omitempty"`
-	LogDestination *string `json:"LogDestination,omitempty"`
-	LogLevel       *string `json:"LogLevel,omitempty"`
+	EventType      *string                     `json:"EventType,omitempty"`
+	LogDestination *string                     `json:"LogDestination,omitempty"`
+	LogLevel       *EventConfigurationLogLevel `json:"LogLevel,omitempty"`
 }
 
 type Logging struct {
-	AccountId           *string              `json:"AccountId,omitempty"`
-	DefaultLogLevel     *string              `json:"DefaultLogLevel,omitempty"`
-	EventConfigurations []EventConfiguration `json:"EventConfigurations,omitempty"`
-	RoleArn             *string              `json:"RoleArn,omitempty"`
+	AccountId           *string                 `json:"AccountId,omitempty"`
+	DefaultLogLevel     *LoggingDefaultLogLevel `json:"DefaultLogLevel,omitempty"`
+	EventConfigurations []EventConfiguration    `json:"EventConfigurations,omitempty"`
+	RoleArn             *string                 `json:"RoleArn,omitempty"`
 }
 
 func (Logging) CloudControlType() string { return "AWS::IoT::Logging" }
@@ -456,8 +456,8 @@ type AddThingsToThingGroupParams struct {
 }
 
 type EnableIoTLoggingParams struct {
-	LogLevel          *string `json:"LogLevel,omitempty"`
-	RoleArnForLogging *string `json:"RoleArnForLogging,omitempty"`
+	LogLevel          *EnableIoTLoggingParamsLogLevel `json:"LogLevel,omitempty"`
+	RoleArnForLogging *string                         `json:"RoleArnForLogging,omitempty"`
 }
 
 type PublishFindingToSnsParams struct {
@@ -465,15 +465,15 @@ type PublishFindingToSnsParams struct {
 }
 
 type ReplaceDefaultPolicyVersionParams struct {
-	TemplateName *string `json:"TemplateName,omitempty"`
+	TemplateName *ReplaceDefaultPolicyVersionParamsTemplateName `json:"TemplateName,omitempty"`
 }
 
 type UpdateCACertificateParams struct {
-	Action *string `json:"Action,omitempty"`
+	Action *UpdateCACertificateParamsAction `json:"Action,omitempty"`
 }
 
 type UpdateDeviceCertificateParams struct {
-	Action *string `json:"Action,omitempty"`
+	Action *UpdateDeviceCertificateParamsAction `json:"Action,omitempty"`
 }
 
 type ActionParams struct {
@@ -537,24 +537,24 @@ type ProvisioningTemplateTag struct {
 }
 
 type ProvisioningTemplate struct {
-	Description         *string                   `json:"Description,omitempty"`
-	Enabled             *bool                     `json:"Enabled,omitempty"`
-	PreProvisioningHook *ProvisioningHook         `json:"PreProvisioningHook,omitempty"`
-	ProvisioningRoleArn *string                   `json:"ProvisioningRoleArn,omitempty"`
-	Tags                []ProvisioningTemplateTag `json:"Tags,omitempty"`
-	TemplateArn         *string                   `json:"TemplateArn,omitempty"`
-	TemplateBody        *string                   `json:"TemplateBody,omitempty"`
-	TemplateName        *string                   `json:"TemplateName,omitempty"`
-	TemplateType        *string                   `json:"TemplateType,omitempty"`
+	Description         *string                           `json:"Description,omitempty"`
+	Enabled             *bool                             `json:"Enabled,omitempty"`
+	PreProvisioningHook *ProvisioningHook                 `json:"PreProvisioningHook,omitempty"`
+	ProvisioningRoleArn *string                           `json:"ProvisioningRoleArn,omitempty"`
+	Tags                []ProvisioningTemplateTag         `json:"Tags,omitempty"`
+	TemplateArn         *string                           `json:"TemplateArn,omitempty"`
+	TemplateBody        *string                           `json:"TemplateBody,omitempty"`
+	TemplateName        *string                           `json:"TemplateName,omitempty"`
+	TemplateType        *ProvisioningTemplateTemplateType `json:"TemplateType,omitempty"`
 }
 
 func (ProvisioningTemplate) CloudControlType() string { return "AWS::IoT::ProvisioningTemplate" }
 
 type ResourceSpecificLogging struct {
-	LogLevel   *string `json:"LogLevel,omitempty"`
-	TargetId   *string `json:"TargetId,omitempty"`
-	TargetName *string `json:"TargetName,omitempty"`
-	TargetType *string `json:"TargetType,omitempty"`
+	LogLevel   *ResourceSpecificLoggingLogLevel   `json:"LogLevel,omitempty"`
+	TargetId   *string                            `json:"TargetId,omitempty"`
+	TargetName *string                            `json:"TargetName,omitempty"`
+	TargetType *ResourceSpecificLoggingTargetType `json:"TargetType,omitempty"`
 }
 
 func (ResourceSpecificLogging) CloudControlType() string { return "AWS::IoT::ResourceSpecificLogging" }
@@ -580,20 +580,20 @@ type ScheduledAuditTag struct {
 }
 
 type ScheduledAudit struct {
-	DayOfMonth         *string             `json:"DayOfMonth,omitempty"`
-	DayOfWeek          *string             `json:"DayOfWeek,omitempty"`
-	Frequency          *string             `json:"Frequency,omitempty"`
-	ScheduledAuditArn  *string             `json:"ScheduledAuditArn,omitempty"`
-	ScheduledAuditName *string             `json:"ScheduledAuditName,omitempty"`
-	Tags               []ScheduledAuditTag `json:"Tags,omitempty"`
-	TargetCheckNames   []string            `json:"TargetCheckNames,omitempty"`
+	DayOfMonth         *string                  `json:"DayOfMonth,omitempty"`
+	DayOfWeek          *ScheduledAuditDayOfWeek `json:"DayOfWeek,omitempty"`
+	Frequency          *ScheduledAuditFrequency `json:"Frequency,omitempty"`
+	ScheduledAuditArn  *string                  `json:"ScheduledAuditArn,omitempty"`
+	ScheduledAuditName *string                  `json:"ScheduledAuditName,omitempty"`
+	Tags               []ScheduledAuditTag      `json:"Tags,omitempty"`
+	TargetCheckNames   []string                 `json:"TargetCheckNames,omitempty"`
 }
 
 func (ScheduledAudit) CloudControlType() string { return "AWS::IoT::ScheduledAudit" }
 
 type MetricDimension struct {
-	DimensionName *string `json:"DimensionName,omitempty"`
-	Operator      *string `json:"Operator,omitempty"`
+	DimensionName *string                  `json:"DimensionName,omitempty"`
+	Operator      *MetricDimensionOperator `json:"Operator,omitempty"`
 }
 
 type MetricToRetain struct {
@@ -608,11 +608,11 @@ type AlertTarget struct {
 }
 
 type MachineLearningDetectionConfig struct {
-	ConfidenceLevel *string `json:"ConfidenceLevel,omitempty"`
+	ConfidenceLevel *MachineLearningDetectionConfigConfidenceLevel `json:"ConfidenceLevel,omitempty"`
 }
 
 type StatisticalThreshold struct {
-	Statistic *string `json:"Statistic,omitempty"`
+	Statistic *StatisticalThresholdStatistic `json:"Statistic,omitempty"`
 }
 
 type MetricValue struct {
@@ -625,13 +625,13 @@ type MetricValue struct {
 }
 
 type BehaviorCriteria struct {
-	ComparisonOperator           *string                         `json:"ComparisonOperator,omitempty"`
-	ConsecutiveDatapointsToAlarm *int                            `json:"ConsecutiveDatapointsToAlarm,omitempty"`
-	ConsecutiveDatapointsToClear *int                            `json:"ConsecutiveDatapointsToClear,omitempty"`
-	DurationSeconds              *int                            `json:"DurationSeconds,omitempty"`
-	MlDetectionConfig            *MachineLearningDetectionConfig `json:"MlDetectionConfig,omitempty"`
-	StatisticalThreshold         *StatisticalThreshold           `json:"StatisticalThreshold,omitempty"`
-	Value                        *MetricValue                    `json:"Value,omitempty"`
+	ComparisonOperator           *BehaviorCriteriaComparisonOperator `json:"ComparisonOperator,omitempty"`
+	ConsecutiveDatapointsToAlarm *int                                `json:"ConsecutiveDatapointsToAlarm,omitempty"`
+	ConsecutiveDatapointsToClear *int                                `json:"ConsecutiveDatapointsToClear,omitempty"`
+	DurationSeconds              *int                                `json:"DurationSeconds,omitempty"`
+	MlDetectionConfig            *MachineLearningDetectionConfig     `json:"MlDetectionConfig,omitempty"`
+	StatisticalThreshold         *StatisticalThreshold               `json:"StatisticalThreshold,omitempty"`
+	Value                        *MetricValue                        `json:"Value,omitempty"`
 }
 
 type Behavior struct {
@@ -709,8 +709,8 @@ type SoftwarePackageVersion struct {
 	PackageVersionArn    *string                     `json:"PackageVersionArn,omitempty"`
 	Recipe               *string                     `json:"Recipe,omitempty"`
 	Sbom                 *Sbom                       `json:"Sbom,omitempty"`
-	SbomValidationStatus *string                     `json:"SbomValidationStatus,omitempty"`
-	Status               *string                     `json:"Status,omitempty"`
+	SbomValidationStatus *SbomValidationStatus       `json:"SbomValidationStatus,omitempty"`
+	Status               *PackageVersionStatus       `json:"Status,omitempty"`
 	Tags                 []SoftwarePackageVersionTag `json:"Tags,omitempty"`
 	VersionName          *string                     `json:"VersionName,omitempty"`
 }
@@ -773,9 +773,9 @@ type ThingTypeTag struct {
 }
 
 type PropagatingAttribute struct {
-	ConnectionAttribute *string `json:"ConnectionAttribute,omitempty"`
-	ThingAttribute      *string `json:"ThingAttribute,omitempty"`
-	UserPropertyKey     *string `json:"UserPropertyKey,omitempty"`
+	ConnectionAttribute *PropagatingAttributeConnectionAttribute `json:"ConnectionAttribute,omitempty"`
+	ThingAttribute      *string                                  `json:"ThingAttribute,omitempty"`
+	UserPropertyKey     *string                                  `json:"UserPropertyKey,omitempty"`
 }
 
 type ThingTypeThingTypePropertiesMqtt5Configuration struct {
@@ -1005,10 +1005,10 @@ type RepublishAction struct {
 }
 
 type S3Action struct {
-	BucketName *string `json:"BucketName,omitempty"`
-	CannedAcl  *string `json:"CannedAcl,omitempty"`
-	Key        *string `json:"Key,omitempty"`
-	RoleArn    *string `json:"RoleArn,omitempty"`
+	BucketName *string                  `json:"BucketName,omitempty"`
+	CannedAcl  *CannedAccessControlList `json:"CannedAcl,omitempty"`
+	Key        *string                  `json:"Key,omitempty"`
+	RoleArn    *string                  `json:"RoleArn,omitempty"`
 }
 
 type SnsAction struct {
@@ -1047,7 +1047,7 @@ type TimestreamAction struct {
 	Timestamp    *TimestreamTimestamp  `json:"Timestamp,omitempty"`
 }
 
-type Action struct {
+type TopicRuleAction struct {
 	CloudwatchAlarm  *CloudwatchAlarmAction  `json:"CloudwatchAlarm,omitempty"`
 	CloudwatchLogs   *CloudwatchLogsAction   `json:"CloudwatchLogs,omitempty"`
 	CloudwatchMetric *CloudwatchMetricAction `json:"CloudwatchMetric,omitempty"`
@@ -1073,12 +1073,12 @@ type Action struct {
 }
 
 type TopicRulePayload struct {
-	Actions          []Action `json:"Actions,omitempty"`
-	AwsIotSqlVersion *string  `json:"AwsIotSqlVersion,omitempty"`
-	Description      *string  `json:"Description,omitempty"`
-	ErrorAction      *Action  `json:"ErrorAction,omitempty"`
-	RuleDisabled     *bool    `json:"RuleDisabled,omitempty"`
-	Sql              *string  `json:"Sql,omitempty"`
+	Actions          []TopicRuleAction `json:"Actions,omitempty"`
+	AwsIotSqlVersion *string           `json:"AwsIotSqlVersion,omitempty"`
+	Description      *string           `json:"Description,omitempty"`
+	ErrorAction      *TopicRuleAction  `json:"ErrorAction,omitempty"`
+	RuleDisabled     *bool             `json:"RuleDisabled,omitempty"`
+	Sql              *string           `json:"Sql,omitempty"`
 }
 
 type TopicRule struct {
@@ -1102,11 +1102,395 @@ type VpcDestinationProperties struct {
 }
 
 type TopicRuleDestination struct {
-	Arn               *string                    `json:"Arn,omitempty"`
-	HttpUrlProperties *HttpUrlDestinationSummary `json:"HttpUrlProperties,omitempty"`
-	Status            *string                    `json:"Status,omitempty"`
-	StatusReason      *string                    `json:"StatusReason,omitempty"`
-	VpcProperties     *VpcDestinationProperties  `json:"VpcProperties,omitempty"`
+	Arn               *string                     `json:"Arn,omitempty"`
+	HttpUrlProperties *HttpUrlDestinationSummary  `json:"HttpUrlProperties,omitempty"`
+	Status            *TopicRuleDestinationStatus `json:"Status,omitempty"`
+	StatusReason      *string                     `json:"StatusReason,omitempty"`
+	VpcProperties     *VpcDestinationProperties   `json:"VpcProperties,omitempty"`
 }
 
 func (TopicRuleDestination) CloudControlType() string { return "AWS::IoT::TopicRuleDestination" }
+
+type AuthorizerStatus string
+
+const (
+	AuthorizerStatusACTIVE   AuthorizerStatus = "ACTIVE"
+	AuthorizerStatusINACTIVE AuthorizerStatus = "INACTIVE"
+)
+
+type CACertificateAutoRegistrationStatus string
+
+const (
+	CACertificateAutoRegistrationStatusENABLE  CACertificateAutoRegistrationStatus = "ENABLE"
+	CACertificateAutoRegistrationStatusDISABLE CACertificateAutoRegistrationStatus = "DISABLE"
+)
+
+type CACertificateCertificateMode string
+
+const (
+	CACertificateCertificateModeDEFAULT CACertificateCertificateMode = "DEFAULT"
+	CACertificateCertificateModeSNIONLY CACertificateCertificateMode = "SNI_ONLY"
+)
+
+type CACertificateStatus string
+
+const (
+	CACertificateStatusACTIVE   CACertificateStatus = "ACTIVE"
+	CACertificateStatusINACTIVE CACertificateStatus = "INACTIVE"
+)
+
+type CertificateCertificateMode string
+
+const (
+	CertificateCertificateModeDEFAULT CertificateCertificateMode = "DEFAULT"
+	CertificateCertificateModeSNIONLY CertificateCertificateMode = "SNI_ONLY"
+)
+
+type CertificateStatus string
+
+const (
+	CertificateStatusACTIVE            CertificateStatus = "ACTIVE"
+	CertificateStatusINACTIVE          CertificateStatus = "INACTIVE"
+	CertificateStatusREVOKED           CertificateStatus = "REVOKED"
+	CertificateStatusPENDINGTRANSFER   CertificateStatus = "PENDING_TRANSFER"
+	CertificateStatusPENDINGACTIVATION CertificateStatus = "PENDING_ACTIVATION"
+)
+
+type CertificateProviderOperation string
+
+const (
+	CertificateProviderOperationCreateCertificateFromCsr CertificateProviderOperation = "CreateCertificateFromCsr"
+)
+
+type CommandParameterType string
+
+const (
+	CommandParameterTypeSTRING       CommandParameterType = "STRING"
+	CommandParameterTypeINTEGER      CommandParameterType = "INTEGER"
+	CommandParameterTypeDOUBLE       CommandParameterType = "DOUBLE"
+	CommandParameterTypeLONG         CommandParameterType = "LONG"
+	CommandParameterTypeUNSIGNEDLONG CommandParameterType = "UNSIGNEDLONG"
+	CommandParameterTypeBOOLEAN      CommandParameterType = "BOOLEAN"
+	CommandParameterTypeBINARY       CommandParameterType = "BINARY"
+)
+
+type CommandParameterValueComparisonOperator string
+
+const (
+	CommandParameterValueComparisonOperatorEQUALS            CommandParameterValueComparisonOperator = "EQUALS"
+	CommandParameterValueComparisonOperatorNOTEQUALS         CommandParameterValueComparisonOperator = "NOT_EQUALS"
+	CommandParameterValueComparisonOperatorLESSTHAN          CommandParameterValueComparisonOperator = "LESS_THAN"
+	CommandParameterValueComparisonOperatorLESSTHANEQUALS    CommandParameterValueComparisonOperator = "LESS_THAN_EQUALS"
+	CommandParameterValueComparisonOperatorGREATERTHAN       CommandParameterValueComparisonOperator = "GREATER_THAN"
+	CommandParameterValueComparisonOperatorGREATERTHANEQUALS CommandParameterValueComparisonOperator = "GREATER_THAN_EQUALS"
+	CommandParameterValueComparisonOperatorINSET             CommandParameterValueComparisonOperator = "IN_SET"
+	CommandParameterValueComparisonOperatorNOTINSET          CommandParameterValueComparisonOperator = "NOT_IN_SET"
+	CommandParameterValueComparisonOperatorINRANGE           CommandParameterValueComparisonOperator = "IN_RANGE"
+	CommandParameterValueComparisonOperatorNOTINRANGE        CommandParameterValueComparisonOperator = "NOT_IN_RANGE"
+)
+
+type CommandNamespace string
+
+const (
+	CommandNamespaceAWSIoT          CommandNamespace = "AWS-IoT"
+	CommandNamespaceAWSIoTFleetWise CommandNamespace = "AWS-IoT-FleetWise"
+)
+
+type OutputFormat string
+
+const (
+	OutputFormatJSON OutputFormat = "JSON"
+	OutputFormatCBOR OutputFormat = "CBOR"
+)
+
+type CustomMetricMetricType string
+
+const (
+	CustomMetricMetricTypeStringList    CustomMetricMetricType = "string-list"
+	CustomMetricMetricTypeIpAddressList CustomMetricMetricType = "ip-address-list"
+	CustomMetricMetricTypeNumberList    CustomMetricMetricType = "number-list"
+	CustomMetricMetricTypeNumber        CustomMetricMetricType = "number"
+)
+
+type DimensionType string
+
+const (
+	DimensionTypeTOPICFILTER DimensionType = "TOPIC_FILTER"
+)
+
+type DomainConfigurationApplicationProtocol string
+
+const (
+	DomainConfigurationApplicationProtocolSECUREMQTT DomainConfigurationApplicationProtocol = "SECURE_MQTT"
+	DomainConfigurationApplicationProtocolMQTTWSS    DomainConfigurationApplicationProtocol = "MQTT_WSS"
+	DomainConfigurationApplicationProtocolHTTPS      DomainConfigurationApplicationProtocol = "HTTPS"
+	DomainConfigurationApplicationProtocolDEFAULT    DomainConfigurationApplicationProtocol = "DEFAULT"
+)
+
+type DomainConfigurationAuthenticationType string
+
+const (
+	DomainConfigurationAuthenticationTypeAWSX509        DomainConfigurationAuthenticationType = "AWS_X509"
+	DomainConfigurationAuthenticationTypeCUSTOMAUTH     DomainConfigurationAuthenticationType = "CUSTOM_AUTH"
+	DomainConfigurationAuthenticationTypeAWSSIGV4       DomainConfigurationAuthenticationType = "AWS_SIGV4"
+	DomainConfigurationAuthenticationTypeCUSTOMAUTHX509 DomainConfigurationAuthenticationType = "CUSTOM_AUTH_X509"
+	DomainConfigurationAuthenticationTypeDEFAULT        DomainConfigurationAuthenticationType = "DEFAULT"
+)
+
+type DomainConfigurationDomainConfigurationStatus string
+
+const (
+	DomainConfigurationDomainConfigurationStatusENABLED  DomainConfigurationDomainConfigurationStatus = "ENABLED"
+	DomainConfigurationDomainConfigurationStatusDISABLED DomainConfigurationDomainConfigurationStatus = "DISABLED"
+)
+
+type DomainConfigurationDomainType string
+
+const (
+	DomainConfigurationDomainTypeENDPOINT        DomainConfigurationDomainType = "ENDPOINT"
+	DomainConfigurationDomainTypeAWSMANAGED      DomainConfigurationDomainType = "AWS_MANAGED"
+	DomainConfigurationDomainTypeCUSTOMERMANAGED DomainConfigurationDomainType = "CUSTOMER_MANAGED"
+)
+
+type ServerCertificateSummaryServerCertificateStatus string
+
+const (
+	ServerCertificateSummaryServerCertificateStatusINVALID ServerCertificateSummaryServerCertificateStatus = "INVALID"
+	ServerCertificateSummaryServerCertificateStatusVALID   ServerCertificateSummaryServerCertificateStatus = "VALID"
+)
+
+type DomainConfigurationServiceType string
+
+const (
+	DomainConfigurationServiceTypeDATA               DomainConfigurationServiceType = "DATA"
+	DomainConfigurationServiceTypeCREDENTIALPROVIDER DomainConfigurationServiceType = "CREDENTIAL_PROVIDER"
+	DomainConfigurationServiceTypeJOBS               DomainConfigurationServiceType = "JOBS"
+)
+
+type EncryptionConfigurationConfigurationDetailsConfigurationStatus string
+
+const (
+	EncryptionConfigurationConfigurationDetailsConfigurationStatusHEALTHY   EncryptionConfigurationConfigurationDetailsConfigurationStatus = "HEALTHY"
+	EncryptionConfigurationConfigurationDetailsConfigurationStatusUNHEALTHY EncryptionConfigurationConfigurationDetailsConfigurationStatus = "UNHEALTHY"
+)
+
+type EncryptionConfigurationEncryptionType string
+
+const (
+	EncryptionConfigurationEncryptionTypeCUSTOMERMANAGEDKMSKEY EncryptionConfigurationEncryptionType = "CUSTOMER_MANAGED_KMS_KEY"
+	EncryptionConfigurationEncryptionTypeAWSOWNEDKMSKEY        EncryptionConfigurationEncryptionType = "AWS_OWNED_KMS_KEY"
+)
+
+type Action string
+
+const (
+	ActionCANCEL Action = "CANCEL"
+)
+
+type FailureType string
+
+const (
+	FailureTypeFAILED   FailureType = "FAILED"
+	FailureTypeREJECTED FailureType = "REJECTED"
+	FailureTypeTIMEDOUT FailureType = "TIMED_OUT"
+	FailureTypeALL      FailureType = "ALL"
+)
+
+type JobRetryFailureType string
+
+const (
+	JobRetryFailureTypeFAILED   JobRetryFailureType = "FAILED"
+	JobRetryFailureTypeTIMEDOUT JobRetryFailureType = "TIMED_OUT"
+	JobRetryFailureTypeALL      JobRetryFailureType = "ALL"
+)
+
+type LoggingDefaultLogLevel string
+
+const (
+	LoggingDefaultLogLevelERROR    LoggingDefaultLogLevel = "ERROR"
+	LoggingDefaultLogLevelWARN     LoggingDefaultLogLevel = "WARN"
+	LoggingDefaultLogLevelINFO     LoggingDefaultLogLevel = "INFO"
+	LoggingDefaultLogLevelDEBUG    LoggingDefaultLogLevel = "DEBUG"
+	LoggingDefaultLogLevelDISABLED LoggingDefaultLogLevel = "DISABLED"
+)
+
+type EventConfigurationLogLevel string
+
+const (
+	EventConfigurationLogLevelERROR    EventConfigurationLogLevel = "ERROR"
+	EventConfigurationLogLevelWARN     EventConfigurationLogLevel = "WARN"
+	EventConfigurationLogLevelINFO     EventConfigurationLogLevel = "INFO"
+	EventConfigurationLogLevelDEBUG    EventConfigurationLogLevel = "DEBUG"
+	EventConfigurationLogLevelDISABLED EventConfigurationLogLevel = "DISABLED"
+)
+
+type EnableIoTLoggingParamsLogLevel string
+
+const (
+	EnableIoTLoggingParamsLogLevelDEBUG      EnableIoTLoggingParamsLogLevel = "DEBUG"
+	EnableIoTLoggingParamsLogLevelINFO       EnableIoTLoggingParamsLogLevel = "INFO"
+	EnableIoTLoggingParamsLogLevelERROR      EnableIoTLoggingParamsLogLevel = "ERROR"
+	EnableIoTLoggingParamsLogLevelWARN       EnableIoTLoggingParamsLogLevel = "WARN"
+	EnableIoTLoggingParamsLogLevelUNSETVALUE EnableIoTLoggingParamsLogLevel = "UNSET_VALUE"
+)
+
+type ReplaceDefaultPolicyVersionParamsTemplateName string
+
+const (
+	ReplaceDefaultPolicyVersionParamsTemplateNameBLANKPOLICY ReplaceDefaultPolicyVersionParamsTemplateName = "BLANK_POLICY"
+	ReplaceDefaultPolicyVersionParamsTemplateNameUNSETVALUE  ReplaceDefaultPolicyVersionParamsTemplateName = "UNSET_VALUE"
+)
+
+type UpdateCACertificateParamsAction string
+
+const (
+	UpdateCACertificateParamsActionDEACTIVATE UpdateCACertificateParamsAction = "DEACTIVATE"
+	UpdateCACertificateParamsActionUNSETVALUE UpdateCACertificateParamsAction = "UNSET_VALUE"
+)
+
+type UpdateDeviceCertificateParamsAction string
+
+const (
+	UpdateDeviceCertificateParamsActionDEACTIVATE UpdateDeviceCertificateParamsAction = "DEACTIVATE"
+	UpdateDeviceCertificateParamsActionUNSETVALUE UpdateDeviceCertificateParamsAction = "UNSET_VALUE"
+)
+
+type ProvisioningTemplateTemplateType string
+
+const (
+	ProvisioningTemplateTemplateTypeFLEETPROVISIONING ProvisioningTemplateTemplateType = "FLEET_PROVISIONING"
+	ProvisioningTemplateTemplateTypeJITP              ProvisioningTemplateTemplateType = "JITP"
+)
+
+type ResourceSpecificLoggingLogLevel string
+
+const (
+	ResourceSpecificLoggingLogLevelERROR    ResourceSpecificLoggingLogLevel = "ERROR"
+	ResourceSpecificLoggingLogLevelWARN     ResourceSpecificLoggingLogLevel = "WARN"
+	ResourceSpecificLoggingLogLevelINFO     ResourceSpecificLoggingLogLevel = "INFO"
+	ResourceSpecificLoggingLogLevelDEBUG    ResourceSpecificLoggingLogLevel = "DEBUG"
+	ResourceSpecificLoggingLogLevelDISABLED ResourceSpecificLoggingLogLevel = "DISABLED"
+)
+
+type ResourceSpecificLoggingTargetType string
+
+const (
+	ResourceSpecificLoggingTargetTypeTHINGGROUP  ResourceSpecificLoggingTargetType = "THING_GROUP"
+	ResourceSpecificLoggingTargetTypeCLIENTID    ResourceSpecificLoggingTargetType = "CLIENT_ID"
+	ResourceSpecificLoggingTargetTypeSOURCEIP    ResourceSpecificLoggingTargetType = "SOURCE_IP"
+	ResourceSpecificLoggingTargetTypePRINCIPALID ResourceSpecificLoggingTargetType = "PRINCIPAL_ID"
+	ResourceSpecificLoggingTargetTypeEVENTTYPE   ResourceSpecificLoggingTargetType = "EVENT_TYPE"
+)
+
+type ScheduledAuditDayOfWeek string
+
+const (
+	ScheduledAuditDayOfWeekSUN        ScheduledAuditDayOfWeek = "SUN"
+	ScheduledAuditDayOfWeekMON        ScheduledAuditDayOfWeek = "MON"
+	ScheduledAuditDayOfWeekTUE        ScheduledAuditDayOfWeek = "TUE"
+	ScheduledAuditDayOfWeekWED        ScheduledAuditDayOfWeek = "WED"
+	ScheduledAuditDayOfWeekTHU        ScheduledAuditDayOfWeek = "THU"
+	ScheduledAuditDayOfWeekFRI        ScheduledAuditDayOfWeek = "FRI"
+	ScheduledAuditDayOfWeekSAT        ScheduledAuditDayOfWeek = "SAT"
+	ScheduledAuditDayOfWeekUNSETVALUE ScheduledAuditDayOfWeek = "UNSET_VALUE"
+)
+
+type ScheduledAuditFrequency string
+
+const (
+	ScheduledAuditFrequencyDAILY    ScheduledAuditFrequency = "DAILY"
+	ScheduledAuditFrequencyWEEKLY   ScheduledAuditFrequency = "WEEKLY"
+	ScheduledAuditFrequencyBIWEEKLY ScheduledAuditFrequency = "BIWEEKLY"
+	ScheduledAuditFrequencyMONTHLY  ScheduledAuditFrequency = "MONTHLY"
+)
+
+type MetricDimensionOperator string
+
+const (
+	MetricDimensionOperatorIN    MetricDimensionOperator = "IN"
+	MetricDimensionOperatorNOTIN MetricDimensionOperator = "NOT_IN"
+)
+
+type BehaviorCriteriaComparisonOperator string
+
+const (
+	BehaviorCriteriaComparisonOperatorLessThan          BehaviorCriteriaComparisonOperator = "less-than"
+	BehaviorCriteriaComparisonOperatorLessThanEquals    BehaviorCriteriaComparisonOperator = "less-than-equals"
+	BehaviorCriteriaComparisonOperatorGreaterThan       BehaviorCriteriaComparisonOperator = "greater-than"
+	BehaviorCriteriaComparisonOperatorGreaterThanEquals BehaviorCriteriaComparisonOperator = "greater-than-equals"
+	BehaviorCriteriaComparisonOperatorInCidrSet         BehaviorCriteriaComparisonOperator = "in-cidr-set"
+	BehaviorCriteriaComparisonOperatorNotInCidrSet      BehaviorCriteriaComparisonOperator = "not-in-cidr-set"
+	BehaviorCriteriaComparisonOperatorInPortSet         BehaviorCriteriaComparisonOperator = "in-port-set"
+	BehaviorCriteriaComparisonOperatorNotInPortSet      BehaviorCriteriaComparisonOperator = "not-in-port-set"
+	BehaviorCriteriaComparisonOperatorInSet             BehaviorCriteriaComparisonOperator = "in-set"
+	BehaviorCriteriaComparisonOperatorNotInSet          BehaviorCriteriaComparisonOperator = "not-in-set"
+)
+
+type MachineLearningDetectionConfigConfidenceLevel string
+
+const (
+	MachineLearningDetectionConfigConfidenceLevelLOW    MachineLearningDetectionConfigConfidenceLevel = "LOW"
+	MachineLearningDetectionConfigConfidenceLevelMEDIUM MachineLearningDetectionConfigConfidenceLevel = "MEDIUM"
+	MachineLearningDetectionConfigConfidenceLevelHIGH   MachineLearningDetectionConfigConfidenceLevel = "HIGH"
+)
+
+type StatisticalThresholdStatistic string
+
+const (
+	StatisticalThresholdStatisticAverage StatisticalThresholdStatistic = "Average"
+	StatisticalThresholdStatisticP0      StatisticalThresholdStatistic = "p0"
+	StatisticalThresholdStatisticP01     StatisticalThresholdStatistic = "p0.1"
+	StatisticalThresholdStatisticP001    StatisticalThresholdStatistic = "p0.01"
+	StatisticalThresholdStatisticP1      StatisticalThresholdStatistic = "p1"
+	StatisticalThresholdStatisticP10     StatisticalThresholdStatistic = "p10"
+	StatisticalThresholdStatisticP50     StatisticalThresholdStatistic = "p50"
+	StatisticalThresholdStatisticP90     StatisticalThresholdStatistic = "p90"
+	StatisticalThresholdStatisticP99     StatisticalThresholdStatistic = "p99"
+	StatisticalThresholdStatisticP999    StatisticalThresholdStatistic = "p99.9"
+	StatisticalThresholdStatisticP9999   StatisticalThresholdStatistic = "p99.99"
+	StatisticalThresholdStatisticP100    StatisticalThresholdStatistic = "p100"
+)
+
+type SbomValidationStatus string
+
+const (
+	SbomValidationStatusINPROGRESS SbomValidationStatus = "IN_PROGRESS"
+	SbomValidationStatusFAILED     SbomValidationStatus = "FAILED"
+	SbomValidationStatusSUCCEEDED  SbomValidationStatus = "SUCCEEDED"
+)
+
+type PackageVersionStatus string
+
+const (
+	PackageVersionStatusDRAFT      PackageVersionStatus = "DRAFT"
+	PackageVersionStatusPUBLISHED  PackageVersionStatus = "PUBLISHED"
+	PackageVersionStatusDEPRECATED PackageVersionStatus = "DEPRECATED"
+)
+
+type PropagatingAttributeConnectionAttribute string
+
+const (
+	PropagatingAttributeConnectionAttributeIotClientId       PropagatingAttributeConnectionAttribute = "iot:ClientId"
+	PropagatingAttributeConnectionAttributeIotThingThingName PropagatingAttributeConnectionAttribute = "iot:Thing.ThingName"
+)
+
+type CannedAccessControlList string
+
+const (
+	CannedAccessControlListPrivate                CannedAccessControlList = "private"
+	CannedAccessControlListPublicRead             CannedAccessControlList = "public-read"
+	CannedAccessControlListPublicReadWrite        CannedAccessControlList = "public-read-write"
+	CannedAccessControlListAwsExecRead            CannedAccessControlList = "aws-exec-read"
+	CannedAccessControlListAuthenticatedRead      CannedAccessControlList = "authenticated-read"
+	CannedAccessControlListBucketOwnerRead        CannedAccessControlList = "bucket-owner-read"
+	CannedAccessControlListBucketOwnerFullControl CannedAccessControlList = "bucket-owner-full-control"
+	CannedAccessControlListLogDeliveryWrite       CannedAccessControlList = "log-delivery-write"
+)
+
+type TopicRuleDestinationStatus string
+
+const (
+	TopicRuleDestinationStatusENABLED    TopicRuleDestinationStatus = "ENABLED"
+	TopicRuleDestinationStatusINPROGRESS TopicRuleDestinationStatus = "IN_PROGRESS"
+	TopicRuleDestinationStatusDISABLED   TopicRuleDestinationStatus = "DISABLED"
+)

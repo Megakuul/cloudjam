@@ -11,12 +11,12 @@ type Tag struct {
 }
 
 type CapacityManagerDataExport struct {
-	CapacityManagerDataExportId *string `json:"CapacityManagerDataExportId,omitempty"`
-	OutputFormat                *string `json:"OutputFormat,omitempty"`
-	S3BucketName                *string `json:"S3BucketName,omitempty"`
-	S3BucketPrefix              *string `json:"S3BucketPrefix,omitempty"`
-	Schedule                    *string `json:"Schedule,omitempty"`
-	Tags                        []Tag   `json:"Tags,omitempty"`
+	CapacityManagerDataExportId *string                                `json:"CapacityManagerDataExportId,omitempty"`
+	OutputFormat                *CapacityManagerDataExportOutputFormat `json:"OutputFormat,omitempty"`
+	S3BucketName                *string                                `json:"S3BucketName,omitempty"`
+	S3BucketPrefix              *string                                `json:"S3BucketPrefix,omitempty"`
+	Schedule                    *CapacityManagerDataExportSchedule     `json:"Schedule,omitempty"`
+	Tags                        []Tag                                  `json:"Tags,omitempty"`
 }
 
 func (CapacityManagerDataExport) CloudControlType() string {
@@ -97,16 +97,16 @@ type CapacityReservationFleetTagSpecification struct {
 }
 
 type CapacityReservationFleet struct {
-	AllocationStrategy         *string                                    `json:"AllocationStrategy,omitempty"`
-	CapacityReservationFleetId *string                                    `json:"CapacityReservationFleetId,omitempty"`
-	EndDate                    *string                                    `json:"EndDate,omitempty"`
-	InstanceMatchCriteria      *string                                    `json:"InstanceMatchCriteria,omitempty"`
-	InstanceTypeSpecifications []InstanceTypeSpecification                `json:"InstanceTypeSpecifications,omitempty"`
-	NoRemoveEndDate            *bool                                      `json:"NoRemoveEndDate,omitempty"`
-	RemoveEndDate              *bool                                      `json:"RemoveEndDate,omitempty"`
-	TagSpecifications          []CapacityReservationFleetTagSpecification `json:"TagSpecifications,omitempty"`
-	Tenancy                    *string                                    `json:"Tenancy,omitempty"`
-	TotalTargetCapacity        *int                                       `json:"TotalTargetCapacity,omitempty"`
+	AllocationStrategy         *string                                        `json:"AllocationStrategy,omitempty"`
+	CapacityReservationFleetId *string                                        `json:"CapacityReservationFleetId,omitempty"`
+	EndDate                    *string                                        `json:"EndDate,omitempty"`
+	InstanceMatchCriteria      *CapacityReservationFleetInstanceMatchCriteria `json:"InstanceMatchCriteria,omitempty"`
+	InstanceTypeSpecifications []InstanceTypeSpecification                    `json:"InstanceTypeSpecifications,omitempty"`
+	NoRemoveEndDate            *bool                                          `json:"NoRemoveEndDate,omitempty"`
+	RemoveEndDate              *bool                                          `json:"RemoveEndDate,omitempty"`
+	TagSpecifications          []CapacityReservationFleetTagSpecification     `json:"TagSpecifications,omitempty"`
+	Tenancy                    *CapacityReservationFleetTenancy               `json:"Tenancy,omitempty"`
+	TotalTargetCapacity        *int                                           `json:"TotalTargetCapacity,omitempty"`
 }
 
 func (CapacityReservationFleet) CloudControlType() string {
@@ -290,13 +290,13 @@ type FleetLaunchTemplateSpecificationRequest struct {
 }
 
 type EbsBlockDevice struct {
-	DeleteOnTermination *bool   `json:"DeleteOnTermination,omitempty"`
-	Encrypted           *bool   `json:"Encrypted,omitempty"`
-	Iops                *int    `json:"Iops,omitempty"`
-	KmsKeyId            *string `json:"KmsKeyId,omitempty"`
-	SnapshotId          *string `json:"SnapshotId,omitempty"`
-	VolumeSize          *int    `json:"VolumeSize,omitempty"`
-	VolumeType          *string `json:"VolumeType,omitempty"`
+	DeleteOnTermination *bool                     `json:"DeleteOnTermination,omitempty"`
+	Encrypted           *bool                     `json:"Encrypted,omitempty"`
+	Iops                *int                      `json:"Iops,omitempty"`
+	KmsKeyId            *string                   `json:"KmsKeyId,omitempty"`
+	SnapshotId          *string                   `json:"SnapshotId,omitempty"`
+	VolumeSize          *int                      `json:"VolumeSize,omitempty"`
+	VolumeType          *EbsBlockDeviceVolumeType `json:"VolumeType,omitempty"`
 }
 
 type BlockDeviceMapping struct {
@@ -369,38 +369,38 @@ type VCpuCountRangeRequest struct {
 }
 
 type InstanceRequirementsRequest struct {
-	AcceleratorCount                               *AcceleratorCountRequest           `json:"AcceleratorCount,omitempty"`
-	AcceleratorManufacturers                       []string                           `json:"AcceleratorManufacturers,omitempty"`
-	AcceleratorNames                               []string                           `json:"AcceleratorNames,omitempty"`
-	AcceleratorTotalMemoryMiB                      *AcceleratorTotalMemoryMiBRequest  `json:"AcceleratorTotalMemoryMiB,omitempty"`
-	AcceleratorTypes                               []string                           `json:"AcceleratorTypes,omitempty"`
-	AllowedInstanceTypes                           []string                           `json:"AllowedInstanceTypes,omitempty"`
-	BareMetal                                      *string                            `json:"BareMetal,omitempty"`
-	BaselineEbsBandwidthMbps                       *BaselineEbsBandwidthMbpsRequest   `json:"BaselineEbsBandwidthMbps,omitempty"`
-	BaselinePerformanceFactors                     *BaselinePerformanceFactorsRequest `json:"BaselinePerformanceFactors,omitempty"`
-	BurstablePerformance                           *string                            `json:"BurstablePerformance,omitempty"`
-	CpuManufacturers                               []string                           `json:"CpuManufacturers,omitempty"`
-	ExcludedInstanceTypes                          []string                           `json:"ExcludedInstanceTypes,omitempty"`
-	InstanceGenerations                            []string                           `json:"InstanceGenerations,omitempty"`
-	LocalStorage                                   *string                            `json:"LocalStorage,omitempty"`
-	LocalStorageTypes                              []string                           `json:"LocalStorageTypes,omitempty"`
-	MaxSpotPriceAsPercentageOfOptimalOnDemandPrice *int                               `json:"MaxSpotPriceAsPercentageOfOptimalOnDemandPrice,omitempty"`
-	MemoryGiBPerVCpu                               *MemoryGiBPerVCpuRequest           `json:"MemoryGiBPerVCpu,omitempty"`
-	MemoryMiB                                      *MemoryMiBRequest                  `json:"MemoryMiB,omitempty"`
-	NetworkBandwidthGbps                           *NetworkBandwidthGbpsRequest       `json:"NetworkBandwidthGbps,omitempty"`
-	NetworkInterfaceCount                          *NetworkInterfaceCountRequest      `json:"NetworkInterfaceCount,omitempty"`
-	OnDemandMaxPricePercentageOverLowestPrice      *int                               `json:"OnDemandMaxPricePercentageOverLowestPrice,omitempty"`
-	RequireEncryptionInTransit                     *bool                              `json:"RequireEncryptionInTransit,omitempty"`
-	RequireHibernateSupport                        *bool                              `json:"RequireHibernateSupport,omitempty"`
-	SpotMaxPricePercentageOverLowestPrice          *int                               `json:"SpotMaxPricePercentageOverLowestPrice,omitempty"`
-	TotalLocalStorageGB                            *TotalLocalStorageGBRequest        `json:"TotalLocalStorageGB,omitempty"`
-	VCpuCount                                      *VCpuCountRangeRequest             `json:"VCpuCount,omitempty"`
+	AcceleratorCount                               *AcceleratorCountRequest                                  `json:"AcceleratorCount,omitempty"`
+	AcceleratorManufacturers                       []InstanceRequirementsRequestAcceleratorManufacturersItem `json:"AcceleratorManufacturers,omitempty"`
+	AcceleratorNames                               []InstanceRequirementsRequestAcceleratorNamesItem         `json:"AcceleratorNames,omitempty"`
+	AcceleratorTotalMemoryMiB                      *AcceleratorTotalMemoryMiBRequest                         `json:"AcceleratorTotalMemoryMiB,omitempty"`
+	AcceleratorTypes                               []InstanceRequirementsRequestAcceleratorTypesItem         `json:"AcceleratorTypes,omitempty"`
+	AllowedInstanceTypes                           []string                                                  `json:"AllowedInstanceTypes,omitempty"`
+	BareMetal                                      *InstanceRequirementsRequestBareMetal                     `json:"BareMetal,omitempty"`
+	BaselineEbsBandwidthMbps                       *BaselineEbsBandwidthMbpsRequest                          `json:"BaselineEbsBandwidthMbps,omitempty"`
+	BaselinePerformanceFactors                     *BaselinePerformanceFactorsRequest                        `json:"BaselinePerformanceFactors,omitempty"`
+	BurstablePerformance                           *InstanceRequirementsRequestBurstablePerformance          `json:"BurstablePerformance,omitempty"`
+	CpuManufacturers                               []InstanceRequirementsRequestCpuManufacturersItem         `json:"CpuManufacturers,omitempty"`
+	ExcludedInstanceTypes                          []string                                                  `json:"ExcludedInstanceTypes,omitempty"`
+	InstanceGenerations                            []InstanceRequirementsRequestInstanceGenerationsItem      `json:"InstanceGenerations,omitempty"`
+	LocalStorage                                   *InstanceRequirementsRequestLocalStorage                  `json:"LocalStorage,omitempty"`
+	LocalStorageTypes                              []InstanceRequirementsRequestLocalStorageTypesItem        `json:"LocalStorageTypes,omitempty"`
+	MaxSpotPriceAsPercentageOfOptimalOnDemandPrice *int                                                      `json:"MaxSpotPriceAsPercentageOfOptimalOnDemandPrice,omitempty"`
+	MemoryGiBPerVCpu                               *MemoryGiBPerVCpuRequest                                  `json:"MemoryGiBPerVCpu,omitempty"`
+	MemoryMiB                                      *MemoryMiBRequest                                         `json:"MemoryMiB,omitempty"`
+	NetworkBandwidthGbps                           *NetworkBandwidthGbpsRequest                              `json:"NetworkBandwidthGbps,omitempty"`
+	NetworkInterfaceCount                          *NetworkInterfaceCountRequest                             `json:"NetworkInterfaceCount,omitempty"`
+	OnDemandMaxPricePercentageOverLowestPrice      *int                                                      `json:"OnDemandMaxPricePercentageOverLowestPrice,omitempty"`
+	RequireEncryptionInTransit                     *bool                                                     `json:"RequireEncryptionInTransit,omitempty"`
+	RequireHibernateSupport                        *bool                                                     `json:"RequireHibernateSupport,omitempty"`
+	SpotMaxPricePercentageOverLowestPrice          *int                                                      `json:"SpotMaxPricePercentageOverLowestPrice,omitempty"`
+	TotalLocalStorageGB                            *TotalLocalStorageGBRequest                               `json:"TotalLocalStorageGB,omitempty"`
+	VCpuCount                                      *VCpuCountRangeRequest                                    `json:"VCpuCount,omitempty"`
 }
 
 type InstanceMetadataOptionsRequest struct {
-	HttpEndpoint            *string `json:"HttpEndpoint,omitempty"`
-	HttpPutResponseHopLimit *int    `json:"HttpPutResponseHopLimit,omitempty"`
-	HttpTokens              *string `json:"HttpTokens,omitempty"`
+	HttpEndpoint            *InstanceMetadataOptionsRequestHttpEndpoint `json:"HttpEndpoint,omitempty"`
+	HttpPutResponseHopLimit *int                                        `json:"HttpPutResponseHopLimit,omitempty"`
+	HttpTokens              *InstanceMetadataOptionsRequestHttpTokens   `json:"HttpTokens,omitempty"`
 }
 
 type Ipv6AddressRequest struct {
@@ -463,7 +463,7 @@ type FleetLaunchTemplateConfigRequest struct {
 }
 
 type CapacityReservationOptionsRequest struct {
-	UsageStrategy *string `json:"UsageStrategy,omitempty"`
+	UsageStrategy *CapacityReservationOptionsRequestUsageStrategy `json:"UsageStrategy,omitempty"`
 }
 
 type OnDemandOptionsRequest struct {
@@ -476,12 +476,12 @@ type OnDemandOptionsRequest struct {
 }
 
 type ReservedCapacityOptionsRequest struct {
-	ReservationTypes []string `json:"ReservationTypes,omitempty"`
+	ReservationTypes []ReservedCapacityOptionsRequestReservationTypesItem `json:"ReservationTypes,omitempty"`
 }
 
 type CapacityRebalance struct {
-	ReplacementStrategy *string `json:"ReplacementStrategy,omitempty"`
-	TerminationDelay    *int    `json:"TerminationDelay,omitempty"`
+	ReplacementStrategy *CapacityRebalanceReplacementStrategy `json:"ReplacementStrategy,omitempty"`
+	TerminationDelay    *int                                  `json:"TerminationDelay,omitempty"`
 }
 
 type MaintenanceStrategies struct {
@@ -489,14 +489,14 @@ type MaintenanceStrategies struct {
 }
 
 type SpotOptionsRequest struct {
-	AllocationStrategy           *string                `json:"AllocationStrategy,omitempty"`
-	InstanceInterruptionBehavior *string                `json:"InstanceInterruptionBehavior,omitempty"`
-	InstancePoolsToUseCount      *int                   `json:"InstancePoolsToUseCount,omitempty"`
-	MaintenanceStrategies        *MaintenanceStrategies `json:"MaintenanceStrategies,omitempty"`
-	MaxTotalPrice                *string                `json:"MaxTotalPrice,omitempty"`
-	MinTargetCapacity            *int                   `json:"MinTargetCapacity,omitempty"`
-	SingleAvailabilityZone       *bool                  `json:"SingleAvailabilityZone,omitempty"`
-	SingleInstanceType           *bool                  `json:"SingleInstanceType,omitempty"`
+	AllocationStrategy           *SpotOptionsRequestAllocationStrategy           `json:"AllocationStrategy,omitempty"`
+	InstanceInterruptionBehavior *SpotOptionsRequestInstanceInterruptionBehavior `json:"InstanceInterruptionBehavior,omitempty"`
+	InstancePoolsToUseCount      *int                                            `json:"InstancePoolsToUseCount,omitempty"`
+	MaintenanceStrategies        *MaintenanceStrategies                          `json:"MaintenanceStrategies,omitempty"`
+	MaxTotalPrice                *string                                         `json:"MaxTotalPrice,omitempty"`
+	MinTargetCapacity            *int                                            `json:"MinTargetCapacity,omitempty"`
+	SingleAvailabilityZone       *bool                                           `json:"SingleAvailabilityZone,omitempty"`
+	SingleInstanceType           *bool                                           `json:"SingleInstanceType,omitempty"`
 }
 
 type EC2FleetTag struct {
@@ -505,33 +505,33 @@ type EC2FleetTag struct {
 }
 
 type EC2FleetTagSpecification struct {
-	ResourceType *string       `json:"ResourceType,omitempty"`
-	Tags         []EC2FleetTag `json:"Tags,omitempty"`
+	ResourceType *EC2FleetTagSpecificationResourceType `json:"ResourceType,omitempty"`
+	Tags         []EC2FleetTag                         `json:"Tags,omitempty"`
 }
 
 type TargetCapacitySpecificationRequest struct {
-	DefaultTargetCapacityType *string `json:"DefaultTargetCapacityType,omitempty"`
-	OnDemandTargetCapacity    *int    `json:"OnDemandTargetCapacity,omitempty"`
-	SpotTargetCapacity        *int    `json:"SpotTargetCapacity,omitempty"`
-	TargetCapacityUnitType    *string `json:"TargetCapacityUnitType,omitempty"`
-	TotalTargetCapacity       *int    `json:"TotalTargetCapacity,omitempty"`
+	DefaultTargetCapacityType *TargetCapacitySpecificationRequestDefaultTargetCapacityType `json:"DefaultTargetCapacityType,omitempty"`
+	OnDemandTargetCapacity    *int                                                         `json:"OnDemandTargetCapacity,omitempty"`
+	SpotTargetCapacity        *int                                                         `json:"SpotTargetCapacity,omitempty"`
+	TargetCapacityUnitType    *TargetCapacitySpecificationRequestTargetCapacityUnitType    `json:"TargetCapacityUnitType,omitempty"`
+	TotalTargetCapacity       *int                                                         `json:"TotalTargetCapacity,omitempty"`
 }
 
 type EC2Fleet struct {
-	Context                          *string                             `json:"Context,omitempty"`
-	ExcessCapacityTerminationPolicy  *string                             `json:"ExcessCapacityTerminationPolicy,omitempty"`
-	FleetId                          *string                             `json:"FleetId,omitempty"`
-	LaunchTemplateConfigs            []FleetLaunchTemplateConfigRequest  `json:"LaunchTemplateConfigs,omitempty"`
-	OnDemandOptions                  *OnDemandOptionsRequest             `json:"OnDemandOptions,omitempty"`
-	ReplaceUnhealthyInstances        *bool                               `json:"ReplaceUnhealthyInstances,omitempty"`
-	ReservedCapacityOptions          *ReservedCapacityOptionsRequest     `json:"ReservedCapacityOptions,omitempty"`
-	SpotOptions                      *SpotOptionsRequest                 `json:"SpotOptions,omitempty"`
-	TagSpecifications                []EC2FleetTagSpecification          `json:"TagSpecifications,omitempty"`
-	TargetCapacitySpecification      *TargetCapacitySpecificationRequest `json:"TargetCapacitySpecification,omitempty"`
-	TerminateInstancesWithExpiration *bool                               `json:"TerminateInstancesWithExpiration,omitempty"`
-	Type                             *string                             `json:"Type,omitempty"`
-	ValidFrom                        *string                             `json:"ValidFrom,omitempty"`
-	ValidUntil                       *string                             `json:"ValidUntil,omitempty"`
+	Context                          *string                                  `json:"Context,omitempty"`
+	ExcessCapacityTerminationPolicy  *EC2FleetExcessCapacityTerminationPolicy `json:"ExcessCapacityTerminationPolicy,omitempty"`
+	FleetId                          *string                                  `json:"FleetId,omitempty"`
+	LaunchTemplateConfigs            []FleetLaunchTemplateConfigRequest       `json:"LaunchTemplateConfigs,omitempty"`
+	OnDemandOptions                  *OnDemandOptionsRequest                  `json:"OnDemandOptions,omitempty"`
+	ReplaceUnhealthyInstances        *bool                                    `json:"ReplaceUnhealthyInstances,omitempty"`
+	ReservedCapacityOptions          *ReservedCapacityOptionsRequest          `json:"ReservedCapacityOptions,omitempty"`
+	SpotOptions                      *SpotOptionsRequest                      `json:"SpotOptions,omitempty"`
+	TagSpecifications                []EC2FleetTagSpecification               `json:"TagSpecifications,omitempty"`
+	TargetCapacitySpecification      *TargetCapacitySpecificationRequest      `json:"TargetCapacitySpecification,omitempty"`
+	TerminateInstancesWithExpiration *bool                                    `json:"TerminateInstancesWithExpiration,omitempty"`
+	Type                             *EC2FleetType                            `json:"Type,omitempty"`
+	ValidFrom                        *string                                  `json:"ValidFrom,omitempty"`
+	ValidUntil                       *string                                  `json:"ValidUntil,omitempty"`
 }
 
 func (EC2Fleet) CloudControlType() string { return "AWS::EC2::EC2Fleet" }
@@ -595,9 +595,9 @@ func (EnclaveCertificateIamRoleAssociation) CloudControlType() string {
 }
 
 type FlowLogDestinationOptions struct {
-	FileFormat               *string `json:"FileFormat,omitempty"`
-	HiveCompatiblePartitions *bool   `json:"HiveCompatiblePartitions,omitempty"`
-	PerHourPartition         *bool   `json:"PerHourPartition,omitempty"`
+	FileFormat               *FlowLogDestinationOptionsFileFormat `json:"FileFormat,omitempty"`
+	HiveCompatiblePartitions *bool                                `json:"HiveCompatiblePartitions,omitempty"`
+	PerHourPartition         *bool                                `json:"PerHourPartition,omitempty"`
 }
 
 type TagFieldSpecification struct {
@@ -616,15 +616,15 @@ type FlowLog struct {
 	DestinationOptions       *FlowLogDestinationOptions `json:"DestinationOptions,omitempty"`
 	Id                       *string                    `json:"Id,omitempty"`
 	LogDestination           *string                    `json:"LogDestination,omitempty"`
-	LogDestinationType       *string                    `json:"LogDestinationType,omitempty"`
+	LogDestinationType       *FlowLogLogDestinationType `json:"LogDestinationType,omitempty"`
 	LogFormat                *string                    `json:"LogFormat,omitempty"`
 	LogGroupName             *string                    `json:"LogGroupName,omitempty"`
 	MaxAggregationInterval   *int                       `json:"MaxAggregationInterval,omitempty"`
 	ResourceId               *string                    `json:"ResourceId,omitempty"`
-	ResourceType             *string                    `json:"ResourceType,omitempty"`
+	ResourceType             *FlowLogResourceType       `json:"ResourceType,omitempty"`
 	TagFieldSpecifications   []TagFieldSpecification    `json:"TagFieldSpecifications,omitempty"`
 	Tags                     []FlowLogTag               `json:"Tags,omitempty"`
-	TrafficType              *string                    `json:"TrafficType,omitempty"`
+	TrafficType              *FlowLogTrafficType        `json:"TrafficType,omitempty"`
 }
 
 func (FlowLog) CloudControlType() string { return "AWS::EC2::FlowLog" }
@@ -645,16 +645,16 @@ type HostTag struct {
 }
 
 type Host struct {
-	AssetId          *string   `json:"AssetId,omitempty"`
-	AutoPlacement    *string   `json:"AutoPlacement,omitempty"`
-	AvailabilityZone *string   `json:"AvailabilityZone,omitempty"`
-	HostId           *string   `json:"HostId,omitempty"`
-	HostMaintenance  *string   `json:"HostMaintenance,omitempty"`
-	HostRecovery     *string   `json:"HostRecovery,omitempty"`
-	InstanceFamily   *string   `json:"InstanceFamily,omitempty"`
-	InstanceType     *string   `json:"InstanceType,omitempty"`
-	OutpostArn       *string   `json:"OutpostArn,omitempty"`
-	Tags             []HostTag `json:"Tags,omitempty"`
+	AssetId          *string              `json:"AssetId,omitempty"`
+	AutoPlacement    *HostAutoPlacement   `json:"AutoPlacement,omitempty"`
+	AvailabilityZone *string              `json:"AvailabilityZone,omitempty"`
+	HostId           *string              `json:"HostId,omitempty"`
+	HostMaintenance  *HostHostMaintenance `json:"HostMaintenance,omitempty"`
+	HostRecovery     *HostHostRecovery    `json:"HostRecovery,omitempty"`
+	InstanceFamily   *string              `json:"InstanceFamily,omitempty"`
+	InstanceType     *string              `json:"InstanceType,omitempty"`
+	OutpostArn       *string              `json:"OutpostArn,omitempty"`
+	Tags             []HostTag            `json:"Tags,omitempty"`
 }
 
 func (Host) CloudControlType() string { return "AWS::EC2::Host" }
@@ -680,14 +680,14 @@ type IPAM struct {
 	Description                                          *string                           `json:"Description,omitempty"`
 	EnablePrivateGua                                     *bool                             `json:"EnablePrivateGua,omitempty"`
 	IpamId                                               *string                           `json:"IpamId,omitempty"`
-	MeteredAccount                                       *string                           `json:"MeteredAccount,omitempty"`
+	MeteredAccount                                       *IPAMMeteredAccount               `json:"MeteredAccount,omitempty"`
 	OperatingRegions                                     []IpamOperatingRegion             `json:"OperatingRegions,omitempty"`
 	PrivateDefaultScopeId                                *string                           `json:"PrivateDefaultScopeId,omitempty"`
 	PublicDefaultScopeId                                 *string                           `json:"PublicDefaultScopeId,omitempty"`
 	ResourceDiscoveryAssociationCount                    *int                              `json:"ResourceDiscoveryAssociationCount,omitempty"`
 	ScopeCount                                           *int                              `json:"ScopeCount,omitempty"`
 	Tags                                                 []IPAMTag                         `json:"Tags,omitempty"`
-	Tier                                                 *string                           `json:"Tier,omitempty"`
+	Tier                                                 *IPAMTier                         `json:"Tier,omitempty"`
 }
 
 func (IPAM) CloudControlType() string { return "AWS::EC2::IPAM" }
@@ -719,30 +719,30 @@ type SourceResource struct {
 }
 
 type IPAMPool struct {
-	AddressFamily                  *string           `json:"AddressFamily,omitempty"`
-	AllocationDefaultNetmaskLength *int              `json:"AllocationDefaultNetmaskLength,omitempty"`
-	AllocationMaxNetmaskLength     *int              `json:"AllocationMaxNetmaskLength,omitempty"`
-	AllocationMinNetmaskLength     *int              `json:"AllocationMinNetmaskLength,omitempty"`
-	AllocationResourceTags         []IPAMPoolTag     `json:"AllocationResourceTags,omitempty"`
-	Arn                            *string           `json:"Arn,omitempty"`
-	AutoImport                     *bool             `json:"AutoImport,omitempty"`
-	AwsService                     *string           `json:"AwsService,omitempty"`
-	Description                    *string           `json:"Description,omitempty"`
-	IpamArn                        *string           `json:"IpamArn,omitempty"`
-	IpamPoolId                     *string           `json:"IpamPoolId,omitempty"`
-	IpamScopeArn                   *string           `json:"IpamScopeArn,omitempty"`
-	IpamScopeId                    *string           `json:"IpamScopeId,omitempty"`
-	IpamScopeType                  *string           `json:"IpamScopeType,omitempty"`
-	Locale                         *string           `json:"Locale,omitempty"`
-	PoolDepth                      *int              `json:"PoolDepth,omitempty"`
-	ProvisionedCidrs               []ProvisionedCidr `json:"ProvisionedCidrs,omitempty"`
-	PublicIpSource                 *string           `json:"PublicIpSource,omitempty"`
-	PubliclyAdvertisable           *bool             `json:"PubliclyAdvertisable,omitempty"`
-	SourceIpamPoolId               *string           `json:"SourceIpamPoolId,omitempty"`
-	SourceResource                 *SourceResource   `json:"SourceResource,omitempty"`
-	State                          *string           `json:"State,omitempty"`
-	StateMessage                   *string           `json:"StateMessage,omitempty"`
-	Tags                           []IPAMPoolTag     `json:"Tags,omitempty"`
+	AddressFamily                  *string                 `json:"AddressFamily,omitempty"`
+	AllocationDefaultNetmaskLength *int                    `json:"AllocationDefaultNetmaskLength,omitempty"`
+	AllocationMaxNetmaskLength     *int                    `json:"AllocationMaxNetmaskLength,omitempty"`
+	AllocationMinNetmaskLength     *int                    `json:"AllocationMinNetmaskLength,omitempty"`
+	AllocationResourceTags         []IPAMPoolTag           `json:"AllocationResourceTags,omitempty"`
+	Arn                            *string                 `json:"Arn,omitempty"`
+	AutoImport                     *bool                   `json:"AutoImport,omitempty"`
+	AwsService                     *IPAMPoolAwsService     `json:"AwsService,omitempty"`
+	Description                    *string                 `json:"Description,omitempty"`
+	IpamArn                        *string                 `json:"IpamArn,omitempty"`
+	IpamPoolId                     *string                 `json:"IpamPoolId,omitempty"`
+	IpamScopeArn                   *string                 `json:"IpamScopeArn,omitempty"`
+	IpamScopeId                    *string                 `json:"IpamScopeId,omitempty"`
+	IpamScopeType                  *IPAMPoolIpamScopeType  `json:"IpamScopeType,omitempty"`
+	Locale                         *string                 `json:"Locale,omitempty"`
+	PoolDepth                      *int                    `json:"PoolDepth,omitempty"`
+	ProvisionedCidrs               []ProvisionedCidr       `json:"ProvisionedCidrs,omitempty"`
+	PublicIpSource                 *IPAMPoolPublicIpSource `json:"PublicIpSource,omitempty"`
+	PubliclyAdvertisable           *bool                   `json:"PubliclyAdvertisable,omitempty"`
+	SourceIpamPoolId               *string                 `json:"SourceIpamPoolId,omitempty"`
+	SourceResource                 *SourceResource         `json:"SourceResource,omitempty"`
+	State                          *IPAMPoolState          `json:"State,omitempty"`
+	StateMessage                   *string                 `json:"StateMessage,omitempty"`
+	Tags                           []IPAMPoolTag           `json:"Tags,omitempty"`
 }
 
 func (IPAMPool) CloudControlType() string { return "AWS::EC2::IPAMPool" }
@@ -763,21 +763,21 @@ type IPAMPrefixListResolverTag struct {
 }
 
 type IpamPrefixListResolverRuleCondition struct {
-	Cidr           *string                    `json:"Cidr,omitempty"`
-	IpamPoolId     *string                    `json:"IpamPoolId,omitempty"`
-	Operation      *string                    `json:"Operation,omitempty"`
-	ResourceId     *string                    `json:"ResourceId,omitempty"`
-	ResourceOwner  *string                    `json:"ResourceOwner,omitempty"`
-	ResourceRegion *string                    `json:"ResourceRegion,omitempty"`
-	ResourceTag    *IPAMPrefixListResolverTag `json:"ResourceTag,omitempty"`
+	Cidr           *string                                       `json:"Cidr,omitempty"`
+	IpamPoolId     *string                                       `json:"IpamPoolId,omitempty"`
+	Operation      *IpamPrefixListResolverRuleConditionOperation `json:"Operation,omitempty"`
+	ResourceId     *string                                       `json:"ResourceId,omitempty"`
+	ResourceOwner  *string                                       `json:"ResourceOwner,omitempty"`
+	ResourceRegion *string                                       `json:"ResourceRegion,omitempty"`
+	ResourceTag    *IPAMPrefixListResolverTag                    `json:"ResourceTag,omitempty"`
 }
 
 type IpamPrefixListResolverRule struct {
-	Conditions   []IpamPrefixListResolverRuleCondition `json:"Conditions,omitempty"`
-	IpamScopeId  *string                               `json:"IpamScopeId,omitempty"`
-	ResourceType *string                               `json:"ResourceType,omitempty"`
-	RuleType     *string                               `json:"RuleType,omitempty"`
-	StaticCidr   *string                               `json:"StaticCidr,omitempty"`
+	Conditions   []IpamPrefixListResolverRuleCondition   `json:"Conditions,omitempty"`
+	IpamScopeId  *string                                 `json:"IpamScopeId,omitempty"`
+	ResourceType *IpamPrefixListResolverRuleResourceType `json:"ResourceType,omitempty"`
+	RuleType     *IpamPrefixListResolverRuleRuleType     `json:"RuleType,omitempty"`
+	StaticCidr   *string                                 `json:"StaticCidr,omitempty"`
 }
 
 type IPAMPrefixListResolver struct {
@@ -865,8 +865,8 @@ func (IPAMResourceDiscoveryAssociation) CloudControlType() string {
 }
 
 type IpamScopeExternalAuthorityConfiguration struct {
-	ExternalResourceIdentifier     *string `json:"ExternalResourceIdentifier,omitempty"`
-	IpamScopeExternalAuthorityType *string `json:"IpamScopeExternalAuthorityType,omitempty"`
+	ExternalResourceIdentifier     *string                                                                `json:"ExternalResourceIdentifier,omitempty"`
+	IpamScopeExternalAuthorityType *IpamScopeExternalAuthorityConfigurationIpamScopeExternalAuthorityType `json:"IpamScopeExternalAuthorityType,omitempty"`
 }
 
 type IPAMScopeTag struct {
@@ -881,7 +881,7 @@ type IPAMScope struct {
 	IpamArn                        *string                                  `json:"IpamArn,omitempty"`
 	IpamId                         *string                                  `json:"IpamId,omitempty"`
 	IpamScopeId                    *string                                  `json:"IpamScopeId,omitempty"`
-	IpamScopeType                  *string                                  `json:"IpamScopeType,omitempty"`
+	IpamScopeType                  *IPAMScopeIpamScopeType                  `json:"IpamScopeType,omitempty"`
 	IsDefault                      *bool                                    `json:"IsDefault,omitempty"`
 	PoolCount                      *int                                     `json:"PoolCount,omitempty"`
 	Tags                           []IPAMScopeTag                           `json:"Tags,omitempty"`
@@ -947,11 +947,11 @@ type LicenseSpecification struct {
 }
 
 type MetadataOptions struct {
-	HttpEndpoint            *string `json:"HttpEndpoint,omitempty"`
-	HttpProtocolIpv6        *string `json:"HttpProtocolIpv6,omitempty"`
-	HttpPutResponseHopLimit *int    `json:"HttpPutResponseHopLimit,omitempty"`
-	HttpTokens              *string `json:"HttpTokens,omitempty"`
-	InstanceMetadataTags    *string `json:"InstanceMetadataTags,omitempty"`
+	HttpEndpoint            *MetadataOptionsHttpEndpoint         `json:"HttpEndpoint,omitempty"`
+	HttpProtocolIpv6        *MetadataOptionsHttpProtocolIpv6     `json:"HttpProtocolIpv6,omitempty"`
+	HttpPutResponseHopLimit *int                                 `json:"HttpPutResponseHopLimit,omitempty"`
+	HttpTokens              *MetadataOptionsHttpTokens           `json:"HttpTokens,omitempty"`
+	InstanceMetadataTags    *MetadataOptionsInstanceMetadataTags `json:"InstanceMetadataTags,omitempty"`
 }
 
 type EnaSrdUdpSpecification struct {
@@ -986,9 +986,9 @@ type NetworkInterface struct {
 }
 
 type PrivateDnsNameOptions struct {
-	EnableResourceNameDnsAAAARecord *bool   `json:"EnableResourceNameDnsAAAARecord,omitempty"`
-	EnableResourceNameDnsARecord    *bool   `json:"EnableResourceNameDnsARecord,omitempty"`
-	HostnameType                    *string `json:"HostnameType,omitempty"`
+	EnableResourceNameDnsAAAARecord *bool                              `json:"EnableResourceNameDnsAAAARecord,omitempty"`
+	EnableResourceNameDnsARecord    *bool                              `json:"EnableResourceNameDnsARecord,omitempty"`
+	HostnameType                    *PrivateDnsNameOptionsHostnameType `json:"HostnameType,omitempty"`
 }
 
 type AssociationParameter struct {
@@ -1018,7 +1018,7 @@ type Volume struct {
 
 type Instance struct {
 	AdditionalInfo                    *string                       `json:"AdditionalInfo,omitempty"`
-	Affinity                          *string                       `json:"Affinity,omitempty"`
+	Affinity                          *InstanceAffinity             `json:"Affinity,omitempty"`
 	AvailabilityZone                  *string                       `json:"AvailabilityZone,omitempty"`
 	BlockDeviceMappings               []InstanceBlockDeviceMapping  `json:"BlockDeviceMappings,omitempty"`
 	CpuOptions                        *InstanceCpuOptions           `json:"CpuOptions,omitempty"`
@@ -1096,7 +1096,7 @@ type InstanceConnectEndpoint struct {
 	PreserveClientIp           *bool                                  `json:"PreserveClientIp,omitempty"`
 	PublicDnsNames             *InstanceConnectEndpointPublicDnsNames `json:"PublicDnsNames,omitempty"`
 	SecurityGroupIds           []string                               `json:"SecurityGroupIds,omitempty"`
-	State                      *string                                `json:"State,omitempty"`
+	State                      *InstanceConnectEndpointState          `json:"State,omitempty"`
 	StateMessage               *string                                `json:"StateMessage,omitempty"`
 	SubnetId                   *string                                `json:"SubnetId,omitempty"`
 	Tags                       []InstanceConnectEndpointTag           `json:"Tags,omitempty"`
@@ -1133,13 +1133,13 @@ type KeyPairTag struct {
 }
 
 type KeyPair struct {
-	KeyFingerprint    *string      `json:"KeyFingerprint,omitempty"`
-	KeyFormat         *string      `json:"KeyFormat,omitempty"`
-	KeyName           *string      `json:"KeyName,omitempty"`
-	KeyPairId         *string      `json:"KeyPairId,omitempty"`
-	KeyType           *string      `json:"KeyType,omitempty"`
-	PublicKeyMaterial *string      `json:"PublicKeyMaterial,omitempty"`
-	Tags              []KeyPairTag `json:"Tags,omitempty"`
+	KeyFingerprint    *string           `json:"KeyFingerprint,omitempty"`
+	KeyFormat         *KeyPairKeyFormat `json:"KeyFormat,omitempty"`
+	KeyName           *string           `json:"KeyName,omitempty"`
+	KeyPairId         *string           `json:"KeyPairId,omitempty"`
+	KeyType           *KeyPairKeyType   `json:"KeyType,omitempty"`
+	PublicKeyMaterial *string           `json:"PublicKeyMaterial,omitempty"`
+	Tags              []KeyPairTag      `json:"Tags,omitempty"`
 }
 
 func (KeyPair) CloudControlType() string { return "AWS::EC2::KeyPair" }
@@ -1175,10 +1175,10 @@ type CapacityReservationSpecification struct {
 }
 
 type CpuOptions struct {
-	AmdSevSnp            *string `json:"AmdSevSnp,omitempty"`
-	CoreCount            *int    `json:"CoreCount,omitempty"`
-	NestedVirtualization *string `json:"NestedVirtualization,omitempty"`
-	ThreadsPerCore       *int    `json:"ThreadsPerCore,omitempty"`
+	AmdSevSnp            *CpuOptionsAmdSevSnp            `json:"AmdSevSnp,omitempty"`
+	CoreCount            *int                            `json:"CoreCount,omitempty"`
+	NestedVirtualization *CpuOptionsNestedVirtualization `json:"NestedVirtualization,omitempty"`
+	ThreadsPerCore       *int                            `json:"ThreadsPerCore,omitempty"`
 }
 
 type CreditSpecification struct {
@@ -1641,13 +1641,13 @@ type NetworkAclEntry struct {
 func (NetworkAclEntry) CloudControlType() string { return "AWS::EC2::NetworkAclEntry" }
 
 type PacketHeaderStatementRequest struct {
-	DestinationAddresses   []string `json:"DestinationAddresses,omitempty"`
-	DestinationPorts       []string `json:"DestinationPorts,omitempty"`
-	DestinationPrefixLists []string `json:"DestinationPrefixLists,omitempty"`
-	Protocols              []string `json:"Protocols,omitempty"`
-	SourceAddresses        []string `json:"SourceAddresses,omitempty"`
-	SourcePorts            []string `json:"SourcePorts,omitempty"`
-	SourcePrefixLists      []string `json:"SourcePrefixLists,omitempty"`
+	DestinationAddresses   []string   `json:"DestinationAddresses,omitempty"`
+	DestinationPorts       []string   `json:"DestinationPorts,omitempty"`
+	DestinationPrefixLists []string   `json:"DestinationPrefixLists,omitempty"`
+	Protocols              []Protocol `json:"Protocols,omitempty"`
+	SourceAddresses        []string   `json:"SourceAddresses,omitempty"`
+	SourcePorts            []string   `json:"SourcePorts,omitempty"`
+	SourcePrefixLists      []string   `json:"SourcePrefixLists,omitempty"`
 }
 
 type ResourceStatementRequest struct {
@@ -1695,16 +1695,16 @@ type NetworkInsightsAccessScopeAnalysisTag struct {
 }
 
 type NetworkInsightsAccessScopeAnalysis struct {
-	AnalyzedEniCount                      *int                                    `json:"AnalyzedEniCount,omitempty"`
-	EndDate                               *string                                 `json:"EndDate,omitempty"`
-	FindingsFound                         *string                                 `json:"FindingsFound,omitempty"`
-	NetworkInsightsAccessScopeAnalysisArn *string                                 `json:"NetworkInsightsAccessScopeAnalysisArn,omitempty"`
-	NetworkInsightsAccessScopeAnalysisId  *string                                 `json:"NetworkInsightsAccessScopeAnalysisId,omitempty"`
-	NetworkInsightsAccessScopeId          *string                                 `json:"NetworkInsightsAccessScopeId,omitempty"`
-	StartDate                             *string                                 `json:"StartDate,omitempty"`
-	Status                                *string                                 `json:"Status,omitempty"`
-	StatusMessage                         *string                                 `json:"StatusMessage,omitempty"`
-	Tags                                  []NetworkInsightsAccessScopeAnalysisTag `json:"Tags,omitempty"`
+	AnalyzedEniCount                      *int                                             `json:"AnalyzedEniCount,omitempty"`
+	EndDate                               *string                                          `json:"EndDate,omitempty"`
+	FindingsFound                         *NetworkInsightsAccessScopeAnalysisFindingsFound `json:"FindingsFound,omitempty"`
+	NetworkInsightsAccessScopeAnalysisArn *string                                          `json:"NetworkInsightsAccessScopeAnalysisArn,omitempty"`
+	NetworkInsightsAccessScopeAnalysisId  *string                                          `json:"NetworkInsightsAccessScopeAnalysisId,omitempty"`
+	NetworkInsightsAccessScopeId          *string                                          `json:"NetworkInsightsAccessScopeId,omitempty"`
+	StartDate                             *string                                          `json:"StartDate,omitempty"`
+	Status                                *NetworkInsightsAccessScopeAnalysisStatus        `json:"Status,omitempty"`
+	StatusMessage                         *string                                          `json:"StatusMessage,omitempty"`
+	Tags                                  []NetworkInsightsAccessScopeAnalysisTag          `json:"Tags,omitempty"`
 }
 
 func (NetworkInsightsAccessScopeAnalysis) CloudControlType() string {
@@ -1875,22 +1875,22 @@ type NetworkInsightsAnalysisTag struct {
 }
 
 type NetworkInsightsAnalysis struct {
-	AdditionalAccounts         []string                     `json:"AdditionalAccounts,omitempty"`
-	AlternatePathHints         []AlternatePathHint          `json:"AlternatePathHints,omitempty"`
-	Explanations               []Explanation                `json:"Explanations,omitempty"`
-	FilterInArns               []string                     `json:"FilterInArns,omitempty"`
-	FilterOutArns              []string                     `json:"FilterOutArns,omitempty"`
-	ForwardPathComponents      []PathComponent              `json:"ForwardPathComponents,omitempty"`
-	NetworkInsightsAnalysisArn *string                      `json:"NetworkInsightsAnalysisArn,omitempty"`
-	NetworkInsightsAnalysisId  *string                      `json:"NetworkInsightsAnalysisId,omitempty"`
-	NetworkInsightsPathId      *string                      `json:"NetworkInsightsPathId,omitempty"`
-	NetworkPathFound           *bool                        `json:"NetworkPathFound,omitempty"`
-	ReturnPathComponents       []PathComponent              `json:"ReturnPathComponents,omitempty"`
-	StartDate                  *string                      `json:"StartDate,omitempty"`
-	Status                     *string                      `json:"Status,omitempty"`
-	StatusMessage              *string                      `json:"StatusMessage,omitempty"`
-	SuggestedAccounts          []string                     `json:"SuggestedAccounts,omitempty"`
-	Tags                       []NetworkInsightsAnalysisTag `json:"Tags,omitempty"`
+	AdditionalAccounts         []string                       `json:"AdditionalAccounts,omitempty"`
+	AlternatePathHints         []AlternatePathHint            `json:"AlternatePathHints,omitempty"`
+	Explanations               []Explanation                  `json:"Explanations,omitempty"`
+	FilterInArns               []string                       `json:"FilterInArns,omitempty"`
+	FilterOutArns              []string                       `json:"FilterOutArns,omitempty"`
+	ForwardPathComponents      []PathComponent                `json:"ForwardPathComponents,omitempty"`
+	NetworkInsightsAnalysisArn *string                        `json:"NetworkInsightsAnalysisArn,omitempty"`
+	NetworkInsightsAnalysisId  *string                        `json:"NetworkInsightsAnalysisId,omitempty"`
+	NetworkInsightsPathId      *string                        `json:"NetworkInsightsPathId,omitempty"`
+	NetworkPathFound           *bool                          `json:"NetworkPathFound,omitempty"`
+	ReturnPathComponents       []PathComponent                `json:"ReturnPathComponents,omitempty"`
+	StartDate                  *string                        `json:"StartDate,omitempty"`
+	Status                     *NetworkInsightsAnalysisStatus `json:"Status,omitempty"`
+	StatusMessage              *string                        `json:"StatusMessage,omitempty"`
+	SuggestedAccounts          []string                       `json:"SuggestedAccounts,omitempty"`
+	Tags                       []NetworkInsightsAnalysisTag   `json:"Tags,omitempty"`
 }
 
 func (NetworkInsightsAnalysis) CloudControlType() string { return "AWS::EC2::NetworkInsightsAnalysis" }
@@ -1913,20 +1913,20 @@ type NetworkInsightsPathTag struct {
 }
 
 type NetworkInsightsPath struct {
-	CreatedDate            *string                  `json:"CreatedDate,omitempty"`
-	Destination            *string                  `json:"Destination,omitempty"`
-	DestinationArn         *string                  `json:"DestinationArn,omitempty"`
-	DestinationIp          *string                  `json:"DestinationIp,omitempty"`
-	DestinationPort        *int                     `json:"DestinationPort,omitempty"`
-	FilterAtDestination    *PathFilter              `json:"FilterAtDestination,omitempty"`
-	FilterAtSource         *PathFilter              `json:"FilterAtSource,omitempty"`
-	NetworkInsightsPathArn *string                  `json:"NetworkInsightsPathArn,omitempty"`
-	NetworkInsightsPathId  *string                  `json:"NetworkInsightsPathId,omitempty"`
-	Protocol               *string                  `json:"Protocol,omitempty"`
-	Source                 *string                  `json:"Source,omitempty"`
-	SourceArn              *string                  `json:"SourceArn,omitempty"`
-	SourceIp               *string                  `json:"SourceIp,omitempty"`
-	Tags                   []NetworkInsightsPathTag `json:"Tags,omitempty"`
+	CreatedDate            *string                      `json:"CreatedDate,omitempty"`
+	Destination            *string                      `json:"Destination,omitempty"`
+	DestinationArn         *string                      `json:"DestinationArn,omitempty"`
+	DestinationIp          *string                      `json:"DestinationIp,omitempty"`
+	DestinationPort        *int                         `json:"DestinationPort,omitempty"`
+	FilterAtDestination    *PathFilter                  `json:"FilterAtDestination,omitempty"`
+	FilterAtSource         *PathFilter                  `json:"FilterAtSource,omitempty"`
+	NetworkInsightsPathArn *string                      `json:"NetworkInsightsPathArn,omitempty"`
+	NetworkInsightsPathId  *string                      `json:"NetworkInsightsPathId,omitempty"`
+	Protocol               *NetworkInsightsPathProtocol `json:"Protocol,omitempty"`
+	Source                 *string                      `json:"Source,omitempty"`
+	SourceArn              *string                      `json:"SourceArn,omitempty"`
+	SourceIp               *string                      `json:"SourceIp,omitempty"`
+	Tags                   []NetworkInsightsPathTag     `json:"Tags,omitempty"`
 }
 
 func (NetworkInsightsPath) CloudControlType() string { return "AWS::EC2::NetworkInsightsPath" }
@@ -1967,30 +1967,30 @@ type NetworkInterfaceTag struct {
 }
 
 type NetworkInterfaceNetworkInterface struct {
-	ConnectionTrackingSpecification      *NetworkInterfaceConnectionTrackingSpecification `json:"ConnectionTrackingSpecification,omitempty"`
-	Description                          *string                                          `json:"Description,omitempty"`
-	EnablePrimaryIpv6                    *bool                                            `json:"EnablePrimaryIpv6,omitempty"`
-	GroupSet                             []string                                         `json:"GroupSet,omitempty"`
-	Id                                   *string                                          `json:"Id,omitempty"`
-	InterfaceType                        *string                                          `json:"InterfaceType,omitempty"`
-	Ipv4PrefixCount                      *int                                             `json:"Ipv4PrefixCount,omitempty"`
-	Ipv4Prefixes                         []NetworkInterfaceIpv4PrefixSpecification        `json:"Ipv4Prefixes,omitempty"`
-	Ipv6AddressCount                     *int                                             `json:"Ipv6AddressCount,omitempty"`
-	Ipv6Addresses                        []NetworkInterfaceInstanceIpv6Address            `json:"Ipv6Addresses,omitempty"`
-	Ipv6PrefixCount                      *int                                             `json:"Ipv6PrefixCount,omitempty"`
-	Ipv6Prefixes                         []NetworkInterfaceIpv6PrefixSpecification        `json:"Ipv6Prefixes,omitempty"`
-	PrimaryIpv6Address                   *string                                          `json:"PrimaryIpv6Address,omitempty"`
-	PrimaryPrivateIpAddress              *string                                          `json:"PrimaryPrivateIpAddress,omitempty"`
-	PrivateIpAddress                     *string                                          `json:"PrivateIpAddress,omitempty"`
-	PrivateIpAddresses                   []NetworkInterfacePrivateIpAddressSpecification  `json:"PrivateIpAddresses,omitempty"`
-	PublicIpDnsHostnameTypeSpecification *string                                          `json:"PublicIpDnsHostnameTypeSpecification,omitempty"`
-	PublicIpDnsNameOptions               *PublicIpDnsNameOptions                          `json:"PublicIpDnsNameOptions,omitempty"`
-	SecondaryPrivateIpAddressCount       *int                                             `json:"SecondaryPrivateIpAddressCount,omitempty"`
-	SecondaryPrivateIpAddresses          []string                                         `json:"SecondaryPrivateIpAddresses,omitempty"`
-	SourceDestCheck                      *bool                                            `json:"SourceDestCheck,omitempty"`
-	SubnetId                             *string                                          `json:"SubnetId,omitempty"`
-	Tags                                 []NetworkInterfaceTag                            `json:"Tags,omitempty"`
-	VpcId                                *string                                          `json:"VpcId,omitempty"`
+	ConnectionTrackingSpecification      *NetworkInterfaceConnectionTrackingSpecification                      `json:"ConnectionTrackingSpecification,omitempty"`
+	Description                          *string                                                               `json:"Description,omitempty"`
+	EnablePrimaryIpv6                    *bool                                                                 `json:"EnablePrimaryIpv6,omitempty"`
+	GroupSet                             []string                                                              `json:"GroupSet,omitempty"`
+	Id                                   *string                                                               `json:"Id,omitempty"`
+	InterfaceType                        *string                                                               `json:"InterfaceType,omitempty"`
+	Ipv4PrefixCount                      *int                                                                  `json:"Ipv4PrefixCount,omitempty"`
+	Ipv4Prefixes                         []NetworkInterfaceIpv4PrefixSpecification                             `json:"Ipv4Prefixes,omitempty"`
+	Ipv6AddressCount                     *int                                                                  `json:"Ipv6AddressCount,omitempty"`
+	Ipv6Addresses                        []NetworkInterfaceInstanceIpv6Address                                 `json:"Ipv6Addresses,omitempty"`
+	Ipv6PrefixCount                      *int                                                                  `json:"Ipv6PrefixCount,omitempty"`
+	Ipv6Prefixes                         []NetworkInterfaceIpv6PrefixSpecification                             `json:"Ipv6Prefixes,omitempty"`
+	PrimaryIpv6Address                   *string                                                               `json:"PrimaryIpv6Address,omitempty"`
+	PrimaryPrivateIpAddress              *string                                                               `json:"PrimaryPrivateIpAddress,omitempty"`
+	PrivateIpAddress                     *string                                                               `json:"PrivateIpAddress,omitempty"`
+	PrivateIpAddresses                   []NetworkInterfacePrivateIpAddressSpecification                       `json:"PrivateIpAddresses,omitempty"`
+	PublicIpDnsHostnameTypeSpecification *NetworkInterfaceNetworkInterfacePublicIpDnsHostnameTypeSpecification `json:"PublicIpDnsHostnameTypeSpecification,omitempty"`
+	PublicIpDnsNameOptions               *PublicIpDnsNameOptions                                               `json:"PublicIpDnsNameOptions,omitempty"`
+	SecondaryPrivateIpAddressCount       *int                                                                  `json:"SecondaryPrivateIpAddressCount,omitempty"`
+	SecondaryPrivateIpAddresses          []string                                                              `json:"SecondaryPrivateIpAddresses,omitempty"`
+	SourceDestCheck                      *bool                                                                 `json:"SourceDestCheck,omitempty"`
+	SubnetId                             *string                                                               `json:"SubnetId,omitempty"`
+	Tags                                 []NetworkInterfaceTag                                                 `json:"Tags,omitempty"`
+	VpcId                                *string                                                               `json:"VpcId,omitempty"`
 }
 
 func (NetworkInterfaceNetworkInterface) CloudControlType() string {
@@ -2070,15 +2070,15 @@ type PrefixListTag struct {
 }
 
 type PrefixList struct {
-	AddressFamily  *string         `json:"AddressFamily,omitempty"`
-	Arn            *string         `json:"Arn,omitempty"`
-	Entries        []Entry         `json:"Entries,omitempty"`
-	MaxEntries     *int            `json:"MaxEntries,omitempty"`
-	OwnerId        *string         `json:"OwnerId,omitempty"`
-	PrefixListId   *string         `json:"PrefixListId,omitempty"`
-	PrefixListName *string         `json:"PrefixListName,omitempty"`
-	Tags           []PrefixListTag `json:"Tags,omitempty"`
-	Version        *int            `json:"Version,omitempty"`
+	AddressFamily  *PrefixListAddressFamily `json:"AddressFamily,omitempty"`
+	Arn            *string                  `json:"Arn,omitempty"`
+	Entries        []Entry                  `json:"Entries,omitempty"`
+	MaxEntries     *int                     `json:"MaxEntries,omitempty"`
+	OwnerId        *string                  `json:"OwnerId,omitempty"`
+	PrefixListId   *string                  `json:"PrefixListId,omitempty"`
+	PrefixListName *string                  `json:"PrefixListName,omitempty"`
+	Tags           []PrefixListTag          `json:"Tags,omitempty"`
+	Version        *int                     `json:"Version,omitempty"`
 }
 
 func (PrefixList) CloudControlType() string { return "AWS::EC2::PrefixList" }
@@ -2111,13 +2111,13 @@ type RouteServerTag struct {
 }
 
 type RouteServer struct {
-	AmazonSideAsn           *int             `json:"AmazonSideAsn,omitempty"`
-	Arn                     *string          `json:"Arn,omitempty"`
-	Id                      *string          `json:"Id,omitempty"`
-	PersistRoutes           *string          `json:"PersistRoutes,omitempty"`
-	PersistRoutesDuration   *int             `json:"PersistRoutesDuration,omitempty"`
-	SnsNotificationsEnabled *bool            `json:"SnsNotificationsEnabled,omitempty"`
-	Tags                    []RouteServerTag `json:"Tags,omitempty"`
+	AmazonSideAsn           *int                      `json:"AmazonSideAsn,omitempty"`
+	Arn                     *string                   `json:"Arn,omitempty"`
+	Id                      *string                   `json:"Id,omitempty"`
+	PersistRoutes           *RouteServerPersistRoutes `json:"PersistRoutes,omitempty"`
+	PersistRoutesDuration   *int                      `json:"PersistRoutesDuration,omitempty"`
+	SnsNotificationsEnabled *bool                     `json:"SnsNotificationsEnabled,omitempty"`
+	Tags                    []RouteServerTag          `json:"Tags,omitempty"`
 }
 
 func (RouteServer) CloudControlType() string { return "AWS::EC2::RouteServer" }
@@ -2148,8 +2148,8 @@ type RouteServerEndpoint struct {
 func (RouteServerEndpoint) CloudControlType() string { return "AWS::EC2::RouteServerEndpoint" }
 
 type BgpOptions struct {
-	PeerAsn               *int    `json:"PeerAsn,omitempty"`
-	PeerLivenessDetection *string `json:"PeerLivenessDetection,omitempty"`
+	PeerAsn               *int                             `json:"PeerAsn,omitempty"`
+	PeerLivenessDetection *BgpOptionsPeerLivenessDetection `json:"PeerLivenessDetection,omitempty"`
 }
 
 type RouteServerPeerTag struct {
@@ -2269,11 +2269,11 @@ type SecurityGroupIngress struct {
 func (SecurityGroupIngress) CloudControlType() string { return "AWS::EC2::SecurityGroupIngress" }
 
 type SecurityGroupVpcAssociation struct {
-	GroupId     *string `json:"GroupId,omitempty"`
-	State       *string `json:"State,omitempty"`
-	StateReason *string `json:"StateReason,omitempty"`
-	VpcId       *string `json:"VpcId,omitempty"`
-	VpcOwnerId  *string `json:"VpcOwnerId,omitempty"`
+	GroupId     *string                           `json:"GroupId,omitempty"`
+	State       *SecurityGroupVpcAssociationState `json:"State,omitempty"`
+	StateReason *string                           `json:"StateReason,omitempty"`
+	VpcId       *string                           `json:"VpcId,omitempty"`
+	VpcOwnerId  *string                           `json:"VpcOwnerId,omitempty"`
 }
 
 func (SecurityGroupVpcAssociation) CloudControlType() string {
@@ -2281,8 +2281,8 @@ func (SecurityGroupVpcAssociation) CloudControlType() string {
 }
 
 type SnapshotBlockPublicAccess struct {
-	AccountId *string `json:"AccountId,omitempty"`
-	State     *string `json:"State,omitempty"`
+	AccountId *string                         `json:"AccountId,omitempty"`
+	State     *SnapshotBlockPublicAccessState `json:"State,omitempty"`
 }
 
 func (SnapshotBlockPublicAccess) CloudControlType() string {
@@ -2290,12 +2290,12 @@ func (SnapshotBlockPublicAccess) CloudControlType() string {
 }
 
 type SpotFleetEbsBlockDevice struct {
-	DeleteOnTermination *bool   `json:"DeleteOnTermination,omitempty"`
-	Encrypted           *bool   `json:"Encrypted,omitempty"`
-	Iops                *int    `json:"Iops,omitempty"`
-	SnapshotId          *string `json:"SnapshotId,omitempty"`
-	VolumeSize          *int    `json:"VolumeSize,omitempty"`
-	VolumeType          *string `json:"VolumeType,omitempty"`
+	DeleteOnTermination *bool                              `json:"DeleteOnTermination,omitempty"`
+	Encrypted           *bool                              `json:"Encrypted,omitempty"`
+	Iops                *int                               `json:"Iops,omitempty"`
+	SnapshotId          *string                            `json:"SnapshotId,omitempty"`
+	VolumeSize          *int                               `json:"VolumeSize,omitempty"`
+	VolumeType          *SpotFleetEbsBlockDeviceVolumeType `json:"VolumeType,omitempty"`
 }
 
 type SpotFleetBlockDeviceMapping struct {
@@ -2367,32 +2367,32 @@ type SpotFleetVCpuCountRangeRequest struct {
 }
 
 type SpotFleetInstanceRequirementsRequest struct {
-	AcceleratorCount                               *SpotFleetAcceleratorCountRequest           `json:"AcceleratorCount,omitempty"`
-	AcceleratorManufacturers                       []string                                    `json:"AcceleratorManufacturers,omitempty"`
-	AcceleratorNames                               []string                                    `json:"AcceleratorNames,omitempty"`
-	AcceleratorTotalMemoryMiB                      *SpotFleetAcceleratorTotalMemoryMiBRequest  `json:"AcceleratorTotalMemoryMiB,omitempty"`
-	AcceleratorTypes                               []string                                    `json:"AcceleratorTypes,omitempty"`
-	AllowedInstanceTypes                           []string                                    `json:"AllowedInstanceTypes,omitempty"`
-	BareMetal                                      *string                                     `json:"BareMetal,omitempty"`
-	BaselineEbsBandwidthMbps                       *SpotFleetBaselineEbsBandwidthMbpsRequest   `json:"BaselineEbsBandwidthMbps,omitempty"`
-	BaselinePerformanceFactors                     *SpotFleetBaselinePerformanceFactorsRequest `json:"BaselinePerformanceFactors,omitempty"`
-	BurstablePerformance                           *string                                     `json:"BurstablePerformance,omitempty"`
-	CpuManufacturers                               []string                                    `json:"CpuManufacturers,omitempty"`
-	ExcludedInstanceTypes                          []string                                    `json:"ExcludedInstanceTypes,omitempty"`
-	InstanceGenerations                            []string                                    `json:"InstanceGenerations,omitempty"`
-	LocalStorage                                   *string                                     `json:"LocalStorage,omitempty"`
-	LocalStorageTypes                              []string                                    `json:"LocalStorageTypes,omitempty"`
-	MaxSpotPriceAsPercentageOfOptimalOnDemandPrice *int                                        `json:"MaxSpotPriceAsPercentageOfOptimalOnDemandPrice,omitempty"`
-	MemoryGiBPerVCpu                               *SpotFleetMemoryGiBPerVCpuRequest           `json:"MemoryGiBPerVCpu,omitempty"`
-	MemoryMiB                                      *SpotFleetMemoryMiBRequest                  `json:"MemoryMiB,omitempty"`
-	NetworkBandwidthGbps                           *SpotFleetNetworkBandwidthGbpsRequest       `json:"NetworkBandwidthGbps,omitempty"`
-	NetworkInterfaceCount                          *SpotFleetNetworkInterfaceCountRequest      `json:"NetworkInterfaceCount,omitempty"`
-	OnDemandMaxPricePercentageOverLowestPrice      *int                                        `json:"OnDemandMaxPricePercentageOverLowestPrice,omitempty"`
-	RequireEncryptionInTransit                     *bool                                       `json:"RequireEncryptionInTransit,omitempty"`
-	RequireHibernateSupport                        *bool                                       `json:"RequireHibernateSupport,omitempty"`
-	SpotMaxPricePercentageOverLowestPrice          *int                                        `json:"SpotMaxPricePercentageOverLowestPrice,omitempty"`
-	TotalLocalStorageGB                            *SpotFleetTotalLocalStorageGBRequest        `json:"TotalLocalStorageGB,omitempty"`
-	VCpuCount                                      *SpotFleetVCpuCountRangeRequest             `json:"VCpuCount,omitempty"`
+	AcceleratorCount                               *SpotFleetAcceleratorCountRequest                                  `json:"AcceleratorCount,omitempty"`
+	AcceleratorManufacturers                       []SpotFleetInstanceRequirementsRequestAcceleratorManufacturersItem `json:"AcceleratorManufacturers,omitempty"`
+	AcceleratorNames                               []SpotFleetInstanceRequirementsRequestAcceleratorNamesItem         `json:"AcceleratorNames,omitempty"`
+	AcceleratorTotalMemoryMiB                      *SpotFleetAcceleratorTotalMemoryMiBRequest                         `json:"AcceleratorTotalMemoryMiB,omitempty"`
+	AcceleratorTypes                               []SpotFleetInstanceRequirementsRequestAcceleratorTypesItem         `json:"AcceleratorTypes,omitempty"`
+	AllowedInstanceTypes                           []string                                                           `json:"AllowedInstanceTypes,omitempty"`
+	BareMetal                                      *SpotFleetInstanceRequirementsRequestBareMetal                     `json:"BareMetal,omitempty"`
+	BaselineEbsBandwidthMbps                       *SpotFleetBaselineEbsBandwidthMbpsRequest                          `json:"BaselineEbsBandwidthMbps,omitempty"`
+	BaselinePerformanceFactors                     *SpotFleetBaselinePerformanceFactorsRequest                        `json:"BaselinePerformanceFactors,omitempty"`
+	BurstablePerformance                           *SpotFleetInstanceRequirementsRequestBurstablePerformance          `json:"BurstablePerformance,omitempty"`
+	CpuManufacturers                               []SpotFleetInstanceRequirementsRequestCpuManufacturersItem         `json:"CpuManufacturers,omitempty"`
+	ExcludedInstanceTypes                          []string                                                           `json:"ExcludedInstanceTypes,omitempty"`
+	InstanceGenerations                            []SpotFleetInstanceRequirementsRequestInstanceGenerationsItem      `json:"InstanceGenerations,omitempty"`
+	LocalStorage                                   *SpotFleetInstanceRequirementsRequestLocalStorage                  `json:"LocalStorage,omitempty"`
+	LocalStorageTypes                              []SpotFleetInstanceRequirementsRequestLocalStorageTypesItem        `json:"LocalStorageTypes,omitempty"`
+	MaxSpotPriceAsPercentageOfOptimalOnDemandPrice *int                                                               `json:"MaxSpotPriceAsPercentageOfOptimalOnDemandPrice,omitempty"`
+	MemoryGiBPerVCpu                               *SpotFleetMemoryGiBPerVCpuRequest                                  `json:"MemoryGiBPerVCpu,omitempty"`
+	MemoryMiB                                      *SpotFleetMemoryMiBRequest                                         `json:"MemoryMiB,omitempty"`
+	NetworkBandwidthGbps                           *SpotFleetNetworkBandwidthGbpsRequest                              `json:"NetworkBandwidthGbps,omitempty"`
+	NetworkInterfaceCount                          *SpotFleetNetworkInterfaceCountRequest                             `json:"NetworkInterfaceCount,omitempty"`
+	OnDemandMaxPricePercentageOverLowestPrice      *int                                                               `json:"OnDemandMaxPricePercentageOverLowestPrice,omitempty"`
+	RequireEncryptionInTransit                     *bool                                                              `json:"RequireEncryptionInTransit,omitempty"`
+	RequireHibernateSupport                        *bool                                                              `json:"RequireHibernateSupport,omitempty"`
+	SpotMaxPricePercentageOverLowestPrice          *int                                                               `json:"SpotMaxPricePercentageOverLowestPrice,omitempty"`
+	TotalLocalStorageGB                            *SpotFleetTotalLocalStorageGBRequest                               `json:"TotalLocalStorageGB,omitempty"`
+	VCpuCount                                      *SpotFleetVCpuCountRangeRequest                                    `json:"VCpuCount,omitempty"`
 }
 
 type SpotFleetMonitoring struct {
@@ -2423,10 +2423,10 @@ type InstanceNetworkInterfaceSpecification struct {
 }
 
 type SpotPlacement struct {
-	AvailabilityZone   *string `json:"AvailabilityZone,omitempty"`
-	AvailabilityZoneId *string `json:"AvailabilityZoneId,omitempty"`
-	GroupName          *string `json:"GroupName,omitempty"`
-	Tenancy            *string `json:"Tenancy,omitempty"`
+	AvailabilityZone   *string               `json:"AvailabilityZone,omitempty"`
+	AvailabilityZoneId *string               `json:"AvailabilityZoneId,omitempty"`
+	GroupName          *string               `json:"GroupName,omitempty"`
+	Tenancy            *SpotPlacementTenancy `json:"Tenancy,omitempty"`
 }
 
 type GroupIdentifier struct {
@@ -2439,8 +2439,8 @@ type SpotFleetTag struct {
 }
 
 type SpotFleetTagSpecification struct {
-	ResourceType *string        `json:"ResourceType,omitempty"`
-	Tags         []SpotFleetTag `json:"Tags,omitempty"`
+	ResourceType *SpotFleetTagSpecificationResourceType `json:"ResourceType,omitempty"`
+	Tags         []SpotFleetTag                         `json:"Tags,omitempty"`
 }
 
 type SpotFleetLaunchSpecification struct {
@@ -2508,8 +2508,8 @@ type LoadBalancersConfig struct {
 }
 
 type SpotCapacityRebalance struct {
-	ReplacementStrategy *string `json:"ReplacementStrategy,omitempty"`
-	TerminationDelay    *int    `json:"TerminationDelay,omitempty"`
+	ReplacementStrategy *SpotCapacityRebalanceReplacementStrategy `json:"ReplacementStrategy,omitempty"`
+	TerminationDelay    *int                                      `json:"TerminationDelay,omitempty"`
 }
 
 type SpotMaintenanceStrategies struct {
@@ -2517,29 +2517,29 @@ type SpotMaintenanceStrategies struct {
 }
 
 type SpotFleetRequestConfigData struct {
-	AllocationStrategy               *string                        `json:"AllocationStrategy,omitempty"`
-	Context                          *string                        `json:"Context,omitempty"`
-	ExcessCapacityTerminationPolicy  *string                        `json:"ExcessCapacityTerminationPolicy,omitempty"`
-	IamFleetRole                     *string                        `json:"IamFleetRole,omitempty"`
-	InstanceInterruptionBehavior     *string                        `json:"InstanceInterruptionBehavior,omitempty"`
-	InstancePoolsToUseCount          *int                           `json:"InstancePoolsToUseCount,omitempty"`
-	LaunchSpecifications             []SpotFleetLaunchSpecification `json:"LaunchSpecifications,omitempty"`
-	LaunchTemplateConfigs            []LaunchTemplateConfig         `json:"LaunchTemplateConfigs,omitempty"`
-	LoadBalancersConfig              *LoadBalancersConfig           `json:"LoadBalancersConfig,omitempty"`
-	OnDemandAllocationStrategy       *string                        `json:"OnDemandAllocationStrategy,omitempty"`
-	OnDemandMaxTotalPrice            *string                        `json:"OnDemandMaxTotalPrice,omitempty"`
-	OnDemandTargetCapacity           *int                           `json:"OnDemandTargetCapacity,omitempty"`
-	ReplaceUnhealthyInstances        *bool                          `json:"ReplaceUnhealthyInstances,omitempty"`
-	SpotMaintenanceStrategies        *SpotMaintenanceStrategies     `json:"SpotMaintenanceStrategies,omitempty"`
-	SpotMaxTotalPrice                *string                        `json:"SpotMaxTotalPrice,omitempty"`
-	SpotPrice                        *string                        `json:"SpotPrice,omitempty"`
-	TagSpecifications                []SpotFleetTagSpecification    `json:"TagSpecifications,omitempty"`
-	TargetCapacity                   *int                           `json:"TargetCapacity,omitempty"`
-	TargetCapacityUnitType           *string                        `json:"TargetCapacityUnitType,omitempty"`
-	TerminateInstancesWithExpiration *bool                          `json:"TerminateInstancesWithExpiration,omitempty"`
-	Type                             *string                        `json:"Type,omitempty"`
-	ValidFrom                        *string                        `json:"ValidFrom,omitempty"`
-	ValidUntil                       *string                        `json:"ValidUntil,omitempty"`
+	AllocationStrategy               *SpotFleetRequestConfigDataAllocationStrategy              `json:"AllocationStrategy,omitempty"`
+	Context                          *string                                                    `json:"Context,omitempty"`
+	ExcessCapacityTerminationPolicy  *SpotFleetRequestConfigDataExcessCapacityTerminationPolicy `json:"ExcessCapacityTerminationPolicy,omitempty"`
+	IamFleetRole                     *string                                                    `json:"IamFleetRole,omitempty"`
+	InstanceInterruptionBehavior     *SpotFleetRequestConfigDataInstanceInterruptionBehavior    `json:"InstanceInterruptionBehavior,omitempty"`
+	InstancePoolsToUseCount          *int                                                       `json:"InstancePoolsToUseCount,omitempty"`
+	LaunchSpecifications             []SpotFleetLaunchSpecification                             `json:"LaunchSpecifications,omitempty"`
+	LaunchTemplateConfigs            []LaunchTemplateConfig                                     `json:"LaunchTemplateConfigs,omitempty"`
+	LoadBalancersConfig              *LoadBalancersConfig                                       `json:"LoadBalancersConfig,omitempty"`
+	OnDemandAllocationStrategy       *string                                                    `json:"OnDemandAllocationStrategy,omitempty"`
+	OnDemandMaxTotalPrice            *string                                                    `json:"OnDemandMaxTotalPrice,omitempty"`
+	OnDemandTargetCapacity           *int                                                       `json:"OnDemandTargetCapacity,omitempty"`
+	ReplaceUnhealthyInstances        *bool                                                      `json:"ReplaceUnhealthyInstances,omitempty"`
+	SpotMaintenanceStrategies        *SpotMaintenanceStrategies                                 `json:"SpotMaintenanceStrategies,omitempty"`
+	SpotMaxTotalPrice                *string                                                    `json:"SpotMaxTotalPrice,omitempty"`
+	SpotPrice                        *string                                                    `json:"SpotPrice,omitempty"`
+	TagSpecifications                []SpotFleetTagSpecification                                `json:"TagSpecifications,omitempty"`
+	TargetCapacity                   *int                                                       `json:"TargetCapacity,omitempty"`
+	TargetCapacityUnitType           *SpotFleetRequestConfigDataTargetCapacityUnitType          `json:"TargetCapacityUnitType,omitempty"`
+	TerminateInstancesWithExpiration *bool                                                      `json:"TerminateInstancesWithExpiration,omitempty"`
+	Type                             *SpotFleetRequestConfigDataType                            `json:"Type,omitempty"`
+	ValidFrom                        *string                                                    `json:"ValidFrom,omitempty"`
+	ValidUntil                       *string                                                    `json:"ValidUntil,omitempty"`
 }
 
 type SpotFleet struct {
@@ -2551,11 +2551,11 @@ type SpotFleet struct {
 func (SpotFleet) CloudControlType() string { return "AWS::EC2::SpotFleet" }
 
 type SqlHaStandbyDetectedInstance struct {
-	HaStatus              *string `json:"HaStatus,omitempty"`
-	InstanceId            *string `json:"InstanceId,omitempty"`
-	LastUpdatedTime       *string `json:"LastUpdatedTime,omitempty"`
-	SqlServerCredentials  *string `json:"SqlServerCredentials,omitempty"`
-	SqlServerLicenseUsage *string `json:"SqlServerLicenseUsage,omitempty"`
+	HaStatus              *HaStatus              `json:"HaStatus,omitempty"`
+	InstanceId            *string                `json:"InstanceId,omitempty"`
+	LastUpdatedTime       *string                `json:"LastUpdatedTime,omitempty"`
+	SqlServerCredentials  *string                `json:"SqlServerCredentials,omitempty"`
+	SqlServerLicenseUsage *SqlServerLicenseUsage `json:"SqlServerLicenseUsage,omitempty"`
 }
 
 func (SqlHaStandbyDetectedInstance) CloudControlType() string {
@@ -2641,10 +2641,10 @@ type TrafficMirrorFilterTag struct {
 }
 
 type TrafficMirrorFilter struct {
-	Description     *string                  `json:"Description,omitempty"`
-	Id              *string                  `json:"Id,omitempty"`
-	NetworkServices []string                 `json:"NetworkServices,omitempty"`
-	Tags            []TrafficMirrorFilterTag `json:"Tags,omitempty"`
+	Description     *string                       `json:"Description,omitempty"`
+	Id              *string                       `json:"Id,omitempty"`
+	NetworkServices []TrafficMirrorNetworkService `json:"NetworkServices,omitempty"`
+	Tags            []TrafficMirrorFilterTag      `json:"Tags,omitempty"`
 }
 
 func (TrafficMirrorFilter) CloudControlType() string { return "AWS::EC2::TrafficMirrorFilter" }
@@ -2718,23 +2718,23 @@ type TransitGatewayTag struct {
 }
 
 type TransitGateway struct {
-	AmazonSideAsn                   *int                `json:"AmazonSideAsn,omitempty"`
-	AssociationDefaultRouteTableId  *string             `json:"AssociationDefaultRouteTableId,omitempty"`
-	AutoAcceptSharedAttachments     *string             `json:"AutoAcceptSharedAttachments,omitempty"`
-	DefaultRouteTableAssociation    *string             `json:"DefaultRouteTableAssociation,omitempty"`
-	DefaultRouteTablePropagation    *string             `json:"DefaultRouteTablePropagation,omitempty"`
-	Description                     *string             `json:"Description,omitempty"`
-	DnsSupport                      *string             `json:"DnsSupport,omitempty"`
-	EncryptionSupport               *string             `json:"EncryptionSupport,omitempty"`
-	EncryptionSupportState          *string             `json:"EncryptionSupportState,omitempty"`
-	Id                              *string             `json:"Id,omitempty"`
-	MulticastSupport                *string             `json:"MulticastSupport,omitempty"`
-	PropagationDefaultRouteTableId  *string             `json:"PropagationDefaultRouteTableId,omitempty"`
-	SecurityGroupReferencingSupport *string             `json:"SecurityGroupReferencingSupport,omitempty"`
-	Tags                            []TransitGatewayTag `json:"Tags,omitempty"`
-	TransitGatewayArn               *string             `json:"TransitGatewayArn,omitempty"`
-	TransitGatewayCidrBlocks        []string            `json:"TransitGatewayCidrBlocks,omitempty"`
-	VpnEcmpSupport                  *string             `json:"VpnEcmpSupport,omitempty"`
+	AmazonSideAsn                   *int                             `json:"AmazonSideAsn,omitempty"`
+	AssociationDefaultRouteTableId  *string                          `json:"AssociationDefaultRouteTableId,omitempty"`
+	AutoAcceptSharedAttachments     *string                          `json:"AutoAcceptSharedAttachments,omitempty"`
+	DefaultRouteTableAssociation    *string                          `json:"DefaultRouteTableAssociation,omitempty"`
+	DefaultRouteTablePropagation    *string                          `json:"DefaultRouteTablePropagation,omitempty"`
+	Description                     *string                          `json:"Description,omitempty"`
+	DnsSupport                      *string                          `json:"DnsSupport,omitempty"`
+	EncryptionSupport               *TransitGatewayEncryptionSupport `json:"EncryptionSupport,omitempty"`
+	EncryptionSupportState          *string                          `json:"EncryptionSupportState,omitempty"`
+	Id                              *string                          `json:"Id,omitempty"`
+	MulticastSupport                *string                          `json:"MulticastSupport,omitempty"`
+	PropagationDefaultRouteTableId  *string                          `json:"PropagationDefaultRouteTableId,omitempty"`
+	SecurityGroupReferencingSupport *string                          `json:"SecurityGroupReferencingSupport,omitempty"`
+	Tags                            []TransitGatewayTag              `json:"Tags,omitempty"`
+	TransitGatewayArn               *string                          `json:"TransitGatewayArn,omitempty"`
+	TransitGatewayCidrBlocks        []string                         `json:"TransitGatewayCidrBlocks,omitempty"`
+	VpnEcmpSupport                  *string                          `json:"VpnEcmpSupport,omitempty"`
 }
 
 func (TransitGateway) CloudControlType() string { return "AWS::EC2::TransitGateway" }
@@ -2838,20 +2838,20 @@ func (TransitGatewayMeteringPolicy) CloudControlType() string {
 }
 
 type TransitGatewayMeteringPolicyEntry struct {
-	DestinationCidrBlock                    *string `json:"DestinationCidrBlock,omitempty"`
-	DestinationPortRange                    *string `json:"DestinationPortRange,omitempty"`
-	DestinationTransitGatewayAttachmentId   *string `json:"DestinationTransitGatewayAttachmentId,omitempty"`
-	DestinationTransitGatewayAttachmentType *string `json:"DestinationTransitGatewayAttachmentType,omitempty"`
-	MeteredAccount                          *string `json:"MeteredAccount,omitempty"`
-	PolicyRuleNumber                        *int    `json:"PolicyRuleNumber,omitempty"`
-	Protocol                                *string `json:"Protocol,omitempty"`
-	SourceCidrBlock                         *string `json:"SourceCidrBlock,omitempty"`
-	SourcePortRange                         *string `json:"SourcePortRange,omitempty"`
-	SourceTransitGatewayAttachmentId        *string `json:"SourceTransitGatewayAttachmentId,omitempty"`
-	SourceTransitGatewayAttachmentType      *string `json:"SourceTransitGatewayAttachmentType,omitempty"`
-	State                                   *string `json:"State,omitempty"`
-	TransitGatewayMeteringPolicyId          *string `json:"TransitGatewayMeteringPolicyId,omitempty"`
-	UpdateEffectiveAt                       *string `json:"UpdateEffectiveAt,omitempty"`
+	DestinationCidrBlock                    *string                               `json:"DestinationCidrBlock,omitempty"`
+	DestinationPortRange                    *string                               `json:"DestinationPortRange,omitempty"`
+	DestinationTransitGatewayAttachmentId   *string                               `json:"DestinationTransitGatewayAttachmentId,omitempty"`
+	DestinationTransitGatewayAttachmentType *TransitGatewayAttachmentResourceType `json:"DestinationTransitGatewayAttachmentType,omitempty"`
+	MeteredAccount                          *TransitGatewayMeteringPayerType      `json:"MeteredAccount,omitempty"`
+	PolicyRuleNumber                        *int                                  `json:"PolicyRuleNumber,omitempty"`
+	Protocol                                *string                               `json:"Protocol,omitempty"`
+	SourceCidrBlock                         *string                               `json:"SourceCidrBlock,omitempty"`
+	SourcePortRange                         *string                               `json:"SourcePortRange,omitempty"`
+	SourceTransitGatewayAttachmentId        *string                               `json:"SourceTransitGatewayAttachmentId,omitempty"`
+	SourceTransitGatewayAttachmentType      *TransitGatewayAttachmentResourceType `json:"SourceTransitGatewayAttachmentType,omitempty"`
+	State                                   *string                               `json:"State,omitempty"`
+	TransitGatewayMeteringPolicyId          *string                               `json:"TransitGatewayMeteringPolicyId,omitempty"`
+	UpdateEffectiveAt                       *string                               `json:"UpdateEffectiveAt,omitempty"`
 }
 
 func (TransitGatewayMeteringPolicyEntry) CloudControlType() string {
@@ -3094,20 +3094,20 @@ type VpcEncryptionControlExclusions struct {
 }
 
 type VpcEncryptionControl struct {
-	EgressOnlyInternetGatewayExclusion *string                         `json:"EgressOnlyInternetGatewayExclusion,omitempty"`
-	ElasticFileSystemExclusion         *string                         `json:"ElasticFileSystemExclusion,omitempty"`
-	InternetGatewayExclusion           *string                         `json:"InternetGatewayExclusion,omitempty"`
-	LambdaExclusion                    *string                         `json:"LambdaExclusion,omitempty"`
-	Mode                               *string                         `json:"Mode,omitempty"`
-	NatGatewayExclusion                *string                         `json:"NatGatewayExclusion,omitempty"`
-	ResourceExclusions                 *VpcEncryptionControlExclusions `json:"ResourceExclusions,omitempty"`
-	State                              *string                         `json:"State,omitempty"`
-	StateMessage                       *string                         `json:"StateMessage,omitempty"`
-	VirtualPrivateGatewayExclusion     *string                         `json:"VirtualPrivateGatewayExclusion,omitempty"`
-	VpcEncryptionControlId             *string                         `json:"VpcEncryptionControlId,omitempty"`
-	VpcId                              *string                         `json:"VpcId,omitempty"`
-	VpcLatticeExclusion                *string                         `json:"VpcLatticeExclusion,omitempty"`
-	VpcPeeringExclusion                *string                         `json:"VpcPeeringExclusion,omitempty"`
+	EgressOnlyInternetGatewayExclusion *VpcEncryptionControlEgressOnlyInternetGatewayExclusion `json:"EgressOnlyInternetGatewayExclusion,omitempty"`
+	ElasticFileSystemExclusion         *VpcEncryptionControlElasticFileSystemExclusion         `json:"ElasticFileSystemExclusion,omitempty"`
+	InternetGatewayExclusion           *VpcEncryptionControlInternetGatewayExclusion           `json:"InternetGatewayExclusion,omitempty"`
+	LambdaExclusion                    *VpcEncryptionControlLambdaExclusion                    `json:"LambdaExclusion,omitempty"`
+	Mode                               *VpcEncryptionControlMode                               `json:"Mode,omitempty"`
+	NatGatewayExclusion                *VpcEncryptionControlNatGatewayExclusion                `json:"NatGatewayExclusion,omitempty"`
+	ResourceExclusions                 *VpcEncryptionControlExclusions                         `json:"ResourceExclusions,omitempty"`
+	State                              *string                                                 `json:"State,omitempty"`
+	StateMessage                       *string                                                 `json:"StateMessage,omitempty"`
+	VirtualPrivateGatewayExclusion     *VpcEncryptionControlVirtualPrivateGatewayExclusion     `json:"VirtualPrivateGatewayExclusion,omitempty"`
+	VpcEncryptionControlId             *string                                                 `json:"VpcEncryptionControlId,omitempty"`
+	VpcId                              *string                                                 `json:"VpcId,omitempty"`
+	VpcLatticeExclusion                *VpcEncryptionControlVpcLatticeExclusion                `json:"VpcLatticeExclusion,omitempty"`
+	VpcPeeringExclusion                *VpcEncryptionControlVpcPeeringExclusion                `json:"VpcPeeringExclusion,omitempty"`
 }
 
 type VPC struct {
@@ -3134,11 +3134,11 @@ type VPCBlockPublicAccessExclusionTag struct {
 }
 
 type VPCBlockPublicAccessExclusion struct {
-	ExclusionId                  *string                            `json:"ExclusionId,omitempty"`
-	InternetGatewayExclusionMode *string                            `json:"InternetGatewayExclusionMode,omitempty"`
-	SubnetId                     *string                            `json:"SubnetId,omitempty"`
-	Tags                         []VPCBlockPublicAccessExclusionTag `json:"Tags,omitempty"`
-	VpcId                        *string                            `json:"VpcId,omitempty"`
+	ExclusionId                  *string                                                    `json:"ExclusionId,omitempty"`
+	InternetGatewayExclusionMode *VPCBlockPublicAccessExclusionInternetGatewayExclusionMode `json:"InternetGatewayExclusionMode,omitempty"`
+	SubnetId                     *string                                                    `json:"SubnetId,omitempty"`
+	Tags                         []VPCBlockPublicAccessExclusionTag                         `json:"Tags,omitempty"`
+	VpcId                        *string                                                    `json:"VpcId,omitempty"`
 }
 
 func (VPCBlockPublicAccessExclusion) CloudControlType() string {
@@ -3146,9 +3146,9 @@ func (VPCBlockPublicAccessExclusion) CloudControlType() string {
 }
 
 type VPCBlockPublicAccessOptions struct {
-	AccountId                *string `json:"AccountId,omitempty"`
-	ExclusionsAllowed        *string `json:"ExclusionsAllowed,omitempty"`
-	InternetGatewayBlockMode *string `json:"InternetGatewayBlockMode,omitempty"`
+	AccountId                *string                                              `json:"AccountId,omitempty"`
+	ExclusionsAllowed        *string                                              `json:"ExclusionsAllowed,omitempty"`
+	InternetGatewayBlockMode *VPCBlockPublicAccessOptionsInternetGatewayBlockMode `json:"InternetGatewayBlockMode,omitempty"`
 }
 
 func (VPCBlockPublicAccessOptions) CloudControlType() string {
@@ -3204,30 +3204,30 @@ type VPCEncryptionControlTag struct {
 }
 
 type VPCEncryptionControl struct {
-	EgressOnlyInternetGatewayExclusionInput *string                   `json:"EgressOnlyInternetGatewayExclusionInput,omitempty"`
-	ElasticFileSystemExclusionInput         *string                   `json:"ElasticFileSystemExclusionInput,omitempty"`
-	InternetGatewayExclusionInput           *string                   `json:"InternetGatewayExclusionInput,omitempty"`
-	LambdaExclusionInput                    *string                   `json:"LambdaExclusionInput,omitempty"`
-	Mode                                    *string                   `json:"Mode,omitempty"`
-	NatGatewayExclusionInput                *string                   `json:"NatGatewayExclusionInput,omitempty"`
-	ResourceExclusions                      *ResourceExclusions       `json:"ResourceExclusions,omitempty"`
-	State                                   *string                   `json:"State,omitempty"`
-	StateMessage                            *string                   `json:"StateMessage,omitempty"`
-	Tags                                    []VPCEncryptionControlTag `json:"Tags,omitempty"`
-	VirtualPrivateGatewayExclusionInput     *string                   `json:"VirtualPrivateGatewayExclusionInput,omitempty"`
-	VpcEncryptionControlId                  *string                   `json:"VpcEncryptionControlId,omitempty"`
-	VpcId                                   *string                   `json:"VpcId,omitempty"`
-	VpcLatticeExclusionInput                *string                   `json:"VpcLatticeExclusionInput,omitempty"`
-	VpcPeeringExclusionInput                *string                   `json:"VpcPeeringExclusionInput,omitempty"`
+	EgressOnlyInternetGatewayExclusionInput *VPCEncryptionControlEgressOnlyInternetGatewayExclusionInput `json:"EgressOnlyInternetGatewayExclusionInput,omitempty"`
+	ElasticFileSystemExclusionInput         *VPCEncryptionControlElasticFileSystemExclusionInput         `json:"ElasticFileSystemExclusionInput,omitempty"`
+	InternetGatewayExclusionInput           *VPCEncryptionControlInternetGatewayExclusionInput           `json:"InternetGatewayExclusionInput,omitempty"`
+	LambdaExclusionInput                    *VPCEncryptionControlLambdaExclusionInput                    `json:"LambdaExclusionInput,omitempty"`
+	Mode                                    *VPCEncryptionControlMode                                    `json:"Mode,omitempty"`
+	NatGatewayExclusionInput                *VPCEncryptionControlNatGatewayExclusionInput                `json:"NatGatewayExclusionInput,omitempty"`
+	ResourceExclusions                      *ResourceExclusions                                          `json:"ResourceExclusions,omitempty"`
+	State                                   *VPCEncryptionControlState                                   `json:"State,omitempty"`
+	StateMessage                            *string                                                      `json:"StateMessage,omitempty"`
+	Tags                                    []VPCEncryptionControlTag                                    `json:"Tags,omitempty"`
+	VirtualPrivateGatewayExclusionInput     *VPCEncryptionControlVirtualPrivateGatewayExclusionInput     `json:"VirtualPrivateGatewayExclusionInput,omitempty"`
+	VpcEncryptionControlId                  *string                                                      `json:"VpcEncryptionControlId,omitempty"`
+	VpcId                                   *string                                                      `json:"VpcId,omitempty"`
+	VpcLatticeExclusionInput                *VPCEncryptionControlVpcLatticeExclusionInput                `json:"VpcLatticeExclusionInput,omitempty"`
+	VpcPeeringExclusionInput                *VPCEncryptionControlVpcPeeringExclusionInput                `json:"VpcPeeringExclusionInput,omitempty"`
 }
 
 func (VPCEncryptionControl) CloudControlType() string { return "AWS::EC2::VPCEncryptionControl" }
 
 type DnsOptionsSpecification struct {
-	DnsRecordIpType                          *string  `json:"DnsRecordIpType,omitempty"`
-	PrivateDnsOnlyForInboundResolverEndpoint *string  `json:"PrivateDnsOnlyForInboundResolverEndpoint,omitempty"`
-	PrivateDnsPreference                     *string  `json:"PrivateDnsPreference,omitempty"`
-	PrivateDnsSpecifiedDomains               []string `json:"PrivateDnsSpecifiedDomains,omitempty"`
+	DnsRecordIpType                          *DnsOptionsSpecificationDnsRecordIpType                          `json:"DnsRecordIpType,omitempty"`
+	PrivateDnsOnlyForInboundResolverEndpoint *DnsOptionsSpecificationPrivateDnsOnlyForInboundResolverEndpoint `json:"PrivateDnsOnlyForInboundResolverEndpoint,omitempty"`
+	PrivateDnsPreference                     *DnsOptionsSpecificationPrivateDnsPreference                     `json:"PrivateDnsPreference,omitempty"`
+	PrivateDnsSpecifiedDomains               []string                                                         `json:"PrivateDnsSpecifiedDomains,omitempty"`
 }
 
 type VPCEndpointTag struct {
@@ -3236,24 +3236,24 @@ type VPCEndpointTag struct {
 }
 
 type VPCEndpoint struct {
-	CreationTimestamp        *string                  `json:"CreationTimestamp,omitempty"`
-	DnsEntries               []string                 `json:"DnsEntries,omitempty"`
-	DnsOptions               *DnsOptionsSpecification `json:"DnsOptions,omitempty"`
-	Id                       *string                  `json:"Id,omitempty"`
-	IpAddressType            *string                  `json:"IpAddressType,omitempty"`
-	NetworkInterfaceIds      []string                 `json:"NetworkInterfaceIds,omitempty"`
-	PolicyDocument           json.RawMessage          `json:"PolicyDocument,omitempty"`
-	PrivateDnsEnabled        *bool                    `json:"PrivateDnsEnabled,omitempty"`
-	ResourceConfigurationArn *string                  `json:"ResourceConfigurationArn,omitempty"`
-	RouteTableIds            []string                 `json:"RouteTableIds,omitempty"`
-	SecurityGroupIds         []string                 `json:"SecurityGroupIds,omitempty"`
-	ServiceName              *string                  `json:"ServiceName,omitempty"`
-	ServiceNetworkArn        *string                  `json:"ServiceNetworkArn,omitempty"`
-	ServiceRegion            *string                  `json:"ServiceRegion,omitempty"`
-	SubnetIds                []string                 `json:"SubnetIds,omitempty"`
-	Tags                     []VPCEndpointTag         `json:"Tags,omitempty"`
-	VpcEndpointType          *string                  `json:"VpcEndpointType,omitempty"`
-	VpcId                    *string                  `json:"VpcId,omitempty"`
+	CreationTimestamp        *string                     `json:"CreationTimestamp,omitempty"`
+	DnsEntries               []string                    `json:"DnsEntries,omitempty"`
+	DnsOptions               *DnsOptionsSpecification    `json:"DnsOptions,omitempty"`
+	Id                       *string                     `json:"Id,omitempty"`
+	IpAddressType            *VPCEndpointIpAddressType   `json:"IpAddressType,omitempty"`
+	NetworkInterfaceIds      []string                    `json:"NetworkInterfaceIds,omitempty"`
+	PolicyDocument           json.RawMessage             `json:"PolicyDocument,omitempty"`
+	PrivateDnsEnabled        *bool                       `json:"PrivateDnsEnabled,omitempty"`
+	ResourceConfigurationArn *string                     `json:"ResourceConfigurationArn,omitempty"`
+	RouteTableIds            []string                    `json:"RouteTableIds,omitempty"`
+	SecurityGroupIds         []string                    `json:"SecurityGroupIds,omitempty"`
+	ServiceName              *string                     `json:"ServiceName,omitempty"`
+	ServiceNetworkArn        *string                     `json:"ServiceNetworkArn,omitempty"`
+	ServiceRegion            *string                     `json:"ServiceRegion,omitempty"`
+	SubnetIds                []string                    `json:"SubnetIds,omitempty"`
+	Tags                     []VPCEndpointTag            `json:"Tags,omitempty"`
+	VpcEndpointType          *VPCEndpointVpcEndpointType `json:"VpcEndpointType,omitempty"`
+	VpcId                    *string                     `json:"VpcId,omitempty"`
 }
 
 func (VPCEndpoint) CloudControlType() string { return "AWS::EC2::VPCEndpoint" }
@@ -3282,7 +3282,7 @@ type VPCEndpointService struct {
 	NetworkLoadBalancerArns    []string                `json:"NetworkLoadBalancerArns,omitempty"`
 	PayerResponsibility        *string                 `json:"PayerResponsibility,omitempty"`
 	ServiceId                  *string                 `json:"ServiceId,omitempty"`
-	SupportedIpAddressTypes    []string                `json:"SupportedIpAddressTypes,omitempty"`
+	SupportedIpAddressTypes    []IpAddressType         `json:"SupportedIpAddressTypes,omitempty"`
 	SupportedRegions           []string                `json:"SupportedRegions,omitempty"`
 	Tags                       []VPCEndpointServiceTag `json:"Tags,omitempty"`
 }
@@ -3346,16 +3346,16 @@ type VPNConnectionTag struct {
 }
 
 type IKEVersionsRequestListValue struct {
-	Value *string `json:"Value,omitempty"`
+	Value *IKEVersionsRequestListValueValue `json:"Value,omitempty"`
 }
 
 type CloudwatchLogOptionsSpecification struct {
-	BgpLogEnabled      *bool   `json:"BgpLogEnabled,omitempty"`
-	BgpLogGroupArn     *string `json:"BgpLogGroupArn,omitempty"`
-	BgpLogOutputFormat *string `json:"BgpLogOutputFormat,omitempty"`
-	LogEnabled         *bool   `json:"LogEnabled,omitempty"`
-	LogGroupArn        *string `json:"LogGroupArn,omitempty"`
-	LogOutputFormat    *string `json:"LogOutputFormat,omitempty"`
+	BgpLogEnabled      *bool                                                `json:"BgpLogEnabled,omitempty"`
+	BgpLogGroupArn     *string                                              `json:"BgpLogGroupArn,omitempty"`
+	BgpLogOutputFormat *CloudwatchLogOptionsSpecificationBgpLogOutputFormat `json:"BgpLogOutputFormat,omitempty"`
+	LogEnabled         *bool                                                `json:"LogEnabled,omitempty"`
+	LogGroupArn        *string                                              `json:"LogGroupArn,omitempty"`
+	LogOutputFormat    *CloudwatchLogOptionsSpecificationLogOutputFormat    `json:"LogOutputFormat,omitempty"`
 }
 
 type VpnTunnelLogOptionsSpecification struct {
@@ -3367,11 +3367,11 @@ type Phase1DHGroupNumbersRequestListValue struct {
 }
 
 type Phase1EncryptionAlgorithmsRequestListValue struct {
-	Value *string `json:"Value,omitempty"`
+	Value *Phase1EncryptionAlgorithmsRequestListValueValue `json:"Value,omitempty"`
 }
 
 type Phase1IntegrityAlgorithmsRequestListValue struct {
-	Value *string `json:"Value,omitempty"`
+	Value *Phase1IntegrityAlgorithmsRequestListValueValue `json:"Value,omitempty"`
 }
 
 type Phase2DHGroupNumbersRequestListValue struct {
@@ -3379,56 +3379,56 @@ type Phase2DHGroupNumbersRequestListValue struct {
 }
 
 type Phase2EncryptionAlgorithmsRequestListValue struct {
-	Value *string `json:"Value,omitempty"`
+	Value *Phase2EncryptionAlgorithmsRequestListValueValue `json:"Value,omitempty"`
 }
 
 type Phase2IntegrityAlgorithmsRequestListValue struct {
-	Value *string `json:"Value,omitempty"`
+	Value *Phase2IntegrityAlgorithmsRequestListValueValue `json:"Value,omitempty"`
 }
 
 type VpnTunnelOptionsSpecification struct {
-	DPDTimeoutAction             *string                                      `json:"DPDTimeoutAction,omitempty"`
-	DPDTimeoutSeconds            *int                                         `json:"DPDTimeoutSeconds,omitempty"`
-	EnableTunnelLifecycleControl *bool                                        `json:"EnableTunnelLifecycleControl,omitempty"`
-	IKEVersions                  []IKEVersionsRequestListValue                `json:"IKEVersions,omitempty"`
-	LogOptions                   *VpnTunnelLogOptionsSpecification            `json:"LogOptions,omitempty"`
-	Phase1DHGroupNumbers         []Phase1DHGroupNumbersRequestListValue       `json:"Phase1DHGroupNumbers,omitempty"`
-	Phase1EncryptionAlgorithms   []Phase1EncryptionAlgorithmsRequestListValue `json:"Phase1EncryptionAlgorithms,omitempty"`
-	Phase1IntegrityAlgorithms    []Phase1IntegrityAlgorithmsRequestListValue  `json:"Phase1IntegrityAlgorithms,omitempty"`
-	Phase1LifetimeSeconds        *int                                         `json:"Phase1LifetimeSeconds,omitempty"`
-	Phase2DHGroupNumbers         []Phase2DHGroupNumbersRequestListValue       `json:"Phase2DHGroupNumbers,omitempty"`
-	Phase2EncryptionAlgorithms   []Phase2EncryptionAlgorithmsRequestListValue `json:"Phase2EncryptionAlgorithms,omitempty"`
-	Phase2IntegrityAlgorithms    []Phase2IntegrityAlgorithmsRequestListValue  `json:"Phase2IntegrityAlgorithms,omitempty"`
-	Phase2LifetimeSeconds        *int                                         `json:"Phase2LifetimeSeconds,omitempty"`
-	PreSharedKey                 *string                                      `json:"PreSharedKey,omitempty"`
-	RekeyFuzzPercentage          *int                                         `json:"RekeyFuzzPercentage,omitempty"`
-	RekeyMarginTimeSeconds       *int                                         `json:"RekeyMarginTimeSeconds,omitempty"`
-	ReplayWindowSize             *int                                         `json:"ReplayWindowSize,omitempty"`
-	StartupAction                *string                                      `json:"StartupAction,omitempty"`
-	TunnelInsideCidr             *string                                      `json:"TunnelInsideCidr,omitempty"`
-	TunnelInsideIpv6Cidr         *string                                      `json:"TunnelInsideIpv6Cidr,omitempty"`
+	DPDTimeoutAction             *VpnTunnelOptionsSpecificationDPDTimeoutAction `json:"DPDTimeoutAction,omitempty"`
+	DPDTimeoutSeconds            *int                                           `json:"DPDTimeoutSeconds,omitempty"`
+	EnableTunnelLifecycleControl *bool                                          `json:"EnableTunnelLifecycleControl,omitempty"`
+	IKEVersions                  []IKEVersionsRequestListValue                  `json:"IKEVersions,omitempty"`
+	LogOptions                   *VpnTunnelLogOptionsSpecification              `json:"LogOptions,omitempty"`
+	Phase1DHGroupNumbers         []Phase1DHGroupNumbersRequestListValue         `json:"Phase1DHGroupNumbers,omitempty"`
+	Phase1EncryptionAlgorithms   []Phase1EncryptionAlgorithmsRequestListValue   `json:"Phase1EncryptionAlgorithms,omitempty"`
+	Phase1IntegrityAlgorithms    []Phase1IntegrityAlgorithmsRequestListValue    `json:"Phase1IntegrityAlgorithms,omitempty"`
+	Phase1LifetimeSeconds        *int                                           `json:"Phase1LifetimeSeconds,omitempty"`
+	Phase2DHGroupNumbers         []Phase2DHGroupNumbersRequestListValue         `json:"Phase2DHGroupNumbers,omitempty"`
+	Phase2EncryptionAlgorithms   []Phase2EncryptionAlgorithmsRequestListValue   `json:"Phase2EncryptionAlgorithms,omitempty"`
+	Phase2IntegrityAlgorithms    []Phase2IntegrityAlgorithmsRequestListValue    `json:"Phase2IntegrityAlgorithms,omitempty"`
+	Phase2LifetimeSeconds        *int                                           `json:"Phase2LifetimeSeconds,omitempty"`
+	PreSharedKey                 *string                                        `json:"PreSharedKey,omitempty"`
+	RekeyFuzzPercentage          *int                                           `json:"RekeyFuzzPercentage,omitempty"`
+	RekeyMarginTimeSeconds       *int                                           `json:"RekeyMarginTimeSeconds,omitempty"`
+	ReplayWindowSize             *int                                           `json:"ReplayWindowSize,omitempty"`
+	StartupAction                *VpnTunnelOptionsSpecificationStartupAction    `json:"StartupAction,omitempty"`
+	TunnelInsideCidr             *string                                        `json:"TunnelInsideCidr,omitempty"`
+	TunnelInsideIpv6Cidr         *string                                        `json:"TunnelInsideIpv6Cidr,omitempty"`
 }
 
 type VPNConnection struct {
-	CustomerGatewayId                   *string                         `json:"CustomerGatewayId,omitempty"`
-	EnableAcceleration                  *bool                           `json:"EnableAcceleration,omitempty"`
-	LocalIpv4NetworkCidr                *string                         `json:"LocalIpv4NetworkCidr,omitempty"`
-	LocalIpv6NetworkCidr                *string                         `json:"LocalIpv6NetworkCidr,omitempty"`
-	OutsideIpAddressType                *string                         `json:"OutsideIpAddressType,omitempty"`
-	PreSharedKeyStorage                 *string                         `json:"PreSharedKeyStorage,omitempty"`
-	RemoteIpv4NetworkCidr               *string                         `json:"RemoteIpv4NetworkCidr,omitempty"`
-	RemoteIpv6NetworkCidr               *string                         `json:"RemoteIpv6NetworkCidr,omitempty"`
-	StaticRoutesOnly                    *bool                           `json:"StaticRoutesOnly,omitempty"`
-	Tags                                []VPNConnectionTag              `json:"Tags,omitempty"`
-	TransitGatewayId                    *string                         `json:"TransitGatewayId,omitempty"`
-	TransportTransitGatewayAttachmentId *string                         `json:"TransportTransitGatewayAttachmentId,omitempty"`
-	TunnelBandwidth                     *string                         `json:"TunnelBandwidth,omitempty"`
-	TunnelInsideIpVersion               *string                         `json:"TunnelInsideIpVersion,omitempty"`
-	Type                                *string                         `json:"Type,omitempty"`
-	VpnConcentratorId                   *string                         `json:"VpnConcentratorId,omitempty"`
-	VpnConnectionId                     *string                         `json:"VpnConnectionId,omitempty"`
-	VpnGatewayId                        *string                         `json:"VpnGatewayId,omitempty"`
-	VpnTunnelOptionsSpecifications      []VpnTunnelOptionsSpecification `json:"VpnTunnelOptionsSpecifications,omitempty"`
+	CustomerGatewayId                   *string                           `json:"CustomerGatewayId,omitempty"`
+	EnableAcceleration                  *bool                             `json:"EnableAcceleration,omitempty"`
+	LocalIpv4NetworkCidr                *string                           `json:"LocalIpv4NetworkCidr,omitempty"`
+	LocalIpv6NetworkCidr                *string                           `json:"LocalIpv6NetworkCidr,omitempty"`
+	OutsideIpAddressType                *string                           `json:"OutsideIpAddressType,omitempty"`
+	PreSharedKeyStorage                 *VPNConnectionPreSharedKeyStorage `json:"PreSharedKeyStorage,omitempty"`
+	RemoteIpv4NetworkCidr               *string                           `json:"RemoteIpv4NetworkCidr,omitempty"`
+	RemoteIpv6NetworkCidr               *string                           `json:"RemoteIpv6NetworkCidr,omitempty"`
+	StaticRoutesOnly                    *bool                             `json:"StaticRoutesOnly,omitempty"`
+	Tags                                []VPNConnectionTag                `json:"Tags,omitempty"`
+	TransitGatewayId                    *string                           `json:"TransitGatewayId,omitempty"`
+	TransportTransitGatewayAttachmentId *string                           `json:"TransportTransitGatewayAttachmentId,omitempty"`
+	TunnelBandwidth                     *VPNConnectionTunnelBandwidth     `json:"TunnelBandwidth,omitempty"`
+	TunnelInsideIpVersion               *string                           `json:"TunnelInsideIpVersion,omitempty"`
+	Type                                *string                           `json:"Type,omitempty"`
+	VpnConcentratorId                   *string                           `json:"VpnConcentratorId,omitempty"`
+	VpnConnectionId                     *string                           `json:"VpnConnectionId,omitempty"`
+	VpnGatewayId                        *string                           `json:"VpnGatewayId,omitempty"`
+	VpnTunnelOptionsSpecifications      []VpnTunnelOptionsSpecification   `json:"VpnTunnelOptionsSpecifications,omitempty"`
 }
 
 func (VPNConnection) CloudControlType() string { return "AWS::EC2::VPNConnection" }
@@ -3709,3 +3709,1130 @@ type VolumeAttachment struct {
 }
 
 func (VolumeAttachment) CloudControlType() string { return "AWS::EC2::VolumeAttachment" }
+
+type CapacityManagerDataExportOutputFormat string
+
+const (
+	CapacityManagerDataExportOutputFormatCsv     CapacityManagerDataExportOutputFormat = "csv"
+	CapacityManagerDataExportOutputFormatParquet CapacityManagerDataExportOutputFormat = "parquet"
+)
+
+type CapacityManagerDataExportSchedule string
+
+const (
+	CapacityManagerDataExportScheduleHourly CapacityManagerDataExportSchedule = "hourly"
+)
+
+type CapacityReservationFleetInstanceMatchCriteria string
+
+const (
+	CapacityReservationFleetInstanceMatchCriteriaOpen CapacityReservationFleetInstanceMatchCriteria = "open"
+)
+
+type CapacityReservationFleetTenancy string
+
+const (
+	CapacityReservationFleetTenancyDefault CapacityReservationFleetTenancy = "default"
+)
+
+type EC2FleetExcessCapacityTerminationPolicy string
+
+const (
+	EC2FleetExcessCapacityTerminationPolicyTermination   EC2FleetExcessCapacityTerminationPolicy = "termination"
+	EC2FleetExcessCapacityTerminationPolicyNoTermination EC2FleetExcessCapacityTerminationPolicy = "no-termination"
+)
+
+type EbsBlockDeviceVolumeType string
+
+const (
+	EbsBlockDeviceVolumeTypeGp2      EbsBlockDeviceVolumeType = "gp2"
+	EbsBlockDeviceVolumeTypeGp3      EbsBlockDeviceVolumeType = "gp3"
+	EbsBlockDeviceVolumeTypeIo1      EbsBlockDeviceVolumeType = "io1"
+	EbsBlockDeviceVolumeTypeIo2      EbsBlockDeviceVolumeType = "io2"
+	EbsBlockDeviceVolumeTypeSc1      EbsBlockDeviceVolumeType = "sc1"
+	EbsBlockDeviceVolumeTypeSt1      EbsBlockDeviceVolumeType = "st1"
+	EbsBlockDeviceVolumeTypeStandard EbsBlockDeviceVolumeType = "standard"
+)
+
+type InstanceRequirementsRequestAcceleratorManufacturersItem string
+
+const (
+	InstanceRequirementsRequestAcceleratorManufacturersItemAmazonWebServices InstanceRequirementsRequestAcceleratorManufacturersItem = "amazon-web-services"
+	InstanceRequirementsRequestAcceleratorManufacturersItemAmd               InstanceRequirementsRequestAcceleratorManufacturersItem = "amd"
+	InstanceRequirementsRequestAcceleratorManufacturersItemHabana            InstanceRequirementsRequestAcceleratorManufacturersItem = "habana"
+	InstanceRequirementsRequestAcceleratorManufacturersItemNvidia            InstanceRequirementsRequestAcceleratorManufacturersItem = "nvidia"
+	InstanceRequirementsRequestAcceleratorManufacturersItemXilinx            InstanceRequirementsRequestAcceleratorManufacturersItem = "xilinx"
+)
+
+type InstanceRequirementsRequestAcceleratorNamesItem string
+
+const (
+	InstanceRequirementsRequestAcceleratorNamesItemA10g          InstanceRequirementsRequestAcceleratorNamesItem = "a10g"
+	InstanceRequirementsRequestAcceleratorNamesItemA100          InstanceRequirementsRequestAcceleratorNamesItem = "a100"
+	InstanceRequirementsRequestAcceleratorNamesItemH100          InstanceRequirementsRequestAcceleratorNamesItem = "h100"
+	InstanceRequirementsRequestAcceleratorNamesItemInferentia    InstanceRequirementsRequestAcceleratorNamesItem = "inferentia"
+	InstanceRequirementsRequestAcceleratorNamesItemK520          InstanceRequirementsRequestAcceleratorNamesItem = "k520"
+	InstanceRequirementsRequestAcceleratorNamesItemK80           InstanceRequirementsRequestAcceleratorNamesItem = "k80"
+	InstanceRequirementsRequestAcceleratorNamesItemM60           InstanceRequirementsRequestAcceleratorNamesItem = "m60"
+	InstanceRequirementsRequestAcceleratorNamesItemRadeonProV520 InstanceRequirementsRequestAcceleratorNamesItem = "radeon-pro-v520"
+	InstanceRequirementsRequestAcceleratorNamesItemT4            InstanceRequirementsRequestAcceleratorNamesItem = "t4"
+	InstanceRequirementsRequestAcceleratorNamesItemT4g           InstanceRequirementsRequestAcceleratorNamesItem = "t4g"
+	InstanceRequirementsRequestAcceleratorNamesItemVu9p          InstanceRequirementsRequestAcceleratorNamesItem = "vu9p"
+	InstanceRequirementsRequestAcceleratorNamesItemV100          InstanceRequirementsRequestAcceleratorNamesItem = "v100"
+	InstanceRequirementsRequestAcceleratorNamesItemL40s          InstanceRequirementsRequestAcceleratorNamesItem = "l40s"
+	InstanceRequirementsRequestAcceleratorNamesItemL4            InstanceRequirementsRequestAcceleratorNamesItem = "l4"
+	InstanceRequirementsRequestAcceleratorNamesItemGaudiHl205    InstanceRequirementsRequestAcceleratorNamesItem = "gaudi-hl-205"
+	InstanceRequirementsRequestAcceleratorNamesItemInferentia2   InstanceRequirementsRequestAcceleratorNamesItem = "inferentia2"
+	InstanceRequirementsRequestAcceleratorNamesItemTrainium      InstanceRequirementsRequestAcceleratorNamesItem = "trainium"
+	InstanceRequirementsRequestAcceleratorNamesItemTrainium2     InstanceRequirementsRequestAcceleratorNamesItem = "trainium2"
+	InstanceRequirementsRequestAcceleratorNamesItemU30           InstanceRequirementsRequestAcceleratorNamesItem = "u30"
+)
+
+type InstanceRequirementsRequestAcceleratorTypesItem string
+
+const (
+	InstanceRequirementsRequestAcceleratorTypesItemGpu       InstanceRequirementsRequestAcceleratorTypesItem = "gpu"
+	InstanceRequirementsRequestAcceleratorTypesItemFpga      InstanceRequirementsRequestAcceleratorTypesItem = "fpga"
+	InstanceRequirementsRequestAcceleratorTypesItemInference InstanceRequirementsRequestAcceleratorTypesItem = "inference"
+	InstanceRequirementsRequestAcceleratorTypesItemMedia     InstanceRequirementsRequestAcceleratorTypesItem = "media"
+)
+
+type InstanceRequirementsRequestBareMetal string
+
+const (
+	InstanceRequirementsRequestBareMetalIncluded InstanceRequirementsRequestBareMetal = "included"
+	InstanceRequirementsRequestBareMetalRequired InstanceRequirementsRequestBareMetal = "required"
+	InstanceRequirementsRequestBareMetalExcluded InstanceRequirementsRequestBareMetal = "excluded"
+)
+
+type InstanceRequirementsRequestBurstablePerformance string
+
+const (
+	InstanceRequirementsRequestBurstablePerformanceIncluded InstanceRequirementsRequestBurstablePerformance = "included"
+	InstanceRequirementsRequestBurstablePerformanceRequired InstanceRequirementsRequestBurstablePerformance = "required"
+	InstanceRequirementsRequestBurstablePerformanceExcluded InstanceRequirementsRequestBurstablePerformance = "excluded"
+)
+
+type InstanceRequirementsRequestCpuManufacturersItem string
+
+const (
+	InstanceRequirementsRequestCpuManufacturersItemIntel             InstanceRequirementsRequestCpuManufacturersItem = "intel"
+	InstanceRequirementsRequestCpuManufacturersItemAmd               InstanceRequirementsRequestCpuManufacturersItem = "amd"
+	InstanceRequirementsRequestCpuManufacturersItemAmazonWebServices InstanceRequirementsRequestCpuManufacturersItem = "amazon-web-services"
+	InstanceRequirementsRequestCpuManufacturersItemApple             InstanceRequirementsRequestCpuManufacturersItem = "apple"
+)
+
+type InstanceRequirementsRequestInstanceGenerationsItem string
+
+const (
+	InstanceRequirementsRequestInstanceGenerationsItemCurrent  InstanceRequirementsRequestInstanceGenerationsItem = "current"
+	InstanceRequirementsRequestInstanceGenerationsItemPrevious InstanceRequirementsRequestInstanceGenerationsItem = "previous"
+)
+
+type InstanceRequirementsRequestLocalStorage string
+
+const (
+	InstanceRequirementsRequestLocalStorageIncluded InstanceRequirementsRequestLocalStorage = "included"
+	InstanceRequirementsRequestLocalStorageRequired InstanceRequirementsRequestLocalStorage = "required"
+	InstanceRequirementsRequestLocalStorageExcluded InstanceRequirementsRequestLocalStorage = "excluded"
+)
+
+type InstanceRequirementsRequestLocalStorageTypesItem string
+
+const (
+	InstanceRequirementsRequestLocalStorageTypesItemHdd InstanceRequirementsRequestLocalStorageTypesItem = "hdd"
+	InstanceRequirementsRequestLocalStorageTypesItemSsd InstanceRequirementsRequestLocalStorageTypesItem = "ssd"
+)
+
+type InstanceMetadataOptionsRequestHttpEndpoint string
+
+const (
+	InstanceMetadataOptionsRequestHttpEndpointDisabled InstanceMetadataOptionsRequestHttpEndpoint = "disabled"
+	InstanceMetadataOptionsRequestHttpEndpointEnabled  InstanceMetadataOptionsRequestHttpEndpoint = "enabled"
+)
+
+type InstanceMetadataOptionsRequestHttpTokens string
+
+const (
+	InstanceMetadataOptionsRequestHttpTokensOptional InstanceMetadataOptionsRequestHttpTokens = "optional"
+	InstanceMetadataOptionsRequestHttpTokensRequired InstanceMetadataOptionsRequestHttpTokens = "required"
+)
+
+type CapacityReservationOptionsRequestUsageStrategy string
+
+const (
+	CapacityReservationOptionsRequestUsageStrategyUseCapacityReservationsFirst CapacityReservationOptionsRequestUsageStrategy = "use-capacity-reservations-first"
+)
+
+type ReservedCapacityOptionsRequestReservationTypesItem string
+
+const (
+	ReservedCapacityOptionsRequestReservationTypesItemInterruptibleCapacityReservation ReservedCapacityOptionsRequestReservationTypesItem = "interruptible-capacity-reservation"
+)
+
+type SpotOptionsRequestAllocationStrategy string
+
+const (
+	SpotOptionsRequestAllocationStrategyLowestPrice                          SpotOptionsRequestAllocationStrategy = "lowest-price"
+	EC2FleetSpotOptionsRequestAllocationStrategyLowestPrice                  SpotOptionsRequestAllocationStrategy = "lowestPrice"
+	SpotOptionsRequestAllocationStrategyDiversified                          SpotOptionsRequestAllocationStrategy = "diversified"
+	SpotOptionsRequestAllocationStrategyCapacityOptimized                    SpotOptionsRequestAllocationStrategy = "capacityOptimized"
+	EC2FleetSpotOptionsRequestAllocationStrategyCapacityOptimized            SpotOptionsRequestAllocationStrategy = "capacity-optimized"
+	SpotOptionsRequestAllocationStrategyCapacityOptimizedPrioritized         SpotOptionsRequestAllocationStrategy = "capacityOptimizedPrioritized"
+	EC2FleetSpotOptionsRequestAllocationStrategyCapacityOptimizedPrioritized SpotOptionsRequestAllocationStrategy = "capacity-optimized-prioritized"
+	SpotOptionsRequestAllocationStrategyPriceCapacityOptimized               SpotOptionsRequestAllocationStrategy = "priceCapacityOptimized"
+	EC2FleetSpotOptionsRequestAllocationStrategyPriceCapacityOptimized       SpotOptionsRequestAllocationStrategy = "price-capacity-optimized"
+)
+
+type SpotOptionsRequestInstanceInterruptionBehavior string
+
+const (
+	SpotOptionsRequestInstanceInterruptionBehaviorHibernate SpotOptionsRequestInstanceInterruptionBehavior = "hibernate"
+	SpotOptionsRequestInstanceInterruptionBehaviorStop      SpotOptionsRequestInstanceInterruptionBehavior = "stop"
+	SpotOptionsRequestInstanceInterruptionBehaviorTerminate SpotOptionsRequestInstanceInterruptionBehavior = "terminate"
+)
+
+type CapacityRebalanceReplacementStrategy string
+
+const (
+	CapacityRebalanceReplacementStrategyLaunch                CapacityRebalanceReplacementStrategy = "launch"
+	CapacityRebalanceReplacementStrategyLaunchBeforeTerminate CapacityRebalanceReplacementStrategy = "launch-before-terminate"
+)
+
+type EC2FleetTagSpecificationResourceType string
+
+const (
+	EC2FleetTagSpecificationResourceTypeClientVpnEndpoint                    EC2FleetTagSpecificationResourceType = "client-vpn-endpoint"
+	EC2FleetTagSpecificationResourceTypeCustomerGateway                      EC2FleetTagSpecificationResourceType = "customer-gateway"
+	EC2FleetTagSpecificationResourceTypeDedicatedHost                        EC2FleetTagSpecificationResourceType = "dedicated-host"
+	EC2FleetTagSpecificationResourceTypeDhcpOptions                          EC2FleetTagSpecificationResourceType = "dhcp-options"
+	EC2FleetTagSpecificationResourceTypeEgressOnlyInternetGateway            EC2FleetTagSpecificationResourceType = "egress-only-internet-gateway"
+	EC2FleetTagSpecificationResourceTypeElasticGpu                           EC2FleetTagSpecificationResourceType = "elastic-gpu"
+	EC2FleetTagSpecificationResourceTypeElasticIp                            EC2FleetTagSpecificationResourceType = "elastic-ip"
+	EC2FleetTagSpecificationResourceTypeExportImageTask                      EC2FleetTagSpecificationResourceType = "export-image-task"
+	EC2FleetTagSpecificationResourceTypeExportInstanceTask                   EC2FleetTagSpecificationResourceType = "export-instance-task"
+	EC2FleetTagSpecificationResourceTypeFleet                                EC2FleetTagSpecificationResourceType = "fleet"
+	EC2FleetTagSpecificationResourceTypeFpgaImage                            EC2FleetTagSpecificationResourceType = "fpga-image"
+	EC2FleetTagSpecificationResourceTypeHostReservation                      EC2FleetTagSpecificationResourceType = "host-reservation"
+	EC2FleetTagSpecificationResourceTypeImage                                EC2FleetTagSpecificationResourceType = "image"
+	EC2FleetTagSpecificationResourceTypeImportImageTask                      EC2FleetTagSpecificationResourceType = "import-image-task"
+	EC2FleetTagSpecificationResourceTypeImportSnapshotTask                   EC2FleetTagSpecificationResourceType = "import-snapshot-task"
+	EC2FleetTagSpecificationResourceTypeInstance                             EC2FleetTagSpecificationResourceType = "instance"
+	EC2FleetTagSpecificationResourceTypeInternetGateway                      EC2FleetTagSpecificationResourceType = "internet-gateway"
+	EC2FleetTagSpecificationResourceTypeKeyPair                              EC2FleetTagSpecificationResourceType = "key-pair"
+	EC2FleetTagSpecificationResourceTypeLaunchTemplate                       EC2FleetTagSpecificationResourceType = "launch-template"
+	EC2FleetTagSpecificationResourceTypeLocalGatewayRouteTableVpcAssociation EC2FleetTagSpecificationResourceType = "local-gateway-route-table-vpc-association"
+	EC2FleetTagSpecificationResourceTypeNatgateway                           EC2FleetTagSpecificationResourceType = "natgateway"
+	EC2FleetTagSpecificationResourceTypeNetworkAcl                           EC2FleetTagSpecificationResourceType = "network-acl"
+	EC2FleetTagSpecificationResourceTypeNetworkInsightsAnalysis              EC2FleetTagSpecificationResourceType = "network-insights-analysis"
+	EC2FleetTagSpecificationResourceTypeNetworkInsightsPath                  EC2FleetTagSpecificationResourceType = "network-insights-path"
+	EC2FleetTagSpecificationResourceTypeNetworkInterface                     EC2FleetTagSpecificationResourceType = "network-interface"
+	EC2FleetTagSpecificationResourceTypePlacementGroup                       EC2FleetTagSpecificationResourceType = "placement-group"
+	EC2FleetTagSpecificationResourceTypeReservedInstances                    EC2FleetTagSpecificationResourceType = "reserved-instances"
+	EC2FleetTagSpecificationResourceTypeRouteTable                           EC2FleetTagSpecificationResourceType = "route-table"
+	EC2FleetTagSpecificationResourceTypeSecurityGroup                        EC2FleetTagSpecificationResourceType = "security-group"
+	EC2FleetTagSpecificationResourceTypeSnapshot                             EC2FleetTagSpecificationResourceType = "snapshot"
+	EC2FleetTagSpecificationResourceTypeSpotFleetRequest                     EC2FleetTagSpecificationResourceType = "spot-fleet-request"
+	EC2FleetTagSpecificationResourceTypeSpotInstancesRequest                 EC2FleetTagSpecificationResourceType = "spot-instances-request"
+	EC2FleetTagSpecificationResourceTypeSubnet                               EC2FleetTagSpecificationResourceType = "subnet"
+	EC2FleetTagSpecificationResourceTypeTrafficMirrorFilter                  EC2FleetTagSpecificationResourceType = "traffic-mirror-filter"
+	EC2FleetTagSpecificationResourceTypeTrafficMirrorSession                 EC2FleetTagSpecificationResourceType = "traffic-mirror-session"
+	EC2FleetTagSpecificationResourceTypeTrafficMirrorTarget                  EC2FleetTagSpecificationResourceType = "traffic-mirror-target"
+	EC2FleetTagSpecificationResourceTypeTransitGateway                       EC2FleetTagSpecificationResourceType = "transit-gateway"
+	EC2FleetTagSpecificationResourceTypeTransitGatewayAttachment             EC2FleetTagSpecificationResourceType = "transit-gateway-attachment"
+	EC2FleetTagSpecificationResourceTypeTransitGatewayConnectPeer            EC2FleetTagSpecificationResourceType = "transit-gateway-connect-peer"
+	EC2FleetTagSpecificationResourceTypeTransitGatewayMulticastDomain        EC2FleetTagSpecificationResourceType = "transit-gateway-multicast-domain"
+	EC2FleetTagSpecificationResourceTypeTransitGatewayRouteTable             EC2FleetTagSpecificationResourceType = "transit-gateway-route-table"
+	EC2FleetTagSpecificationResourceTypeVolume                               EC2FleetTagSpecificationResourceType = "volume"
+	EC2FleetTagSpecificationResourceTypeVpc                                  EC2FleetTagSpecificationResourceType = "vpc"
+	EC2FleetTagSpecificationResourceTypeVpcFlowLog                           EC2FleetTagSpecificationResourceType = "vpc-flow-log"
+	EC2FleetTagSpecificationResourceTypeVpcPeeringConnection                 EC2FleetTagSpecificationResourceType = "vpc-peering-connection"
+	EC2FleetTagSpecificationResourceTypeVpnConnection                        EC2FleetTagSpecificationResourceType = "vpn-connection"
+	EC2FleetTagSpecificationResourceTypeVpnGateway                           EC2FleetTagSpecificationResourceType = "vpn-gateway"
+)
+
+type TargetCapacitySpecificationRequestDefaultTargetCapacityType string
+
+const (
+	TargetCapacitySpecificationRequestDefaultTargetCapacityTypeOnDemand         TargetCapacitySpecificationRequestDefaultTargetCapacityType = "on-demand"
+	TargetCapacitySpecificationRequestDefaultTargetCapacityTypeSpot             TargetCapacitySpecificationRequestDefaultTargetCapacityType = "spot"
+	TargetCapacitySpecificationRequestDefaultTargetCapacityTypeCapacityBlock    TargetCapacitySpecificationRequestDefaultTargetCapacityType = "capacity-block"
+	TargetCapacitySpecificationRequestDefaultTargetCapacityTypeReservedCapacity TargetCapacitySpecificationRequestDefaultTargetCapacityType = "reserved-capacity"
+)
+
+type TargetCapacitySpecificationRequestTargetCapacityUnitType string
+
+const (
+	TargetCapacitySpecificationRequestTargetCapacityUnitTypeVcpu      TargetCapacitySpecificationRequestTargetCapacityUnitType = "vcpu"
+	TargetCapacitySpecificationRequestTargetCapacityUnitTypeMemoryMib TargetCapacitySpecificationRequestTargetCapacityUnitType = "memory-mib"
+	TargetCapacitySpecificationRequestTargetCapacityUnitTypeUnits     TargetCapacitySpecificationRequestTargetCapacityUnitType = "units"
+)
+
+type EC2FleetType string
+
+const (
+	EC2FleetTypeMaintain EC2FleetType = "maintain"
+	EC2FleetTypeRequest  EC2FleetType = "request"
+	EC2FleetTypeInstant  EC2FleetType = "instant"
+)
+
+type FlowLogDestinationOptionsFileFormat string
+
+const (
+	FlowLogDestinationOptionsFileFormatPlainText FlowLogDestinationOptionsFileFormat = "plain-text"
+	FlowLogDestinationOptionsFileFormatParquet   FlowLogDestinationOptionsFileFormat = "parquet"
+)
+
+type FlowLogLogDestinationType string
+
+const (
+	FlowLogLogDestinationTypeCloudWatchLogs      FlowLogLogDestinationType = "cloud-watch-logs"
+	FlowLogLogDestinationTypeS3                  FlowLogLogDestinationType = "s3"
+	FlowLogLogDestinationTypeKinesisDataFirehose FlowLogLogDestinationType = "kinesis-data-firehose"
+)
+
+type FlowLogResourceType string
+
+const (
+	FlowLogResourceTypeNetworkInterface         FlowLogResourceType = "NetworkInterface"
+	FlowLogResourceTypeSubnet                   FlowLogResourceType = "Subnet"
+	FlowLogResourceTypeVPC                      FlowLogResourceType = "VPC"
+	FlowLogResourceTypeTransitGateway           FlowLogResourceType = "TransitGateway"
+	FlowLogResourceTypeTransitGatewayAttachment FlowLogResourceType = "TransitGatewayAttachment"
+	FlowLogResourceTypeRegionalNatGateway       FlowLogResourceType = "RegionalNatGateway"
+)
+
+type FlowLogTrafficType string
+
+const (
+	FlowLogTrafficTypeACCEPT FlowLogTrafficType = "ACCEPT"
+	FlowLogTrafficTypeALL    FlowLogTrafficType = "ALL"
+	FlowLogTrafficTypeREJECT FlowLogTrafficType = "REJECT"
+)
+
+type HostAutoPlacement string
+
+const (
+	HostAutoPlacementOn  HostAutoPlacement = "on"
+	HostAutoPlacementOff HostAutoPlacement = "off"
+)
+
+type HostHostMaintenance string
+
+const (
+	HostHostMaintenanceOn  HostHostMaintenance = "on"
+	HostHostMaintenanceOff HostHostMaintenance = "off"
+)
+
+type HostHostRecovery string
+
+const (
+	HostHostRecoveryOn  HostHostRecovery = "on"
+	HostHostRecoveryOff HostHostRecovery = "off"
+)
+
+type IPAMMeteredAccount string
+
+const (
+	IPAMMeteredAccountIpamOwner     IPAMMeteredAccount = "ipam-owner"
+	IPAMMeteredAccountResourceOwner IPAMMeteredAccount = "resource-owner"
+)
+
+type IPAMTier string
+
+const (
+	IPAMTierFree     IPAMTier = "free"
+	IPAMTierAdvanced IPAMTier = "advanced"
+)
+
+type IPAMPoolAwsService string
+
+const (
+	IPAMPoolAwsServiceEc2            IPAMPoolAwsService = "ec2"
+	IPAMPoolAwsServiceGlobalServices IPAMPoolAwsService = "global-services"
+)
+
+type IPAMPoolIpamScopeType string
+
+const (
+	IPAMPoolIpamScopeTypePublic  IPAMPoolIpamScopeType = "public"
+	IPAMPoolIpamScopeTypePrivate IPAMPoolIpamScopeType = "private"
+)
+
+type IPAMPoolPublicIpSource string
+
+const (
+	IPAMPoolPublicIpSourceByoip  IPAMPoolPublicIpSource = "byoip"
+	IPAMPoolPublicIpSourceAmazon IPAMPoolPublicIpSource = "amazon"
+)
+
+type IPAMPoolState string
+
+const (
+	IPAMPoolStateCreateInProgress IPAMPoolState = "create-in-progress"
+	IPAMPoolStateCreateComplete   IPAMPoolState = "create-complete"
+	IPAMPoolStateModifyInProgress IPAMPoolState = "modify-in-progress"
+	IPAMPoolStateModifyComplete   IPAMPoolState = "modify-complete"
+	IPAMPoolStateDeleteInProgress IPAMPoolState = "delete-in-progress"
+	IPAMPoolStateDeleteComplete   IPAMPoolState = "delete-complete"
+)
+
+type IpamPrefixListResolverRuleConditionOperation string
+
+const (
+	IpamPrefixListResolverRuleConditionOperationEquals    IpamPrefixListResolverRuleConditionOperation = "equals"
+	IpamPrefixListResolverRuleConditionOperationNotEquals IpamPrefixListResolverRuleConditionOperation = "not-equals"
+	IpamPrefixListResolverRuleConditionOperationSubnetOf  IpamPrefixListResolverRuleConditionOperation = "subnet-of"
+)
+
+type IpamPrefixListResolverRuleResourceType string
+
+const (
+	IpamPrefixListResolverRuleResourceTypeVpc            IpamPrefixListResolverRuleResourceType = "vpc"
+	IpamPrefixListResolverRuleResourceTypeSubnet         IpamPrefixListResolverRuleResourceType = "subnet"
+	IpamPrefixListResolverRuleResourceTypeEip            IpamPrefixListResolverRuleResourceType = "eip"
+	IpamPrefixListResolverRuleResourceTypePublicIpv4Pool IpamPrefixListResolverRuleResourceType = "public-ipv4-pool"
+)
+
+type IpamPrefixListResolverRuleRuleType string
+
+const (
+	IpamPrefixListResolverRuleRuleTypeStaticCidr       IpamPrefixListResolverRuleRuleType = "static-cidr"
+	IpamPrefixListResolverRuleRuleTypeIpamResourceCidr IpamPrefixListResolverRuleRuleType = "ipam-resource-cidr"
+	IpamPrefixListResolverRuleRuleTypeIpamPoolCidr     IpamPrefixListResolverRuleRuleType = "ipam-pool-cidr"
+)
+
+type IpamScopeExternalAuthorityConfigurationIpamScopeExternalAuthorityType string
+
+const (
+	IpamScopeExternalAuthorityConfigurationIpamScopeExternalAuthorityTypeInfoblox IpamScopeExternalAuthorityConfigurationIpamScopeExternalAuthorityType = "infoblox"
+)
+
+type IPAMScopeIpamScopeType string
+
+const (
+	IPAMScopeIpamScopeTypePublic  IPAMScopeIpamScopeType = "public"
+	IPAMScopeIpamScopeTypePrivate IPAMScopeIpamScopeType = "private"
+)
+
+type InstanceAffinity string
+
+const (
+	InstanceAffinityDefault InstanceAffinity = "default"
+	InstanceAffinityHost    InstanceAffinity = "host"
+)
+
+type MetadataOptionsHttpEndpoint string
+
+const (
+	MetadataOptionsHttpEndpointDisabled MetadataOptionsHttpEndpoint = "disabled"
+	MetadataOptionsHttpEndpointEnabled  MetadataOptionsHttpEndpoint = "enabled"
+)
+
+type MetadataOptionsHttpProtocolIpv6 string
+
+const (
+	MetadataOptionsHttpProtocolIpv6Disabled MetadataOptionsHttpProtocolIpv6 = "disabled"
+	MetadataOptionsHttpProtocolIpv6Enabled  MetadataOptionsHttpProtocolIpv6 = "enabled"
+)
+
+type MetadataOptionsHttpTokens string
+
+const (
+	MetadataOptionsHttpTokensOptional MetadataOptionsHttpTokens = "optional"
+	MetadataOptionsHttpTokensRequired MetadataOptionsHttpTokens = "required"
+)
+
+type MetadataOptionsInstanceMetadataTags string
+
+const (
+	MetadataOptionsInstanceMetadataTagsDisabled MetadataOptionsInstanceMetadataTags = "disabled"
+	MetadataOptionsInstanceMetadataTagsEnabled  MetadataOptionsInstanceMetadataTags = "enabled"
+)
+
+type PrivateDnsNameOptionsHostnameType string
+
+const (
+	PrivateDnsNameOptionsHostnameTypeIpName       PrivateDnsNameOptionsHostnameType = "ip-name"
+	PrivateDnsNameOptionsHostnameTypeResourceName PrivateDnsNameOptionsHostnameType = "resource-name"
+)
+
+type InstanceConnectEndpointState string
+
+const (
+	InstanceConnectEndpointStateCreateInProgress InstanceConnectEndpointState = "create-in-progress"
+	InstanceConnectEndpointStateCreateComplete   InstanceConnectEndpointState = "create-complete"
+	InstanceConnectEndpointStateCreateFailed     InstanceConnectEndpointState = "create-failed"
+	InstanceConnectEndpointStateDeleteInProgress InstanceConnectEndpointState = "delete-in-progress"
+	InstanceConnectEndpointStateDeleteComplete   InstanceConnectEndpointState = "delete-complete"
+	InstanceConnectEndpointStateDeleteFailed     InstanceConnectEndpointState = "delete-failed"
+	InstanceConnectEndpointStateUpdateInProgress InstanceConnectEndpointState = "update-in-progress"
+	InstanceConnectEndpointStateUpdateComplete   InstanceConnectEndpointState = "update-complete"
+	InstanceConnectEndpointStateUpdateFailed     InstanceConnectEndpointState = "update-failed"
+)
+
+type KeyPairKeyFormat string
+
+const (
+	KeyPairKeyFormatPem KeyPairKeyFormat = "pem"
+	KeyPairKeyFormatPpk KeyPairKeyFormat = "ppk"
+)
+
+type KeyPairKeyType string
+
+const (
+	KeyPairKeyTypeRsa     KeyPairKeyType = "rsa"
+	KeyPairKeyTypeEd25519 KeyPairKeyType = "ed25519"
+)
+
+type CpuOptionsAmdSevSnp string
+
+const (
+	CpuOptionsAmdSevSnpEnabled  CpuOptionsAmdSevSnp = "enabled"
+	CpuOptionsAmdSevSnpDisabled CpuOptionsAmdSevSnp = "disabled"
+)
+
+type CpuOptionsNestedVirtualization string
+
+const (
+	CpuOptionsNestedVirtualizationEnabled  CpuOptionsNestedVirtualization = "enabled"
+	CpuOptionsNestedVirtualizationDisabled CpuOptionsNestedVirtualization = "disabled"
+)
+
+type Protocol string
+
+const (
+	ProtocolTcp Protocol = "tcp"
+	ProtocolUdp Protocol = "udp"
+)
+
+type NetworkInsightsAccessScopeAnalysisFindingsFound string
+
+const (
+	NetworkInsightsAccessScopeAnalysisFindingsFoundTrue    NetworkInsightsAccessScopeAnalysisFindingsFound = "true"
+	NetworkInsightsAccessScopeAnalysisFindingsFoundFalse   NetworkInsightsAccessScopeAnalysisFindingsFound = "false"
+	NetworkInsightsAccessScopeAnalysisFindingsFoundUnknown NetworkInsightsAccessScopeAnalysisFindingsFound = "unknown"
+)
+
+type NetworkInsightsAccessScopeAnalysisStatus string
+
+const (
+	NetworkInsightsAccessScopeAnalysisStatusRunning   NetworkInsightsAccessScopeAnalysisStatus = "running"
+	NetworkInsightsAccessScopeAnalysisStatusFailed    NetworkInsightsAccessScopeAnalysisStatus = "failed"
+	NetworkInsightsAccessScopeAnalysisStatusSucceeded NetworkInsightsAccessScopeAnalysisStatus = "succeeded"
+)
+
+type NetworkInsightsAnalysisStatus string
+
+const (
+	NetworkInsightsAnalysisStatusRunning   NetworkInsightsAnalysisStatus = "running"
+	NetworkInsightsAnalysisStatusFailed    NetworkInsightsAnalysisStatus = "failed"
+	NetworkInsightsAnalysisStatusSucceeded NetworkInsightsAnalysisStatus = "succeeded"
+)
+
+type NetworkInsightsPathProtocol string
+
+const (
+	NetworkInsightsPathProtocolTcp NetworkInsightsPathProtocol = "tcp"
+	NetworkInsightsPathProtocolUdp NetworkInsightsPathProtocol = "udp"
+)
+
+type NetworkInterfaceNetworkInterfacePublicIpDnsHostnameTypeSpecification string
+
+const (
+	NetworkInterfaceNetworkInterfacePublicIpDnsHostnameTypeSpecificationPublicDualStackDnsName NetworkInterfaceNetworkInterfacePublicIpDnsHostnameTypeSpecification = "public-dual-stack-dns-name"
+	NetworkInterfaceNetworkInterfacePublicIpDnsHostnameTypeSpecificationPublicIpv4DnsName      NetworkInterfaceNetworkInterfacePublicIpDnsHostnameTypeSpecification = "public-ipv4-dns-name"
+	NetworkInterfaceNetworkInterfacePublicIpDnsHostnameTypeSpecificationPublicIpv6DnsName      NetworkInterfaceNetworkInterfacePublicIpDnsHostnameTypeSpecification = "public-ipv6-dns-name"
+)
+
+type PrefixListAddressFamily string
+
+const (
+	PrefixListAddressFamilyIPv4 PrefixListAddressFamily = "IPv4"
+	PrefixListAddressFamilyIPv6 PrefixListAddressFamily = "IPv6"
+)
+
+type RouteServerPersistRoutes string
+
+const (
+	RouteServerPersistRoutesEnable  RouteServerPersistRoutes = "enable"
+	RouteServerPersistRoutesDisable RouteServerPersistRoutes = "disable"
+)
+
+type BgpOptionsPeerLivenessDetection string
+
+const (
+	BgpOptionsPeerLivenessDetectionBfd          BgpOptionsPeerLivenessDetection = "bfd"
+	BgpOptionsPeerLivenessDetectionBgpKeepalive BgpOptionsPeerLivenessDetection = "bgp-keepalive"
+)
+
+type SecurityGroupVpcAssociationState string
+
+const (
+	SecurityGroupVpcAssociationStateAssociating          SecurityGroupVpcAssociationState = "associating"
+	SecurityGroupVpcAssociationStateAssociated           SecurityGroupVpcAssociationState = "associated"
+	SecurityGroupVpcAssociationStateAssociationFailed    SecurityGroupVpcAssociationState = "association-failed"
+	SecurityGroupVpcAssociationStateDisassociating       SecurityGroupVpcAssociationState = "disassociating"
+	SecurityGroupVpcAssociationStateDisassociated        SecurityGroupVpcAssociationState = "disassociated"
+	SecurityGroupVpcAssociationStateDisassociationFailed SecurityGroupVpcAssociationState = "disassociation-failed"
+)
+
+type SnapshotBlockPublicAccessState string
+
+const (
+	SnapshotBlockPublicAccessStateBlockAllSharing SnapshotBlockPublicAccessState = "block-all-sharing"
+	SnapshotBlockPublicAccessStateBlockNewSharing SnapshotBlockPublicAccessState = "block-new-sharing"
+)
+
+type SpotFleetRequestConfigDataAllocationStrategy string
+
+const (
+	SpotFleetRequestConfigDataAllocationStrategyCapacityOptimized            SpotFleetRequestConfigDataAllocationStrategy = "capacityOptimized"
+	SpotFleetRequestConfigDataAllocationStrategyCapacityOptimizedPrioritized SpotFleetRequestConfigDataAllocationStrategy = "capacityOptimizedPrioritized"
+	SpotFleetRequestConfigDataAllocationStrategyDiversified                  SpotFleetRequestConfigDataAllocationStrategy = "diversified"
+	SpotFleetRequestConfigDataAllocationStrategyLowestPrice                  SpotFleetRequestConfigDataAllocationStrategy = "lowestPrice"
+	SpotFleetRequestConfigDataAllocationStrategyPriceCapacityOptimized       SpotFleetRequestConfigDataAllocationStrategy = "priceCapacityOptimized"
+)
+
+type SpotFleetRequestConfigDataExcessCapacityTerminationPolicy string
+
+const (
+	SpotFleetRequestConfigDataExcessCapacityTerminationPolicyDefault                SpotFleetRequestConfigDataExcessCapacityTerminationPolicy = "Default"
+	SpotFleetRequestConfigDataExcessCapacityTerminationPolicyNoTermination          SpotFleetRequestConfigDataExcessCapacityTerminationPolicy = "NoTermination"
+	SpotFleetSpotFleetRequestConfigDataExcessCapacityTerminationPolicyDefault       SpotFleetRequestConfigDataExcessCapacityTerminationPolicy = "default"
+	SpotFleetSpotFleetRequestConfigDataExcessCapacityTerminationPolicyNoTermination SpotFleetRequestConfigDataExcessCapacityTerminationPolicy = "noTermination"
+)
+
+type SpotFleetRequestConfigDataInstanceInterruptionBehavior string
+
+const (
+	SpotFleetRequestConfigDataInstanceInterruptionBehaviorHibernate SpotFleetRequestConfigDataInstanceInterruptionBehavior = "hibernate"
+	SpotFleetRequestConfigDataInstanceInterruptionBehaviorStop      SpotFleetRequestConfigDataInstanceInterruptionBehavior = "stop"
+	SpotFleetRequestConfigDataInstanceInterruptionBehaviorTerminate SpotFleetRequestConfigDataInstanceInterruptionBehavior = "terminate"
+)
+
+type SpotFleetEbsBlockDeviceVolumeType string
+
+const (
+	SpotFleetEbsBlockDeviceVolumeTypeGp2      SpotFleetEbsBlockDeviceVolumeType = "gp2"
+	SpotFleetEbsBlockDeviceVolumeTypeGp3      SpotFleetEbsBlockDeviceVolumeType = "gp3"
+	SpotFleetEbsBlockDeviceVolumeTypeIo1      SpotFleetEbsBlockDeviceVolumeType = "io1"
+	SpotFleetEbsBlockDeviceVolumeTypeIo2      SpotFleetEbsBlockDeviceVolumeType = "io2"
+	SpotFleetEbsBlockDeviceVolumeTypeSc1      SpotFleetEbsBlockDeviceVolumeType = "sc1"
+	SpotFleetEbsBlockDeviceVolumeTypeSt1      SpotFleetEbsBlockDeviceVolumeType = "st1"
+	SpotFleetEbsBlockDeviceVolumeTypeStandard SpotFleetEbsBlockDeviceVolumeType = "standard"
+)
+
+type SpotFleetInstanceRequirementsRequestAcceleratorManufacturersItem string
+
+const (
+	SpotFleetInstanceRequirementsRequestAcceleratorManufacturersItemAmazonWebServices SpotFleetInstanceRequirementsRequestAcceleratorManufacturersItem = "amazon-web-services"
+	SpotFleetInstanceRequirementsRequestAcceleratorManufacturersItemAmd               SpotFleetInstanceRequirementsRequestAcceleratorManufacturersItem = "amd"
+	SpotFleetInstanceRequirementsRequestAcceleratorManufacturersItemHabana            SpotFleetInstanceRequirementsRequestAcceleratorManufacturersItem = "habana"
+	SpotFleetInstanceRequirementsRequestAcceleratorManufacturersItemNvidia            SpotFleetInstanceRequirementsRequestAcceleratorManufacturersItem = "nvidia"
+	SpotFleetInstanceRequirementsRequestAcceleratorManufacturersItemXilinx            SpotFleetInstanceRequirementsRequestAcceleratorManufacturersItem = "xilinx"
+)
+
+type SpotFleetInstanceRequirementsRequestAcceleratorNamesItem string
+
+const (
+	SpotFleetInstanceRequirementsRequestAcceleratorNamesItemA10g          SpotFleetInstanceRequirementsRequestAcceleratorNamesItem = "a10g"
+	SpotFleetInstanceRequirementsRequestAcceleratorNamesItemA100          SpotFleetInstanceRequirementsRequestAcceleratorNamesItem = "a100"
+	SpotFleetInstanceRequirementsRequestAcceleratorNamesItemH100          SpotFleetInstanceRequirementsRequestAcceleratorNamesItem = "h100"
+	SpotFleetInstanceRequirementsRequestAcceleratorNamesItemInferentia    SpotFleetInstanceRequirementsRequestAcceleratorNamesItem = "inferentia"
+	SpotFleetInstanceRequirementsRequestAcceleratorNamesItemK520          SpotFleetInstanceRequirementsRequestAcceleratorNamesItem = "k520"
+	SpotFleetInstanceRequirementsRequestAcceleratorNamesItemK80           SpotFleetInstanceRequirementsRequestAcceleratorNamesItem = "k80"
+	SpotFleetInstanceRequirementsRequestAcceleratorNamesItemM60           SpotFleetInstanceRequirementsRequestAcceleratorNamesItem = "m60"
+	SpotFleetInstanceRequirementsRequestAcceleratorNamesItemRadeonProV520 SpotFleetInstanceRequirementsRequestAcceleratorNamesItem = "radeon-pro-v520"
+	SpotFleetInstanceRequirementsRequestAcceleratorNamesItemT4            SpotFleetInstanceRequirementsRequestAcceleratorNamesItem = "t4"
+	SpotFleetInstanceRequirementsRequestAcceleratorNamesItemT4g           SpotFleetInstanceRequirementsRequestAcceleratorNamesItem = "t4g"
+	SpotFleetInstanceRequirementsRequestAcceleratorNamesItemVu9p          SpotFleetInstanceRequirementsRequestAcceleratorNamesItem = "vu9p"
+	SpotFleetInstanceRequirementsRequestAcceleratorNamesItemV100          SpotFleetInstanceRequirementsRequestAcceleratorNamesItem = "v100"
+	SpotFleetInstanceRequirementsRequestAcceleratorNamesItemL40s          SpotFleetInstanceRequirementsRequestAcceleratorNamesItem = "l40s"
+	SpotFleetInstanceRequirementsRequestAcceleratorNamesItemL4            SpotFleetInstanceRequirementsRequestAcceleratorNamesItem = "l4"
+	SpotFleetInstanceRequirementsRequestAcceleratorNamesItemGaudiHl205    SpotFleetInstanceRequirementsRequestAcceleratorNamesItem = "gaudi-hl-205"
+	SpotFleetInstanceRequirementsRequestAcceleratorNamesItemInferentia2   SpotFleetInstanceRequirementsRequestAcceleratorNamesItem = "inferentia2"
+	SpotFleetInstanceRequirementsRequestAcceleratorNamesItemTrainium      SpotFleetInstanceRequirementsRequestAcceleratorNamesItem = "trainium"
+	SpotFleetInstanceRequirementsRequestAcceleratorNamesItemTrainium2     SpotFleetInstanceRequirementsRequestAcceleratorNamesItem = "trainium2"
+	SpotFleetInstanceRequirementsRequestAcceleratorNamesItemU30           SpotFleetInstanceRequirementsRequestAcceleratorNamesItem = "u30"
+)
+
+type SpotFleetInstanceRequirementsRequestAcceleratorTypesItem string
+
+const (
+	SpotFleetInstanceRequirementsRequestAcceleratorTypesItemGpu       SpotFleetInstanceRequirementsRequestAcceleratorTypesItem = "gpu"
+	SpotFleetInstanceRequirementsRequestAcceleratorTypesItemFpga      SpotFleetInstanceRequirementsRequestAcceleratorTypesItem = "fpga"
+	SpotFleetInstanceRequirementsRequestAcceleratorTypesItemInference SpotFleetInstanceRequirementsRequestAcceleratorTypesItem = "inference"
+	SpotFleetInstanceRequirementsRequestAcceleratorTypesItemMedia     SpotFleetInstanceRequirementsRequestAcceleratorTypesItem = "media"
+)
+
+type SpotFleetInstanceRequirementsRequestBareMetal string
+
+const (
+	SpotFleetInstanceRequirementsRequestBareMetalIncluded SpotFleetInstanceRequirementsRequestBareMetal = "included"
+	SpotFleetInstanceRequirementsRequestBareMetalRequired SpotFleetInstanceRequirementsRequestBareMetal = "required"
+	SpotFleetInstanceRequirementsRequestBareMetalExcluded SpotFleetInstanceRequirementsRequestBareMetal = "excluded"
+)
+
+type SpotFleetInstanceRequirementsRequestBurstablePerformance string
+
+const (
+	SpotFleetInstanceRequirementsRequestBurstablePerformanceIncluded SpotFleetInstanceRequirementsRequestBurstablePerformance = "included"
+	SpotFleetInstanceRequirementsRequestBurstablePerformanceRequired SpotFleetInstanceRequirementsRequestBurstablePerformance = "required"
+	SpotFleetInstanceRequirementsRequestBurstablePerformanceExcluded SpotFleetInstanceRequirementsRequestBurstablePerformance = "excluded"
+)
+
+type SpotFleetInstanceRequirementsRequestCpuManufacturersItem string
+
+const (
+	SpotFleetInstanceRequirementsRequestCpuManufacturersItemIntel             SpotFleetInstanceRequirementsRequestCpuManufacturersItem = "intel"
+	SpotFleetInstanceRequirementsRequestCpuManufacturersItemAmd               SpotFleetInstanceRequirementsRequestCpuManufacturersItem = "amd"
+	SpotFleetInstanceRequirementsRequestCpuManufacturersItemAmazonWebServices SpotFleetInstanceRequirementsRequestCpuManufacturersItem = "amazon-web-services"
+	SpotFleetInstanceRequirementsRequestCpuManufacturersItemApple             SpotFleetInstanceRequirementsRequestCpuManufacturersItem = "apple"
+)
+
+type SpotFleetInstanceRequirementsRequestInstanceGenerationsItem string
+
+const (
+	SpotFleetInstanceRequirementsRequestInstanceGenerationsItemCurrent  SpotFleetInstanceRequirementsRequestInstanceGenerationsItem = "current"
+	SpotFleetInstanceRequirementsRequestInstanceGenerationsItemPrevious SpotFleetInstanceRequirementsRequestInstanceGenerationsItem = "previous"
+)
+
+type SpotFleetInstanceRequirementsRequestLocalStorage string
+
+const (
+	SpotFleetInstanceRequirementsRequestLocalStorageIncluded SpotFleetInstanceRequirementsRequestLocalStorage = "included"
+	SpotFleetInstanceRequirementsRequestLocalStorageRequired SpotFleetInstanceRequirementsRequestLocalStorage = "required"
+	SpotFleetInstanceRequirementsRequestLocalStorageExcluded SpotFleetInstanceRequirementsRequestLocalStorage = "excluded"
+)
+
+type SpotFleetInstanceRequirementsRequestLocalStorageTypesItem string
+
+const (
+	SpotFleetInstanceRequirementsRequestLocalStorageTypesItemHdd SpotFleetInstanceRequirementsRequestLocalStorageTypesItem = "hdd"
+	SpotFleetInstanceRequirementsRequestLocalStorageTypesItemSsd SpotFleetInstanceRequirementsRequestLocalStorageTypesItem = "ssd"
+)
+
+type SpotPlacementTenancy string
+
+const (
+	SpotPlacementTenancyDedicated SpotPlacementTenancy = "dedicated"
+	SpotPlacementTenancyDefault   SpotPlacementTenancy = "default"
+	SpotPlacementTenancyHost      SpotPlacementTenancy = "host"
+)
+
+type SpotFleetTagSpecificationResourceType string
+
+const (
+	SpotFleetTagSpecificationResourceTypeClientVpnEndpoint                    SpotFleetTagSpecificationResourceType = "client-vpn-endpoint"
+	SpotFleetTagSpecificationResourceTypeCustomerGateway                      SpotFleetTagSpecificationResourceType = "customer-gateway"
+	SpotFleetTagSpecificationResourceTypeDedicatedHost                        SpotFleetTagSpecificationResourceType = "dedicated-host"
+	SpotFleetTagSpecificationResourceTypeDhcpOptions                          SpotFleetTagSpecificationResourceType = "dhcp-options"
+	SpotFleetTagSpecificationResourceTypeEgressOnlyInternetGateway            SpotFleetTagSpecificationResourceType = "egress-only-internet-gateway"
+	SpotFleetTagSpecificationResourceTypeElasticGpu                           SpotFleetTagSpecificationResourceType = "elastic-gpu"
+	SpotFleetTagSpecificationResourceTypeElasticIp                            SpotFleetTagSpecificationResourceType = "elastic-ip"
+	SpotFleetTagSpecificationResourceTypeExportImageTask                      SpotFleetTagSpecificationResourceType = "export-image-task"
+	SpotFleetTagSpecificationResourceTypeExportInstanceTask                   SpotFleetTagSpecificationResourceType = "export-instance-task"
+	SpotFleetTagSpecificationResourceTypeFleet                                SpotFleetTagSpecificationResourceType = "fleet"
+	SpotFleetTagSpecificationResourceTypeFpgaImage                            SpotFleetTagSpecificationResourceType = "fpga-image"
+	SpotFleetTagSpecificationResourceTypeHostReservation                      SpotFleetTagSpecificationResourceType = "host-reservation"
+	SpotFleetTagSpecificationResourceTypeImage                                SpotFleetTagSpecificationResourceType = "image"
+	SpotFleetTagSpecificationResourceTypeImportImageTask                      SpotFleetTagSpecificationResourceType = "import-image-task"
+	SpotFleetTagSpecificationResourceTypeImportSnapshotTask                   SpotFleetTagSpecificationResourceType = "import-snapshot-task"
+	SpotFleetTagSpecificationResourceTypeInstance                             SpotFleetTagSpecificationResourceType = "instance"
+	SpotFleetTagSpecificationResourceTypeInternetGateway                      SpotFleetTagSpecificationResourceType = "internet-gateway"
+	SpotFleetTagSpecificationResourceTypeKeyPair                              SpotFleetTagSpecificationResourceType = "key-pair"
+	SpotFleetTagSpecificationResourceTypeLaunchTemplate                       SpotFleetTagSpecificationResourceType = "launch-template"
+	SpotFleetTagSpecificationResourceTypeLocalGatewayRouteTableVpcAssociation SpotFleetTagSpecificationResourceType = "local-gateway-route-table-vpc-association"
+	SpotFleetTagSpecificationResourceTypeNatgateway                           SpotFleetTagSpecificationResourceType = "natgateway"
+	SpotFleetTagSpecificationResourceTypeNetworkAcl                           SpotFleetTagSpecificationResourceType = "network-acl"
+	SpotFleetTagSpecificationResourceTypeNetworkInsightsAnalysis              SpotFleetTagSpecificationResourceType = "network-insights-analysis"
+	SpotFleetTagSpecificationResourceTypeNetworkInsightsPath                  SpotFleetTagSpecificationResourceType = "network-insights-path"
+	SpotFleetTagSpecificationResourceTypeNetworkInterface                     SpotFleetTagSpecificationResourceType = "network-interface"
+	SpotFleetTagSpecificationResourceTypePlacementGroup                       SpotFleetTagSpecificationResourceType = "placement-group"
+	SpotFleetTagSpecificationResourceTypeReservedInstances                    SpotFleetTagSpecificationResourceType = "reserved-instances"
+	SpotFleetTagSpecificationResourceTypeRouteTable                           SpotFleetTagSpecificationResourceType = "route-table"
+	SpotFleetTagSpecificationResourceTypeSecurityGroup                        SpotFleetTagSpecificationResourceType = "security-group"
+	SpotFleetTagSpecificationResourceTypeSnapshot                             SpotFleetTagSpecificationResourceType = "snapshot"
+	SpotFleetTagSpecificationResourceTypeSpotFleetRequest                     SpotFleetTagSpecificationResourceType = "spot-fleet-request"
+	SpotFleetTagSpecificationResourceTypeSpotInstancesRequest                 SpotFleetTagSpecificationResourceType = "spot-instances-request"
+	SpotFleetTagSpecificationResourceTypeSubnet                               SpotFleetTagSpecificationResourceType = "subnet"
+	SpotFleetTagSpecificationResourceTypeTrafficMirrorFilter                  SpotFleetTagSpecificationResourceType = "traffic-mirror-filter"
+	SpotFleetTagSpecificationResourceTypeTrafficMirrorSession                 SpotFleetTagSpecificationResourceType = "traffic-mirror-session"
+	SpotFleetTagSpecificationResourceTypeTrafficMirrorTarget                  SpotFleetTagSpecificationResourceType = "traffic-mirror-target"
+	SpotFleetTagSpecificationResourceTypeTransitGateway                       SpotFleetTagSpecificationResourceType = "transit-gateway"
+	SpotFleetTagSpecificationResourceTypeTransitGatewayAttachment             SpotFleetTagSpecificationResourceType = "transit-gateway-attachment"
+	SpotFleetTagSpecificationResourceTypeTransitGatewayConnectPeer            SpotFleetTagSpecificationResourceType = "transit-gateway-connect-peer"
+	SpotFleetTagSpecificationResourceTypeTransitGatewayMulticastDomain        SpotFleetTagSpecificationResourceType = "transit-gateway-multicast-domain"
+	SpotFleetTagSpecificationResourceTypeTransitGatewayRouteTable             SpotFleetTagSpecificationResourceType = "transit-gateway-route-table"
+	SpotFleetTagSpecificationResourceTypeVolume                               SpotFleetTagSpecificationResourceType = "volume"
+	SpotFleetTagSpecificationResourceTypeVpc                                  SpotFleetTagSpecificationResourceType = "vpc"
+	SpotFleetTagSpecificationResourceTypeVpcFlowLog                           SpotFleetTagSpecificationResourceType = "vpc-flow-log"
+	SpotFleetTagSpecificationResourceTypeVpcPeeringConnection                 SpotFleetTagSpecificationResourceType = "vpc-peering-connection"
+	SpotFleetTagSpecificationResourceTypeVpnConnection                        SpotFleetTagSpecificationResourceType = "vpn-connection"
+	SpotFleetTagSpecificationResourceTypeVpnGateway                           SpotFleetTagSpecificationResourceType = "vpn-gateway"
+)
+
+type SpotCapacityRebalanceReplacementStrategy string
+
+const (
+	SpotCapacityRebalanceReplacementStrategyLaunch                SpotCapacityRebalanceReplacementStrategy = "launch"
+	SpotCapacityRebalanceReplacementStrategyLaunchBeforeTerminate SpotCapacityRebalanceReplacementStrategy = "launch-before-terminate"
+)
+
+type SpotFleetRequestConfigDataTargetCapacityUnitType string
+
+const (
+	SpotFleetRequestConfigDataTargetCapacityUnitTypeVcpu      SpotFleetRequestConfigDataTargetCapacityUnitType = "vcpu"
+	SpotFleetRequestConfigDataTargetCapacityUnitTypeMemoryMib SpotFleetRequestConfigDataTargetCapacityUnitType = "memory-mib"
+	SpotFleetRequestConfigDataTargetCapacityUnitTypeUnits     SpotFleetRequestConfigDataTargetCapacityUnitType = "units"
+)
+
+type SpotFleetRequestConfigDataType string
+
+const (
+	SpotFleetRequestConfigDataTypeMaintain SpotFleetRequestConfigDataType = "maintain"
+	SpotFleetRequestConfigDataTypeRequest  SpotFleetRequestConfigDataType = "request"
+)
+
+type HaStatus string
+
+const (
+	HaStatusProcessing HaStatus = "processing"
+	HaStatusActive     HaStatus = "active"
+	HaStatusStandby    HaStatus = "standby"
+	HaStatusInvalid    HaStatus = "invalid"
+)
+
+type SqlServerLicenseUsage string
+
+const (
+	SqlServerLicenseUsageFull   SqlServerLicenseUsage = "full"
+	SqlServerLicenseUsageWaived SqlServerLicenseUsage = "waived"
+)
+
+type TrafficMirrorNetworkService string
+
+const (
+	TrafficMirrorNetworkServiceAmazonDns TrafficMirrorNetworkService = "amazon-dns"
+)
+
+type TransitGatewayEncryptionSupport string
+
+const (
+	TransitGatewayEncryptionSupportDisable TransitGatewayEncryptionSupport = "disable"
+	TransitGatewayEncryptionSupportEnable  TransitGatewayEncryptionSupport = "enable"
+)
+
+type TransitGatewayAttachmentResourceType string
+
+const (
+	TransitGatewayAttachmentResourceTypeVpc                  TransitGatewayAttachmentResourceType = "vpc"
+	TransitGatewayAttachmentResourceTypeVpn                  TransitGatewayAttachmentResourceType = "vpn"
+	TransitGatewayAttachmentResourceTypeDirectConnectGateway TransitGatewayAttachmentResourceType = "direct-connect-gateway"
+	TransitGatewayAttachmentResourceTypePeering              TransitGatewayAttachmentResourceType = "peering"
+	TransitGatewayAttachmentResourceTypeNetworkFunction      TransitGatewayAttachmentResourceType = "network-function"
+	TransitGatewayAttachmentResourceTypeVpnConcentrator      TransitGatewayAttachmentResourceType = "vpn-concentrator"
+	TransitGatewayAttachmentResourceTypeClientVpn            TransitGatewayAttachmentResourceType = "client-vpn"
+)
+
+type TransitGatewayMeteringPayerType string
+
+const (
+	TransitGatewayMeteringPayerTypeSourceAttachmentOwner      TransitGatewayMeteringPayerType = "source-attachment-owner"
+	TransitGatewayMeteringPayerTypeDestinationAttachmentOwner TransitGatewayMeteringPayerType = "destination-attachment-owner"
+	TransitGatewayMeteringPayerTypeTransitGatewayOwner        TransitGatewayMeteringPayerType = "transit-gateway-owner"
+)
+
+type VpcEncryptionControlEgressOnlyInternetGatewayExclusion string
+
+const (
+	VpcEncryptionControlEgressOnlyInternetGatewayExclusionEnable  VpcEncryptionControlEgressOnlyInternetGatewayExclusion = "enable"
+	VpcEncryptionControlEgressOnlyInternetGatewayExclusionDisable VpcEncryptionControlEgressOnlyInternetGatewayExclusion = "disable"
+)
+
+type VpcEncryptionControlElasticFileSystemExclusion string
+
+const (
+	VpcEncryptionControlElasticFileSystemExclusionEnable  VpcEncryptionControlElasticFileSystemExclusion = "enable"
+	VpcEncryptionControlElasticFileSystemExclusionDisable VpcEncryptionControlElasticFileSystemExclusion = "disable"
+)
+
+type VpcEncryptionControlInternetGatewayExclusion string
+
+const (
+	VpcEncryptionControlInternetGatewayExclusionEnable  VpcEncryptionControlInternetGatewayExclusion = "enable"
+	VpcEncryptionControlInternetGatewayExclusionDisable VpcEncryptionControlInternetGatewayExclusion = "disable"
+)
+
+type VpcEncryptionControlLambdaExclusion string
+
+const (
+	VpcEncryptionControlLambdaExclusionEnable  VpcEncryptionControlLambdaExclusion = "enable"
+	VpcEncryptionControlLambdaExclusionDisable VpcEncryptionControlLambdaExclusion = "disable"
+)
+
+type VpcEncryptionControlMode string
+
+const (
+	VpcEncryptionControlModeMonitor VpcEncryptionControlMode = "monitor"
+	VpcEncryptionControlModeEnforce VpcEncryptionControlMode = "enforce"
+)
+
+type VpcEncryptionControlNatGatewayExclusion string
+
+const (
+	VpcEncryptionControlNatGatewayExclusionEnable  VpcEncryptionControlNatGatewayExclusion = "enable"
+	VpcEncryptionControlNatGatewayExclusionDisable VpcEncryptionControlNatGatewayExclusion = "disable"
+)
+
+type VpcEncryptionControlVirtualPrivateGatewayExclusion string
+
+const (
+	VpcEncryptionControlVirtualPrivateGatewayExclusionEnable  VpcEncryptionControlVirtualPrivateGatewayExclusion = "enable"
+	VpcEncryptionControlVirtualPrivateGatewayExclusionDisable VpcEncryptionControlVirtualPrivateGatewayExclusion = "disable"
+)
+
+type VpcEncryptionControlVpcLatticeExclusion string
+
+const (
+	VpcEncryptionControlVpcLatticeExclusionEnable  VpcEncryptionControlVpcLatticeExclusion = "enable"
+	VpcEncryptionControlVpcLatticeExclusionDisable VpcEncryptionControlVpcLatticeExclusion = "disable"
+)
+
+type VpcEncryptionControlVpcPeeringExclusion string
+
+const (
+	VpcEncryptionControlVpcPeeringExclusionEnable  VpcEncryptionControlVpcPeeringExclusion = "enable"
+	VpcEncryptionControlVpcPeeringExclusionDisable VpcEncryptionControlVpcPeeringExclusion = "disable"
+)
+
+type VPCBlockPublicAccessExclusionInternetGatewayExclusionMode string
+
+const (
+	VPCBlockPublicAccessExclusionInternetGatewayExclusionModeAllowBidirectional VPCBlockPublicAccessExclusionInternetGatewayExclusionMode = "allow-bidirectional"
+	VPCBlockPublicAccessExclusionInternetGatewayExclusionModeAllowEgress        VPCBlockPublicAccessExclusionInternetGatewayExclusionMode = "allow-egress"
+)
+
+type VPCBlockPublicAccessOptionsInternetGatewayBlockMode string
+
+const (
+	VPCBlockPublicAccessOptionsInternetGatewayBlockModeBlockBidirectional VPCBlockPublicAccessOptionsInternetGatewayBlockMode = "block-bidirectional"
+	VPCBlockPublicAccessOptionsInternetGatewayBlockModeBlockIngress       VPCBlockPublicAccessOptionsInternetGatewayBlockMode = "block-ingress"
+)
+
+type VPCEncryptionControlEgressOnlyInternetGatewayExclusionInput string
+
+const (
+	VPCEncryptionControlEgressOnlyInternetGatewayExclusionInputEnable  VPCEncryptionControlEgressOnlyInternetGatewayExclusionInput = "enable"
+	VPCEncryptionControlEgressOnlyInternetGatewayExclusionInputDisable VPCEncryptionControlEgressOnlyInternetGatewayExclusionInput = "disable"
+)
+
+type VPCEncryptionControlElasticFileSystemExclusionInput string
+
+const (
+	VPCEncryptionControlElasticFileSystemExclusionInputEnable  VPCEncryptionControlElasticFileSystemExclusionInput = "enable"
+	VPCEncryptionControlElasticFileSystemExclusionInputDisable VPCEncryptionControlElasticFileSystemExclusionInput = "disable"
+)
+
+type VPCEncryptionControlInternetGatewayExclusionInput string
+
+const (
+	VPCEncryptionControlInternetGatewayExclusionInputEnable  VPCEncryptionControlInternetGatewayExclusionInput = "enable"
+	VPCEncryptionControlInternetGatewayExclusionInputDisable VPCEncryptionControlInternetGatewayExclusionInput = "disable"
+)
+
+type VPCEncryptionControlLambdaExclusionInput string
+
+const (
+	VPCEncryptionControlLambdaExclusionInputEnable  VPCEncryptionControlLambdaExclusionInput = "enable"
+	VPCEncryptionControlLambdaExclusionInputDisable VPCEncryptionControlLambdaExclusionInput = "disable"
+)
+
+type VPCEncryptionControlMode string
+
+const (
+	VPCEncryptionControlModeMonitor VPCEncryptionControlMode = "monitor"
+	VPCEncryptionControlModeEnforce VPCEncryptionControlMode = "enforce"
+)
+
+type VPCEncryptionControlNatGatewayExclusionInput string
+
+const (
+	VPCEncryptionControlNatGatewayExclusionInputEnable  VPCEncryptionControlNatGatewayExclusionInput = "enable"
+	VPCEncryptionControlNatGatewayExclusionInputDisable VPCEncryptionControlNatGatewayExclusionInput = "disable"
+)
+
+type VPCEncryptionControlState string
+
+const (
+	VPCEncryptionControlStateCreating          VPCEncryptionControlState = "creating"
+	VPCEncryptionControlStateAvailable         VPCEncryptionControlState = "available"
+	VPCEncryptionControlStateMonitorInProgress VPCEncryptionControlState = "monitor-in-progress"
+	VPCEncryptionControlStateEnforceInProgress VPCEncryptionControlState = "enforce-in-progress"
+	VPCEncryptionControlStateMonitorFailed     VPCEncryptionControlState = "monitor-failed"
+	VPCEncryptionControlStateEnforceFailed     VPCEncryptionControlState = "enforce-failed"
+	VPCEncryptionControlStateDeleting          VPCEncryptionControlState = "deleting"
+	VPCEncryptionControlStateDeleted           VPCEncryptionControlState = "deleted"
+	VPCEncryptionControlStateDeleteFailed      VPCEncryptionControlState = "delete-failed"
+)
+
+type VPCEncryptionControlVirtualPrivateGatewayExclusionInput string
+
+const (
+	VPCEncryptionControlVirtualPrivateGatewayExclusionInputEnable  VPCEncryptionControlVirtualPrivateGatewayExclusionInput = "enable"
+	VPCEncryptionControlVirtualPrivateGatewayExclusionInputDisable VPCEncryptionControlVirtualPrivateGatewayExclusionInput = "disable"
+)
+
+type VPCEncryptionControlVpcLatticeExclusionInput string
+
+const (
+	VPCEncryptionControlVpcLatticeExclusionInputEnable  VPCEncryptionControlVpcLatticeExclusionInput = "enable"
+	VPCEncryptionControlVpcLatticeExclusionInputDisable VPCEncryptionControlVpcLatticeExclusionInput = "disable"
+)
+
+type VPCEncryptionControlVpcPeeringExclusionInput string
+
+const (
+	VPCEncryptionControlVpcPeeringExclusionInputEnable  VPCEncryptionControlVpcPeeringExclusionInput = "enable"
+	VPCEncryptionControlVpcPeeringExclusionInputDisable VPCEncryptionControlVpcPeeringExclusionInput = "disable"
+)
+
+type DnsOptionsSpecificationDnsRecordIpType string
+
+const (
+	DnsOptionsSpecificationDnsRecordIpTypeIpv4           DnsOptionsSpecificationDnsRecordIpType = "ipv4"
+	DnsOptionsSpecificationDnsRecordIpTypeIpv6           DnsOptionsSpecificationDnsRecordIpType = "ipv6"
+	DnsOptionsSpecificationDnsRecordIpTypeDualstack      DnsOptionsSpecificationDnsRecordIpType = "dualstack"
+	DnsOptionsSpecificationDnsRecordIpTypeServiceDefined DnsOptionsSpecificationDnsRecordIpType = "service-defined"
+	DnsOptionsSpecificationDnsRecordIpTypeNotSpecified   DnsOptionsSpecificationDnsRecordIpType = "not-specified"
+)
+
+type DnsOptionsSpecificationPrivateDnsOnlyForInboundResolverEndpoint string
+
+const (
+	DnsOptionsSpecificationPrivateDnsOnlyForInboundResolverEndpointOnlyInboundResolver DnsOptionsSpecificationPrivateDnsOnlyForInboundResolverEndpoint = "OnlyInboundResolver"
+	DnsOptionsSpecificationPrivateDnsOnlyForInboundResolverEndpointAllResolvers        DnsOptionsSpecificationPrivateDnsOnlyForInboundResolverEndpoint = "AllResolvers"
+	DnsOptionsSpecificationPrivateDnsOnlyForInboundResolverEndpointNotSpecified        DnsOptionsSpecificationPrivateDnsOnlyForInboundResolverEndpoint = "NotSpecified"
+)
+
+type DnsOptionsSpecificationPrivateDnsPreference string
+
+const (
+	DnsOptionsSpecificationPrivateDnsPreferenceVERIFIEDDOMAINSONLY                DnsOptionsSpecificationPrivateDnsPreference = "VERIFIED_DOMAINS_ONLY"
+	DnsOptionsSpecificationPrivateDnsPreferenceALLDOMAINS                         DnsOptionsSpecificationPrivateDnsPreference = "ALL_DOMAINS"
+	DnsOptionsSpecificationPrivateDnsPreferenceVERIFIEDDOMAINSANDSPECIFIEDDOMAINS DnsOptionsSpecificationPrivateDnsPreference = "VERIFIED_DOMAINS_AND_SPECIFIED_DOMAINS"
+	DnsOptionsSpecificationPrivateDnsPreferenceSPECIFIEDDOMAINSONLY               DnsOptionsSpecificationPrivateDnsPreference = "SPECIFIED_DOMAINS_ONLY"
+)
+
+type VPCEndpointIpAddressType string
+
+const (
+	VPCEndpointIpAddressTypeIpv4         VPCEndpointIpAddressType = "ipv4"
+	VPCEndpointIpAddressTypeIpv6         VPCEndpointIpAddressType = "ipv6"
+	VPCEndpointIpAddressTypeDualstack    VPCEndpointIpAddressType = "dualstack"
+	VPCEndpointIpAddressTypeNotSpecified VPCEndpointIpAddressType = "not-specified"
+)
+
+type VPCEndpointVpcEndpointType string
+
+const (
+	VPCEndpointVpcEndpointTypeInterface           VPCEndpointVpcEndpointType = "Interface"
+	VPCEndpointVpcEndpointTypeGateway             VPCEndpointVpcEndpointType = "Gateway"
+	VPCEndpointVpcEndpointTypeGatewayLoadBalancer VPCEndpointVpcEndpointType = "GatewayLoadBalancer"
+	VPCEndpointVpcEndpointTypeServiceNetwork      VPCEndpointVpcEndpointType = "ServiceNetwork"
+	VPCEndpointVpcEndpointTypeResource            VPCEndpointVpcEndpointType = "Resource"
+)
+
+type IpAddressType string
+
+const (
+	IpAddressTypeIpv4 IpAddressType = "ipv4"
+	IpAddressTypeIpv6 IpAddressType = "ipv6"
+)
+
+type VPNConnectionPreSharedKeyStorage string
+
+const (
+	VPNConnectionPreSharedKeyStorageStandard       VPNConnectionPreSharedKeyStorage = "Standard"
+	VPNConnectionPreSharedKeyStorageSecretsManager VPNConnectionPreSharedKeyStorage = "SecretsManager"
+)
+
+type VPNConnectionTunnelBandwidth string
+
+const (
+	VPNConnectionTunnelBandwidthStandard VPNConnectionTunnelBandwidth = "standard"
+	VPNConnectionTunnelBandwidthLarge    VPNConnectionTunnelBandwidth = "large"
+)
+
+type VpnTunnelOptionsSpecificationDPDTimeoutAction string
+
+const (
+	VpnTunnelOptionsSpecificationDPDTimeoutActionClear   VpnTunnelOptionsSpecificationDPDTimeoutAction = "clear"
+	VpnTunnelOptionsSpecificationDPDTimeoutActionNone    VpnTunnelOptionsSpecificationDPDTimeoutAction = "none"
+	VpnTunnelOptionsSpecificationDPDTimeoutActionRestart VpnTunnelOptionsSpecificationDPDTimeoutAction = "restart"
+)
+
+type IKEVersionsRequestListValueValue string
+
+const (
+	IKEVersionsRequestListValueValueIkev1 IKEVersionsRequestListValueValue = "ikev1"
+	IKEVersionsRequestListValueValueIkev2 IKEVersionsRequestListValueValue = "ikev2"
+)
+
+type CloudwatchLogOptionsSpecificationBgpLogOutputFormat string
+
+const (
+	CloudwatchLogOptionsSpecificationBgpLogOutputFormatJson CloudwatchLogOptionsSpecificationBgpLogOutputFormat = "json"
+	CloudwatchLogOptionsSpecificationBgpLogOutputFormatText CloudwatchLogOptionsSpecificationBgpLogOutputFormat = "text"
+)
+
+type CloudwatchLogOptionsSpecificationLogOutputFormat string
+
+const (
+	CloudwatchLogOptionsSpecificationLogOutputFormatJson CloudwatchLogOptionsSpecificationLogOutputFormat = "json"
+	CloudwatchLogOptionsSpecificationLogOutputFormatText CloudwatchLogOptionsSpecificationLogOutputFormat = "text"
+)
+
+type Phase1EncryptionAlgorithmsRequestListValueValue string
+
+const (
+	Phase1EncryptionAlgorithmsRequestListValueValueAES128      Phase1EncryptionAlgorithmsRequestListValueValue = "AES128"
+	Phase1EncryptionAlgorithmsRequestListValueValueAES256      Phase1EncryptionAlgorithmsRequestListValueValue = "AES256"
+	Phase1EncryptionAlgorithmsRequestListValueValueAES128GCM16 Phase1EncryptionAlgorithmsRequestListValueValue = "AES128-GCM-16"
+	Phase1EncryptionAlgorithmsRequestListValueValueAES256GCM16 Phase1EncryptionAlgorithmsRequestListValueValue = "AES256-GCM-16"
+)
+
+type Phase1IntegrityAlgorithmsRequestListValueValue string
+
+const (
+	Phase1IntegrityAlgorithmsRequestListValueValueSHA1    Phase1IntegrityAlgorithmsRequestListValueValue = "SHA1"
+	Phase1IntegrityAlgorithmsRequestListValueValueSHA2256 Phase1IntegrityAlgorithmsRequestListValueValue = "SHA2-256"
+	Phase1IntegrityAlgorithmsRequestListValueValueSHA2384 Phase1IntegrityAlgorithmsRequestListValueValue = "SHA2-384"
+	Phase1IntegrityAlgorithmsRequestListValueValueSHA2512 Phase1IntegrityAlgorithmsRequestListValueValue = "SHA2-512"
+)
+
+type Phase2EncryptionAlgorithmsRequestListValueValue string
+
+const (
+	Phase2EncryptionAlgorithmsRequestListValueValueAES128      Phase2EncryptionAlgorithmsRequestListValueValue = "AES128"
+	Phase2EncryptionAlgorithmsRequestListValueValueAES256      Phase2EncryptionAlgorithmsRequestListValueValue = "AES256"
+	Phase2EncryptionAlgorithmsRequestListValueValueAES128GCM16 Phase2EncryptionAlgorithmsRequestListValueValue = "AES128-GCM-16"
+	Phase2EncryptionAlgorithmsRequestListValueValueAES256GCM16 Phase2EncryptionAlgorithmsRequestListValueValue = "AES256-GCM-16"
+)
+
+type Phase2IntegrityAlgorithmsRequestListValueValue string
+
+const (
+	Phase2IntegrityAlgorithmsRequestListValueValueSHA1    Phase2IntegrityAlgorithmsRequestListValueValue = "SHA1"
+	Phase2IntegrityAlgorithmsRequestListValueValueSHA2256 Phase2IntegrityAlgorithmsRequestListValueValue = "SHA2-256"
+	Phase2IntegrityAlgorithmsRequestListValueValueSHA2384 Phase2IntegrityAlgorithmsRequestListValueValue = "SHA2-384"
+	Phase2IntegrityAlgorithmsRequestListValueValueSHA2512 Phase2IntegrityAlgorithmsRequestListValueValue = "SHA2-512"
+)
+
+type VpnTunnelOptionsSpecificationStartupAction string
+
+const (
+	VpnTunnelOptionsSpecificationStartupActionAdd   VpnTunnelOptionsSpecificationStartupAction = "add"
+	VpnTunnelOptionsSpecificationStartupActionStart VpnTunnelOptionsSpecificationStartupAction = "start"
+)

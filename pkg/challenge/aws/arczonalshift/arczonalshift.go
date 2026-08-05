@@ -4,9 +4,9 @@
 package arczonalshift
 
 type AutoshiftObserverNotificationStatus struct {
-	AccountId *string `json:"AccountId,omitempty"`
-	Region    *string `json:"Region,omitempty"`
-	Status    *string `json:"Status,omitempty"`
+	AccountId *string                                                                 `json:"AccountId,omitempty"`
+	Region    *string                                                                 `json:"Region,omitempty"`
+	Status    *AutoshiftObserverNotificationStatusAutoshiftObserverNotificationStatus `json:"Status,omitempty"`
 }
 
 func (AutoshiftObserverNotificationStatus) CloudControlType() string {
@@ -28,9 +28,21 @@ type PracticeRunConfiguration struct {
 type ZonalAutoshiftConfiguration struct {
 	PracticeRunConfiguration *PracticeRunConfiguration `json:"PracticeRunConfiguration,omitempty"`
 	ResourceIdentifier       *string                   `json:"ResourceIdentifier,omitempty"`
-	ZonalAutoshiftStatus     *string                   `json:"ZonalAutoshiftStatus,omitempty"`
+	ZonalAutoshiftStatus     *ZonalAutoshiftStatus     `json:"ZonalAutoshiftStatus,omitempty"`
 }
 
 func (ZonalAutoshiftConfiguration) CloudControlType() string {
 	return "AWS::ARCZonalShift::ZonalAutoshiftConfiguration"
 }
+
+type AutoshiftObserverNotificationStatusAutoshiftObserverNotificationStatus string
+
+const (
+	AutoshiftObserverNotificationStatusAutoshiftObserverNotificationStatusENABLED AutoshiftObserverNotificationStatusAutoshiftObserverNotificationStatus = "ENABLED"
+)
+
+type ZonalAutoshiftStatus string
+
+const (
+	ZonalAutoshiftStatusENABLED ZonalAutoshiftStatus = "ENABLED"
+)

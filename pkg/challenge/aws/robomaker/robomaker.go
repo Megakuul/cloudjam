@@ -12,25 +12,25 @@ type Fleet struct {
 func (Fleet) CloudControlType() string { return "AWS::RoboMaker::Fleet" }
 
 type Robot struct {
-	Architecture      *string           `json:"Architecture,omitempty"`
-	Arn               *string           `json:"Arn,omitempty"`
-	Fleet             *string           `json:"Fleet,omitempty"`
-	GreengrassGroupId *string           `json:"GreengrassGroupId,omitempty"`
-	Name              *string           `json:"Name,omitempty"`
-	Tags              map[string]string `json:"Tags,omitempty"`
+	Architecture      *RobotArchitecture `json:"Architecture,omitempty"`
+	Arn               *string            `json:"Arn,omitempty"`
+	Fleet             *string            `json:"Fleet,omitempty"`
+	GreengrassGroupId *string            `json:"GreengrassGroupId,omitempty"`
+	Name              *string            `json:"Name,omitempty"`
+	Tags              map[string]string  `json:"Tags,omitempty"`
 }
 
 func (Robot) CloudControlType() string { return "AWS::RoboMaker::Robot" }
 
 type RobotSoftwareSuite struct {
-	Name    *string `json:"Name,omitempty"`
-	Version *string `json:"Version,omitempty"`
+	Name    *RobotSoftwareSuiteName    `json:"Name,omitempty"`
+	Version *RobotSoftwareSuiteVersion `json:"Version,omitempty"`
 }
 
 type SourceConfig struct {
-	Architecture *string `json:"Architecture,omitempty"`
-	S3Bucket     *string `json:"S3Bucket,omitempty"`
-	S3Key        *string `json:"S3Key,omitempty"`
+	Architecture *SourceConfigArchitecture `json:"Architecture,omitempty"`
+	S3Bucket     *string                   `json:"S3Bucket,omitempty"`
+	S3Key        *string                   `json:"S3Key,omitempty"`
 }
 
 type RobotApplication struct {
@@ -57,24 +57,24 @@ func (RobotApplicationVersion) CloudControlType() string {
 }
 
 type RenderingEngine struct {
-	Name    *string `json:"Name,omitempty"`
-	Version *string `json:"Version,omitempty"`
+	Name    *RenderingEngineName `json:"Name,omitempty"`
+	Version *string              `json:"Version,omitempty"`
 }
 
 type SimulationApplicationRobotSoftwareSuite struct {
-	Name    *string `json:"Name,omitempty"`
-	Version *string `json:"Version,omitempty"`
+	Name    *SimulationApplicationRobotSoftwareSuiteName    `json:"Name,omitempty"`
+	Version *SimulationApplicationRobotSoftwareSuiteVersion `json:"Version,omitempty"`
 }
 
 type SimulationSoftwareSuite struct {
-	Name    *string `json:"Name,omitempty"`
-	Version *string `json:"Version,omitempty"`
+	Name    *SimulationSoftwareSuiteName    `json:"Name,omitempty"`
+	Version *SimulationSoftwareSuiteVersion `json:"Version,omitempty"`
 }
 
 type SimulationApplicationSourceConfig struct {
-	Architecture *string `json:"Architecture,omitempty"`
-	S3Bucket     *string `json:"S3Bucket,omitempty"`
-	S3Key        *string `json:"S3Key,omitempty"`
+	Architecture *SimulationApplicationSourceConfigArchitecture `json:"Architecture,omitempty"`
+	S3Bucket     *string                                        `json:"S3Bucket,omitempty"`
+	S3Key        *string                                        `json:"S3Key,omitempty"`
 }
 
 type SimulationApplication struct {
@@ -103,3 +103,86 @@ type SimulationApplicationVersion struct {
 func (SimulationApplicationVersion) CloudControlType() string {
 	return "AWS::RoboMaker::SimulationApplicationVersion"
 }
+
+type RobotArchitecture string
+
+const (
+	RobotArchitectureX8664 RobotArchitecture = "X86_64"
+	RobotArchitectureARM64 RobotArchitecture = "ARM64"
+	RobotArchitectureARMHF RobotArchitecture = "ARMHF"
+)
+
+type RobotSoftwareSuiteName string
+
+const (
+	RobotSoftwareSuiteNameROS     RobotSoftwareSuiteName = "ROS"
+	RobotSoftwareSuiteNameROS2    RobotSoftwareSuiteName = "ROS2"
+	RobotSoftwareSuiteNameGeneral RobotSoftwareSuiteName = "General"
+)
+
+type RobotSoftwareSuiteVersion string
+
+const (
+	RobotSoftwareSuiteVersionKinetic RobotSoftwareSuiteVersion = "Kinetic"
+	RobotSoftwareSuiteVersionMelodic RobotSoftwareSuiteVersion = "Melodic"
+	RobotSoftwareSuiteVersionDashing RobotSoftwareSuiteVersion = "Dashing"
+)
+
+type SourceConfigArchitecture string
+
+const (
+	SourceConfigArchitectureX8664 SourceConfigArchitecture = "X86_64"
+	SourceConfigArchitectureARM64 SourceConfigArchitecture = "ARM64"
+	SourceConfigArchitectureARMHF SourceConfigArchitecture = "ARMHF"
+)
+
+type RenderingEngineName string
+
+const (
+	RenderingEngineNameOGRE RenderingEngineName = "OGRE"
+)
+
+type SimulationApplicationRobotSoftwareSuiteName string
+
+const (
+	SimulationApplicationRobotSoftwareSuiteNameROS     SimulationApplicationRobotSoftwareSuiteName = "ROS"
+	SimulationApplicationRobotSoftwareSuiteNameROS2    SimulationApplicationRobotSoftwareSuiteName = "ROS2"
+	SimulationApplicationRobotSoftwareSuiteNameGeneral SimulationApplicationRobotSoftwareSuiteName = "General"
+)
+
+type SimulationApplicationRobotSoftwareSuiteVersion string
+
+const (
+	SimulationApplicationRobotSoftwareSuiteVersionKinetic SimulationApplicationRobotSoftwareSuiteVersion = "Kinetic"
+	SimulationApplicationRobotSoftwareSuiteVersionMelodic SimulationApplicationRobotSoftwareSuiteVersion = "Melodic"
+	SimulationApplicationRobotSoftwareSuiteVersionDashing SimulationApplicationRobotSoftwareSuiteVersion = "Dashing"
+	SimulationApplicationRobotSoftwareSuiteVersionFoxy    SimulationApplicationRobotSoftwareSuiteVersion = "Foxy"
+)
+
+type SimulationSoftwareSuiteName string
+
+const (
+	SimulationSoftwareSuiteNameGazebo            SimulationSoftwareSuiteName = "Gazebo"
+	SimulationSoftwareSuiteNameRosbagPlay        SimulationSoftwareSuiteName = "RosbagPlay"
+	SimulationSoftwareSuiteNameSimulationRuntime SimulationSoftwareSuiteName = "SimulationRuntime"
+)
+
+type SimulationSoftwareSuiteVersion string
+
+const (
+	SimulationSoftwareSuiteVersionX7      SimulationSoftwareSuiteVersion = "7"
+	SimulationSoftwareSuiteVersionX9      SimulationSoftwareSuiteVersion = "9"
+	SimulationSoftwareSuiteVersionX11     SimulationSoftwareSuiteVersion = "11"
+	SimulationSoftwareSuiteVersionKinetic SimulationSoftwareSuiteVersion = "Kinetic"
+	SimulationSoftwareSuiteVersionMelodic SimulationSoftwareSuiteVersion = "Melodic"
+	SimulationSoftwareSuiteVersionDashing SimulationSoftwareSuiteVersion = "Dashing"
+	SimulationSoftwareSuiteVersionFoxy    SimulationSoftwareSuiteVersion = "Foxy"
+)
+
+type SimulationApplicationSourceConfigArchitecture string
+
+const (
+	SimulationApplicationSourceConfigArchitectureX8664 SimulationApplicationSourceConfigArchitecture = "X86_64"
+	SimulationApplicationSourceConfigArchitectureARM64 SimulationApplicationSourceConfigArchitecture = "ARM64"
+	SimulationApplicationSourceConfigArchitectureARMHF SimulationApplicationSourceConfigArchitecture = "ARMHF"
+)

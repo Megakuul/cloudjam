@@ -58,9 +58,9 @@ type Input struct {
 }
 
 type FilesLimit struct {
-	MaxFiles  *int    `json:"MaxFiles,omitempty"`
-	Order     *string `json:"Order,omitempty"`
-	OrderedBy *string `json:"OrderedBy,omitempty"`
+	MaxFiles  *int                 `json:"MaxFiles,omitempty"`
+	Order     *FilesLimitOrder     `json:"Order,omitempty"`
+	OrderedBy *FilesLimitOrderedBy `json:"OrderedBy,omitempty"`
 }
 
 type FilterValue struct {
@@ -80,11 +80,11 @@ type DatetimeOptions struct {
 }
 
 type DatasetParameter struct {
-	CreateColumn    *bool             `json:"CreateColumn,omitempty"`
-	DatetimeOptions *DatetimeOptions  `json:"DatetimeOptions,omitempty"`
-	Filter          *FilterExpression `json:"Filter,omitempty"`
-	Name            *string           `json:"Name,omitempty"`
-	Type            *string           `json:"Type,omitempty"`
+	CreateColumn    *bool                 `json:"CreateColumn,omitempty"`
+	DatetimeOptions *DatetimeOptions      `json:"DatetimeOptions,omitempty"`
+	Filter          *FilterExpression     `json:"Filter,omitempty"`
+	Name            *string               `json:"Name,omitempty"`
+	Type            *DatasetParameterType `json:"Type,omitempty"`
 }
 
 type PathParameter struct {
@@ -104,12 +104,12 @@ type Tag struct {
 }
 
 type Dataset struct {
-	Format        *string        `json:"Format,omitempty"`
+	Format        *DatasetFormat `json:"Format,omitempty"`
 	FormatOptions *FormatOptions `json:"FormatOptions,omitempty"`
 	Input         *Input         `json:"Input,omitempty"`
 	Name          *string        `json:"Name,omitempty"`
 	PathOptions   *PathOptions   `json:"PathOptions,omitempty"`
-	Source        *string        `json:"Source,omitempty"`
+	Source        *DatasetSource `json:"Source,omitempty"`
 	Tags          []Tag          `json:"Tags,omitempty"`
 }
 
@@ -140,14 +140,14 @@ type DataCatalogOutput struct {
 }
 
 type DatabaseOutput struct {
-	DatabaseOptions    *DatabaseTableOutputOptions `json:"DatabaseOptions,omitempty"`
-	DatabaseOutputMode *string                     `json:"DatabaseOutputMode,omitempty"`
-	GlueConnectionName *string                     `json:"GlueConnectionName,omitempty"`
+	DatabaseOptions    *DatabaseTableOutputOptions       `json:"DatabaseOptions,omitempty"`
+	DatabaseOutputMode *DatabaseOutputDatabaseOutputMode `json:"DatabaseOutputMode,omitempty"`
+	GlueConnectionName *string                           `json:"GlueConnectionName,omitempty"`
 }
 
 type JobSample struct {
-	Mode *string `json:"Mode,omitempty"`
-	Size *int    `json:"Size,omitempty"`
+	Mode *SampleMode `json:"Mode,omitempty"`
+	Size *int        `json:"Size,omitempty"`
 }
 
 type OutputLocation struct {
@@ -165,13 +165,13 @@ type OutputFormatOptions struct {
 }
 
 type Output struct {
-	CompressionFormat *string              `json:"CompressionFormat,omitempty"`
-	Format            *string              `json:"Format,omitempty"`
-	FormatOptions     *OutputFormatOptions `json:"FormatOptions,omitempty"`
-	Location          *JobS3Location       `json:"Location,omitempty"`
-	MaxOutputFiles    *int                 `json:"MaxOutputFiles,omitempty"`
-	Overwrite         *bool                `json:"Overwrite,omitempty"`
-	PartitionColumns  []string             `json:"PartitionColumns,omitempty"`
+	CompressionFormat *OutputCompressionFormat `json:"CompressionFormat,omitempty"`
+	Format            *OutputFormat            `json:"Format,omitempty"`
+	FormatOptions     *OutputFormatOptions     `json:"FormatOptions,omitempty"`
+	Location          *JobS3Location           `json:"Location,omitempty"`
+	MaxOutputFiles    *int                     `json:"MaxOutputFiles,omitempty"`
+	Overwrite         *bool                    `json:"Overwrite,omitempty"`
+	PartitionColumns  []string                 `json:"PartitionColumns,omitempty"`
 }
 
 type ColumnSelector struct {
@@ -221,8 +221,8 @@ type JobTag struct {
 }
 
 type ValidationConfiguration struct {
-	RulesetArn     *string `json:"RulesetArn,omitempty"`
-	ValidationMode *string `json:"ValidationMode,omitempty"`
+	RulesetArn     *string         `json:"RulesetArn,omitempty"`
+	ValidationMode *ValidationMode `json:"ValidationMode,omitempty"`
 }
 
 type Job struct {
@@ -230,9 +230,9 @@ type Job struct {
 	DatabaseOutputs          []DatabaseOutput          `json:"DatabaseOutputs,omitempty"`
 	DatasetName              *string                   `json:"DatasetName,omitempty"`
 	EncryptionKeyArn         *string                   `json:"EncryptionKeyArn,omitempty"`
-	EncryptionMode           *string                   `json:"EncryptionMode,omitempty"`
+	EncryptionMode           *JobEncryptionMode        `json:"EncryptionMode,omitempty"`
 	JobSample                *JobSample                `json:"JobSample,omitempty"`
-	LogSubscription          *string                   `json:"LogSubscription,omitempty"`
+	LogSubscription          *JobLogSubscription       `json:"LogSubscription,omitempty"`
 	MaxCapacity              *int                      `json:"MaxCapacity,omitempty"`
 	MaxRetries               *int                      `json:"MaxRetries,omitempty"`
 	Name                     *string                   `json:"Name,omitempty"`
@@ -244,15 +244,15 @@ type Job struct {
 	RoleArn                  *string                   `json:"RoleArn,omitempty"`
 	Tags                     []JobTag                  `json:"Tags,omitempty"`
 	Timeout                  *int                      `json:"Timeout,omitempty"`
-	Type                     *string                   `json:"Type,omitempty"`
+	Type                     *JobType                  `json:"Type,omitempty"`
 	ValidationConfigurations []ValidationConfiguration `json:"ValidationConfigurations,omitempty"`
 }
 
 func (Job) CloudControlType() string { return "AWS::DataBrew::Job" }
 
 type Sample struct {
-	Size *int    `json:"Size,omitempty"`
-	Type *string `json:"Type,omitempty"`
+	Size *int        `json:"Size,omitempty"`
+	Type *SampleType `json:"Type,omitempty"`
 }
 
 type ProjectTag struct {
@@ -312,9 +312,9 @@ type SubstitutionValue struct {
 }
 
 type Threshold struct {
-	Type  *string  `json:"Type,omitempty"`
-	Unit  *string  `json:"Unit,omitempty"`
-	Value *float64 `json:"Value,omitempty"`
+	Type  *ThresholdType `json:"Type,omitempty"`
+	Unit  *ThresholdUnit `json:"Unit,omitempty"`
+	Value *float64       `json:"Value,omitempty"`
 }
 
 type Rule struct {
@@ -354,3 +354,133 @@ type Schedule struct {
 }
 
 func (Schedule) CloudControlType() string { return "AWS::DataBrew::Schedule" }
+
+type DatasetFormat string
+
+const (
+	DatasetFormatCSV     DatasetFormat = "CSV"
+	DatasetFormatJSON    DatasetFormat = "JSON"
+	DatasetFormatPARQUET DatasetFormat = "PARQUET"
+	DatasetFormatEXCEL   DatasetFormat = "EXCEL"
+	DatasetFormatORC     DatasetFormat = "ORC"
+)
+
+type FilesLimitOrder string
+
+const (
+	FilesLimitOrderASCENDING  FilesLimitOrder = "ASCENDING"
+	FilesLimitOrderDESCENDING FilesLimitOrder = "DESCENDING"
+)
+
+type FilesLimitOrderedBy string
+
+const (
+	FilesLimitOrderedByLASTMODIFIEDDATE FilesLimitOrderedBy = "LAST_MODIFIED_DATE"
+)
+
+type DatasetParameterType string
+
+const (
+	DatasetParameterTypeString   DatasetParameterType = "String"
+	DatasetParameterTypeNumber   DatasetParameterType = "Number"
+	DatasetParameterTypeDatetime DatasetParameterType = "Datetime"
+)
+
+type DatasetSource string
+
+const (
+	DatasetSourceS3          DatasetSource = "S3"
+	DatasetSourceDATACATALOG DatasetSource = "DATA-CATALOG"
+	DatasetSourceDATABASE    DatasetSource = "DATABASE"
+)
+
+type DatabaseOutputDatabaseOutputMode string
+
+const (
+	DatabaseOutputDatabaseOutputModeNEWTABLE DatabaseOutputDatabaseOutputMode = "NEW_TABLE"
+)
+
+type JobEncryptionMode string
+
+const (
+	JobEncryptionModeSSEKMS JobEncryptionMode = "SSE-KMS"
+	JobEncryptionModeSSES3  JobEncryptionMode = "SSE-S3"
+)
+
+type SampleMode string
+
+const (
+	SampleModeFULLDATASET SampleMode = "FULL_DATASET"
+	SampleModeCUSTOMROWS  SampleMode = "CUSTOM_ROWS"
+)
+
+type JobLogSubscription string
+
+const (
+	JobLogSubscriptionENABLE  JobLogSubscription = "ENABLE"
+	JobLogSubscriptionDISABLE JobLogSubscription = "DISABLE"
+)
+
+type OutputCompressionFormat string
+
+const (
+	OutputCompressionFormatGZIP    OutputCompressionFormat = "GZIP"
+	OutputCompressionFormatLZ4     OutputCompressionFormat = "LZ4"
+	OutputCompressionFormatSNAPPY  OutputCompressionFormat = "SNAPPY"
+	OutputCompressionFormatBZIP2   OutputCompressionFormat = "BZIP2"
+	OutputCompressionFormatDEFLATE OutputCompressionFormat = "DEFLATE"
+	OutputCompressionFormatLZO     OutputCompressionFormat = "LZO"
+	OutputCompressionFormatBROTLI  OutputCompressionFormat = "BROTLI"
+	OutputCompressionFormatZSTD    OutputCompressionFormat = "ZSTD"
+	OutputCompressionFormatZLIB    OutputCompressionFormat = "ZLIB"
+)
+
+type OutputFormat string
+
+const (
+	OutputFormatCSV          OutputFormat = "CSV"
+	OutputFormatJSON         OutputFormat = "JSON"
+	OutputFormatPARQUET      OutputFormat = "PARQUET"
+	OutputFormatGLUEPARQUET  OutputFormat = "GLUEPARQUET"
+	OutputFormatAVRO         OutputFormat = "AVRO"
+	OutputFormatORC          OutputFormat = "ORC"
+	OutputFormatXML          OutputFormat = "XML"
+	OutputFormatTABLEAUHYPER OutputFormat = "TABLEAUHYPER"
+)
+
+type JobType string
+
+const (
+	JobTypePROFILE JobType = "PROFILE"
+	JobTypeRECIPE  JobType = "RECIPE"
+)
+
+type ValidationMode string
+
+const (
+	ValidationModeCHECKALL ValidationMode = "CHECK_ALL"
+)
+
+type SampleType string
+
+const (
+	SampleTypeFIRSTN SampleType = "FIRST_N"
+	SampleTypeLASTN  SampleType = "LAST_N"
+	SampleTypeRANDOM SampleType = "RANDOM"
+)
+
+type ThresholdType string
+
+const (
+	ThresholdTypeGREATERTHANOREQUAL ThresholdType = "GREATER_THAN_OR_EQUAL"
+	ThresholdTypeLESSTHANOREQUAL    ThresholdType = "LESS_THAN_OR_EQUAL"
+	ThresholdTypeGREATERTHAN        ThresholdType = "GREATER_THAN"
+	ThresholdTypeLESSTHAN           ThresholdType = "LESS_THAN"
+)
+
+type ThresholdUnit string
+
+const (
+	ThresholdUnitCOUNT      ThresholdUnit = "COUNT"
+	ThresholdUnitPERCENTAGE ThresholdUnit = "PERCENTAGE"
+)

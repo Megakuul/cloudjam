@@ -19,7 +19,7 @@ type DataConnector struct {
 type Function struct {
 	ImplementedBy      *DataConnector `json:"ImplementedBy,omitempty"`
 	RequiredProperties []string       `json:"RequiredProperties,omitempty"`
-	Scope              *string        `json:"Scope,omitempty"`
+	Scope              *FunctionScope `json:"Scope,omitempty"`
 }
 
 type DataValueRelationshipValue struct {
@@ -48,7 +48,7 @@ type DataType struct {
 	AllowedValues []DataValue   `json:"AllowedValues,omitempty"`
 	NestedType    *DataType     `json:"NestedType,omitempty"`
 	Relationship  *Relationship `json:"Relationship,omitempty"`
-	Type          *string       `json:"Type,omitempty"`
+	Type          *DataTypeType `json:"Type,omitempty"`
 	UnitOfMeasure *string       `json:"UnitOfMeasure,omitempty"`
 }
 
@@ -63,13 +63,13 @@ type PropertyDefinition struct {
 }
 
 type PropertyGroup struct {
-	GroupType     *string  `json:"GroupType,omitempty"`
-	PropertyNames []string `json:"PropertyNames,omitempty"`
+	GroupType     *PropertyGroupGroupType `json:"GroupType,omitempty"`
+	PropertyNames []string                `json:"PropertyNames,omitempty"`
 }
 
 type Status struct {
 	Error map[string]any `json:"Error,omitempty"`
-	State *string        `json:"State,omitempty"`
+	State *StatusState   `json:"State,omitempty"`
 }
 
 type ComponentType struct {
@@ -119,7 +119,7 @@ type EntityDataType struct {
 	AllowedValues []EntityDataValue   `json:"AllowedValues,omitempty"`
 	NestedType    *EntityDataType     `json:"NestedType,omitempty"`
 	Relationship  *EntityRelationship `json:"Relationship,omitempty"`
-	Type          *string             `json:"Type,omitempty"`
+	Type          *EntityDataTypeType `json:"Type,omitempty"`
 	UnitOfMeasure *string             `json:"UnitOfMeasure,omitempty"`
 }
 
@@ -142,13 +142,13 @@ type Property struct {
 }
 
 type EntityPropertyGroup struct {
-	GroupType     *string  `json:"GroupType,omitempty"`
-	PropertyNames []string `json:"PropertyNames,omitempty"`
+	GroupType     *EntityPropertyGroupGroupType `json:"GroupType,omitempty"`
+	PropertyNames []string                      `json:"PropertyNames,omitempty"`
 }
 
 type EntityStatus struct {
-	Error map[string]any `json:"Error,omitempty"`
-	State *string        `json:"State,omitempty"`
+	Error map[string]any     `json:"Error,omitempty"`
+	State *EntityStatusState `json:"State,omitempty"`
 }
 
 type Component struct {
@@ -230,3 +230,68 @@ type Workspace struct {
 }
 
 func (Workspace) CloudControlType() string { return "AWS::IoTTwinMaker::Workspace" }
+
+type FunctionScope string
+
+const (
+	FunctionScopeENTITY    FunctionScope = "ENTITY"
+	FunctionScopeWORKSPACE FunctionScope = "WORKSPACE"
+)
+
+type DataTypeType string
+
+const (
+	DataTypeTypeRELATIONSHIP DataTypeType = "RELATIONSHIP"
+	DataTypeTypeSTRING       DataTypeType = "STRING"
+	DataTypeTypeLONG         DataTypeType = "LONG"
+	DataTypeTypeBOOLEAN      DataTypeType = "BOOLEAN"
+	DataTypeTypeINTEGER      DataTypeType = "INTEGER"
+	DataTypeTypeDOUBLE       DataTypeType = "DOUBLE"
+	DataTypeTypeLIST         DataTypeType = "LIST"
+	DataTypeTypeMAP          DataTypeType = "MAP"
+)
+
+type PropertyGroupGroupType string
+
+const (
+	PropertyGroupGroupTypeTABULAR PropertyGroupGroupType = "TABULAR"
+)
+
+type StatusState string
+
+const (
+	StatusStateCREATING StatusState = "CREATING"
+	StatusStateUPDATING StatusState = "UPDATING"
+	StatusStateDELETING StatusState = "DELETING"
+	StatusStateACTIVE   StatusState = "ACTIVE"
+	StatusStateERROR    StatusState = "ERROR"
+)
+
+type EntityDataTypeType string
+
+const (
+	EntityDataTypeTypeRELATIONSHIP EntityDataTypeType = "RELATIONSHIP"
+	EntityDataTypeTypeSTRING       EntityDataTypeType = "STRING"
+	EntityDataTypeTypeLONG         EntityDataTypeType = "LONG"
+	EntityDataTypeTypeBOOLEAN      EntityDataTypeType = "BOOLEAN"
+	EntityDataTypeTypeINTEGER      EntityDataTypeType = "INTEGER"
+	EntityDataTypeTypeDOUBLE       EntityDataTypeType = "DOUBLE"
+	EntityDataTypeTypeLIST         EntityDataTypeType = "LIST"
+	EntityDataTypeTypeMAP          EntityDataTypeType = "MAP"
+)
+
+type EntityPropertyGroupGroupType string
+
+const (
+	EntityPropertyGroupGroupTypeTABULAR EntityPropertyGroupGroupType = "TABULAR"
+)
+
+type EntityStatusState string
+
+const (
+	EntityStatusStateCREATING EntityStatusState = "CREATING"
+	EntityStatusStateUPDATING EntityStatusState = "UPDATING"
+	EntityStatusStateDELETING EntityStatusState = "DELETING"
+	EntityStatusStateACTIVE   EntityStatusState = "ACTIVE"
+	EntityStatusStateERROR    EntityStatusState = "ERROR"
+)

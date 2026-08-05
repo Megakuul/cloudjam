@@ -6,14 +6,14 @@ package events
 import "encoding/json"
 
 type ApiDestination struct {
-	Arn                          *string `json:"Arn,omitempty"`
-	ArnForPolicy                 *string `json:"ArnForPolicy,omitempty"`
-	ConnectionArn                *string `json:"ConnectionArn,omitempty"`
-	Description                  *string `json:"Description,omitempty"`
-	HttpMethod                   *string `json:"HttpMethod,omitempty"`
-	InvocationEndpoint           *string `json:"InvocationEndpoint,omitempty"`
-	InvocationRateLimitPerSecond *int    `json:"InvocationRateLimitPerSecond,omitempty"`
-	Name                         *string `json:"Name,omitempty"`
+	Arn                          *string                   `json:"Arn,omitempty"`
+	ArnForPolicy                 *string                   `json:"ArnForPolicy,omitempty"`
+	ConnectionArn                *string                   `json:"ConnectionArn,omitempty"`
+	Description                  *string                   `json:"Description,omitempty"`
+	HttpMethod                   *ApiDestinationHttpMethod `json:"HttpMethod,omitempty"`
+	InvocationEndpoint           *string                   `json:"InvocationEndpoint,omitempty"`
+	InvocationRateLimitPerSecond *int                      `json:"InvocationRateLimitPerSecond,omitempty"`
+	Name                         *string                   `json:"Name,omitempty"`
 }
 
 func (ApiDestination) CloudControlType() string { return "AWS::Events::ApiDestination" }
@@ -67,10 +67,10 @@ type ClientParameters struct {
 }
 
 type OAuthParameters struct {
-	AuthorizationEndpoint *string                   `json:"AuthorizationEndpoint,omitempty"`
-	ClientParameters      *ClientParameters         `json:"ClientParameters,omitempty"`
-	HttpMethod            *string                   `json:"HttpMethod,omitempty"`
-	OAuthHttpParameters   *ConnectionHttpParameters `json:"OAuthHttpParameters,omitempty"`
+	AuthorizationEndpoint *string                    `json:"AuthorizationEndpoint,omitempty"`
+	ClientParameters      *ClientParameters          `json:"ClientParameters,omitempty"`
+	HttpMethod            *OAuthParametersHttpMethod `json:"HttpMethod,omitempty"`
+	OAuthHttpParameters   *ConnectionHttpParameters  `json:"OAuthHttpParameters,omitempty"`
 }
 
 type AuthParameters struct {
@@ -89,7 +89,7 @@ type Connection struct {
 	Arn                              *string                                     `json:"Arn,omitempty"`
 	ArnForPolicy                     *string                                     `json:"ArnForPolicy,omitempty"`
 	AuthParameters                   *AuthParameters                             `json:"AuthParameters,omitempty"`
-	AuthorizationType                *string                                     `json:"AuthorizationType,omitempty"`
+	AuthorizationType                *ConnectionAuthorizationType                `json:"AuthorizationType,omitempty"`
 	Description                      *string                                     `json:"Description,omitempty"`
 	InvocationConnectivityParameters *ConnectionInvocationConnectivityParameters `json:"InvocationConnectivityParameters,omitempty"`
 	KmsKeyIdentifier                 *string                                     `json:"KmsKeyIdentifier,omitempty"`
@@ -104,7 +104,7 @@ type EndpointEventBus struct {
 }
 
 type ReplicationConfig struct {
-	State *string `json:"State,omitempty"`
+	State *ReplicationState `json:"State,omitempty"`
 }
 
 type Primary struct {
@@ -134,7 +134,7 @@ type Endpoint struct {
 	ReplicationConfig *ReplicationConfig `json:"ReplicationConfig,omitempty"`
 	RoleArn           *string            `json:"RoleArn,omitempty"`
 	RoutingConfig     *RoutingConfig     `json:"RoutingConfig,omitempty"`
-	State             *string            `json:"State,omitempty"`
+	State             *EndpointState     `json:"State,omitempty"`
 	StateReason       *string            `json:"StateReason,omitempty"`
 }
 
@@ -145,8 +145,8 @@ type EventBusDeadLetterConfig struct {
 }
 
 type EventBusLogConfig struct {
-	IncludeDetail *string `json:"IncludeDetail,omitempty"`
-	Level         *string `json:"Level,omitempty"`
+	IncludeDetail *EventBusLogConfigIncludeDetail `json:"IncludeDetail,omitempty"`
+	Level         *EventBusLogConfigLevel         `json:"Level,omitempty"`
 }
 
 type Tag struct {
@@ -336,9 +336,79 @@ type Rule struct {
 	Name               *string         `json:"Name,omitempty"`
 	RoleArn            *string         `json:"RoleArn,omitempty"`
 	ScheduleExpression *string         `json:"ScheduleExpression,omitempty"`
-	State              *string         `json:"State,omitempty"`
+	State              *RuleState      `json:"State,omitempty"`
 	Tags               []RuleTag       `json:"Tags,omitempty"`
 	Targets            []Target        `json:"Targets,omitempty"`
 }
 
 func (Rule) CloudControlType() string { return "AWS::Events::Rule" }
+
+type ApiDestinationHttpMethod string
+
+const (
+	ApiDestinationHttpMethodGET     ApiDestinationHttpMethod = "GET"
+	ApiDestinationHttpMethodHEAD    ApiDestinationHttpMethod = "HEAD"
+	ApiDestinationHttpMethodPOST    ApiDestinationHttpMethod = "POST"
+	ApiDestinationHttpMethodOPTIONS ApiDestinationHttpMethod = "OPTIONS"
+	ApiDestinationHttpMethodPUT     ApiDestinationHttpMethod = "PUT"
+	ApiDestinationHttpMethodDELETE  ApiDestinationHttpMethod = "DELETE"
+	ApiDestinationHttpMethodPATCH   ApiDestinationHttpMethod = "PATCH"
+)
+
+type OAuthParametersHttpMethod string
+
+const (
+	OAuthParametersHttpMethodGET  OAuthParametersHttpMethod = "GET"
+	OAuthParametersHttpMethodPOST OAuthParametersHttpMethod = "POST"
+	OAuthParametersHttpMethodPUT  OAuthParametersHttpMethod = "PUT"
+)
+
+type ConnectionAuthorizationType string
+
+const (
+	ConnectionAuthorizationTypeAPIKEY                 ConnectionAuthorizationType = "API_KEY"
+	ConnectionAuthorizationTypeBASIC                  ConnectionAuthorizationType = "BASIC"
+	ConnectionAuthorizationTypeOAUTHCLIENTCREDENTIALS ConnectionAuthorizationType = "OAUTH_CLIENT_CREDENTIALS"
+)
+
+type ReplicationState string
+
+const (
+	ReplicationStateENABLED  ReplicationState = "ENABLED"
+	ReplicationStateDISABLED ReplicationState = "DISABLED"
+)
+
+type EndpointState string
+
+const (
+	EndpointStateACTIVE       EndpointState = "ACTIVE"
+	EndpointStateCREATING     EndpointState = "CREATING"
+	EndpointStateUPDATING     EndpointState = "UPDATING"
+	EndpointStateDELETING     EndpointState = "DELETING"
+	EndpointStateCREATEFAILED EndpointState = "CREATE_FAILED"
+	EndpointStateUPDATEFAILED EndpointState = "UPDATE_FAILED"
+)
+
+type EventBusLogConfigIncludeDetail string
+
+const (
+	EventBusLogConfigIncludeDetailFULL EventBusLogConfigIncludeDetail = "FULL"
+	EventBusLogConfigIncludeDetailNONE EventBusLogConfigIncludeDetail = "NONE"
+)
+
+type EventBusLogConfigLevel string
+
+const (
+	EventBusLogConfigLevelINFO  EventBusLogConfigLevel = "INFO"
+	EventBusLogConfigLevelERROR EventBusLogConfigLevel = "ERROR"
+	EventBusLogConfigLevelTRACE EventBusLogConfigLevel = "TRACE"
+	EventBusLogConfigLevelOFF   EventBusLogConfigLevel = "OFF"
+)
+
+type RuleState string
+
+const (
+	RuleStateDISABLED                                 RuleState = "DISABLED"
+	RuleStateENABLED                                  RuleState = "ENABLED"
+	RuleStateENABLEDWITHALLCLOUDTRAILMANAGEMENTEVENTS RuleState = "ENABLED_WITH_ALL_CLOUDTRAIL_MANAGEMENT_EVENTS"
+)

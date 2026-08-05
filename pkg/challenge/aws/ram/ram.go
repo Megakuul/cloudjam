@@ -35,7 +35,7 @@ type ResourceShare struct {
 	AllowExternalPrincipals    *bool                       `json:"AllowExternalPrincipals,omitempty"`
 	Arn                        *string                     `json:"Arn,omitempty"`
 	CreationTime               *string                     `json:"CreationTime,omitempty"`
-	FeatureSet                 *string                     `json:"FeatureSet,omitempty"`
+	FeatureSet                 *ResourceShareFeatureSet    `json:"FeatureSet,omitempty"`
 	LastUpdatedTime            *string                     `json:"LastUpdatedTime,omitempty"`
 	Name                       *string                     `json:"Name,omitempty"`
 	OwningAccountId            *string                     `json:"OwningAccountId,omitempty"`
@@ -44,8 +44,26 @@ type ResourceShare struct {
 	ResourceArns               []string                    `json:"ResourceArns,omitempty"`
 	ResourceShareConfiguration *ResourceShareConfiguration `json:"ResourceShareConfiguration,omitempty"`
 	Sources                    []string                    `json:"Sources,omitempty"`
-	Status                     *string                     `json:"Status,omitempty"`
+	Status                     *ResourceShareStatus        `json:"Status,omitempty"`
 	Tags                       []ResourceShareTag          `json:"Tags,omitempty"`
 }
 
 func (ResourceShare) CloudControlType() string { return "AWS::RAM::ResourceShare" }
+
+type ResourceShareFeatureSet string
+
+const (
+	ResourceShareFeatureSetCREATEDFROMPOLICY   ResourceShareFeatureSet = "CREATED_FROM_POLICY"
+	ResourceShareFeatureSetPROMOTINGTOSTANDARD ResourceShareFeatureSet = "PROMOTING_TO_STANDARD"
+	ResourceShareFeatureSetSTANDARD            ResourceShareFeatureSet = "STANDARD"
+)
+
+type ResourceShareStatus string
+
+const (
+	ResourceShareStatusPENDING  ResourceShareStatus = "PENDING"
+	ResourceShareStatusACTIVE   ResourceShareStatus = "ACTIVE"
+	ResourceShareStatusFAILED   ResourceShareStatus = "FAILED"
+	ResourceShareStatusDELETING ResourceShareStatus = "DELETING"
+	ResourceShareStatusDELETED  ResourceShareStatus = "DELETED"
+)

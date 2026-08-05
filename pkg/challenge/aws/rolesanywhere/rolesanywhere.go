@@ -26,8 +26,8 @@ type MappingRule struct {
 }
 
 type AttributeMapping struct {
-	CertificateField *string       `json:"CertificateField,omitempty"`
-	MappingRules     []MappingRule `json:"MappingRules,omitempty"`
+	CertificateField *CertificateField `json:"CertificateField,omitempty"`
+	MappingRules     []MappingRule     `json:"MappingRules,omitempty"`
 }
 
 type ProfileTag struct {
@@ -53,15 +53,15 @@ type Profile struct {
 func (Profile) CloudControlType() string { return "AWS::RolesAnywhere::Profile" }
 
 type NotificationSetting struct {
-	Channel   *string  `json:"Channel,omitempty"`
-	Enabled   *bool    `json:"Enabled,omitempty"`
-	Event     *string  `json:"Event,omitempty"`
-	Threshold *float64 `json:"Threshold,omitempty"`
+	Channel   *NotificationChannel `json:"Channel,omitempty"`
+	Enabled   *bool                `json:"Enabled,omitempty"`
+	Event     *NotificationEvent   `json:"Event,omitempty"`
+	Threshold *float64             `json:"Threshold,omitempty"`
 }
 
 type Source struct {
-	SourceData json.RawMessage `json:"SourceData,omitempty"`
-	SourceType *string         `json:"SourceType,omitempty"`
+	SourceData json.RawMessage  `json:"SourceData,omitempty"`
+	SourceType *TrustAnchorType `json:"SourceType,omitempty"`
 }
 
 type TrustAnchorTag struct {
@@ -80,3 +80,31 @@ type TrustAnchor struct {
 }
 
 func (TrustAnchor) CloudControlType() string { return "AWS::RolesAnywhere::TrustAnchor" }
+
+type CertificateField string
+
+const (
+	CertificateFieldX509Subject CertificateField = "x509Subject"
+	CertificateFieldX509Issuer  CertificateField = "x509Issuer"
+	CertificateFieldX509SAN     CertificateField = "x509SAN"
+)
+
+type NotificationChannel string
+
+const (
+	NotificationChannelALL NotificationChannel = "ALL"
+)
+
+type NotificationEvent string
+
+const (
+	NotificationEventCACERTIFICATEEXPIRY        NotificationEvent = "CA_CERTIFICATE_EXPIRY"
+	NotificationEventENDENTITYCERTIFICATEEXPIRY NotificationEvent = "END_ENTITY_CERTIFICATE_EXPIRY"
+)
+
+type TrustAnchorType string
+
+const (
+	TrustAnchorTypeAWSACMPCA         TrustAnchorType = "AWS_ACM_PCA"
+	TrustAnchorTypeCERTIFICATEBUNDLE TrustAnchorType = "CERTIFICATE_BUNDLE"
+)

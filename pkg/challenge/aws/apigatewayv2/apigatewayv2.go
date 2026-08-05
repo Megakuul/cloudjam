@@ -157,7 +157,7 @@ type DomainName struct {
 	MutualTlsAuthentication  *MutualTlsAuthentication  `json:"MutualTlsAuthentication,omitempty"`
 	RegionalDomainName       *string                   `json:"RegionalDomainName,omitempty"`
 	RegionalHostedZoneId     *string                   `json:"RegionalHostedZoneId,omitempty"`
-	RoutingMode              *string                   `json:"RoutingMode,omitempty"`
+	RoutingMode              *DomainNameRoutingMode    `json:"RoutingMode,omitempty"`
 	Tags                     map[string]string         `json:"Tags,omitempty"`
 }
 
@@ -331,3 +331,11 @@ type VpcLink struct {
 }
 
 func (VpcLink) CloudControlType() string { return "AWS::ApiGatewayV2::VpcLink" }
+
+type DomainNameRoutingMode string
+
+const (
+	DomainNameRoutingModeAPIMAPPINGONLY            DomainNameRoutingMode = "API_MAPPING_ONLY"
+	DomainNameRoutingModeROUTINGRULETHENAPIMAPPING DomainNameRoutingMode = "ROUTING_RULE_THEN_API_MAPPING"
+	DomainNameRoutingModeROUTINGRULEONLY           DomainNameRoutingMode = "ROUTING_RULE_ONLY"
+)

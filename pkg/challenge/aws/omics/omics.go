@@ -10,8 +10,8 @@ type ReferenceItem struct {
 }
 
 type SseConfig struct {
-	KeyArn *string `json:"KeyArn,omitempty"`
-	Type   *string `json:"Type,omitempty"`
+	KeyArn *string         `json:"KeyArn,omitempty"`
+	Type   *EncryptionType `json:"Type,omitempty"`
 }
 
 type AnnotationStore struct {
@@ -21,10 +21,10 @@ type AnnotationStore struct {
 	Name           *string           `json:"Name,omitempty"`
 	Reference      *ReferenceItem    `json:"Reference,omitempty"`
 	SseConfig      *SseConfig        `json:"SseConfig,omitempty"`
-	Status         *string           `json:"Status,omitempty"`
+	Status         *StoreStatus      `json:"Status,omitempty"`
 	StatusMessage  *string           `json:"StatusMessage,omitempty"`
 	StoreArn       *string           `json:"StoreArn,omitempty"`
-	StoreFormat    *string           `json:"StoreFormat,omitempty"`
+	StoreFormat    *StoreFormat      `json:"StoreFormat,omitempty"`
 	StoreOptions   json.RawMessage   `json:"StoreOptions,omitempty"`
 	StoreSizeBytes *float64          `json:"StoreSizeBytes,omitempty"`
 	Tags           map[string]string `json:"Tags,omitempty"`
@@ -43,21 +43,21 @@ type RunConfigurations struct {
 }
 
 type Configuration struct {
-	Arn               *string            `json:"Arn,omitempty"`
-	CreationTime      *string            `json:"CreationTime,omitempty"`
-	Description       *string            `json:"Description,omitempty"`
-	Name              *string            `json:"Name,omitempty"`
-	RunConfigurations *RunConfigurations `json:"RunConfigurations,omitempty"`
-	Status            *string            `json:"Status,omitempty"`
-	Tags              map[string]string  `json:"Tags,omitempty"`
-	Uuid              *string            `json:"Uuid,omitempty"`
+	Arn               *string              `json:"Arn,omitempty"`
+	CreationTime      *string              `json:"CreationTime,omitempty"`
+	Description       *string              `json:"Description,omitempty"`
+	Name              *string              `json:"Name,omitempty"`
+	RunConfigurations *RunConfigurations   `json:"RunConfigurations,omitempty"`
+	Status            *ConfigurationStatus `json:"Status,omitempty"`
+	Tags              map[string]string    `json:"Tags,omitempty"`
+	Uuid              *string              `json:"Uuid,omitempty"`
 }
 
 func (Configuration) CloudControlType() string { return "AWS::Omics::Configuration" }
 
 type ReferenceStoreSseConfig struct {
-	KeyArn *string `json:"KeyArn,omitempty"`
-	Type   *string `json:"Type,omitempty"`
+	KeyArn *string                       `json:"KeyArn,omitempty"`
+	Type   *ReferenceStoreEncryptionType `json:"Type,omitempty"`
 }
 
 type ReferenceStore struct {
@@ -87,8 +87,8 @@ type RunGroup struct {
 func (RunGroup) CloudControlType() string { return "AWS::Omics::RunGroup" }
 
 type SequenceStoreSseConfig struct {
-	KeyArn *string `json:"KeyArn,omitempty"`
-	Type   *string `json:"Type,omitempty"`
+	KeyArn *string                      `json:"KeyArn,omitempty"`
+	Type   *SequenceStoreEncryptionType `json:"Type,omitempty"`
 }
 
 type SequenceStore struct {
@@ -96,7 +96,7 @@ type SequenceStore struct {
 	Arn                    *string                 `json:"Arn,omitempty"`
 	CreationTime           *string                 `json:"CreationTime,omitempty"`
 	Description            *string                 `json:"Description,omitempty"`
-	ETagAlgorithmFamily    *string                 `json:"ETagAlgorithmFamily,omitempty"`
+	ETagAlgorithmFamily    *ETagAlgorithmFamily    `json:"ETagAlgorithmFamily,omitempty"`
 	FallbackLocation       *string                 `json:"FallbackLocation,omitempty"`
 	Name                   *string                 `json:"Name,omitempty"`
 	PropagatedSetLevelTags []string                `json:"PropagatedSetLevelTags,omitempty"`
@@ -105,7 +105,7 @@ type SequenceStore struct {
 	S3Uri                  *string                 `json:"S3Uri,omitempty"`
 	SequenceStoreId        *string                 `json:"SequenceStoreId,omitempty"`
 	SseConfig              *SequenceStoreSseConfig `json:"SseConfig,omitempty"`
-	Status                 *string                 `json:"Status,omitempty"`
+	Status                 *SequenceStoreStatus    `json:"Status,omitempty"`
 	StatusMessage          *string                 `json:"StatusMessage,omitempty"`
 	Tags                   map[string]string       `json:"Tags,omitempty"`
 	UpdateTime             *string                 `json:"UpdateTime,omitempty"`
@@ -118,8 +118,8 @@ type VariantStoreReferenceItem struct {
 }
 
 type VariantStoreSseConfig struct {
-	KeyArn *string `json:"KeyArn,omitempty"`
-	Type   *string `json:"Type,omitempty"`
+	KeyArn *string                     `json:"KeyArn,omitempty"`
+	Type   *VariantStoreEncryptionType `json:"Type,omitempty"`
 }
 
 type VariantStore struct {
@@ -129,7 +129,7 @@ type VariantStore struct {
 	Name           *string                    `json:"Name,omitempty"`
 	Reference      *VariantStoreReferenceItem `json:"Reference,omitempty"`
 	SseConfig      *VariantStoreSseConfig     `json:"SseConfig,omitempty"`
-	Status         *string                    `json:"Status,omitempty"`
+	Status         *VariantStoreStoreStatus   `json:"Status,omitempty"`
 	StatusMessage  *string                    `json:"StatusMessage,omitempty"`
 	StoreArn       *string                    `json:"StoreArn,omitempty"`
 	StoreSizeBytes *float64                   `json:"StoreSizeBytes,omitempty"`
@@ -157,8 +157,8 @@ type ContainerRegistryMap struct {
 }
 
 type SourceReference struct {
-	Type  *string `json:"type,omitempty"`
-	Value *string `json:"value,omitempty"`
+	Type  *SourceReferenceType `json:"type,omitempty"`
+	Value *string              `json:"value,omitempty"`
 }
 
 type DefinitionRepository struct {
@@ -174,7 +174,7 @@ type WorkflowParameter struct {
 }
 
 type Workflow struct {
-	Accelerators            *string                      `json:"Accelerators,omitempty"`
+	Accelerators            *Accelerators                `json:"Accelerators,omitempty"`
 	Arn                     *string                      `json:"Arn,omitempty"`
 	ContainerRegistryMap    *ContainerRegistryMap        `json:"ContainerRegistryMap,omitempty"`
 	ContainerRegistryMapUri *string                      `json:"ContainerRegistryMapUri,omitempty"`
@@ -182,17 +182,17 @@ type Workflow struct {
 	DefinitionRepository    *DefinitionRepository        `json:"DefinitionRepository,omitempty"`
 	DefinitionUri           *string                      `json:"DefinitionUri,omitempty"`
 	Description             *string                      `json:"Description,omitempty"`
-	Engine                  *string                      `json:"Engine,omitempty"`
+	Engine                  *WorkflowEngine              `json:"Engine,omitempty"`
 	Id                      *string                      `json:"Id,omitempty"`
 	Main                    *string                      `json:"Main,omitempty"`
 	Name                    *string                      `json:"Name,omitempty"`
 	ParameterTemplate       map[string]WorkflowParameter `json:"ParameterTemplate,omitempty"`
 	ParameterTemplatePath   *string                      `json:"ParameterTemplatePath,omitempty"`
-	Status                  *string                      `json:"Status,omitempty"`
+	Status                  *WorkflowStatus              `json:"Status,omitempty"`
 	StorageCapacity         *float64                     `json:"StorageCapacity,omitempty"`
-	StorageType             *string                      `json:"StorageType,omitempty"`
+	StorageType             *StorageType                 `json:"StorageType,omitempty"`
 	Tags                    map[string]string            `json:"Tags,omitempty"`
-	Type                    *string                      `json:"Type,omitempty"`
+	Type                    *WorkflowType                `json:"Type,omitempty"`
 	Uuid                    *string                      `json:"Uuid,omitempty"`
 	WorkflowBucketOwnerId   *string                      `json:"WorkflowBucketOwnerId,omitempty"`
 	ReadmeMarkdown          *string                      `json:"readmeMarkdown,omitempty"`
@@ -220,8 +220,8 @@ type WorkflowVersionContainerRegistryMap struct {
 }
 
 type WorkflowVersionSourceReference struct {
-	Type  *string `json:"type,omitempty"`
-	Value *string `json:"value,omitempty"`
+	Type  *WorkflowVersionSourceReferenceType `json:"type,omitempty"`
+	Value *string                             `json:"value,omitempty"`
 }
 
 type WorkflowVersionDefinitionRepository struct {
@@ -237,7 +237,7 @@ type WorkflowVersionWorkflowParameter struct {
 }
 
 type WorkflowVersion struct {
-	Accelerators            *string                                     `json:"Accelerators,omitempty"`
+	Accelerators            *WorkflowVersionAccelerators                `json:"Accelerators,omitempty"`
 	Arn                     *string                                     `json:"Arn,omitempty"`
 	ContainerRegistryMap    *WorkflowVersionContainerRegistryMap        `json:"ContainerRegistryMap,omitempty"`
 	ContainerRegistryMapUri *string                                     `json:"ContainerRegistryMapUri,omitempty"`
@@ -245,15 +245,15 @@ type WorkflowVersion struct {
 	DefinitionRepository    *WorkflowVersionDefinitionRepository        `json:"DefinitionRepository,omitempty"`
 	DefinitionUri           *string                                     `json:"DefinitionUri,omitempty"`
 	Description             *string                                     `json:"Description,omitempty"`
-	Engine                  *string                                     `json:"Engine,omitempty"`
+	Engine                  *WorkflowVersionWorkflowEngine              `json:"Engine,omitempty"`
 	Main                    *string                                     `json:"Main,omitempty"`
 	ParameterTemplate       map[string]WorkflowVersionWorkflowParameter `json:"ParameterTemplate,omitempty"`
 	ParameterTemplatePath   *string                                     `json:"ParameterTemplatePath,omitempty"`
-	Status                  *string                                     `json:"Status,omitempty"`
+	Status                  *WorkflowVersionWorkflowStatus              `json:"Status,omitempty"`
 	StorageCapacity         *float64                                    `json:"StorageCapacity,omitempty"`
-	StorageType             *string                                     `json:"StorageType,omitempty"`
+	StorageType             *WorkflowVersionStorageType                 `json:"StorageType,omitempty"`
 	Tags                    map[string]string                           `json:"Tags,omitempty"`
-	Type                    *string                                     `json:"Type,omitempty"`
+	Type                    *WorkflowVersionWorkflowType                `json:"Type,omitempty"`
 	Uuid                    *string                                     `json:"Uuid,omitempty"`
 	VersionName             *string                                     `json:"VersionName,omitempty"`
 	WorkflowBucketOwnerId   *string                                     `json:"WorkflowBucketOwnerId,omitempty"`
@@ -264,3 +264,176 @@ type WorkflowVersion struct {
 }
 
 func (WorkflowVersion) CloudControlType() string { return "AWS::Omics::WorkflowVersion" }
+
+type EncryptionType string
+
+const (
+	EncryptionTypeKMS EncryptionType = "KMS"
+)
+
+type StoreStatus string
+
+const (
+	StoreStatusCREATING StoreStatus = "CREATING"
+	StoreStatusUPDATING StoreStatus = "UPDATING"
+	StoreStatusDELETING StoreStatus = "DELETING"
+	StoreStatusACTIVE   StoreStatus = "ACTIVE"
+	StoreStatusFAILED   StoreStatus = "FAILED"
+)
+
+type StoreFormat string
+
+const (
+	StoreFormatGFF StoreFormat = "GFF"
+	StoreFormatTSV StoreFormat = "TSV"
+	StoreFormatVCF StoreFormat = "VCF"
+)
+
+type ConfigurationStatus string
+
+const (
+	ConfigurationStatusCREATING ConfigurationStatus = "CREATING"
+	ConfigurationStatusACTIVE   ConfigurationStatus = "ACTIVE"
+	ConfigurationStatusUPDATING ConfigurationStatus = "UPDATING"
+	ConfigurationStatusDELETING ConfigurationStatus = "DELETING"
+	ConfigurationStatusDELETED  ConfigurationStatus = "DELETED"
+	ConfigurationStatusFAILED   ConfigurationStatus = "FAILED"
+)
+
+type ReferenceStoreEncryptionType string
+
+const (
+	ReferenceStoreEncryptionTypeKMS ReferenceStoreEncryptionType = "KMS"
+)
+
+type ETagAlgorithmFamily string
+
+const (
+	ETagAlgorithmFamilyMD5up    ETagAlgorithmFamily = "MD5up"
+	ETagAlgorithmFamilySHA256up ETagAlgorithmFamily = "SHA256up"
+	ETagAlgorithmFamilySHA512up ETagAlgorithmFamily = "SHA512up"
+)
+
+type SequenceStoreEncryptionType string
+
+const (
+	SequenceStoreEncryptionTypeKMS SequenceStoreEncryptionType = "KMS"
+)
+
+type SequenceStoreStatus string
+
+const (
+	SequenceStoreStatusCREATING SequenceStoreStatus = "CREATING"
+	SequenceStoreStatusACTIVE   SequenceStoreStatus = "ACTIVE"
+	SequenceStoreStatusUPDATING SequenceStoreStatus = "UPDATING"
+	SequenceStoreStatusDELETING SequenceStoreStatus = "DELETING"
+	SequenceStoreStatusFAILED   SequenceStoreStatus = "FAILED"
+)
+
+type VariantStoreEncryptionType string
+
+const (
+	VariantStoreEncryptionTypeKMS VariantStoreEncryptionType = "KMS"
+)
+
+type VariantStoreStoreStatus string
+
+const (
+	VariantStoreStoreStatusCREATING VariantStoreStoreStatus = "CREATING"
+	VariantStoreStoreStatusUPDATING VariantStoreStoreStatus = "UPDATING"
+	VariantStoreStoreStatusDELETING VariantStoreStoreStatus = "DELETING"
+	VariantStoreStoreStatusACTIVE   VariantStoreStoreStatus = "ACTIVE"
+	VariantStoreStoreStatusFAILED   VariantStoreStoreStatus = "FAILED"
+)
+
+type Accelerators string
+
+const (
+	AcceleratorsGPU Accelerators = "GPU"
+)
+
+type SourceReferenceType string
+
+const (
+	SourceReferenceTypeBRANCH SourceReferenceType = "BRANCH"
+	SourceReferenceTypeTAG    SourceReferenceType = "TAG"
+	SourceReferenceTypeCOMMIT SourceReferenceType = "COMMIT"
+)
+
+type WorkflowEngine string
+
+const (
+	WorkflowEngineWDL      WorkflowEngine = "WDL"
+	WorkflowEngineNEXTFLOW WorkflowEngine = "NEXTFLOW"
+	WorkflowEngineCWL      WorkflowEngine = "CWL"
+)
+
+type WorkflowStatus string
+
+const (
+	WorkflowStatusCREATING WorkflowStatus = "CREATING"
+	WorkflowStatusACTIVE   WorkflowStatus = "ACTIVE"
+	WorkflowStatusUPDATING WorkflowStatus = "UPDATING"
+	WorkflowStatusDELETED  WorkflowStatus = "DELETED"
+	WorkflowStatusFAILED   WorkflowStatus = "FAILED"
+)
+
+type StorageType string
+
+const (
+	StorageTypeSTATIC  StorageType = "STATIC"
+	StorageTypeDYNAMIC StorageType = "DYNAMIC"
+)
+
+type WorkflowType string
+
+const (
+	WorkflowTypePRIVATE WorkflowType = "PRIVATE"
+)
+
+type WorkflowVersionAccelerators string
+
+const (
+	WorkflowVersionAcceleratorsGPU WorkflowVersionAccelerators = "GPU"
+)
+
+type WorkflowVersionSourceReferenceType string
+
+const (
+	WorkflowVersionSourceReferenceTypeBRANCH WorkflowVersionSourceReferenceType = "BRANCH"
+	WorkflowVersionSourceReferenceTypeTAG    WorkflowVersionSourceReferenceType = "TAG"
+	WorkflowVersionSourceReferenceTypeCOMMIT WorkflowVersionSourceReferenceType = "COMMIT"
+)
+
+type WorkflowVersionWorkflowEngine string
+
+const (
+	WorkflowVersionWorkflowEngineWDL      WorkflowVersionWorkflowEngine = "WDL"
+	WorkflowVersionWorkflowEngineNEXTFLOW WorkflowVersionWorkflowEngine = "NEXTFLOW"
+	WorkflowVersionWorkflowEngineCWL      WorkflowVersionWorkflowEngine = "CWL"
+)
+
+type WorkflowVersionWorkflowStatus string
+
+const (
+	WorkflowVersionWorkflowStatusCREATING WorkflowVersionWorkflowStatus = "CREATING"
+	WorkflowVersionWorkflowStatusACTIVE   WorkflowVersionWorkflowStatus = "ACTIVE"
+	WorkflowVersionWorkflowStatusUPDATING WorkflowVersionWorkflowStatus = "UPDATING"
+	WorkflowVersionWorkflowStatusDELETED  WorkflowVersionWorkflowStatus = "DELETED"
+	WorkflowVersionWorkflowStatusFAILED   WorkflowVersionWorkflowStatus = "FAILED"
+	WorkflowVersionWorkflowStatusINACTIVE WorkflowVersionWorkflowStatus = "INACTIVE"
+)
+
+type WorkflowVersionStorageType string
+
+const (
+	WorkflowVersionStorageTypeSTATIC  WorkflowVersionStorageType = "STATIC"
+	WorkflowVersionStorageTypeDYNAMIC WorkflowVersionStorageType = "DYNAMIC"
+)
+
+type WorkflowVersionWorkflowType string
+
+const (
+	WorkflowVersionWorkflowTypePRIVATE   WorkflowVersionWorkflowType = "PRIVATE"
+	WorkflowVersionWorkflowTypeREADY2RUN WorkflowVersionWorkflowType = "READY2RUN"
+)

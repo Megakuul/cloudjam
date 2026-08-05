@@ -6,12 +6,12 @@ package autoscaling
 import "encoding/json"
 
 type AvailabilityZoneDistribution struct {
-	CapacityDistributionStrategy *string `json:"CapacityDistributionStrategy,omitempty"`
+	CapacityDistributionStrategy *AvailabilityZoneDistributionCapacityDistributionStrategy `json:"CapacityDistributionStrategy,omitempty"`
 }
 
 type AvailabilityZoneImpairmentPolicy struct {
-	ImpairedZoneHealthCheckBehavior *string `json:"ImpairedZoneHealthCheckBehavior,omitempty"`
-	ZonalShiftEnabled               *bool   `json:"ZonalShiftEnabled,omitempty"`
+	ImpairedZoneHealthCheckBehavior *AvailabilityZoneImpairmentPolicyImpairedZoneHealthCheckBehavior `json:"ImpairedZoneHealthCheckBehavior,omitempty"`
+	ZonalShiftEnabled               *bool                                                            `json:"ZonalShiftEnabled,omitempty"`
 }
 
 type CapacityReservationTarget struct {
@@ -449,3 +449,18 @@ type WarmPool struct {
 }
 
 func (WarmPool) CloudControlType() string { return "AWS::AutoScaling::WarmPool" }
+
+type AvailabilityZoneDistributionCapacityDistributionStrategy string
+
+const (
+	AvailabilityZoneDistributionCapacityDistributionStrategyBalancedBestEffort       AvailabilityZoneDistributionCapacityDistributionStrategy = "balanced-best-effort"
+	AvailabilityZoneDistributionCapacityDistributionStrategyBalancedOnly             AvailabilityZoneDistributionCapacityDistributionStrategy = "balanced-only"
+	AvailabilityZoneDistributionCapacityDistributionStrategyReservationsThenBalanced AvailabilityZoneDistributionCapacityDistributionStrategy = "reservations-then-balanced"
+)
+
+type AvailabilityZoneImpairmentPolicyImpairedZoneHealthCheckBehavior string
+
+const (
+	AvailabilityZoneImpairmentPolicyImpairedZoneHealthCheckBehaviorIgnoreUnhealthy  AvailabilityZoneImpairmentPolicyImpairedZoneHealthCheckBehavior = "IgnoreUnhealthy"
+	AvailabilityZoneImpairmentPolicyImpairedZoneHealthCheckBehaviorReplaceUnhealthy AvailabilityZoneImpairmentPolicyImpairedZoneHealthCheckBehavior = "ReplaceUnhealthy"
+)

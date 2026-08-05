@@ -4,26 +4,26 @@
 package greengrassv2
 
 type ComponentDependencyRequirement struct {
-	DependencyType     *string `json:"DependencyType,omitempty"`
-	VersionRequirement *string `json:"VersionRequirement,omitempty"`
+	DependencyType     *ComponentDependencyRequirementDependencyType `json:"DependencyType,omitempty"`
+	VersionRequirement *string                                       `json:"VersionRequirement,omitempty"`
 }
 
 type LambdaEventSource struct {
-	Topic *string `json:"Topic,omitempty"`
-	Type  *string `json:"Type,omitempty"`
+	Topic *string                `json:"Topic,omitempty"`
+	Type  *LambdaEventSourceType `json:"Type,omitempty"`
 }
 
 type LambdaDeviceMount struct {
-	AddGroupOwner *bool   `json:"AddGroupOwner,omitempty"`
-	Path          *string `json:"Path,omitempty"`
-	Permission    *string `json:"Permission,omitempty"`
+	AddGroupOwner *bool                       `json:"AddGroupOwner,omitempty"`
+	Path          *string                     `json:"Path,omitempty"`
+	Permission    *LambdaFilesystemPermission `json:"Permission,omitempty"`
 }
 
 type LambdaVolumeMount struct {
-	AddGroupOwner   *bool   `json:"AddGroupOwner,omitempty"`
-	DestinationPath *string `json:"DestinationPath,omitempty"`
-	Permission      *string `json:"Permission,omitempty"`
-	SourcePath      *string `json:"SourcePath,omitempty"`
+	AddGroupOwner   *bool                       `json:"AddGroupOwner,omitempty"`
+	DestinationPath *string                     `json:"DestinationPath,omitempty"`
+	Permission      *LambdaFilesystemPermission `json:"Permission,omitempty"`
+	SourcePath      *string                     `json:"SourcePath,omitempty"`
 }
 
 type LambdaContainerParams struct {
@@ -34,22 +34,22 @@ type LambdaContainerParams struct {
 }
 
 type LambdaLinuxProcessParams struct {
-	ContainerParams *LambdaContainerParams `json:"ContainerParams,omitempty"`
-	IsolationMode   *string                `json:"IsolationMode,omitempty"`
+	ContainerParams *LambdaContainerParams                 `json:"ContainerParams,omitempty"`
+	IsolationMode   *LambdaLinuxProcessParamsIsolationMode `json:"IsolationMode,omitempty"`
 }
 
 type LambdaExecutionParameters struct {
-	EnvironmentVariables     map[string]string         `json:"EnvironmentVariables,omitempty"`
-	EventSources             []LambdaEventSource       `json:"EventSources,omitempty"`
-	ExecArgs                 []string                  `json:"ExecArgs,omitempty"`
-	InputPayloadEncodingType *string                   `json:"InputPayloadEncodingType,omitempty"`
-	LinuxProcessParams       *LambdaLinuxProcessParams `json:"LinuxProcessParams,omitempty"`
-	MaxIdleTimeInSeconds     *int                      `json:"MaxIdleTimeInSeconds,omitempty"`
-	MaxInstancesCount        *int                      `json:"MaxInstancesCount,omitempty"`
-	MaxQueueSize             *int                      `json:"MaxQueueSize,omitempty"`
-	Pinned                   *bool                     `json:"Pinned,omitempty"`
-	StatusTimeoutInSeconds   *int                      `json:"StatusTimeoutInSeconds,omitempty"`
-	TimeoutInSeconds         *int                      `json:"TimeoutInSeconds,omitempty"`
+	EnvironmentVariables     map[string]string                                  `json:"EnvironmentVariables,omitempty"`
+	EventSources             []LambdaEventSource                                `json:"EventSources,omitempty"`
+	ExecArgs                 []string                                           `json:"ExecArgs,omitempty"`
+	InputPayloadEncodingType *LambdaExecutionParametersInputPayloadEncodingType `json:"InputPayloadEncodingType,omitempty"`
+	LinuxProcessParams       *LambdaLinuxProcessParams                          `json:"LinuxProcessParams,omitempty"`
+	MaxIdleTimeInSeconds     *int                                               `json:"MaxIdleTimeInSeconds,omitempty"`
+	MaxInstancesCount        *int                                               `json:"MaxInstancesCount,omitempty"`
+	MaxQueueSize             *int                                               `json:"MaxQueueSize,omitempty"`
+	Pinned                   *bool                                              `json:"Pinned,omitempty"`
+	StatusTimeoutInSeconds   *int                                               `json:"StatusTimeoutInSeconds,omitempty"`
+	TimeoutInSeconds         *int                                               `json:"TimeoutInSeconds,omitempty"`
 }
 
 type ComponentPlatform struct {
@@ -100,8 +100,8 @@ type ComponentDeploymentSpecification struct {
 }
 
 type DeploymentComponentUpdatePolicy struct {
-	Action           *string `json:"Action,omitempty"`
-	TimeoutInSeconds *int    `json:"TimeoutInSeconds,omitempty"`
+	Action           *DeploymentComponentUpdatePolicyAction `json:"Action,omitempty"`
+	TimeoutInSeconds *int                                   `json:"TimeoutInSeconds,omitempty"`
 }
 
 type DeploymentConfigurationValidationPolicy struct {
@@ -111,14 +111,14 @@ type DeploymentConfigurationValidationPolicy struct {
 type DeploymentPolicies struct {
 	ComponentUpdatePolicy         *DeploymentComponentUpdatePolicy         `json:"ComponentUpdatePolicy,omitempty"`
 	ConfigurationValidationPolicy *DeploymentConfigurationValidationPolicy `json:"ConfigurationValidationPolicy,omitempty"`
-	FailureHandlingPolicy         *string                                  `json:"FailureHandlingPolicy,omitempty"`
+	FailureHandlingPolicy         *DeploymentPoliciesFailureHandlingPolicy `json:"FailureHandlingPolicy,omitempty"`
 }
 
 type IoTJobAbortCriteria struct {
-	Action                    *string  `json:"Action,omitempty"`
-	FailureType               *string  `json:"FailureType,omitempty"`
-	MinNumberOfExecutedThings *int     `json:"MinNumberOfExecutedThings,omitempty"`
-	ThresholdPercentage       *float64 `json:"ThresholdPercentage,omitempty"`
+	Action                    *IoTJobAbortCriteriaAction      `json:"Action,omitempty"`
+	FailureType               *IoTJobAbortCriteriaFailureType `json:"FailureType,omitempty"`
+	MinNumberOfExecutedThings *int                            `json:"MinNumberOfExecutedThings,omitempty"`
+	ThresholdPercentage       *float64                        `json:"ThresholdPercentage,omitempty"`
 }
 
 type IoTJobAbortConfig struct {
@@ -158,3 +158,67 @@ type Deployment struct {
 }
 
 func (Deployment) CloudControlType() string { return "AWS::GreengrassV2::Deployment" }
+
+type ComponentDependencyRequirementDependencyType string
+
+const (
+	ComponentDependencyRequirementDependencyTypeSOFT ComponentDependencyRequirementDependencyType = "SOFT"
+	ComponentDependencyRequirementDependencyTypeHARD ComponentDependencyRequirementDependencyType = "HARD"
+)
+
+type LambdaEventSourceType string
+
+const (
+	LambdaEventSourceTypePUBSUB  LambdaEventSourceType = "PUB_SUB"
+	LambdaEventSourceTypeIOTCORE LambdaEventSourceType = "IOT_CORE"
+)
+
+type LambdaExecutionParametersInputPayloadEncodingType string
+
+const (
+	LambdaExecutionParametersInputPayloadEncodingTypeJson   LambdaExecutionParametersInputPayloadEncodingType = "json"
+	LambdaExecutionParametersInputPayloadEncodingTypeBinary LambdaExecutionParametersInputPayloadEncodingType = "binary"
+)
+
+type LambdaFilesystemPermission string
+
+const (
+	LambdaFilesystemPermissionRo LambdaFilesystemPermission = "ro"
+	LambdaFilesystemPermissionRw LambdaFilesystemPermission = "rw"
+)
+
+type LambdaLinuxProcessParamsIsolationMode string
+
+const (
+	LambdaLinuxProcessParamsIsolationModeGreengrassContainer LambdaLinuxProcessParamsIsolationMode = "GreengrassContainer"
+	LambdaLinuxProcessParamsIsolationModeNoContainer         LambdaLinuxProcessParamsIsolationMode = "NoContainer"
+)
+
+type DeploymentComponentUpdatePolicyAction string
+
+const (
+	DeploymentComponentUpdatePolicyActionNOTIFYCOMPONENTS     DeploymentComponentUpdatePolicyAction = "NOTIFY_COMPONENTS"
+	DeploymentComponentUpdatePolicyActionSKIPNOTIFYCOMPONENTS DeploymentComponentUpdatePolicyAction = "SKIP_NOTIFY_COMPONENTS"
+)
+
+type DeploymentPoliciesFailureHandlingPolicy string
+
+const (
+	DeploymentPoliciesFailureHandlingPolicyROLLBACK  DeploymentPoliciesFailureHandlingPolicy = "ROLLBACK"
+	DeploymentPoliciesFailureHandlingPolicyDONOTHING DeploymentPoliciesFailureHandlingPolicy = "DO_NOTHING"
+)
+
+type IoTJobAbortCriteriaAction string
+
+const (
+	IoTJobAbortCriteriaActionCANCEL IoTJobAbortCriteriaAction = "CANCEL"
+)
+
+type IoTJobAbortCriteriaFailureType string
+
+const (
+	IoTJobAbortCriteriaFailureTypeFAILED   IoTJobAbortCriteriaFailureType = "FAILED"
+	IoTJobAbortCriteriaFailureTypeREJECTED IoTJobAbortCriteriaFailureType = "REJECTED"
+	IoTJobAbortCriteriaFailureTypeTIMEDOUT IoTJobAbortCriteriaFailureType = "TIMED_OUT"
+	IoTJobAbortCriteriaFailureTypeALL      IoTJobAbortCriteriaFailureType = "ALL"
+)

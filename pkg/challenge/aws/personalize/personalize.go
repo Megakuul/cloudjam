@@ -16,31 +16,31 @@ type DatasetImportJob struct {
 }
 
 type Dataset struct {
-	DatasetArn       *string           `json:"DatasetArn,omitempty"`
-	DatasetGroupArn  *string           `json:"DatasetGroupArn,omitempty"`
-	DatasetImportJob *DatasetImportJob `json:"DatasetImportJob,omitempty"`
-	DatasetType      *string           `json:"DatasetType,omitempty"`
-	Name             *string           `json:"Name,omitempty"`
-	SchemaArn        *string           `json:"SchemaArn,omitempty"`
+	DatasetArn       *string             `json:"DatasetArn,omitempty"`
+	DatasetGroupArn  *string             `json:"DatasetGroupArn,omitempty"`
+	DatasetImportJob *DatasetImportJob   `json:"DatasetImportJob,omitempty"`
+	DatasetType      *DatasetDatasetType `json:"DatasetType,omitempty"`
+	Name             *string             `json:"Name,omitempty"`
+	SchemaArn        *string             `json:"SchemaArn,omitempty"`
 }
 
 func (Dataset) CloudControlType() string { return "AWS::Personalize::Dataset" }
 
 type DatasetGroup struct {
-	DatasetGroupArn *string `json:"DatasetGroupArn,omitempty"`
-	Domain          *string `json:"Domain,omitempty"`
-	KmsKeyArn       *string `json:"KmsKeyArn,omitempty"`
-	Name            *string `json:"Name,omitempty"`
-	RoleArn         *string `json:"RoleArn,omitempty"`
+	DatasetGroupArn *string             `json:"DatasetGroupArn,omitempty"`
+	Domain          *DatasetGroupDomain `json:"Domain,omitempty"`
+	KmsKeyArn       *string             `json:"KmsKeyArn,omitempty"`
+	Name            *string             `json:"Name,omitempty"`
+	RoleArn         *string             `json:"RoleArn,omitempty"`
 }
 
 func (DatasetGroup) CloudControlType() string { return "AWS::Personalize::DatasetGroup" }
 
 type Schema struct {
-	Domain    *string `json:"Domain,omitempty"`
-	Name      *string `json:"Name,omitempty"`
-	Schema    *string `json:"Schema,omitempty"`
-	SchemaArn *string `json:"SchemaArn,omitempty"`
+	Domain    *SchemaDomain `json:"Domain,omitempty"`
+	Name      *string       `json:"Name,omitempty"`
+	Schema    *string       `json:"Schema,omitempty"`
+	SchemaArn *string       `json:"SchemaArn,omitempty"`
 }
 
 func (Schema) CloudControlType() string { return "AWS::Personalize::Schema" }
@@ -74,9 +74,9 @@ type SolutionConfigHpoConfigAlgorithmHyperParameterRanges struct {
 }
 
 type SolutionConfigHpoConfigHpoObjective struct {
-	MetricName  *string `json:"MetricName,omitempty"`
-	MetricRegex *string `json:"MetricRegex,omitempty"`
-	Type        *string `json:"Type,omitempty"`
+	MetricName  *string                                  `json:"MetricName,omitempty"`
+	MetricRegex *string                                  `json:"MetricRegex,omitempty"`
+	Type        *SolutionConfigHpoConfigHpoObjectiveType `json:"Type,omitempty"`
 }
 
 type SolutionConfigHpoConfigHpoResourceConfig struct {
@@ -110,3 +110,32 @@ type Solution struct {
 }
 
 func (Solution) CloudControlType() string { return "AWS::Personalize::Solution" }
+
+type DatasetDatasetType string
+
+const (
+	DatasetDatasetTypeInteractions DatasetDatasetType = "Interactions"
+	DatasetDatasetTypeItems        DatasetDatasetType = "Items"
+	DatasetDatasetTypeUsers        DatasetDatasetType = "Users"
+)
+
+type DatasetGroupDomain string
+
+const (
+	DatasetGroupDomainECOMMERCE     DatasetGroupDomain = "ECOMMERCE"
+	DatasetGroupDomainVIDEOONDEMAND DatasetGroupDomain = "VIDEO_ON_DEMAND"
+)
+
+type SchemaDomain string
+
+const (
+	SchemaDomainECOMMERCE     SchemaDomain = "ECOMMERCE"
+	SchemaDomainVIDEOONDEMAND SchemaDomain = "VIDEO_ON_DEMAND"
+)
+
+type SolutionConfigHpoConfigHpoObjectiveType string
+
+const (
+	SolutionConfigHpoConfigHpoObjectiveTypeMaximize SolutionConfigHpoConfigHpoObjectiveType = "Maximize"
+	SolutionConfigHpoConfigHpoObjectiveTypeMinimize SolutionConfigHpoConfigHpoObjectiveType = "Minimize"
+)

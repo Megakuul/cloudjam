@@ -35,8 +35,8 @@ type Channel struct {
 func (Channel) CloudControlType() string { return "AWS::IoTAnalytics::Channel" }
 
 type ResourceConfiguration struct {
-	ComputeType    *string `json:"ComputeType,omitempty"`
-	VolumeSizeInGB *int    `json:"VolumeSizeInGB,omitempty"`
+	ComputeType    *ResourceConfigurationComputeType `json:"ComputeType,omitempty"`
+	VolumeSizeInGB *int                              `json:"VolumeSizeInGB,omitempty"`
 }
 
 type DatasetContentVersionValue struct {
@@ -334,3 +334,10 @@ type Pipeline struct {
 }
 
 func (Pipeline) CloudControlType() string { return "AWS::IoTAnalytics::Pipeline" }
+
+type ResourceConfigurationComputeType string
+
+const (
+	ResourceConfigurationComputeTypeACU1 ResourceConfigurationComputeType = "ACU_1"
+	ResourceConfigurationComputeTypeACU2 ResourceConfigurationComputeType = "ACU_2"
+)

@@ -28,18 +28,18 @@ type Validators struct {
 }
 
 type ConfigurationProfile struct {
-	ApplicationId           *string                    `json:"ApplicationId,omitempty"`
-	ConfigurationProfileId  *string                    `json:"ConfigurationProfileId,omitempty"`
-	DeletionProtectionCheck *string                    `json:"DeletionProtectionCheck,omitempty"`
-	Description             *string                    `json:"Description,omitempty"`
-	KmsKeyArn               *string                    `json:"KmsKeyArn,omitempty"`
-	KmsKeyIdentifier        *string                    `json:"KmsKeyIdentifier,omitempty"`
-	LocationUri             *string                    `json:"LocationUri,omitempty"`
-	Name                    *string                    `json:"Name,omitempty"`
-	RetrievalRoleArn        *string                    `json:"RetrievalRoleArn,omitempty"`
-	Tags                    []ConfigurationProfileTags `json:"Tags,omitempty"`
-	Type                    *string                    `json:"Type,omitempty"`
-	Validators              []Validators               `json:"Validators,omitempty"`
+	ApplicationId           *string                                      `json:"ApplicationId,omitempty"`
+	ConfigurationProfileId  *string                                      `json:"ConfigurationProfileId,omitempty"`
+	DeletionProtectionCheck *ConfigurationProfileDeletionProtectionCheck `json:"DeletionProtectionCheck,omitempty"`
+	Description             *string                                      `json:"Description,omitempty"`
+	KmsKeyArn               *string                                      `json:"KmsKeyArn,omitempty"`
+	KmsKeyIdentifier        *string                                      `json:"KmsKeyIdentifier,omitempty"`
+	LocationUri             *string                                      `json:"LocationUri,omitempty"`
+	Name                    *string                                      `json:"Name,omitempty"`
+	RetrievalRoleArn        *string                                      `json:"RetrievalRoleArn,omitempty"`
+	Tags                    []ConfigurationProfileTags                   `json:"Tags,omitempty"`
+	Type                    *string                                      `json:"Type,omitempty"`
+	Validators              []Validators                                 `json:"Validators,omitempty"`
 }
 
 func (ConfigurationProfile) CloudControlType() string { return "AWS::AppConfig::ConfigurationProfile" }
@@ -65,7 +65,7 @@ type Deployment struct {
 	DynamicExtensionParameters []DynamicExtensionParameters `json:"DynamicExtensionParameters,omitempty"`
 	EnvironmentId              *string                      `json:"EnvironmentId,omitempty"`
 	KmsKeyIdentifier           *string                      `json:"KmsKeyIdentifier,omitempty"`
-	State                      *string                      `json:"State,omitempty"`
+	State                      *DeploymentState             `json:"State,omitempty"`
 	Tags                       []Tag                        `json:"Tags,omitempty"`
 }
 
@@ -77,15 +77,15 @@ type DeploymentStrategyTag struct {
 }
 
 type DeploymentStrategy struct {
-	DeploymentDurationInMinutes *float64                `json:"DeploymentDurationInMinutes,omitempty"`
-	Description                 *string                 `json:"Description,omitempty"`
-	FinalBakeTimeInMinutes      *float64                `json:"FinalBakeTimeInMinutes,omitempty"`
-	GrowthFactor                *float64                `json:"GrowthFactor,omitempty"`
-	GrowthType                  *string                 `json:"GrowthType,omitempty"`
-	Id                          *string                 `json:"Id,omitempty"`
-	Name                        *string                 `json:"Name,omitempty"`
-	ReplicateTo                 *string                 `json:"ReplicateTo,omitempty"`
-	Tags                        []DeploymentStrategyTag `json:"Tags,omitempty"`
+	DeploymentDurationInMinutes *float64                       `json:"DeploymentDurationInMinutes,omitempty"`
+	Description                 *string                        `json:"Description,omitempty"`
+	FinalBakeTimeInMinutes      *float64                       `json:"FinalBakeTimeInMinutes,omitempty"`
+	GrowthFactor                *float64                       `json:"GrowthFactor,omitempty"`
+	GrowthType                  *DeploymentStrategyGrowthType  `json:"GrowthType,omitempty"`
+	Id                          *string                        `json:"Id,omitempty"`
+	Name                        *string                        `json:"Name,omitempty"`
+	ReplicateTo                 *DeploymentStrategyReplicateTo `json:"ReplicateTo,omitempty"`
+	Tags                        []DeploymentStrategyTag        `json:"Tags,omitempty"`
 }
 
 func (DeploymentStrategy) CloudControlType() string { return "AWS::AppConfig::DeploymentStrategy" }
@@ -101,13 +101,13 @@ type EnvironmentTag struct {
 }
 
 type Environment struct {
-	ApplicationId           *string          `json:"ApplicationId,omitempty"`
-	DeletionProtectionCheck *string          `json:"DeletionProtectionCheck,omitempty"`
-	Description             *string          `json:"Description,omitempty"`
-	EnvironmentId           *string          `json:"EnvironmentId,omitempty"`
-	Monitors                []Monitor        `json:"Monitors,omitempty"`
-	Name                    *string          `json:"Name,omitempty"`
-	Tags                    []EnvironmentTag `json:"Tags,omitempty"`
+	ApplicationId           *string                             `json:"ApplicationId,omitempty"`
+	DeletionProtectionCheck *EnvironmentDeletionProtectionCheck `json:"DeletionProtectionCheck,omitempty"`
+	Description             *string                             `json:"Description,omitempty"`
+	EnvironmentId           *string                             `json:"EnvironmentId,omitempty"`
+	Monitors                []Monitor                           `json:"Monitors,omitempty"`
+	Name                    *string                             `json:"Name,omitempty"`
+	Tags                    []EnvironmentTag                    `json:"Tags,omitempty"`
 }
 
 func (Environment) CloudControlType() string { return "AWS::AppConfig::Environment" }
@@ -177,3 +177,45 @@ type HostedConfigurationVersion struct {
 func (HostedConfigurationVersion) CloudControlType() string {
 	return "AWS::AppConfig::HostedConfigurationVersion"
 }
+
+type ConfigurationProfileDeletionProtectionCheck string
+
+const (
+	ConfigurationProfileDeletionProtectionCheckACCOUNTDEFAULT ConfigurationProfileDeletionProtectionCheck = "ACCOUNT_DEFAULT"
+	ConfigurationProfileDeletionProtectionCheckAPPLY          ConfigurationProfileDeletionProtectionCheck = "APPLY"
+	ConfigurationProfileDeletionProtectionCheckBYPASS         ConfigurationProfileDeletionProtectionCheck = "BYPASS"
+)
+
+type DeploymentState string
+
+const (
+	DeploymentStateBAKING      DeploymentState = "BAKING"
+	DeploymentStateVALIDATING  DeploymentState = "VALIDATING"
+	DeploymentStateDEPLOYING   DeploymentState = "DEPLOYING"
+	DeploymentStateCOMPLETE    DeploymentState = "COMPLETE"
+	DeploymentStateROLLINGBACK DeploymentState = "ROLLING_BACK"
+	DeploymentStateROLLEDBACK  DeploymentState = "ROLLED_BACK"
+	DeploymentStateREVERTED    DeploymentState = "REVERTED"
+)
+
+type DeploymentStrategyGrowthType string
+
+const (
+	DeploymentStrategyGrowthTypeEXPONENTIAL DeploymentStrategyGrowthType = "EXPONENTIAL"
+	DeploymentStrategyGrowthTypeLINEAR      DeploymentStrategyGrowthType = "LINEAR"
+)
+
+type DeploymentStrategyReplicateTo string
+
+const (
+	DeploymentStrategyReplicateToNONE        DeploymentStrategyReplicateTo = "NONE"
+	DeploymentStrategyReplicateToSSMDOCUMENT DeploymentStrategyReplicateTo = "SSM_DOCUMENT"
+)
+
+type EnvironmentDeletionProtectionCheck string
+
+const (
+	EnvironmentDeletionProtectionCheckACCOUNTDEFAULT EnvironmentDeletionProtectionCheck = "ACCOUNT_DEFAULT"
+	EnvironmentDeletionProtectionCheckAPPLY          EnvironmentDeletionProtectionCheck = "APPLY"
+	EnvironmentDeletionProtectionCheckBYPASS         EnvironmentDeletionProtectionCheck = "BYPASS"
+)

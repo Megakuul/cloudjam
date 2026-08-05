@@ -77,8 +77,8 @@ type LocalSecondaryIndex struct {
 }
 
 type ContributorInsightsSpecification struct {
-	Enabled *bool   `json:"Enabled,omitempty"`
-	Mode    *string `json:"Mode,omitempty"`
+	Enabled *bool                                 `json:"Enabled,omitempty"`
+	Mode    *ContributorInsightsSpecificationMode `json:"Mode,omitempty"`
 }
 
 type ReadProvisionedThroughputSettings struct {
@@ -94,8 +94,8 @@ type ReplicaGlobalSecondaryIndexSpecification struct {
 }
 
 type KinesisStreamSpecification struct {
-	ApproximateCreationDateTimePrecision *string `json:"ApproximateCreationDateTimePrecision,omitempty"`
-	StreamArn                            *string `json:"StreamArn,omitempty"`
+	ApproximateCreationDateTimePrecision *KinesisStreamSpecificationApproximateCreationDateTimePrecision `json:"ApproximateCreationDateTimePrecision,omitempty"`
+	StreamArn                            *string                                                         `json:"StreamArn,omitempty"`
 }
 
 type PointInTimeRecoverySpecification struct {
@@ -121,20 +121,20 @@ type Tag struct {
 }
 
 type ReplicaSpecification struct {
-	ContributorInsightsSpecification   *ContributorInsightsSpecification          `json:"ContributorInsightsSpecification,omitempty"`
-	DeletionProtectionEnabled          *bool                                      `json:"DeletionProtectionEnabled,omitempty"`
-	GlobalSecondaryIndexes             []ReplicaGlobalSecondaryIndexSpecification `json:"GlobalSecondaryIndexes,omitempty"`
-	GlobalTableSettingsReplicationMode *string                                    `json:"GlobalTableSettingsReplicationMode,omitempty"`
-	KinesisStreamSpecification         *KinesisStreamSpecification                `json:"KinesisStreamSpecification,omitempty"`
-	PointInTimeRecoverySpecification   *PointInTimeRecoverySpecification          `json:"PointInTimeRecoverySpecification,omitempty"`
-	ReadOnDemandThroughputSettings     *ReadOnDemandThroughputSettings            `json:"ReadOnDemandThroughputSettings,omitempty"`
-	ReadProvisionedThroughputSettings  *ReadProvisionedThroughputSettings         `json:"ReadProvisionedThroughputSettings,omitempty"`
-	Region                             *string                                    `json:"Region,omitempty"`
-	ReplicaStreamSpecification         *ReplicaStreamSpecification                `json:"ReplicaStreamSpecification,omitempty"`
-	ResourcePolicy                     *ResourcePolicy                            `json:"ResourcePolicy,omitempty"`
-	SSESpecification                   *ReplicaSSESpecification                   `json:"SSESpecification,omitempty"`
-	TableClass                         *string                                    `json:"TableClass,omitempty"`
-	Tags                               []Tag                                      `json:"Tags,omitempty"`
+	ContributorInsightsSpecification   *ContributorInsightsSpecification                       `json:"ContributorInsightsSpecification,omitempty"`
+	DeletionProtectionEnabled          *bool                                                   `json:"DeletionProtectionEnabled,omitempty"`
+	GlobalSecondaryIndexes             []ReplicaGlobalSecondaryIndexSpecification              `json:"GlobalSecondaryIndexes,omitempty"`
+	GlobalTableSettingsReplicationMode *ReplicaSpecificationGlobalTableSettingsReplicationMode `json:"GlobalTableSettingsReplicationMode,omitempty"`
+	KinesisStreamSpecification         *KinesisStreamSpecification                             `json:"KinesisStreamSpecification,omitempty"`
+	PointInTimeRecoverySpecification   *PointInTimeRecoverySpecification                       `json:"PointInTimeRecoverySpecification,omitempty"`
+	ReadOnDemandThroughputSettings     *ReadOnDemandThroughputSettings                         `json:"ReadOnDemandThroughputSettings,omitempty"`
+	ReadProvisionedThroughputSettings  *ReadProvisionedThroughputSettings                      `json:"ReadProvisionedThroughputSettings,omitempty"`
+	Region                             *string                                                 `json:"Region,omitempty"`
+	ReplicaStreamSpecification         *ReplicaStreamSpecification                             `json:"ReplicaStreamSpecification,omitempty"`
+	ResourcePolicy                     *ResourcePolicy                                         `json:"ResourcePolicy,omitempty"`
+	SSESpecification                   *ReplicaSSESpecification                                `json:"SSESpecification,omitempty"`
+	TableClass                         *string                                                 `json:"TableClass,omitempty"`
+	Tags                               []Tag                                                   `json:"Tags,omitempty"`
 }
 
 type SSESpecification struct {
@@ -160,7 +160,7 @@ type GlobalTable struct {
 	GlobalTableWitnesses               []GlobalTableWitness                     `json:"GlobalTableWitnesses,omitempty"`
 	KeySchema                          []KeySchema                              `json:"KeySchema,omitempty"`
 	LocalSecondaryIndexes              []LocalSecondaryIndex                    `json:"LocalSecondaryIndexes,omitempty"`
-	MultiRegionConsistency             *string                                  `json:"MultiRegionConsistency,omitempty"`
+	MultiRegionConsistency             *GlobalTableMultiRegionConsistency       `json:"MultiRegionConsistency,omitempty"`
 	ReadOnDemandThroughputSettings     *ReadOnDemandThroughputSettings          `json:"ReadOnDemandThroughputSettings,omitempty"`
 	ReadProvisionedThroughputSettings  *GlobalReadProvisionedThroughputSettings `json:"ReadProvisionedThroughputSettings,omitempty"`
 	Replicas                           []ReplicaSpecification                   `json:"Replicas,omitempty"`
@@ -183,8 +183,8 @@ type TableAttributeDefinition struct {
 }
 
 type TableContributorInsightsSpecification struct {
-	Enabled *bool   `json:"Enabled,omitempty"`
-	Mode    *string `json:"Mode,omitempty"`
+	Enabled *bool                                      `json:"Enabled,omitempty"`
+	Mode    *TableContributorInsightsSpecificationMode `json:"Mode,omitempty"`
 }
 
 type TableKeySchema struct {
@@ -245,8 +245,8 @@ type ImportSourceSpecification struct {
 }
 
 type TableKinesisStreamSpecification struct {
-	ApproximateCreationDateTimePrecision *string `json:"ApproximateCreationDateTimePrecision,omitempty"`
-	StreamArn                            *string `json:"StreamArn,omitempty"`
+	ApproximateCreationDateTimePrecision *TableKinesisStreamSpecificationApproximateCreationDateTimePrecision `json:"ApproximateCreationDateTimePrecision,omitempty"`
+	StreamArn                            *string                                                              `json:"StreamArn,omitempty"`
 }
 
 type TableLocalSecondaryIndex struct {
@@ -311,3 +311,45 @@ type Table struct {
 }
 
 func (Table) CloudControlType() string { return "AWS::DynamoDB::Table" }
+
+type GlobalTableMultiRegionConsistency string
+
+const (
+	GlobalTableMultiRegionConsistencyEVENTUAL GlobalTableMultiRegionConsistency = "EVENTUAL"
+	GlobalTableMultiRegionConsistencySTRONG   GlobalTableMultiRegionConsistency = "STRONG"
+)
+
+type ContributorInsightsSpecificationMode string
+
+const (
+	ContributorInsightsSpecificationModeACCESSEDANDTHROTTLEDKEYS ContributorInsightsSpecificationMode = "ACCESSED_AND_THROTTLED_KEYS"
+	ContributorInsightsSpecificationModeTHROTTLEDKEYS            ContributorInsightsSpecificationMode = "THROTTLED_KEYS"
+)
+
+type ReplicaSpecificationGlobalTableSettingsReplicationMode string
+
+const (
+	ReplicaSpecificationGlobalTableSettingsReplicationModeENABLED  ReplicaSpecificationGlobalTableSettingsReplicationMode = "ENABLED"
+	ReplicaSpecificationGlobalTableSettingsReplicationModeDISABLED ReplicaSpecificationGlobalTableSettingsReplicationMode = "DISABLED"
+)
+
+type KinesisStreamSpecificationApproximateCreationDateTimePrecision string
+
+const (
+	KinesisStreamSpecificationApproximateCreationDateTimePrecisionMICROSECOND KinesisStreamSpecificationApproximateCreationDateTimePrecision = "MICROSECOND"
+	KinesisStreamSpecificationApproximateCreationDateTimePrecisionMILLISECOND KinesisStreamSpecificationApproximateCreationDateTimePrecision = "MILLISECOND"
+)
+
+type TableContributorInsightsSpecificationMode string
+
+const (
+	TableContributorInsightsSpecificationModeACCESSEDANDTHROTTLEDKEYS TableContributorInsightsSpecificationMode = "ACCESSED_AND_THROTTLED_KEYS"
+	TableContributorInsightsSpecificationModeTHROTTLEDKEYS            TableContributorInsightsSpecificationMode = "THROTTLED_KEYS"
+)
+
+type TableKinesisStreamSpecificationApproximateCreationDateTimePrecision string
+
+const (
+	TableKinesisStreamSpecificationApproximateCreationDateTimePrecisionMICROSECOND TableKinesisStreamSpecificationApproximateCreationDateTimePrecision = "MICROSECOND"
+	TableKinesisStreamSpecificationApproximateCreationDateTimePrecisionMILLISECOND TableKinesisStreamSpecificationApproximateCreationDateTimePrecision = "MILLISECOND"
+)

@@ -25,17 +25,17 @@ type FirehoseLogDestination struct {
 }
 
 type S3LogDestination struct {
-	BucketName   *string `json:"BucketName,omitempty"`
-	BucketOwner  *string `json:"BucketOwner,omitempty"`
-	OutputFormat *string `json:"OutputFormat,omitempty"`
-	Prefix       *string `json:"Prefix,omitempty"`
+	BucketName   *string         `json:"BucketName,omitempty"`
+	BucketOwner  *string         `json:"BucketOwner,omitempty"`
+	OutputFormat *S3OutputFormat `json:"OutputFormat,omitempty"`
+	Prefix       *string         `json:"Prefix,omitempty"`
 }
 
 type PipeLogConfiguration struct {
 	CloudwatchLogsLogDestination *CloudwatchLogsLogDestination `json:"CloudwatchLogsLogDestination,omitempty"`
 	FirehoseLogDestination       *FirehoseLogDestination       `json:"FirehoseLogDestination,omitempty"`
-	IncludeExecutionData         []string                      `json:"IncludeExecutionData,omitempty"`
-	Level                        *string                       `json:"Level,omitempty"`
+	IncludeExecutionData         []IncludeExecutionDataOption  `json:"IncludeExecutionData,omitempty"`
+	Level                        *LogLevel                     `json:"Level,omitempty"`
 	S3LogDestination             *S3LogDestination             `json:"S3LogDestination,omitempty"`
 }
 
@@ -51,14 +51,14 @@ type DeadLetterConfig struct {
 }
 
 type PipeSourceDynamoDBStreamParameters struct {
-	BatchSize                      *int              `json:"BatchSize,omitempty"`
-	DeadLetterConfig               *DeadLetterConfig `json:"DeadLetterConfig,omitempty"`
-	MaximumBatchingWindowInSeconds *int              `json:"MaximumBatchingWindowInSeconds,omitempty"`
-	MaximumRecordAgeInSeconds      *int              `json:"MaximumRecordAgeInSeconds,omitempty"`
-	MaximumRetryAttempts           *int              `json:"MaximumRetryAttempts,omitempty"`
-	OnPartialBatchItemFailure      *string           `json:"OnPartialBatchItemFailure,omitempty"`
-	ParallelizationFactor          *int              `json:"ParallelizationFactor,omitempty"`
-	StartingPosition               *string           `json:"StartingPosition,omitempty"`
+	BatchSize                      *int                              `json:"BatchSize,omitempty"`
+	DeadLetterConfig               *DeadLetterConfig                 `json:"DeadLetterConfig,omitempty"`
+	MaximumBatchingWindowInSeconds *int                              `json:"MaximumBatchingWindowInSeconds,omitempty"`
+	MaximumRecordAgeInSeconds      *int                              `json:"MaximumRecordAgeInSeconds,omitempty"`
+	MaximumRetryAttempts           *int                              `json:"MaximumRetryAttempts,omitempty"`
+	OnPartialBatchItemFailure      *OnPartialBatchItemFailureStreams `json:"OnPartialBatchItemFailure,omitempty"`
+	ParallelizationFactor          *int                              `json:"ParallelizationFactor,omitempty"`
+	StartingPosition               *DynamoDBStreamStartPosition      `json:"StartingPosition,omitempty"`
 }
 
 type Filter struct {
@@ -70,24 +70,24 @@ type FilterCriteria struct {
 }
 
 type PipeSourceKinesisStreamParameters struct {
-	BatchSize                      *int              `json:"BatchSize,omitempty"`
-	DeadLetterConfig               *DeadLetterConfig `json:"DeadLetterConfig,omitempty"`
-	MaximumBatchingWindowInSeconds *int              `json:"MaximumBatchingWindowInSeconds,omitempty"`
-	MaximumRecordAgeInSeconds      *int              `json:"MaximumRecordAgeInSeconds,omitempty"`
-	MaximumRetryAttempts           *int              `json:"MaximumRetryAttempts,omitempty"`
-	OnPartialBatchItemFailure      *string           `json:"OnPartialBatchItemFailure,omitempty"`
-	ParallelizationFactor          *int              `json:"ParallelizationFactor,omitempty"`
-	StartingPosition               *string           `json:"StartingPosition,omitempty"`
-	StartingPositionTimestamp      *string           `json:"StartingPositionTimestamp,omitempty"`
+	BatchSize                      *int                              `json:"BatchSize,omitempty"`
+	DeadLetterConfig               *DeadLetterConfig                 `json:"DeadLetterConfig,omitempty"`
+	MaximumBatchingWindowInSeconds *int                              `json:"MaximumBatchingWindowInSeconds,omitempty"`
+	MaximumRecordAgeInSeconds      *int                              `json:"MaximumRecordAgeInSeconds,omitempty"`
+	MaximumRetryAttempts           *int                              `json:"MaximumRetryAttempts,omitempty"`
+	OnPartialBatchItemFailure      *OnPartialBatchItemFailureStreams `json:"OnPartialBatchItemFailure,omitempty"`
+	ParallelizationFactor          *int                              `json:"ParallelizationFactor,omitempty"`
+	StartingPosition               *KinesisStreamStartPosition       `json:"StartingPosition,omitempty"`
+	StartingPositionTimestamp      *string                           `json:"StartingPositionTimestamp,omitempty"`
 }
 
 type PipeSourceManagedStreamingKafkaParameters struct {
-	BatchSize                      *int            `json:"BatchSize,omitempty"`
-	ConsumerGroupID                *string         `json:"ConsumerGroupID,omitempty"`
-	Credentials                    json.RawMessage `json:"Credentials,omitempty"`
-	MaximumBatchingWindowInSeconds *int            `json:"MaximumBatchingWindowInSeconds,omitempty"`
-	StartingPosition               *string         `json:"StartingPosition,omitempty"`
-	TopicName                      *string         `json:"TopicName,omitempty"`
+	BatchSize                      *int              `json:"BatchSize,omitempty"`
+	ConsumerGroupID                *string           `json:"ConsumerGroupID,omitempty"`
+	Credentials                    json.RawMessage   `json:"Credentials,omitempty"`
+	MaximumBatchingWindowInSeconds *int              `json:"MaximumBatchingWindowInSeconds,omitempty"`
+	StartingPosition               *MSKStartPosition `json:"StartingPosition,omitempty"`
+	TopicName                      *string           `json:"TopicName,omitempty"`
 }
 
 type PipeSourceRabbitMQBrokerParameters struct {
@@ -110,7 +110,7 @@ type PipeSourceSelfManagedKafkaParameters struct {
 	Credentials                    json.RawMessage                         `json:"Credentials,omitempty"`
 	MaximumBatchingWindowInSeconds *int                                    `json:"MaximumBatchingWindowInSeconds,omitempty"`
 	ServerRootCaCertificate        *string                                 `json:"ServerRootCaCertificate,omitempty"`
-	StartingPosition               *string                                 `json:"StartingPosition,omitempty"`
+	StartingPosition               *SelfManagedKafkaStartPosition          `json:"StartingPosition,omitempty"`
 	TopicName                      *string                                 `json:"TopicName,omitempty"`
 	Vpc                            *SelfManagedKafkaAccessConfigurationVpc `json:"Vpc,omitempty"`
 }
@@ -141,8 +141,8 @@ type BatchEnvironmentVariable struct {
 }
 
 type BatchResourceRequirement struct {
-	Type  *string `json:"Type,omitempty"`
-	Value *string `json:"Value,omitempty"`
+	Type  *BatchResourceRequirementType `json:"Type,omitempty"`
+	Value *string                       `json:"Value,omitempty"`
 }
 
 type BatchContainerOverrides struct {
@@ -153,8 +153,8 @@ type BatchContainerOverrides struct {
 }
 
 type BatchJobDependency struct {
-	JobId *string `json:"JobId,omitempty"`
-	Type  *string `json:"Type,omitempty"`
+	JobId *string                 `json:"JobId,omitempty"`
+	Type  *BatchJobDependencyType `json:"Type,omitempty"`
 }
 
 type BatchRetryStrategy struct {
@@ -183,9 +183,9 @@ type CapacityProviderStrategyItem struct {
 }
 
 type AwsVpcConfiguration struct {
-	AssignPublicIp *string  `json:"AssignPublicIp,omitempty"`
-	SecurityGroups []string `json:"SecurityGroups,omitempty"`
-	Subnets        []string `json:"Subnets,omitempty"`
+	AssignPublicIp *AssignPublicIp `json:"AssignPublicIp,omitempty"`
+	SecurityGroups []string        `json:"SecurityGroups,omitempty"`
+	Subnets        []string        `json:"Subnets,omitempty"`
 }
 
 type NetworkConfiguration struct {
@@ -198,13 +198,13 @@ type EcsEnvironmentVariable struct {
 }
 
 type EcsEnvironmentFile struct {
-	Type  *string `json:"Type,omitempty"`
-	Value *string `json:"Value,omitempty"`
+	Type  *EcsEnvironmentFileType `json:"Type,omitempty"`
+	Value *string                 `json:"Value,omitempty"`
 }
 
 type EcsResourceRequirement struct {
-	Type  *string `json:"Type,omitempty"`
-	Value *string `json:"Value,omitempty"`
+	Type  *EcsResourceRequirementType `json:"Type,omitempty"`
+	Value *string                     `json:"Value,omitempty"`
 }
 
 type EcsContainerOverride struct {
@@ -238,13 +238,13 @@ type EcsTaskOverride struct {
 }
 
 type PlacementConstraint struct {
-	Expression *string `json:"Expression,omitempty"`
-	Type       *string `json:"Type,omitempty"`
+	Expression *string                  `json:"Expression,omitempty"`
+	Type       *PlacementConstraintType `json:"Type,omitempty"`
 }
 
 type PlacementStrategy struct {
-	Field *string `json:"Field,omitempty"`
-	Type  *string `json:"Type,omitempty"`
+	Field *string                `json:"Field,omitempty"`
+	Type  *PlacementStrategyType `json:"Type,omitempty"`
 }
 
 type Tag struct {
@@ -257,13 +257,13 @@ type PipeTargetEcsTaskParameters struct {
 	EnableECSManagedTags     *bool                          `json:"EnableECSManagedTags,omitempty"`
 	EnableExecuteCommand     *bool                          `json:"EnableExecuteCommand,omitempty"`
 	Group                    *string                        `json:"Group,omitempty"`
-	LaunchType               *string                        `json:"LaunchType,omitempty"`
+	LaunchType               *LaunchType                    `json:"LaunchType,omitempty"`
 	NetworkConfiguration     *NetworkConfiguration          `json:"NetworkConfiguration,omitempty"`
 	Overrides                *EcsTaskOverride               `json:"Overrides,omitempty"`
 	PlacementConstraints     []PlacementConstraint          `json:"PlacementConstraints,omitempty"`
 	PlacementStrategy        []PlacementStrategy            `json:"PlacementStrategy,omitempty"`
 	PlatformVersion          *string                        `json:"PlatformVersion,omitempty"`
-	PropagateTags            *string                        `json:"PropagateTags,omitempty"`
+	PropagateTags            *PropagateTags                 `json:"PropagateTags,omitempty"`
 	ReferenceId              *string                        `json:"ReferenceId,omitempty"`
 	Tags                     []Tag                          `json:"Tags,omitempty"`
 	TaskCount                *int                           `json:"TaskCount,omitempty"`
@@ -289,7 +289,7 @@ type PipeTargetKinesisStreamParameters struct {
 }
 
 type PipeTargetLambdaFunctionParameters struct {
-	InvocationType *string `json:"InvocationType,omitempty"`
+	InvocationType *PipeTargetInvocationType `json:"InvocationType,omitempty"`
 }
 
 type PipeTargetRedshiftDataParameters struct {
@@ -316,19 +316,19 @@ type PipeTargetSqsQueueParameters struct {
 }
 
 type PipeTargetStateMachineParameters struct {
-	InvocationType *string `json:"InvocationType,omitempty"`
+	InvocationType *PipeTargetInvocationType `json:"InvocationType,omitempty"`
 }
 
 type DimensionMapping struct {
-	DimensionName      *string `json:"DimensionName,omitempty"`
-	DimensionValue     *string `json:"DimensionValue,omitempty"`
-	DimensionValueType *string `json:"DimensionValueType,omitempty"`
+	DimensionName      *string             `json:"DimensionName,omitempty"`
+	DimensionValue     *string             `json:"DimensionValue,omitempty"`
+	DimensionValueType *DimensionValueType `json:"DimensionValueType,omitempty"`
 }
 
 type MultiMeasureAttributeMapping struct {
-	MeasureValue              *string `json:"MeasureValue,omitempty"`
-	MeasureValueType          *string `json:"MeasureValueType,omitempty"`
-	MultiMeasureAttributeName *string `json:"MultiMeasureAttributeName,omitempty"`
+	MeasureValue              *string           `json:"MeasureValue,omitempty"`
+	MeasureValueType          *MeasureValueType `json:"MeasureValueType,omitempty"`
+	MultiMeasureAttributeName *string           `json:"MultiMeasureAttributeName,omitempty"`
 }
 
 type MultiMeasureMapping struct {
@@ -337,17 +337,17 @@ type MultiMeasureMapping struct {
 }
 
 type SingleMeasureMapping struct {
-	MeasureName      *string `json:"MeasureName,omitempty"`
-	MeasureValue     *string `json:"MeasureValue,omitempty"`
-	MeasureValueType *string `json:"MeasureValueType,omitempty"`
+	MeasureName      *string           `json:"MeasureName,omitempty"`
+	MeasureValue     *string           `json:"MeasureValue,omitempty"`
+	MeasureValueType *MeasureValueType `json:"MeasureValueType,omitempty"`
 }
 
 type PipeTargetTimestreamParameters struct {
 	DimensionMappings     []DimensionMapping     `json:"DimensionMappings,omitempty"`
-	EpochTimeUnit         *string                `json:"EpochTimeUnit,omitempty"`
+	EpochTimeUnit         *EpochTimeUnit         `json:"EpochTimeUnit,omitempty"`
 	MultiMeasureMappings  []MultiMeasureMapping  `json:"MultiMeasureMappings,omitempty"`
 	SingleMeasureMappings []SingleMeasureMapping `json:"SingleMeasureMappings,omitempty"`
-	TimeFieldType         *string                `json:"TimeFieldType,omitempty"`
+	TimeFieldType         *TimeFieldType         `json:"TimeFieldType,omitempty"`
 	TimeValue             *string                `json:"TimeValue,omitempty"`
 	TimestampFormat       *string                `json:"TimestampFormat,omitempty"`
 	VersionValue          *string                `json:"VersionValue,omitempty"`
@@ -372,9 +372,9 @@ type PipeTargetParameters struct {
 type Pipe struct {
 	Arn                  *string                   `json:"Arn,omitempty"`
 	CreationTime         *string                   `json:"CreationTime,omitempty"`
-	CurrentState         *string                   `json:"CurrentState,omitempty"`
+	CurrentState         *PipeState                `json:"CurrentState,omitempty"`
 	Description          *string                   `json:"Description,omitempty"`
-	DesiredState         *string                   `json:"DesiredState,omitempty"`
+	DesiredState         *RequestedPipeState       `json:"DesiredState,omitempty"`
 	Enrichment           *string                   `json:"Enrichment,omitempty"`
 	EnrichmentParameters *PipeEnrichmentParameters `json:"EnrichmentParameters,omitempty"`
 	KmsKeyIdentifier     *string                   `json:"KmsKeyIdentifier,omitempty"`
@@ -391,3 +391,191 @@ type Pipe struct {
 }
 
 func (Pipe) CloudControlType() string { return "AWS::Pipes::Pipe" }
+
+type PipeState string
+
+const (
+	PipeStateRUNNING              PipeState = "RUNNING"
+	PipeStateSTOPPED              PipeState = "STOPPED"
+	PipeStateCREATING             PipeState = "CREATING"
+	PipeStateUPDATING             PipeState = "UPDATING"
+	PipeStateDELETING             PipeState = "DELETING"
+	PipeStateSTARTING             PipeState = "STARTING"
+	PipeStateSTOPPING             PipeState = "STOPPING"
+	PipeStateCREATEFAILED         PipeState = "CREATE_FAILED"
+	PipeStateUPDATEFAILED         PipeState = "UPDATE_FAILED"
+	PipeStateSTARTFAILED          PipeState = "START_FAILED"
+	PipeStateSTOPFAILED           PipeState = "STOP_FAILED"
+	PipeStateDELETEFAILED         PipeState = "DELETE_FAILED"
+	PipeStateCREATEROLLBACKFAILED PipeState = "CREATE_ROLLBACK_FAILED"
+	PipeStateDELETEROLLBACKFAILED PipeState = "DELETE_ROLLBACK_FAILED"
+	PipeStateUPDATEROLLBACKFAILED PipeState = "UPDATE_ROLLBACK_FAILED"
+)
+
+type RequestedPipeState string
+
+const (
+	RequestedPipeStateRUNNING RequestedPipeState = "RUNNING"
+	RequestedPipeStateSTOPPED RequestedPipeState = "STOPPED"
+)
+
+type IncludeExecutionDataOption string
+
+const (
+	IncludeExecutionDataOptionALL IncludeExecutionDataOption = "ALL"
+)
+
+type LogLevel string
+
+const (
+	LogLevelOFF   LogLevel = "OFF"
+	LogLevelERROR LogLevel = "ERROR"
+	LogLevelINFO  LogLevel = "INFO"
+	LogLevelTRACE LogLevel = "TRACE"
+)
+
+type S3OutputFormat string
+
+const (
+	S3OutputFormatJson  S3OutputFormat = "json"
+	S3OutputFormatPlain S3OutputFormat = "plain"
+	S3OutputFormatW3c   S3OutputFormat = "w3c"
+)
+
+type OnPartialBatchItemFailureStreams string
+
+const (
+	OnPartialBatchItemFailureStreamsAUTOMATICBISECT OnPartialBatchItemFailureStreams = "AUTOMATIC_BISECT"
+)
+
+type DynamoDBStreamStartPosition string
+
+const (
+	DynamoDBStreamStartPositionTRIMHORIZON DynamoDBStreamStartPosition = "TRIM_HORIZON"
+	DynamoDBStreamStartPositionLATEST      DynamoDBStreamStartPosition = "LATEST"
+)
+
+type KinesisStreamStartPosition string
+
+const (
+	KinesisStreamStartPositionTRIMHORIZON KinesisStreamStartPosition = "TRIM_HORIZON"
+	KinesisStreamStartPositionLATEST      KinesisStreamStartPosition = "LATEST"
+	KinesisStreamStartPositionATTIMESTAMP KinesisStreamStartPosition = "AT_TIMESTAMP"
+)
+
+type MSKStartPosition string
+
+const (
+	MSKStartPositionTRIMHORIZON MSKStartPosition = "TRIM_HORIZON"
+	MSKStartPositionLATEST      MSKStartPosition = "LATEST"
+)
+
+type SelfManagedKafkaStartPosition string
+
+const (
+	SelfManagedKafkaStartPositionTRIMHORIZON SelfManagedKafkaStartPosition = "TRIM_HORIZON"
+	SelfManagedKafkaStartPositionLATEST      SelfManagedKafkaStartPosition = "LATEST"
+)
+
+type BatchResourceRequirementType string
+
+const (
+	BatchResourceRequirementTypeGPU    BatchResourceRequirementType = "GPU"
+	BatchResourceRequirementTypeMEMORY BatchResourceRequirementType = "MEMORY"
+	BatchResourceRequirementTypeVCPU   BatchResourceRequirementType = "VCPU"
+)
+
+type BatchJobDependencyType string
+
+const (
+	BatchJobDependencyTypeNTON       BatchJobDependencyType = "N_TO_N"
+	BatchJobDependencyTypeSEQUENTIAL BatchJobDependencyType = "SEQUENTIAL"
+)
+
+type LaunchType string
+
+const (
+	LaunchTypeEC2      LaunchType = "EC2"
+	LaunchTypeFARGATE  LaunchType = "FARGATE"
+	LaunchTypeEXTERNAL LaunchType = "EXTERNAL"
+)
+
+type AssignPublicIp string
+
+const (
+	AssignPublicIpENABLED  AssignPublicIp = "ENABLED"
+	AssignPublicIpDISABLED AssignPublicIp = "DISABLED"
+)
+
+type EcsEnvironmentFileType string
+
+const (
+	EcsEnvironmentFileTypeS3 EcsEnvironmentFileType = "s3"
+)
+
+type EcsResourceRequirementType string
+
+const (
+	EcsResourceRequirementTypeGPU                  EcsResourceRequirementType = "GPU"
+	EcsResourceRequirementTypeInferenceAccelerator EcsResourceRequirementType = "InferenceAccelerator"
+)
+
+type PlacementConstraintType string
+
+const (
+	PlacementConstraintTypeDistinctInstance PlacementConstraintType = "distinctInstance"
+	PlacementConstraintTypeMemberOf         PlacementConstraintType = "memberOf"
+)
+
+type PlacementStrategyType string
+
+const (
+	PlacementStrategyTypeRandom  PlacementStrategyType = "random"
+	PlacementStrategyTypeSpread  PlacementStrategyType = "spread"
+	PlacementStrategyTypeBinpack PlacementStrategyType = "binpack"
+)
+
+type PropagateTags string
+
+const (
+	PropagateTagsTASKDEFINITION PropagateTags = "TASK_DEFINITION"
+)
+
+type PipeTargetInvocationType string
+
+const (
+	PipeTargetInvocationTypeREQUESTRESPONSE PipeTargetInvocationType = "REQUEST_RESPONSE"
+	PipeTargetInvocationTypeFIREANDFORGET   PipeTargetInvocationType = "FIRE_AND_FORGET"
+)
+
+type DimensionValueType string
+
+const (
+	DimensionValueTypeVARCHAR DimensionValueType = "VARCHAR"
+)
+
+type EpochTimeUnit string
+
+const (
+	EpochTimeUnitMILLISECONDS EpochTimeUnit = "MILLISECONDS"
+	EpochTimeUnitSECONDS      EpochTimeUnit = "SECONDS"
+	EpochTimeUnitMICROSECONDS EpochTimeUnit = "MICROSECONDS"
+	EpochTimeUnitNANOSECONDS  EpochTimeUnit = "NANOSECONDS"
+)
+
+type MeasureValueType string
+
+const (
+	MeasureValueTypeDOUBLE    MeasureValueType = "DOUBLE"
+	MeasureValueTypeBIGINT    MeasureValueType = "BIGINT"
+	MeasureValueTypeVARCHAR   MeasureValueType = "VARCHAR"
+	MeasureValueTypeBOOLEAN   MeasureValueType = "BOOLEAN"
+	MeasureValueTypeTIMESTAMP MeasureValueType = "TIMESTAMP"
+)
+
+type TimeFieldType string
+
+const (
+	TimeFieldTypeEPOCH           TimeFieldType = "EPOCH"
+	TimeFieldTypeTIMESTAMPFORMAT TimeFieldType = "TIMESTAMP_FORMAT"
+)

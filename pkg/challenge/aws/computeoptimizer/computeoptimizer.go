@@ -4,24 +4,24 @@
 package computeoptimizer
 
 type IntegerCriteriaCondition struct {
-	Comparison *string `json:"Comparison,omitempty"`
-	Values     []int   `json:"Values,omitempty"`
+	Comparison *IntegerCriteriaConditionComparison `json:"Comparison,omitempty"`
+	Values     []int                               `json:"Values,omitempty"`
 }
 
 type StringCriteriaCondition struct {
-	Comparison *string  `json:"Comparison,omitempty"`
-	Values     []string `json:"Values,omitempty"`
+	Comparison *StringCriteriaConditionComparison `json:"Comparison,omitempty"`
+	Values     []string                           `json:"Values,omitempty"`
 }
 
 type DoubleCriteriaCondition struct {
-	Comparison *string   `json:"Comparison,omitempty"`
-	Values     []float64 `json:"Values,omitempty"`
+	Comparison *DoubleCriteriaConditionComparison `json:"Comparison,omitempty"`
+	Values     []float64                          `json:"Values,omitempty"`
 }
 
 type ResourceTagsCriteriaCondition struct {
-	Comparison *string  `json:"Comparison,omitempty"`
-	Key        *string  `json:"Key,omitempty"`
-	Values     []string `json:"Values,omitempty"`
+	Comparison *ResourceTagsCriteriaConditionComparison `json:"Comparison,omitempty"`
+	Key        *string                                  `json:"Key,omitempty"`
+	Values     []string                                 `json:"Values,omitempty"`
 }
 
 type Criteria struct {
@@ -36,8 +36,8 @@ type Criteria struct {
 }
 
 type OrganizationConfiguration struct {
-	AccountIds     []string `json:"AccountIds,omitempty"`
-	RuleApplyOrder *string  `json:"RuleApplyOrder,omitempty"`
+	AccountIds     []string                                 `json:"AccountIds,omitempty"`
+	RuleApplyOrder *OrganizationConfigurationRuleApplyOrder `json:"RuleApplyOrder,omitempty"`
 }
 
 type Schedule struct {
@@ -52,22 +52,118 @@ type Tag struct {
 }
 
 type AutomationRule struct {
-	AccountId                 *string                    `json:"AccountId,omitempty"`
-	CreatedTimestamp          *string                    `json:"CreatedTimestamp,omitempty"`
-	Criteria                  *Criteria                  `json:"Criteria,omitempty"`
-	Description               *string                    `json:"Description,omitempty"`
-	LastUpdatedTimestamp      *string                    `json:"LastUpdatedTimestamp,omitempty"`
-	Name                      *string                    `json:"Name,omitempty"`
-	OrganizationConfiguration *OrganizationConfiguration `json:"OrganizationConfiguration,omitempty"`
-	Priority                  *string                    `json:"Priority,omitempty"`
-	RecommendedActionTypes    []string                   `json:"RecommendedActionTypes,omitempty"`
-	RuleArn                   *string                    `json:"RuleArn,omitempty"`
-	RuleId                    *string                    `json:"RuleId,omitempty"`
-	RuleRevision              *string                    `json:"RuleRevision,omitempty"`
-	RuleType                  *string                    `json:"RuleType,omitempty"`
-	Schedule                  *Schedule                  `json:"Schedule,omitempty"`
-	Status                    *string                    `json:"Status,omitempty"`
-	Tags                      []Tag                      `json:"Tags,omitempty"`
+	AccountId                 *string                                    `json:"AccountId,omitempty"`
+	CreatedTimestamp          *string                                    `json:"CreatedTimestamp,omitempty"`
+	Criteria                  *Criteria                                  `json:"Criteria,omitempty"`
+	Description               *string                                    `json:"Description,omitempty"`
+	LastUpdatedTimestamp      *string                                    `json:"LastUpdatedTimestamp,omitempty"`
+	Name                      *string                                    `json:"Name,omitempty"`
+	OrganizationConfiguration *OrganizationConfiguration                 `json:"OrganizationConfiguration,omitempty"`
+	Priority                  *string                                    `json:"Priority,omitempty"`
+	RecommendedActionTypes    []AutomationRuleRecommendedActionTypesItem `json:"RecommendedActionTypes,omitempty"`
+	RuleArn                   *string                                    `json:"RuleArn,omitempty"`
+	RuleId                    *string                                    `json:"RuleId,omitempty"`
+	RuleRevision              *string                                    `json:"RuleRevision,omitempty"`
+	RuleType                  *AutomationRuleRuleType                    `json:"RuleType,omitempty"`
+	Schedule                  *Schedule                                  `json:"Schedule,omitempty"`
+	Status                    *AutomationRuleStatus                      `json:"Status,omitempty"`
+	Tags                      []Tag                                      `json:"Tags,omitempty"`
 }
 
 func (AutomationRule) CloudControlType() string { return "AWS::ComputeOptimizer::AutomationRule" }
+
+type IntegerCriteriaConditionComparison string
+
+const (
+	IntegerCriteriaConditionComparisonStringEquals              IntegerCriteriaConditionComparison = "StringEquals"
+	IntegerCriteriaConditionComparisonStringNotEquals           IntegerCriteriaConditionComparison = "StringNotEquals"
+	IntegerCriteriaConditionComparisonStringEqualsIgnoreCase    IntegerCriteriaConditionComparison = "StringEqualsIgnoreCase"
+	IntegerCriteriaConditionComparisonStringNotEqualsIgnoreCase IntegerCriteriaConditionComparison = "StringNotEqualsIgnoreCase"
+	IntegerCriteriaConditionComparisonStringLike                IntegerCriteriaConditionComparison = "StringLike"
+	IntegerCriteriaConditionComparisonStringNotLike             IntegerCriteriaConditionComparison = "StringNotLike"
+	IntegerCriteriaConditionComparisonNumericEquals             IntegerCriteriaConditionComparison = "NumericEquals"
+	IntegerCriteriaConditionComparisonNumericNotEquals          IntegerCriteriaConditionComparison = "NumericNotEquals"
+	IntegerCriteriaConditionComparisonNumericLessThan           IntegerCriteriaConditionComparison = "NumericLessThan"
+	IntegerCriteriaConditionComparisonNumericLessThanEquals     IntegerCriteriaConditionComparison = "NumericLessThanEquals"
+	IntegerCriteriaConditionComparisonNumericGreaterThan        IntegerCriteriaConditionComparison = "NumericGreaterThan"
+	IntegerCriteriaConditionComparisonNumericGreaterThanEquals  IntegerCriteriaConditionComparison = "NumericGreaterThanEquals"
+)
+
+type StringCriteriaConditionComparison string
+
+const (
+	StringCriteriaConditionComparisonStringEquals              StringCriteriaConditionComparison = "StringEquals"
+	StringCriteriaConditionComparisonStringNotEquals           StringCriteriaConditionComparison = "StringNotEquals"
+	StringCriteriaConditionComparisonStringEqualsIgnoreCase    StringCriteriaConditionComparison = "StringEqualsIgnoreCase"
+	StringCriteriaConditionComparisonStringNotEqualsIgnoreCase StringCriteriaConditionComparison = "StringNotEqualsIgnoreCase"
+	StringCriteriaConditionComparisonStringLike                StringCriteriaConditionComparison = "StringLike"
+	StringCriteriaConditionComparisonStringNotLike             StringCriteriaConditionComparison = "StringNotLike"
+	StringCriteriaConditionComparisonNumericEquals             StringCriteriaConditionComparison = "NumericEquals"
+	StringCriteriaConditionComparisonNumericNotEquals          StringCriteriaConditionComparison = "NumericNotEquals"
+	StringCriteriaConditionComparisonNumericLessThan           StringCriteriaConditionComparison = "NumericLessThan"
+	StringCriteriaConditionComparisonNumericLessThanEquals     StringCriteriaConditionComparison = "NumericLessThanEquals"
+	StringCriteriaConditionComparisonNumericGreaterThan        StringCriteriaConditionComparison = "NumericGreaterThan"
+	StringCriteriaConditionComparisonNumericGreaterThanEquals  StringCriteriaConditionComparison = "NumericGreaterThanEquals"
+)
+
+type DoubleCriteriaConditionComparison string
+
+const (
+	DoubleCriteriaConditionComparisonStringEquals              DoubleCriteriaConditionComparison = "StringEquals"
+	DoubleCriteriaConditionComparisonStringNotEquals           DoubleCriteriaConditionComparison = "StringNotEquals"
+	DoubleCriteriaConditionComparisonStringEqualsIgnoreCase    DoubleCriteriaConditionComparison = "StringEqualsIgnoreCase"
+	DoubleCriteriaConditionComparisonStringNotEqualsIgnoreCase DoubleCriteriaConditionComparison = "StringNotEqualsIgnoreCase"
+	DoubleCriteriaConditionComparisonStringLike                DoubleCriteriaConditionComparison = "StringLike"
+	DoubleCriteriaConditionComparisonStringNotLike             DoubleCriteriaConditionComparison = "StringNotLike"
+	DoubleCriteriaConditionComparisonNumericEquals             DoubleCriteriaConditionComparison = "NumericEquals"
+	DoubleCriteriaConditionComparisonNumericNotEquals          DoubleCriteriaConditionComparison = "NumericNotEquals"
+	DoubleCriteriaConditionComparisonNumericLessThan           DoubleCriteriaConditionComparison = "NumericLessThan"
+	DoubleCriteriaConditionComparisonNumericLessThanEquals     DoubleCriteriaConditionComparison = "NumericLessThanEquals"
+	DoubleCriteriaConditionComparisonNumericGreaterThan        DoubleCriteriaConditionComparison = "NumericGreaterThan"
+	DoubleCriteriaConditionComparisonNumericGreaterThanEquals  DoubleCriteriaConditionComparison = "NumericGreaterThanEquals"
+)
+
+type ResourceTagsCriteriaConditionComparison string
+
+const (
+	ResourceTagsCriteriaConditionComparisonStringEquals              ResourceTagsCriteriaConditionComparison = "StringEquals"
+	ResourceTagsCriteriaConditionComparisonStringNotEquals           ResourceTagsCriteriaConditionComparison = "StringNotEquals"
+	ResourceTagsCriteriaConditionComparisonStringEqualsIgnoreCase    ResourceTagsCriteriaConditionComparison = "StringEqualsIgnoreCase"
+	ResourceTagsCriteriaConditionComparisonStringNotEqualsIgnoreCase ResourceTagsCriteriaConditionComparison = "StringNotEqualsIgnoreCase"
+	ResourceTagsCriteriaConditionComparisonStringLike                ResourceTagsCriteriaConditionComparison = "StringLike"
+	ResourceTagsCriteriaConditionComparisonStringNotLike             ResourceTagsCriteriaConditionComparison = "StringNotLike"
+	ResourceTagsCriteriaConditionComparisonNumericEquals             ResourceTagsCriteriaConditionComparison = "NumericEquals"
+	ResourceTagsCriteriaConditionComparisonNumericNotEquals          ResourceTagsCriteriaConditionComparison = "NumericNotEquals"
+	ResourceTagsCriteriaConditionComparisonNumericLessThan           ResourceTagsCriteriaConditionComparison = "NumericLessThan"
+	ResourceTagsCriteriaConditionComparisonNumericLessThanEquals     ResourceTagsCriteriaConditionComparison = "NumericLessThanEquals"
+	ResourceTagsCriteriaConditionComparisonNumericGreaterThan        ResourceTagsCriteriaConditionComparison = "NumericGreaterThan"
+	ResourceTagsCriteriaConditionComparisonNumericGreaterThanEquals  ResourceTagsCriteriaConditionComparison = "NumericGreaterThanEquals"
+)
+
+type OrganizationConfigurationRuleApplyOrder string
+
+const (
+	OrganizationConfigurationRuleApplyOrderBeforeAccountRules OrganizationConfigurationRuleApplyOrder = "BeforeAccountRules"
+	OrganizationConfigurationRuleApplyOrderAfterAccountRules  OrganizationConfigurationRuleApplyOrder = "AfterAccountRules"
+)
+
+type AutomationRuleRecommendedActionTypesItem string
+
+const (
+	AutomationRuleRecommendedActionTypesItemSnapshotAndDeleteUnattachedEbsVolume AutomationRuleRecommendedActionTypesItem = "SnapshotAndDeleteUnattachedEbsVolume"
+	AutomationRuleRecommendedActionTypesItemUpgradeEbsVolumeType                 AutomationRuleRecommendedActionTypesItem = "UpgradeEbsVolumeType"
+)
+
+type AutomationRuleRuleType string
+
+const (
+	AutomationRuleRuleTypeAccountRule      AutomationRuleRuleType = "AccountRule"
+	AutomationRuleRuleTypeOrganizationRule AutomationRuleRuleType = "OrganizationRule"
+)
+
+type AutomationRuleStatus string
+
+const (
+	AutomationRuleStatusActive   AutomationRuleStatus = "Active"
+	AutomationRuleStatusInactive AutomationRuleStatus = "Inactive"
+)

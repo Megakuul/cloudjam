@@ -20,16 +20,16 @@ type AppInstance struct {
 func (AppInstance) CloudControlType() string { return "AWS::Chime::AppInstance" }
 
 type InvokedBy struct {
-	StandardMessages *string `json:"StandardMessages,omitempty"`
-	TargetedMessages *string `json:"TargetedMessages,omitempty"`
+	StandardMessages *InvokedByStandardMessages `json:"StandardMessages,omitempty"`
+	TargetedMessages *InvokedByTargetedMessages `json:"TargetedMessages,omitempty"`
 }
 
 type LexConfiguration struct {
-	InvokedBy      *InvokedBy `json:"InvokedBy,omitempty"`
-	LexBotAliasArn *string    `json:"LexBotAliasArn,omitempty"`
-	LocaleId       *string    `json:"LocaleId,omitempty"`
-	RespondsTo     *string    `json:"RespondsTo,omitempty"`
-	WelcomeIntent  *string    `json:"WelcomeIntent,omitempty"`
+	InvokedBy      *InvokedBy                  `json:"InvokedBy,omitempty"`
+	LexBotAliasArn *string                     `json:"LexBotAliasArn,omitempty"`
+	LocaleId       *string                     `json:"LocaleId,omitempty"`
+	RespondsTo     *LexConfigurationRespondsTo `json:"RespondsTo,omitempty"`
+	WelcomeIntent  *string                     `json:"WelcomeIntent,omitempty"`
 }
 
 type Configuration struct {
@@ -55,8 +55,8 @@ type AppInstanceBot struct {
 func (AppInstanceBot) CloudControlType() string { return "AWS::Chime::AppInstanceBot" }
 
 type ExpirationSettings struct {
-	ExpirationCriterion *string `json:"ExpirationCriterion,omitempty"`
-	ExpirationDays      *int    `json:"ExpirationDays,omitempty"`
+	ExpirationCriterion *ExpirationSettingsExpirationCriterion `json:"ExpirationCriterion,omitempty"`
+	ExpirationDays      *int                                   `json:"ExpirationDays,omitempty"`
 }
 
 type AppInstanceUserTag struct {
@@ -75,3 +75,31 @@ type AppInstanceUser struct {
 }
 
 func (AppInstanceUser) CloudControlType() string { return "AWS::Chime::AppInstanceUser" }
+
+type InvokedByStandardMessages string
+
+const (
+	InvokedByStandardMessagesAUTO     InvokedByStandardMessages = "AUTO"
+	InvokedByStandardMessagesALL      InvokedByStandardMessages = "ALL"
+	InvokedByStandardMessagesMENTIONS InvokedByStandardMessages = "MENTIONS"
+	InvokedByStandardMessagesNONE     InvokedByStandardMessages = "NONE"
+)
+
+type InvokedByTargetedMessages string
+
+const (
+	InvokedByTargetedMessagesALL  InvokedByTargetedMessages = "ALL"
+	InvokedByTargetedMessagesNONE InvokedByTargetedMessages = "NONE"
+)
+
+type LexConfigurationRespondsTo string
+
+const (
+	LexConfigurationRespondsToSTANDARDMESSAGES LexConfigurationRespondsTo = "STANDARD_MESSAGES"
+)
+
+type ExpirationSettingsExpirationCriterion string
+
+const (
+	ExpirationSettingsExpirationCriterionCREATEDTIMESTAMP ExpirationSettingsExpirationCriterion = "CREATED_TIMESTAMP"
+)

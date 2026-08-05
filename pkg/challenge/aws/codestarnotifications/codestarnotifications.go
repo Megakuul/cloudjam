@@ -9,19 +9,33 @@ type Target struct {
 }
 
 type NotificationRule struct {
-	Arn           *string           `json:"Arn,omitempty"`
-	CreatedBy     *string           `json:"CreatedBy,omitempty"`
-	DetailType    *string           `json:"DetailType,omitempty"`
-	EventTypeId   *string           `json:"EventTypeId,omitempty"`
-	EventTypeIds  []string          `json:"EventTypeIds,omitempty"`
-	Name          *string           `json:"Name,omitempty"`
-	Resource      *string           `json:"Resource,omitempty"`
-	Status        *string           `json:"Status,omitempty"`
-	Tags          map[string]string `json:"Tags,omitempty"`
-	TargetAddress *string           `json:"TargetAddress,omitempty"`
-	Targets       []Target          `json:"Targets,omitempty"`
+	Arn           *string                     `json:"Arn,omitempty"`
+	CreatedBy     *string                     `json:"CreatedBy,omitempty"`
+	DetailType    *NotificationRuleDetailType `json:"DetailType,omitempty"`
+	EventTypeId   *string                     `json:"EventTypeId,omitempty"`
+	EventTypeIds  []string                    `json:"EventTypeIds,omitempty"`
+	Name          *string                     `json:"Name,omitempty"`
+	Resource      *string                     `json:"Resource,omitempty"`
+	Status        *NotificationRuleStatus     `json:"Status,omitempty"`
+	Tags          map[string]string           `json:"Tags,omitempty"`
+	TargetAddress *string                     `json:"TargetAddress,omitempty"`
+	Targets       []Target                    `json:"Targets,omitempty"`
 }
 
 func (NotificationRule) CloudControlType() string {
 	return "AWS::CodeStarNotifications::NotificationRule"
 }
+
+type NotificationRuleDetailType string
+
+const (
+	NotificationRuleDetailTypeBASIC NotificationRuleDetailType = "BASIC"
+	NotificationRuleDetailTypeFULL  NotificationRuleDetailType = "FULL"
+)
+
+type NotificationRuleStatus string
+
+const (
+	NotificationRuleStatusENABLED  NotificationRuleStatus = "ENABLED"
+	NotificationRuleStatusDISABLED NotificationRuleStatus = "DISABLED"
+)

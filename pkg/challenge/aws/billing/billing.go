@@ -4,8 +4,8 @@
 package billing
 
 type BillingViewDataFilterExpressionDimensions struct {
-	Key    *string  `json:"Key,omitempty"`
-	Values []string `json:"Values,omitempty"`
+	Key    *DimensionKey `json:"Key,omitempty"`
+	Values []string      `json:"Values,omitempty"`
 }
 
 type BillingViewDataFilterExpressionTags struct {
@@ -31,7 +31,7 @@ type Tag struct {
 
 type BillingView struct {
 	Arn                  *string                          `json:"Arn,omitempty"`
-	BillingViewType      *string                          `json:"BillingViewType,omitempty"`
+	BillingViewType      *BillingViewType                 `json:"BillingViewType,omitempty"`
 	CreatedAt            *float64                         `json:"CreatedAt,omitempty"`
 	DataFilterExpression *BillingViewDataFilterExpression `json:"DataFilterExpression,omitempty"`
 	Description          *string                          `json:"Description,omitempty"`
@@ -43,3 +43,17 @@ type BillingView struct {
 }
 
 func (BillingView) CloudControlType() string { return "AWS::Billing::BillingView" }
+
+type BillingViewType string
+
+const (
+	BillingViewTypePRIMARY      BillingViewType = "PRIMARY"
+	BillingViewTypeBILLINGGROUP BillingViewType = "BILLING_GROUP"
+	BillingViewTypeCUSTOM       BillingViewType = "CUSTOM"
+)
+
+type DimensionKey string
+
+const (
+	DimensionKeyLINKEDACCOUNT DimensionKey = "LINKED_ACCOUNT"
+)

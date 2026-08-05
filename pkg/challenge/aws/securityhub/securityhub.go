@@ -6,11 +6,11 @@ package securityhub
 import "encoding/json"
 
 type AggregatorV2 struct {
-	AggregationRegion *string           `json:"AggregationRegion,omitempty"`
-	AggregatorV2Arn   *string           `json:"AggregatorV2Arn,omitempty"`
-	LinkedRegions     []string          `json:"LinkedRegions,omitempty"`
-	RegionLinkingMode *string           `json:"RegionLinkingMode,omitempty"`
-	Tags              map[string]string `json:"Tags,omitempty"`
+	AggregationRegion *string                        `json:"AggregationRegion,omitempty"`
+	AggregatorV2Arn   *string                        `json:"AggregatorV2Arn,omitempty"`
+	LinkedRegions     []string                       `json:"LinkedRegions,omitempty"`
+	RegionLinkingMode *AggregatorV2RegionLinkingMode `json:"RegionLinkingMode,omitempty"`
+	Tags              map[string]string              `json:"Tags,omitempty"`
 }
 
 func (AggregatorV2) CloudControlType() string { return "AWS::SecurityHub::AggregatorV2" }
@@ -26,35 +26,35 @@ type RelatedFinding struct {
 }
 
 type SeverityUpdate struct {
-	Label      *string  `json:"Label,omitempty"`
-	Normalized *int     `json:"Normalized,omitempty"`
-	Product    *float64 `json:"Product,omitempty"`
+	Label      *SeverityUpdateLabel `json:"Label,omitempty"`
+	Normalized *int                 `json:"Normalized,omitempty"`
+	Product    *float64             `json:"Product,omitempty"`
 }
 
 type WorkflowUpdate struct {
-	Status *string `json:"Status,omitempty"`
+	Status *WorkflowUpdateStatus `json:"Status,omitempty"`
 }
 
 type AutomationRulesFindingFieldsUpdate struct {
-	Confidence        *int              `json:"Confidence,omitempty"`
-	Criticality       *int              `json:"Criticality,omitempty"`
-	Note              *NoteUpdate       `json:"Note,omitempty"`
-	RelatedFindings   []RelatedFinding  `json:"RelatedFindings,omitempty"`
-	Severity          *SeverityUpdate   `json:"Severity,omitempty"`
-	Types             []string          `json:"Types,omitempty"`
-	UserDefinedFields map[string]string `json:"UserDefinedFields,omitempty"`
-	VerificationState *string           `json:"VerificationState,omitempty"`
-	Workflow          *WorkflowUpdate   `json:"Workflow,omitempty"`
+	Confidence        *int                                                 `json:"Confidence,omitempty"`
+	Criticality       *int                                                 `json:"Criticality,omitempty"`
+	Note              *NoteUpdate                                          `json:"Note,omitempty"`
+	RelatedFindings   []RelatedFinding                                     `json:"RelatedFindings,omitempty"`
+	Severity          *SeverityUpdate                                      `json:"Severity,omitempty"`
+	Types             []string                                             `json:"Types,omitempty"`
+	UserDefinedFields map[string]string                                    `json:"UserDefinedFields,omitempty"`
+	VerificationState *AutomationRulesFindingFieldsUpdateVerificationState `json:"VerificationState,omitempty"`
+	Workflow          *WorkflowUpdate                                      `json:"Workflow,omitempty"`
 }
 
 type AutomationRulesAction struct {
 	FindingFieldsUpdate *AutomationRulesFindingFieldsUpdate `json:"FindingFieldsUpdate,omitempty"`
-	Type                *string                             `json:"Type,omitempty"`
+	Type                *AutomationRulesActionType          `json:"Type,omitempty"`
 }
 
 type StringFilter struct {
-	Comparison *string `json:"Comparison,omitempty"`
-	Value      *string `json:"Value,omitempty"`
+	Comparison *StringFilterComparison `json:"Comparison,omitempty"`
+	Value      *string                 `json:"Value,omitempty"`
 }
 
 type NumberFilter struct {
@@ -64,8 +64,8 @@ type NumberFilter struct {
 }
 
 type DateRange struct {
-	Unit  *string  `json:"Unit,omitempty"`
-	Value *float64 `json:"Value,omitempty"`
+	Unit  *DateRangeUnit `json:"Unit,omitempty"`
+	Value *float64       `json:"Value,omitempty"`
 }
 
 type DateFilter struct {
@@ -75,9 +75,9 @@ type DateFilter struct {
 }
 
 type MapFilter struct {
-	Comparison *string `json:"Comparison,omitempty"`
-	Key        *string `json:"Key,omitempty"`
-	Value      *string `json:"Value,omitempty"`
+	Comparison *MapFilterComparison `json:"Comparison,omitempty"`
+	Key        *string              `json:"Key,omitempty"`
+	Value      *string              `json:"Value,omitempty"`
 }
 
 type AutomationRulesFindingFilters struct {
@@ -128,7 +128,7 @@ type AutomationRule struct {
 	RuleArn     *string                        `json:"RuleArn,omitempty"`
 	RuleName    *string                        `json:"RuleName,omitempty"`
 	RuleOrder   *int                           `json:"RuleOrder,omitempty"`
-	RuleStatus  *string                        `json:"RuleStatus,omitempty"`
+	RuleStatus  *AutomationRuleRuleStatus      `json:"RuleStatus,omitempty"`
 	Tags        map[string]string              `json:"Tags,omitempty"`
 	UpdatedAt   *string                        `json:"UpdatedAt,omitempty"`
 }
@@ -148,7 +148,7 @@ type AutomationRulesFindingFieldsUpdateV2 struct {
 type AutomationRulesActionV2 struct {
 	ExternalIntegrationConfiguration *ExternalIntegrationConfiguration     `json:"ExternalIntegrationConfiguration,omitempty"`
 	FindingFieldsUpdate              *AutomationRulesFindingFieldsUpdateV2 `json:"FindingFieldsUpdate,omitempty"`
-	Type                             *string                               `json:"Type,omitempty"`
+	Type                             *AutomationRulesActionV2Type          `json:"Type,omitempty"`
 }
 
 type BooleanFilter struct {
@@ -156,13 +156,13 @@ type BooleanFilter struct {
 }
 
 type OcsfBooleanFilter struct {
-	FieldName *string        `json:"FieldName,omitempty"`
-	Filter    *BooleanFilter `json:"Filter,omitempty"`
+	FieldName *OcsfBooleanFilterFieldName `json:"FieldName,omitempty"`
+	Filter    *BooleanFilter              `json:"Filter,omitempty"`
 }
 
 type AutomationRuleV2DateRange struct {
-	Unit  *string  `json:"Unit,omitempty"`
-	Value *float64 `json:"Value,omitempty"`
+	Unit  *AutomationRuleV2DateRangeUnit `json:"Unit,omitempty"`
+	Value *float64                       `json:"Value,omitempty"`
 }
 
 type AutomationRuleV2DateFilter struct {
@@ -172,18 +172,18 @@ type AutomationRuleV2DateFilter struct {
 }
 
 type OcsfDateFilter struct {
-	FieldName *string                     `json:"FieldName,omitempty"`
+	FieldName *OcsfDateFilterFieldName    `json:"FieldName,omitempty"`
 	Filter    *AutomationRuleV2DateFilter `json:"Filter,omitempty"`
 }
 
 type AutomationRuleV2MapFilter struct {
-	Comparison *string `json:"Comparison,omitempty"`
-	Key        *string `json:"Key,omitempty"`
-	Value      *string `json:"Value,omitempty"`
+	Comparison *AutomationRuleV2MapFilterComparison `json:"Comparison,omitempty"`
+	Key        *string                              `json:"Key,omitempty"`
+	Value      *string                              `json:"Value,omitempty"`
 }
 
 type OcsfMapFilter struct {
-	FieldName *string                    `json:"FieldName,omitempty"`
+	FieldName *OcsfMapFilterFieldName    `json:"FieldName,omitempty"`
 	Filter    *AutomationRuleV2MapFilter `json:"Filter,omitempty"`
 }
 
@@ -194,17 +194,17 @@ type AutomationRuleV2NumberFilter struct {
 }
 
 type OcsfNumberFilter struct {
-	FieldName *string                       `json:"FieldName,omitempty"`
+	FieldName *OcsfNumberFilterFieldName    `json:"FieldName,omitempty"`
 	Filter    *AutomationRuleV2NumberFilter `json:"Filter,omitempty"`
 }
 
 type AutomationRuleV2StringFilter struct {
-	Comparison *string `json:"Comparison,omitempty"`
-	Value      *string `json:"Value,omitempty"`
+	Comparison *AutomationRuleV2StringFilterComparison `json:"Comparison,omitempty"`
+	Value      *string                                 `json:"Value,omitempty"`
 }
 
 type OcsfStringFilter struct {
-	FieldName *string                       `json:"FieldName,omitempty"`
+	FieldName *OcsfStringField              `json:"FieldName,omitempty"`
 	Filter    *AutomationRuleV2StringFilter `json:"Filter,omitempty"`
 }
 
@@ -213,13 +213,13 @@ type CompositeFilter struct {
 	DateFilters    []OcsfDateFilter    `json:"DateFilters,omitempty"`
 	MapFilters     []OcsfMapFilter     `json:"MapFilters,omitempty"`
 	NumberFilters  []OcsfNumberFilter  `json:"NumberFilters,omitempty"`
-	Operator       *string             `json:"Operator,omitempty"`
+	Operator       *AllowedOperators   `json:"Operator,omitempty"`
 	StringFilters  []OcsfStringFilter  `json:"StringFilters,omitempty"`
 }
 
 type OcsfFindingFilters struct {
 	CompositeFilters  []CompositeFilter `json:"CompositeFilters,omitempty"`
-	CompositeOperator *string           `json:"CompositeOperator,omitempty"`
+	CompositeOperator *AllowedOperators `json:"CompositeOperator,omitempty"`
 }
 
 type Criteria struct {
@@ -227,17 +227,17 @@ type Criteria struct {
 }
 
 type AutomationRuleV2 struct {
-	Actions     []AutomationRulesActionV2 `json:"Actions,omitempty"`
-	CreatedAt   *string                   `json:"CreatedAt,omitempty"`
-	Criteria    *Criteria                 `json:"Criteria,omitempty"`
-	Description *string                   `json:"Description,omitempty"`
-	RuleArn     *string                   `json:"RuleArn,omitempty"`
-	RuleId      *string                   `json:"RuleId,omitempty"`
-	RuleName    *string                   `json:"RuleName,omitempty"`
-	RuleOrder   *float64                  `json:"RuleOrder,omitempty"`
-	RuleStatus  *string                   `json:"RuleStatus,omitempty"`
-	Tags        map[string]string         `json:"Tags,omitempty"`
-	UpdatedAt   *string                   `json:"UpdatedAt,omitempty"`
+	Actions     []AutomationRulesActionV2   `json:"Actions,omitempty"`
+	CreatedAt   *string                     `json:"CreatedAt,omitempty"`
+	Criteria    *Criteria                   `json:"Criteria,omitempty"`
+	Description *string                     `json:"Description,omitempty"`
+	RuleArn     *string                     `json:"RuleArn,omitempty"`
+	RuleId      *string                     `json:"RuleId,omitempty"`
+	RuleName    *string                     `json:"RuleName,omitempty"`
+	RuleOrder   *float64                    `json:"RuleOrder,omitempty"`
+	RuleStatus  *AutomationRuleV2RuleStatus `json:"RuleStatus,omitempty"`
+	Tags        map[string]string           `json:"Tags,omitempty"`
+	UpdatedAt   *string                     `json:"UpdatedAt,omitempty"`
 }
 
 func (AutomationRuleV2) CloudControlType() string { return "AWS::SecurityHub::AutomationRuleV2" }
@@ -254,8 +254,8 @@ type ParameterValue struct {
 }
 
 type ParameterConfiguration struct {
-	Value     *ParameterValue `json:"Value,omitempty"`
-	ValueType *string         `json:"ValueType,omitempty"`
+	Value     *ParameterValue                  `json:"Value,omitempty"`
+	ValueType *ParameterConfigurationValueType `json:"ValueType,omitempty"`
 }
 
 type SecurityControlCustomParameter struct {
@@ -299,8 +299,8 @@ type HealthIssue struct {
 }
 
 type AzureScopeConfiguration struct {
-	ScopeType   *string  `json:"ScopeType,omitempty"`
-	ScopeValues []string `json:"ScopeValues,omitempty"`
+	ScopeType   *AzureScopeConfigurationScopeType `json:"ScopeType,omitempty"`
+	ScopeValues []string                          `json:"ScopeValues,omitempty"`
 }
 
 type AzureProviderConfiguration struct {
@@ -358,18 +358,18 @@ type ConnectorV2 struct {
 func (ConnectorV2) CloudControlType() string { return "AWS::SecurityHub::ConnectorV2" }
 
 type DelegatedAdmin struct {
-	AdminAccountId           *string `json:"AdminAccountId,omitempty"`
-	DelegatedAdminIdentifier *string `json:"DelegatedAdminIdentifier,omitempty"`
-	Status                   *string `json:"Status,omitempty"`
+	AdminAccountId           *string               `json:"AdminAccountId,omitempty"`
+	DelegatedAdminIdentifier *string               `json:"DelegatedAdminIdentifier,omitempty"`
+	Status                   *DelegatedAdminStatus `json:"Status,omitempty"`
 }
 
 func (DelegatedAdmin) CloudControlType() string { return "AWS::SecurityHub::DelegatedAdmin" }
 
 type FindingAggregator struct {
-	FindingAggregationRegion *string  `json:"FindingAggregationRegion,omitempty"`
-	FindingAggregatorArn     *string  `json:"FindingAggregatorArn,omitempty"`
-	RegionLinkingMode        *string  `json:"RegionLinkingMode,omitempty"`
-	Regions                  []string `json:"Regions,omitempty"`
+	FindingAggregationRegion *string                             `json:"FindingAggregationRegion,omitempty"`
+	FindingAggregatorArn     *string                             `json:"FindingAggregatorArn,omitempty"`
+	RegionLinkingMode        *FindingAggregatorRegionLinkingMode `json:"RegionLinkingMode,omitempty"`
+	Regions                  []string                            `json:"Regions,omitempty"`
 }
 
 func (FindingAggregator) CloudControlType() string { return "AWS::SecurityHub::FindingAggregator" }
@@ -394,8 +394,8 @@ type HubV2 struct {
 func (HubV2) CloudControlType() string { return "AWS::SecurityHub::HubV2" }
 
 type InsightStringFilter struct {
-	Comparison *string `json:"Comparison,omitempty"`
-	Value      *string `json:"Value,omitempty"`
+	Comparison *InsightStringFilterComparison `json:"Comparison,omitempty"`
+	Value      *string                        `json:"Value,omitempty"`
 }
 
 type InsightNumberFilter struct {
@@ -405,8 +405,8 @@ type InsightNumberFilter struct {
 }
 
 type InsightDateRange struct {
-	Unit  *string  `json:"Unit,omitempty"`
-	Value *float64 `json:"Value,omitempty"`
+	Unit  *InsightDateRangeUnit `json:"Unit,omitempty"`
+	Value *float64              `json:"Value,omitempty"`
 }
 
 type InsightDateFilter struct {
@@ -424,9 +424,9 @@ type IpFilter struct {
 }
 
 type InsightMapFilter struct {
-	Comparison *string `json:"Comparison,omitempty"`
-	Key        *string `json:"Key,omitempty"`
-	Value      *string `json:"Value,omitempty"`
+	Comparison *InsightMapFilterComparison `json:"Comparison,omitempty"`
+	Key        *string                     `json:"Key,omitempty"`
+	Value      *string                     `json:"Value,omitempty"`
 }
 
 type InsightBooleanFilter struct {
@@ -550,13 +550,13 @@ type Insight struct {
 func (Insight) CloudControlType() string { return "AWS::SecurityHub::Insight" }
 
 type OrganizationConfiguration struct {
-	AutoEnable                          *bool   `json:"AutoEnable,omitempty"`
-	AutoEnableStandards                 *string `json:"AutoEnableStandards,omitempty"`
-	ConfigurationType                   *string `json:"ConfigurationType,omitempty"`
-	MemberAccountLimitReached           *bool   `json:"MemberAccountLimitReached,omitempty"`
-	OrganizationConfigurationIdentifier *string `json:"OrganizationConfigurationIdentifier,omitempty"`
-	Status                              *string `json:"Status,omitempty"`
-	StatusMessage                       *string `json:"StatusMessage,omitempty"`
+	AutoEnable                          *bool                                         `json:"AutoEnable,omitempty"`
+	AutoEnableStandards                 *OrganizationConfigurationAutoEnableStandards `json:"AutoEnableStandards,omitempty"`
+	ConfigurationType                   *OrganizationConfigurationConfigurationType   `json:"ConfigurationType,omitempty"`
+	MemberAccountLimitReached           *bool                                         `json:"MemberAccountLimitReached,omitempty"`
+	OrganizationConfigurationIdentifier *string                                       `json:"OrganizationConfigurationIdentifier,omitempty"`
+	Status                              *OrganizationConfigurationStatus              `json:"Status,omitempty"`
+	StatusMessage                       *string                                       `json:"StatusMessage,omitempty"`
 }
 
 func (OrganizationConfiguration) CloudControlType() string {
@@ -564,14 +564,14 @@ func (OrganizationConfiguration) CloudControlType() string {
 }
 
 type PolicyAssociation struct {
-	AssociationIdentifier    *string `json:"AssociationIdentifier,omitempty"`
-	AssociationStatus        *string `json:"AssociationStatus,omitempty"`
-	AssociationStatusMessage *string `json:"AssociationStatusMessage,omitempty"`
-	AssociationType          *string `json:"AssociationType,omitempty"`
-	ConfigurationPolicyId    *string `json:"ConfigurationPolicyId,omitempty"`
-	TargetId                 *string `json:"TargetId,omitempty"`
-	TargetType               *string `json:"TargetType,omitempty"`
-	UpdatedAt                *string `json:"UpdatedAt,omitempty"`
+	AssociationIdentifier    *string                             `json:"AssociationIdentifier,omitempty"`
+	AssociationStatus        *PolicyAssociationAssociationStatus `json:"AssociationStatus,omitempty"`
+	AssociationStatusMessage *string                             `json:"AssociationStatusMessage,omitempty"`
+	AssociationType          *PolicyAssociationAssociationType   `json:"AssociationType,omitempty"`
+	ConfigurationPolicyId    *string                             `json:"ConfigurationPolicyId,omitempty"`
+	TargetId                 *string                             `json:"TargetId,omitempty"`
+	TargetType               *PolicyAssociationTargetType        `json:"TargetType,omitempty"`
+	UpdatedAt                *string                             `json:"UpdatedAt,omitempty"`
 }
 
 func (PolicyAssociation) CloudControlType() string { return "AWS::SecurityHub::PolicyAssociation" }
@@ -595,8 +595,8 @@ type SecurityControlParameterValue struct {
 }
 
 type SecurityControlParameterConfiguration struct {
-	Value     *SecurityControlParameterValue `json:"Value,omitempty"`
-	ValueType *string                        `json:"ValueType,omitempty"`
+	Value     *SecurityControlParameterValue                  `json:"Value,omitempty"`
+	ValueType *SecurityControlParameterConfigurationValueType `json:"ValueType,omitempty"`
 }
 
 type SecurityControl struct {
@@ -620,3 +620,293 @@ type Standard struct {
 }
 
 func (Standard) CloudControlType() string { return "AWS::SecurityHub::Standard" }
+
+type AggregatorV2RegionLinkingMode string
+
+const (
+	AggregatorV2RegionLinkingModeSPECIFIEDREGIONS AggregatorV2RegionLinkingMode = "SPECIFIED_REGIONS"
+)
+
+type SeverityUpdateLabel string
+
+const (
+	SeverityUpdateLabelINFORMATIONAL SeverityUpdateLabel = "INFORMATIONAL"
+	SeverityUpdateLabelLOW           SeverityUpdateLabel = "LOW"
+	SeverityUpdateLabelMEDIUM        SeverityUpdateLabel = "MEDIUM"
+	SeverityUpdateLabelHIGH          SeverityUpdateLabel = "HIGH"
+	SeverityUpdateLabelCRITICAL      SeverityUpdateLabel = "CRITICAL"
+)
+
+type AutomationRulesFindingFieldsUpdateVerificationState string
+
+const (
+	AutomationRulesFindingFieldsUpdateVerificationStateUNKNOWN        AutomationRulesFindingFieldsUpdateVerificationState = "UNKNOWN"
+	AutomationRulesFindingFieldsUpdateVerificationStateTRUEPOSITIVE   AutomationRulesFindingFieldsUpdateVerificationState = "TRUE_POSITIVE"
+	AutomationRulesFindingFieldsUpdateVerificationStateFALSEPOSITIVE  AutomationRulesFindingFieldsUpdateVerificationState = "FALSE_POSITIVE"
+	AutomationRulesFindingFieldsUpdateVerificationStateBENIGNPOSITIVE AutomationRulesFindingFieldsUpdateVerificationState = "BENIGN_POSITIVE"
+)
+
+type WorkflowUpdateStatus string
+
+const (
+	WorkflowUpdateStatusNEW        WorkflowUpdateStatus = "NEW"
+	WorkflowUpdateStatusNOTIFIED   WorkflowUpdateStatus = "NOTIFIED"
+	WorkflowUpdateStatusRESOLVED   WorkflowUpdateStatus = "RESOLVED"
+	WorkflowUpdateStatusSUPPRESSED WorkflowUpdateStatus = "SUPPRESSED"
+)
+
+type AutomationRulesActionType string
+
+const (
+	AutomationRulesActionTypeFINDINGFIELDSUPDATE AutomationRulesActionType = "FINDING_FIELDS_UPDATE"
+)
+
+type StringFilterComparison string
+
+const (
+	StringFilterComparisonEQUALS          StringFilterComparison = "EQUALS"
+	StringFilterComparisonPREFIX          StringFilterComparison = "PREFIX"
+	StringFilterComparisonNOTEQUALS       StringFilterComparison = "NOT_EQUALS"
+	StringFilterComparisonPREFIXNOTEQUALS StringFilterComparison = "PREFIX_NOT_EQUALS"
+	StringFilterComparisonCONTAINS        StringFilterComparison = "CONTAINS"
+	StringFilterComparisonNOTCONTAINS     StringFilterComparison = "NOT_CONTAINS"
+)
+
+type DateRangeUnit string
+
+const (
+	DateRangeUnitDAYS DateRangeUnit = "DAYS"
+)
+
+type MapFilterComparison string
+
+const (
+	MapFilterComparisonEQUALS      MapFilterComparison = "EQUALS"
+	MapFilterComparisonNOTEQUALS   MapFilterComparison = "NOT_EQUALS"
+	MapFilterComparisonCONTAINS    MapFilterComparison = "CONTAINS"
+	MapFilterComparisonNOTCONTAINS MapFilterComparison = "NOT_CONTAINS"
+)
+
+type AutomationRuleRuleStatus string
+
+const (
+	AutomationRuleRuleStatusENABLED  AutomationRuleRuleStatus = "ENABLED"
+	AutomationRuleRuleStatusDISABLED AutomationRuleRuleStatus = "DISABLED"
+)
+
+type AutomationRulesActionV2Type string
+
+const (
+	AutomationRulesActionV2TypeFINDINGFIELDSUPDATE AutomationRulesActionV2Type = "FINDING_FIELDS_UPDATE"
+	AutomationRulesActionV2TypeEXTERNALINTEGRATION AutomationRulesActionV2Type = "EXTERNAL_INTEGRATION"
+)
+
+type OcsfBooleanFilterFieldName string
+
+const (
+	OcsfBooleanFilterFieldNameComplianceAssessmentsMeetsCriteria OcsfBooleanFilterFieldName = "compliance.assessments.meets_criteria"
+	OcsfBooleanFilterFieldNameVulnerabilitiesIsExploitAvailable  OcsfBooleanFilterFieldName = "vulnerabilities.is_exploit_available"
+	OcsfBooleanFilterFieldNameVulnerabilitiesIsFixAvailable      OcsfBooleanFilterFieldName = "vulnerabilities.is_fix_available"
+)
+
+type OcsfDateFilterFieldName string
+
+const (
+	OcsfDateFilterFieldNameFindingInfoCreatedTimeDt   OcsfDateFilterFieldName = "finding_info.created_time_dt"
+	OcsfDateFilterFieldNameFindingInfoFirstSeenTimeDt OcsfDateFilterFieldName = "finding_info.first_seen_time_dt"
+	OcsfDateFilterFieldNameFindingInfoLastSeenTimeDt  OcsfDateFilterFieldName = "finding_info.last_seen_time_dt"
+	OcsfDateFilterFieldNameFindingInfoModifiedTimeDt  OcsfDateFilterFieldName = "finding_info.modified_time_dt"
+)
+
+type AutomationRuleV2DateRangeUnit string
+
+const (
+	AutomationRuleV2DateRangeUnitDAYS AutomationRuleV2DateRangeUnit = "DAYS"
+)
+
+type OcsfMapFilterFieldName string
+
+const (
+	OcsfMapFilterFieldNameResourcesTags OcsfMapFilterFieldName = "resources.tags"
+)
+
+type AutomationRuleV2MapFilterComparison string
+
+const (
+	AutomationRuleV2MapFilterComparisonEQUALS    AutomationRuleV2MapFilterComparison = "EQUALS"
+	AutomationRuleV2MapFilterComparisonNOTEQUALS AutomationRuleV2MapFilterComparison = "NOT_EQUALS"
+)
+
+type OcsfNumberFilterFieldName string
+
+const (
+	OcsfNumberFilterFieldNameActivityId                    OcsfNumberFilterFieldName = "activity_id"
+	OcsfNumberFilterFieldNameComplianceStatusId            OcsfNumberFilterFieldName = "compliance.status_id"
+	OcsfNumberFilterFieldNameConfidenceScore               OcsfNumberFilterFieldName = "confidence_score"
+	OcsfNumberFilterFieldNameFindingInfoRelatedEventsCount OcsfNumberFilterFieldName = "finding_info.related_events_count"
+	OcsfNumberFilterFieldNameVendorAttributesSeverityId    OcsfNumberFilterFieldName = "vendor_attributes.severity_id"
+)
+
+type AllowedOperators string
+
+const (
+	AllowedOperatorsAND AllowedOperators = "AND"
+	AllowedOperatorsOR  AllowedOperators = "OR"
+)
+
+type OcsfStringField string
+
+const (
+	OcsfStringFieldActivityName                       OcsfStringField = "activity_name"
+	OcsfStringFieldCloudAccountName                   OcsfStringField = "cloud.account.name"
+	OcsfStringFieldCloudAccountUid                    OcsfStringField = "cloud.account.uid"
+	OcsfStringFieldCloudProvider                      OcsfStringField = "cloud.provider"
+	OcsfStringFieldCloudRegion                        OcsfStringField = "cloud.region"
+	OcsfStringFieldComplianceAssessmentsCategory      OcsfStringField = "compliance.assessments.category"
+	OcsfStringFieldComplianceAssessmentsName          OcsfStringField = "compliance.assessments.name"
+	OcsfStringFieldComplianceControl                  OcsfStringField = "compliance.control"
+	OcsfStringFieldComplianceStatus                   OcsfStringField = "compliance.status"
+	OcsfStringFieldComplianceStandards                OcsfStringField = "compliance.standards"
+	OcsfStringFieldFindingInfoDesc                    OcsfStringField = "finding_info.desc"
+	OcsfStringFieldFindingInfoSrcUrl                  OcsfStringField = "finding_info.src_url"
+	OcsfStringFieldFindingInfoTitle                   OcsfStringField = "finding_info.title"
+	OcsfStringFieldFindingInfoTypes                   OcsfStringField = "finding_info.types"
+	OcsfStringFieldFindingInfoUid                     OcsfStringField = "finding_info.uid"
+	OcsfStringFieldFindingInfoRelatedEventsUid        OcsfStringField = "finding_info.related_events.uid"
+	OcsfStringFieldFindingInfoRelatedEventsProductUid OcsfStringField = "finding_info.related_events.product.uid"
+	OcsfStringFieldFindingInfoRelatedEventsTitle      OcsfStringField = "finding_info.related_events.title"
+	OcsfStringFieldMetadataProductFeatureUid          OcsfStringField = "metadata.product.feature.uid"
+	OcsfStringFieldMetadataProductName                OcsfStringField = "metadata.product.name"
+	OcsfStringFieldMetadataProductUid                 OcsfStringField = "metadata.product.uid"
+	OcsfStringFieldMetadataProductVendorName          OcsfStringField = "metadata.product.vendor_name"
+	OcsfStringFieldRemediationDesc                    OcsfStringField = "remediation.desc"
+	OcsfStringFieldRemediationReferences              OcsfStringField = "remediation.references"
+	OcsfStringFieldResourcesCloudPartition            OcsfStringField = "resources.cloud_partition"
+	OcsfStringFieldResourcesName                      OcsfStringField = "resources.name"
+	OcsfStringFieldResourcesRegion                    OcsfStringField = "resources.region"
+	OcsfStringFieldResourcesType                      OcsfStringField = "resources.type"
+	OcsfStringFieldResourcesUid                       OcsfStringField = "resources.uid"
+	OcsfStringFieldVulnerabilitiesFixCoverage         OcsfStringField = "vulnerabilities.fix_coverage"
+	OcsfStringFieldClassName                          OcsfStringField = "class_name"
+	OcsfStringFieldVendorAttributesSeverity           OcsfStringField = "vendor_attributes.severity"
+)
+
+type AutomationRuleV2StringFilterComparison string
+
+const (
+	AutomationRuleV2StringFilterComparisonEQUALS          AutomationRuleV2StringFilterComparison = "EQUALS"
+	AutomationRuleV2StringFilterComparisonPREFIX          AutomationRuleV2StringFilterComparison = "PREFIX"
+	AutomationRuleV2StringFilterComparisonNOTEQUALS       AutomationRuleV2StringFilterComparison = "NOT_EQUALS"
+	AutomationRuleV2StringFilterComparisonPREFIXNOTEQUALS AutomationRuleV2StringFilterComparison = "PREFIX_NOT_EQUALS"
+	AutomationRuleV2StringFilterComparisonCONTAINS        AutomationRuleV2StringFilterComparison = "CONTAINS"
+)
+
+type AutomationRuleV2RuleStatus string
+
+const (
+	AutomationRuleV2RuleStatusENABLED  AutomationRuleV2RuleStatus = "ENABLED"
+	AutomationRuleV2RuleStatusDISABLED AutomationRuleV2RuleStatus = "DISABLED"
+)
+
+type ParameterConfigurationValueType string
+
+const (
+	ParameterConfigurationValueTypeDEFAULT ParameterConfigurationValueType = "DEFAULT"
+	ParameterConfigurationValueTypeCUSTOM  ParameterConfigurationValueType = "CUSTOM"
+)
+
+type AzureScopeConfigurationScopeType string
+
+const (
+	AzureScopeConfigurationScopeTypeTENANT       AzureScopeConfigurationScopeType = "TENANT"
+	AzureScopeConfigurationScopeTypeSUBSCRIPTION AzureScopeConfigurationScopeType = "SUBSCRIPTION"
+)
+
+type DelegatedAdminStatus string
+
+const (
+	DelegatedAdminStatusENABLED           DelegatedAdminStatus = "ENABLED"
+	DelegatedAdminStatusDISABLEINPROGRESS DelegatedAdminStatus = "DISABLE_IN_PROGRESS"
+)
+
+type FindingAggregatorRegionLinkingMode string
+
+const (
+	FindingAggregatorRegionLinkingModeALLREGIONS                FindingAggregatorRegionLinkingMode = "ALL_REGIONS"
+	FindingAggregatorRegionLinkingModeALLREGIONSEXCEPTSPECIFIED FindingAggregatorRegionLinkingMode = "ALL_REGIONS_EXCEPT_SPECIFIED"
+	FindingAggregatorRegionLinkingModeSPECIFIEDREGIONS          FindingAggregatorRegionLinkingMode = "SPECIFIED_REGIONS"
+)
+
+type InsightStringFilterComparison string
+
+const (
+	InsightStringFilterComparisonEQUALS          InsightStringFilterComparison = "EQUALS"
+	InsightStringFilterComparisonPREFIX          InsightStringFilterComparison = "PREFIX"
+	InsightStringFilterComparisonNOTEQUALS       InsightStringFilterComparison = "NOT_EQUALS"
+	InsightStringFilterComparisonPREFIXNOTEQUALS InsightStringFilterComparison = "PREFIX_NOT_EQUALS"
+)
+
+type InsightDateRangeUnit string
+
+const (
+	InsightDateRangeUnitDAYS InsightDateRangeUnit = "DAYS"
+)
+
+type InsightMapFilterComparison string
+
+const (
+	InsightMapFilterComparisonEQUALS    InsightMapFilterComparison = "EQUALS"
+	InsightMapFilterComparisonNOTEQUALS InsightMapFilterComparison = "NOT_EQUALS"
+)
+
+type OrganizationConfigurationAutoEnableStandards string
+
+const (
+	OrganizationConfigurationAutoEnableStandardsDEFAULT OrganizationConfigurationAutoEnableStandards = "DEFAULT"
+	OrganizationConfigurationAutoEnableStandardsNONE    OrganizationConfigurationAutoEnableStandards = "NONE"
+)
+
+type OrganizationConfigurationConfigurationType string
+
+const (
+	OrganizationConfigurationConfigurationTypeCENTRAL OrganizationConfigurationConfigurationType = "CENTRAL"
+	OrganizationConfigurationConfigurationTypeLOCAL   OrganizationConfigurationConfigurationType = "LOCAL"
+)
+
+type OrganizationConfigurationStatus string
+
+const (
+	OrganizationConfigurationStatusPENDING OrganizationConfigurationStatus = "PENDING"
+	OrganizationConfigurationStatusENABLED OrganizationConfigurationStatus = "ENABLED"
+	OrganizationConfigurationStatusFAILED  OrganizationConfigurationStatus = "FAILED"
+)
+
+type PolicyAssociationAssociationStatus string
+
+const (
+	PolicyAssociationAssociationStatusSUCCESS PolicyAssociationAssociationStatus = "SUCCESS"
+	PolicyAssociationAssociationStatusPENDING PolicyAssociationAssociationStatus = "PENDING"
+	PolicyAssociationAssociationStatusFAILED  PolicyAssociationAssociationStatus = "FAILED"
+)
+
+type PolicyAssociationAssociationType string
+
+const (
+	PolicyAssociationAssociationTypeAPPLIED   PolicyAssociationAssociationType = "APPLIED"
+	PolicyAssociationAssociationTypeINHERITED PolicyAssociationAssociationType = "INHERITED"
+)
+
+type PolicyAssociationTargetType string
+
+const (
+	PolicyAssociationTargetTypeACCOUNT            PolicyAssociationTargetType = "ACCOUNT"
+	PolicyAssociationTargetTypeORGANIZATIONALUNIT PolicyAssociationTargetType = "ORGANIZATIONAL_UNIT"
+	PolicyAssociationTargetTypeROOT               PolicyAssociationTargetType = "ROOT"
+)
+
+type SecurityControlParameterConfigurationValueType string
+
+const (
+	SecurityControlParameterConfigurationValueTypeDEFAULT SecurityControlParameterConfigurationValueType = "DEFAULT"
+	SecurityControlParameterConfigurationValueTypeCUSTOM  SecurityControlParameterConfigurationValueType = "CUSTOM"
+)

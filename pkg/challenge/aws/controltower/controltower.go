@@ -51,15 +51,36 @@ type LandingZoneTag struct {
 }
 
 type LandingZone struct {
-	Arn                    *string          `json:"Arn,omitempty"`
-	DriftStatus            *string          `json:"DriftStatus,omitempty"`
-	LandingZoneIdentifier  *string          `json:"LandingZoneIdentifier,omitempty"`
-	LatestAvailableVersion *string          `json:"LatestAvailableVersion,omitempty"`
-	Manifest               json.RawMessage  `json:"Manifest,omitempty"`
-	RemediationTypes       []string         `json:"RemediationTypes,omitempty"`
-	Status                 *string          `json:"Status,omitempty"`
-	Tags                   []LandingZoneTag `json:"Tags,omitempty"`
-	Version                *string          `json:"Version,omitempty"`
+	Arn                    *string                 `json:"Arn,omitempty"`
+	DriftStatus            *LandingZoneDriftStatus `json:"DriftStatus,omitempty"`
+	LandingZoneIdentifier  *string                 `json:"LandingZoneIdentifier,omitempty"`
+	LatestAvailableVersion *string                 `json:"LatestAvailableVersion,omitempty"`
+	Manifest               json.RawMessage         `json:"Manifest,omitempty"`
+	RemediationTypes       []RemediationTypesItem  `json:"RemediationTypes,omitempty"`
+	Status                 *LandingZoneStatus      `json:"Status,omitempty"`
+	Tags                   []LandingZoneTag        `json:"Tags,omitempty"`
+	Version                *string                 `json:"Version,omitempty"`
 }
 
 func (LandingZone) CloudControlType() string { return "AWS::ControlTower::LandingZone" }
+
+type LandingZoneDriftStatus string
+
+const (
+	LandingZoneDriftStatusDRIFTED LandingZoneDriftStatus = "DRIFTED"
+	LandingZoneDriftStatusINSYNC  LandingZoneDriftStatus = "IN_SYNC"
+)
+
+type RemediationTypesItem string
+
+const (
+	RemediationTypesItemINHERITANCEDRIFT RemediationTypesItem = "INHERITANCE_DRIFT"
+)
+
+type LandingZoneStatus string
+
+const (
+	LandingZoneStatusACTIVE     LandingZoneStatus = "ACTIVE"
+	LandingZoneStatusPROCESSING LandingZoneStatus = "PROCESSING"
+	LandingZoneStatusFAILED     LandingZoneStatus = "FAILED"
+)

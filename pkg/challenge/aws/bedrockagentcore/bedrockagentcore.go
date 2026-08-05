@@ -20,16 +20,16 @@ type Tag struct {
 }
 
 type ApiKeyCredentialProvider struct {
-	ApiKey                *string          `json:"ApiKey,omitempty"`
-	ApiKeySecretArn       *ApiKeySecretArn `json:"ApiKeySecretArn,omitempty"`
-	ApiKeySecretConfig    *SecretReference `json:"ApiKeySecretConfig,omitempty"`
-	ApiKeySecretJsonKey   *string          `json:"ApiKeySecretJsonKey,omitempty"`
-	ApiKeySecretSource    *string          `json:"ApiKeySecretSource,omitempty"`
-	CreatedTime           *string          `json:"CreatedTime,omitempty"`
-	CredentialProviderArn *string          `json:"CredentialProviderArn,omitempty"`
-	LastUpdatedTime       *string          `json:"LastUpdatedTime,omitempty"`
-	Name                  *string          `json:"Name,omitempty"`
-	Tags                  []Tag            `json:"Tags,omitempty"`
+	ApiKey                *string                                     `json:"ApiKey,omitempty"`
+	ApiKeySecretArn       *ApiKeySecretArn                            `json:"ApiKeySecretArn,omitempty"`
+	ApiKeySecretConfig    *SecretReference                            `json:"ApiKeySecretConfig,omitempty"`
+	ApiKeySecretJsonKey   *string                                     `json:"ApiKeySecretJsonKey,omitempty"`
+	ApiKeySecretSource    *ApiKeyCredentialProviderApiKeySecretSource `json:"ApiKeySecretSource,omitempty"`
+	CreatedTime           *string                                     `json:"CreatedTime,omitempty"`
+	CredentialProviderArn *string                                     `json:"CredentialProviderArn,omitempty"`
+	LastUpdatedTime       *string                                     `json:"LastUpdatedTime,omitempty"`
+	Name                  *string                                     `json:"Name,omitempty"`
+	Tags                  []Tag                                       `json:"Tags,omitempty"`
 }
 
 func (ApiKeyCredentialProvider) CloudControlType() string {
@@ -54,8 +54,8 @@ type S3Location struct {
 }
 
 type BrowserEnterprisePolicy struct {
-	Location *S3Location `json:"Location,omitempty"`
-	Type     *string     `json:"Type,omitempty"`
+	Location *S3Location                  `json:"Location,omitempty"`
+	Type     *BrowserEnterprisePolicyType `json:"Type,omitempty"`
 }
 
 type VpcConfig struct {
@@ -64,8 +64,8 @@ type VpcConfig struct {
 }
 
 type BrowserNetworkConfiguration struct {
-	NetworkMode *string    `json:"NetworkMode,omitempty"`
-	VpcConfig   *VpcConfig `json:"VpcConfig,omitempty"`
+	NetworkMode *BrowserNetworkMode `json:"NetworkMode,omitempty"`
+	VpcConfig   *VpcConfig          `json:"VpcConfig,omitempty"`
 }
 
 type RecordingConfig struct {
@@ -87,24 +87,24 @@ type BrowserCustom struct {
 	Name                 *string                      `json:"Name,omitempty"`
 	NetworkConfiguration *BrowserNetworkConfiguration `json:"NetworkConfiguration,omitempty"`
 	RecordingConfig      *RecordingConfig             `json:"RecordingConfig,omitempty"`
-	Status               *string                      `json:"Status,omitempty"`
+	Status               *BrowserStatus               `json:"Status,omitempty"`
 	Tags                 map[string]string            `json:"Tags,omitempty"`
 }
 
 func (BrowserCustom) CloudControlType() string { return "AWS::BedrockAgentCore::BrowserCustom" }
 
 type BrowserProfile struct {
-	CreatedAt                 *string           `json:"CreatedAt,omitempty"`
-	Description               *string           `json:"Description,omitempty"`
-	LastSavedAt               *string           `json:"LastSavedAt,omitempty"`
-	LastSavedBrowserId        *string           `json:"LastSavedBrowserId,omitempty"`
-	LastSavedBrowserSessionId *string           `json:"LastSavedBrowserSessionId,omitempty"`
-	LastUpdatedAt             *string           `json:"LastUpdatedAt,omitempty"`
-	Name                      *string           `json:"Name,omitempty"`
-	ProfileArn                *string           `json:"ProfileArn,omitempty"`
-	ProfileId                 *string           `json:"ProfileId,omitempty"`
-	Status                    *string           `json:"Status,omitempty"`
-	Tags                      map[string]string `json:"Tags,omitempty"`
+	CreatedAt                 *string               `json:"CreatedAt,omitempty"`
+	Description               *string               `json:"Description,omitempty"`
+	LastSavedAt               *string               `json:"LastSavedAt,omitempty"`
+	LastSavedBrowserId        *string               `json:"LastSavedBrowserId,omitempty"`
+	LastSavedBrowserSessionId *string               `json:"LastSavedBrowserSessionId,omitempty"`
+	LastUpdatedAt             *string               `json:"LastUpdatedAt,omitempty"`
+	Name                      *string               `json:"Name,omitempty"`
+	ProfileArn                *string               `json:"ProfileArn,omitempty"`
+	ProfileId                 *string               `json:"ProfileId,omitempty"`
+	Status                    *BrowserProfileStatus `json:"Status,omitempty"`
+	Tags                      map[string]string     `json:"Tags,omitempty"`
 }
 
 func (BrowserProfile) CloudControlType() string { return "AWS::BedrockAgentCore::BrowserProfile" }
@@ -123,7 +123,7 @@ type CodeInterpreterCustomVpcConfig struct {
 }
 
 type CodeInterpreterNetworkConfiguration struct {
-	NetworkMode *string                         `json:"NetworkMode,omitempty"`
+	NetworkMode *CodeInterpreterNetworkMode     `json:"NetworkMode,omitempty"`
 	VpcConfig   *CodeInterpreterCustomVpcConfig `json:"VpcConfig,omitempty"`
 }
 
@@ -138,7 +138,7 @@ type CodeInterpreterCustom struct {
 	LastUpdatedAt        *string                              `json:"LastUpdatedAt,omitempty"`
 	Name                 *string                              `json:"Name,omitempty"`
 	NetworkConfiguration *CodeInterpreterNetworkConfiguration `json:"NetworkConfiguration,omitempty"`
-	Status               *string                              `json:"Status,omitempty"`
+	Status               *CodeInterpreterStatus               `json:"Status,omitempty"`
 	Tags                 map[string]string                    `json:"Tags,omitempty"`
 }
 
@@ -207,18 +207,18 @@ type DatasetTag struct {
 }
 
 type Dataset struct {
-	CreatedAt    *string         `json:"CreatedAt,omitempty"`
-	DatasetArn   *string         `json:"DatasetArn,omitempty"`
-	DatasetId    *string         `json:"DatasetId,omitempty"`
-	DatasetName  *string         `json:"DatasetName,omitempty"`
-	Description  *string         `json:"Description,omitempty"`
-	ExampleCount *int            `json:"ExampleCount,omitempty"`
-	KmsKeyArn    *string         `json:"KmsKeyArn,omitempty"`
-	SchemaType   *string         `json:"SchemaType,omitempty"`
-	Source       *DataSourceType `json:"Source,omitempty"`
-	Status       *string         `json:"Status,omitempty"`
-	Tags         []DatasetTag    `json:"Tags,omitempty"`
-	UpdatedAt    *string         `json:"UpdatedAt,omitempty"`
+	CreatedAt    *string            `json:"CreatedAt,omitempty"`
+	DatasetArn   *string            `json:"DatasetArn,omitempty"`
+	DatasetId    *string            `json:"DatasetId,omitempty"`
+	DatasetName  *string            `json:"DatasetName,omitempty"`
+	Description  *string            `json:"Description,omitempty"`
+	ExampleCount *int               `json:"ExampleCount,omitempty"`
+	KmsKeyArn    *string            `json:"KmsKeyArn,omitempty"`
+	SchemaType   *DatasetSchemaType `json:"SchemaType,omitempty"`
+	Source       *DataSourceType    `json:"Source,omitempty"`
+	Status       *DatasetStatus     `json:"Status,omitempty"`
+	Tags         []DatasetTag       `json:"Tags,omitempty"`
+	UpdatedAt    *string            `json:"UpdatedAt,omitempty"`
 }
 
 func (Dataset) CloudControlType() string { return "AWS::BedrockAgentCore::Dataset" }
@@ -288,8 +288,8 @@ type Evaluator struct {
 	EvaluatorId     *string          `json:"EvaluatorId,omitempty"`
 	EvaluatorName   *string          `json:"EvaluatorName,omitempty"`
 	KmsKeyArn       *string          `json:"KmsKeyArn,omitempty"`
-	Level           *string          `json:"Level,omitempty"`
-	Status          *string          `json:"Status,omitempty"`
+	Level           *EvaluatorLevel  `json:"Level,omitempty"`
+	Status          *EvaluatorStatus `json:"Status,omitempty"`
 	Tags            []EvaluatorTag   `json:"Tags,omitempty"`
 	UpdatedAt       *string          `json:"UpdatedAt,omitempty"`
 }
@@ -302,13 +302,13 @@ type InterceptorInputConfiguration struct {
 
 type GatewayInterceptorConfiguration struct {
 	InputConfiguration *InterceptorInputConfiguration `json:"InputConfiguration,omitempty"`
-	InterceptionPoints []string                       `json:"InterceptionPoints,omitempty"`
+	InterceptionPoints []GatewayInterceptionPoint     `json:"InterceptionPoints,omitempty"`
 	Interceptor        json.RawMessage                `json:"Interceptor,omitempty"`
 }
 
 type GatewayPolicyEngineConfiguration struct {
-	Arn  *string `json:"Arn,omitempty"`
-	Mode *string `json:"Mode,omitempty"`
+	Arn  *string                  `json:"Arn,omitempty"`
+	Mode *GatewayPolicyEngineMode `json:"Mode,omitempty"`
 }
 
 type WorkloadIdentityDetails struct {
@@ -317,10 +317,10 @@ type WorkloadIdentityDetails struct {
 
 type Gateway struct {
 	AuthorizerConfiguration   json.RawMessage                   `json:"AuthorizerConfiguration,omitempty"`
-	AuthorizerType            *string                           `json:"AuthorizerType,omitempty"`
+	AuthorizerType            *AuthorizerType                   `json:"AuthorizerType,omitempty"`
 	CreatedAt                 *string                           `json:"CreatedAt,omitempty"`
 	Description               *string                           `json:"Description,omitempty"`
-	ExceptionLevel            *string                           `json:"ExceptionLevel,omitempty"`
+	ExceptionLevel            *ExceptionLevel                   `json:"ExceptionLevel,omitempty"`
 	GatewayArn                *string                           `json:"GatewayArn,omitempty"`
 	GatewayIdentifier         *string                           `json:"GatewayIdentifier,omitempty"`
 	GatewayUrl                *string                           `json:"GatewayUrl,omitempty"`
@@ -331,7 +331,7 @@ type Gateway struct {
 	ProtocolConfiguration     json.RawMessage                   `json:"ProtocolConfiguration,omitempty"`
 	ProtocolType              json.RawMessage                   `json:"ProtocolType,omitempty"`
 	RoleArn                   *string                           `json:"RoleArn,omitempty"`
-	Status                    *string                           `json:"Status,omitempty"`
+	Status                    *GatewayStatus                    `json:"Status,omitempty"`
 	StatusReasons             []string                          `json:"StatusReasons,omitempty"`
 	Tags                      map[string]string                 `json:"Tags,omitempty"`
 	UpdatedAt                 *string                           `json:"UpdatedAt,omitempty"`
@@ -341,8 +341,8 @@ type Gateway struct {
 func (Gateway) CloudControlType() string { return "AWS::BedrockAgentCore::Gateway" }
 
 type CredentialProviderConfiguration struct {
-	CredentialProvider     json.RawMessage `json:"CredentialProvider,omitempty"`
-	CredentialProviderType *string         `json:"CredentialProviderType,omitempty"`
+	CredentialProvider     json.RawMessage         `json:"CredentialProvider,omitempty"`
+	CredentialProviderType *CredentialProviderType `json:"CredentialProviderType,omitempty"`
 }
 
 type MetadataConfiguration struct {
@@ -369,8 +369,8 @@ type GatewayTarget struct {
 	Name                             *string                           `json:"Name,omitempty"`
 	PrivateEndpoint                  json.RawMessage                   `json:"PrivateEndpoint,omitempty"`
 	PrivateEndpointManagedResources  []ManagedResourceDetails          `json:"PrivateEndpointManagedResources,omitempty"`
-	ProtocolType                     *string                           `json:"ProtocolType,omitempty"`
-	Status                           *string                           `json:"Status,omitempty"`
+	ProtocolType                     *TargetProtocolType               `json:"ProtocolType,omitempty"`
+	Status                           *TargetStatus                     `json:"Status,omitempty"`
 	StatusReasons                    []string                          `json:"StatusReasons,omitempty"`
 	TargetConfiguration              json.RawMessage                   `json:"TargetConfiguration,omitempty"`
 	TargetId                         *string                           `json:"TargetId,omitempty"`
@@ -385,23 +385,23 @@ type ClaimMatchValueType struct {
 }
 
 type AuthorizingClaimMatchValueType struct {
-	ClaimMatchOperator *string              `json:"ClaimMatchOperator,omitempty"`
-	ClaimMatchValue    *ClaimMatchValueType `json:"ClaimMatchValue,omitempty"`
+	ClaimMatchOperator *AuthorizingClaimMatchValueTypeClaimMatchOperator `json:"ClaimMatchOperator,omitempty"`
+	ClaimMatchValue    *ClaimMatchValueType                              `json:"ClaimMatchValue,omitempty"`
 }
 
 type CustomClaimValidationType struct {
-	AuthorizingClaimMatchValue *AuthorizingClaimMatchValueType `json:"AuthorizingClaimMatchValue,omitempty"`
-	InboundTokenClaimName      *string                         `json:"InboundTokenClaimName,omitempty"`
-	InboundTokenClaimValueType *string                         `json:"InboundTokenClaimValueType,omitempty"`
+	AuthorizingClaimMatchValue *AuthorizingClaimMatchValueType                      `json:"AuthorizingClaimMatchValue,omitempty"`
+	InboundTokenClaimName      *string                                              `json:"InboundTokenClaimName,omitempty"`
+	InboundTokenClaimValueType *CustomClaimValidationTypeInboundTokenClaimValueType `json:"InboundTokenClaimValueType,omitempty"`
 }
 
 type ManagedVpcResource struct {
-	EndpointIpAddressType *string           `json:"EndpointIpAddressType,omitempty"`
-	RoutingDomain         *string           `json:"RoutingDomain,omitempty"`
-	SecurityGroupIds      []string          `json:"SecurityGroupIds,omitempty"`
-	SubnetIds             []string          `json:"SubnetIds,omitempty"`
-	Tags                  map[string]string `json:"Tags,omitempty"`
-	VpcIdentifier         *string           `json:"VpcIdentifier,omitempty"`
+	EndpointIpAddressType *ManagedVpcResourceEndpointIpAddressType `json:"EndpointIpAddressType,omitempty"`
+	RoutingDomain         *string                                  `json:"RoutingDomain,omitempty"`
+	SecurityGroupIds      []string                                 `json:"SecurityGroupIds,omitempty"`
+	SubnetIds             []string                                 `json:"SubnetIds,omitempty"`
+	Tags                  map[string]string                        `json:"Tags,omitempty"`
+	VpcIdentifier         *string                                  `json:"VpcIdentifier,omitempty"`
 }
 
 type SelfManagedLatticeResource struct {
@@ -463,8 +463,8 @@ type HarnessVpcConfig struct {
 }
 
 type NetworkConfiguration struct {
-	NetworkMode       *string           `json:"NetworkMode,omitempty"`
-	NetworkModeConfig *HarnessVpcConfig `json:"NetworkModeConfig,omitempty"`
+	NetworkMode       *NetworkConfigurationNetworkMode `json:"NetworkMode,omitempty"`
+	NetworkModeConfig *HarnessVpcConfig                `json:"NetworkModeConfig,omitempty"`
 }
 
 type HarnessAgentCoreRuntimeEnvironment struct {
@@ -502,10 +502,10 @@ type HarnessAgentCoreMemoryConfiguration struct {
 }
 
 type HarnessManagedMemoryConfiguration struct {
-	Arn                 *string  `json:"Arn,omitempty"`
-	EncryptionKeyArn    *string  `json:"EncryptionKeyArn,omitempty"`
-	EventExpiryDuration *int     `json:"EventExpiryDuration,omitempty"`
-	Strategies          []string `json:"Strategies,omitempty"`
+	Arn                 *string                                           `json:"Arn,omitempty"`
+	EncryptionKeyArn    *string                                           `json:"EncryptionKeyArn,omitempty"`
+	EventExpiryDuration *int                                              `json:"EventExpiryDuration,omitempty"`
+	Strategies          []HarnessManagedMemoryConfigurationStrategiesItem `json:"Strategies,omitempty"`
 }
 
 type HarnessMemoryConfiguration struct {
@@ -515,12 +515,12 @@ type HarnessMemoryConfiguration struct {
 }
 
 type HarnessBedrockModelConfig struct {
-	AdditionalParams map[string]json.RawMessage `json:"AdditionalParams,omitempty"`
-	ApiFormat        *string                    `json:"ApiFormat,omitempty"`
-	MaxTokens        *int                       `json:"MaxTokens,omitempty"`
-	ModelId          *string                    `json:"ModelId,omitempty"`
-	Temperature      *float64                   `json:"Temperature,omitempty"`
-	TopP             *float64                   `json:"TopP,omitempty"`
+	AdditionalParams map[string]json.RawMessage          `json:"AdditionalParams,omitempty"`
+	ApiFormat        *HarnessBedrockModelConfigApiFormat `json:"ApiFormat,omitempty"`
+	MaxTokens        *int                                `json:"MaxTokens,omitempty"`
+	ModelId          *string                             `json:"ModelId,omitempty"`
+	Temperature      *float64                            `json:"Temperature,omitempty"`
+	TopP             *float64                            `json:"TopP,omitempty"`
 }
 
 type HarnessGeminiModelConfig struct {
@@ -543,13 +543,13 @@ type HarnessLiteLlmModelConfig struct {
 }
 
 type HarnessOpenAiModelConfig struct {
-	AdditionalParams map[string]json.RawMessage `json:"AdditionalParams,omitempty"`
-	ApiFormat        *string                    `json:"ApiFormat,omitempty"`
-	ApiKeyArn        *string                    `json:"ApiKeyArn,omitempty"`
-	MaxTokens        *int                       `json:"MaxTokens,omitempty"`
-	ModelId          *string                    `json:"ModelId,omitempty"`
-	Temperature      *float64                   `json:"Temperature,omitempty"`
-	TopP             *float64                   `json:"TopP,omitempty"`
+	AdditionalParams map[string]json.RawMessage         `json:"AdditionalParams,omitempty"`
+	ApiFormat        *HarnessOpenAiModelConfigApiFormat `json:"ApiFormat,omitempty"`
+	ApiKeyArn        *string                            `json:"ApiKeyArn,omitempty"`
+	MaxTokens        *int                               `json:"MaxTokens,omitempty"`
+	ModelId          *string                            `json:"ModelId,omitempty"`
+	Temperature      *float64                           `json:"Temperature,omitempty"`
+	TopP             *float64                           `json:"TopP,omitempty"`
 }
 
 type HarnessModelConfiguration struct {
@@ -603,11 +603,11 @@ type HarnessAgentCoreCodeInterpreterConfig struct {
 }
 
 type OAuthCredentialProvider struct {
-	CustomParameters map[string]string `json:"CustomParameters,omitempty"`
-	DefaultReturnUrl *string           `json:"DefaultReturnUrl,omitempty"`
-	GrantType        *string           `json:"GrantType,omitempty"`
-	ProviderArn      *string           `json:"ProviderArn,omitempty"`
-	Scopes           []string          `json:"Scopes,omitempty"`
+	CustomParameters map[string]string                 `json:"CustomParameters,omitempty"`
+	DefaultReturnUrl *string                           `json:"DefaultReturnUrl,omitempty"`
+	GrantType        *OAuthCredentialProviderGrantType `json:"GrantType,omitempty"`
+	ProviderArn      *string                           `json:"ProviderArn,omitempty"`
+	Scopes           []string                          `json:"Scopes,omitempty"`
 }
 
 type HarnessGatewayOutboundAuth struct {
@@ -642,7 +642,7 @@ type HarnessToolConfiguration struct {
 type HarnessTool struct {
 	Config *HarnessToolConfiguration `json:"Config,omitempty"`
 	Name   *string                   `json:"Name,omitempty"`
-	Type   *string                   `json:"Type,omitempty"`
+	Type   *HarnessToolType          `json:"Type,omitempty"`
 }
 
 type HarnessSlidingWindowConfiguration struct {
@@ -662,7 +662,7 @@ type HarnessTruncationStrategyConfiguration struct {
 
 type HarnessTruncationConfiguration struct {
 	Config   *HarnessTruncationStrategyConfiguration `json:"Config,omitempty"`
-	Strategy *string                                 `json:"Strategy,omitempty"`
+	Strategy *HarnessTruncationConfigurationStrategy `json:"Strategy,omitempty"`
 }
 
 type Harness struct {
@@ -681,7 +681,7 @@ type Harness struct {
 	Memory                  *HarnessMemoryConfiguration     `json:"Memory,omitempty"`
 	Model                   *HarnessModelConfiguration      `json:"Model,omitempty"`
 	Skills                  []HarnessSkill                  `json:"Skills,omitempty"`
-	Status                  *string                         `json:"Status,omitempty"`
+	Status                  *HarnessStatus                  `json:"Status,omitempty"`
 	SystemPrompt            []HarnessSystemContentBlock     `json:"SystemPrompt,omitempty"`
 	Tags                    []HarnessTag                    `json:"Tags,omitempty"`
 	TimeoutSeconds          *int                            `json:"TimeoutSeconds,omitempty"`
@@ -699,24 +699,24 @@ type HarnessEndpointTag struct {
 }
 
 type HarnessEndpoint struct {
-	Arn           *string              `json:"Arn,omitempty"`
-	CreatedAt     *string              `json:"CreatedAt,omitempty"`
-	Description   *string              `json:"Description,omitempty"`
-	EndpointName  *string              `json:"EndpointName,omitempty"`
-	HarnessId     *string              `json:"HarnessId,omitempty"`
-	HarnessName   *string              `json:"HarnessName,omitempty"`
-	LiveVersion   *string              `json:"LiveVersion,omitempty"`
-	Status        *string              `json:"Status,omitempty"`
-	Tags          []HarnessEndpointTag `json:"Tags,omitempty"`
-	TargetVersion *string              `json:"TargetVersion,omitempty"`
-	UpdatedAt     *string              `json:"UpdatedAt,omitempty"`
+	Arn           *string                `json:"Arn,omitempty"`
+	CreatedAt     *string                `json:"CreatedAt,omitempty"`
+	Description   *string                `json:"Description,omitempty"`
+	EndpointName  *string                `json:"EndpointName,omitempty"`
+	HarnessId     *string                `json:"HarnessId,omitempty"`
+	HarnessName   *string                `json:"HarnessName,omitempty"`
+	LiveVersion   *string                `json:"LiveVersion,omitempty"`
+	Status        *HarnessEndpointStatus `json:"Status,omitempty"`
+	Tags          []HarnessEndpointTag   `json:"Tags,omitempty"`
+	TargetVersion *string                `json:"TargetVersion,omitempty"`
+	UpdatedAt     *string                `json:"UpdatedAt,omitempty"`
 }
 
 func (HarnessEndpoint) CloudControlType() string { return "AWS::BedrockAgentCore::HarnessEndpoint" }
 
 type IndexedKey struct {
-	Key  *string `json:"Key,omitempty"`
-	Type *string `json:"Type,omitempty"`
+	Key  *string            `json:"Key,omitempty"`
+	Type *MetadataValueType `json:"Type,omitempty"`
 }
 
 type EpisodicOverrideConsolidationConfigurationInput struct {
@@ -760,9 +760,9 @@ type ExtractionConfig struct {
 }
 
 type MetadataSchemaEntry struct {
-	ExtractionConfig *ExtractionConfig `json:"ExtractionConfig,omitempty"`
-	Key              *string           `json:"Key,omitempty"`
-	Type             *string           `json:"Type,omitempty"`
+	ExtractionConfig *ExtractionConfig  `json:"ExtractionConfig,omitempty"`
+	Key              *string            `json:"Key,omitempty"`
+	Type             *MetadataValueType `json:"Type,omitempty"`
 }
 
 type MemoryRecordSchema struct {
@@ -860,17 +860,17 @@ type CustomConfigurationInput struct {
 }
 
 type CustomMemoryStrategy struct {
-	Configuration      *CustomConfigurationInput `json:"Configuration,omitempty"`
-	CreatedAt          *string                   `json:"CreatedAt,omitempty"`
-	Description        *string                   `json:"Description,omitempty"`
-	MemoryRecordSchema *MemoryRecordSchema       `json:"MemoryRecordSchema,omitempty"`
-	Name               *string                   `json:"Name,omitempty"`
-	NamespaceTemplates []string                  `json:"NamespaceTemplates,omitempty"`
-	Namespaces         []string                  `json:"Namespaces,omitempty"`
-	Status             *string                   `json:"Status,omitempty"`
-	StrategyId         *string                   `json:"StrategyId,omitempty"`
-	Type               *string                   `json:"Type,omitempty"`
-	UpdatedAt          *string                   `json:"UpdatedAt,omitempty"`
+	Configuration      *CustomConfigurationInput   `json:"Configuration,omitempty"`
+	CreatedAt          *string                     `json:"CreatedAt,omitempty"`
+	Description        *string                     `json:"Description,omitempty"`
+	MemoryRecordSchema *MemoryRecordSchema         `json:"MemoryRecordSchema,omitempty"`
+	Name               *string                     `json:"Name,omitempty"`
+	NamespaceTemplates []string                    `json:"NamespaceTemplates,omitempty"`
+	Namespaces         []string                    `json:"Namespaces,omitempty"`
+	Status             *CustomMemoryStrategyStatus `json:"Status,omitempty"`
+	StrategyId         *string                     `json:"StrategyId,omitempty"`
+	Type               *CustomMemoryStrategyType   `json:"Type,omitempty"`
+	UpdatedAt          *string                     `json:"UpdatedAt,omitempty"`
 }
 
 type EpisodicReflectionConfigurationInput struct {
@@ -887,49 +887,49 @@ type EpisodicMemoryStrategy struct {
 	NamespaceTemplates      []string                              `json:"NamespaceTemplates,omitempty"`
 	Namespaces              []string                              `json:"Namespaces,omitempty"`
 	ReflectionConfiguration *EpisodicReflectionConfigurationInput `json:"ReflectionConfiguration,omitempty"`
-	Status                  *string                               `json:"Status,omitempty"`
+	Status                  *EpisodicMemoryStrategyStatus         `json:"Status,omitempty"`
 	StrategyId              *string                               `json:"StrategyId,omitempty"`
-	Type                    *string                               `json:"Type,omitempty"`
+	Type                    *EpisodicMemoryStrategyType           `json:"Type,omitempty"`
 	UpdatedAt               *string                               `json:"UpdatedAt,omitempty"`
 }
 
 type SemanticMemoryStrategy struct {
-	CreatedAt          *string             `json:"CreatedAt,omitempty"`
-	Description        *string             `json:"Description,omitempty"`
-	MemoryRecordSchema *MemoryRecordSchema `json:"MemoryRecordSchema,omitempty"`
-	Name               *string             `json:"Name,omitempty"`
-	NamespaceTemplates []string            `json:"NamespaceTemplates,omitempty"`
-	Namespaces         []string            `json:"Namespaces,omitempty"`
-	Status             *string             `json:"Status,omitempty"`
-	StrategyId         *string             `json:"StrategyId,omitempty"`
-	Type               *string             `json:"Type,omitempty"`
-	UpdatedAt          *string             `json:"UpdatedAt,omitempty"`
+	CreatedAt          *string                       `json:"CreatedAt,omitempty"`
+	Description        *string                       `json:"Description,omitempty"`
+	MemoryRecordSchema *MemoryRecordSchema           `json:"MemoryRecordSchema,omitempty"`
+	Name               *string                       `json:"Name,omitempty"`
+	NamespaceTemplates []string                      `json:"NamespaceTemplates,omitempty"`
+	Namespaces         []string                      `json:"Namespaces,omitempty"`
+	Status             *SemanticMemoryStrategyStatus `json:"Status,omitempty"`
+	StrategyId         *string                       `json:"StrategyId,omitempty"`
+	Type               *SemanticMemoryStrategyType   `json:"Type,omitempty"`
+	UpdatedAt          *string                       `json:"UpdatedAt,omitempty"`
 }
 
 type SummaryMemoryStrategy struct {
-	CreatedAt          *string             `json:"CreatedAt,omitempty"`
-	Description        *string             `json:"Description,omitempty"`
-	MemoryRecordSchema *MemoryRecordSchema `json:"MemoryRecordSchema,omitempty"`
-	Name               *string             `json:"Name,omitempty"`
-	NamespaceTemplates []string            `json:"NamespaceTemplates,omitempty"`
-	Namespaces         []string            `json:"Namespaces,omitempty"`
-	Status             *string             `json:"Status,omitempty"`
-	StrategyId         *string             `json:"StrategyId,omitempty"`
-	Type               *string             `json:"Type,omitempty"`
-	UpdatedAt          *string             `json:"UpdatedAt,omitempty"`
+	CreatedAt          *string                      `json:"CreatedAt,omitempty"`
+	Description        *string                      `json:"Description,omitempty"`
+	MemoryRecordSchema *MemoryRecordSchema          `json:"MemoryRecordSchema,omitempty"`
+	Name               *string                      `json:"Name,omitempty"`
+	NamespaceTemplates []string                     `json:"NamespaceTemplates,omitempty"`
+	Namespaces         []string                     `json:"Namespaces,omitempty"`
+	Status             *SummaryMemoryStrategyStatus `json:"Status,omitempty"`
+	StrategyId         *string                      `json:"StrategyId,omitempty"`
+	Type               *SummaryMemoryStrategyType   `json:"Type,omitempty"`
+	UpdatedAt          *string                      `json:"UpdatedAt,omitempty"`
 }
 
 type UserPreferenceMemoryStrategy struct {
-	CreatedAt          *string             `json:"CreatedAt,omitempty"`
-	Description        *string             `json:"Description,omitempty"`
-	MemoryRecordSchema *MemoryRecordSchema `json:"MemoryRecordSchema,omitempty"`
-	Name               *string             `json:"Name,omitempty"`
-	NamespaceTemplates []string            `json:"NamespaceTemplates,omitempty"`
-	Namespaces         []string            `json:"Namespaces,omitempty"`
-	Status             *string             `json:"Status,omitempty"`
-	StrategyId         *string             `json:"StrategyId,omitempty"`
-	Type               *string             `json:"Type,omitempty"`
-	UpdatedAt          *string             `json:"UpdatedAt,omitempty"`
+	CreatedAt          *string                             `json:"CreatedAt,omitempty"`
+	Description        *string                             `json:"Description,omitempty"`
+	MemoryRecordSchema *MemoryRecordSchema                 `json:"MemoryRecordSchema,omitempty"`
+	Name               *string                             `json:"Name,omitempty"`
+	NamespaceTemplates []string                            `json:"NamespaceTemplates,omitempty"`
+	Namespaces         []string                            `json:"Namespaces,omitempty"`
+	Status             *UserPreferenceMemoryStrategyStatus `json:"Status,omitempty"`
+	StrategyId         *string                             `json:"StrategyId,omitempty"`
+	Type               *UserPreferenceMemoryStrategyType   `json:"Type,omitempty"`
+	UpdatedAt          *string                             `json:"UpdatedAt,omitempty"`
 }
 
 type MemoryStrategy struct {
@@ -941,8 +941,8 @@ type MemoryStrategy struct {
 }
 
 type ContentConfiguration struct {
-	Level *string `json:"Level,omitempty"`
-	Type  *string `json:"Type,omitempty"`
+	Level *ContentConfigurationLevel `json:"Level,omitempty"`
+	Type  *ContentConfigurationType  `json:"Type,omitempty"`
 }
 
 type KinesisResource struct {
@@ -970,7 +970,7 @@ type Memory struct {
 	MemoryId                *string                  `json:"MemoryId,omitempty"`
 	MemoryStrategies        []MemoryStrategy         `json:"MemoryStrategies,omitempty"`
 	Name                    *string                  `json:"Name,omitempty"`
-	Status                  *string                  `json:"Status,omitempty"`
+	Status                  *MemoryStatus            `json:"Status,omitempty"`
 	StreamDeliveryResources *StreamDeliveryResources `json:"StreamDeliveryResources,omitempty"`
 	Tags                    map[string]string        `json:"Tags,omitempty"`
 	UpdatedAt               *string                  `json:"UpdatedAt,omitempty"`
@@ -988,10 +988,10 @@ type OAuth2CredentialProviderSecretReference struct {
 }
 
 type AtlassianOauth2ProviderConfigInput struct {
-	ClientId           *string                                  `json:"ClientId,omitempty"`
-	ClientSecret       *string                                  `json:"ClientSecret,omitempty"`
-	ClientSecretConfig *OAuth2CredentialProviderSecretReference `json:"ClientSecretConfig,omitempty"`
-	ClientSecretSource *string                                  `json:"ClientSecretSource,omitempty"`
+	ClientId           *string                                               `json:"ClientId,omitempty"`
+	ClientSecret       *string                                               `json:"ClientSecret,omitempty"`
+	ClientSecretConfig *OAuth2CredentialProviderSecretReference              `json:"ClientSecretConfig,omitempty"`
+	ClientSecretSource *AtlassianOauth2ProviderConfigInputClientSecretSource `json:"ClientSecretSource,omitempty"`
 }
 
 type Oauth2AuthorizationServerMetadata struct {
@@ -1007,22 +1007,22 @@ type Oauth2Discovery struct {
 }
 
 type TokenExchangeGrantTypeConfig struct {
-	ActorTokenContent *string  `json:"ActorTokenContent,omitempty"`
-	ActorTokenScopes  []string `json:"ActorTokenScopes,omitempty"`
+	ActorTokenContent *TokenExchangeGrantTypeConfigActorTokenContent `json:"ActorTokenContent,omitempty"`
+	ActorTokenScopes  []string                                       `json:"ActorTokenScopes,omitempty"`
 }
 
 type OnBehalfOfTokenExchangeConfig struct {
-	GrantType                    *string                       `json:"GrantType,omitempty"`
-	TokenExchangeGrantTypeConfig *TokenExchangeGrantTypeConfig `json:"TokenExchangeGrantTypeConfig,omitempty"`
+	GrantType                    *OnBehalfOfTokenExchangeConfigGrantType `json:"GrantType,omitempty"`
+	TokenExchangeGrantTypeConfig *TokenExchangeGrantTypeConfig           `json:"TokenExchangeGrantTypeConfig,omitempty"`
 }
 
 type OAuth2CredentialProviderManagedVpcResource struct {
-	EndpointIpAddressType *string           `json:"EndpointIpAddressType,omitempty"`
-	RoutingDomain         *string           `json:"RoutingDomain,omitempty"`
-	SecurityGroupIds      []string          `json:"SecurityGroupIds,omitempty"`
-	SubnetIds             []string          `json:"SubnetIds,omitempty"`
-	Tags                  map[string]string `json:"Tags,omitempty"`
-	VpcIdentifier         *string           `json:"VpcIdentifier,omitempty"`
+	EndpointIpAddressType *OAuth2CredentialProviderManagedVpcResourceEndpointIpAddressType `json:"EndpointIpAddressType,omitempty"`
+	RoutingDomain         *string                                                          `json:"RoutingDomain,omitempty"`
+	SecurityGroupIds      []string                                                         `json:"SecurityGroupIds,omitempty"`
+	SubnetIds             []string                                                         `json:"SubnetIds,omitempty"`
+	Tags                  map[string]string                                                `json:"Tags,omitempty"`
+	VpcIdentifier         *string                                                          `json:"VpcIdentifier,omitempty"`
 }
 
 type OAuth2CredentialProviderSelfManagedLatticeResource struct {
@@ -1048,76 +1048,76 @@ type PrivateKeySource struct {
 }
 
 type PrivateKeyJwtConfig struct {
-	AdditionalHeaderClaims  map[string]string `json:"AdditionalHeaderClaims,omitempty"`
-	AdditionalPayloadClaims map[string]string `json:"AdditionalPayloadClaims,omitempty"`
-	PrivateKeySource        *PrivateKeySource `json:"PrivateKeySource,omitempty"`
-	SigningAlgorithm        *string           `json:"SigningAlgorithm,omitempty"`
+	AdditionalHeaderClaims  map[string]string                    `json:"AdditionalHeaderClaims,omitempty"`
+	AdditionalPayloadClaims map[string]string                    `json:"AdditionalPayloadClaims,omitempty"`
+	PrivateKeySource        *PrivateKeySource                    `json:"PrivateKeySource,omitempty"`
+	SigningAlgorithm        *PrivateKeyJwtConfigSigningAlgorithm `json:"SigningAlgorithm,omitempty"`
 }
 
 type CustomOauth2ProviderConfigInput struct {
-	ClientAuthenticationMethod    *string                                           `json:"ClientAuthenticationMethod,omitempty"`
-	ClientId                      *string                                           `json:"ClientId,omitempty"`
-	ClientSecret                  *string                                           `json:"ClientSecret,omitempty"`
-	ClientSecretConfig            *OAuth2CredentialProviderSecretReference          `json:"ClientSecretConfig,omitempty"`
-	ClientSecretSource            *string                                           `json:"ClientSecretSource,omitempty"`
-	OauthDiscovery                *Oauth2Discovery                                  `json:"OauthDiscovery,omitempty"`
-	OnBehalfOfTokenExchangeConfig *OnBehalfOfTokenExchangeConfig                    `json:"OnBehalfOfTokenExchangeConfig,omitempty"`
-	PrivateEndpoint               *OAuth2CredentialProviderPrivateEndpoint          `json:"PrivateEndpoint,omitempty"`
-	PrivateEndpointOverrides      []OAuth2CredentialProviderPrivateEndpointOverride `json:"PrivateEndpointOverrides,omitempty"`
-	PrivateKeyJwtConfig           *PrivateKeyJwtConfig                              `json:"PrivateKeyJwtConfig,omitempty"`
+	ClientAuthenticationMethod    *CustomOauth2ProviderConfigInputClientAuthenticationMethod `json:"ClientAuthenticationMethod,omitempty"`
+	ClientId                      *string                                                    `json:"ClientId,omitempty"`
+	ClientSecret                  *string                                                    `json:"ClientSecret,omitempty"`
+	ClientSecretConfig            *OAuth2CredentialProviderSecretReference                   `json:"ClientSecretConfig,omitempty"`
+	ClientSecretSource            *CustomOauth2ProviderConfigInputClientSecretSource         `json:"ClientSecretSource,omitempty"`
+	OauthDiscovery                *Oauth2Discovery                                           `json:"OauthDiscovery,omitempty"`
+	OnBehalfOfTokenExchangeConfig *OnBehalfOfTokenExchangeConfig                             `json:"OnBehalfOfTokenExchangeConfig,omitempty"`
+	PrivateEndpoint               *OAuth2CredentialProviderPrivateEndpoint                   `json:"PrivateEndpoint,omitempty"`
+	PrivateEndpointOverrides      []OAuth2CredentialProviderPrivateEndpointOverride          `json:"PrivateEndpointOverrides,omitempty"`
+	PrivateKeyJwtConfig           *PrivateKeyJwtConfig                                       `json:"PrivateKeyJwtConfig,omitempty"`
 }
 
 type GithubOauth2ProviderConfigInput struct {
-	ClientId           *string                                  `json:"ClientId,omitempty"`
-	ClientSecret       *string                                  `json:"ClientSecret,omitempty"`
-	ClientSecretConfig *OAuth2CredentialProviderSecretReference `json:"ClientSecretConfig,omitempty"`
-	ClientSecretSource *string                                  `json:"ClientSecretSource,omitempty"`
+	ClientId           *string                                            `json:"ClientId,omitempty"`
+	ClientSecret       *string                                            `json:"ClientSecret,omitempty"`
+	ClientSecretConfig *OAuth2CredentialProviderSecretReference           `json:"ClientSecretConfig,omitempty"`
+	ClientSecretSource *GithubOauth2ProviderConfigInputClientSecretSource `json:"ClientSecretSource,omitempty"`
 }
 
 type GoogleOauth2ProviderConfigInput struct {
-	ClientId           *string                                  `json:"ClientId,omitempty"`
-	ClientSecret       *string                                  `json:"ClientSecret,omitempty"`
-	ClientSecretConfig *OAuth2CredentialProviderSecretReference `json:"ClientSecretConfig,omitempty"`
-	ClientSecretSource *string                                  `json:"ClientSecretSource,omitempty"`
+	ClientId           *string                                            `json:"ClientId,omitempty"`
+	ClientSecret       *string                                            `json:"ClientSecret,omitempty"`
+	ClientSecretConfig *OAuth2CredentialProviderSecretReference           `json:"ClientSecretConfig,omitempty"`
+	ClientSecretSource *GoogleOauth2ProviderConfigInputClientSecretSource `json:"ClientSecretSource,omitempty"`
 }
 
 type IncludedOauth2ProviderConfigInput struct {
-	AuthorizationEndpoint *string                                  `json:"AuthorizationEndpoint,omitempty"`
-	ClientId              *string                                  `json:"ClientId,omitempty"`
-	ClientSecret          *string                                  `json:"ClientSecret,omitempty"`
-	ClientSecretConfig    *OAuth2CredentialProviderSecretReference `json:"ClientSecretConfig,omitempty"`
-	ClientSecretSource    *string                                  `json:"ClientSecretSource,omitempty"`
-	Issuer                *string                                  `json:"Issuer,omitempty"`
-	TokenEndpoint         *string                                  `json:"TokenEndpoint,omitempty"`
+	AuthorizationEndpoint *string                                              `json:"AuthorizationEndpoint,omitempty"`
+	ClientId              *string                                              `json:"ClientId,omitempty"`
+	ClientSecret          *string                                              `json:"ClientSecret,omitempty"`
+	ClientSecretConfig    *OAuth2CredentialProviderSecretReference             `json:"ClientSecretConfig,omitempty"`
+	ClientSecretSource    *IncludedOauth2ProviderConfigInputClientSecretSource `json:"ClientSecretSource,omitempty"`
+	Issuer                *string                                              `json:"Issuer,omitempty"`
+	TokenEndpoint         *string                                              `json:"TokenEndpoint,omitempty"`
 }
 
 type LinkedinOauth2ProviderConfigInput struct {
-	ClientId           *string                                  `json:"ClientId,omitempty"`
-	ClientSecret       *string                                  `json:"ClientSecret,omitempty"`
-	ClientSecretConfig *OAuth2CredentialProviderSecretReference `json:"ClientSecretConfig,omitempty"`
-	ClientSecretSource *string                                  `json:"ClientSecretSource,omitempty"`
+	ClientId           *string                                              `json:"ClientId,omitempty"`
+	ClientSecret       *string                                              `json:"ClientSecret,omitempty"`
+	ClientSecretConfig *OAuth2CredentialProviderSecretReference             `json:"ClientSecretConfig,omitempty"`
+	ClientSecretSource *LinkedinOauth2ProviderConfigInputClientSecretSource `json:"ClientSecretSource,omitempty"`
 }
 
 type MicrosoftOauth2ProviderConfigInput struct {
-	ClientId           *string                                  `json:"ClientId,omitempty"`
-	ClientSecret       *string                                  `json:"ClientSecret,omitempty"`
-	ClientSecretConfig *OAuth2CredentialProviderSecretReference `json:"ClientSecretConfig,omitempty"`
-	ClientSecretSource *string                                  `json:"ClientSecretSource,omitempty"`
-	TenantId           *string                                  `json:"TenantId,omitempty"`
+	ClientId           *string                                               `json:"ClientId,omitempty"`
+	ClientSecret       *string                                               `json:"ClientSecret,omitempty"`
+	ClientSecretConfig *OAuth2CredentialProviderSecretReference              `json:"ClientSecretConfig,omitempty"`
+	ClientSecretSource *MicrosoftOauth2ProviderConfigInputClientSecretSource `json:"ClientSecretSource,omitempty"`
+	TenantId           *string                                               `json:"TenantId,omitempty"`
 }
 
 type SalesforceOauth2ProviderConfigInput struct {
-	ClientId           *string                                  `json:"ClientId,omitempty"`
-	ClientSecret       *string                                  `json:"ClientSecret,omitempty"`
-	ClientSecretConfig *OAuth2CredentialProviderSecretReference `json:"ClientSecretConfig,omitempty"`
-	ClientSecretSource *string                                  `json:"ClientSecretSource,omitempty"`
+	ClientId           *string                                                `json:"ClientId,omitempty"`
+	ClientSecret       *string                                                `json:"ClientSecret,omitempty"`
+	ClientSecretConfig *OAuth2CredentialProviderSecretReference               `json:"ClientSecretConfig,omitempty"`
+	ClientSecretSource *SalesforceOauth2ProviderConfigInputClientSecretSource `json:"ClientSecretSource,omitempty"`
 }
 
 type SlackOauth2ProviderConfigInput struct {
-	ClientId           *string                                  `json:"ClientId,omitempty"`
-	ClientSecret       *string                                  `json:"ClientSecret,omitempty"`
-	ClientSecretConfig *OAuth2CredentialProviderSecretReference `json:"ClientSecretConfig,omitempty"`
-	ClientSecretSource *string                                  `json:"ClientSecretSource,omitempty"`
+	ClientId           *string                                           `json:"ClientId,omitempty"`
+	ClientSecret       *string                                           `json:"ClientSecret,omitempty"`
+	ClientSecretConfig *OAuth2CredentialProviderSecretReference          `json:"ClientSecretConfig,omitempty"`
+	ClientSecretSource *SlackOauth2ProviderConfigInputClientSecretSource `json:"ClientSecretSource,omitempty"`
 }
 
 type Oauth2ProviderConfigInput struct {
@@ -1133,13 +1133,13 @@ type Oauth2ProviderConfigInput struct {
 }
 
 type Oauth2ProviderConfigOutput struct {
-	ClientAuthenticationMethod    *string                                           `json:"ClientAuthenticationMethod,omitempty"`
-	ClientId                      *string                                           `json:"ClientId,omitempty"`
-	OauthDiscovery                *Oauth2Discovery                                  `json:"OauthDiscovery,omitempty"`
-	OnBehalfOfTokenExchangeConfig *OnBehalfOfTokenExchangeConfig                    `json:"OnBehalfOfTokenExchangeConfig,omitempty"`
-	PrivateEndpoint               *OAuth2CredentialProviderPrivateEndpoint          `json:"PrivateEndpoint,omitempty"`
-	PrivateEndpointOverrides      []OAuth2CredentialProviderPrivateEndpointOverride `json:"PrivateEndpointOverrides,omitempty"`
-	PrivateKeyJwtConfig           *PrivateKeyJwtConfig                              `json:"PrivateKeyJwtConfig,omitempty"`
+	ClientAuthenticationMethod    *Oauth2ProviderConfigOutputClientAuthenticationMethod `json:"ClientAuthenticationMethod,omitempty"`
+	ClientId                      *string                                               `json:"ClientId,omitempty"`
+	OauthDiscovery                *Oauth2Discovery                                      `json:"OauthDiscovery,omitempty"`
+	OnBehalfOfTokenExchangeConfig *OnBehalfOfTokenExchangeConfig                        `json:"OnBehalfOfTokenExchangeConfig,omitempty"`
+	PrivateEndpoint               *OAuth2CredentialProviderPrivateEndpoint              `json:"PrivateEndpoint,omitempty"`
+	PrivateEndpointOverrides      []OAuth2CredentialProviderPrivateEndpointOverride     `json:"PrivateEndpointOverrides,omitempty"`
+	PrivateKeyJwtConfig           *PrivateKeyJwtConfig                                  `json:"PrivateKeyJwtConfig,omitempty"`
 }
 
 type OAuth2CredentialProviderTag struct {
@@ -1148,19 +1148,19 @@ type OAuth2CredentialProviderTag struct {
 }
 
 type OAuth2CredentialProvider struct {
-	CallbackUrl                *string                       `json:"CallbackUrl,omitempty"`
-	ClientSecretArn            *ClientSecretArn              `json:"ClientSecretArn,omitempty"`
-	ClientSecretJsonKey        *string                       `json:"ClientSecretJsonKey,omitempty"`
-	ClientSecretSource         *string                       `json:"ClientSecretSource,omitempty"`
-	CreatedTime                *string                       `json:"CreatedTime,omitempty"`
-	CredentialProviderArn      *string                       `json:"CredentialProviderArn,omitempty"`
-	CredentialProviderVendor   *string                       `json:"CredentialProviderVendor,omitempty"`
-	LastUpdatedTime            *string                       `json:"LastUpdatedTime,omitempty"`
-	Name                       *string                       `json:"Name,omitempty"`
-	Oauth2ProviderConfigInput  *Oauth2ProviderConfigInput    `json:"Oauth2ProviderConfigInput,omitempty"`
-	Oauth2ProviderConfigOutput *Oauth2ProviderConfigOutput   `json:"Oauth2ProviderConfigOutput,omitempty"`
-	Status                     *string                       `json:"Status,omitempty"`
-	Tags                       []OAuth2CredentialProviderTag `json:"Tags,omitempty"`
+	CallbackUrl                *string                                           `json:"CallbackUrl,omitempty"`
+	ClientSecretArn            *ClientSecretArn                                  `json:"ClientSecretArn,omitempty"`
+	ClientSecretJsonKey        *string                                           `json:"ClientSecretJsonKey,omitempty"`
+	ClientSecretSource         *OAuth2CredentialProviderClientSecretSource       `json:"ClientSecretSource,omitempty"`
+	CreatedTime                *string                                           `json:"CreatedTime,omitempty"`
+	CredentialProviderArn      *string                                           `json:"CredentialProviderArn,omitempty"`
+	CredentialProviderVendor   *OAuth2CredentialProviderCredentialProviderVendor `json:"CredentialProviderVendor,omitempty"`
+	LastUpdatedTime            *string                                           `json:"LastUpdatedTime,omitempty"`
+	Name                       *string                                           `json:"Name,omitempty"`
+	Oauth2ProviderConfigInput  *Oauth2ProviderConfigInput                        `json:"Oauth2ProviderConfigInput,omitempty"`
+	Oauth2ProviderConfigOutput *Oauth2ProviderConfigOutput                       `json:"Oauth2ProviderConfigOutput,omitempty"`
+	Status                     *OAuth2CredentialProviderStatus                   `json:"Status,omitempty"`
+	Tags                       []OAuth2CredentialProviderTag                     `json:"Tags,omitempty"`
 }
 
 func (OAuth2CredentialProvider) CloudControlType() string {
@@ -1168,7 +1168,7 @@ func (OAuth2CredentialProvider) CloudControlType() string {
 }
 
 type ClusteringConfig struct {
-	Frequencies []string `json:"Frequencies,omitempty"`
+	Frequencies []ClusteringFrequency `json:"Frequencies,omitempty"`
 }
 
 type CloudWatchLogsInputConfig struct {
@@ -1203,9 +1203,9 @@ type FilterValue struct {
 }
 
 type Filter struct {
-	Key      *string      `json:"Key,omitempty"`
-	Operator *string      `json:"Operator,omitempty"`
-	Value    *FilterValue `json:"Value,omitempty"`
+	Key      *string         `json:"Key,omitempty"`
+	Operator *FilterOperator `json:"Operator,omitempty"`
+	Value    *FilterValue    `json:"Value,omitempty"`
 }
 
 type SamplingConfig struct {
@@ -1228,22 +1228,22 @@ type OnlineEvaluationConfigTag struct {
 }
 
 type OnlineEvaluationConfig struct {
-	ClusteringConfig           *ClusteringConfig           `json:"ClusteringConfig,omitempty"`
-	CreatedAt                  *string                     `json:"CreatedAt,omitempty"`
-	DataSourceConfig           *DataSourceConfig           `json:"DataSourceConfig,omitempty"`
-	Description                *string                     `json:"Description,omitempty"`
-	EvaluationExecutionRoleArn *string                     `json:"EvaluationExecutionRoleArn,omitempty"`
-	Evaluators                 []EvaluatorReference        `json:"Evaluators,omitempty"`
-	ExecutionStatus            *string                     `json:"ExecutionStatus,omitempty"`
-	Insights                   []Insight                   `json:"Insights,omitempty"`
-	OnlineEvaluationConfigArn  *string                     `json:"OnlineEvaluationConfigArn,omitempty"`
-	OnlineEvaluationConfigId   *string                     `json:"OnlineEvaluationConfigId,omitempty"`
-	OnlineEvaluationConfigName *string                     `json:"OnlineEvaluationConfigName,omitempty"`
-	OutputConfig               *OutputConfig               `json:"OutputConfig,omitempty"`
-	Rule                       *Rule                       `json:"Rule,omitempty"`
-	Status                     *string                     `json:"Status,omitempty"`
-	Tags                       []OnlineEvaluationConfigTag `json:"Tags,omitempty"`
-	UpdatedAt                  *string                     `json:"UpdatedAt,omitempty"`
+	ClusteringConfig           *ClusteringConfig             `json:"ClusteringConfig,omitempty"`
+	CreatedAt                  *string                       `json:"CreatedAt,omitempty"`
+	DataSourceConfig           *DataSourceConfig             `json:"DataSourceConfig,omitempty"`
+	Description                *string                       `json:"Description,omitempty"`
+	EvaluationExecutionRoleArn *string                       `json:"EvaluationExecutionRoleArn,omitempty"`
+	Evaluators                 []EvaluatorReference          `json:"Evaluators,omitempty"`
+	ExecutionStatus            *ExecutionStatus              `json:"ExecutionStatus,omitempty"`
+	Insights                   []Insight                     `json:"Insights,omitempty"`
+	OnlineEvaluationConfigArn  *string                       `json:"OnlineEvaluationConfigArn,omitempty"`
+	OnlineEvaluationConfigId   *string                       `json:"OnlineEvaluationConfigId,omitempty"`
+	OnlineEvaluationConfigName *string                       `json:"OnlineEvaluationConfigName,omitempty"`
+	OutputConfig               *OutputConfig                 `json:"OutputConfig,omitempty"`
+	Rule                       *Rule                         `json:"Rule,omitempty"`
+	Status                     *OnlineEvaluationConfigStatus `json:"Status,omitempty"`
+	Tags                       []OnlineEvaluationConfigTag   `json:"Tags,omitempty"`
+	UpdatedAt                  *string                       `json:"UpdatedAt,omitempty"`
 }
 
 func (OnlineEvaluationConfig) CloudControlType() string {
@@ -1263,8 +1263,8 @@ type PaymentConnector struct {
 	ConnectorCreatedAt               *string                            `json:"ConnectorCreatedAt,omitempty"`
 	ConnectorLastUpdatedAt           *string                            `json:"ConnectorLastUpdatedAt,omitempty"`
 	ConnectorName                    *string                            `json:"ConnectorName,omitempty"`
-	ConnectorStatus                  *string                            `json:"ConnectorStatus,omitempty"`
-	ConnectorType                    *string                            `json:"ConnectorType,omitempty"`
+	ConnectorStatus                  *PaymentConnectorStatus            `json:"ConnectorStatus,omitempty"`
+	ConnectorType                    *PaymentConnectorType              `json:"ConnectorType,omitempty"`
 	CredentialProviderConfigurations []CredentialsProviderConfiguration `json:"CredentialProviderConfigurations,omitempty"`
 	Description                      *string                            `json:"Description,omitempty"`
 	PaymentConnectorArn              *string                            `json:"PaymentConnectorArn,omitempty"`
@@ -1283,21 +1283,21 @@ type CoinbaseCdpConfigurationInput struct {
 	ApiKeyId           *string                                   `json:"ApiKeyId,omitempty"`
 	ApiKeySecret       *string                                   `json:"ApiKeySecret,omitempty"`
 	ApiKeySecretConfig *PaymentCredentialProviderSecretReference `json:"ApiKeySecretConfig,omitempty"`
-	ApiKeySecretSource *string                                   `json:"ApiKeySecretSource,omitempty"`
+	ApiKeySecretSource *SecretSourceType                         `json:"ApiKeySecretSource,omitempty"`
 	WalletSecret       *string                                   `json:"WalletSecret,omitempty"`
 	WalletSecretConfig *PaymentCredentialProviderSecretReference `json:"WalletSecretConfig,omitempty"`
-	WalletSecretSource *string                                   `json:"WalletSecretSource,omitempty"`
+	WalletSecretSource *SecretSourceType                         `json:"WalletSecretSource,omitempty"`
 }
 
 type StripePrivyConfigurationInput struct {
 	AppId                         *string                                   `json:"AppId,omitempty"`
 	AppSecret                     *string                                   `json:"AppSecret,omitempty"`
 	AppSecretConfig               *PaymentCredentialProviderSecretReference `json:"AppSecretConfig,omitempty"`
-	AppSecretSource               *string                                   `json:"AppSecretSource,omitempty"`
+	AppSecretSource               *SecretSourceType                         `json:"AppSecretSource,omitempty"`
 	AuthorizationId               *string                                   `json:"AuthorizationId,omitempty"`
 	AuthorizationPrivateKey       *string                                   `json:"AuthorizationPrivateKey,omitempty"`
 	AuthorizationPrivateKeyConfig *PaymentCredentialProviderSecretReference `json:"AuthorizationPrivateKeyConfig,omitempty"`
-	AuthorizationPrivateKeySource *string                                   `json:"AuthorizationPrivateKeySource,omitempty"`
+	AuthorizationPrivateKeySource *SecretSourceType                         `json:"AuthorizationPrivateKeySource,omitempty"`
 }
 
 type PaymentProviderConfigurationInput struct {
@@ -1310,24 +1310,24 @@ type SecretInfo struct {
 }
 
 type CoinbaseCdpConfigurationOutput struct {
-	ApiKeyId            *string     `json:"ApiKeyId,omitempty"`
-	ApiKeySecretArn     *SecretInfo `json:"ApiKeySecretArn,omitempty"`
-	ApiKeySecretJsonKey *string     `json:"ApiKeySecretJsonKey,omitempty"`
-	ApiKeySecretSource  *string     `json:"ApiKeySecretSource,omitempty"`
-	WalletSecretArn     *SecretInfo `json:"WalletSecretArn,omitempty"`
-	WalletSecretJsonKey *string     `json:"WalletSecretJsonKey,omitempty"`
-	WalletSecretSource  *string     `json:"WalletSecretSource,omitempty"`
+	ApiKeyId            *string           `json:"ApiKeyId,omitempty"`
+	ApiKeySecretArn     *SecretInfo       `json:"ApiKeySecretArn,omitempty"`
+	ApiKeySecretJsonKey *string           `json:"ApiKeySecretJsonKey,omitempty"`
+	ApiKeySecretSource  *SecretSourceType `json:"ApiKeySecretSource,omitempty"`
+	WalletSecretArn     *SecretInfo       `json:"WalletSecretArn,omitempty"`
+	WalletSecretJsonKey *string           `json:"WalletSecretJsonKey,omitempty"`
+	WalletSecretSource  *SecretSourceType `json:"WalletSecretSource,omitempty"`
 }
 
 type StripePrivyConfigurationOutput struct {
-	AppId                          *string     `json:"AppId,omitempty"`
-	AppSecretArn                   *SecretInfo `json:"AppSecretArn,omitempty"`
-	AppSecretJsonKey               *string     `json:"AppSecretJsonKey,omitempty"`
-	AppSecretSource                *string     `json:"AppSecretSource,omitempty"`
-	AuthorizationId                *string     `json:"AuthorizationId,omitempty"`
-	AuthorizationPrivateKeyArn     *SecretInfo `json:"AuthorizationPrivateKeyArn,omitempty"`
-	AuthorizationPrivateKeyJsonKey *string     `json:"AuthorizationPrivateKeyJsonKey,omitempty"`
-	AuthorizationPrivateKeySource  *string     `json:"AuthorizationPrivateKeySource,omitempty"`
+	AppId                          *string           `json:"AppId,omitempty"`
+	AppSecretArn                   *SecretInfo       `json:"AppSecretArn,omitempty"`
+	AppSecretJsonKey               *string           `json:"AppSecretJsonKey,omitempty"`
+	AppSecretSource                *SecretSourceType `json:"AppSecretSource,omitempty"`
+	AuthorizationId                *string           `json:"AuthorizationId,omitempty"`
+	AuthorizationPrivateKeyArn     *SecretInfo       `json:"AuthorizationPrivateKeyArn,omitempty"`
+	AuthorizationPrivateKeyJsonKey *string           `json:"AuthorizationPrivateKeyJsonKey,omitempty"`
+	AuthorizationPrivateKeySource  *SecretSourceType `json:"AuthorizationPrivateKeySource,omitempty"`
 }
 
 type PaymentProviderConfigurationOutput struct {
@@ -1341,14 +1341,14 @@ type PaymentCredentialProviderTag struct {
 }
 
 type PaymentCredentialProvider struct {
-	CreatedTime                 *string                             `json:"CreatedTime,omitempty"`
-	CredentialProviderArn       *string                             `json:"CredentialProviderArn,omitempty"`
-	CredentialProviderVendor    *string                             `json:"CredentialProviderVendor,omitempty"`
-	LastUpdatedTime             *string                             `json:"LastUpdatedTime,omitempty"`
-	Name                        *string                             `json:"Name,omitempty"`
-	ProviderConfigurationInput  *PaymentProviderConfigurationInput  `json:"ProviderConfigurationInput,omitempty"`
-	ProviderConfigurationOutput *PaymentProviderConfigurationOutput `json:"ProviderConfigurationOutput,omitempty"`
-	Tags                        []PaymentCredentialProviderTag      `json:"Tags,omitempty"`
+	CreatedTime                 *string                              `json:"CreatedTime,omitempty"`
+	CredentialProviderArn       *string                              `json:"CredentialProviderArn,omitempty"`
+	CredentialProviderVendor    *PaymentCredentialProviderVendorType `json:"CredentialProviderVendor,omitempty"`
+	LastUpdatedTime             *string                              `json:"LastUpdatedTime,omitempty"`
+	Name                        *string                              `json:"Name,omitempty"`
+	ProviderConfigurationInput  *PaymentProviderConfigurationInput   `json:"ProviderConfigurationInput,omitempty"`
+	ProviderConfigurationOutput *PaymentProviderConfigurationOutput  `json:"ProviderConfigurationOutput,omitempty"`
+	Tags                        []PaymentCredentialProviderTag       `json:"Tags,omitempty"`
 }
 
 func (PaymentCredentialProvider) CloudControlType() string {
@@ -1361,14 +1361,14 @@ type PaymentManagerClaimMatchValueType struct {
 }
 
 type PaymentManagerAuthorizingClaimMatchValueType struct {
-	ClaimMatchOperator *string                            `json:"ClaimMatchOperator,omitempty"`
-	ClaimMatchValue    *PaymentManagerClaimMatchValueType `json:"ClaimMatchValue,omitempty"`
+	ClaimMatchOperator *PaymentManagerAuthorizingClaimMatchValueTypeClaimMatchOperator `json:"ClaimMatchOperator,omitempty"`
+	ClaimMatchValue    *PaymentManagerClaimMatchValueType                              `json:"ClaimMatchValue,omitempty"`
 }
 
 type PaymentManagerCustomClaimValidationType struct {
-	AuthorizingClaimMatchValue *PaymentManagerAuthorizingClaimMatchValueType `json:"AuthorizingClaimMatchValue,omitempty"`
-	InboundTokenClaimName      *string                                       `json:"InboundTokenClaimName,omitempty"`
-	InboundTokenClaimValueType *string                                       `json:"InboundTokenClaimValueType,omitempty"`
+	AuthorizingClaimMatchValue *PaymentManagerAuthorizingClaimMatchValueType                      `json:"AuthorizingClaimMatchValue,omitempty"`
+	InboundTokenClaimName      *string                                                            `json:"InboundTokenClaimName,omitempty"`
+	InboundTokenClaimValueType *PaymentManagerCustomClaimValidationTypeInboundTokenClaimValueType `json:"InboundTokenClaimValueType,omitempty"`
 }
 
 type PaymentManagerCustomJWTAuthorizerConfiguration struct {
@@ -1394,7 +1394,7 @@ type PaymentManagerWorkloadIdentityDetails struct {
 
 type PaymentManager struct {
 	AuthorizerConfiguration *PaymentManagerAuthorizerConfiguration `json:"AuthorizerConfiguration,omitempty"`
-	AuthorizerType          *string                                `json:"AuthorizerType,omitempty"`
+	AuthorizerType          *PaymentsAuthorizerType                `json:"AuthorizerType,omitempty"`
 	CreatedAt               *string                                `json:"CreatedAt,omitempty"`
 	Description             *string                                `json:"Description,omitempty"`
 	LastUpdatedAt           *string                                `json:"LastUpdatedAt,omitempty"`
@@ -1402,7 +1402,7 @@ type PaymentManager struct {
 	PaymentManagerArn       *string                                `json:"PaymentManagerArn,omitempty"`
 	PaymentManagerId        *string                                `json:"PaymentManagerId,omitempty"`
 	RoleArn                 *string                                `json:"RoleArn,omitempty"`
-	Status                  *string                                `json:"Status,omitempty"`
+	Status                  *PaymentManagerStatus                  `json:"Status,omitempty"`
 	Tags                    []PaymentManagerTag                    `json:"Tags,omitempty"`
 	WorkloadIdentityDetails *PaymentManagerWorkloadIdentityDetails `json:"WorkloadIdentityDetails,omitempty"`
 }
@@ -1423,18 +1423,18 @@ type PolicyDefinition struct {
 }
 
 type Policy struct {
-	CreatedAt       *string           `json:"CreatedAt,omitempty"`
-	Definition      *PolicyDefinition `json:"Definition,omitempty"`
-	Description     *string           `json:"Description,omitempty"`
-	EnforcementMode *string           `json:"EnforcementMode,omitempty"`
-	Name            *string           `json:"Name,omitempty"`
-	PolicyArn       *string           `json:"PolicyArn,omitempty"`
-	PolicyEngineId  *string           `json:"PolicyEngineId,omitempty"`
-	PolicyId        *string           `json:"PolicyId,omitempty"`
-	Status          *string           `json:"Status,omitempty"`
-	StatusReasons   []string          `json:"StatusReasons,omitempty"`
-	UpdatedAt       *string           `json:"UpdatedAt,omitempty"`
-	ValidationMode  *string           `json:"ValidationMode,omitempty"`
+	CreatedAt       *string               `json:"CreatedAt,omitempty"`
+	Definition      *PolicyDefinition     `json:"Definition,omitempty"`
+	Description     *string               `json:"Description,omitempty"`
+	EnforcementMode *EnforcementMode      `json:"EnforcementMode,omitempty"`
+	Name            *string               `json:"Name,omitempty"`
+	PolicyArn       *string               `json:"PolicyArn,omitempty"`
+	PolicyEngineId  *string               `json:"PolicyEngineId,omitempty"`
+	PolicyId        *string               `json:"PolicyId,omitempty"`
+	Status          *PolicyStatus         `json:"Status,omitempty"`
+	StatusReasons   []string              `json:"StatusReasons,omitempty"`
+	UpdatedAt       *string               `json:"UpdatedAt,omitempty"`
+	ValidationMode  *PolicyValidationMode `json:"ValidationMode,omitempty"`
 }
 
 func (Policy) CloudControlType() string { return "AWS::BedrockAgentCore::Policy" }
@@ -1445,16 +1445,16 @@ type PolicyEngineTag struct {
 }
 
 type PolicyEngine struct {
-	CreatedAt        *string           `json:"CreatedAt,omitempty"`
-	Description      *string           `json:"Description,omitempty"`
-	EncryptionKeyArn *string           `json:"EncryptionKeyArn,omitempty"`
-	Name             *string           `json:"Name,omitempty"`
-	PolicyEngineArn  *string           `json:"PolicyEngineArn,omitempty"`
-	PolicyEngineId   *string           `json:"PolicyEngineId,omitempty"`
-	Status           *string           `json:"Status,omitempty"`
-	StatusReasons    []string          `json:"StatusReasons,omitempty"`
-	Tags             []PolicyEngineTag `json:"Tags,omitempty"`
-	UpdatedAt        *string           `json:"UpdatedAt,omitempty"`
+	CreatedAt        *string             `json:"CreatedAt,omitempty"`
+	Description      *string             `json:"Description,omitempty"`
+	EncryptionKeyArn *string             `json:"EncryptionKeyArn,omitempty"`
+	Name             *string             `json:"Name,omitempty"`
+	PolicyEngineArn  *string             `json:"PolicyEngineArn,omitempty"`
+	PolicyEngineId   *string             `json:"PolicyEngineId,omitempty"`
+	Status           *PolicyEngineStatus `json:"Status,omitempty"`
+	StatusReasons    []string            `json:"StatusReasons,omitempty"`
+	Tags             []PolicyEngineTag   `json:"Tags,omitempty"`
+	UpdatedAt        *string             `json:"UpdatedAt,omitempty"`
 }
 
 func (PolicyEngine) CloudControlType() string { return "AWS::BedrockAgentCore::PolicyEngine" }
@@ -1477,9 +1477,9 @@ type Code struct {
 }
 
 type CodeConfiguration struct {
-	Code       *Code    `json:"Code,omitempty"`
-	EntryPoint []string `json:"EntryPoint,omitempty"`
-	Runtime    *string  `json:"Runtime,omitempty"`
+	Code       *Code                    `json:"Code,omitempty"`
+	EntryPoint []string                 `json:"EntryPoint,omitempty"`
+	Runtime    *AgentManagedRuntimeType `json:"Runtime,omitempty"`
 }
 
 type RuntimeContainerConfiguration struct {
@@ -1506,14 +1506,14 @@ type RuntimeClaimMatchValueType struct {
 }
 
 type RuntimeAuthorizingClaimMatchValueType struct {
-	ClaimMatchOperator *string                     `json:"ClaimMatchOperator,omitempty"`
+	ClaimMatchOperator *ClaimMatchOperator         `json:"ClaimMatchOperator,omitempty"`
 	ClaimMatchValue    *RuntimeClaimMatchValueType `json:"ClaimMatchValue,omitempty"`
 }
 
 type RuntimeCustomClaimValidationType struct {
 	AuthorizingClaimMatchValue *RuntimeAuthorizingClaimMatchValueType `json:"AuthorizingClaimMatchValue,omitempty"`
 	InboundTokenClaimName      *string                                `json:"InboundTokenClaimName,omitempty"`
-	InboundTokenClaimValueType *string                                `json:"InboundTokenClaimValueType,omitempty"`
+	InboundTokenClaimValueType *InboundTokenClaimValueType            `json:"InboundTokenClaimValueType,omitempty"`
 }
 
 type RuntimePrivateEndpointOverride struct {
@@ -1567,7 +1567,7 @@ type RuntimeVpcConfig struct {
 }
 
 type RuntimeNetworkConfiguration struct {
-	NetworkMode       *string           `json:"NetworkMode,omitempty"`
+	NetworkMode       *NetworkMode      `json:"NetworkMode,omitempty"`
 	NetworkModeConfig *RuntimeVpcConfig `json:"NetworkModeConfig,omitempty"`
 }
 
@@ -1594,10 +1594,10 @@ type Runtime struct {
 	LastUpdatedAt              *string                          `json:"LastUpdatedAt,omitempty"`
 	LifecycleConfiguration     *RuntimeLifecycleConfiguration   `json:"LifecycleConfiguration,omitempty"`
 	NetworkConfiguration       *RuntimeNetworkConfiguration     `json:"NetworkConfiguration,omitempty"`
-	ProtocolConfiguration      *string                          `json:"ProtocolConfiguration,omitempty"`
+	ProtocolConfiguration      *ProtocolConfiguration           `json:"ProtocolConfiguration,omitempty"`
 	RequestHeaderConfiguration *RequestHeaderConfiguration      `json:"RequestHeaderConfiguration,omitempty"`
 	RoleArn                    *string                          `json:"RoleArn,omitempty"`
-	Status                     *string                          `json:"Status,omitempty"`
+	Status                     *AgentStatus                     `json:"Status,omitempty"`
 	Tags                       map[string]string                `json:"Tags,omitempty"`
 	WorkloadIdentityDetails    *RuntimeWorkloadIdentityDetails  `json:"WorkloadIdentityDetails,omitempty"`
 }
@@ -1605,20 +1605,20 @@ type Runtime struct {
 func (Runtime) CloudControlType() string { return "AWS::BedrockAgentCore::Runtime" }
 
 type RuntimeEndpoint struct {
-	AgentRuntimeArn         *string           `json:"AgentRuntimeArn,omitempty"`
-	AgentRuntimeEndpointArn *string           `json:"AgentRuntimeEndpointArn,omitempty"`
-	AgentRuntimeId          *string           `json:"AgentRuntimeId,omitempty"`
-	AgentRuntimeVersion     *string           `json:"AgentRuntimeVersion,omitempty"`
-	CreatedAt               *string           `json:"CreatedAt,omitempty"`
-	Description             *string           `json:"Description,omitempty"`
-	FailureReason           *string           `json:"FailureReason,omitempty"`
-	Id                      *string           `json:"Id,omitempty"`
-	LastUpdatedAt           *string           `json:"LastUpdatedAt,omitempty"`
-	LiveVersion             *string           `json:"LiveVersion,omitempty"`
-	Name                    *string           `json:"Name,omitempty"`
-	Status                  *string           `json:"Status,omitempty"`
-	Tags                    map[string]string `json:"Tags,omitempty"`
-	TargetVersion           *string           `json:"TargetVersion,omitempty"`
+	AgentRuntimeArn         *string                     `json:"AgentRuntimeArn,omitempty"`
+	AgentRuntimeEndpointArn *string                     `json:"AgentRuntimeEndpointArn,omitempty"`
+	AgentRuntimeId          *string                     `json:"AgentRuntimeId,omitempty"`
+	AgentRuntimeVersion     *string                     `json:"AgentRuntimeVersion,omitempty"`
+	CreatedAt               *string                     `json:"CreatedAt,omitempty"`
+	Description             *string                     `json:"Description,omitempty"`
+	FailureReason           *string                     `json:"FailureReason,omitempty"`
+	Id                      *string                     `json:"Id,omitempty"`
+	LastUpdatedAt           *string                     `json:"LastUpdatedAt,omitempty"`
+	LiveVersion             *string                     `json:"LiveVersion,omitempty"`
+	Name                    *string                     `json:"Name,omitempty"`
+	Status                  *AgentRuntimeEndpointStatus `json:"Status,omitempty"`
+	Tags                    map[string]string           `json:"Tags,omitempty"`
+	TargetVersion           *string                     `json:"TargetVersion,omitempty"`
 }
 
 func (RuntimeEndpoint) CloudControlType() string { return "AWS::BedrockAgentCore::RuntimeEndpoint" }
@@ -1638,3 +1638,770 @@ type WorkloadIdentity struct {
 }
 
 func (WorkloadIdentity) CloudControlType() string { return "AWS::BedrockAgentCore::WorkloadIdentity" }
+
+type ApiKeyCredentialProviderApiKeySecretSource string
+
+const (
+	ApiKeyCredentialProviderApiKeySecretSourceMANAGED  ApiKeyCredentialProviderApiKeySecretSource = "MANAGED"
+	ApiKeyCredentialProviderApiKeySecretSourceEXTERNAL ApiKeyCredentialProviderApiKeySecretSource = "EXTERNAL"
+)
+
+type BrowserEnterprisePolicyType string
+
+const (
+	BrowserEnterprisePolicyTypeMANAGED     BrowserEnterprisePolicyType = "MANAGED"
+	BrowserEnterprisePolicyTypeRECOMMENDED BrowserEnterprisePolicyType = "RECOMMENDED"
+)
+
+type BrowserNetworkMode string
+
+const (
+	BrowserNetworkModePUBLIC BrowserNetworkMode = "PUBLIC"
+	BrowserNetworkModeVPC    BrowserNetworkMode = "VPC"
+)
+
+type BrowserStatus string
+
+const (
+	BrowserStatusCREATING     BrowserStatus = "CREATING"
+	BrowserStatusCREATEFAILED BrowserStatus = "CREATE_FAILED"
+	BrowserStatusREADY        BrowserStatus = "READY"
+	BrowserStatusDELETING     BrowserStatus = "DELETING"
+	BrowserStatusDELETEFAILED BrowserStatus = "DELETE_FAILED"
+	BrowserStatusDELETED      BrowserStatus = "DELETED"
+)
+
+type BrowserProfileStatus string
+
+const (
+	BrowserProfileStatusREADY    BrowserProfileStatus = "READY"
+	BrowserProfileStatusDELETING BrowserProfileStatus = "DELETING"
+	BrowserProfileStatusDELETED  BrowserProfileStatus = "DELETED"
+	BrowserProfileStatusSAVING   BrowserProfileStatus = "SAVING"
+)
+
+type CodeInterpreterNetworkMode string
+
+const (
+	CodeInterpreterNetworkModePUBLIC  CodeInterpreterNetworkMode = "PUBLIC"
+	CodeInterpreterNetworkModeSANDBOX CodeInterpreterNetworkMode = "SANDBOX"
+	CodeInterpreterNetworkModeVPC     CodeInterpreterNetworkMode = "VPC"
+)
+
+type CodeInterpreterStatus string
+
+const (
+	CodeInterpreterStatusCREATING     CodeInterpreterStatus = "CREATING"
+	CodeInterpreterStatusCREATEFAILED CodeInterpreterStatus = "CREATE_FAILED"
+	CodeInterpreterStatusREADY        CodeInterpreterStatus = "READY"
+	CodeInterpreterStatusDELETING     CodeInterpreterStatus = "DELETING"
+	CodeInterpreterStatusDELETEFAILED CodeInterpreterStatus = "DELETE_FAILED"
+	CodeInterpreterStatusDELETED      CodeInterpreterStatus = "DELETED"
+)
+
+type DatasetSchemaType string
+
+const (
+	DatasetSchemaTypeAGENTCOREEVALUATIONPREDEFINEDV1 DatasetSchemaType = "AGENTCORE_EVALUATION_PREDEFINED_V1"
+	DatasetSchemaTypeAGENTCOREEVALUATIONSIMULATEDV1  DatasetSchemaType = "AGENTCORE_EVALUATION_SIMULATED_V1"
+)
+
+type DatasetStatus string
+
+const (
+	DatasetStatusCREATING     DatasetStatus = "CREATING"
+	DatasetStatusUPDATING     DatasetStatus = "UPDATING"
+	DatasetStatusDELETING     DatasetStatus = "DELETING"
+	DatasetStatusACTIVE       DatasetStatus = "ACTIVE"
+	DatasetStatusCREATEFAILED DatasetStatus = "CREATE_FAILED"
+	DatasetStatusUPDATEFAILED DatasetStatus = "UPDATE_FAILED"
+	DatasetStatusDELETEFAILED DatasetStatus = "DELETE_FAILED"
+)
+
+type EvaluatorLevel string
+
+const (
+	EvaluatorLevelTOOLCALL EvaluatorLevel = "TOOL_CALL"
+	EvaluatorLevelTRACE    EvaluatorLevel = "TRACE"
+	EvaluatorLevelSESSION  EvaluatorLevel = "SESSION"
+)
+
+type EvaluatorStatus string
+
+const (
+	EvaluatorStatusACTIVE       EvaluatorStatus = "ACTIVE"
+	EvaluatorStatusCREATING     EvaluatorStatus = "CREATING"
+	EvaluatorStatusCREATEFAILED EvaluatorStatus = "CREATE_FAILED"
+	EvaluatorStatusUPDATING     EvaluatorStatus = "UPDATING"
+	EvaluatorStatusUPDATEFAILED EvaluatorStatus = "UPDATE_FAILED"
+	EvaluatorStatusDELETING     EvaluatorStatus = "DELETING"
+)
+
+type AuthorizerType string
+
+const (
+	AuthorizerTypeCUSTOMJWT        AuthorizerType = "CUSTOM_JWT"
+	AuthorizerTypeAWSIAM           AuthorizerType = "AWS_IAM"
+	AuthorizerTypeNONE             AuthorizerType = "NONE"
+	AuthorizerTypeAUTHENTICATEONLY AuthorizerType = "AUTHENTICATE_ONLY"
+)
+
+type ExceptionLevel string
+
+const (
+	ExceptionLevelDEBUG ExceptionLevel = "DEBUG"
+)
+
+type GatewayInterceptionPoint string
+
+const (
+	GatewayInterceptionPointREQUEST  GatewayInterceptionPoint = "REQUEST"
+	GatewayInterceptionPointRESPONSE GatewayInterceptionPoint = "RESPONSE"
+)
+
+type GatewayPolicyEngineMode string
+
+const (
+	GatewayPolicyEngineModeLOGONLY GatewayPolicyEngineMode = "LOG_ONLY"
+	GatewayPolicyEngineModeENFORCE GatewayPolicyEngineMode = "ENFORCE"
+)
+
+type GatewayStatus string
+
+const (
+	GatewayStatusCREATING           GatewayStatus = "CREATING"
+	GatewayStatusUPDATING           GatewayStatus = "UPDATING"
+	GatewayStatusUPDATEUNSUCCESSFUL GatewayStatus = "UPDATE_UNSUCCESSFUL"
+	GatewayStatusDELETING           GatewayStatus = "DELETING"
+	GatewayStatusREADY              GatewayStatus = "READY"
+	GatewayStatusFAILED             GatewayStatus = "FAILED"
+)
+
+type CredentialProviderType string
+
+const (
+	CredentialProviderTypeGATEWAYIAMROLE       CredentialProviderType = "GATEWAY_IAM_ROLE"
+	CredentialProviderTypeOAUTH                CredentialProviderType = "OAUTH"
+	CredentialProviderTypeAPIKEY               CredentialProviderType = "API_KEY"
+	CredentialProviderTypeCALLERIAMCREDENTIALS CredentialProviderType = "CALLER_IAM_CREDENTIALS"
+	CredentialProviderTypeJWTPASSTHROUGH       CredentialProviderType = "JWT_PASSTHROUGH"
+)
+
+type TargetProtocolType string
+
+const (
+	TargetProtocolTypeMCP       TargetProtocolType = "MCP"
+	TargetProtocolTypeHTTP      TargetProtocolType = "HTTP"
+	TargetProtocolTypeINFERENCE TargetProtocolType = "INFERENCE"
+)
+
+type TargetStatus string
+
+const (
+	TargetStatusCREATING                TargetStatus = "CREATING"
+	TargetStatusUPDATING                TargetStatus = "UPDATING"
+	TargetStatusUPDATEUNSUCCESSFUL      TargetStatus = "UPDATE_UNSUCCESSFUL"
+	TargetStatusDELETING                TargetStatus = "DELETING"
+	TargetStatusREADY                   TargetStatus = "READY"
+	TargetStatusFAILED                  TargetStatus = "FAILED"
+	TargetStatusSYNCHRONIZING           TargetStatus = "SYNCHRONIZING"
+	TargetStatusSYNCHRONIZEUNSUCCESSFUL TargetStatus = "SYNCHRONIZE_UNSUCCESSFUL"
+	TargetStatusCREATEPENDINGAUTH       TargetStatus = "CREATE_PENDING_AUTH"
+	TargetStatusUPDATEPENDINGAUTH       TargetStatus = "UPDATE_PENDING_AUTH"
+	TargetStatusSYNCHRONIZEPENDINGAUTH  TargetStatus = "SYNCHRONIZE_PENDING_AUTH"
+)
+
+type AuthorizingClaimMatchValueTypeClaimMatchOperator string
+
+const (
+	AuthorizingClaimMatchValueTypeClaimMatchOperatorEQUALS      AuthorizingClaimMatchValueTypeClaimMatchOperator = "EQUALS"
+	AuthorizingClaimMatchValueTypeClaimMatchOperatorCONTAINS    AuthorizingClaimMatchValueTypeClaimMatchOperator = "CONTAINS"
+	AuthorizingClaimMatchValueTypeClaimMatchOperatorCONTAINSANY AuthorizingClaimMatchValueTypeClaimMatchOperator = "CONTAINS_ANY"
+)
+
+type CustomClaimValidationTypeInboundTokenClaimValueType string
+
+const (
+	CustomClaimValidationTypeInboundTokenClaimValueTypeSTRING      CustomClaimValidationTypeInboundTokenClaimValueType = "STRING"
+	CustomClaimValidationTypeInboundTokenClaimValueTypeSTRINGARRAY CustomClaimValidationTypeInboundTokenClaimValueType = "STRING_ARRAY"
+)
+
+type ManagedVpcResourceEndpointIpAddressType string
+
+const (
+	ManagedVpcResourceEndpointIpAddressTypeIPV4 ManagedVpcResourceEndpointIpAddressType = "IPV4"
+	ManagedVpcResourceEndpointIpAddressTypeIPV6 ManagedVpcResourceEndpointIpAddressType = "IPV6"
+)
+
+type NetworkConfigurationNetworkMode string
+
+const (
+	NetworkConfigurationNetworkModePUBLIC NetworkConfigurationNetworkMode = "PUBLIC"
+	NetworkConfigurationNetworkModeVPC    NetworkConfigurationNetworkMode = "VPC"
+)
+
+type HarnessManagedMemoryConfigurationStrategiesItem string
+
+const (
+	HarnessManagedMemoryConfigurationStrategiesItemSEMANTIC       HarnessManagedMemoryConfigurationStrategiesItem = "SEMANTIC"
+	HarnessManagedMemoryConfigurationStrategiesItemSUMMARIZATION  HarnessManagedMemoryConfigurationStrategiesItem = "SUMMARIZATION"
+	HarnessManagedMemoryConfigurationStrategiesItemUSERPREFERENCE HarnessManagedMemoryConfigurationStrategiesItem = "USER_PREFERENCE"
+	HarnessManagedMemoryConfigurationStrategiesItemEPISODIC       HarnessManagedMemoryConfigurationStrategiesItem = "EPISODIC"
+)
+
+type HarnessBedrockModelConfigApiFormat string
+
+const (
+	HarnessBedrockModelConfigApiFormatConverseStream  HarnessBedrockModelConfigApiFormat = "converse_stream"
+	HarnessBedrockModelConfigApiFormatResponses       HarnessBedrockModelConfigApiFormat = "responses"
+	HarnessBedrockModelConfigApiFormatChatCompletions HarnessBedrockModelConfigApiFormat = "chat_completions"
+)
+
+type HarnessOpenAiModelConfigApiFormat string
+
+const (
+	HarnessOpenAiModelConfigApiFormatChatCompletions HarnessOpenAiModelConfigApiFormat = "chat_completions"
+	HarnessOpenAiModelConfigApiFormatResponses       HarnessOpenAiModelConfigApiFormat = "responses"
+)
+
+type HarnessStatus string
+
+const (
+	HarnessStatusCREATING     HarnessStatus = "CREATING"
+	HarnessStatusCREATEFAILED HarnessStatus = "CREATE_FAILED"
+	HarnessStatusUPDATING     HarnessStatus = "UPDATING"
+	HarnessStatusUPDATEFAILED HarnessStatus = "UPDATE_FAILED"
+	HarnessStatusREADY        HarnessStatus = "READY"
+	HarnessStatusDELETING     HarnessStatus = "DELETING"
+	HarnessStatusDELETEFAILED HarnessStatus = "DELETE_FAILED"
+)
+
+type OAuthCredentialProviderGrantType string
+
+const (
+	OAuthCredentialProviderGrantTypeCLIENTCREDENTIALS OAuthCredentialProviderGrantType = "CLIENT_CREDENTIALS"
+	OAuthCredentialProviderGrantTypeAUTHORIZATIONCODE OAuthCredentialProviderGrantType = "AUTHORIZATION_CODE"
+)
+
+type HarnessToolType string
+
+const (
+	HarnessToolTypeRemoteMcp                HarnessToolType = "remote_mcp"
+	HarnessToolTypeAgentcoreBrowser         HarnessToolType = "agentcore_browser"
+	HarnessToolTypeAgentcoreGateway         HarnessToolType = "agentcore_gateway"
+	HarnessToolTypeInlineFunction           HarnessToolType = "inline_function"
+	HarnessToolTypeAgentcoreCodeInterpreter HarnessToolType = "agentcore_code_interpreter"
+)
+
+type HarnessTruncationConfigurationStrategy string
+
+const (
+	HarnessTruncationConfigurationStrategySlidingWindow HarnessTruncationConfigurationStrategy = "sliding_window"
+	HarnessTruncationConfigurationStrategySummarization HarnessTruncationConfigurationStrategy = "summarization"
+	HarnessTruncationConfigurationStrategyNone          HarnessTruncationConfigurationStrategy = "none"
+)
+
+type HarnessEndpointStatus string
+
+const (
+	HarnessEndpointStatusCREATING     HarnessEndpointStatus = "CREATING"
+	HarnessEndpointStatusCREATEFAILED HarnessEndpointStatus = "CREATE_FAILED"
+	HarnessEndpointStatusUPDATING     HarnessEndpointStatus = "UPDATING"
+	HarnessEndpointStatusUPDATEFAILED HarnessEndpointStatus = "UPDATE_FAILED"
+	HarnessEndpointStatusREADY        HarnessEndpointStatus = "READY"
+	HarnessEndpointStatusDELETING     HarnessEndpointStatus = "DELETING"
+	HarnessEndpointStatusDELETEFAILED HarnessEndpointStatus = "DELETE_FAILED"
+)
+
+type MetadataValueType string
+
+const (
+	MetadataValueTypeSTRING     MetadataValueType = "STRING"
+	MetadataValueTypeSTRINGLIST MetadataValueType = "STRINGLIST"
+	MetadataValueTypeNUMBER     MetadataValueType = "NUMBER"
+)
+
+type CustomMemoryStrategyStatus string
+
+const (
+	CustomMemoryStrategyStatusCREATING CustomMemoryStrategyStatus = "CREATING"
+	CustomMemoryStrategyStatusACTIVE   CustomMemoryStrategyStatus = "ACTIVE"
+	CustomMemoryStrategyStatusDELETING CustomMemoryStrategyStatus = "DELETING"
+	CustomMemoryStrategyStatusFAILED   CustomMemoryStrategyStatus = "FAILED"
+)
+
+type CustomMemoryStrategyType string
+
+const (
+	CustomMemoryStrategyTypeSEMANTIC       CustomMemoryStrategyType = "SEMANTIC"
+	CustomMemoryStrategyTypeSUMMARIZATION  CustomMemoryStrategyType = "SUMMARIZATION"
+	CustomMemoryStrategyTypeUSERPREFERENCE CustomMemoryStrategyType = "USER_PREFERENCE"
+	CustomMemoryStrategyTypeCUSTOM         CustomMemoryStrategyType = "CUSTOM"
+	CustomMemoryStrategyTypeEPISODIC       CustomMemoryStrategyType = "EPISODIC"
+)
+
+type EpisodicMemoryStrategyStatus string
+
+const (
+	EpisodicMemoryStrategyStatusCREATING EpisodicMemoryStrategyStatus = "CREATING"
+	EpisodicMemoryStrategyStatusACTIVE   EpisodicMemoryStrategyStatus = "ACTIVE"
+	EpisodicMemoryStrategyStatusDELETING EpisodicMemoryStrategyStatus = "DELETING"
+	EpisodicMemoryStrategyStatusFAILED   EpisodicMemoryStrategyStatus = "FAILED"
+)
+
+type EpisodicMemoryStrategyType string
+
+const (
+	EpisodicMemoryStrategyTypeSEMANTIC       EpisodicMemoryStrategyType = "SEMANTIC"
+	EpisodicMemoryStrategyTypeSUMMARIZATION  EpisodicMemoryStrategyType = "SUMMARIZATION"
+	EpisodicMemoryStrategyTypeUSERPREFERENCE EpisodicMemoryStrategyType = "USER_PREFERENCE"
+	EpisodicMemoryStrategyTypeCUSTOM         EpisodicMemoryStrategyType = "CUSTOM"
+	EpisodicMemoryStrategyTypeEPISODIC       EpisodicMemoryStrategyType = "EPISODIC"
+)
+
+type SemanticMemoryStrategyStatus string
+
+const (
+	SemanticMemoryStrategyStatusCREATING SemanticMemoryStrategyStatus = "CREATING"
+	SemanticMemoryStrategyStatusACTIVE   SemanticMemoryStrategyStatus = "ACTIVE"
+	SemanticMemoryStrategyStatusDELETING SemanticMemoryStrategyStatus = "DELETING"
+	SemanticMemoryStrategyStatusFAILED   SemanticMemoryStrategyStatus = "FAILED"
+)
+
+type SemanticMemoryStrategyType string
+
+const (
+	SemanticMemoryStrategyTypeSEMANTIC       SemanticMemoryStrategyType = "SEMANTIC"
+	SemanticMemoryStrategyTypeSUMMARIZATION  SemanticMemoryStrategyType = "SUMMARIZATION"
+	SemanticMemoryStrategyTypeUSERPREFERENCE SemanticMemoryStrategyType = "USER_PREFERENCE"
+	SemanticMemoryStrategyTypeCUSTOM         SemanticMemoryStrategyType = "CUSTOM"
+	SemanticMemoryStrategyTypeEPISODIC       SemanticMemoryStrategyType = "EPISODIC"
+)
+
+type SummaryMemoryStrategyStatus string
+
+const (
+	SummaryMemoryStrategyStatusCREATING SummaryMemoryStrategyStatus = "CREATING"
+	SummaryMemoryStrategyStatusACTIVE   SummaryMemoryStrategyStatus = "ACTIVE"
+	SummaryMemoryStrategyStatusDELETING SummaryMemoryStrategyStatus = "DELETING"
+	SummaryMemoryStrategyStatusFAILED   SummaryMemoryStrategyStatus = "FAILED"
+)
+
+type SummaryMemoryStrategyType string
+
+const (
+	SummaryMemoryStrategyTypeSEMANTIC       SummaryMemoryStrategyType = "SEMANTIC"
+	SummaryMemoryStrategyTypeSUMMARIZATION  SummaryMemoryStrategyType = "SUMMARIZATION"
+	SummaryMemoryStrategyTypeUSERPREFERENCE SummaryMemoryStrategyType = "USER_PREFERENCE"
+	SummaryMemoryStrategyTypeCUSTOM         SummaryMemoryStrategyType = "CUSTOM"
+	SummaryMemoryStrategyTypeEPISODIC       SummaryMemoryStrategyType = "EPISODIC"
+)
+
+type UserPreferenceMemoryStrategyStatus string
+
+const (
+	UserPreferenceMemoryStrategyStatusCREATING UserPreferenceMemoryStrategyStatus = "CREATING"
+	UserPreferenceMemoryStrategyStatusACTIVE   UserPreferenceMemoryStrategyStatus = "ACTIVE"
+	UserPreferenceMemoryStrategyStatusDELETING UserPreferenceMemoryStrategyStatus = "DELETING"
+	UserPreferenceMemoryStrategyStatusFAILED   UserPreferenceMemoryStrategyStatus = "FAILED"
+)
+
+type UserPreferenceMemoryStrategyType string
+
+const (
+	UserPreferenceMemoryStrategyTypeSEMANTIC       UserPreferenceMemoryStrategyType = "SEMANTIC"
+	UserPreferenceMemoryStrategyTypeSUMMARIZATION  UserPreferenceMemoryStrategyType = "SUMMARIZATION"
+	UserPreferenceMemoryStrategyTypeUSERPREFERENCE UserPreferenceMemoryStrategyType = "USER_PREFERENCE"
+	UserPreferenceMemoryStrategyTypeCUSTOM         UserPreferenceMemoryStrategyType = "CUSTOM"
+	UserPreferenceMemoryStrategyTypeEPISODIC       UserPreferenceMemoryStrategyType = "EPISODIC"
+)
+
+type MemoryStatus string
+
+const (
+	MemoryStatusCREATING MemoryStatus = "CREATING"
+	MemoryStatusACTIVE   MemoryStatus = "ACTIVE"
+	MemoryStatusFAILED   MemoryStatus = "FAILED"
+	MemoryStatusDELETING MemoryStatus = "DELETING"
+)
+
+type ContentConfigurationLevel string
+
+const (
+	ContentConfigurationLevelMETADATAONLY ContentConfigurationLevel = "METADATA_ONLY"
+	ContentConfigurationLevelFULLCONTENT  ContentConfigurationLevel = "FULL_CONTENT"
+)
+
+type ContentConfigurationType string
+
+const (
+	ContentConfigurationTypeMEMORYRECORDS ContentConfigurationType = "MEMORY_RECORDS"
+)
+
+type OAuth2CredentialProviderClientSecretSource string
+
+const (
+	OAuth2CredentialProviderClientSecretSourceMANAGED  OAuth2CredentialProviderClientSecretSource = "MANAGED"
+	OAuth2CredentialProviderClientSecretSourceEXTERNAL OAuth2CredentialProviderClientSecretSource = "EXTERNAL"
+)
+
+type OAuth2CredentialProviderCredentialProviderVendor string
+
+const (
+	OAuth2CredentialProviderCredentialProviderVendorGoogleOauth2     OAuth2CredentialProviderCredentialProviderVendor = "GoogleOauth2"
+	OAuth2CredentialProviderCredentialProviderVendorGithubOauth2     OAuth2CredentialProviderCredentialProviderVendor = "GithubOauth2"
+	OAuth2CredentialProviderCredentialProviderVendorSlackOauth2      OAuth2CredentialProviderCredentialProviderVendor = "SlackOauth2"
+	OAuth2CredentialProviderCredentialProviderVendorSalesforceOauth2 OAuth2CredentialProviderCredentialProviderVendor = "SalesforceOauth2"
+	OAuth2CredentialProviderCredentialProviderVendorMicrosoftOauth2  OAuth2CredentialProviderCredentialProviderVendor = "MicrosoftOauth2"
+	OAuth2CredentialProviderCredentialProviderVendorCustomOauth2     OAuth2CredentialProviderCredentialProviderVendor = "CustomOauth2"
+	OAuth2CredentialProviderCredentialProviderVendorAtlassianOauth2  OAuth2CredentialProviderCredentialProviderVendor = "AtlassianOauth2"
+	OAuth2CredentialProviderCredentialProviderVendorLinkedinOauth2   OAuth2CredentialProviderCredentialProviderVendor = "LinkedinOauth2"
+	OAuth2CredentialProviderCredentialProviderVendorXOauth2          OAuth2CredentialProviderCredentialProviderVendor = "XOauth2"
+	OAuth2CredentialProviderCredentialProviderVendorOktaOauth2       OAuth2CredentialProviderCredentialProviderVendor = "OktaOauth2"
+	OAuth2CredentialProviderCredentialProviderVendorOneLoginOauth2   OAuth2CredentialProviderCredentialProviderVendor = "OneLoginOauth2"
+	OAuth2CredentialProviderCredentialProviderVendorPingOneOauth2    OAuth2CredentialProviderCredentialProviderVendor = "PingOneOauth2"
+	OAuth2CredentialProviderCredentialProviderVendorFacebookOauth2   OAuth2CredentialProviderCredentialProviderVendor = "FacebookOauth2"
+	OAuth2CredentialProviderCredentialProviderVendorYandexOauth2     OAuth2CredentialProviderCredentialProviderVendor = "YandexOauth2"
+	OAuth2CredentialProviderCredentialProviderVendorRedditOauth2     OAuth2CredentialProviderCredentialProviderVendor = "RedditOauth2"
+	OAuth2CredentialProviderCredentialProviderVendorZoomOauth2       OAuth2CredentialProviderCredentialProviderVendor = "ZoomOauth2"
+	OAuth2CredentialProviderCredentialProviderVendorTwitchOauth2     OAuth2CredentialProviderCredentialProviderVendor = "TwitchOauth2"
+	OAuth2CredentialProviderCredentialProviderVendorSpotifyOauth2    OAuth2CredentialProviderCredentialProviderVendor = "SpotifyOauth2"
+	OAuth2CredentialProviderCredentialProviderVendorDropboxOauth2    OAuth2CredentialProviderCredentialProviderVendor = "DropboxOauth2"
+	OAuth2CredentialProviderCredentialProviderVendorNotionOauth2     OAuth2CredentialProviderCredentialProviderVendor = "NotionOauth2"
+	OAuth2CredentialProviderCredentialProviderVendorHubspotOauth2    OAuth2CredentialProviderCredentialProviderVendor = "HubspotOauth2"
+	OAuth2CredentialProviderCredentialProviderVendorCyberArkOauth2   OAuth2CredentialProviderCredentialProviderVendor = "CyberArkOauth2"
+	OAuth2CredentialProviderCredentialProviderVendorFusionAuthOauth2 OAuth2CredentialProviderCredentialProviderVendor = "FusionAuthOauth2"
+	OAuth2CredentialProviderCredentialProviderVendorAuth0Oauth2      OAuth2CredentialProviderCredentialProviderVendor = "Auth0Oauth2"
+	OAuth2CredentialProviderCredentialProviderVendorCognitoOauth2    OAuth2CredentialProviderCredentialProviderVendor = "CognitoOauth2"
+)
+
+type AtlassianOauth2ProviderConfigInputClientSecretSource string
+
+const (
+	AtlassianOauth2ProviderConfigInputClientSecretSourceMANAGED  AtlassianOauth2ProviderConfigInputClientSecretSource = "MANAGED"
+	AtlassianOauth2ProviderConfigInputClientSecretSourceEXTERNAL AtlassianOauth2ProviderConfigInputClientSecretSource = "EXTERNAL"
+)
+
+type CustomOauth2ProviderConfigInputClientAuthenticationMethod string
+
+const (
+	CustomOauth2ProviderConfigInputClientAuthenticationMethodCLIENTSECRETBASIC CustomOauth2ProviderConfigInputClientAuthenticationMethod = "CLIENT_SECRET_BASIC"
+	CustomOauth2ProviderConfigInputClientAuthenticationMethodCLIENTSECRETPOST  CustomOauth2ProviderConfigInputClientAuthenticationMethod = "CLIENT_SECRET_POST"
+	CustomOauth2ProviderConfigInputClientAuthenticationMethodAWSIAMIDTOKENJWT  CustomOauth2ProviderConfigInputClientAuthenticationMethod = "AWS_IAM_ID_TOKEN_JWT"
+	CustomOauth2ProviderConfigInputClientAuthenticationMethodPRIVATEKEYJWT     CustomOauth2ProviderConfigInputClientAuthenticationMethod = "PRIVATE_KEY_JWT"
+)
+
+type CustomOauth2ProviderConfigInputClientSecretSource string
+
+const (
+	CustomOauth2ProviderConfigInputClientSecretSourceMANAGED  CustomOauth2ProviderConfigInputClientSecretSource = "MANAGED"
+	CustomOauth2ProviderConfigInputClientSecretSourceEXTERNAL CustomOauth2ProviderConfigInputClientSecretSource = "EXTERNAL"
+)
+
+type OnBehalfOfTokenExchangeConfigGrantType string
+
+const (
+	OnBehalfOfTokenExchangeConfigGrantTypeTOKENEXCHANGE         OnBehalfOfTokenExchangeConfigGrantType = "TOKEN_EXCHANGE"
+	OnBehalfOfTokenExchangeConfigGrantTypeJWTAUTHORIZATIONGRANT OnBehalfOfTokenExchangeConfigGrantType = "JWT_AUTHORIZATION_GRANT"
+)
+
+type TokenExchangeGrantTypeConfigActorTokenContent string
+
+const (
+	TokenExchangeGrantTypeConfigActorTokenContentNONE             TokenExchangeGrantTypeConfigActorTokenContent = "NONE"
+	TokenExchangeGrantTypeConfigActorTokenContentM2M              TokenExchangeGrantTypeConfigActorTokenContent = "M2M"
+	TokenExchangeGrantTypeConfigActorTokenContentAWSIAMIDTOKENJWT TokenExchangeGrantTypeConfigActorTokenContent = "AWS_IAM_ID_TOKEN_JWT"
+)
+
+type OAuth2CredentialProviderManagedVpcResourceEndpointIpAddressType string
+
+const (
+	OAuth2CredentialProviderManagedVpcResourceEndpointIpAddressTypeIPV4 OAuth2CredentialProviderManagedVpcResourceEndpointIpAddressType = "IPV4"
+	OAuth2CredentialProviderManagedVpcResourceEndpointIpAddressTypeIPV6 OAuth2CredentialProviderManagedVpcResourceEndpointIpAddressType = "IPV6"
+)
+
+type PrivateKeyJwtConfigSigningAlgorithm string
+
+const (
+	PrivateKeyJwtConfigSigningAlgorithmRS256 PrivateKeyJwtConfigSigningAlgorithm = "RS256"
+	PrivateKeyJwtConfigSigningAlgorithmPS256 PrivateKeyJwtConfigSigningAlgorithm = "PS256"
+	PrivateKeyJwtConfigSigningAlgorithmES256 PrivateKeyJwtConfigSigningAlgorithm = "ES256"
+)
+
+type GithubOauth2ProviderConfigInputClientSecretSource string
+
+const (
+	GithubOauth2ProviderConfigInputClientSecretSourceMANAGED  GithubOauth2ProviderConfigInputClientSecretSource = "MANAGED"
+	GithubOauth2ProviderConfigInputClientSecretSourceEXTERNAL GithubOauth2ProviderConfigInputClientSecretSource = "EXTERNAL"
+)
+
+type GoogleOauth2ProviderConfigInputClientSecretSource string
+
+const (
+	GoogleOauth2ProviderConfigInputClientSecretSourceMANAGED  GoogleOauth2ProviderConfigInputClientSecretSource = "MANAGED"
+	GoogleOauth2ProviderConfigInputClientSecretSourceEXTERNAL GoogleOauth2ProviderConfigInputClientSecretSource = "EXTERNAL"
+)
+
+type IncludedOauth2ProviderConfigInputClientSecretSource string
+
+const (
+	IncludedOauth2ProviderConfigInputClientSecretSourceMANAGED  IncludedOauth2ProviderConfigInputClientSecretSource = "MANAGED"
+	IncludedOauth2ProviderConfigInputClientSecretSourceEXTERNAL IncludedOauth2ProviderConfigInputClientSecretSource = "EXTERNAL"
+)
+
+type LinkedinOauth2ProviderConfigInputClientSecretSource string
+
+const (
+	LinkedinOauth2ProviderConfigInputClientSecretSourceMANAGED  LinkedinOauth2ProviderConfigInputClientSecretSource = "MANAGED"
+	LinkedinOauth2ProviderConfigInputClientSecretSourceEXTERNAL LinkedinOauth2ProviderConfigInputClientSecretSource = "EXTERNAL"
+)
+
+type MicrosoftOauth2ProviderConfigInputClientSecretSource string
+
+const (
+	MicrosoftOauth2ProviderConfigInputClientSecretSourceMANAGED  MicrosoftOauth2ProviderConfigInputClientSecretSource = "MANAGED"
+	MicrosoftOauth2ProviderConfigInputClientSecretSourceEXTERNAL MicrosoftOauth2ProviderConfigInputClientSecretSource = "EXTERNAL"
+)
+
+type SalesforceOauth2ProviderConfigInputClientSecretSource string
+
+const (
+	SalesforceOauth2ProviderConfigInputClientSecretSourceMANAGED  SalesforceOauth2ProviderConfigInputClientSecretSource = "MANAGED"
+	SalesforceOauth2ProviderConfigInputClientSecretSourceEXTERNAL SalesforceOauth2ProviderConfigInputClientSecretSource = "EXTERNAL"
+)
+
+type SlackOauth2ProviderConfigInputClientSecretSource string
+
+const (
+	SlackOauth2ProviderConfigInputClientSecretSourceMANAGED  SlackOauth2ProviderConfigInputClientSecretSource = "MANAGED"
+	SlackOauth2ProviderConfigInputClientSecretSourceEXTERNAL SlackOauth2ProviderConfigInputClientSecretSource = "EXTERNAL"
+)
+
+type Oauth2ProviderConfigOutputClientAuthenticationMethod string
+
+const (
+	Oauth2ProviderConfigOutputClientAuthenticationMethodCLIENTSECRETBASIC Oauth2ProviderConfigOutputClientAuthenticationMethod = "CLIENT_SECRET_BASIC"
+	Oauth2ProviderConfigOutputClientAuthenticationMethodCLIENTSECRETPOST  Oauth2ProviderConfigOutputClientAuthenticationMethod = "CLIENT_SECRET_POST"
+	Oauth2ProviderConfigOutputClientAuthenticationMethodAWSIAMIDTOKENJWT  Oauth2ProviderConfigOutputClientAuthenticationMethod = "AWS_IAM_ID_TOKEN_JWT"
+	Oauth2ProviderConfigOutputClientAuthenticationMethodPRIVATEKEYJWT     Oauth2ProviderConfigOutputClientAuthenticationMethod = "PRIVATE_KEY_JWT"
+)
+
+type OAuth2CredentialProviderStatus string
+
+const (
+	OAuth2CredentialProviderStatusCREATING     OAuth2CredentialProviderStatus = "CREATING"
+	OAuth2CredentialProviderStatusCREATEFAILED OAuth2CredentialProviderStatus = "CREATE_FAILED"
+	OAuth2CredentialProviderStatusUPDATING     OAuth2CredentialProviderStatus = "UPDATING"
+	OAuth2CredentialProviderStatusUPDATEFAILED OAuth2CredentialProviderStatus = "UPDATE_FAILED"
+	OAuth2CredentialProviderStatusREADY        OAuth2CredentialProviderStatus = "READY"
+	OAuth2CredentialProviderStatusDELETING     OAuth2CredentialProviderStatus = "DELETING"
+	OAuth2CredentialProviderStatusDELETEFAILED OAuth2CredentialProviderStatus = "DELETE_FAILED"
+)
+
+type ClusteringFrequency string
+
+const (
+	ClusteringFrequencyDAILY   ClusteringFrequency = "DAILY"
+	ClusteringFrequencyWEEKLY  ClusteringFrequency = "WEEKLY"
+	ClusteringFrequencyMONTHLY ClusteringFrequency = "MONTHLY"
+)
+
+type ExecutionStatus string
+
+const (
+	ExecutionStatusENABLED  ExecutionStatus = "ENABLED"
+	ExecutionStatusDISABLED ExecutionStatus = "DISABLED"
+)
+
+type FilterOperator string
+
+const (
+	FilterOperatorEquals             FilterOperator = "Equals"
+	FilterOperatorNotEquals          FilterOperator = "NotEquals"
+	FilterOperatorGreaterThan        FilterOperator = "GreaterThan"
+	FilterOperatorLessThan           FilterOperator = "LessThan"
+	FilterOperatorGreaterThanOrEqual FilterOperator = "GreaterThanOrEqual"
+	FilterOperatorLessThanOrEqual    FilterOperator = "LessThanOrEqual"
+	FilterOperatorContains           FilterOperator = "Contains"
+	FilterOperatorNotContains        FilterOperator = "NotContains"
+)
+
+type OnlineEvaluationConfigStatus string
+
+const (
+	OnlineEvaluationConfigStatusACTIVE       OnlineEvaluationConfigStatus = "ACTIVE"
+	OnlineEvaluationConfigStatusCREATING     OnlineEvaluationConfigStatus = "CREATING"
+	OnlineEvaluationConfigStatusCREATEFAILED OnlineEvaluationConfigStatus = "CREATE_FAILED"
+	OnlineEvaluationConfigStatusUPDATING     OnlineEvaluationConfigStatus = "UPDATING"
+	OnlineEvaluationConfigStatusUPDATEFAILED OnlineEvaluationConfigStatus = "UPDATE_FAILED"
+	OnlineEvaluationConfigStatusDELETING     OnlineEvaluationConfigStatus = "DELETING"
+)
+
+type PaymentConnectorStatus string
+
+const (
+	PaymentConnectorStatusCREATING     PaymentConnectorStatus = "CREATING"
+	PaymentConnectorStatusUPDATING     PaymentConnectorStatus = "UPDATING"
+	PaymentConnectorStatusDELETING     PaymentConnectorStatus = "DELETING"
+	PaymentConnectorStatusREADY        PaymentConnectorStatus = "READY"
+	PaymentConnectorStatusCREATEFAILED PaymentConnectorStatus = "CREATE_FAILED"
+	PaymentConnectorStatusUPDATEFAILED PaymentConnectorStatus = "UPDATE_FAILED"
+	PaymentConnectorStatusDELETEFAILED PaymentConnectorStatus = "DELETE_FAILED"
+)
+
+type PaymentConnectorType string
+
+const (
+	PaymentConnectorTypeCoinbaseCDP PaymentConnectorType = "CoinbaseCDP"
+	PaymentConnectorTypeStripePrivy PaymentConnectorType = "StripePrivy"
+)
+
+type PaymentCredentialProviderVendorType string
+
+const (
+	PaymentCredentialProviderVendorTypeCoinbaseCDP PaymentCredentialProviderVendorType = "CoinbaseCDP"
+	PaymentCredentialProviderVendorTypeStripePrivy PaymentCredentialProviderVendorType = "StripePrivy"
+)
+
+type SecretSourceType string
+
+const (
+	SecretSourceTypeMANAGED  SecretSourceType = "MANAGED"
+	SecretSourceTypeEXTERNAL SecretSourceType = "EXTERNAL"
+)
+
+type PaymentManagerAuthorizingClaimMatchValueTypeClaimMatchOperator string
+
+const (
+	PaymentManagerAuthorizingClaimMatchValueTypeClaimMatchOperatorEQUALS      PaymentManagerAuthorizingClaimMatchValueTypeClaimMatchOperator = "EQUALS"
+	PaymentManagerAuthorizingClaimMatchValueTypeClaimMatchOperatorCONTAINS    PaymentManagerAuthorizingClaimMatchValueTypeClaimMatchOperator = "CONTAINS"
+	PaymentManagerAuthorizingClaimMatchValueTypeClaimMatchOperatorCONTAINSANY PaymentManagerAuthorizingClaimMatchValueTypeClaimMatchOperator = "CONTAINS_ANY"
+)
+
+type PaymentManagerCustomClaimValidationTypeInboundTokenClaimValueType string
+
+const (
+	PaymentManagerCustomClaimValidationTypeInboundTokenClaimValueTypeSTRING      PaymentManagerCustomClaimValidationTypeInboundTokenClaimValueType = "STRING"
+	PaymentManagerCustomClaimValidationTypeInboundTokenClaimValueTypeSTRINGARRAY PaymentManagerCustomClaimValidationTypeInboundTokenClaimValueType = "STRING_ARRAY"
+)
+
+type PaymentsAuthorizerType string
+
+const (
+	PaymentsAuthorizerTypeCUSTOMJWT PaymentsAuthorizerType = "CUSTOM_JWT"
+	PaymentsAuthorizerTypeAWSIAM    PaymentsAuthorizerType = "AWS_IAM"
+)
+
+type PaymentManagerStatus string
+
+const (
+	PaymentManagerStatusCREATING     PaymentManagerStatus = "CREATING"
+	PaymentManagerStatusUPDATING     PaymentManagerStatus = "UPDATING"
+	PaymentManagerStatusDELETING     PaymentManagerStatus = "DELETING"
+	PaymentManagerStatusREADY        PaymentManagerStatus = "READY"
+	PaymentManagerStatusCREATEFAILED PaymentManagerStatus = "CREATE_FAILED"
+	PaymentManagerStatusUPDATEFAILED PaymentManagerStatus = "UPDATE_FAILED"
+	PaymentManagerStatusDELETEFAILED PaymentManagerStatus = "DELETE_FAILED"
+)
+
+type EnforcementMode string
+
+const (
+	EnforcementModeACTIVE  EnforcementMode = "ACTIVE"
+	EnforcementModeLOGONLY EnforcementMode = "LOG_ONLY"
+)
+
+type PolicyStatus string
+
+const (
+	PolicyStatusCREATING     PolicyStatus = "CREATING"
+	PolicyStatusACTIVE       PolicyStatus = "ACTIVE"
+	PolicyStatusUPDATING     PolicyStatus = "UPDATING"
+	PolicyStatusDELETING     PolicyStatus = "DELETING"
+	PolicyStatusCREATEFAILED PolicyStatus = "CREATE_FAILED"
+	PolicyStatusUPDATEFAILED PolicyStatus = "UPDATE_FAILED"
+	PolicyStatusDELETEFAILED PolicyStatus = "DELETE_FAILED"
+)
+
+type PolicyValidationMode string
+
+const (
+	PolicyValidationModeFAILONANYFINDINGS PolicyValidationMode = "FAIL_ON_ANY_FINDINGS"
+	PolicyValidationModeIGNOREALLFINDINGS PolicyValidationMode = "IGNORE_ALL_FINDINGS"
+)
+
+type PolicyEngineStatus string
+
+const (
+	PolicyEngineStatusCREATING     PolicyEngineStatus = "CREATING"
+	PolicyEngineStatusACTIVE       PolicyEngineStatus = "ACTIVE"
+	PolicyEngineStatusUPDATING     PolicyEngineStatus = "UPDATING"
+	PolicyEngineStatusDELETING     PolicyEngineStatus = "DELETING"
+	PolicyEngineStatusCREATEFAILED PolicyEngineStatus = "CREATE_FAILED"
+	PolicyEngineStatusUPDATEFAILED PolicyEngineStatus = "UPDATE_FAILED"
+	PolicyEngineStatusDELETEFAILED PolicyEngineStatus = "DELETE_FAILED"
+)
+
+type AgentManagedRuntimeType string
+
+const (
+	AgentManagedRuntimeTypePYTHON310 AgentManagedRuntimeType = "PYTHON_3_10"
+	AgentManagedRuntimeTypePYTHON311 AgentManagedRuntimeType = "PYTHON_3_11"
+	AgentManagedRuntimeTypePYTHON312 AgentManagedRuntimeType = "PYTHON_3_12"
+	AgentManagedRuntimeTypePYTHON313 AgentManagedRuntimeType = "PYTHON_3_13"
+	AgentManagedRuntimeTypePYTHON314 AgentManagedRuntimeType = "PYTHON_3_14"
+	AgentManagedRuntimeTypeNODE22    AgentManagedRuntimeType = "NODE_22"
+)
+
+type ClaimMatchOperator string
+
+const (
+	ClaimMatchOperatorEQUALS      ClaimMatchOperator = "EQUALS"
+	ClaimMatchOperatorCONTAINS    ClaimMatchOperator = "CONTAINS"
+	ClaimMatchOperatorCONTAINSANY ClaimMatchOperator = "CONTAINS_ANY"
+)
+
+type InboundTokenClaimValueType string
+
+const (
+	InboundTokenClaimValueTypeSTRING      InboundTokenClaimValueType = "STRING"
+	InboundTokenClaimValueTypeSTRINGARRAY InboundTokenClaimValueType = "STRING_ARRAY"
+)
+
+type NetworkMode string
+
+const (
+	NetworkModePUBLIC NetworkMode = "PUBLIC"
+	NetworkModeVPC    NetworkMode = "VPC"
+)
+
+type ProtocolConfiguration string
+
+const (
+	ProtocolConfigurationMCP  ProtocolConfiguration = "MCP"
+	ProtocolConfigurationHTTP ProtocolConfiguration = "HTTP"
+	ProtocolConfigurationA2A  ProtocolConfiguration = "A2A"
+	ProtocolConfigurationAGUI ProtocolConfiguration = "AGUI"
+)
+
+type AgentStatus string
+
+const (
+	AgentStatusCREATING     AgentStatus = "CREATING"
+	AgentStatusCREATEFAILED AgentStatus = "CREATE_FAILED"
+	AgentStatusUPDATING     AgentStatus = "UPDATING"
+	AgentStatusUPDATEFAILED AgentStatus = "UPDATE_FAILED"
+	AgentStatusREADY        AgentStatus = "READY"
+	AgentStatusDELETING     AgentStatus = "DELETING"
+)
+
+type AgentRuntimeEndpointStatus string
+
+const (
+	AgentRuntimeEndpointStatusCREATING     AgentRuntimeEndpointStatus = "CREATING"
+	AgentRuntimeEndpointStatusCREATEFAILED AgentRuntimeEndpointStatus = "CREATE_FAILED"
+	AgentRuntimeEndpointStatusUPDATING     AgentRuntimeEndpointStatus = "UPDATING"
+	AgentRuntimeEndpointStatusUPDATEFAILED AgentRuntimeEndpointStatus = "UPDATE_FAILED"
+	AgentRuntimeEndpointStatusREADY        AgentRuntimeEndpointStatus = "READY"
+	AgentRuntimeEndpointStatusDELETING     AgentRuntimeEndpointStatus = "DELETING"
+)

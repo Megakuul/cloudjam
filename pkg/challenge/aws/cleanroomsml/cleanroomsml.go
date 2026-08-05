@@ -40,13 +40,13 @@ func (ConfiguredModelAlgorithm) CloudControlType() string {
 }
 
 type TrainedModelExportsMaxSize struct {
-	Unit  *string  `json:"Unit,omitempty"`
-	Value *float64 `json:"Value,omitempty"`
+	Unit  *TrainedModelExportsMaxSizeUnitType `json:"Unit,omitempty"`
+	Value *float64                            `json:"Value,omitempty"`
 }
 
 type TrainedModelExportsConfigurationPolicy struct {
-	FilesToExport []string                    `json:"FilesToExport,omitempty"`
-	MaxSize       *TrainedModelExportsMaxSize `json:"MaxSize,omitempty"`
+	FilesToExport []TrainedModelExportFileType `json:"FilesToExport,omitempty"`
+	MaxSize       *TrainedModelExportsMaxSize  `json:"MaxSize,omitempty"`
 }
 
 type CustomEntityConfig struct {
@@ -55,19 +55,19 @@ type CustomEntityConfig struct {
 
 type LogRedactionConfiguration struct {
 	CustomEntityConfig *CustomEntityConfig `json:"CustomEntityConfig,omitempty"`
-	EntitiesToRedact   []string            `json:"EntitiesToRedact,omitempty"`
+	EntitiesToRedact   []EntityType        `json:"EntitiesToRedact,omitempty"`
 }
 
 type LogsConfigurationPolicy struct {
 	AllowedAccountIds         []string                   `json:"AllowedAccountIds,omitempty"`
 	FilterPattern             *string                    `json:"FilterPattern,omitempty"`
 	LogRedactionConfiguration *LogRedactionConfiguration `json:"LogRedactionConfiguration,omitempty"`
-	LogType                   *string                    `json:"LogType,omitempty"`
+	LogType                   *LogType                   `json:"LogType,omitempty"`
 }
 
 type TrainedModelInferenceMaxOutputSize struct {
-	Unit  *string  `json:"Unit,omitempty"`
-	Value *float64 `json:"Value,omitempty"`
+	Unit  *TrainedModelInferenceMaxOutputSizeUnitType `json:"Unit,omitempty"`
+	Value *float64                                    `json:"Value,omitempty"`
 }
 
 type TrainedModelInferenceJobsConfigurationPolicy struct {
@@ -76,12 +76,12 @@ type TrainedModelInferenceJobsConfigurationPolicy struct {
 }
 
 type MetricsConfigurationPolicy struct {
-	NoiseLevel *string `json:"NoiseLevel,omitempty"`
+	NoiseLevel *NoiseLevelType `json:"NoiseLevel,omitempty"`
 }
 
 type TrainedModelArtifactMaxSize struct {
-	Unit  *string  `json:"Unit,omitempty"`
-	Value *float64 `json:"Value,omitempty"`
+	Unit  *TrainedModelArtifactMaxSizeUnitType `json:"Unit,omitempty"`
+	Value *float64                             `json:"Value,omitempty"`
 }
 
 type TrainedModelsConfigurationPolicy struct {
@@ -136,8 +136,8 @@ type DataSource struct {
 }
 
 type ColumnSchema struct {
-	ColumnName  *string  `json:"ColumnName,omitempty"`
-	ColumnTypes []string `json:"ColumnTypes,omitempty"`
+	ColumnName  *string      `json:"ColumnName,omitempty"`
+	ColumnTypes []ColumnType `json:"ColumnTypes,omitempty"`
 }
 
 type DatasetInputConfig struct {
@@ -147,17 +147,88 @@ type DatasetInputConfig struct {
 
 type Dataset struct {
 	InputConfig *DatasetInputConfig `json:"InputConfig,omitempty"`
-	Type        *string             `json:"Type,omitempty"`
+	Type        *DatasetType        `json:"Type,omitempty"`
 }
 
 type TrainingDataset struct {
-	Description        *string              `json:"Description,omitempty"`
-	Name               *string              `json:"Name,omitempty"`
-	RoleArn            *string              `json:"RoleArn,omitempty"`
-	Status             *string              `json:"Status,omitempty"`
-	Tags               []TrainingDatasetTag `json:"Tags,omitempty"`
-	TrainingData       []Dataset            `json:"TrainingData,omitempty"`
-	TrainingDatasetArn *string              `json:"TrainingDatasetArn,omitempty"`
+	Description        *string                `json:"Description,omitempty"`
+	Name               *string                `json:"Name,omitempty"`
+	RoleArn            *string                `json:"RoleArn,omitempty"`
+	Status             *TrainingDatasetStatus `json:"Status,omitempty"`
+	Tags               []TrainingDatasetTag   `json:"Tags,omitempty"`
+	TrainingData       []Dataset              `json:"TrainingData,omitempty"`
+	TrainingDatasetArn *string                `json:"TrainingDatasetArn,omitempty"`
 }
 
 func (TrainingDataset) CloudControlType() string { return "AWS::CleanRoomsML::TrainingDataset" }
+
+type TrainedModelExportFileType string
+
+const (
+	TrainedModelExportFileTypeMODEL  TrainedModelExportFileType = "MODEL"
+	TrainedModelExportFileTypeOUTPUT TrainedModelExportFileType = "OUTPUT"
+)
+
+type TrainedModelExportsMaxSizeUnitType string
+
+const (
+	TrainedModelExportsMaxSizeUnitTypeGB TrainedModelExportsMaxSizeUnitType = "GB"
+)
+
+type EntityType string
+
+const (
+	EntityTypeALLPERSONALLYIDENTIFIABLEINFORMATION EntityType = "ALL_PERSONALLY_IDENTIFIABLE_INFORMATION"
+	EntityTypeNUMBERS                              EntityType = "NUMBERS"
+	EntityTypeCUSTOM                               EntityType = "CUSTOM"
+)
+
+type LogType string
+
+const (
+	LogTypeALL          LogType = "ALL"
+	LogTypeERRORSUMMARY LogType = "ERROR_SUMMARY"
+)
+
+type TrainedModelInferenceMaxOutputSizeUnitType string
+
+const (
+	TrainedModelInferenceMaxOutputSizeUnitTypeGB TrainedModelInferenceMaxOutputSizeUnitType = "GB"
+)
+
+type NoiseLevelType string
+
+const (
+	NoiseLevelTypeHIGH   NoiseLevelType = "HIGH"
+	NoiseLevelTypeMEDIUM NoiseLevelType = "MEDIUM"
+	NoiseLevelTypeLOW    NoiseLevelType = "LOW"
+	NoiseLevelTypeNONE   NoiseLevelType = "NONE"
+)
+
+type TrainedModelArtifactMaxSizeUnitType string
+
+const (
+	TrainedModelArtifactMaxSizeUnitTypeGB TrainedModelArtifactMaxSizeUnitType = "GB"
+)
+
+type TrainingDatasetStatus string
+
+const (
+	TrainingDatasetStatusACTIVE TrainingDatasetStatus = "ACTIVE"
+)
+
+type ColumnType string
+
+const (
+	ColumnTypeUSERID             ColumnType = "USER_ID"
+	ColumnTypeITEMID             ColumnType = "ITEM_ID"
+	ColumnTypeTIMESTAMP          ColumnType = "TIMESTAMP"
+	ColumnTypeCATEGORICALFEATURE ColumnType = "CATEGORICAL_FEATURE"
+	ColumnTypeNUMERICALFEATURE   ColumnType = "NUMERICAL_FEATURE"
+)
+
+type DatasetType string
+
+const (
+	DatasetTypeINTERACTIONS DatasetType = "INTERACTIONS"
+)

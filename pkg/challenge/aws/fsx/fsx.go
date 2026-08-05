@@ -6,11 +6,11 @@ package fsx
 import "encoding/json"
 
 type AutoExportPolicy struct {
-	Events []string `json:"Events,omitempty"`
+	Events []EventType `json:"Events,omitempty"`
 }
 
 type AutoImportPolicy struct {
-	Events []string `json:"Events,omitempty"`
+	Events []EventType `json:"Events,omitempty"`
 }
 
 type S3 struct {
@@ -211,9 +211,9 @@ type OntapWindowsFileSystemUser struct {
 }
 
 type OntapFileSystemIdentity struct {
-	Type        *string                     `json:"Type,omitempty"`
-	UnixUser    *OntapUnixFileSystemUser    `json:"UnixUser,omitempty"`
-	WindowsUser *OntapWindowsFileSystemUser `json:"WindowsUser,omitempty"`
+	Type        *OntapFileSystemIdentityType `json:"Type,omitempty"`
+	UnixUser    *OntapUnixFileSystemUser     `json:"UnixUser,omitempty"`
+	WindowsUser *OntapWindowsFileSystemUser  `json:"WindowsUser,omitempty"`
 }
 
 type S3AccessPointOntapConfiguration struct {
@@ -232,8 +232,8 @@ type OpenZFSPosixFileSystemUser struct {
 }
 
 type OpenZFSFileSystemIdentity struct {
-	PosixUser *OpenZFSPosixFileSystemUser `json:"PosixUser,omitempty"`
-	Type      *string                     `json:"Type,omitempty"`
+	PosixUser *OpenZFSPosixFileSystemUser    `json:"PosixUser,omitempty"`
+	Type      *OpenZFSFileSystemIdentityType `json:"Type,omitempty"`
 }
 
 type S3AccessPointOpenZFSConfiguration struct {
@@ -253,12 +253,12 @@ type S3AccessPoint struct {
 }
 
 type S3AccessPointAttachment struct {
-	Lifecycle            *string                            `json:"Lifecycle,omitempty"`
+	Lifecycle            *S3AccessPointAttachmentLifecycle  `json:"Lifecycle,omitempty"`
 	Name                 *string                            `json:"Name,omitempty"`
 	OntapConfiguration   *S3AccessPointOntapConfiguration   `json:"OntapConfiguration,omitempty"`
 	OpenZFSConfiguration *S3AccessPointOpenZFSConfiguration `json:"OpenZFSConfiguration,omitempty"`
 	S3AccessPoint        *S3AccessPoint                     `json:"S3AccessPoint,omitempty"`
-	Type                 *string                            `json:"Type,omitempty"`
+	Type                 *S3AccessPointAttachmentType       `json:"Type,omitempty"`
 }
 
 func (S3AccessPointAttachment) CloudControlType() string { return "AWS::FSx::S3AccessPointAttachment" }
@@ -415,3 +415,42 @@ type Volume struct {
 }
 
 func (Volume) CloudControlType() string { return "AWS::FSx::Volume" }
+
+type EventType string
+
+const (
+	EventTypeNEW     EventType = "NEW"
+	EventTypeCHANGED EventType = "CHANGED"
+	EventTypeDELETED EventType = "DELETED"
+)
+
+type S3AccessPointAttachmentLifecycle string
+
+const (
+	S3AccessPointAttachmentLifecycleAVAILABLE     S3AccessPointAttachmentLifecycle = "AVAILABLE"
+	S3AccessPointAttachmentLifecycleCREATING      S3AccessPointAttachmentLifecycle = "CREATING"
+	S3AccessPointAttachmentLifecycleDELETING      S3AccessPointAttachmentLifecycle = "DELETING"
+	S3AccessPointAttachmentLifecycleFAILED        S3AccessPointAttachmentLifecycle = "FAILED"
+	S3AccessPointAttachmentLifecycleMISCONFIGURED S3AccessPointAttachmentLifecycle = "MISCONFIGURED"
+	S3AccessPointAttachmentLifecycleUPDATING      S3AccessPointAttachmentLifecycle = "UPDATING"
+)
+
+type OntapFileSystemIdentityType string
+
+const (
+	OntapFileSystemIdentityTypeUNIX    OntapFileSystemIdentityType = "UNIX"
+	OntapFileSystemIdentityTypeWINDOWS OntapFileSystemIdentityType = "WINDOWS"
+)
+
+type OpenZFSFileSystemIdentityType string
+
+const (
+	OpenZFSFileSystemIdentityTypePOSIX OpenZFSFileSystemIdentityType = "POSIX"
+)
+
+type S3AccessPointAttachmentType string
+
+const (
+	S3AccessPointAttachmentTypeOPENZFS S3AccessPointAttachmentType = "OPENZFS"
+	S3AccessPointAttachmentTypeONTAP   S3AccessPointAttachmentType = "ONTAP"
+)

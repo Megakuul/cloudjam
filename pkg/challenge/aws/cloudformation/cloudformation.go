@@ -21,19 +21,19 @@ type TemplateProgress struct {
 }
 
 type TemplateConfiguration struct {
-	DeletionPolicy      *string `json:"DeletionPolicy,omitempty"`
-	UpdateReplacePolicy *string `json:"UpdateReplacePolicy,omitempty"`
+	DeletionPolicy      *TemplateConfigurationDeletionPolicy      `json:"DeletionPolicy,omitempty"`
+	UpdateReplacePolicy *TemplateConfigurationUpdateReplacePolicy `json:"UpdateReplacePolicy,omitempty"`
 }
 
 type GeneratedTemplate struct {
-	CreationTime          *string                `json:"CreationTime,omitempty"`
-	GeneratedTemplateId   *string                `json:"GeneratedTemplateId,omitempty"`
-	GeneratedTemplateName *string                `json:"GeneratedTemplateName,omitempty"`
-	LastUpdatedTime       *string                `json:"LastUpdatedTime,omitempty"`
-	Progress              *TemplateProgress      `json:"Progress,omitempty"`
-	Status                *string                `json:"Status,omitempty"`
-	TemplateConfiguration *TemplateConfiguration `json:"TemplateConfiguration,omitempty"`
-	TotalWarnings         *int                   `json:"TotalWarnings,omitempty"`
+	CreationTime          *string                  `json:"CreationTime,omitempty"`
+	GeneratedTemplateId   *string                  `json:"GeneratedTemplateId,omitempty"`
+	GeneratedTemplateName *string                  `json:"GeneratedTemplateName,omitempty"`
+	LastUpdatedTime       *string                  `json:"LastUpdatedTime,omitempty"`
+	Progress              *TemplateProgress        `json:"Progress,omitempty"`
+	Status                *GeneratedTemplateStatus `json:"Status,omitempty"`
+	TemplateConfiguration *TemplateConfiguration   `json:"TemplateConfiguration,omitempty"`
+	TotalWarnings         *int                     `json:"TotalWarnings,omitempty"`
 }
 
 func (GeneratedTemplate) CloudControlType() string { return "AWS::CloudFormation::GeneratedTemplate" }
@@ -54,23 +54,23 @@ type GuardHookStackFiltersStackRoles struct {
 }
 
 type GuardHookStackFilters struct {
-	FilteringCriteria *string                          `json:"FilteringCriteria,omitempty"`
-	StackNames        *GuardHookStackFiltersStackNames `json:"StackNames,omitempty"`
-	StackRoles        *GuardHookStackFiltersStackRoles `json:"StackRoles,omitempty"`
+	FilteringCriteria *GuardHookStackFiltersFilteringCriteria `json:"FilteringCriteria,omitempty"`
+	StackNames        *GuardHookStackFiltersStackNames        `json:"StackNames,omitempty"`
+	StackRoles        *GuardHookStackFiltersStackRoles        `json:"StackRoles,omitempty"`
 }
 
 type GuardHook struct {
 	Alias            *string                `json:"Alias,omitempty"`
 	ExecutionRole    *string                `json:"ExecutionRole,omitempty"`
-	FailureMode      *string                `json:"FailureMode,omitempty"`
+	FailureMode      *GuardHookFailureMode  `json:"FailureMode,omitempty"`
 	HookArn          *string                `json:"HookArn,omitempty"`
-	HookStatus       *string                `json:"HookStatus,omitempty"`
+	HookStatus       *GuardHookHookStatus   `json:"HookStatus,omitempty"`
 	LogBucket        *string                `json:"LogBucket,omitempty"`
 	Options          json.RawMessage        `json:"Options,omitempty"`
 	RuleLocation     *S3Location            `json:"RuleLocation,omitempty"`
 	StackFilters     *GuardHookStackFilters `json:"StackFilters,omitempty"`
 	TargetFilters    map[string]any         `json:"TargetFilters,omitempty"`
-	TargetOperations []string               `json:"TargetOperations,omitempty"`
+	TargetOperations []TargetOperation      `json:"TargetOperations,omitempty"`
 }
 
 func (GuardHook) CloudControlType() string { return "AWS::CloudFormation::GuardHook" }
@@ -85,11 +85,11 @@ type HookDefaultVersion struct {
 func (HookDefaultVersion) CloudControlType() string { return "AWS::CloudFormation::HookDefaultVersion" }
 
 type HookTypeConfig struct {
-	Configuration      *string `json:"Configuration,omitempty"`
-	ConfigurationAlias *string `json:"ConfigurationAlias,omitempty"`
-	ConfigurationArn   *string `json:"ConfigurationArn,omitempty"`
-	TypeArn            *string `json:"TypeArn,omitempty"`
-	TypeName           *string `json:"TypeName,omitempty"`
+	Configuration      *string                           `json:"Configuration,omitempty"`
+	ConfigurationAlias *HookTypeConfigConfigurationAlias `json:"ConfigurationAlias,omitempty"`
+	ConfigurationArn   *string                           `json:"ConfigurationArn,omitempty"`
+	TypeArn            *string                           `json:"TypeArn,omitempty"`
+	TypeName           *string                           `json:"TypeName,omitempty"`
 }
 
 func (HookTypeConfig) CloudControlType() string { return "AWS::CloudFormation::HookTypeConfig" }
@@ -100,15 +100,15 @@ type LoggingConfig struct {
 }
 
 type HookVersion struct {
-	Arn                  *string        `json:"Arn,omitempty"`
-	ExecutionRoleArn     *string        `json:"ExecutionRoleArn,omitempty"`
-	IsDefaultVersion     *bool          `json:"IsDefaultVersion,omitempty"`
-	LoggingConfig        *LoggingConfig `json:"LoggingConfig,omitempty"`
-	SchemaHandlerPackage *string        `json:"SchemaHandlerPackage,omitempty"`
-	TypeArn              *string        `json:"TypeArn,omitempty"`
-	TypeName             *string        `json:"TypeName,omitempty"`
-	VersionId            *string        `json:"VersionId,omitempty"`
-	Visibility           *string        `json:"Visibility,omitempty"`
+	Arn                  *string                `json:"Arn,omitempty"`
+	ExecutionRoleArn     *string                `json:"ExecutionRoleArn,omitempty"`
+	IsDefaultVersion     *bool                  `json:"IsDefaultVersion,omitempty"`
+	LoggingConfig        *LoggingConfig         `json:"LoggingConfig,omitempty"`
+	SchemaHandlerPackage *string                `json:"SchemaHandlerPackage,omitempty"`
+	TypeArn              *string                `json:"TypeArn,omitempty"`
+	TypeName             *string                `json:"TypeName,omitempty"`
+	VersionId            *string                `json:"VersionId,omitempty"`
+	Visibility           *HookVersionVisibility `json:"Visibility,omitempty"`
 }
 
 func (HookVersion) CloudControlType() string { return "AWS::CloudFormation::HookVersion" }
@@ -129,23 +129,23 @@ type LambdaHookStackFiltersStackRoles struct {
 }
 
 type LambdaHookStackFilters struct {
-	FilteringCriteria *string                           `json:"FilteringCriteria,omitempty"`
-	StackNames        *LambdaHookStackFiltersStackNames `json:"StackNames,omitempty"`
-	StackRoles        *LambdaHookStackFiltersStackRoles `json:"StackRoles,omitempty"`
+	FilteringCriteria *LambdaHookStackFiltersFilteringCriteria `json:"FilteringCriteria,omitempty"`
+	StackNames        *LambdaHookStackFiltersStackNames        `json:"StackNames,omitempty"`
+	StackRoles        *LambdaHookStackFiltersStackRoles        `json:"StackRoles,omitempty"`
 }
 
 type LambdaHook struct {
-	Alias            *string                  `json:"Alias,omitempty"`
-	AutoUpdate       *bool                    `json:"AutoUpdate,omitempty"`
-	ExecutionRole    *string                  `json:"ExecutionRole,omitempty"`
-	FailureMode      *string                  `json:"FailureMode,omitempty"`
-	HookArn          *string                  `json:"HookArn,omitempty"`
-	HookStatus       *string                  `json:"HookStatus,omitempty"`
-	LambdaFunction   *string                  `json:"LambdaFunction,omitempty"`
-	LoggingConfig    *LambdaHookLoggingConfig `json:"LoggingConfig,omitempty"`
-	StackFilters     *LambdaHookStackFilters  `json:"StackFilters,omitempty"`
-	TargetFilters    map[string]any           `json:"TargetFilters,omitempty"`
-	TargetOperations []string                 `json:"TargetOperations,omitempty"`
+	Alias            *string                     `json:"Alias,omitempty"`
+	AutoUpdate       *bool                       `json:"AutoUpdate,omitempty"`
+	ExecutionRole    *string                     `json:"ExecutionRole,omitempty"`
+	FailureMode      *LambdaHookFailureMode      `json:"FailureMode,omitempty"`
+	HookArn          *string                     `json:"HookArn,omitempty"`
+	HookStatus       *LambdaHookHookStatus       `json:"HookStatus,omitempty"`
+	LambdaFunction   *string                     `json:"LambdaFunction,omitempty"`
+	LoggingConfig    *LambdaHookLoggingConfig    `json:"LoggingConfig,omitempty"`
+	StackFilters     *LambdaHookStackFilters     `json:"StackFilters,omitempty"`
+	TargetFilters    map[string]any              `json:"TargetFilters,omitempty"`
+	TargetOperations []LambdaHookTargetOperation `json:"TargetOperations,omitempty"`
 }
 
 func (LambdaHook) CloudControlType() string { return "AWS::CloudFormation::LambdaHook" }
@@ -172,40 +172,40 @@ func (ModuleDefaultVersion) CloudControlType() string {
 }
 
 type ModuleVersion struct {
-	Arn              *string `json:"Arn,omitempty"`
-	Description      *string `json:"Description,omitempty"`
-	DocumentationUrl *string `json:"DocumentationUrl,omitempty"`
-	IsDefaultVersion *bool   `json:"IsDefaultVersion,omitempty"`
-	ModuleName       *string `json:"ModuleName,omitempty"`
-	ModulePackage    *string `json:"ModulePackage,omitempty"`
-	Schema           *string `json:"Schema,omitempty"`
-	TimeCreated      *string `json:"TimeCreated,omitempty"`
-	VersionId        *string `json:"VersionId,omitempty"`
-	Visibility       *string `json:"Visibility,omitempty"`
+	Arn              *string                  `json:"Arn,omitempty"`
+	Description      *string                  `json:"Description,omitempty"`
+	DocumentationUrl *string                  `json:"DocumentationUrl,omitempty"`
+	IsDefaultVersion *bool                    `json:"IsDefaultVersion,omitempty"`
+	ModuleName       *string                  `json:"ModuleName,omitempty"`
+	ModulePackage    *string                  `json:"ModulePackage,omitempty"`
+	Schema           *string                  `json:"Schema,omitempty"`
+	TimeCreated      *string                  `json:"TimeCreated,omitempty"`
+	VersionId        *string                  `json:"VersionId,omitempty"`
+	Visibility       *ModuleVersionVisibility `json:"Visibility,omitempty"`
 }
 
 func (ModuleVersion) CloudControlType() string { return "AWS::CloudFormation::ModuleVersion" }
 
 type PublicTypeVersion struct {
-	Arn                 *string `json:"Arn,omitempty"`
-	LogDeliveryBucket   *string `json:"LogDeliveryBucket,omitempty"`
-	PublicTypeArn       *string `json:"PublicTypeArn,omitempty"`
-	PublicVersionNumber *string `json:"PublicVersionNumber,omitempty"`
-	PublisherId         *string `json:"PublisherId,omitempty"`
-	Type                *string `json:"Type,omitempty"`
-	TypeName            *string `json:"TypeName,omitempty"`
-	TypeVersionArn      *string `json:"TypeVersionArn,omitempty"`
+	Arn                 *string                `json:"Arn,omitempty"`
+	LogDeliveryBucket   *string                `json:"LogDeliveryBucket,omitempty"`
+	PublicTypeArn       *string                `json:"PublicTypeArn,omitempty"`
+	PublicVersionNumber *string                `json:"PublicVersionNumber,omitempty"`
+	PublisherId         *string                `json:"PublisherId,omitempty"`
+	Type                *PublicTypeVersionType `json:"Type,omitempty"`
+	TypeName            *string                `json:"TypeName,omitempty"`
+	TypeVersionArn      *string                `json:"TypeVersionArn,omitempty"`
 }
 
 func (PublicTypeVersion) CloudControlType() string { return "AWS::CloudFormation::PublicTypeVersion" }
 
 type Publisher struct {
-	AcceptTermsAndConditions *bool   `json:"AcceptTermsAndConditions,omitempty"`
-	ConnectionArn            *string `json:"ConnectionArn,omitempty"`
-	IdentityProvider         *string `json:"IdentityProvider,omitempty"`
-	PublisherId              *string `json:"PublisherId,omitempty"`
-	PublisherProfile         *string `json:"PublisherProfile,omitempty"`
-	PublisherStatus          *string `json:"PublisherStatus,omitempty"`
+	AcceptTermsAndConditions *bool                      `json:"AcceptTermsAndConditions,omitempty"`
+	ConnectionArn            *string                    `json:"ConnectionArn,omitempty"`
+	IdentityProvider         *PublisherIdentityProvider `json:"IdentityProvider,omitempty"`
+	PublisherId              *string                    `json:"PublisherId,omitempty"`
+	PublisherProfile         *string                    `json:"PublisherProfile,omitempty"`
+	PublisherStatus          *PublisherPublisherStatus  `json:"PublisherStatus,omitempty"`
 }
 
 func (Publisher) CloudControlType() string { return "AWS::CloudFormation::Publisher" }
@@ -227,16 +227,16 @@ type ResourceVersionLoggingConfig struct {
 }
 
 type ResourceVersion struct {
-	Arn                  *string                       `json:"Arn,omitempty"`
-	ExecutionRoleArn     *string                       `json:"ExecutionRoleArn,omitempty"`
-	IsDefaultVersion     *bool                         `json:"IsDefaultVersion,omitempty"`
-	LoggingConfig        *ResourceVersionLoggingConfig `json:"LoggingConfig,omitempty"`
-	ProvisioningType     *string                       `json:"ProvisioningType,omitempty"`
-	SchemaHandlerPackage *string                       `json:"SchemaHandlerPackage,omitempty"`
-	TypeArn              *string                       `json:"TypeArn,omitempty"`
-	TypeName             *string                       `json:"TypeName,omitempty"`
-	VersionId            *string                       `json:"VersionId,omitempty"`
-	Visibility           *string                       `json:"Visibility,omitempty"`
+	Arn                  *string                          `json:"Arn,omitempty"`
+	ExecutionRoleArn     *string                          `json:"ExecutionRoleArn,omitempty"`
+	IsDefaultVersion     *bool                            `json:"IsDefaultVersion,omitempty"`
+	LoggingConfig        *ResourceVersionLoggingConfig    `json:"LoggingConfig,omitempty"`
+	ProvisioningType     *ResourceVersionProvisioningType `json:"ProvisioningType,omitempty"`
+	SchemaHandlerPackage *string                          `json:"SchemaHandlerPackage,omitempty"`
+	TypeArn              *string                          `json:"TypeArn,omitempty"`
+	TypeName             *string                          `json:"TypeName,omitempty"`
+	VersionId            *string                          `json:"VersionId,omitempty"`
+	Visibility           *ResourceVersionVisibility       `json:"Visibility,omitempty"`
 }
 
 func (ResourceVersion) CloudControlType() string { return "AWS::CloudFormation::ResourceVersion" }
@@ -254,29 +254,29 @@ type Tag struct {
 }
 
 type Stack struct {
-	Capabilities                []string          `json:"Capabilities,omitempty"`
-	ChangeSetId                 *string           `json:"ChangeSetId,omitempty"`
-	CreationTime                *string           `json:"CreationTime,omitempty"`
-	Description                 *string           `json:"Description,omitempty"`
-	DisableRollback             *bool             `json:"DisableRollback,omitempty"`
-	EnableTerminationProtection *bool             `json:"EnableTerminationProtection,omitempty"`
-	LastUpdateTime              *string           `json:"LastUpdateTime,omitempty"`
-	NotificationARNs            []string          `json:"NotificationARNs,omitempty"`
-	Outputs                     []Output          `json:"Outputs,omitempty"`
-	Parameters                  map[string]string `json:"Parameters,omitempty"`
-	ParentId                    *string           `json:"ParentId,omitempty"`
-	RoleARN                     *string           `json:"RoleARN,omitempty"`
-	RootId                      *string           `json:"RootId,omitempty"`
-	StackId                     *string           `json:"StackId,omitempty"`
-	StackName                   *string           `json:"StackName,omitempty"`
-	StackPolicyBody             map[string]any    `json:"StackPolicyBody,omitempty"`
-	StackPolicyURL              *string           `json:"StackPolicyURL,omitempty"`
-	StackStatus                 *string           `json:"StackStatus,omitempty"`
-	StackStatusReason           *string           `json:"StackStatusReason,omitempty"`
-	Tags                        []Tag             `json:"Tags,omitempty"`
-	TemplateBody                json.RawMessage   `json:"TemplateBody,omitempty"`
-	TemplateURL                 *string           `json:"TemplateURL,omitempty"`
-	TimeoutInMinutes            *int              `json:"TimeoutInMinutes,omitempty"`
+	Capabilities                []StackCapabilitiesItem `json:"Capabilities,omitempty"`
+	ChangeSetId                 *string                 `json:"ChangeSetId,omitempty"`
+	CreationTime                *string                 `json:"CreationTime,omitempty"`
+	Description                 *string                 `json:"Description,omitempty"`
+	DisableRollback             *bool                   `json:"DisableRollback,omitempty"`
+	EnableTerminationProtection *bool                   `json:"EnableTerminationProtection,omitempty"`
+	LastUpdateTime              *string                 `json:"LastUpdateTime,omitempty"`
+	NotificationARNs            []string                `json:"NotificationARNs,omitempty"`
+	Outputs                     []Output                `json:"Outputs,omitempty"`
+	Parameters                  map[string]string       `json:"Parameters,omitempty"`
+	ParentId                    *string                 `json:"ParentId,omitempty"`
+	RoleARN                     *string                 `json:"RoleARN,omitempty"`
+	RootId                      *string                 `json:"RootId,omitempty"`
+	StackId                     *string                 `json:"StackId,omitempty"`
+	StackName                   *string                 `json:"StackName,omitempty"`
+	StackPolicyBody             map[string]any          `json:"StackPolicyBody,omitempty"`
+	StackPolicyURL              *string                 `json:"StackPolicyURL,omitempty"`
+	StackStatus                 *StackStackStatus       `json:"StackStatus,omitempty"`
+	StackStatusReason           *string                 `json:"StackStatusReason,omitempty"`
+	Tags                        []Tag                   `json:"Tags,omitempty"`
+	TemplateBody                json.RawMessage         `json:"TemplateBody,omitempty"`
+	TemplateURL                 *string                 `json:"TemplateURL,omitempty"`
+	TimeoutInMinutes            *int                    `json:"TimeoutInMinutes,omitempty"`
 }
 
 func (Stack) CloudControlType() string { return "AWS::CloudFormation::Stack" }
@@ -292,13 +292,13 @@ type StackSetManagedExecution struct {
 }
 
 type OperationPreferences struct {
-	ConcurrencyMode            *string  `json:"ConcurrencyMode,omitempty"`
-	FailureToleranceCount      *int     `json:"FailureToleranceCount,omitempty"`
-	FailureTolerancePercentage *int     `json:"FailureTolerancePercentage,omitempty"`
-	MaxConcurrentCount         *int     `json:"MaxConcurrentCount,omitempty"`
-	MaxConcurrentPercentage    *int     `json:"MaxConcurrentPercentage,omitempty"`
-	RegionConcurrencyType      *string  `json:"RegionConcurrencyType,omitempty"`
-	RegionOrder                []string `json:"RegionOrder,omitempty"`
+	ConcurrencyMode            *ConcurrencyMode       `json:"ConcurrencyMode,omitempty"`
+	FailureToleranceCount      *int                   `json:"FailureToleranceCount,omitempty"`
+	FailureTolerancePercentage *int                   `json:"FailureTolerancePercentage,omitempty"`
+	MaxConcurrentCount         *int                   `json:"MaxConcurrentCount,omitempty"`
+	MaxConcurrentPercentage    *int                   `json:"MaxConcurrentPercentage,omitempty"`
+	RegionConcurrencyType      *RegionConcurrencyType `json:"RegionConcurrencyType,omitempty"`
+	RegionOrder                []string               `json:"RegionOrder,omitempty"`
 }
 
 type Parameter struct {
@@ -307,10 +307,10 @@ type Parameter struct {
 }
 
 type DeploymentTargets struct {
-	AccountFilterType     *string  `json:"AccountFilterType,omitempty"`
-	Accounts              []string `json:"Accounts,omitempty"`
-	AccountsUrl           *string  `json:"AccountsUrl,omitempty"`
-	OrganizationalUnitIds []string `json:"OrganizationalUnitIds,omitempty"`
+	AccountFilterType     *DeploymentTargetsAccountFilterType `json:"AccountFilterType,omitempty"`
+	Accounts              []string                            `json:"Accounts,omitempty"`
+	AccountsUrl           *string                             `json:"AccountsUrl,omitempty"`
+	OrganizationalUnitIds []string                            `json:"OrganizationalUnitIds,omitempty"`
 }
 
 type StackInstances struct {
@@ -327,14 +327,14 @@ type StackSetTag struct {
 type StackSet struct {
 	AdministrationRoleARN *string                   `json:"AdministrationRoleARN,omitempty"`
 	AutoDeployment        *AutoDeployment           `json:"AutoDeployment,omitempty"`
-	CallAs                *string                   `json:"CallAs,omitempty"`
-	Capabilities          []string                  `json:"Capabilities,omitempty"`
+	CallAs                *StackSetCallAs           `json:"CallAs,omitempty"`
+	Capabilities          []Capability              `json:"Capabilities,omitempty"`
 	Description           *string                   `json:"Description,omitempty"`
 	ExecutionRoleName     *string                   `json:"ExecutionRoleName,omitempty"`
 	ManagedExecution      *StackSetManagedExecution `json:"ManagedExecution,omitempty"`
 	OperationPreferences  *OperationPreferences     `json:"OperationPreferences,omitempty"`
 	Parameters            []Parameter               `json:"Parameters,omitempty"`
-	PermissionModel       *string                   `json:"PermissionModel,omitempty"`
+	PermissionModel       *StackSetPermissionModel  `json:"PermissionModel,omitempty"`
 	StackInstancesGroup   []StackInstances          `json:"StackInstancesGroup,omitempty"`
 	StackSetId            *string                   `json:"StackSetId,omitempty"`
 	StackSetName          *string                   `json:"StackSetName,omitempty"`
@@ -358,10 +358,10 @@ type TypeActivation struct {
 	MajorVersion     *string                      `json:"MajorVersion,omitempty"`
 	PublicTypeArn    *string                      `json:"PublicTypeArn,omitempty"`
 	PublisherId      *string                      `json:"PublisherId,omitempty"`
-	Type             *string                      `json:"Type,omitempty"`
+	Type             *TypeActivationType          `json:"Type,omitempty"`
 	TypeName         *string                      `json:"TypeName,omitempty"`
 	TypeNameAlias    *string                      `json:"TypeNameAlias,omitempty"`
-	VersionBump      *string                      `json:"VersionBump,omitempty"`
+	VersionBump      *TypeActivationVersionBump   `json:"VersionBump,omitempty"`
 }
 
 func (TypeActivation) CloudControlType() string { return "AWS::CloudFormation::TypeActivation" }
@@ -383,3 +383,243 @@ type WaitConditionHandle struct {
 func (WaitConditionHandle) CloudControlType() string {
 	return "AWS::CloudFormation::WaitConditionHandle"
 }
+
+type GeneratedTemplateStatus string
+
+const (
+	GeneratedTemplateStatusCREATEPENDING    GeneratedTemplateStatus = "CREATE_PENDING"
+	GeneratedTemplateStatusUPDATEPENDING    GeneratedTemplateStatus = "UPDATE_PENDING"
+	GeneratedTemplateStatusDELETEPENDING    GeneratedTemplateStatus = "DELETE_PENDING"
+	GeneratedTemplateStatusCREATEINPROGRESS GeneratedTemplateStatus = "CREATE_IN_PROGRESS"
+	GeneratedTemplateStatusUPDATEINPROGRESS GeneratedTemplateStatus = "UPDATE_IN_PROGRESS"
+	GeneratedTemplateStatusDELETEINPROGRESS GeneratedTemplateStatus = "DELETE_IN_PROGRESS"
+	GeneratedTemplateStatusFAILED           GeneratedTemplateStatus = "FAILED"
+	GeneratedTemplateStatusCOMPLETE         GeneratedTemplateStatus = "COMPLETE"
+)
+
+type TemplateConfigurationDeletionPolicy string
+
+const (
+	TemplateConfigurationDeletionPolicyDELETE TemplateConfigurationDeletionPolicy = "DELETE"
+	TemplateConfigurationDeletionPolicyRETAIN TemplateConfigurationDeletionPolicy = "RETAIN"
+)
+
+type TemplateConfigurationUpdateReplacePolicy string
+
+const (
+	TemplateConfigurationUpdateReplacePolicyDELETE TemplateConfigurationUpdateReplacePolicy = "DELETE"
+	TemplateConfigurationUpdateReplacePolicyRETAIN TemplateConfigurationUpdateReplacePolicy = "RETAIN"
+)
+
+type GuardHookFailureMode string
+
+const (
+	GuardHookFailureModeFAIL GuardHookFailureMode = "FAIL"
+	GuardHookFailureModeWARN GuardHookFailureMode = "WARN"
+)
+
+type GuardHookHookStatus string
+
+const (
+	GuardHookHookStatusENABLED  GuardHookHookStatus = "ENABLED"
+	GuardHookHookStatusDISABLED GuardHookHookStatus = "DISABLED"
+)
+
+type GuardHookStackFiltersFilteringCriteria string
+
+const (
+	GuardHookStackFiltersFilteringCriteriaALL GuardHookStackFiltersFilteringCriteria = "ALL"
+	GuardHookStackFiltersFilteringCriteriaANY GuardHookStackFiltersFilteringCriteria = "ANY"
+)
+
+type TargetOperation string
+
+const (
+	TargetOperationRESOURCE     TargetOperation = "RESOURCE"
+	TargetOperationSTACK        TargetOperation = "STACK"
+	TargetOperationCHANGESET    TargetOperation = "CHANGE_SET"
+	TargetOperationCLOUDCONTROL TargetOperation = "CLOUD_CONTROL"
+)
+
+type HookTypeConfigConfigurationAlias string
+
+const (
+	HookTypeConfigConfigurationAliasDefault HookTypeConfigConfigurationAlias = "default"
+)
+
+type HookVersionVisibility string
+
+const (
+	HookVersionVisibilityPUBLIC  HookVersionVisibility = "PUBLIC"
+	HookVersionVisibilityPRIVATE HookVersionVisibility = "PRIVATE"
+)
+
+type LambdaHookFailureMode string
+
+const (
+	LambdaHookFailureModeFAIL LambdaHookFailureMode = "FAIL"
+	LambdaHookFailureModeWARN LambdaHookFailureMode = "WARN"
+)
+
+type LambdaHookHookStatus string
+
+const (
+	LambdaHookHookStatusENABLED  LambdaHookHookStatus = "ENABLED"
+	LambdaHookHookStatusDISABLED LambdaHookHookStatus = "DISABLED"
+)
+
+type LambdaHookStackFiltersFilteringCriteria string
+
+const (
+	LambdaHookStackFiltersFilteringCriteriaALL LambdaHookStackFiltersFilteringCriteria = "ALL"
+	LambdaHookStackFiltersFilteringCriteriaANY LambdaHookStackFiltersFilteringCriteria = "ANY"
+)
+
+type LambdaHookTargetOperation string
+
+const (
+	LambdaHookTargetOperationRESOURCE     LambdaHookTargetOperation = "RESOURCE"
+	LambdaHookTargetOperationSTACK        LambdaHookTargetOperation = "STACK"
+	LambdaHookTargetOperationCHANGESET    LambdaHookTargetOperation = "CHANGE_SET"
+	LambdaHookTargetOperationCLOUDCONTROL LambdaHookTargetOperation = "CLOUD_CONTROL"
+)
+
+type ModuleVersionVisibility string
+
+const (
+	ModuleVersionVisibilityPRIVATE ModuleVersionVisibility = "PRIVATE"
+)
+
+type PublicTypeVersionType string
+
+const (
+	PublicTypeVersionTypeRESOURCE PublicTypeVersionType = "RESOURCE"
+	PublicTypeVersionTypeMODULE   PublicTypeVersionType = "MODULE"
+	PublicTypeVersionTypeHOOK     PublicTypeVersionType = "HOOK"
+)
+
+type PublisherIdentityProvider string
+
+const (
+	PublisherIdentityProviderAWSMarketplace PublisherIdentityProvider = "AWS_Marketplace"
+	PublisherIdentityProviderGitHub         PublisherIdentityProvider = "GitHub"
+	PublisherIdentityProviderBitbucket      PublisherIdentityProvider = "Bitbucket"
+)
+
+type PublisherPublisherStatus string
+
+const (
+	PublisherPublisherStatusVERIFIED   PublisherPublisherStatus = "VERIFIED"
+	PublisherPublisherStatusUNVERIFIED PublisherPublisherStatus = "UNVERIFIED"
+)
+
+type ResourceVersionProvisioningType string
+
+const (
+	ResourceVersionProvisioningTypeNONPROVISIONABLE ResourceVersionProvisioningType = "NON_PROVISIONABLE"
+	ResourceVersionProvisioningTypeIMMUTABLE        ResourceVersionProvisioningType = "IMMUTABLE"
+	ResourceVersionProvisioningTypeFULLYMUTABLE     ResourceVersionProvisioningType = "FULLY_MUTABLE"
+)
+
+type ResourceVersionVisibility string
+
+const (
+	ResourceVersionVisibilityPUBLIC  ResourceVersionVisibility = "PUBLIC"
+	ResourceVersionVisibilityPRIVATE ResourceVersionVisibility = "PRIVATE"
+)
+
+type StackCapabilitiesItem string
+
+const (
+	StackCapabilitiesItemCAPABILITYIAM        StackCapabilitiesItem = "CAPABILITY_IAM"
+	StackCapabilitiesItemCAPABILITYNAMEDIAM   StackCapabilitiesItem = "CAPABILITY_NAMED_IAM"
+	StackCapabilitiesItemCAPABILITYAUTOEXPAND StackCapabilitiesItem = "CAPABILITY_AUTO_EXPAND"
+)
+
+type StackStackStatus string
+
+const (
+	StackStackStatusCREATEINPROGRESS                        StackStackStatus = "CREATE_IN_PROGRESS"
+	StackStackStatusCREATEFAILED                            StackStackStatus = "CREATE_FAILED"
+	StackStackStatusCREATECOMPLETE                          StackStackStatus = "CREATE_COMPLETE"
+	StackStackStatusROLLBACKINPROGRESS                      StackStackStatus = "ROLLBACK_IN_PROGRESS"
+	StackStackStatusROLLBACKFAILED                          StackStackStatus = "ROLLBACK_FAILED"
+	StackStackStatusROLLBACKCOMPLETE                        StackStackStatus = "ROLLBACK_COMPLETE"
+	StackStackStatusDELETEINPROGRESS                        StackStackStatus = "DELETE_IN_PROGRESS"
+	StackStackStatusDELETEFAILED                            StackStackStatus = "DELETE_FAILED"
+	StackStackStatusDELETECOMPLETE                          StackStackStatus = "DELETE_COMPLETE"
+	StackStackStatusUPDATEINPROGRESS                        StackStackStatus = "UPDATE_IN_PROGRESS"
+	StackStackStatusUPDATECOMPLETECLEANUPINPROGRESS         StackStackStatus = "UPDATE_COMPLETE_CLEANUP_IN_PROGRESS"
+	StackStackStatusUPDATECOMPLETE                          StackStackStatus = "UPDATE_COMPLETE"
+	StackStackStatusUPDATEFAILED                            StackStackStatus = "UPDATE_FAILED"
+	StackStackStatusUPDATEROLLBACKINPROGRESS                StackStackStatus = "UPDATE_ROLLBACK_IN_PROGRESS"
+	StackStackStatusUPDATEROLLBACKFAILED                    StackStackStatus = "UPDATE_ROLLBACK_FAILED"
+	StackStackStatusUPDATEROLLBACKCOMPLETECLEANUPINPROGRESS StackStackStatus = "UPDATE_ROLLBACK_COMPLETE_CLEANUP_IN_PROGRESS"
+	StackStackStatusUPDATEROLLBACKCOMPLETE                  StackStackStatus = "UPDATE_ROLLBACK_COMPLETE"
+	StackStackStatusREVIEWINPROGRESS                        StackStackStatus = "REVIEW_IN_PROGRESS"
+	StackStackStatusIMPORTINPROGRESS                        StackStackStatus = "IMPORT_IN_PROGRESS"
+	StackStackStatusIMPORTCOMPLETE                          StackStackStatus = "IMPORT_COMPLETE"
+	StackStackStatusIMPORTROLLBACKINPROGRESS                StackStackStatus = "IMPORT_ROLLBACK_IN_PROGRESS"
+	StackStackStatusIMPORTROLLBACKFAILED                    StackStackStatus = "IMPORT_ROLLBACK_FAILED"
+	StackStackStatusIMPORTROLLBACKCOMPLETE                  StackStackStatus = "IMPORT_ROLLBACK_COMPLETE"
+)
+
+type StackSetCallAs string
+
+const (
+	StackSetCallAsSELF           StackSetCallAs = "SELF"
+	StackSetCallAsDELEGATEDADMIN StackSetCallAs = "DELEGATED_ADMIN"
+)
+
+type Capability string
+
+const (
+	CapabilityCAPABILITYIAM        Capability = "CAPABILITY_IAM"
+	CapabilityCAPABILITYNAMEDIAM   Capability = "CAPABILITY_NAMED_IAM"
+	CapabilityCAPABILITYAUTOEXPAND Capability = "CAPABILITY_AUTO_EXPAND"
+)
+
+type ConcurrencyMode string
+
+const (
+	ConcurrencyModeSTRICTFAILURETOLERANCE ConcurrencyMode = "STRICT_FAILURE_TOLERANCE"
+	ConcurrencyModeSOFTFAILURETOLERANCE   ConcurrencyMode = "SOFT_FAILURE_TOLERANCE"
+)
+
+type RegionConcurrencyType string
+
+const (
+	RegionConcurrencyTypeSEQUENTIAL RegionConcurrencyType = "SEQUENTIAL"
+	RegionConcurrencyTypePARALLEL   RegionConcurrencyType = "PARALLEL"
+)
+
+type StackSetPermissionModel string
+
+const (
+	StackSetPermissionModelSERVICEMANAGED StackSetPermissionModel = "SERVICE_MANAGED"
+	StackSetPermissionModelSELFMANAGED    StackSetPermissionModel = "SELF_MANAGED"
+)
+
+type DeploymentTargetsAccountFilterType string
+
+const (
+	DeploymentTargetsAccountFilterTypeNONE         DeploymentTargetsAccountFilterType = "NONE"
+	DeploymentTargetsAccountFilterTypeUNION        DeploymentTargetsAccountFilterType = "UNION"
+	DeploymentTargetsAccountFilterTypeINTERSECTION DeploymentTargetsAccountFilterType = "INTERSECTION"
+	DeploymentTargetsAccountFilterTypeDIFFERENCE   DeploymentTargetsAccountFilterType = "DIFFERENCE"
+)
+
+type TypeActivationType string
+
+const (
+	TypeActivationTypeRESOURCE TypeActivationType = "RESOURCE"
+	TypeActivationTypeMODULE   TypeActivationType = "MODULE"
+	TypeActivationTypeHOOK     TypeActivationType = "HOOK"
+)
+
+type TypeActivationVersionBump string
+
+const (
+	TypeActivationVersionBumpMAJOR TypeActivationVersionBump = "MAJOR"
+	TypeActivationVersionBumpMINOR TypeActivationVersionBump = "MINOR"
+)

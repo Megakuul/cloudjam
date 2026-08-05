@@ -14,10 +14,10 @@ type ConfigurationDefinition struct {
 
 type StatusSummary struct {
 	LastUpdatedAt *string           `json:"LastUpdatedAt,omitempty"`
-	Status        *string           `json:"Status,omitempty"`
+	Status        *Status           `json:"Status,omitempty"`
 	StatusDetails map[string]string `json:"StatusDetails,omitempty"`
 	StatusMessage *string           `json:"StatusMessage,omitempty"`
-	StatusType    *string           `json:"StatusType,omitempty"`
+	StatusType    *StatusType       `json:"StatusType,omitempty"`
 }
 
 type ConfigurationManager struct {
@@ -46,3 +46,25 @@ type LifecycleAutomation struct {
 func (LifecycleAutomation) CloudControlType() string {
 	return "AWS::SSMQuickSetup::LifecycleAutomation"
 }
+
+type Status string
+
+const (
+	StatusINITIALIZING Status = "INITIALIZING"
+	StatusDEPLOYING    Status = "DEPLOYING"
+	StatusSUCCEEDED    Status = "SUCCEEDED"
+	StatusDELETING     Status = "DELETING"
+	StatusSTOPPING     Status = "STOPPING"
+	StatusFAILED       Status = "FAILED"
+	StatusSTOPPED      Status = "STOPPED"
+	StatusDELETEFAILED Status = "DELETE_FAILED"
+	StatusSTOPFAILED   Status = "STOP_FAILED"
+	StatusNONE         Status = "NONE"
+)
+
+type StatusType string
+
+const (
+	StatusTypeDeployment      StatusType = "Deployment"
+	StatusTypeAsyncExecutions StatusType = "AsyncExecutions"
+)

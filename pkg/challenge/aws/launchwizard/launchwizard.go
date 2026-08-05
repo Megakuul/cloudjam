@@ -17,9 +17,23 @@ type Deployment struct {
 	Name                  *string           `json:"Name,omitempty"`
 	ResourceGroup         *string           `json:"ResourceGroup,omitempty"`
 	Specifications        map[string]string `json:"Specifications,omitempty"`
-	Status                *string           `json:"Status,omitempty"`
+	Status                *DeploymentStatus `json:"Status,omitempty"`
 	Tags                  []Tags            `json:"Tags,omitempty"`
 	WorkloadName          *string           `json:"WorkloadName,omitempty"`
 }
 
 func (Deployment) CloudControlType() string { return "AWS::LaunchWizard::Deployment" }
+
+type DeploymentStatus string
+
+const (
+	DeploymentStatusCOMPLETED        DeploymentStatus = "COMPLETED"
+	DeploymentStatusCREATING         DeploymentStatus = "CREATING"
+	DeploymentStatusDELETEINPROGRESS DeploymentStatus = "DELETE_IN_PROGRESS"
+	DeploymentStatusDELETEINITIATING DeploymentStatus = "DELETE_INITIATING"
+	DeploymentStatusDELETEFAILED     DeploymentStatus = "DELETE_FAILED"
+	DeploymentStatusDELETED          DeploymentStatus = "DELETED"
+	DeploymentStatusFAILED           DeploymentStatus = "FAILED"
+	DeploymentStatusINPROGRESS       DeploymentStatus = "IN_PROGRESS"
+	DeploymentStatusVALIDATING       DeploymentStatus = "VALIDATING"
+)

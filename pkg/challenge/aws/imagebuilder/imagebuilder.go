@@ -11,20 +11,20 @@ type LatestVersion struct {
 }
 
 type Component struct {
-	Arn                 *string           `json:"Arn,omitempty"`
-	ChangeDescription   *string           `json:"ChangeDescription,omitempty"`
-	Data                *string           `json:"Data,omitempty"`
-	Description         *string           `json:"Description,omitempty"`
-	Encrypted           *bool             `json:"Encrypted,omitempty"`
-	KmsKeyId            *string           `json:"KmsKeyId,omitempty"`
-	LatestVersion       *LatestVersion    `json:"LatestVersion,omitempty"`
-	Name                *string           `json:"Name,omitempty"`
-	Platform            *string           `json:"Platform,omitempty"`
-	SupportedOsVersions []string          `json:"SupportedOsVersions,omitempty"`
-	Tags                map[string]string `json:"Tags,omitempty"`
-	Type                *string           `json:"Type,omitempty"`
-	Uri                 *string           `json:"Uri,omitempty"`
-	Version             *string           `json:"Version,omitempty"`
+	Arn                 *string            `json:"Arn,omitempty"`
+	ChangeDescription   *string            `json:"ChangeDescription,omitempty"`
+	Data                *string            `json:"Data,omitempty"`
+	Description         *string            `json:"Description,omitempty"`
+	Encrypted           *bool              `json:"Encrypted,omitempty"`
+	KmsKeyId            *string            `json:"KmsKeyId,omitempty"`
+	LatestVersion       *LatestVersion     `json:"LatestVersion,omitempty"`
+	Name                *string            `json:"Name,omitempty"`
+	Platform            *ComponentPlatform `json:"Platform,omitempty"`
+	SupportedOsVersions []string           `json:"SupportedOsVersions,omitempty"`
+	Tags                map[string]string  `json:"Tags,omitempty"`
+	Type                *ComponentType     `json:"Type,omitempty"`
+	Uri                 *string            `json:"Uri,omitempty"`
+	Version             *string            `json:"Version,omitempty"`
 }
 
 func (Component) CloudControlType() string { return "AWS::ImageBuilder::Component" }
@@ -40,14 +40,14 @@ type ComponentConfiguration struct {
 }
 
 type EbsInstanceBlockDeviceSpecification struct {
-	DeleteOnTermination *bool   `json:"DeleteOnTermination,omitempty"`
-	Encrypted           *bool   `json:"Encrypted,omitempty"`
-	Iops                *int    `json:"Iops,omitempty"`
-	KmsKeyId            *string `json:"KmsKeyId,omitempty"`
-	SnapshotId          *string `json:"SnapshotId,omitempty"`
-	Throughput          *int    `json:"Throughput,omitempty"`
-	VolumeSize          *int    `json:"VolumeSize,omitempty"`
-	VolumeType          *string `json:"VolumeType,omitempty"`
+	DeleteOnTermination *bool                                          `json:"DeleteOnTermination,omitempty"`
+	Encrypted           *bool                                          `json:"Encrypted,omitempty"`
+	Iops                *int                                           `json:"Iops,omitempty"`
+	KmsKeyId            *string                                        `json:"KmsKeyId,omitempty"`
+	SnapshotId          *string                                        `json:"SnapshotId,omitempty"`
+	Throughput          *int                                           `json:"Throughput,omitempty"`
+	VolumeSize          *int                                           `json:"VolumeSize,omitempty"`
+	VolumeType          *EbsInstanceBlockDeviceSpecificationVolumeType `json:"VolumeType,omitempty"`
 }
 
 type InstanceBlockDeviceMapping struct {
@@ -70,28 +70,28 @@ type ContainerRecipeLatestVersion struct {
 }
 
 type TargetContainerRepository struct {
-	RepositoryName *string `json:"RepositoryName,omitempty"`
-	Service        *string `json:"Service,omitempty"`
+	RepositoryName *string                           `json:"RepositoryName,omitempty"`
+	Service        *TargetContainerRepositoryService `json:"Service,omitempty"`
 }
 
 type ContainerRecipe struct {
-	Arn                    *string                       `json:"Arn,omitempty"`
-	Components             []ComponentConfiguration      `json:"Components,omitempty"`
-	ContainerType          *string                       `json:"ContainerType,omitempty"`
-	Description            *string                       `json:"Description,omitempty"`
-	DockerfileTemplateData *string                       `json:"DockerfileTemplateData,omitempty"`
-	DockerfileTemplateUri  *string                       `json:"DockerfileTemplateUri,omitempty"`
-	ImageOsVersionOverride *string                       `json:"ImageOsVersionOverride,omitempty"`
-	InstanceConfiguration  *InstanceConfiguration        `json:"InstanceConfiguration,omitempty"`
-	KmsKeyId               *string                       `json:"KmsKeyId,omitempty"`
-	LatestVersion          *ContainerRecipeLatestVersion `json:"LatestVersion,omitempty"`
-	Name                   *string                       `json:"Name,omitempty"`
-	ParentImage            *string                       `json:"ParentImage,omitempty"`
-	PlatformOverride       *string                       `json:"PlatformOverride,omitempty"`
-	Tags                   map[string]string             `json:"Tags,omitempty"`
-	TargetRepository       *TargetContainerRepository    `json:"TargetRepository,omitempty"`
-	Version                *string                       `json:"Version,omitempty"`
-	WorkingDirectory       *string                       `json:"WorkingDirectory,omitempty"`
+	Arn                    *string                          `json:"Arn,omitempty"`
+	Components             []ComponentConfiguration         `json:"Components,omitempty"`
+	ContainerType          *ContainerRecipeContainerType    `json:"ContainerType,omitempty"`
+	Description            *string                          `json:"Description,omitempty"`
+	DockerfileTemplateData *string                          `json:"DockerfileTemplateData,omitempty"`
+	DockerfileTemplateUri  *string                          `json:"DockerfileTemplateUri,omitempty"`
+	ImageOsVersionOverride *string                          `json:"ImageOsVersionOverride,omitempty"`
+	InstanceConfiguration  *InstanceConfiguration           `json:"InstanceConfiguration,omitempty"`
+	KmsKeyId               *string                          `json:"KmsKeyId,omitempty"`
+	LatestVersion          *ContainerRecipeLatestVersion    `json:"LatestVersion,omitempty"`
+	Name                   *string                          `json:"Name,omitempty"`
+	ParentImage            *string                          `json:"ParentImage,omitempty"`
+	PlatformOverride       *ContainerRecipePlatformOverride `json:"PlatformOverride,omitempty"`
+	Tags                   map[string]string                `json:"Tags,omitempty"`
+	TargetRepository       *TargetContainerRepository       `json:"TargetRepository,omitempty"`
+	Version                *string                          `json:"Version,omitempty"`
+	WorkingDirectory       *string                          `json:"WorkingDirectory,omitempty"`
 }
 
 func (ContainerRecipe) CloudControlType() string { return "AWS::ImageBuilder::ContainerRecipe" }
@@ -113,8 +113,8 @@ type AmiDistributionConfiguration struct {
 }
 
 type DistributionConfigurationTargetContainerRepository struct {
-	RepositoryName *string `json:"RepositoryName,omitempty"`
-	Service        *string `json:"Service,omitempty"`
+	RepositoryName *string                                                    `json:"RepositoryName,omitempty"`
+	Service        *DistributionConfigurationTargetContainerRepositoryService `json:"Service,omitempty"`
 }
 
 type ContainerDistributionConfiguration struct {
@@ -148,9 +148,9 @@ type LaunchTemplateConfiguration struct {
 }
 
 type SsmParameterConfiguration struct {
-	AmiAccountId  *string `json:"AmiAccountId,omitempty"`
-	DataType      *string `json:"DataType,omitempty"`
-	ParameterName *string `json:"ParameterName,omitempty"`
+	AmiAccountId  *string                            `json:"AmiAccountId,omitempty"`
+	DataType      *SsmParameterConfigurationDataType `json:"DataType,omitempty"`
+	ParameterName *string                            `json:"ParameterName,omitempty"`
 }
 
 type Distribution struct {
@@ -216,10 +216,10 @@ type WorkflowParameter struct {
 }
 
 type WorkflowConfiguration struct {
-	OnFailure     *string             `json:"OnFailure,omitempty"`
-	ParallelGroup *string             `json:"ParallelGroup,omitempty"`
-	Parameters    []WorkflowParameter `json:"Parameters,omitempty"`
-	WorkflowArn   *string             `json:"WorkflowArn,omitempty"`
+	OnFailure     *WorkflowConfigurationOnFailure `json:"OnFailure,omitempty"`
+	ParallelGroup *string                         `json:"ParallelGroup,omitempty"`
+	Parameters    []WorkflowParameter             `json:"Parameters,omitempty"`
+	WorkflowArn   *string                         `json:"WorkflowArn,omitempty"`
 }
 
 type Image struct {
@@ -270,10 +270,10 @@ type AutoDisablePolicy struct {
 }
 
 type Schedule struct {
-	AutoDisablePolicy               *AutoDisablePolicy `json:"AutoDisablePolicy,omitempty"`
-	PipelineExecutionStartCondition *string            `json:"PipelineExecutionStartCondition,omitempty"`
-	ScheduleExpression              *string            `json:"ScheduleExpression,omitempty"`
-	Timezone                        *string            `json:"Timezone,omitempty"`
+	AutoDisablePolicy               *AutoDisablePolicy                       `json:"AutoDisablePolicy,omitempty"`
+	PipelineExecutionStartCondition *SchedulePipelineExecutionStartCondition `json:"PipelineExecutionStartCondition,omitempty"`
+	ScheduleExpression              *string                                  `json:"ScheduleExpression,omitempty"`
+	Timezone                        *string                                  `json:"Timezone,omitempty"`
 }
 
 type ImagePipelineWorkflowParameter struct {
@@ -282,10 +282,10 @@ type ImagePipelineWorkflowParameter struct {
 }
 
 type ImagePipelineWorkflowConfiguration struct {
-	OnFailure     *string                          `json:"OnFailure,omitempty"`
-	ParallelGroup *string                          `json:"ParallelGroup,omitempty"`
-	Parameters    []ImagePipelineWorkflowParameter `json:"Parameters,omitempty"`
-	WorkflowArn   *string                          `json:"WorkflowArn,omitempty"`
+	OnFailure     *ImagePipelineWorkflowConfigurationOnFailure `json:"OnFailure,omitempty"`
+	ParallelGroup *string                                      `json:"ParallelGroup,omitempty"`
+	Parameters    []ImagePipelineWorkflowParameter             `json:"Parameters,omitempty"`
+	WorkflowArn   *string                                      `json:"WorkflowArn,omitempty"`
 }
 
 type ImagePipeline struct {
@@ -304,7 +304,7 @@ type ImagePipeline struct {
 	LoggingConfiguration           *PipelineLoggingConfiguration            `json:"LoggingConfiguration,omitempty"`
 	Name                           *string                                  `json:"Name,omitempty"`
 	Schedule                       *Schedule                                `json:"Schedule,omitempty"`
-	Status                         *string                                  `json:"Status,omitempty"`
+	Status                         *ImagePipelineStatus                     `json:"Status,omitempty"`
 	Tags                           map[string]string                        `json:"Tags,omitempty"`
 	Workflows                      []ImagePipelineWorkflowConfiguration     `json:"Workflows,omitempty"`
 }
@@ -321,14 +321,14 @@ type AdditionalInstanceConfiguration struct {
 }
 
 type ImageRecipeEbsInstanceBlockDeviceSpecification struct {
-	DeleteOnTermination *bool   `json:"DeleteOnTermination,omitempty"`
-	Encrypted           *bool   `json:"Encrypted,omitempty"`
-	Iops                *int    `json:"Iops,omitempty"`
-	KmsKeyId            *string `json:"KmsKeyId,omitempty"`
-	SnapshotId          *string `json:"SnapshotId,omitempty"`
-	Throughput          *int    `json:"Throughput,omitempty"`
-	VolumeSize          *int    `json:"VolumeSize,omitempty"`
-	VolumeType          *string `json:"VolumeType,omitempty"`
+	DeleteOnTermination *bool                                                     `json:"DeleteOnTermination,omitempty"`
+	Encrypted           *bool                                                     `json:"Encrypted,omitempty"`
+	Iops                *int                                                      `json:"Iops,omitempty"`
+	KmsKeyId            *string                                                   `json:"KmsKeyId,omitempty"`
+	SnapshotId          *string                                                   `json:"SnapshotId,omitempty"`
+	Throughput          *int                                                      `json:"Throughput,omitempty"`
+	VolumeSize          *int                                                      `json:"VolumeSize,omitempty"`
+	VolumeType          *ImageRecipeEbsInstanceBlockDeviceSpecificationVolumeType `json:"VolumeType,omitempty"`
 }
 
 type ImageRecipeInstanceBlockDeviceMapping struct {
@@ -374,8 +374,8 @@ type ImageRecipe struct {
 func (ImageRecipe) CloudControlType() string { return "AWS::ImageBuilder::ImageRecipe" }
 
 type InstanceMetadataOptions struct {
-	HttpPutResponseHopLimit *int    `json:"HttpPutResponseHopLimit,omitempty"`
-	HttpTokens              *string `json:"HttpTokens,omitempty"`
+	HttpPutResponseHopLimit *int                               `json:"HttpPutResponseHopLimit,omitempty"`
+	HttpTokens              *InstanceMetadataOptionsHttpTokens `json:"HttpTokens,omitempty"`
 }
 
 type S3Logs struct {
@@ -388,10 +388,10 @@ type Logging struct {
 }
 
 type Placement struct {
-	AvailabilityZone     *string `json:"AvailabilityZone,omitempty"`
-	HostId               *string `json:"HostId,omitempty"`
-	HostResourceGroupArn *string `json:"HostResourceGroupArn,omitempty"`
-	Tenancy              *string `json:"Tenancy,omitempty"`
+	AvailabilityZone     *string           `json:"AvailabilityZone,omitempty"`
+	HostId               *string           `json:"HostId,omitempty"`
+	HostResourceGroupArn *string           `json:"HostResourceGroupArn,omitempty"`
+	Tenancy              *PlacementTenancy `json:"Tenancy,omitempty"`
 }
 
 type InfrastructureConfiguration struct {
@@ -424,12 +424,12 @@ type IncludeResources struct {
 
 type Action struct {
 	IncludeResources *IncludeResources `json:"IncludeResources,omitempty"`
-	Type             *string           `json:"Type,omitempty"`
+	Type             *ActionType       `json:"Type,omitempty"`
 }
 
 type LastLaunched struct {
-	Unit  *string `json:"Unit,omitempty"`
-	Value *int    `json:"Value,omitempty"`
+	Unit  *TimeUnit `json:"Unit,omitempty"`
+	Value *int      `json:"Value,omitempty"`
 }
 
 type AmiExclusionRules struct {
@@ -446,10 +446,10 @@ type ExclusionRules struct {
 }
 
 type Filter struct {
-	RetainAtLeast *int    `json:"RetainAtLeast,omitempty"`
-	Type          *string `json:"Type,omitempty"`
-	Unit          *string `json:"Unit,omitempty"`
-	Value         *int    `json:"Value,omitempty"`
+	RetainAtLeast *int        `json:"RetainAtLeast,omitempty"`
+	Type          *FilterType `json:"Type,omitempty"`
+	Unit          *TimeUnit   `json:"Unit,omitempty"`
+	Value         *int        `json:"Value,omitempty"`
 }
 
 type PolicyDetail struct {
@@ -469,15 +469,15 @@ type ResourceSelection struct {
 }
 
 type LifecyclePolicy struct {
-	Arn               *string            `json:"Arn,omitempty"`
-	Description       *string            `json:"Description,omitempty"`
-	ExecutionRole     *string            `json:"ExecutionRole,omitempty"`
-	Name              *string            `json:"Name,omitempty"`
-	PolicyDetails     []PolicyDetail     `json:"PolicyDetails,omitempty"`
-	ResourceSelection *ResourceSelection `json:"ResourceSelection,omitempty"`
-	ResourceType      *string            `json:"ResourceType,omitempty"`
-	Status            *string            `json:"Status,omitempty"`
-	Tags              map[string]string  `json:"Tags,omitempty"`
+	Arn               *string                      `json:"Arn,omitempty"`
+	Description       *string                      `json:"Description,omitempty"`
+	ExecutionRole     *string                      `json:"ExecutionRole,omitempty"`
+	Name              *string                      `json:"Name,omitempty"`
+	PolicyDetails     []PolicyDetail               `json:"PolicyDetails,omitempty"`
+	ResourceSelection *ResourceSelection           `json:"ResourceSelection,omitempty"`
+	ResourceType      *LifecyclePolicyResourceType `json:"ResourceType,omitempty"`
+	Status            *LifecyclePolicyStatus       `json:"Status,omitempty"`
+	Tags              map[string]string            `json:"Tags,omitempty"`
 }
 
 func (LifecyclePolicy) CloudControlType() string { return "AWS::ImageBuilder::LifecyclePolicy" }
@@ -498,9 +498,173 @@ type Workflow struct {
 	LatestVersion     *WorkflowLatestVersion `json:"LatestVersion,omitempty"`
 	Name              *string                `json:"Name,omitempty"`
 	Tags              map[string]string      `json:"Tags,omitempty"`
-	Type              *string                `json:"Type,omitempty"`
+	Type              *WorkflowType          `json:"Type,omitempty"`
 	Uri               *string                `json:"Uri,omitempty"`
 	Version           *string                `json:"Version,omitempty"`
 }
 
 func (Workflow) CloudControlType() string { return "AWS::ImageBuilder::Workflow" }
+
+type ComponentPlatform string
+
+const (
+	ComponentPlatformWindows ComponentPlatform = "Windows"
+	ComponentPlatformLinux   ComponentPlatform = "Linux"
+	ComponentPlatformMacOS   ComponentPlatform = "macOS"
+)
+
+type ComponentType string
+
+const (
+	ComponentTypeBUILD ComponentType = "BUILD"
+	ComponentTypeTEST  ComponentType = "TEST"
+)
+
+type ContainerRecipeContainerType string
+
+const (
+	ContainerRecipeContainerTypeDOCKER ContainerRecipeContainerType = "DOCKER"
+)
+
+type EbsInstanceBlockDeviceSpecificationVolumeType string
+
+const (
+	EbsInstanceBlockDeviceSpecificationVolumeTypeStandard EbsInstanceBlockDeviceSpecificationVolumeType = "standard"
+	EbsInstanceBlockDeviceSpecificationVolumeTypeIo1      EbsInstanceBlockDeviceSpecificationVolumeType = "io1"
+	EbsInstanceBlockDeviceSpecificationVolumeTypeIo2      EbsInstanceBlockDeviceSpecificationVolumeType = "io2"
+	EbsInstanceBlockDeviceSpecificationVolumeTypeIo2a     EbsInstanceBlockDeviceSpecificationVolumeType = "io2a"
+	EbsInstanceBlockDeviceSpecificationVolumeTypeGp2      EbsInstanceBlockDeviceSpecificationVolumeType = "gp2"
+	EbsInstanceBlockDeviceSpecificationVolumeTypeGp3      EbsInstanceBlockDeviceSpecificationVolumeType = "gp3"
+	EbsInstanceBlockDeviceSpecificationVolumeTypeGp3a     EbsInstanceBlockDeviceSpecificationVolumeType = "gp3a"
+	EbsInstanceBlockDeviceSpecificationVolumeTypeSc1      EbsInstanceBlockDeviceSpecificationVolumeType = "sc1"
+	EbsInstanceBlockDeviceSpecificationVolumeTypeSt1      EbsInstanceBlockDeviceSpecificationVolumeType = "st1"
+)
+
+type ContainerRecipePlatformOverride string
+
+const (
+	ContainerRecipePlatformOverrideWindows ContainerRecipePlatformOverride = "Windows"
+	ContainerRecipePlatformOverrideLinux   ContainerRecipePlatformOverride = "Linux"
+)
+
+type TargetContainerRepositoryService string
+
+const (
+	TargetContainerRepositoryServiceECR TargetContainerRepositoryService = "ECR"
+)
+
+type DistributionConfigurationTargetContainerRepositoryService string
+
+const (
+	DistributionConfigurationTargetContainerRepositoryServiceECR DistributionConfigurationTargetContainerRepositoryService = "ECR"
+)
+
+type SsmParameterConfigurationDataType string
+
+const (
+	SsmParameterConfigurationDataTypeText        SsmParameterConfigurationDataType = "text"
+	SsmParameterConfigurationDataTypeAwsEc2Image SsmParameterConfigurationDataType = "aws:ec2:image"
+)
+
+type WorkflowConfigurationOnFailure string
+
+const (
+	WorkflowConfigurationOnFailureCONTINUE WorkflowConfigurationOnFailure = "CONTINUE"
+	WorkflowConfigurationOnFailureABORT    WorkflowConfigurationOnFailure = "ABORT"
+)
+
+type SchedulePipelineExecutionStartCondition string
+
+const (
+	SchedulePipelineExecutionStartConditionEXPRESSIONMATCHONLY                          SchedulePipelineExecutionStartCondition = "EXPRESSION_MATCH_ONLY"
+	SchedulePipelineExecutionStartConditionEXPRESSIONMATCHANDDEPENDENCYUPDATESAVAILABLE SchedulePipelineExecutionStartCondition = "EXPRESSION_MATCH_AND_DEPENDENCY_UPDATES_AVAILABLE"
+)
+
+type ImagePipelineStatus string
+
+const (
+	ImagePipelineStatusDISABLED ImagePipelineStatus = "DISABLED"
+	ImagePipelineStatusENABLED  ImagePipelineStatus = "ENABLED"
+)
+
+type ImagePipelineWorkflowConfigurationOnFailure string
+
+const (
+	ImagePipelineWorkflowConfigurationOnFailureCONTINUE ImagePipelineWorkflowConfigurationOnFailure = "CONTINUE"
+	ImagePipelineWorkflowConfigurationOnFailureABORT    ImagePipelineWorkflowConfigurationOnFailure = "ABORT"
+)
+
+type ImageRecipeEbsInstanceBlockDeviceSpecificationVolumeType string
+
+const (
+	ImageRecipeEbsInstanceBlockDeviceSpecificationVolumeTypeStandard ImageRecipeEbsInstanceBlockDeviceSpecificationVolumeType = "standard"
+	ImageRecipeEbsInstanceBlockDeviceSpecificationVolumeTypeIo1      ImageRecipeEbsInstanceBlockDeviceSpecificationVolumeType = "io1"
+	ImageRecipeEbsInstanceBlockDeviceSpecificationVolumeTypeIo2      ImageRecipeEbsInstanceBlockDeviceSpecificationVolumeType = "io2"
+	ImageRecipeEbsInstanceBlockDeviceSpecificationVolumeTypeIo2a     ImageRecipeEbsInstanceBlockDeviceSpecificationVolumeType = "io2a"
+	ImageRecipeEbsInstanceBlockDeviceSpecificationVolumeTypeGp2      ImageRecipeEbsInstanceBlockDeviceSpecificationVolumeType = "gp2"
+	ImageRecipeEbsInstanceBlockDeviceSpecificationVolumeTypeGp3      ImageRecipeEbsInstanceBlockDeviceSpecificationVolumeType = "gp3"
+	ImageRecipeEbsInstanceBlockDeviceSpecificationVolumeTypeGp3a     ImageRecipeEbsInstanceBlockDeviceSpecificationVolumeType = "gp3a"
+	ImageRecipeEbsInstanceBlockDeviceSpecificationVolumeTypeSc1      ImageRecipeEbsInstanceBlockDeviceSpecificationVolumeType = "sc1"
+	ImageRecipeEbsInstanceBlockDeviceSpecificationVolumeTypeSt1      ImageRecipeEbsInstanceBlockDeviceSpecificationVolumeType = "st1"
+)
+
+type InstanceMetadataOptionsHttpTokens string
+
+const (
+	InstanceMetadataOptionsHttpTokensRequired InstanceMetadataOptionsHttpTokens = "required"
+	InstanceMetadataOptionsHttpTokensOptional InstanceMetadataOptionsHttpTokens = "optional"
+)
+
+type PlacementTenancy string
+
+const (
+	PlacementTenancyDefault   PlacementTenancy = "default"
+	PlacementTenancyDedicated PlacementTenancy = "dedicated"
+	PlacementTenancyHost      PlacementTenancy = "host"
+)
+
+type ActionType string
+
+const (
+	ActionTypeDELETE    ActionType = "DELETE"
+	ActionTypeDEPRECATE ActionType = "DEPRECATE"
+	ActionTypeDISABLE   ActionType = "DISABLE"
+)
+
+type TimeUnit string
+
+const (
+	TimeUnitDAYS   TimeUnit = "DAYS"
+	TimeUnitWEEKS  TimeUnit = "WEEKS"
+	TimeUnitMONTHS TimeUnit = "MONTHS"
+	TimeUnitYEARS  TimeUnit = "YEARS"
+)
+
+type FilterType string
+
+const (
+	FilterTypeAGE   FilterType = "AGE"
+	FilterTypeCOUNT FilterType = "COUNT"
+)
+
+type LifecyclePolicyResourceType string
+
+const (
+	LifecyclePolicyResourceTypeAMIIMAGE       LifecyclePolicyResourceType = "AMI_IMAGE"
+	LifecyclePolicyResourceTypeCONTAINERIMAGE LifecyclePolicyResourceType = "CONTAINER_IMAGE"
+)
+
+type LifecyclePolicyStatus string
+
+const (
+	LifecyclePolicyStatusDISABLED LifecyclePolicyStatus = "DISABLED"
+	LifecyclePolicyStatusENABLED  LifecyclePolicyStatus = "ENABLED"
+)
+
+type WorkflowType string
+
+const (
+	WorkflowTypeBUILD        WorkflowType = "BUILD"
+	WorkflowTypeTEST         WorkflowType = "TEST"
+	WorkflowTypeDISTRIBUTION WorkflowType = "DISTRIBUTION"
+)

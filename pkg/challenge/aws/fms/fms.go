@@ -37,7 +37,7 @@ type NetworkAclEntry struct {
 	Ipv6CidrBlock *string                      `json:"Ipv6CidrBlock,omitempty"`
 	PortRange     *NetworkAclEntryPortRange    `json:"PortRange,omitempty"`
 	Protocol      *string                      `json:"Protocol,omitempty"`
-	RuleAction    *string                      `json:"RuleAction,omitempty"`
+	RuleAction    *NetworkAclEntryRuleAction   `json:"RuleAction,omitempty"`
 }
 
 type NetworkAclEntrySet struct {
@@ -52,11 +52,11 @@ type NetworkAclCommonPolicy struct {
 }
 
 type NetworkFirewallPolicy struct {
-	FirewallDeploymentModel *string `json:"FirewallDeploymentModel,omitempty"`
+	FirewallDeploymentModel *FirewallDeploymentModel `json:"FirewallDeploymentModel,omitempty"`
 }
 
 type ThirdPartyFirewallPolicy struct {
-	FirewallDeploymentModel *string `json:"FirewallDeploymentModel,omitempty"`
+	FirewallDeploymentModel *FirewallDeploymentModel `json:"FirewallDeploymentModel,omitempty"`
 }
 
 type PolicyOption struct {
@@ -68,7 +68,7 @@ type PolicyOption struct {
 type SecurityServicePolicyData struct {
 	ManagedServiceData *string       `json:"ManagedServiceData,omitempty"`
 	PolicyOption       *PolicyOption `json:"PolicyOption,omitempty"`
-	Type               *string       `json:"Type,omitempty"`
+	Type               *PolicyType   `json:"Type,omitempty"`
 }
 
 type PolicyTag struct {
@@ -77,23 +77,23 @@ type PolicyTag struct {
 }
 
 type Policy struct {
-	Arn                        *string                    `json:"Arn,omitempty"`
-	DeleteAllPolicyResources   *bool                      `json:"DeleteAllPolicyResources,omitempty"`
-	ExcludeMap                 *IEMap                     `json:"ExcludeMap,omitempty"`
-	ExcludeResourceTags        *bool                      `json:"ExcludeResourceTags,omitempty"`
-	Id                         *string                    `json:"Id,omitempty"`
-	IncludeMap                 *IEMap                     `json:"IncludeMap,omitempty"`
-	PolicyDescription          *string                    `json:"PolicyDescription,omitempty"`
-	PolicyName                 *string                    `json:"PolicyName,omitempty"`
-	RemediationEnabled         *bool                      `json:"RemediationEnabled,omitempty"`
-	ResourceSetIds             []string                   `json:"ResourceSetIds,omitempty"`
-	ResourceTagLogicalOperator *string                    `json:"ResourceTagLogicalOperator,omitempty"`
-	ResourceTags               []ResourceTag              `json:"ResourceTags,omitempty"`
-	ResourceType               *string                    `json:"ResourceType,omitempty"`
-	ResourceTypeList           []string                   `json:"ResourceTypeList,omitempty"`
-	ResourcesCleanUp           *bool                      `json:"ResourcesCleanUp,omitempty"`
-	SecurityServicePolicyData  *SecurityServicePolicyData `json:"SecurityServicePolicyData,omitempty"`
-	Tags                       []PolicyTag                `json:"Tags,omitempty"`
+	Arn                        *string                           `json:"Arn,omitempty"`
+	DeleteAllPolicyResources   *bool                             `json:"DeleteAllPolicyResources,omitempty"`
+	ExcludeMap                 *IEMap                            `json:"ExcludeMap,omitempty"`
+	ExcludeResourceTags        *bool                             `json:"ExcludeResourceTags,omitempty"`
+	Id                         *string                           `json:"Id,omitempty"`
+	IncludeMap                 *IEMap                            `json:"IncludeMap,omitempty"`
+	PolicyDescription          *string                           `json:"PolicyDescription,omitempty"`
+	PolicyName                 *string                           `json:"PolicyName,omitempty"`
+	RemediationEnabled         *bool                             `json:"RemediationEnabled,omitempty"`
+	ResourceSetIds             []string                          `json:"ResourceSetIds,omitempty"`
+	ResourceTagLogicalOperator *PolicyResourceTagLogicalOperator `json:"ResourceTagLogicalOperator,omitempty"`
+	ResourceTags               []ResourceTag                     `json:"ResourceTags,omitempty"`
+	ResourceType               *string                           `json:"ResourceType,omitempty"`
+	ResourceTypeList           []string                          `json:"ResourceTypeList,omitempty"`
+	ResourcesCleanUp           *bool                             `json:"ResourcesCleanUp,omitempty"`
+	SecurityServicePolicyData  *SecurityServicePolicyData        `json:"SecurityServicePolicyData,omitempty"`
+	Tags                       []PolicyTag                       `json:"Tags,omitempty"`
 }
 
 func (Policy) CloudControlType() string { return "AWS::FMS::Policy" }
@@ -113,3 +113,40 @@ type ResourceSet struct {
 }
 
 func (ResourceSet) CloudControlType() string { return "AWS::FMS::ResourceSet" }
+
+type PolicyResourceTagLogicalOperator string
+
+const (
+	PolicyResourceTagLogicalOperatorAND PolicyResourceTagLogicalOperator = "AND"
+	PolicyResourceTagLogicalOperatorOR  PolicyResourceTagLogicalOperator = "OR"
+)
+
+type NetworkAclEntryRuleAction string
+
+const (
+	NetworkAclEntryRuleActionAllow NetworkAclEntryRuleAction = "allow"
+	NetworkAclEntryRuleActionDeny  NetworkAclEntryRuleAction = "deny"
+)
+
+type FirewallDeploymentModel string
+
+const (
+	FirewallDeploymentModelDISTRIBUTED FirewallDeploymentModel = "DISTRIBUTED"
+	FirewallDeploymentModelCENTRALIZED FirewallDeploymentModel = "CENTRALIZED"
+)
+
+type PolicyType string
+
+const (
+	PolicyTypeWAF                        PolicyType = "WAF"
+	PolicyTypeWAFV2                      PolicyType = "WAFV2"
+	PolicyTypeSHIELDADVANCED             PolicyType = "SHIELD_ADVANCED"
+	PolicyTypeSECURITYGROUPSCOMMON       PolicyType = "SECURITY_GROUPS_COMMON"
+	PolicyTypeSECURITYGROUPSCONTENTAUDIT PolicyType = "SECURITY_GROUPS_CONTENT_AUDIT"
+	PolicyTypeSECURITYGROUPSUSAGEAUDIT   PolicyType = "SECURITY_GROUPS_USAGE_AUDIT"
+	PolicyTypeNETWORKFIREWALL            PolicyType = "NETWORK_FIREWALL"
+	PolicyTypeTHIRDPARTYFIREWALL         PolicyType = "THIRD_PARTY_FIREWALL"
+	PolicyTypeDNSFIREWALL                PolicyType = "DNS_FIREWALL"
+	PolicyTypeIMPORTNETWORKFIREWALL      PolicyType = "IMPORT_NETWORK_FIREWALL"
+	PolicyTypeNETWORKACLCOMMON           PolicyType = "NETWORK_ACL_COMMON"
+)

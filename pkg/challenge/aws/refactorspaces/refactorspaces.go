@@ -4,8 +4,8 @@
 package refactorspaces
 
 type ApiGatewayProxyInput struct {
-	EndpointType *string `json:"EndpointType,omitempty"`
-	StageName    *string `json:"StageName,omitempty"`
+	EndpointType *ApiGatewayEndpointType `json:"EndpointType,omitempty"`
+	StageName    *string                 `json:"StageName,omitempty"`
 }
 
 type Tag struct {
@@ -22,7 +22,7 @@ type Application struct {
 	Name                  *string               `json:"Name,omitempty"`
 	NlbArn                *string               `json:"NlbArn,omitempty"`
 	NlbName               *string               `json:"NlbName,omitempty"`
-	ProxyType             *string               `json:"ProxyType,omitempty"`
+	ProxyType             *ProxyType            `json:"ProxyType,omitempty"`
 	ProxyUrl              *string               `json:"ProxyUrl,omitempty"`
 	StageName             *string               `json:"StageName,omitempty"`
 	Tags                  []Tag                 `json:"Tags,omitempty"`
@@ -38,19 +38,19 @@ type EnvironmentTag struct {
 }
 
 type Environment struct {
-	Arn                   *string          `json:"Arn,omitempty"`
-	Description           *string          `json:"Description,omitempty"`
-	EnvironmentIdentifier *string          `json:"EnvironmentIdentifier,omitempty"`
-	Name                  *string          `json:"Name,omitempty"`
-	NetworkFabricType     *string          `json:"NetworkFabricType,omitempty"`
-	Tags                  []EnvironmentTag `json:"Tags,omitempty"`
-	TransitGatewayId      *string          `json:"TransitGatewayId,omitempty"`
+	Arn                   *string            `json:"Arn,omitempty"`
+	Description           *string            `json:"Description,omitempty"`
+	EnvironmentIdentifier *string            `json:"EnvironmentIdentifier,omitempty"`
+	Name                  *string            `json:"Name,omitempty"`
+	NetworkFabricType     *NetworkFabricType `json:"NetworkFabricType,omitempty"`
+	Tags                  []EnvironmentTag   `json:"Tags,omitempty"`
+	TransitGatewayId      *string            `json:"TransitGatewayId,omitempty"`
 }
 
 func (Environment) CloudControlType() string { return "AWS::RefactorSpaces::Environment" }
 
 type DefaultRouteInput struct {
-	ActivationState *string `json:"ActivationState,omitempty"`
+	ActivationState *RouteActivationState `json:"ActivationState,omitempty"`
 }
 
 type RouteTag struct {
@@ -59,11 +59,11 @@ type RouteTag struct {
 }
 
 type UriPathRouteInput struct {
-	ActivationState   *string  `json:"ActivationState,omitempty"`
-	AppendSourcePath  *bool    `json:"AppendSourcePath,omitempty"`
-	IncludeChildPaths *bool    `json:"IncludeChildPaths,omitempty"`
-	Methods           []string `json:"Methods,omitempty"`
-	SourcePath        *string  `json:"SourcePath,omitempty"`
+	ActivationState   *RouteActivationState `json:"ActivationState,omitempty"`
+	AppendSourcePath  *bool                 `json:"AppendSourcePath,omitempty"`
+	IncludeChildPaths *bool                 `json:"IncludeChildPaths,omitempty"`
+	Methods           []Method              `json:"Methods,omitempty"`
+	SourcePath        *string               `json:"SourcePath,omitempty"`
 }
 
 type Route struct {
@@ -73,7 +73,7 @@ type Route struct {
 	EnvironmentIdentifier *string            `json:"EnvironmentIdentifier,omitempty"`
 	PathResourceToId      *string            `json:"PathResourceToId,omitempty"`
 	RouteIdentifier       *string            `json:"RouteIdentifier,omitempty"`
-	RouteType             *string            `json:"RouteType,omitempty"`
+	RouteType             *RouteType         `json:"RouteType,omitempty"`
 	ServiceIdentifier     *string            `json:"ServiceIdentifier,omitempty"`
 	Tags                  []RouteTag         `json:"Tags,omitempty"`
 	UriPathRoute          *UriPathRouteInput `json:"UriPathRoute,omitempty"`
@@ -99,7 +99,7 @@ type Service struct {
 	ApplicationIdentifier *string              `json:"ApplicationIdentifier,omitempty"`
 	Arn                   *string              `json:"Arn,omitempty"`
 	Description           *string              `json:"Description,omitempty"`
-	EndpointType          *string              `json:"EndpointType,omitempty"`
+	EndpointType          *ServiceEndpointType `json:"EndpointType,omitempty"`
 	EnvironmentIdentifier *string              `json:"EnvironmentIdentifier,omitempty"`
 	LambdaEndpoint        *LambdaEndpointInput `json:"LambdaEndpoint,omitempty"`
 	Name                  *string              `json:"Name,omitempty"`
@@ -110,3 +110,56 @@ type Service struct {
 }
 
 func (Service) CloudControlType() string { return "AWS::RefactorSpaces::Service" }
+
+type ApiGatewayEndpointType string
+
+const (
+	ApiGatewayEndpointTypeREGIONAL ApiGatewayEndpointType = "REGIONAL"
+	ApiGatewayEndpointTypePRIVATE  ApiGatewayEndpointType = "PRIVATE"
+)
+
+type ProxyType string
+
+const (
+	ProxyTypeAPIGATEWAY ProxyType = "API_GATEWAY"
+)
+
+type NetworkFabricType string
+
+const (
+	NetworkFabricTypeTRANSITGATEWAY NetworkFabricType = "TRANSIT_GATEWAY"
+	NetworkFabricTypeNONE           NetworkFabricType = "NONE"
+)
+
+type RouteActivationState string
+
+const (
+	RouteActivationStateINACTIVE RouteActivationState = "INACTIVE"
+	RouteActivationStateACTIVE   RouteActivationState = "ACTIVE"
+)
+
+type RouteType string
+
+const (
+	RouteTypeDEFAULT RouteType = "DEFAULT"
+	RouteTypeURIPATH RouteType = "URI_PATH"
+)
+
+type Method string
+
+const (
+	MethodDELETE  Method = "DELETE"
+	MethodGET     Method = "GET"
+	MethodHEAD    Method = "HEAD"
+	MethodOPTIONS Method = "OPTIONS"
+	MethodPATCH   Method = "PATCH"
+	MethodPOST    Method = "POST"
+	MethodPUT     Method = "PUT"
+)
+
+type ServiceEndpointType string
+
+const (
+	ServiceEndpointTypeLAMBDA ServiceEndpointType = "LAMBDA"
+	ServiceEndpointTypeURL    ServiceEndpointType = "URL"
+)

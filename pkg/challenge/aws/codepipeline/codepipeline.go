@@ -50,9 +50,9 @@ type EncryptionKey struct {
 }
 
 type ArtifactStore struct {
-	EncryptionKey *EncryptionKey `json:"EncryptionKey,omitempty"`
-	Location      *string        `json:"Location,omitempty"`
-	Type          *string        `json:"Type,omitempty"`
+	EncryptionKey *EncryptionKey     `json:"EncryptionKey,omitempty"`
+	Location      *string            `json:"Location,omitempty"`
+	Type          *ArtifactStoreType `json:"Type,omitempty"`
 }
 
 type ArtifactStoreMap struct {
@@ -66,16 +66,16 @@ type StageTransition struct {
 }
 
 type ActionTypeId struct {
-	Category *string `json:"Category,omitempty"`
-	Owner    *string `json:"Owner,omitempty"`
-	Provider *string `json:"Provider,omitempty"`
-	Version  *string `json:"Version,omitempty"`
+	Category *ActionTypeIdCategory `json:"Category,omitempty"`
+	Owner    *string               `json:"Owner,omitempty"`
+	Provider *string               `json:"Provider,omitempty"`
+	Version  *string               `json:"Version,omitempty"`
 }
 
 type EnvironmentVariable struct {
-	Name  *string `json:"Name,omitempty"`
-	Type  *string `json:"Type,omitempty"`
-	Value *string `json:"Value,omitempty"`
+	Name  *string                  `json:"Name,omitempty"`
+	Type  *EnvironmentVariableType `json:"Type,omitempty"`
+	Value *string                  `json:"Value,omitempty"`
 }
 
 type InputArtifact struct {
@@ -130,17 +130,17 @@ type BeforeEntryConditions struct {
 }
 
 type BlockerDeclaration struct {
-	Name *string `json:"Name,omitempty"`
-	Type *string `json:"Type,omitempty"`
+	Name *string                 `json:"Name,omitempty"`
+	Type *BlockerDeclarationType `json:"Type,omitempty"`
 }
 
 type FailureConditionsRetryConfiguration struct {
-	RetryMode *string `json:"RetryMode,omitempty"`
+	RetryMode *FailureConditionsRetryConfigurationRetryMode `json:"RetryMode,omitempty"`
 }
 
 type FailureConditions struct {
 	Conditions         []Condition                          `json:"Conditions,omitempty"`
-	Result             *string                              `json:"Result,omitempty"`
+	Result             *FailureConditionsResult             `json:"Result,omitempty"`
 	RetryConfiguration *FailureConditionsRetryConfiguration `json:"RetryConfiguration,omitempty"`
 }
 
@@ -196,8 +196,8 @@ type GitConfiguration struct {
 }
 
 type PipelineTriggerDeclaration struct {
-	GitConfiguration *GitConfiguration `json:"GitConfiguration,omitempty"`
-	ProviderType     *string           `json:"ProviderType,omitempty"`
+	GitConfiguration *GitConfiguration                       `json:"GitConfiguration,omitempty"`
+	ProviderType     *PipelineTriggerDeclarationProviderType `json:"ProviderType,omitempty"`
 }
 
 type VariableDeclaration struct {
@@ -211,9 +211,9 @@ type Pipeline struct {
 	ArtifactStore                  *ArtifactStore               `json:"ArtifactStore,omitempty"`
 	ArtifactStores                 []ArtifactStoreMap           `json:"ArtifactStores,omitempty"`
 	DisableInboundStageTransitions []StageTransition            `json:"DisableInboundStageTransitions,omitempty"`
-	ExecutionMode                  *string                      `json:"ExecutionMode,omitempty"`
+	ExecutionMode                  *PipelineExecutionMode       `json:"ExecutionMode,omitempty"`
 	Name                           *string                      `json:"Name,omitempty"`
-	PipelineType                   *string                      `json:"PipelineType,omitempty"`
+	PipelineType                   *PipelinePipelineType        `json:"PipelineType,omitempty"`
 	RestartExecutionOnUpdate       *bool                        `json:"RestartExecutionOnUpdate,omitempty"`
 	RoleArn                        *string                      `json:"RoleArn,omitempty"`
 	Stages                         []StageDeclaration           `json:"Stages,omitempty"`
@@ -241,7 +241,7 @@ type WebhookTag struct {
 }
 
 type Webhook struct {
-	Authentication              *string                   `json:"Authentication,omitempty"`
+	Authentication              *WebhookAuthentication    `json:"Authentication,omitempty"`
 	AuthenticationConfiguration *WebhookAuthConfiguration `json:"AuthenticationConfiguration,omitempty"`
 	Filters                     []WebhookFilterRule       `json:"Filters,omitempty"`
 	Id                          *string                   `json:"Id,omitempty"`
@@ -255,3 +255,77 @@ type Webhook struct {
 }
 
 func (Webhook) CloudControlType() string { return "AWS::CodePipeline::Webhook" }
+
+type ArtifactStoreType string
+
+const (
+	ArtifactStoreTypeS3 ArtifactStoreType = "S3"
+)
+
+type PipelineExecutionMode string
+
+const (
+	PipelineExecutionModeQUEUED     PipelineExecutionMode = "QUEUED"
+	PipelineExecutionModeSUPERSEDED PipelineExecutionMode = "SUPERSEDED"
+	PipelineExecutionModePARALLEL   PipelineExecutionMode = "PARALLEL"
+)
+
+type PipelinePipelineType string
+
+const (
+	PipelinePipelineTypeV1 PipelinePipelineType = "V1"
+	PipelinePipelineTypeV2 PipelinePipelineType = "V2"
+)
+
+type ActionTypeIdCategory string
+
+const (
+	ActionTypeIdCategorySource   ActionTypeIdCategory = "Source"
+	ActionTypeIdCategoryBuild    ActionTypeIdCategory = "Build"
+	ActionTypeIdCategoryTest     ActionTypeIdCategory = "Test"
+	ActionTypeIdCategoryDeploy   ActionTypeIdCategory = "Deploy"
+	ActionTypeIdCategoryInvoke   ActionTypeIdCategory = "Invoke"
+	ActionTypeIdCategoryApproval ActionTypeIdCategory = "Approval"
+	ActionTypeIdCategoryCompute  ActionTypeIdCategory = "Compute"
+)
+
+type EnvironmentVariableType string
+
+const (
+	EnvironmentVariableTypePLAINTEXT      EnvironmentVariableType = "PLAINTEXT"
+	EnvironmentVariableTypeSECRETSMANAGER EnvironmentVariableType = "SECRETS_MANAGER"
+)
+
+type BlockerDeclarationType string
+
+const (
+	BlockerDeclarationTypeSchedule BlockerDeclarationType = "Schedule"
+)
+
+type FailureConditionsResult string
+
+const (
+	FailureConditionsResultROLLBACK FailureConditionsResult = "ROLLBACK"
+	FailureConditionsResultRETRY    FailureConditionsResult = "RETRY"
+)
+
+type FailureConditionsRetryConfigurationRetryMode string
+
+const (
+	FailureConditionsRetryConfigurationRetryModeALLACTIONS    FailureConditionsRetryConfigurationRetryMode = "ALL_ACTIONS"
+	FailureConditionsRetryConfigurationRetryModeFAILEDACTIONS FailureConditionsRetryConfigurationRetryMode = "FAILED_ACTIONS"
+)
+
+type PipelineTriggerDeclarationProviderType string
+
+const (
+	PipelineTriggerDeclarationProviderTypeCodeStarSourceConnection PipelineTriggerDeclarationProviderType = "CodeStarSourceConnection"
+)
+
+type WebhookAuthentication string
+
+const (
+	WebhookAuthenticationGITHUBHMAC      WebhookAuthentication = "GITHUB_HMAC"
+	WebhookAuthenticationIP              WebhookAuthentication = "IP"
+	WebhookAuthenticationUNAUTHENTICATED WebhookAuthentication = "UNAUTHENTICATED"
+)

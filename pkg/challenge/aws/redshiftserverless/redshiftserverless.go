@@ -4,19 +4,19 @@
 package redshiftserverless
 
 type NamespaceNamespace struct {
-	AdminPasswordSecretArn      *string  `json:"AdminPasswordSecretArn,omitempty"`
-	AdminPasswordSecretKmsKeyId *string  `json:"AdminPasswordSecretKmsKeyId,omitempty"`
-	AdminUsername               *string  `json:"AdminUsername,omitempty"`
-	CreationDate                *string  `json:"CreationDate,omitempty"`
-	DbName                      *string  `json:"DbName,omitempty"`
-	DefaultIamRoleArn           *string  `json:"DefaultIamRoleArn,omitempty"`
-	IamRoles                    []string `json:"IamRoles,omitempty"`
-	KmsKeyId                    *string  `json:"KmsKeyId,omitempty"`
-	LogExports                  []string `json:"LogExports,omitempty"`
-	NamespaceArn                *string  `json:"NamespaceArn,omitempty"`
-	NamespaceId                 *string  `json:"NamespaceId,omitempty"`
-	NamespaceName               *string  `json:"NamespaceName,omitempty"`
-	Status                      *string  `json:"Status,omitempty"`
+	AdminPasswordSecretArn      *string          `json:"AdminPasswordSecretArn,omitempty"`
+	AdminPasswordSecretKmsKeyId *string          `json:"AdminPasswordSecretKmsKeyId,omitempty"`
+	AdminUsername               *string          `json:"AdminUsername,omitempty"`
+	CreationDate                *string          `json:"CreationDate,omitempty"`
+	DbName                      *string          `json:"DbName,omitempty"`
+	DefaultIamRoleArn           *string          `json:"DefaultIamRoleArn,omitempty"`
+	IamRoles                    []string         `json:"IamRoles,omitempty"`
+	KmsKeyId                    *string          `json:"KmsKeyId,omitempty"`
+	LogExports                  []LogExport      `json:"LogExports,omitempty"`
+	NamespaceArn                *string          `json:"NamespaceArn,omitempty"`
+	NamespaceId                 *string          `json:"NamespaceId,omitempty"`
+	NamespaceName               *string          `json:"NamespaceName,omitempty"`
+	Status                      *NamespaceStatus `json:"Status,omitempty"`
 }
 
 type SnapshotCopyConfiguration struct {
@@ -40,7 +40,7 @@ type Namespace struct {
 	FinalSnapshotRetentionPeriod *int                        `json:"FinalSnapshotRetentionPeriod,omitempty"`
 	IamRoles                     []string                    `json:"IamRoles,omitempty"`
 	KmsKeyId                     *string                     `json:"KmsKeyId,omitempty"`
-	LogExports                   []string                    `json:"LogExports,omitempty"`
+	LogExports                   []LogExport                 `json:"LogExports,omitempty"`
 	ManageAdminPassword          *bool                       `json:"ManageAdminPassword,omitempty"`
 	Namespace                    *NamespaceNamespace         `json:"Namespace,omitempty"`
 	NamespaceName                *string                     `json:"NamespaceName,omitempty"`
@@ -53,16 +53,16 @@ type Namespace struct {
 func (Namespace) CloudControlType() string { return "AWS::RedshiftServerless::Namespace" }
 
 type SnapshotSnapshot struct {
-	AdminUsername      *string `json:"AdminUsername,omitempty"`
-	KmsKeyId           *string `json:"KmsKeyId,omitempty"`
-	NamespaceArn       *string `json:"NamespaceArn,omitempty"`
-	NamespaceName      *string `json:"NamespaceName,omitempty"`
-	OwnerAccount       *string `json:"OwnerAccount,omitempty"`
-	RetentionPeriod    *int    `json:"RetentionPeriod,omitempty"`
-	SnapshotArn        *string `json:"SnapshotArn,omitempty"`
-	SnapshotCreateTime *string `json:"SnapshotCreateTime,omitempty"`
-	SnapshotName       *string `json:"SnapshotName,omitempty"`
-	Status             *string `json:"Status,omitempty"`
+	AdminUsername      *string         `json:"AdminUsername,omitempty"`
+	KmsKeyId           *string         `json:"KmsKeyId,omitempty"`
+	NamespaceArn       *string         `json:"NamespaceArn,omitempty"`
+	NamespaceName      *string         `json:"NamespaceName,omitempty"`
+	OwnerAccount       *string         `json:"OwnerAccount,omitempty"`
+	RetentionPeriod    *int            `json:"RetentionPeriod,omitempty"`
+	SnapshotArn        *string         `json:"SnapshotArn,omitempty"`
+	SnapshotCreateTime *string         `json:"SnapshotCreateTime,omitempty"`
+	SnapshotName       *string         `json:"SnapshotName,omitempty"`
+	Status             *SnapshotStatus `json:"Status,omitempty"`
 }
 
 type SnapshotTag struct {
@@ -87,8 +87,8 @@ type ConfigParameter struct {
 }
 
 type PerformanceTarget struct {
-	Level  *int    `json:"Level,omitempty"`
-	Status *string `json:"Status,omitempty"`
+	Level  *int                     `json:"Level,omitempty"`
+	Status *PerformanceTargetStatus `json:"Status,omitempty"`
 }
 
 type WorkgroupTag struct {
@@ -126,7 +126,7 @@ type WorkgroupWorkgroup struct {
 	PricePerformanceTarget *PerformanceTarget `json:"PricePerformanceTarget,omitempty"`
 	PubliclyAccessible     *bool              `json:"PubliclyAccessible,omitempty"`
 	SecurityGroupIds       []string           `json:"SecurityGroupIds,omitempty"`
-	Status                 *string            `json:"Status,omitempty"`
+	Status                 *WorkgroupStatus   `json:"Status,omitempty"`
 	SubnetIds              []string           `json:"SubnetIds,omitempty"`
 	TrackName              *string            `json:"TrackName,omitempty"`
 	WorkgroupArn           *string            `json:"WorkgroupArn,omitempty"`
@@ -156,3 +156,46 @@ type Workgroup struct {
 }
 
 func (Workgroup) CloudControlType() string { return "AWS::RedshiftServerless::Workgroup" }
+
+type LogExport string
+
+const (
+	LogExportUseractivitylog LogExport = "useractivitylog"
+	LogExportUserlog         LogExport = "userlog"
+	LogExportConnectionlog   LogExport = "connectionlog"
+)
+
+type NamespaceStatus string
+
+const (
+	NamespaceStatusAVAILABLE NamespaceStatus = "AVAILABLE"
+	NamespaceStatusMODIFYING NamespaceStatus = "MODIFYING"
+	NamespaceStatusDELETING  NamespaceStatus = "DELETING"
+)
+
+type SnapshotStatus string
+
+const (
+	SnapshotStatusAVAILABLE SnapshotStatus = "AVAILABLE"
+	SnapshotStatusCREATING  SnapshotStatus = "CREATING"
+	SnapshotStatusDELETED   SnapshotStatus = "DELETED"
+	SnapshotStatusCANCELLED SnapshotStatus = "CANCELLED"
+	SnapshotStatusFAILED    SnapshotStatus = "FAILED"
+	SnapshotStatusCOPYING   SnapshotStatus = "COPYING"
+)
+
+type PerformanceTargetStatus string
+
+const (
+	PerformanceTargetStatusENABLED  PerformanceTargetStatus = "ENABLED"
+	PerformanceTargetStatusDISABLED PerformanceTargetStatus = "DISABLED"
+)
+
+type WorkgroupStatus string
+
+const (
+	WorkgroupStatusCREATING  WorkgroupStatus = "CREATING"
+	WorkgroupStatusAVAILABLE WorkgroupStatus = "AVAILABLE"
+	WorkgroupStatusMODIFYING WorkgroupStatus = "MODIFYING"
+	WorkgroupStatusDELETING  WorkgroupStatus = "DELETING"
+)

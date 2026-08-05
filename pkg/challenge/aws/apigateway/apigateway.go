@@ -153,11 +153,11 @@ type Deployment struct {
 func (Deployment) CloudControlType() string { return "AWS::ApiGateway::Deployment" }
 
 type Location struct {
-	Method     *string `json:"Method,omitempty"`
-	Name       *string `json:"Name,omitempty"`
-	Path       *string `json:"Path,omitempty"`
-	StatusCode *string `json:"StatusCode,omitempty"`
-	Type       *string `json:"Type,omitempty"`
+	Method     *string       `json:"Method,omitempty"`
+	Name       *string       `json:"Name,omitempty"`
+	Path       *string       `json:"Path,omitempty"`
+	StatusCode *string       `json:"StatusCode,omitempty"`
+	Type       *LocationType `json:"Type,omitempty"`
 }
 
 type DocumentationPart struct {
@@ -205,7 +205,7 @@ type DomainName struct {
 	RegionalCertificateArn              *string                  `json:"RegionalCertificateArn,omitempty"`
 	RegionalDomainName                  *string                  `json:"RegionalDomainName,omitempty"`
 	RegionalHostedZoneId                *string                  `json:"RegionalHostedZoneId,omitempty"`
-	RoutingMode                         *string                  `json:"RoutingMode,omitempty"`
+	RoutingMode                         *DomainNameRoutingMode   `json:"RoutingMode,omitempty"`
 	SecurityPolicy                      *string                  `json:"SecurityPolicy,omitempty"`
 	Tags                                []DomainNameTag          `json:"Tags,omitempty"`
 }
@@ -218,11 +218,11 @@ type DomainNameAccessAssociationTag struct {
 }
 
 type DomainNameAccessAssociation struct {
-	AccessAssociationSource        *string                          `json:"AccessAssociationSource,omitempty"`
-	AccessAssociationSourceType    *string                          `json:"AccessAssociationSourceType,omitempty"`
-	DomainNameAccessAssociationArn *string                          `json:"DomainNameAccessAssociationArn,omitempty"`
-	DomainNameArn                  *string                          `json:"DomainNameArn,omitempty"`
-	Tags                           []DomainNameAccessAssociationTag `json:"Tags,omitempty"`
+	AccessAssociationSource        *string                                                 `json:"AccessAssociationSource,omitempty"`
+	AccessAssociationSourceType    *DomainNameAccessAssociationAccessAssociationSourceType `json:"AccessAssociationSourceType,omitempty"`
+	DomainNameAccessAssociationArn *string                                                 `json:"DomainNameAccessAssociationArn,omitempty"`
+	DomainNameArn                  *string                                                 `json:"DomainNameArn,omitempty"`
+	Tags                           []DomainNameAccessAssociationTag                        `json:"Tags,omitempty"`
 }
 
 func (DomainNameAccessAssociation) CloudControlType() string {
@@ -247,7 +247,7 @@ type DomainNameV2 struct {
 	EndpointAccessMode    *string                            `json:"EndpointAccessMode,omitempty"`
 	EndpointConfiguration *DomainNameV2EndpointConfiguration `json:"EndpointConfiguration,omitempty"`
 	Policy                json.RawMessage                    `json:"Policy,omitempty"`
-	RoutingMode           *string                            `json:"RoutingMode,omitempty"`
+	RoutingMode           *DomainNameV2RoutingMode           `json:"RoutingMode,omitempty"`
 	SecurityPolicy        *string                            `json:"SecurityPolicy,omitempty"`
 	Tags                  []DomainNameV2Tag                  `json:"Tags,omitempty"`
 }
@@ -266,30 +266,30 @@ type GatewayResponse struct {
 func (GatewayResponse) CloudControlType() string { return "AWS::ApiGateway::GatewayResponse" }
 
 type IntegrationResponse struct {
-	ContentHandling    *string           `json:"ContentHandling,omitempty"`
-	ResponseParameters map[string]string `json:"ResponseParameters,omitempty"`
-	ResponseTemplates  map[string]string `json:"ResponseTemplates,omitempty"`
-	SelectionPattern   *string           `json:"SelectionPattern,omitempty"`
-	StatusCode         *string           `json:"StatusCode,omitempty"`
+	ContentHandling    *IntegrationResponseContentHandling `json:"ContentHandling,omitempty"`
+	ResponseParameters map[string]string                   `json:"ResponseParameters,omitempty"`
+	ResponseTemplates  map[string]string                   `json:"ResponseTemplates,omitempty"`
+	SelectionPattern   *string                             `json:"SelectionPattern,omitempty"`
+	StatusCode         *string                             `json:"StatusCode,omitempty"`
 }
 
 type Integration struct {
-	CacheKeyParameters    []string              `json:"CacheKeyParameters,omitempty"`
-	CacheNamespace        *string               `json:"CacheNamespace,omitempty"`
-	ConnectionId          *string               `json:"ConnectionId,omitempty"`
-	ConnectionType        *string               `json:"ConnectionType,omitempty"`
-	ContentHandling       *string               `json:"ContentHandling,omitempty"`
-	Credentials           *string               `json:"Credentials,omitempty"`
-	IntegrationHttpMethod *string               `json:"IntegrationHttpMethod,omitempty"`
-	IntegrationResponses  []IntegrationResponse `json:"IntegrationResponses,omitempty"`
-	IntegrationTarget     *string               `json:"IntegrationTarget,omitempty"`
-	PassthroughBehavior   *string               `json:"PassthroughBehavior,omitempty"`
-	RequestParameters     map[string]string     `json:"RequestParameters,omitempty"`
-	RequestTemplates      map[string]string     `json:"RequestTemplates,omitempty"`
-	ResponseTransferMode  *string               `json:"ResponseTransferMode,omitempty"`
-	TimeoutInMillis       *int                  `json:"TimeoutInMillis,omitempty"`
-	Type                  *string               `json:"Type,omitempty"`
-	Uri                   *string               `json:"Uri,omitempty"`
+	CacheKeyParameters    []string                         `json:"CacheKeyParameters,omitempty"`
+	CacheNamespace        *string                          `json:"CacheNamespace,omitempty"`
+	ConnectionId          *string                          `json:"ConnectionId,omitempty"`
+	ConnectionType        *IntegrationConnectionType       `json:"ConnectionType,omitempty"`
+	ContentHandling       *IntegrationContentHandling      `json:"ContentHandling,omitempty"`
+	Credentials           *string                          `json:"Credentials,omitempty"`
+	IntegrationHttpMethod *string                          `json:"IntegrationHttpMethod,omitempty"`
+	IntegrationResponses  []IntegrationResponse            `json:"IntegrationResponses,omitempty"`
+	IntegrationTarget     *string                          `json:"IntegrationTarget,omitempty"`
+	PassthroughBehavior   *IntegrationPassthroughBehavior  `json:"PassthroughBehavior,omitempty"`
+	RequestParameters     map[string]string                `json:"RequestParameters,omitempty"`
+	RequestTemplates      map[string]string                `json:"RequestTemplates,omitempty"`
+	ResponseTransferMode  *IntegrationResponseTransferMode `json:"ResponseTransferMode,omitempty"`
+	TimeoutInMillis       *int                             `json:"TimeoutInMillis,omitempty"`
+	Type                  *IntegrationType                 `json:"Type,omitempty"`
+	Uri                   *string                          `json:"Uri,omitempty"`
 }
 
 type MethodResponse struct {
@@ -471,10 +471,10 @@ type UsagePlan struct {
 func (UsagePlan) CloudControlType() string { return "AWS::ApiGateway::UsagePlan" }
 
 type UsagePlanKey struct {
-	Id          *string `json:"Id,omitempty"`
-	KeyId       *string `json:"KeyId,omitempty"`
-	KeyType     *string `json:"KeyType,omitempty"`
-	UsagePlanId *string `json:"UsagePlanId,omitempty"`
+	Id          *string              `json:"Id,omitempty"`
+	KeyId       *string              `json:"KeyId,omitempty"`
+	KeyType     *UsagePlanKeyKeyType `json:"KeyType,omitempty"`
+	UsagePlanId *string              `json:"UsagePlanId,omitempty"`
 }
 
 func (UsagePlanKey) CloudControlType() string { return "AWS::ApiGateway::UsagePlanKey" }
@@ -493,3 +493,94 @@ type VpcLink struct {
 }
 
 func (VpcLink) CloudControlType() string { return "AWS::ApiGateway::VpcLink" }
+
+type LocationType string
+
+const (
+	LocationTypeAPI            LocationType = "API"
+	LocationTypeAUTHORIZER     LocationType = "AUTHORIZER"
+	LocationTypeMODEL          LocationType = "MODEL"
+	LocationTypeRESOURCE       LocationType = "RESOURCE"
+	LocationTypeMETHOD         LocationType = "METHOD"
+	LocationTypePATHPARAMETER  LocationType = "PATH_PARAMETER"
+	LocationTypeQUERYPARAMETER LocationType = "QUERY_PARAMETER"
+	LocationTypeREQUESTHEADER  LocationType = "REQUEST_HEADER"
+	LocationTypeREQUESTBODY    LocationType = "REQUEST_BODY"
+	LocationTypeRESPONSE       LocationType = "RESPONSE"
+	LocationTypeRESPONSEHEADER LocationType = "RESPONSE_HEADER"
+	LocationTypeRESPONSEBODY   LocationType = "RESPONSE_BODY"
+)
+
+type DomainNameRoutingMode string
+
+const (
+	DomainNameRoutingModeBASEPATHMAPPINGONLY            DomainNameRoutingMode = "BASE_PATH_MAPPING_ONLY"
+	DomainNameRoutingModeROUTINGRULETHENBASEPATHMAPPING DomainNameRoutingMode = "ROUTING_RULE_THEN_BASE_PATH_MAPPING"
+	DomainNameRoutingModeROUTINGRULEONLY                DomainNameRoutingMode = "ROUTING_RULE_ONLY"
+)
+
+type DomainNameAccessAssociationAccessAssociationSourceType string
+
+const (
+	DomainNameAccessAssociationAccessAssociationSourceTypeVPCE DomainNameAccessAssociationAccessAssociationSourceType = "VPCE"
+)
+
+type DomainNameV2RoutingMode string
+
+const (
+	DomainNameV2RoutingModeBASEPATHMAPPINGONLY            DomainNameV2RoutingMode = "BASE_PATH_MAPPING_ONLY"
+	DomainNameV2RoutingModeROUTINGRULETHENBASEPATHMAPPING DomainNameV2RoutingMode = "ROUTING_RULE_THEN_BASE_PATH_MAPPING"
+	DomainNameV2RoutingModeROUTINGRULEONLY                DomainNameV2RoutingMode = "ROUTING_RULE_ONLY"
+)
+
+type IntegrationConnectionType string
+
+const (
+	IntegrationConnectionTypeINTERNET IntegrationConnectionType = "INTERNET"
+	IntegrationConnectionTypeVPCLINK  IntegrationConnectionType = "VPC_LINK"
+)
+
+type IntegrationContentHandling string
+
+const (
+	IntegrationContentHandlingCONVERTTOBINARY IntegrationContentHandling = "CONVERT_TO_BINARY"
+	IntegrationContentHandlingCONVERTTOTEXT   IntegrationContentHandling = "CONVERT_TO_TEXT"
+)
+
+type IntegrationResponseContentHandling string
+
+const (
+	IntegrationResponseContentHandlingCONVERTTOBINARY IntegrationResponseContentHandling = "CONVERT_TO_BINARY"
+	IntegrationResponseContentHandlingCONVERTTOTEXT   IntegrationResponseContentHandling = "CONVERT_TO_TEXT"
+)
+
+type IntegrationPassthroughBehavior string
+
+const (
+	IntegrationPassthroughBehaviorWHENNOMATCH     IntegrationPassthroughBehavior = "WHEN_NO_MATCH"
+	IntegrationPassthroughBehaviorWHENNOTEMPLATES IntegrationPassthroughBehavior = "WHEN_NO_TEMPLATES"
+	IntegrationPassthroughBehaviorNEVER           IntegrationPassthroughBehavior = "NEVER"
+)
+
+type IntegrationResponseTransferMode string
+
+const (
+	IntegrationResponseTransferModeBUFFERED IntegrationResponseTransferMode = "BUFFERED"
+	IntegrationResponseTransferModeSTREAM   IntegrationResponseTransferMode = "STREAM"
+)
+
+type IntegrationType string
+
+const (
+	IntegrationTypeAWS       IntegrationType = "AWS"
+	IntegrationTypeAWSPROXY  IntegrationType = "AWS_PROXY"
+	IntegrationTypeHTTP      IntegrationType = "HTTP"
+	IntegrationTypeHTTPPROXY IntegrationType = "HTTP_PROXY"
+	IntegrationTypeMOCK      IntegrationType = "MOCK"
+)
+
+type UsagePlanKeyKeyType string
+
+const (
+	UsagePlanKeyKeyTypeAPIKEY UsagePlanKeyKeyType = "API_KEY"
+)

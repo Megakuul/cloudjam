@@ -29,20 +29,20 @@ type Alias struct {
 func (Alias) CloudControlType() string { return "AWS::Lambda::Alias" }
 
 type TargetTrackingScalingPolicy struct {
-	PredefinedMetricType *string  `json:"PredefinedMetricType,omitempty"`
-	TargetValue          *float64 `json:"TargetValue,omitempty"`
+	PredefinedMetricType *CapacityProviderPredefinedMetricType `json:"PredefinedMetricType,omitempty"`
+	TargetValue          *float64                              `json:"TargetValue,omitempty"`
 }
 
 type CapacityProviderScalingConfig struct {
 	MaxVCpuCount    *int                          `json:"MaxVCpuCount,omitempty"`
-	ScalingMode     *string                       `json:"ScalingMode,omitempty"`
+	ScalingMode     *CapacityProviderScalingMode  `json:"ScalingMode,omitempty"`
 	ScalingPolicies []TargetTrackingScalingPolicy `json:"ScalingPolicies,omitempty"`
 }
 
 type InstanceRequirements struct {
-	AllowedInstanceTypes  []string `json:"AllowedInstanceTypes,omitempty"`
-	Architectures         []string `json:"Architectures,omitempty"`
-	ExcludedInstanceTypes []string `json:"ExcludedInstanceTypes,omitempty"`
+	AllowedInstanceTypes  []string       `json:"AllowedInstanceTypes,omitempty"`
+	Architectures         []Architecture `json:"Architectures,omitempty"`
+	ExcludedInstanceTypes []string       `json:"ExcludedInstanceTypes,omitempty"`
 }
 
 type CapacityProviderPermissionsConfig struct {
@@ -55,13 +55,13 @@ type Tag struct {
 }
 
 type PropagateTagsConfig struct {
-	ExplicitTags []Tag   `json:"ExplicitTags,omitempty"`
-	Mode         *string `json:"Mode,omitempty"`
+	ExplicitTags []Tag              `json:"ExplicitTags,omitempty"`
+	Mode         *PropagateTagsMode `json:"Mode,omitempty"`
 }
 
 type CapacityProviderLoggingConfig struct {
-	LogGroup       *string `json:"LogGroup,omitempty"`
-	SystemLogLevel *string `json:"SystemLogLevel,omitempty"`
+	LogGroup       *string                                      `json:"LogGroup,omitempty"`
+	SystemLogLevel *CapacityProviderLoggingConfigSystemLogLevel `json:"SystemLogLevel,omitempty"`
 }
 
 type CapacityProviderTelemetryConfig struct {
@@ -81,7 +81,7 @@ type CapacityProvider struct {
 	KmsKeyArn                     *string                            `json:"KmsKeyArn,omitempty"`
 	PermissionsConfig             *CapacityProviderPermissionsConfig `json:"PermissionsConfig,omitempty"`
 	PropagateTags                 *PropagateTagsConfig               `json:"PropagateTags,omitempty"`
-	State                         *string                            `json:"State,omitempty"`
+	State                         *CapacityProviderState             `json:"State,omitempty"`
 	Tags                          []Tag                              `json:"Tags,omitempty"`
 	TelemetryConfig               *CapacityProviderTelemetryConfig   `json:"TelemetryConfig,omitempty"`
 	VpcConfig                     *CapacityProviderVpcConfig         `json:"VpcConfig,omitempty"`
@@ -94,7 +94,7 @@ type AllowedPublishers struct {
 }
 
 type CodeSigningPolicies struct {
-	UntrustedArtifactOnDeployment *string `json:"UntrustedArtifactOnDeployment,omitempty"`
+	UntrustedArtifactOnDeployment *CodeSigningPoliciesUntrustedArtifactOnDeployment `json:"UntrustedArtifactOnDeployment,omitempty"`
 }
 
 type CodeSigningConfigTag struct {
@@ -137,19 +137,19 @@ type EventInvokeConfig struct {
 func (EventInvokeConfig) CloudControlType() string { return "AWS::Lambda::EventInvokeConfig" }
 
 type SchemaRegistryAccessConfig struct {
-	Type *string `json:"Type,omitempty"`
-	URI  *string `json:"URI,omitempty"`
+	Type *SchemaRegistryAccessConfigType `json:"Type,omitempty"`
+	URI  *string                         `json:"URI,omitempty"`
 }
 
 type SchemaValidationConfig struct {
-	Attribute *string `json:"Attribute,omitempty"`
+	Attribute *SchemaValidationConfigAttribute `json:"Attribute,omitempty"`
 }
 
 type SchemaRegistryConfig struct {
-	AccessConfigs           []SchemaRegistryAccessConfig `json:"AccessConfigs,omitempty"`
-	EventRecordFormat       *string                      `json:"EventRecordFormat,omitempty"`
-	SchemaRegistryURI       *string                      `json:"SchemaRegistryURI,omitempty"`
-	SchemaValidationConfigs []SchemaValidationConfig     `json:"SchemaValidationConfigs,omitempty"`
+	AccessConfigs           []SchemaRegistryAccessConfig           `json:"AccessConfigs,omitempty"`
+	EventRecordFormat       *SchemaRegistryConfigEventRecordFormat `json:"EventRecordFormat,omitempty"`
+	SchemaRegistryURI       *string                                `json:"SchemaRegistryURI,omitempty"`
+	SchemaValidationConfigs []SchemaValidationConfig               `json:"SchemaValidationConfigs,omitempty"`
 }
 
 type AmazonManagedKafkaEventSourceConfig struct {
@@ -166,9 +166,9 @@ type EventSourceMappingDestinationConfig struct {
 }
 
 type DocumentDBEventSourceConfig struct {
-	CollectionName *string `json:"CollectionName,omitempty"`
-	DatabaseName   *string `json:"DatabaseName,omitempty"`
-	FullDocument   *string `json:"FullDocument,omitempty"`
+	CollectionName *string                                  `json:"CollectionName,omitempty"`
+	DatabaseName   *string                                  `json:"DatabaseName,omitempty"`
+	FullDocument   *DocumentDBEventSourceConfigFullDocument `json:"FullDocument,omitempty"`
 }
 
 type Filter struct {
@@ -180,11 +180,11 @@ type FilterCriteria struct {
 }
 
 type LoggingConfig struct {
-	SystemLogLevel *string `json:"SystemLogLevel,omitempty"`
+	SystemLogLevel *LoggingConfigSystemLogLevel `json:"SystemLogLevel,omitempty"`
 }
 
 type MetricsConfig struct {
-	Metrics []string `json:"Metrics,omitempty"`
+	Metrics []MetricsConfigMetricsItem `json:"Metrics,omitempty"`
 }
 
 type ProvisionedPollerConfig struct {
@@ -211,8 +211,8 @@ type SelfManagedKafkaEventSourceConfig struct {
 }
 
 type SourceAccessConfiguration struct {
-	Type *string `json:"Type,omitempty"`
-	URI  *string `json:"URI,omitempty"`
+	Type *SourceAccessConfigurationType `json:"Type,omitempty"`
+	URI  *string                        `json:"URI,omitempty"`
 }
 
 type EventSourceMappingTag struct {
@@ -221,36 +221,36 @@ type EventSourceMappingTag struct {
 }
 
 type EventSourceMapping struct {
-	AmazonManagedKafkaEventSourceConfig *AmazonManagedKafkaEventSourceConfig `json:"AmazonManagedKafkaEventSourceConfig,omitempty"`
-	BatchSize                           *int                                 `json:"BatchSize,omitempty"`
-	BisectBatchOnFunctionError          *bool                                `json:"BisectBatchOnFunctionError,omitempty"`
-	DestinationConfig                   *EventSourceMappingDestinationConfig `json:"DestinationConfig,omitempty"`
-	DocumentDBEventSourceConfig         *DocumentDBEventSourceConfig         `json:"DocumentDBEventSourceConfig,omitempty"`
-	Enabled                             *bool                                `json:"Enabled,omitempty"`
-	EventSourceArn                      *string                              `json:"EventSourceArn,omitempty"`
-	EventSourceMappingArn               *string                              `json:"EventSourceMappingArn,omitempty"`
-	FilterCriteria                      *FilterCriteria                      `json:"FilterCriteria,omitempty"`
-	FunctionName                        *string                              `json:"FunctionName,omitempty"`
-	FunctionResponseTypes               []string                             `json:"FunctionResponseTypes,omitempty"`
-	Id                                  *string                              `json:"Id,omitempty"`
-	KmsKeyArn                           *string                              `json:"KmsKeyArn,omitempty"`
-	LoggingConfig                       *LoggingConfig                       `json:"LoggingConfig,omitempty"`
-	MaximumBatchingWindowInSeconds      *int                                 `json:"MaximumBatchingWindowInSeconds,omitempty"`
-	MaximumRecordAgeInSeconds           *int                                 `json:"MaximumRecordAgeInSeconds,omitempty"`
-	MaximumRetryAttempts                *int                                 `json:"MaximumRetryAttempts,omitempty"`
-	MetricsConfig                       *MetricsConfig                       `json:"MetricsConfig,omitempty"`
-	ParallelizationFactor               *int                                 `json:"ParallelizationFactor,omitempty"`
-	ProvisionedPollerConfig             *ProvisionedPollerConfig             `json:"ProvisionedPollerConfig,omitempty"`
-	Queues                              []string                             `json:"Queues,omitempty"`
-	ScalingConfig                       *ScalingConfig                       `json:"ScalingConfig,omitempty"`
-	SelfManagedEventSource              *SelfManagedEventSource              `json:"SelfManagedEventSource,omitempty"`
-	SelfManagedKafkaEventSourceConfig   *SelfManagedKafkaEventSourceConfig   `json:"SelfManagedKafkaEventSourceConfig,omitempty"`
-	SourceAccessConfigurations          []SourceAccessConfiguration          `json:"SourceAccessConfigurations,omitempty"`
-	StartingPosition                    *string                              `json:"StartingPosition,omitempty"`
-	StartingPositionTimestamp           *float64                             `json:"StartingPositionTimestamp,omitempty"`
-	Tags                                []EventSourceMappingTag              `json:"Tags,omitempty"`
-	Topics                              []string                             `json:"Topics,omitempty"`
-	TumblingWindowInSeconds             *int                                 `json:"TumblingWindowInSeconds,omitempty"`
+	AmazonManagedKafkaEventSourceConfig *AmazonManagedKafkaEventSourceConfig          `json:"AmazonManagedKafkaEventSourceConfig,omitempty"`
+	BatchSize                           *int                                          `json:"BatchSize,omitempty"`
+	BisectBatchOnFunctionError          *bool                                         `json:"BisectBatchOnFunctionError,omitempty"`
+	DestinationConfig                   *EventSourceMappingDestinationConfig          `json:"DestinationConfig,omitempty"`
+	DocumentDBEventSourceConfig         *DocumentDBEventSourceConfig                  `json:"DocumentDBEventSourceConfig,omitempty"`
+	Enabled                             *bool                                         `json:"Enabled,omitempty"`
+	EventSourceArn                      *string                                       `json:"EventSourceArn,omitempty"`
+	EventSourceMappingArn               *string                                       `json:"EventSourceMappingArn,omitempty"`
+	FilterCriteria                      *FilterCriteria                               `json:"FilterCriteria,omitempty"`
+	FunctionName                        *string                                       `json:"FunctionName,omitempty"`
+	FunctionResponseTypes               []EventSourceMappingFunctionResponseTypesItem `json:"FunctionResponseTypes,omitempty"`
+	Id                                  *string                                       `json:"Id,omitempty"`
+	KmsKeyArn                           *string                                       `json:"KmsKeyArn,omitempty"`
+	LoggingConfig                       *LoggingConfig                                `json:"LoggingConfig,omitempty"`
+	MaximumBatchingWindowInSeconds      *int                                          `json:"MaximumBatchingWindowInSeconds,omitempty"`
+	MaximumRecordAgeInSeconds           *int                                          `json:"MaximumRecordAgeInSeconds,omitempty"`
+	MaximumRetryAttempts                *int                                          `json:"MaximumRetryAttempts,omitempty"`
+	MetricsConfig                       *MetricsConfig                                `json:"MetricsConfig,omitempty"`
+	ParallelizationFactor               *int                                          `json:"ParallelizationFactor,omitempty"`
+	ProvisionedPollerConfig             *ProvisionedPollerConfig                      `json:"ProvisionedPollerConfig,omitempty"`
+	Queues                              []string                                      `json:"Queues,omitempty"`
+	ScalingConfig                       *ScalingConfig                                `json:"ScalingConfig,omitempty"`
+	SelfManagedEventSource              *SelfManagedEventSource                       `json:"SelfManagedEventSource,omitempty"`
+	SelfManagedKafkaEventSourceConfig   *SelfManagedKafkaEventSourceConfig            `json:"SelfManagedKafkaEventSourceConfig,omitempty"`
+	SourceAccessConfigurations          []SourceAccessConfiguration                   `json:"SourceAccessConfigurations,omitempty"`
+	StartingPosition                    *string                                       `json:"StartingPosition,omitempty"`
+	StartingPositionTimestamp           *float64                                      `json:"StartingPositionTimestamp,omitempty"`
+	Tags                                []EventSourceMappingTag                       `json:"Tags,omitempty"`
+	Topics                              []string                                      `json:"Topics,omitempty"`
+	TumblingWindowInSeconds             *int                                          `json:"TumblingWindowInSeconds,omitempty"`
 }
 
 func (EventSourceMapping) CloudControlType() string { return "AWS::Lambda::EventSourceMapping" }
@@ -266,13 +266,13 @@ type CapacityProviderConfig struct {
 }
 
 type Code struct {
-	ImageUri            *string `json:"ImageUri,omitempty"`
-	S3Bucket            *string `json:"S3Bucket,omitempty"`
-	S3Key               *string `json:"S3Key,omitempty"`
-	S3ObjectStorageMode *string `json:"S3ObjectStorageMode,omitempty"`
-	S3ObjectVersion     *string `json:"S3ObjectVersion,omitempty"`
-	SourceKMSKeyArn     *string `json:"SourceKMSKeyArn,omitempty"`
-	ZipFile             *string `json:"ZipFile,omitempty"`
+	ImageUri            *string                  `json:"ImageUri,omitempty"`
+	S3Bucket            *string                  `json:"S3Bucket,omitempty"`
+	S3Key               *string                  `json:"S3Key,omitempty"`
+	S3ObjectStorageMode *CodeS3ObjectStorageMode `json:"S3ObjectStorageMode,omitempty"`
+	S3ObjectVersion     *string                  `json:"S3ObjectVersion,omitempty"`
+	SourceKMSKeyArn     *string                  `json:"SourceKMSKeyArn,omitempty"`
+	ZipFile             *string                  `json:"ZipFile,omitempty"`
 }
 
 type DeadLetterConfig struct {
@@ -310,24 +310,24 @@ type ImageConfig struct {
 }
 
 type FunctionLoggingConfig struct {
-	ApplicationLogLevel *string `json:"ApplicationLogLevel,omitempty"`
-	LogFormat           *string `json:"LogFormat,omitempty"`
-	LogGroup            *string `json:"LogGroup,omitempty"`
-	SystemLogLevel      *string `json:"SystemLogLevel,omitempty"`
+	ApplicationLogLevel *FunctionLoggingConfigApplicationLogLevel `json:"ApplicationLogLevel,omitempty"`
+	LogFormat           *FunctionLoggingConfigLogFormat           `json:"LogFormat,omitempty"`
+	LogGroup            *string                                   `json:"LogGroup,omitempty"`
+	SystemLogLevel      *FunctionLoggingConfigSystemLogLevel      `json:"SystemLogLevel,omitempty"`
 }
 
 type RuntimeManagementConfig struct {
-	RuntimeVersionArn *string `json:"RuntimeVersionArn,omitempty"`
-	UpdateRuntimeOn   *string `json:"UpdateRuntimeOn,omitempty"`
+	RuntimeVersionArn *string                                 `json:"RuntimeVersionArn,omitempty"`
+	UpdateRuntimeOn   *RuntimeManagementConfigUpdateRuntimeOn `json:"UpdateRuntimeOn,omitempty"`
 }
 
 type SnapStart struct {
-	ApplyOn *string `json:"ApplyOn,omitempty"`
+	ApplyOn *SnapStartApplyOn `json:"ApplyOn,omitempty"`
 }
 
 type SnapStartResponse struct {
-	ApplyOn            *string `json:"ApplyOn,omitempty"`
-	OptimizationStatus *string `json:"OptimizationStatus,omitempty"`
+	ApplyOn            *SnapStartResponseApplyOn            `json:"ApplyOn,omitempty"`
+	OptimizationStatus *SnapStartResponseOptimizationStatus `json:"OptimizationStatus,omitempty"`
 }
 
 type FunctionTag struct {
@@ -336,11 +336,11 @@ type FunctionTag struct {
 }
 
 type TenancyConfig struct {
-	TenantIsolationMode *string `json:"TenantIsolationMode,omitempty"`
+	TenantIsolationMode *TenancyConfigTenantIsolationMode `json:"TenantIsolationMode,omitempty"`
 }
 
 type TracingConfig struct {
-	Mode *string `json:"Mode,omitempty"`
+	Mode *TracingConfigMode `json:"Mode,omitempty"`
 }
 
 type VpcConfig struct {
@@ -350,48 +350,48 @@ type VpcConfig struct {
 }
 
 type Function struct {
-	Architectures                []string                 `json:"Architectures,omitempty"`
-	Arn                          *string                  `json:"Arn,omitempty"`
-	CapacityProviderConfig       *CapacityProviderConfig  `json:"CapacityProviderConfig,omitempty"`
-	Code                         *Code                    `json:"Code,omitempty"`
-	CodeSigningConfigArn         *string                  `json:"CodeSigningConfigArn,omitempty"`
-	DeadLetterConfig             *DeadLetterConfig        `json:"DeadLetterConfig,omitempty"`
-	Description                  *string                  `json:"Description,omitempty"`
-	DurableConfig                *DurableConfig           `json:"DurableConfig,omitempty"`
-	Environment                  *Environment             `json:"Environment,omitempty"`
-	EphemeralStorage             *EphemeralStorage        `json:"EphemeralStorage,omitempty"`
-	FileSystemConfigs            []FileSystemConfig       `json:"FileSystemConfigs,omitempty"`
-	FunctionName                 *string                  `json:"FunctionName,omitempty"`
-	FunctionScalingConfig        *FunctionScalingConfig   `json:"FunctionScalingConfig,omitempty"`
-	Handler                      *string                  `json:"Handler,omitempty"`
-	ImageConfig                  *ImageConfig             `json:"ImageConfig,omitempty"`
-	KmsKeyArn                    *string                  `json:"KmsKeyArn,omitempty"`
-	Layers                       []string                 `json:"Layers,omitempty"`
-	LoggingConfig                *FunctionLoggingConfig   `json:"LoggingConfig,omitempty"`
-	MemorySize                   *int                     `json:"MemorySize,omitempty"`
-	PackageType                  *string                  `json:"PackageType,omitempty"`
-	PublishToLatestPublished     *bool                    `json:"PublishToLatestPublished,omitempty"`
-	RecursiveLoop                *string                  `json:"RecursiveLoop,omitempty"`
-	ReservedConcurrentExecutions *int                     `json:"ReservedConcurrentExecutions,omitempty"`
-	Role                         *string                  `json:"Role,omitempty"`
-	Runtime                      *string                  `json:"Runtime,omitempty"`
-	RuntimeManagementConfig      *RuntimeManagementConfig `json:"RuntimeManagementConfig,omitempty"`
-	SnapStart                    *SnapStart               `json:"SnapStart,omitempty"`
-	SnapStartResponse            *SnapStartResponse       `json:"SnapStartResponse,omitempty"`
-	Tags                         []FunctionTag            `json:"Tags,omitempty"`
-	TenancyConfig                *TenancyConfig           `json:"TenancyConfig,omitempty"`
-	Timeout                      *int                     `json:"Timeout,omitempty"`
-	TracingConfig                *TracingConfig           `json:"TracingConfig,omitempty"`
-	VpcConfig                    *VpcConfig               `json:"VpcConfig,omitempty"`
+	Architectures                []FunctionArchitecturesItem `json:"Architectures,omitempty"`
+	Arn                          *string                     `json:"Arn,omitempty"`
+	CapacityProviderConfig       *CapacityProviderConfig     `json:"CapacityProviderConfig,omitempty"`
+	Code                         *Code                       `json:"Code,omitempty"`
+	CodeSigningConfigArn         *string                     `json:"CodeSigningConfigArn,omitempty"`
+	DeadLetterConfig             *DeadLetterConfig           `json:"DeadLetterConfig,omitempty"`
+	Description                  *string                     `json:"Description,omitempty"`
+	DurableConfig                *DurableConfig              `json:"DurableConfig,omitempty"`
+	Environment                  *Environment                `json:"Environment,omitempty"`
+	EphemeralStorage             *EphemeralStorage           `json:"EphemeralStorage,omitempty"`
+	FileSystemConfigs            []FileSystemConfig          `json:"FileSystemConfigs,omitempty"`
+	FunctionName                 *string                     `json:"FunctionName,omitempty"`
+	FunctionScalingConfig        *FunctionScalingConfig      `json:"FunctionScalingConfig,omitempty"`
+	Handler                      *string                     `json:"Handler,omitempty"`
+	ImageConfig                  *ImageConfig                `json:"ImageConfig,omitempty"`
+	KmsKeyArn                    *string                     `json:"KmsKeyArn,omitempty"`
+	Layers                       []string                    `json:"Layers,omitempty"`
+	LoggingConfig                *FunctionLoggingConfig      `json:"LoggingConfig,omitempty"`
+	MemorySize                   *int                        `json:"MemorySize,omitempty"`
+	PackageType                  *FunctionPackageType        `json:"PackageType,omitempty"`
+	PublishToLatestPublished     *bool                       `json:"PublishToLatestPublished,omitempty"`
+	RecursiveLoop                *RecursiveLoop              `json:"RecursiveLoop,omitempty"`
+	ReservedConcurrentExecutions *int                        `json:"ReservedConcurrentExecutions,omitempty"`
+	Role                         *string                     `json:"Role,omitempty"`
+	Runtime                      *string                     `json:"Runtime,omitempty"`
+	RuntimeManagementConfig      *RuntimeManagementConfig    `json:"RuntimeManagementConfig,omitempty"`
+	SnapStart                    *SnapStart                  `json:"SnapStart,omitempty"`
+	SnapStartResponse            *SnapStartResponse          `json:"SnapStartResponse,omitempty"`
+	Tags                         []FunctionTag               `json:"Tags,omitempty"`
+	TenancyConfig                *TenancyConfig              `json:"TenancyConfig,omitempty"`
+	Timeout                      *int                        `json:"Timeout,omitempty"`
+	TracingConfig                *TracingConfig              `json:"TracingConfig,omitempty"`
+	VpcConfig                    *VpcConfig                  `json:"VpcConfig,omitempty"`
 }
 
 func (Function) CloudControlType() string { return "AWS::Lambda::Function" }
 
 type Content struct {
-	S3Bucket            *string `json:"S3Bucket,omitempty"`
-	S3Key               *string `json:"S3Key,omitempty"`
-	S3ObjectStorageMode *string `json:"S3ObjectStorageMode,omitempty"`
-	S3ObjectVersion     *string `json:"S3ObjectVersion,omitempty"`
+	S3Bucket            *string                     `json:"S3Bucket,omitempty"`
+	S3Key               *string                     `json:"S3Key,omitempty"`
+	S3ObjectStorageMode *ContentS3ObjectStorageMode `json:"S3ObjectStorageMode,omitempty"`
+	S3ObjectVersion     *string                     `json:"S3ObjectVersion,omitempty"`
 }
 
 type LayerVersion struct {
@@ -421,7 +421,7 @@ type CodeArtifact struct {
 }
 
 type CpuConfiguration struct {
-	Architecture *string `json:"Architecture,omitempty"`
+	Architecture *CpuConfigurationArchitecture `json:"Architecture,omitempty"`
 }
 
 type EnvironmentVariable struct {
@@ -430,21 +430,21 @@ type EnvironmentVariable struct {
 }
 
 type MicrovmHooks struct {
-	Resume                    *string `json:"Resume,omitempty"`
-	ResumeTimeoutInSeconds    *int    `json:"ResumeTimeoutInSeconds,omitempty"`
-	Run                       *string `json:"Run,omitempty"`
-	RunTimeoutInSeconds       *int    `json:"RunTimeoutInSeconds,omitempty"`
-	Suspend                   *string `json:"Suspend,omitempty"`
-	SuspendTimeoutInSeconds   *int    `json:"SuspendTimeoutInSeconds,omitempty"`
-	Terminate                 *string `json:"Terminate,omitempty"`
-	TerminateTimeoutInSeconds *int    `json:"TerminateTimeoutInSeconds,omitempty"`
+	Resume                    *HookState `json:"Resume,omitempty"`
+	ResumeTimeoutInSeconds    *int       `json:"ResumeTimeoutInSeconds,omitempty"`
+	Run                       *HookState `json:"Run,omitempty"`
+	RunTimeoutInSeconds       *int       `json:"RunTimeoutInSeconds,omitempty"`
+	Suspend                   *HookState `json:"Suspend,omitempty"`
+	SuspendTimeoutInSeconds   *int       `json:"SuspendTimeoutInSeconds,omitempty"`
+	Terminate                 *HookState `json:"Terminate,omitempty"`
+	TerminateTimeoutInSeconds *int       `json:"TerminateTimeoutInSeconds,omitempty"`
 }
 
 type MicrovmImageHooks struct {
-	Ready                    *string `json:"Ready,omitempty"`
-	ReadyTimeoutInSeconds    *int    `json:"ReadyTimeoutInSeconds,omitempty"`
-	Validate                 *string `json:"Validate,omitempty"`
-	ValidateTimeoutInSeconds *int    `json:"ValidateTimeoutInSeconds,omitempty"`
+	Ready                    *HookState `json:"Ready,omitempty"`
+	ReadyTimeoutInSeconds    *int       `json:"ReadyTimeoutInSeconds,omitempty"`
+	Validate                 *HookState `json:"Validate,omitempty"`
+	ValidateTimeoutInSeconds *int       `json:"ValidateTimeoutInSeconds,omitempty"`
 }
 
 type Hooks struct {
@@ -473,35 +473,35 @@ type MicrovmImageTag struct {
 }
 
 type MicrovmImage struct {
-	AdditionalOsCapabilities []string              `json:"AdditionalOsCapabilities,omitempty"`
-	BaseImageArn             *string               `json:"BaseImageArn,omitempty"`
-	BaseImageVersion         *string               `json:"BaseImageVersion,omitempty"`
-	BuildRoleArn             *string               `json:"BuildRoleArn,omitempty"`
-	CodeArtifact             *CodeArtifact         `json:"CodeArtifact,omitempty"`
-	CpuConfigurations        []CpuConfiguration    `json:"CpuConfigurations,omitempty"`
-	CreatedAt                *string               `json:"CreatedAt,omitempty"`
-	Description              *string               `json:"Description,omitempty"`
-	EgressNetworkConnectors  []string              `json:"EgressNetworkConnectors,omitempty"`
-	EnvironmentVariables     []EnvironmentVariable `json:"EnvironmentVariables,omitempty"`
-	Hooks                    *Hooks                `json:"Hooks,omitempty"`
-	ImageArn                 *string               `json:"ImageArn,omitempty"`
-	LatestActiveImageVersion *string               `json:"LatestActiveImageVersion,omitempty"`
-	LatestFailedImageVersion *string               `json:"LatestFailedImageVersion,omitempty"`
-	Logging                  *Logging              `json:"Logging,omitempty"`
-	Name                     *string               `json:"Name,omitempty"`
-	Resources                []Resources           `json:"Resources,omitempty"`
-	State                    *string               `json:"State,omitempty"`
-	Tags                     []MicrovmImageTag     `json:"Tags,omitempty"`
-	UpdatedAt                *string               `json:"UpdatedAt,omitempty"`
+	AdditionalOsCapabilities []MicrovmImageAdditionalOsCapabilitiesItem `json:"AdditionalOsCapabilities,omitempty"`
+	BaseImageArn             *string                                    `json:"BaseImageArn,omitempty"`
+	BaseImageVersion         *string                                    `json:"BaseImageVersion,omitempty"`
+	BuildRoleArn             *string                                    `json:"BuildRoleArn,omitempty"`
+	CodeArtifact             *CodeArtifact                              `json:"CodeArtifact,omitempty"`
+	CpuConfigurations        []CpuConfiguration                         `json:"CpuConfigurations,omitempty"`
+	CreatedAt                *string                                    `json:"CreatedAt,omitempty"`
+	Description              *string                                    `json:"Description,omitempty"`
+	EgressNetworkConnectors  []string                                   `json:"EgressNetworkConnectors,omitempty"`
+	EnvironmentVariables     []EnvironmentVariable                      `json:"EnvironmentVariables,omitempty"`
+	Hooks                    *Hooks                                     `json:"Hooks,omitempty"`
+	ImageArn                 *string                                    `json:"ImageArn,omitempty"`
+	LatestActiveImageVersion *string                                    `json:"LatestActiveImageVersion,omitempty"`
+	LatestFailedImageVersion *string                                    `json:"LatestFailedImageVersion,omitempty"`
+	Logging                  *Logging                                   `json:"Logging,omitempty"`
+	Name                     *string                                    `json:"Name,omitempty"`
+	Resources                []Resources                                `json:"Resources,omitempty"`
+	State                    *MicrovmImageState                         `json:"State,omitempty"`
+	Tags                     []MicrovmImageTag                          `json:"Tags,omitempty"`
+	UpdatedAt                *string                                    `json:"UpdatedAt,omitempty"`
 }
 
 func (MicrovmImage) CloudControlType() string { return "AWS::Lambda::MicrovmImage" }
 
 type VpcEgressConfiguration struct {
-	AssociatedComputeResourceTypes []string `json:"AssociatedComputeResourceTypes,omitempty"`
-	NetworkProtocol                *string  `json:"NetworkProtocol,omitempty"`
-	SecurityGroupIds               []string `json:"SecurityGroupIds,omitempty"`
-	SubnetIds                      []string `json:"SubnetIds,omitempty"`
+	AssociatedComputeResourceTypes []VpcEgressConfigurationAssociatedComputeResourceTypesItem `json:"AssociatedComputeResourceTypes,omitempty"`
+	NetworkProtocol                *VpcEgressConfigurationNetworkProtocol                     `json:"NetworkProtocol,omitempty"`
+	SecurityGroupIds               []string                                                   `json:"SecurityGroupIds,omitempty"`
+	SubnetIds                      []string                                                   `json:"SubnetIds,omitempty"`
 }
 
 type Config struct {
@@ -518,44 +518,44 @@ type NetworkConnector struct {
 	Configuration *Config               `json:"Configuration,omitempty"`
 	Name          *string               `json:"Name,omitempty"`
 	OperatorRole  *string               `json:"OperatorRole,omitempty"`
-	State         *string               `json:"State,omitempty"`
+	State         *State                `json:"State,omitempty"`
 	Tags          []NetworkConnectorTag `json:"Tags,omitempty"`
 }
 
 func (NetworkConnector) CloudControlType() string { return "AWS::Lambda::NetworkConnector" }
 
 type Permission struct {
-	Action                *string `json:"Action,omitempty"`
-	EventSourceToken      *string `json:"EventSourceToken,omitempty"`
-	FunctionName          *string `json:"FunctionName,omitempty"`
-	FunctionUrlAuthType   *string `json:"FunctionUrlAuthType,omitempty"`
-	Id                    *string `json:"Id,omitempty"`
-	InvokedViaFunctionUrl *bool   `json:"InvokedViaFunctionUrl,omitempty"`
-	Principal             *string `json:"Principal,omitempty"`
-	PrincipalOrgID        *string `json:"PrincipalOrgID,omitempty"`
-	SourceAccount         *string `json:"SourceAccount,omitempty"`
-	SourceArn             *string `json:"SourceArn,omitempty"`
+	Action                *string                        `json:"Action,omitempty"`
+	EventSourceToken      *string                        `json:"EventSourceToken,omitempty"`
+	FunctionName          *string                        `json:"FunctionName,omitempty"`
+	FunctionUrlAuthType   *PermissionFunctionUrlAuthType `json:"FunctionUrlAuthType,omitempty"`
+	Id                    *string                        `json:"Id,omitempty"`
+	InvokedViaFunctionUrl *bool                          `json:"InvokedViaFunctionUrl,omitempty"`
+	Principal             *string                        `json:"Principal,omitempty"`
+	PrincipalOrgID        *string                        `json:"PrincipalOrgID,omitempty"`
+	SourceAccount         *string                        `json:"SourceAccount,omitempty"`
+	SourceArn             *string                        `json:"SourceArn,omitempty"`
 }
 
 func (Permission) CloudControlType() string { return "AWS::Lambda::Permission" }
 
 type Cors struct {
-	AllowCredentials *bool    `json:"AllowCredentials,omitempty"`
-	AllowHeaders     []string `json:"AllowHeaders,omitempty"`
-	AllowMethods     []string `json:"AllowMethods,omitempty"`
-	AllowOrigins     []string `json:"AllowOrigins,omitempty"`
-	ExposeHeaders    []string `json:"ExposeHeaders,omitempty"`
-	MaxAge           *int     `json:"MaxAge,omitempty"`
+	AllowCredentials *bool              `json:"AllowCredentials,omitempty"`
+	AllowHeaders     []string           `json:"AllowHeaders,omitempty"`
+	AllowMethods     []AllowMethodsItem `json:"AllowMethods,omitempty"`
+	AllowOrigins     []string           `json:"AllowOrigins,omitempty"`
+	ExposeHeaders    []string           `json:"ExposeHeaders,omitempty"`
+	MaxAge           *int               `json:"MaxAge,omitempty"`
 }
 
 type Url struct {
-	AuthType          *string `json:"AuthType,omitempty"`
-	Cors              *Cors   `json:"Cors,omitempty"`
-	FunctionArn       *string `json:"FunctionArn,omitempty"`
-	FunctionUrl       *string `json:"FunctionUrl,omitempty"`
-	InvokeMode        *string `json:"InvokeMode,omitempty"`
-	Qualifier         *string `json:"Qualifier,omitempty"`
-	TargetFunctionArn *string `json:"TargetFunctionArn,omitempty"`
+	AuthType          *UrlAuthType   `json:"AuthType,omitempty"`
+	Cors              *Cors          `json:"Cors,omitempty"`
+	FunctionArn       *string        `json:"FunctionArn,omitempty"`
+	FunctionUrl       *string        `json:"FunctionUrl,omitempty"`
+	InvokeMode        *UrlInvokeMode `json:"InvokeMode,omitempty"`
+	Qualifier         *string        `json:"Qualifier,omitempty"`
+	TargetFunctionArn *string        `json:"TargetFunctionArn,omitempty"`
 }
 
 func (Url) CloudControlType() string { return "AWS::Lambda::Url" }
@@ -586,3 +586,312 @@ type Version struct {
 }
 
 func (Version) CloudControlType() string { return "AWS::Lambda::Version" }
+
+type CapacityProviderScalingMode string
+
+const (
+	CapacityProviderScalingModeAuto   CapacityProviderScalingMode = "Auto"
+	CapacityProviderScalingModeManual CapacityProviderScalingMode = "Manual"
+)
+
+type CapacityProviderPredefinedMetricType string
+
+const (
+	CapacityProviderPredefinedMetricTypeLambdaCapacityProviderAverageCPUUtilization CapacityProviderPredefinedMetricType = "LambdaCapacityProviderAverageCPUUtilization"
+	CapacityProviderPredefinedMetricTypeLambdaCapacityProviderAverageGPUUtilization CapacityProviderPredefinedMetricType = "LambdaCapacityProviderAverageGPUUtilization"
+)
+
+type Architecture string
+
+const (
+	ArchitectureX8664 Architecture = "x86_64"
+	ArchitectureArm64 Architecture = "arm64"
+)
+
+type PropagateTagsMode string
+
+const (
+	PropagateTagsModeNone     PropagateTagsMode = "None"
+	PropagateTagsModeExplicit PropagateTagsMode = "Explicit"
+)
+
+type CapacityProviderState string
+
+const (
+	CapacityProviderStatePending  CapacityProviderState = "Pending"
+	CapacityProviderStateActive   CapacityProviderState = "Active"
+	CapacityProviderStateFailed   CapacityProviderState = "Failed"
+	CapacityProviderStateDeleting CapacityProviderState = "Deleting"
+)
+
+type CapacityProviderLoggingConfigSystemLogLevel string
+
+const (
+	CapacityProviderLoggingConfigSystemLogLevelDEBUG CapacityProviderLoggingConfigSystemLogLevel = "DEBUG"
+	CapacityProviderLoggingConfigSystemLogLevelINFO  CapacityProviderLoggingConfigSystemLogLevel = "INFO"
+	CapacityProviderLoggingConfigSystemLogLevelWARN  CapacityProviderLoggingConfigSystemLogLevel = "WARN"
+)
+
+type CodeSigningPoliciesUntrustedArtifactOnDeployment string
+
+const (
+	CodeSigningPoliciesUntrustedArtifactOnDeploymentWarn    CodeSigningPoliciesUntrustedArtifactOnDeployment = "Warn"
+	CodeSigningPoliciesUntrustedArtifactOnDeploymentEnforce CodeSigningPoliciesUntrustedArtifactOnDeployment = "Enforce"
+)
+
+type SchemaRegistryAccessConfigType string
+
+const (
+	SchemaRegistryAccessConfigTypeBASICAUTH                SchemaRegistryAccessConfigType = "BASIC_AUTH"
+	SchemaRegistryAccessConfigTypeCLIENTCERTIFICATETLSAUTH SchemaRegistryAccessConfigType = "CLIENT_CERTIFICATE_TLS_AUTH"
+	SchemaRegistryAccessConfigTypeSERVERROOTCACERTIFICATE  SchemaRegistryAccessConfigType = "SERVER_ROOT_CA_CERTIFICATE"
+)
+
+type SchemaRegistryConfigEventRecordFormat string
+
+const (
+	SchemaRegistryConfigEventRecordFormatJSON   SchemaRegistryConfigEventRecordFormat = "JSON"
+	SchemaRegistryConfigEventRecordFormatSOURCE SchemaRegistryConfigEventRecordFormat = "SOURCE"
+)
+
+type SchemaValidationConfigAttribute string
+
+const (
+	SchemaValidationConfigAttributeKEY   SchemaValidationConfigAttribute = "KEY"
+	SchemaValidationConfigAttributeVALUE SchemaValidationConfigAttribute = "VALUE"
+)
+
+type DocumentDBEventSourceConfigFullDocument string
+
+const (
+	DocumentDBEventSourceConfigFullDocumentUpdateLookup DocumentDBEventSourceConfigFullDocument = "UpdateLookup"
+	DocumentDBEventSourceConfigFullDocumentDefault      DocumentDBEventSourceConfigFullDocument = "Default"
+)
+
+type EventSourceMappingFunctionResponseTypesItem string
+
+const (
+	EventSourceMappingFunctionResponseTypesItemReportBatchItemFailures EventSourceMappingFunctionResponseTypesItem = "ReportBatchItemFailures"
+)
+
+type LoggingConfigSystemLogLevel string
+
+const (
+	LoggingConfigSystemLogLevelDEBUG LoggingConfigSystemLogLevel = "DEBUG"
+	LoggingConfigSystemLogLevelINFO  LoggingConfigSystemLogLevel = "INFO"
+	LoggingConfigSystemLogLevelWARN  LoggingConfigSystemLogLevel = "WARN"
+)
+
+type MetricsConfigMetricsItem string
+
+const (
+	MetricsConfigMetricsItemEventCount   MetricsConfigMetricsItem = "EventCount"
+	MetricsConfigMetricsItemErrorCount   MetricsConfigMetricsItem = "ErrorCount"
+	MetricsConfigMetricsItemKafkaMetrics MetricsConfigMetricsItem = "KafkaMetrics"
+)
+
+type SourceAccessConfigurationType string
+
+const (
+	SourceAccessConfigurationTypeBASICAUTH                SourceAccessConfigurationType = "BASIC_AUTH"
+	SourceAccessConfigurationTypeVPCSUBNET                SourceAccessConfigurationType = "VPC_SUBNET"
+	SourceAccessConfigurationTypeVPCSECURITYGROUP         SourceAccessConfigurationType = "VPC_SECURITY_GROUP"
+	SourceAccessConfigurationTypeSASLSCRAM512AUTH         SourceAccessConfigurationType = "SASL_SCRAM_512_AUTH"
+	SourceAccessConfigurationTypeSASLSCRAM256AUTH         SourceAccessConfigurationType = "SASL_SCRAM_256_AUTH"
+	SourceAccessConfigurationTypeVIRTUALHOST              SourceAccessConfigurationType = "VIRTUAL_HOST"
+	SourceAccessConfigurationTypeCLIENTCERTIFICATETLSAUTH SourceAccessConfigurationType = "CLIENT_CERTIFICATE_TLS_AUTH"
+	SourceAccessConfigurationTypeSERVERROOTCACERTIFICATE  SourceAccessConfigurationType = "SERVER_ROOT_CA_CERTIFICATE"
+)
+
+type FunctionArchitecturesItem string
+
+const (
+	FunctionArchitecturesItemX8664 FunctionArchitecturesItem = "x86_64"
+	FunctionArchitecturesItemArm64 FunctionArchitecturesItem = "arm64"
+)
+
+type CodeS3ObjectStorageMode string
+
+const (
+	CodeS3ObjectStorageModeCOPY      CodeS3ObjectStorageMode = "COPY"
+	CodeS3ObjectStorageModeREFERENCE CodeS3ObjectStorageMode = "REFERENCE"
+)
+
+type FunctionLoggingConfigApplicationLogLevel string
+
+const (
+	FunctionLoggingConfigApplicationLogLevelTRACE FunctionLoggingConfigApplicationLogLevel = "TRACE"
+	FunctionLoggingConfigApplicationLogLevelDEBUG FunctionLoggingConfigApplicationLogLevel = "DEBUG"
+	FunctionLoggingConfigApplicationLogLevelINFO  FunctionLoggingConfigApplicationLogLevel = "INFO"
+	FunctionLoggingConfigApplicationLogLevelWARN  FunctionLoggingConfigApplicationLogLevel = "WARN"
+	FunctionLoggingConfigApplicationLogLevelERROR FunctionLoggingConfigApplicationLogLevel = "ERROR"
+	FunctionLoggingConfigApplicationLogLevelFATAL FunctionLoggingConfigApplicationLogLevel = "FATAL"
+)
+
+type FunctionLoggingConfigLogFormat string
+
+const (
+	FunctionLoggingConfigLogFormatText FunctionLoggingConfigLogFormat = "Text"
+	FunctionLoggingConfigLogFormatJSON FunctionLoggingConfigLogFormat = "JSON"
+)
+
+type FunctionLoggingConfigSystemLogLevel string
+
+const (
+	FunctionLoggingConfigSystemLogLevelDEBUG FunctionLoggingConfigSystemLogLevel = "DEBUG"
+	FunctionLoggingConfigSystemLogLevelINFO  FunctionLoggingConfigSystemLogLevel = "INFO"
+	FunctionLoggingConfigSystemLogLevelWARN  FunctionLoggingConfigSystemLogLevel = "WARN"
+)
+
+type FunctionPackageType string
+
+const (
+	FunctionPackageTypeImage FunctionPackageType = "Image"
+	FunctionPackageTypeZip   FunctionPackageType = "Zip"
+)
+
+type RecursiveLoop string
+
+const (
+	RecursiveLoopAllow     RecursiveLoop = "Allow"
+	RecursiveLoopTerminate RecursiveLoop = "Terminate"
+)
+
+type RuntimeManagementConfigUpdateRuntimeOn string
+
+const (
+	RuntimeManagementConfigUpdateRuntimeOnAuto           RuntimeManagementConfigUpdateRuntimeOn = "Auto"
+	RuntimeManagementConfigUpdateRuntimeOnFunctionUpdate RuntimeManagementConfigUpdateRuntimeOn = "FunctionUpdate"
+	RuntimeManagementConfigUpdateRuntimeOnManual         RuntimeManagementConfigUpdateRuntimeOn = "Manual"
+)
+
+type SnapStartApplyOn string
+
+const (
+	SnapStartApplyOnPublishedVersions SnapStartApplyOn = "PublishedVersions"
+	SnapStartApplyOnNone              SnapStartApplyOn = "None"
+)
+
+type SnapStartResponseApplyOn string
+
+const (
+	SnapStartResponseApplyOnPublishedVersions SnapStartResponseApplyOn = "PublishedVersions"
+	SnapStartResponseApplyOnNone              SnapStartResponseApplyOn = "None"
+)
+
+type SnapStartResponseOptimizationStatus string
+
+const (
+	SnapStartResponseOptimizationStatusOn  SnapStartResponseOptimizationStatus = "On"
+	SnapStartResponseOptimizationStatusOff SnapStartResponseOptimizationStatus = "Off"
+)
+
+type TenancyConfigTenantIsolationMode string
+
+const (
+	TenancyConfigTenantIsolationModePERTENANT TenancyConfigTenantIsolationMode = "PER_TENANT"
+)
+
+type TracingConfigMode string
+
+const (
+	TracingConfigModeActive      TracingConfigMode = "Active"
+	TracingConfigModePassThrough TracingConfigMode = "PassThrough"
+)
+
+type ContentS3ObjectStorageMode string
+
+const (
+	ContentS3ObjectStorageModeCOPY      ContentS3ObjectStorageMode = "COPY"
+	ContentS3ObjectStorageModeREFERENCE ContentS3ObjectStorageMode = "REFERENCE"
+)
+
+type MicrovmImageAdditionalOsCapabilitiesItem string
+
+const (
+	MicrovmImageAdditionalOsCapabilitiesItemALL MicrovmImageAdditionalOsCapabilitiesItem = "ALL"
+)
+
+type CpuConfigurationArchitecture string
+
+const (
+	CpuConfigurationArchitectureARM64 CpuConfigurationArchitecture = "ARM_64"
+)
+
+type HookState string
+
+const (
+	HookStateDISABLED HookState = "DISABLED"
+	HookStateENABLED  HookState = "ENABLED"
+)
+
+type MicrovmImageState string
+
+const (
+	MicrovmImageStateCREATING     MicrovmImageState = "CREATING"
+	MicrovmImageStateCREATED      MicrovmImageState = "CREATED"
+	MicrovmImageStateCREATEFAILED MicrovmImageState = "CREATE_FAILED"
+	MicrovmImageStateUPDATING     MicrovmImageState = "UPDATING"
+	MicrovmImageStateUPDATED      MicrovmImageState = "UPDATED"
+	MicrovmImageStateUPDATEFAILED MicrovmImageState = "UPDATE_FAILED"
+	MicrovmImageStateDELETING     MicrovmImageState = "DELETING"
+	MicrovmImageStateDELETEFAILED MicrovmImageState = "DELETE_FAILED"
+	MicrovmImageStateDELETED      MicrovmImageState = "DELETED"
+)
+
+type VpcEgressConfigurationAssociatedComputeResourceTypesItem string
+
+const (
+	VpcEgressConfigurationAssociatedComputeResourceTypesItemMicroVm VpcEgressConfigurationAssociatedComputeResourceTypesItem = "MicroVm"
+)
+
+type VpcEgressConfigurationNetworkProtocol string
+
+const (
+	VpcEgressConfigurationNetworkProtocolIPv4      VpcEgressConfigurationNetworkProtocol = "IPv4"
+	VpcEgressConfigurationNetworkProtocolDualStack VpcEgressConfigurationNetworkProtocol = "DualStack"
+)
+
+type State string
+
+const (
+	StatePENDING      State = "PENDING"
+	StateACTIVE       State = "ACTIVE"
+	StateINACTIVE     State = "INACTIVE"
+	StateFAILED       State = "FAILED"
+	StateDELETING     State = "DELETING"
+	StateDELETEFAILED State = "DELETE_FAILED"
+)
+
+type PermissionFunctionUrlAuthType string
+
+const (
+	PermissionFunctionUrlAuthTypeAWSIAM PermissionFunctionUrlAuthType = "AWS_IAM"
+	PermissionFunctionUrlAuthTypeNONE   PermissionFunctionUrlAuthType = "NONE"
+)
+
+type UrlAuthType string
+
+const (
+	UrlAuthTypeAWSIAM UrlAuthType = "AWS_IAM"
+	UrlAuthTypeNONE   UrlAuthType = "NONE"
+)
+
+type AllowMethodsItem string
+
+const (
+	AllowMethodsItemGET    AllowMethodsItem = "GET"
+	AllowMethodsItemPUT    AllowMethodsItem = "PUT"
+	AllowMethodsItemHEAD   AllowMethodsItem = "HEAD"
+	AllowMethodsItemPOST   AllowMethodsItem = "POST"
+	AllowMethodsItemPATCH  AllowMethodsItem = "PATCH"
+	AllowMethodsItemDELETE AllowMethodsItem = "DELETE"
+	AllowMethodsItemX      AllowMethodsItem = "*"
+)
+
+type UrlInvokeMode string
+
+const (
+	UrlInvokeModeBUFFERED       UrlInvokeMode = "BUFFERED"
+	UrlInvokeModeRESPONSESTREAM UrlInvokeMode = "RESPONSE_STREAM"
+)

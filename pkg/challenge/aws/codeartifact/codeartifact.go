@@ -21,8 +21,8 @@ type Domain struct {
 func (Domain) CloudControlType() string { return "AWS::CodeArtifact::Domain" }
 
 type RestrictionType struct {
-	Repositories    []string `json:"Repositories,omitempty"`
-	RestrictionMode *string  `json:"RestrictionMode,omitempty"`
+	Repositories    []string                        `json:"Repositories,omitempty"`
+	RestrictionMode *RestrictionTypeRestrictionMode `json:"RestrictionMode,omitempty"`
 }
 
 type Restrictions struct {
@@ -72,3 +72,12 @@ type Repository struct {
 }
 
 func (Repository) CloudControlType() string { return "AWS::CodeArtifact::Repository" }
+
+type RestrictionTypeRestrictionMode string
+
+const (
+	RestrictionTypeRestrictionModeALLOW                     RestrictionTypeRestrictionMode = "ALLOW"
+	RestrictionTypeRestrictionModeBLOCK                     RestrictionTypeRestrictionMode = "BLOCK"
+	RestrictionTypeRestrictionModeALLOWSPECIFICREPOSITORIES RestrictionTypeRestrictionMode = "ALLOW_SPECIFIC_REPOSITORIES"
+	RestrictionTypeRestrictionModeINHERIT                   RestrictionTypeRestrictionMode = "INHERIT"
+)

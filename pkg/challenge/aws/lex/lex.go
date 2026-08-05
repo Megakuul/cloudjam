@@ -10,11 +10,11 @@ type S3Location struct {
 }
 
 type AudioFillerSettings struct {
-	AudioType                           *string `json:"AudioType,omitempty"`
-	Enabled                             *bool   `json:"Enabled,omitempty"`
-	MinimumPlayDurationInMilliseconds   *int    `json:"MinimumPlayDurationInMilliseconds,omitempty"`
-	ResponseDeliveryDelayInMilliseconds *int    `json:"ResponseDeliveryDelayInMilliseconds,omitempty"`
-	StartDelayInMilliseconds            *int    `json:"StartDelayInMilliseconds,omitempty"`
+	AudioType                           *AudioFillerSettingsAudioType `json:"AudioType,omitempty"`
+	Enabled                             *bool                         `json:"Enabled,omitempty"`
+	MinimumPlayDurationInMilliseconds   *int                          `json:"MinimumPlayDurationInMilliseconds,omitempty"`
+	ResponseDeliveryDelayInMilliseconds *int                          `json:"ResponseDeliveryDelayInMilliseconds,omitempty"`
+	StartDelayInMilliseconds            *int                          `json:"StartDelayInMilliseconds,omitempty"`
 }
 
 type CustomVocabularyItem struct {
@@ -35,7 +35,7 @@ type BedrockModelSpecificationBedrockGuardrailConfiguration struct {
 type BedrockModelSpecification struct {
 	BedrockGuardrailConfiguration *BedrockModelSpecificationBedrockGuardrailConfiguration `json:"BedrockGuardrailConfiguration,omitempty"`
 	BedrockModelCustomPrompt      *string                                                 `json:"BedrockModelCustomPrompt,omitempty"`
-	BedrockTraceStatus            *string                                                 `json:"BedrockTraceStatus,omitempty"`
+	BedrockTraceStatus            *BedrockModelSpecificationBedrockTraceStatus            `json:"BedrockTraceStatus,omitempty"`
 	ModelArn                      *string                                                 `json:"ModelArn,omitempty"`
 }
 
@@ -61,9 +61,9 @@ type IntentDisambiguationSettings struct {
 }
 
 type GenerativeAISettingsRuntimeSettingsNluImprovementSpecification struct {
-	AssistedNluMode              *string                       `json:"AssistedNluMode,omitempty"`
-	Enabled                      *bool                         `json:"Enabled,omitempty"`
-	IntentDisambiguationSettings *IntentDisambiguationSettings `json:"IntentDisambiguationSettings,omitempty"`
+	AssistedNluMode              *GenerativeAISettingsRuntimeSettingsNluImprovementSpecificationAssistedNluMode `json:"AssistedNluMode,omitempty"`
+	Enabled                      *bool                                                                          `json:"Enabled,omitempty"`
+	IntentDisambiguationSettings *IntentDisambiguationSettings                                                  `json:"IntentDisambiguationSettings,omitempty"`
 }
 
 type GenerativeAISettingsRuntimeSettingsSlotResolutionImprovementSpecification struct {
@@ -160,9 +160,9 @@ type Condition struct {
 }
 
 type DialogAction struct {
-	SlotToElicit        *string `json:"SlotToElicit,omitempty"`
-	SuppressNextMessage *bool   `json:"SuppressNextMessage,omitempty"`
-	Type                *string `json:"Type,omitempty"`
+	SlotToElicit        *string           `json:"SlotToElicit,omitempty"`
+	SuppressNextMessage *bool             `json:"SuppressNextMessage,omitempty"`
+	Type                *DialogActionType `json:"Type,omitempty"`
 }
 
 type SlotValue struct {
@@ -170,7 +170,7 @@ type SlotValue struct {
 }
 
 type SlotValueOverride struct {
-	Shape  *string             `json:"Shape,omitempty"`
+	Shape  *SlotShape          `json:"Shape,omitempty"`
 	Value  *SlotValue          `json:"Value,omitempty"`
 	Values []SlotValueOverride `json:"Values,omitempty"`
 }
@@ -318,7 +318,7 @@ type PromptSpecification struct {
 	AllowInterrupt              *bool                                 `json:"AllowInterrupt,omitempty"`
 	MaxRetries                  *int                                  `json:"MaxRetries,omitempty"`
 	MessageGroupsList           []MessageGroup                        `json:"MessageGroupsList,omitempty"`
-	MessageSelectionStrategy    *string                               `json:"MessageSelectionStrategy,omitempty"`
+	MessageSelectionStrategy    *MessageSelectionStrategy             `json:"MessageSelectionStrategy,omitempty"`
 	PromptAttemptsSpecification map[string]PromptAttemptSpecification `json:"PromptAttemptsSpecification,omitempty"`
 }
 
@@ -413,7 +413,7 @@ type MultipleValuesSetting struct {
 }
 
 type ObfuscationSetting struct {
-	ObfuscationSettingType *string `json:"ObfuscationSettingType,omitempty"`
+	ObfuscationSettingType *ObfuscationSettingObfuscationSettingType `json:"ObfuscationSettingType,omitempty"`
 }
 
 type SlotDefaultValue struct {
@@ -472,7 +472,7 @@ type SlotValueElicitationSetting struct {
 	PromptSpecification          *PromptSpecification           `json:"PromptSpecification,omitempty"`
 	SampleUtterances             []SampleUtterance              `json:"SampleUtterances,omitempty"`
 	SlotCaptureSetting           *SlotCaptureSetting            `json:"SlotCaptureSetting,omitempty"`
-	SlotConstraint               *string                        `json:"SlotConstraint,omitempty"`
+	SlotConstraint               *SlotConstraint                `json:"SlotConstraint,omitempty"`
 	WaitAndContinueSpecification *WaitAndContinueSpecification  `json:"WaitAndContinueSpecification,omitempty"`
 }
 
@@ -541,7 +541,7 @@ type SlotTypeValue struct {
 }
 
 type AdvancedRecognitionSetting struct {
-	AudioRecognitionStrategy *string `json:"AudioRecognitionStrategy,omitempty"`
+	AudioRecognitionStrategy *AudioRecognitionStrategy `json:"AudioRecognitionStrategy,omitempty"`
 }
 
 type SlotValueRegexFilter struct {
@@ -549,9 +549,9 @@ type SlotValueRegexFilter struct {
 }
 
 type SlotValueSelectionSetting struct {
-	AdvancedRecognitionSetting *AdvancedRecognitionSetting `json:"AdvancedRecognitionSetting,omitempty"`
-	RegexFilter                *SlotValueRegexFilter       `json:"RegexFilter,omitempty"`
-	ResolutionStrategy         *string                     `json:"ResolutionStrategy,omitempty"`
+	AdvancedRecognitionSetting *AdvancedRecognitionSetting  `json:"AdvancedRecognitionSetting,omitempty"`
+	RegexFilter                *SlotValueRegexFilter        `json:"RegexFilter,omitempty"`
+	ResolutionStrategy         *SlotValueResolutionStrategy `json:"ResolutionStrategy,omitempty"`
 }
 
 type SlotType struct {
@@ -574,8 +574,8 @@ type SpeechModelConfig struct {
 }
 
 type SpeechRecognitionSettings struct {
-	SpeechModelConfig     *SpeechModelConfig `json:"SpeechModelConfig,omitempty"`
-	SpeechModelPreference *string            `json:"SpeechModelPreference,omitempty"`
+	SpeechModelConfig     *SpeechModelConfig     `json:"SpeechModelConfig,omitempty"`
+	SpeechModelPreference *SpeechModelPreference `json:"SpeechModelPreference,omitempty"`
 }
 
 type UnifiedSpeechSettingsSpeechFoundationModel struct {
@@ -588,23 +588,23 @@ type UnifiedSpeechSettings struct {
 }
 
 type VoiceSettings struct {
-	Engine  *string `json:"Engine,omitempty"`
-	VoiceId *string `json:"VoiceId,omitempty"`
+	Engine  *VoiceSettingsEngine `json:"Engine,omitempty"`
+	VoiceId *string              `json:"VoiceId,omitempty"`
 }
 
 type BotLocale struct {
-	AudioFillerSettings        *AudioFillerSettings       `json:"AudioFillerSettings,omitempty"`
-	CustomVocabulary           *CustomVocabulary          `json:"CustomVocabulary,omitempty"`
-	Description                *string                    `json:"Description,omitempty"`
-	GenerativeAISettings       *GenerativeAISettings      `json:"GenerativeAISettings,omitempty"`
-	Intents                    []Intent                   `json:"Intents,omitempty"`
-	LocaleId                   *string                    `json:"LocaleId,omitempty"`
-	NluConfidenceThreshold     *float64                   `json:"NluConfidenceThreshold,omitempty"`
-	SlotTypes                  []SlotType                 `json:"SlotTypes,omitempty"`
-	SpeechDetectionSensitivity *string                    `json:"SpeechDetectionSensitivity,omitempty"`
-	SpeechRecognitionSettings  *SpeechRecognitionSettings `json:"SpeechRecognitionSettings,omitempty"`
-	UnifiedSpeechSettings      *UnifiedSpeechSettings     `json:"UnifiedSpeechSettings,omitempty"`
-	VoiceSettings              *VoiceSettings             `json:"VoiceSettings,omitempty"`
+	AudioFillerSettings        *AudioFillerSettings        `json:"AudioFillerSettings,omitempty"`
+	CustomVocabulary           *CustomVocabulary           `json:"CustomVocabulary,omitempty"`
+	Description                *string                     `json:"Description,omitempty"`
+	GenerativeAISettings       *GenerativeAISettings       `json:"GenerativeAISettings,omitempty"`
+	Intents                    []Intent                    `json:"Intents,omitempty"`
+	LocaleId                   *string                     `json:"LocaleId,omitempty"`
+	NluConfidenceThreshold     *float64                    `json:"NluConfidenceThreshold,omitempty"`
+	SlotTypes                  []SlotType                  `json:"SlotTypes,omitempty"`
+	SpeechDetectionSensitivity *SpeechDetectionSensitivity `json:"SpeechDetectionSensitivity,omitempty"`
+	SpeechRecognitionSettings  *SpeechRecognitionSettings  `json:"SpeechRecognitionSettings,omitempty"`
+	UnifiedSpeechSettings      *UnifiedSpeechSettings      `json:"UnifiedSpeechSettings,omitempty"`
+	VoiceSettings              *VoiceSettings              `json:"VoiceSettings,omitempty"`
 }
 
 type BotMember struct {
@@ -703,7 +703,7 @@ type Bot struct {
 	BotLocales              []BotLocale           `json:"BotLocales,omitempty"`
 	BotMembers              []BotMember           `json:"BotMembers,omitempty"`
 	BotTags                 []Tag                 `json:"BotTags,omitempty"`
-	BotType                 *string               `json:"BotType,omitempty"`
+	BotType                 *BotBotType           `json:"BotType,omitempty"`
 	DataPrivacy             *BotDataPrivacy       `json:"DataPrivacy,omitempty"`
 	Description             *string               `json:"Description,omitempty"`
 	ErrorLogSettings        *BotErrorLogSettings  `json:"ErrorLogSettings,omitempty"`
@@ -785,7 +785,7 @@ type BotAlias struct {
 	BotAliasId                *string                              `json:"BotAliasId,omitempty"`
 	BotAliasLocaleSettings    []BotAliasBotAliasLocaleSettingsItem `json:"BotAliasLocaleSettings,omitempty"`
 	BotAliasName              *string                              `json:"BotAliasName,omitempty"`
-	BotAliasStatus            *string                              `json:"BotAliasStatus,omitempty"`
+	BotAliasStatus            *BotAliasStatus                      `json:"BotAliasStatus,omitempty"`
 	BotAliasTags              []BotAliasTag                        `json:"BotAliasTags,omitempty"`
 	BotId                     *string                              `json:"BotId,omitempty"`
 	BotVersion                *string                              `json:"BotVersion,omitempty"`
@@ -797,7 +797,7 @@ type BotAlias struct {
 func (BotAlias) CloudControlType() string { return "AWS::Lex::BotAlias" }
 
 type BotVersionLocaleDetails struct {
-	SourceBotVersion *string `json:"SourceBotVersion,omitempty"`
+	SourceBotVersion *BotVersion `json:"SourceBotVersion,omitempty"`
 }
 
 type BotVersionLocaleSpecification struct {
@@ -807,7 +807,7 @@ type BotVersionLocaleSpecification struct {
 
 type BotVersion struct {
 	BotId                         *string                         `json:"BotId,omitempty"`
-	BotVersion                    *string                         `json:"BotVersion,omitempty"`
+	BotVersion                    *BotVersion                     `json:"BotVersion,omitempty"`
 	BotVersionLocaleSpecification []BotVersionLocaleSpecification `json:"BotVersionLocaleSpecification,omitempty"`
 	Description                   *string                         `json:"Description,omitempty"`
 }
@@ -822,3 +822,127 @@ type ResourcePolicy struct {
 }
 
 func (ResourcePolicy) CloudControlType() string { return "AWS::Lex::ResourcePolicy" }
+
+type AudioFillerSettingsAudioType string
+
+const (
+	AudioFillerSettingsAudioTypeMELODYCHIPPERCHIME  AudioFillerSettingsAudioType = "MELODY_CHIPPER_CHIME"
+	AudioFillerSettingsAudioTypeMELODYCURIOUSCRAWL  AudioFillerSettingsAudioType = "MELODY_CURIOUS_CRAWL"
+	AudioFillerSettingsAudioTypeMELODYRISINGRIPPLE  AudioFillerSettingsAudioType = "MELODY_RISING_RIPPLE"
+	AudioFillerSettingsAudioTypeMELODYPATIENTPING   AudioFillerSettingsAudioType = "MELODY_PATIENT_PING"
+	AudioFillerSettingsAudioTypeMELODYPONDERINGPONG AudioFillerSettingsAudioType = "MELODY_PONDERING_PONG"
+	AudioFillerSettingsAudioTypeTYPINGKINETICKEYS   AudioFillerSettingsAudioType = "TYPING_KINETIC_KEYS"
+	AudioFillerSettingsAudioTypeTYPINGQUIETQWERTY   AudioFillerSettingsAudioType = "TYPING_QUIET_QWERTY"
+)
+
+type BedrockModelSpecificationBedrockTraceStatus string
+
+const (
+	BedrockModelSpecificationBedrockTraceStatusENABLED  BedrockModelSpecificationBedrockTraceStatus = "ENABLED"
+	BedrockModelSpecificationBedrockTraceStatusDISABLED BedrockModelSpecificationBedrockTraceStatus = "DISABLED"
+)
+
+type GenerativeAISettingsRuntimeSettingsNluImprovementSpecificationAssistedNluMode string
+
+const (
+	GenerativeAISettingsRuntimeSettingsNluImprovementSpecificationAssistedNluModePrimary  GenerativeAISettingsRuntimeSettingsNluImprovementSpecificationAssistedNluMode = "Primary"
+	GenerativeAISettingsRuntimeSettingsNluImprovementSpecificationAssistedNluModeFallback GenerativeAISettingsRuntimeSettingsNluImprovementSpecificationAssistedNluMode = "Fallback"
+)
+
+type DialogActionType string
+
+const (
+	DialogActionTypeCloseIntent          DialogActionType = "CloseIntent"
+	DialogActionTypeConfirmIntent        DialogActionType = "ConfirmIntent"
+	DialogActionTypeElicitIntent         DialogActionType = "ElicitIntent"
+	DialogActionTypeElicitSlot           DialogActionType = "ElicitSlot"
+	DialogActionTypeStartIntent          DialogActionType = "StartIntent"
+	DialogActionTypeFulfillIntent        DialogActionType = "FulfillIntent"
+	DialogActionTypeEndConversation      DialogActionType = "EndConversation"
+	DialogActionTypeEvaluateConditional  DialogActionType = "EvaluateConditional"
+	DialogActionTypeInvokeDialogCodeHook DialogActionType = "InvokeDialogCodeHook"
+)
+
+type SlotShape string
+
+const (
+	SlotShapeScalar SlotShape = "Scalar"
+	SlotShapeList   SlotShape = "List"
+)
+
+type MessageSelectionStrategy string
+
+const (
+	MessageSelectionStrategyRandom  MessageSelectionStrategy = "Random"
+	MessageSelectionStrategyOrdered MessageSelectionStrategy = "Ordered"
+)
+
+type ObfuscationSettingObfuscationSettingType string
+
+const (
+	ObfuscationSettingObfuscationSettingTypeNone               ObfuscationSettingObfuscationSettingType = "None"
+	ObfuscationSettingObfuscationSettingTypeDefaultObfuscation ObfuscationSettingObfuscationSettingType = "DefaultObfuscation"
+)
+
+type SlotConstraint string
+
+const (
+	SlotConstraintRequired SlotConstraint = "Required"
+	SlotConstraintOptional SlotConstraint = "Optional"
+)
+
+type AudioRecognitionStrategy string
+
+const (
+	AudioRecognitionStrategyUseSlotValuesAsCustomVocabulary AudioRecognitionStrategy = "UseSlotValuesAsCustomVocabulary"
+)
+
+type SlotValueResolutionStrategy string
+
+const (
+	SlotValueResolutionStrategyORIGINALVALUE SlotValueResolutionStrategy = "ORIGINAL_VALUE"
+	SlotValueResolutionStrategyTOPRESOLUTION SlotValueResolutionStrategy = "TOP_RESOLUTION"
+	SlotValueResolutionStrategyCONCATENATION SlotValueResolutionStrategy = "CONCATENATION"
+)
+
+type SpeechDetectionSensitivity string
+
+const (
+	SpeechDetectionSensitivityDefault               SpeechDetectionSensitivity = "Default"
+	SpeechDetectionSensitivityHighNoiseTolerance    SpeechDetectionSensitivity = "HighNoiseTolerance"
+	SpeechDetectionSensitivityMaximumNoiseTolerance SpeechDetectionSensitivity = "MaximumNoiseTolerance"
+)
+
+type SpeechModelPreference string
+
+const (
+	SpeechModelPreferenceStandard SpeechModelPreference = "Standard"
+	SpeechModelPreferenceNeural   SpeechModelPreference = "Neural"
+	SpeechModelPreferenceDeepgram SpeechModelPreference = "Deepgram"
+	SpeechModelPreferenceAdvanced SpeechModelPreference = "Advanced"
+)
+
+type VoiceSettingsEngine string
+
+const (
+	VoiceSettingsEngineStandard   VoiceSettingsEngine = "standard"
+	VoiceSettingsEngineNeural     VoiceSettingsEngine = "neural"
+	VoiceSettingsEngineLongForm   VoiceSettingsEngine = "long-form"
+	VoiceSettingsEngineGenerative VoiceSettingsEngine = "generative"
+)
+
+type BotBotType string
+
+const (
+	BotBotTypeBot        BotBotType = "Bot"
+	BotBotTypeBotNetwork BotBotType = "BotNetwork"
+)
+
+type BotAliasStatus string
+
+const (
+	BotAliasStatusCreating  BotAliasStatus = "Creating"
+	BotAliasStatusAvailable BotAliasStatus = "Available"
+	BotAliasStatusDeleting  BotAliasStatus = "Deleting"
+	BotAliasStatusFailed    BotAliasStatus = "Failed"
+)

@@ -11,12 +11,12 @@ type ResourcePolicy struct {
 func (ResourcePolicy) CloudControlType() string { return "AWS::Kinesis::ResourcePolicy" }
 
 type StreamEncryption struct {
-	EncryptionType *string `json:"EncryptionType,omitempty"`
-	KeyId          *string `json:"KeyId,omitempty"`
+	EncryptionType *StreamEncryptionEncryptionType `json:"EncryptionType,omitempty"`
+	KeyId          *string                         `json:"KeyId,omitempty"`
 }
 
 type StreamModeDetails struct {
-	StreamMode *string `json:"StreamMode,omitempty"`
+	StreamMode *StreamModeDetailsStreamMode `json:"StreamMode,omitempty"`
 }
 
 type Tag struct {
@@ -31,7 +31,7 @@ type WarmThroughputObject struct {
 
 type Stream struct {
 	Arn                      *string               `json:"Arn,omitempty"`
-	DesiredShardLevelMetrics []string              `json:"DesiredShardLevelMetrics,omitempty"`
+	DesiredShardLevelMetrics []EnhancedMetric      `json:"DesiredShardLevelMetrics,omitempty"`
 	MaxRecordSizeInKiB       *int                  `json:"MaxRecordSizeInKiB,omitempty"`
 	Name                     *string               `json:"Name,omitempty"`
 	RetentionPeriodHours     *int                  `json:"RetentionPeriodHours,omitempty"`
@@ -60,3 +60,29 @@ type StreamConsumer struct {
 }
 
 func (StreamConsumer) CloudControlType() string { return "AWS::Kinesis::StreamConsumer" }
+
+type EnhancedMetric string
+
+const (
+	EnhancedMetricIncomingBytes                      EnhancedMetric = "IncomingBytes"
+	EnhancedMetricIncomingRecords                    EnhancedMetric = "IncomingRecords"
+	EnhancedMetricOutgoingBytes                      EnhancedMetric = "OutgoingBytes"
+	EnhancedMetricOutgoingRecords                    EnhancedMetric = "OutgoingRecords"
+	EnhancedMetricWriteProvisionedThroughputExceeded EnhancedMetric = "WriteProvisionedThroughputExceeded"
+	EnhancedMetricReadProvisionedThroughputExceeded  EnhancedMetric = "ReadProvisionedThroughputExceeded"
+	EnhancedMetricIteratorAgeMilliseconds            EnhancedMetric = "IteratorAgeMilliseconds"
+	EnhancedMetricALL                                EnhancedMetric = "ALL"
+)
+
+type StreamEncryptionEncryptionType string
+
+const (
+	StreamEncryptionEncryptionTypeKMS StreamEncryptionEncryptionType = "KMS"
+)
+
+type StreamModeDetailsStreamMode string
+
+const (
+	StreamModeDetailsStreamModeONDEMAND    StreamModeDetailsStreamMode = "ON_DEMAND"
+	StreamModeDetailsStreamModePROVISIONED StreamModeDetailsStreamMode = "PROVISIONED"
+)

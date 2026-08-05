@@ -11,14 +11,14 @@ type AccountAlias struct {
 func (AccountAlias) CloudControlType() string { return "AWS::SupportApp::AccountAlias" }
 
 type SlackChannelConfiguration struct {
-	ChannelId                       *string `json:"ChannelId,omitempty"`
-	ChannelName                     *string `json:"ChannelName,omitempty"`
-	ChannelRoleArn                  *string `json:"ChannelRoleArn,omitempty"`
-	NotifyOnAddCorrespondenceToCase *bool   `json:"NotifyOnAddCorrespondenceToCase,omitempty"`
-	NotifyOnCaseSeverity            *string `json:"NotifyOnCaseSeverity,omitempty"`
-	NotifyOnCreateOrReopenCase      *bool   `json:"NotifyOnCreateOrReopenCase,omitempty"`
-	NotifyOnResolveCase             *bool   `json:"NotifyOnResolveCase,omitempty"`
-	TeamId                          *string `json:"TeamId,omitempty"`
+	ChannelId                       *string                                        `json:"ChannelId,omitempty"`
+	ChannelName                     *string                                        `json:"ChannelName,omitempty"`
+	ChannelRoleArn                  *string                                        `json:"ChannelRoleArn,omitempty"`
+	NotifyOnAddCorrespondenceToCase *bool                                          `json:"NotifyOnAddCorrespondenceToCase,omitempty"`
+	NotifyOnCaseSeverity            *SlackChannelConfigurationNotifyOnCaseSeverity `json:"NotifyOnCaseSeverity,omitempty"`
+	NotifyOnCreateOrReopenCase      *bool                                          `json:"NotifyOnCreateOrReopenCase,omitempty"`
+	NotifyOnResolveCase             *bool                                          `json:"NotifyOnResolveCase,omitempty"`
+	TeamId                          *string                                        `json:"TeamId,omitempty"`
 }
 
 func (SlackChannelConfiguration) CloudControlType() string {
@@ -33,3 +33,11 @@ type SlackWorkspaceConfiguration struct {
 func (SlackWorkspaceConfiguration) CloudControlType() string {
 	return "AWS::SupportApp::SlackWorkspaceConfiguration"
 }
+
+type SlackChannelConfigurationNotifyOnCaseSeverity string
+
+const (
+	SlackChannelConfigurationNotifyOnCaseSeverityNone SlackChannelConfigurationNotifyOnCaseSeverity = "none"
+	SlackChannelConfigurationNotifyOnCaseSeverityAll  SlackChannelConfigurationNotifyOnCaseSeverity = "all"
+	SlackChannelConfigurationNotifyOnCaseSeverityHigh SlackChannelConfigurationNotifyOnCaseSeverity = "high"
+)

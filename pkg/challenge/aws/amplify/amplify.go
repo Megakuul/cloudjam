@@ -15,21 +15,21 @@ type EnvironmentVariable struct {
 }
 
 type AutoBranchCreationConfig struct {
-	AutoBranchCreationPatterns []string              `json:"AutoBranchCreationPatterns,omitempty"`
-	BasicAuthConfig            *BasicAuthConfig      `json:"BasicAuthConfig,omitempty"`
-	BuildSpec                  *string               `json:"BuildSpec,omitempty"`
-	EnableAutoBranchCreation   *bool                 `json:"EnableAutoBranchCreation,omitempty"`
-	EnableAutoBuild            *bool                 `json:"EnableAutoBuild,omitempty"`
-	EnablePerformanceMode      *bool                 `json:"EnablePerformanceMode,omitempty"`
-	EnablePullRequestPreview   *bool                 `json:"EnablePullRequestPreview,omitempty"`
-	EnvironmentVariables       []EnvironmentVariable `json:"EnvironmentVariables,omitempty"`
-	Framework                  *string               `json:"Framework,omitempty"`
-	PullRequestEnvironmentName *string               `json:"PullRequestEnvironmentName,omitempty"`
-	Stage                      *string               `json:"Stage,omitempty"`
+	AutoBranchCreationPatterns []string                       `json:"AutoBranchCreationPatterns,omitempty"`
+	BasicAuthConfig            *BasicAuthConfig               `json:"BasicAuthConfig,omitempty"`
+	BuildSpec                  *string                        `json:"BuildSpec,omitempty"`
+	EnableAutoBranchCreation   *bool                          `json:"EnableAutoBranchCreation,omitempty"`
+	EnableAutoBuild            *bool                          `json:"EnableAutoBuild,omitempty"`
+	EnablePerformanceMode      *bool                          `json:"EnablePerformanceMode,omitempty"`
+	EnablePullRequestPreview   *bool                          `json:"EnablePullRequestPreview,omitempty"`
+	EnvironmentVariables       []EnvironmentVariable          `json:"EnvironmentVariables,omitempty"`
+	Framework                  *string                        `json:"Framework,omitempty"`
+	PullRequestEnvironmentName *string                        `json:"PullRequestEnvironmentName,omitempty"`
+	Stage                      *AutoBranchCreationConfigStage `json:"Stage,omitempty"`
 }
 
 type CacheConfig struct {
-	Type *string `json:"Type,omitempty"`
+	Type *CacheConfigType `json:"Type,omitempty"`
 }
 
 type CustomRule struct {
@@ -40,7 +40,7 @@ type CustomRule struct {
 }
 
 type JobConfig struct {
-	BuildComputeType *string `json:"BuildComputeType,omitempty"`
+	BuildComputeType *JobConfigBuildComputeType `json:"BuildComputeType,omitempty"`
 }
 
 type Tag struct {
@@ -68,7 +68,7 @@ type App struct {
 	JobConfig                *JobConfig                `json:"JobConfig,omitempty"`
 	Name                     *string                   `json:"Name,omitempty"`
 	OauthToken               *string                   `json:"OauthToken,omitempty"`
-	Platform                 *string                   `json:"Platform,omitempty"`
+	Platform                 *AppPlatform              `json:"Platform,omitempty"`
 	Repository               *string                   `json:"Repository,omitempty"`
 	Tags                     []Tag                     `json:"Tags,omitempty"`
 }
@@ -111,21 +111,21 @@ type Branch struct {
 	EnvironmentVariables       []BranchEnvironmentVariable `json:"EnvironmentVariables,omitempty"`
 	Framework                  *string                     `json:"Framework,omitempty"`
 	PullRequestEnvironmentName *string                     `json:"PullRequestEnvironmentName,omitempty"`
-	Stage                      *string                     `json:"Stage,omitempty"`
+	Stage                      *BranchStage                `json:"Stage,omitempty"`
 	Tags                       []BranchTag                 `json:"Tags,omitempty"`
 }
 
 func (Branch) CloudControlType() string { return "AWS::Amplify::Branch" }
 
 type Certificate struct {
-	CertificateArn                   *string `json:"CertificateArn,omitempty"`
-	CertificateType                  *string `json:"CertificateType,omitempty"`
-	CertificateVerificationDNSRecord *string `json:"CertificateVerificationDNSRecord,omitempty"`
+	CertificateArn                   *string                     `json:"CertificateArn,omitempty"`
+	CertificateType                  *CertificateCertificateType `json:"CertificateType,omitempty"`
+	CertificateVerificationDNSRecord *string                     `json:"CertificateVerificationDNSRecord,omitempty"`
 }
 
 type CertificateSettings struct {
-	CertificateType      *string `json:"CertificateType,omitempty"`
-	CustomCertificateArn *string `json:"CustomCertificateArn,omitempty"`
+	CertificateType      *CertificateSettingsCertificateType `json:"CertificateType,omitempty"`
+	CustomCertificateArn *string                             `json:"CustomCertificateArn,omitempty"`
 }
 
 type SubDomainSetting struct {
@@ -150,3 +150,60 @@ type Domain struct {
 }
 
 func (Domain) CloudControlType() string { return "AWS::Amplify::Domain" }
+
+type AutoBranchCreationConfigStage string
+
+const (
+	AutoBranchCreationConfigStageEXPERIMENTAL AutoBranchCreationConfigStage = "EXPERIMENTAL"
+	AutoBranchCreationConfigStageBETA         AutoBranchCreationConfigStage = "BETA"
+	AutoBranchCreationConfigStagePULLREQUEST  AutoBranchCreationConfigStage = "PULL_REQUEST"
+	AutoBranchCreationConfigStagePRODUCTION   AutoBranchCreationConfigStage = "PRODUCTION"
+	AutoBranchCreationConfigStageDEVELOPMENT  AutoBranchCreationConfigStage = "DEVELOPMENT"
+)
+
+type CacheConfigType string
+
+const (
+	CacheConfigTypeAMPLIFYMANAGED          CacheConfigType = "AMPLIFY_MANAGED"
+	CacheConfigTypeAMPLIFYMANAGEDNOCOOKIES CacheConfigType = "AMPLIFY_MANAGED_NO_COOKIES"
+)
+
+type JobConfigBuildComputeType string
+
+const (
+	JobConfigBuildComputeTypeSTANDARD8GB JobConfigBuildComputeType = "STANDARD_8GB"
+	JobConfigBuildComputeTypeLARGE16GB   JobConfigBuildComputeType = "LARGE_16GB"
+	JobConfigBuildComputeTypeXLARGE72GB  JobConfigBuildComputeType = "XLARGE_72GB"
+)
+
+type AppPlatform string
+
+const (
+	AppPlatformWEB        AppPlatform = "WEB"
+	AppPlatformWEBDYNAMIC AppPlatform = "WEB_DYNAMIC"
+	AppPlatformWEBCOMPUTE AppPlatform = "WEB_COMPUTE"
+)
+
+type BranchStage string
+
+const (
+	BranchStageEXPERIMENTAL BranchStage = "EXPERIMENTAL"
+	BranchStageBETA         BranchStage = "BETA"
+	BranchStagePULLREQUEST  BranchStage = "PULL_REQUEST"
+	BranchStagePRODUCTION   BranchStage = "PRODUCTION"
+	BranchStageDEVELOPMENT  BranchStage = "DEVELOPMENT"
+)
+
+type CertificateCertificateType string
+
+const (
+	CertificateCertificateTypeAMPLIFYMANAGED CertificateCertificateType = "AMPLIFY_MANAGED"
+	CertificateCertificateTypeCUSTOM         CertificateCertificateType = "CUSTOM"
+)
+
+type CertificateSettingsCertificateType string
+
+const (
+	CertificateSettingsCertificateTypeAMPLIFYMANAGED CertificateSettingsCertificateType = "AMPLIFY_MANAGED"
+	CertificateSettingsCertificateTypeCUSTOM         CertificateSettingsCertificateType = "CUSTOM"
+)

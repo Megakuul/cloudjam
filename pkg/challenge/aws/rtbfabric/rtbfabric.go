@@ -4,10 +4,10 @@
 package rtbfabric
 
 type ResponderErrorMaskingForHttpCode struct {
-	Action                    *string  `json:"Action,omitempty"`
-	HttpCode                  *string  `json:"HttpCode,omitempty"`
-	LoggingTypes              []string `json:"LoggingTypes,omitempty"`
-	ResponseLoggingPercentage *float64 `json:"ResponseLoggingPercentage,omitempty"`
+	Action                    *ResponderErrorMaskingForHttpCodeAction `json:"Action,omitempty"`
+	HttpCode                  *string                                 `json:"HttpCode,omitempty"`
+	LoggingTypes              []ResponderErrorMaskingLoggingType      `json:"LoggingTypes,omitempty"`
+	ResponseLoggingPercentage *float64                                `json:"ResponseLoggingPercentage,omitempty"`
 }
 
 type LinkAttributes struct {
@@ -41,7 +41,7 @@ type InboundExternalLink struct {
 	LinkAttributes   *LinkAttributes  `json:"LinkAttributes,omitempty"`
 	LinkId           *string          `json:"LinkId,omitempty"`
 	LinkLogSettings  *LinkLogSettings `json:"LinkLogSettings,omitempty"`
-	LinkStatus       *string          `json:"LinkStatus,omitempty"`
+	LinkStatus       *LinkStatus      `json:"LinkStatus,omitempty"`
 	Tags             []Tag            `json:"Tags,omitempty"`
 	UpdatedTimestamp *string          `json:"UpdatedTimestamp,omitempty"`
 }
@@ -49,10 +49,10 @@ type InboundExternalLink struct {
 func (InboundExternalLink) CloudControlType() string { return "AWS::RTBFabric::InboundExternalLink" }
 
 type LinkResponderErrorMaskingForHttpCode struct {
-	Action                    *string  `json:"Action,omitempty"`
-	HttpCode                  *string  `json:"HttpCode,omitempty"`
-	LoggingTypes              []string `json:"LoggingTypes,omitempty"`
-	ResponseLoggingPercentage *float64 `json:"ResponseLoggingPercentage,omitempty"`
+	Action                    *LinkResponderErrorMaskingForHttpCodeAction `json:"Action,omitempty"`
+	HttpCode                  *string                                     `json:"HttpCode,omitempty"`
+	LoggingTypes              []LinkResponderErrorMaskingLoggingType      `json:"LoggingTypes,omitempty"`
+	ResponseLoggingPercentage *float64                                    `json:"ResponseLoggingPercentage,omitempty"`
 }
 
 type LinkLinkAttributes struct {
@@ -91,10 +91,10 @@ type Link struct {
 	GatewayId               *string               `json:"GatewayId,omitempty"`
 	HttpResponderAllowed    *bool                 `json:"HttpResponderAllowed,omitempty"`
 	LinkAttributes          *LinkLinkAttributes   `json:"LinkAttributes,omitempty"`
-	LinkDirection           *string               `json:"LinkDirection,omitempty"`
+	LinkDirection           *LinkDirection        `json:"LinkDirection,omitempty"`
 	LinkId                  *string               `json:"LinkId,omitempty"`
 	LinkLogSettings         *LinkLinkLogSettings  `json:"LinkLogSettings,omitempty"`
-	LinkStatus              *string               `json:"LinkStatus,omitempty"`
+	LinkStatus              *LinkLinkStatus       `json:"LinkStatus,omitempty"`
 	ModuleConfigurationList []ModuleConfiguration `json:"ModuleConfigurationList,omitempty"`
 	PeerGatewayId           *string               `json:"PeerGatewayId,omitempty"`
 	Tags                    []LinkTag             `json:"Tags,omitempty"`
@@ -130,7 +130,7 @@ type LinkRoutingRule struct {
 	LinkId           *string              `json:"LinkId,omitempty"`
 	Priority         *int                 `json:"Priority,omitempty"`
 	RuleId           *string              `json:"RuleId,omitempty"`
-	Status           *string              `json:"Status,omitempty"`
+	Status           *RuleStatus          `json:"Status,omitempty"`
 	Tags             []LinkRoutingRuleTag `json:"Tags,omitempty"`
 	UpdatedTimestamp *string              `json:"UpdatedTimestamp,omitempty"`
 }
@@ -138,10 +138,10 @@ type LinkRoutingRule struct {
 func (LinkRoutingRule) CloudControlType() string { return "AWS::RTBFabric::LinkRoutingRule" }
 
 type OutboundExternalLinkResponderErrorMaskingForHttpCode struct {
-	Action                    *string  `json:"Action,omitempty"`
-	HttpCode                  *string  `json:"HttpCode,omitempty"`
-	LoggingTypes              []string `json:"LoggingTypes,omitempty"`
-	ResponseLoggingPercentage *float64 `json:"ResponseLoggingPercentage,omitempty"`
+	Action                    *OutboundExternalLinkResponderErrorMaskingForHttpCodeAction `json:"Action,omitempty"`
+	HttpCode                  *string                                                     `json:"HttpCode,omitempty"`
+	LoggingTypes              []OutboundExternalLinkResponderErrorMaskingLoggingType      `json:"LoggingTypes,omitempty"`
+	ResponseLoggingPercentage *float64                                                    `json:"ResponseLoggingPercentage,omitempty"`
 }
 
 type OutboundExternalLinkLinkAttributes struct {
@@ -174,7 +174,7 @@ type OutboundExternalLink struct {
 	LinkAttributes   *OutboundExternalLinkLinkAttributes  `json:"LinkAttributes,omitempty"`
 	LinkId           *string                              `json:"LinkId,omitempty"`
 	LinkLogSettings  *OutboundExternalLinkLinkLogSettings `json:"LinkLogSettings,omitempty"`
-	LinkStatus       *string                              `json:"LinkStatus,omitempty"`
+	LinkStatus       *OutboundExternalLinkLinkStatus      `json:"LinkStatus,omitempty"`
 	PublicEndpoint   *string                              `json:"PublicEndpoint,omitempty"`
 	Tags             []OutboundExternalLinkTag            `json:"Tags,omitempty"`
 	UpdatedTimestamp *string                              `json:"UpdatedTimestamp,omitempty"`
@@ -188,25 +188,25 @@ type RequesterGatewayTag struct {
 }
 
 type RequesterGateway struct {
-	ActiveLinksCount       *int                  `json:"ActiveLinksCount,omitempty"`
-	Arn                    *string               `json:"Arn,omitempty"`
-	CreatedTimestamp       *string               `json:"CreatedTimestamp,omitempty"`
-	Description            *string               `json:"Description,omitempty"`
-	DomainName             *string               `json:"DomainName,omitempty"`
-	GatewayId              *string               `json:"GatewayId,omitempty"`
-	RequesterGatewayStatus *string               `json:"RequesterGatewayStatus,omitempty"`
-	SecurityGroupIds       []string              `json:"SecurityGroupIds,omitempty"`
-	SubnetIds              []string              `json:"SubnetIds,omitempty"`
-	Tags                   []RequesterGatewayTag `json:"Tags,omitempty"`
-	TotalLinksCount        *int                  `json:"TotalLinksCount,omitempty"`
-	UpdatedTimestamp       *string               `json:"UpdatedTimestamp,omitempty"`
-	VpcId                  *string               `json:"VpcId,omitempty"`
+	ActiveLinksCount       *int                    `json:"ActiveLinksCount,omitempty"`
+	Arn                    *string                 `json:"Arn,omitempty"`
+	CreatedTimestamp       *string                 `json:"CreatedTimestamp,omitempty"`
+	Description            *string                 `json:"Description,omitempty"`
+	DomainName             *string                 `json:"DomainName,omitempty"`
+	GatewayId              *string                 `json:"GatewayId,omitempty"`
+	RequesterGatewayStatus *RequesterGatewayStatus `json:"RequesterGatewayStatus,omitempty"`
+	SecurityGroupIds       []string                `json:"SecurityGroupIds,omitempty"`
+	SubnetIds              []string                `json:"SubnetIds,omitempty"`
+	Tags                   []RequesterGatewayTag   `json:"Tags,omitempty"`
+	TotalLinksCount        *int                    `json:"TotalLinksCount,omitempty"`
+	UpdatedTimestamp       *string                 `json:"UpdatedTimestamp,omitempty"`
+	VpcId                  *string                 `json:"VpcId,omitempty"`
 }
 
 func (RequesterGateway) CloudControlType() string { return "AWS::RTBFabric::RequesterGateway" }
 
 type ListenerConfig struct {
-	Protocols []string `json:"Protocols,omitempty"`
+	Protocols []Protocol `json:"Protocols,omitempty"`
 }
 
 type ResponderGatewayTag struct {
@@ -219,26 +219,199 @@ type TrustStoreConfiguration struct {
 }
 
 type ResponderGateway struct {
-	AcmCertificateArn            *string                  `json:"AcmCertificateArn,omitempty"`
-	Arn                          *string                  `json:"Arn,omitempty"`
-	CertificateAssociationStatus *string                  `json:"CertificateAssociationStatus,omitempty"`
-	CreatedTimestamp             *string                  `json:"CreatedTimestamp,omitempty"`
-	Description                  *string                  `json:"Description,omitempty"`
-	DomainName                   *string                  `json:"DomainName,omitempty"`
-	ExternalInboundEndpoint      *string                  `json:"ExternalInboundEndpoint,omitempty"`
-	GatewayId                    *string                  `json:"GatewayId,omitempty"`
-	GatewayType                  *string                  `json:"GatewayType,omitempty"`
-	ListenerConfig               *ListenerConfig          `json:"ListenerConfig,omitempty"`
-	ManagedEndpointConfiguration map[string]any           `json:"ManagedEndpointConfiguration,omitempty"`
-	Port                         *int                     `json:"Port,omitempty"`
-	Protocol                     *string                  `json:"Protocol,omitempty"`
-	ResponderGatewayStatus       *string                  `json:"ResponderGatewayStatus,omitempty"`
-	SecurityGroupIds             []string                 `json:"SecurityGroupIds,omitempty"`
-	SubnetIds                    []string                 `json:"SubnetIds,omitempty"`
-	Tags                         []ResponderGatewayTag    `json:"Tags,omitempty"`
-	TrustStoreConfiguration      *TrustStoreConfiguration `json:"TrustStoreConfiguration,omitempty"`
-	UpdatedTimestamp             *string                  `json:"UpdatedTimestamp,omitempty"`
-	VpcId                        *string                  `json:"VpcId,omitempty"`
+	AcmCertificateArn            *string                       `json:"AcmCertificateArn,omitempty"`
+	Arn                          *string                       `json:"Arn,omitempty"`
+	CertificateAssociationStatus *CertificateAssociationStatus `json:"CertificateAssociationStatus,omitempty"`
+	CreatedTimestamp             *string                       `json:"CreatedTimestamp,omitempty"`
+	Description                  *string                       `json:"Description,omitempty"`
+	DomainName                   *string                       `json:"DomainName,omitempty"`
+	ExternalInboundEndpoint      *string                       `json:"ExternalInboundEndpoint,omitempty"`
+	GatewayId                    *string                       `json:"GatewayId,omitempty"`
+	GatewayType                  *GatewayType                  `json:"GatewayType,omitempty"`
+	ListenerConfig               *ListenerConfig               `json:"ListenerConfig,omitempty"`
+	ManagedEndpointConfiguration map[string]any                `json:"ManagedEndpointConfiguration,omitempty"`
+	Port                         *int                          `json:"Port,omitempty"`
+	Protocol                     *Protocol                     `json:"Protocol,omitempty"`
+	ResponderGatewayStatus       *ResponderGatewayStatus       `json:"ResponderGatewayStatus,omitempty"`
+	SecurityGroupIds             []string                      `json:"SecurityGroupIds,omitempty"`
+	SubnetIds                    []string                      `json:"SubnetIds,omitempty"`
+	Tags                         []ResponderGatewayTag         `json:"Tags,omitempty"`
+	TrustStoreConfiguration      *TrustStoreConfiguration      `json:"TrustStoreConfiguration,omitempty"`
+	UpdatedTimestamp             *string                       `json:"UpdatedTimestamp,omitempty"`
+	VpcId                        *string                       `json:"VpcId,omitempty"`
 }
 
 func (ResponderGateway) CloudControlType() string { return "AWS::RTBFabric::ResponderGateway" }
+
+type ResponderErrorMaskingForHttpCodeAction string
+
+const (
+	ResponderErrorMaskingForHttpCodeActionNOBID       ResponderErrorMaskingForHttpCodeAction = "NO_BID"
+	ResponderErrorMaskingForHttpCodeActionPASSTHROUGH ResponderErrorMaskingForHttpCodeAction = "PASSTHROUGH"
+)
+
+type ResponderErrorMaskingLoggingType string
+
+const (
+	ResponderErrorMaskingLoggingTypeNONE     ResponderErrorMaskingLoggingType = "NONE"
+	ResponderErrorMaskingLoggingTypeMETRIC   ResponderErrorMaskingLoggingType = "METRIC"
+	ResponderErrorMaskingLoggingTypeRESPONSE ResponderErrorMaskingLoggingType = "RESPONSE"
+)
+
+type LinkStatus string
+
+const (
+	LinkStatusPENDINGCREATION     LinkStatus = "PENDING_CREATION"
+	LinkStatusPENDINGREQUEST      LinkStatus = "PENDING_REQUEST"
+	LinkStatusREQUESTED           LinkStatus = "REQUESTED"
+	LinkStatusACCEPTED            LinkStatus = "ACCEPTED"
+	LinkStatusACTIVE              LinkStatus = "ACTIVE"
+	LinkStatusREJECTED            LinkStatus = "REJECTED"
+	LinkStatusFAILED              LinkStatus = "FAILED"
+	LinkStatusPENDINGDELETION     LinkStatus = "PENDING_DELETION"
+	LinkStatusDELETED             LinkStatus = "DELETED"
+	LinkStatusPENDINGUPDATE       LinkStatus = "PENDING_UPDATE"
+	LinkStatusPENDINGISOLATION    LinkStatus = "PENDING_ISOLATION"
+	LinkStatusISOLATED            LinkStatus = "ISOLATED"
+	LinkStatusPENDINGRESTORATION  LinkStatus = "PENDING_RESTORATION"
+	LinkStatusUNKNOWNTOSDKVERSION LinkStatus = "UNKNOWN_TO_SDK_VERSION"
+)
+
+type LinkResponderErrorMaskingForHttpCodeAction string
+
+const (
+	LinkResponderErrorMaskingForHttpCodeActionNOBID       LinkResponderErrorMaskingForHttpCodeAction = "NO_BID"
+	LinkResponderErrorMaskingForHttpCodeActionPASSTHROUGH LinkResponderErrorMaskingForHttpCodeAction = "PASSTHROUGH"
+)
+
+type LinkResponderErrorMaskingLoggingType string
+
+const (
+	LinkResponderErrorMaskingLoggingTypeNONE     LinkResponderErrorMaskingLoggingType = "NONE"
+	LinkResponderErrorMaskingLoggingTypeMETRIC   LinkResponderErrorMaskingLoggingType = "METRIC"
+	LinkResponderErrorMaskingLoggingTypeRESPONSE LinkResponderErrorMaskingLoggingType = "RESPONSE"
+)
+
+type LinkDirection string
+
+const (
+	LinkDirectionREQUEST  LinkDirection = "REQUEST"
+	LinkDirectionRESPONSE LinkDirection = "RESPONSE"
+)
+
+type LinkLinkStatus string
+
+const (
+	LinkLinkStatusPENDINGCREATION     LinkLinkStatus = "PENDING_CREATION"
+	LinkLinkStatusPENDINGREQUEST      LinkLinkStatus = "PENDING_REQUEST"
+	LinkLinkStatusREQUESTED           LinkLinkStatus = "REQUESTED"
+	LinkLinkStatusACCEPTED            LinkLinkStatus = "ACCEPTED"
+	LinkLinkStatusACTIVE              LinkLinkStatus = "ACTIVE"
+	LinkLinkStatusREJECTED            LinkLinkStatus = "REJECTED"
+	LinkLinkStatusFAILED              LinkLinkStatus = "FAILED"
+	LinkLinkStatusPENDINGDELETION     LinkLinkStatus = "PENDING_DELETION"
+	LinkLinkStatusDELETED             LinkLinkStatus = "DELETED"
+	LinkLinkStatusPENDINGUPDATE       LinkLinkStatus = "PENDING_UPDATE"
+	LinkLinkStatusPENDINGISOLATION    LinkLinkStatus = "PENDING_ISOLATION"
+	LinkLinkStatusISOLATED            LinkLinkStatus = "ISOLATED"
+	LinkLinkStatusPENDINGRESTORATION  LinkLinkStatus = "PENDING_RESTORATION"
+	LinkLinkStatusUNKNOWNTOSDKVERSION LinkLinkStatus = "UNKNOWN_TO_SDK_VERSION"
+)
+
+type RuleStatus string
+
+const (
+	RuleStatusCREATIONINPROGRESS RuleStatus = "CREATION_IN_PROGRESS"
+	RuleStatusACTIVE             RuleStatus = "ACTIVE"
+	RuleStatusUPDATEINPROGRESS   RuleStatus = "UPDATE_IN_PROGRESS"
+	RuleStatusDELETIONINPROGRESS RuleStatus = "DELETION_IN_PROGRESS"
+	RuleStatusDELETED            RuleStatus = "DELETED"
+	RuleStatusFAILED             RuleStatus = "FAILED"
+)
+
+type OutboundExternalLinkResponderErrorMaskingForHttpCodeAction string
+
+const (
+	OutboundExternalLinkResponderErrorMaskingForHttpCodeActionNOBID       OutboundExternalLinkResponderErrorMaskingForHttpCodeAction = "NO_BID"
+	OutboundExternalLinkResponderErrorMaskingForHttpCodeActionPASSTHROUGH OutboundExternalLinkResponderErrorMaskingForHttpCodeAction = "PASSTHROUGH"
+)
+
+type OutboundExternalLinkResponderErrorMaskingLoggingType string
+
+const (
+	OutboundExternalLinkResponderErrorMaskingLoggingTypeNONE     OutboundExternalLinkResponderErrorMaskingLoggingType = "NONE"
+	OutboundExternalLinkResponderErrorMaskingLoggingTypeMETRIC   OutboundExternalLinkResponderErrorMaskingLoggingType = "METRIC"
+	OutboundExternalLinkResponderErrorMaskingLoggingTypeRESPONSE OutboundExternalLinkResponderErrorMaskingLoggingType = "RESPONSE"
+)
+
+type OutboundExternalLinkLinkStatus string
+
+const (
+	OutboundExternalLinkLinkStatusPENDINGCREATION     OutboundExternalLinkLinkStatus = "PENDING_CREATION"
+	OutboundExternalLinkLinkStatusPENDINGREQUEST      OutboundExternalLinkLinkStatus = "PENDING_REQUEST"
+	OutboundExternalLinkLinkStatusREQUESTED           OutboundExternalLinkLinkStatus = "REQUESTED"
+	OutboundExternalLinkLinkStatusACCEPTED            OutboundExternalLinkLinkStatus = "ACCEPTED"
+	OutboundExternalLinkLinkStatusACTIVE              OutboundExternalLinkLinkStatus = "ACTIVE"
+	OutboundExternalLinkLinkStatusREJECTED            OutboundExternalLinkLinkStatus = "REJECTED"
+	OutboundExternalLinkLinkStatusFAILED              OutboundExternalLinkLinkStatus = "FAILED"
+	OutboundExternalLinkLinkStatusPENDINGDELETION     OutboundExternalLinkLinkStatus = "PENDING_DELETION"
+	OutboundExternalLinkLinkStatusDELETED             OutboundExternalLinkLinkStatus = "DELETED"
+	OutboundExternalLinkLinkStatusPENDINGUPDATE       OutboundExternalLinkLinkStatus = "PENDING_UPDATE"
+	OutboundExternalLinkLinkStatusPENDINGISOLATION    OutboundExternalLinkLinkStatus = "PENDING_ISOLATION"
+	OutboundExternalLinkLinkStatusISOLATED            OutboundExternalLinkLinkStatus = "ISOLATED"
+	OutboundExternalLinkLinkStatusPENDINGRESTORATION  OutboundExternalLinkLinkStatus = "PENDING_RESTORATION"
+	OutboundExternalLinkLinkStatusUNKNOWNTOSDKVERSION OutboundExternalLinkLinkStatus = "UNKNOWN_TO_SDK_VERSION"
+)
+
+type RequesterGatewayStatus string
+
+const (
+	RequesterGatewayStatusPENDINGCREATION    RequesterGatewayStatus = "PENDING_CREATION"
+	RequesterGatewayStatusACTIVE             RequesterGatewayStatus = "ACTIVE"
+	RequesterGatewayStatusPENDINGDELETION    RequesterGatewayStatus = "PENDING_DELETION"
+	RequesterGatewayStatusDELETED            RequesterGatewayStatus = "DELETED"
+	RequesterGatewayStatusERROR              RequesterGatewayStatus = "ERROR"
+	RequesterGatewayStatusPENDINGUPDATE      RequesterGatewayStatus = "PENDING_UPDATE"
+	RequesterGatewayStatusISOLATED           RequesterGatewayStatus = "ISOLATED"
+	RequesterGatewayStatusPENDINGISOLATION   RequesterGatewayStatus = "PENDING_ISOLATION"
+	RequesterGatewayStatusPENDINGRESTORATION RequesterGatewayStatus = "PENDING_RESTORATION"
+)
+
+type CertificateAssociationStatus string
+
+const (
+	CertificateAssociationStatusPENDINGASSOCIATION    CertificateAssociationStatus = "PENDING_ASSOCIATION"
+	CertificateAssociationStatusASSOCIATED            CertificateAssociationStatus = "ASSOCIATED"
+	CertificateAssociationStatusPENDINGDISASSOCIATION CertificateAssociationStatus = "PENDING_DISASSOCIATION"
+	CertificateAssociationStatusDISASSOCIATED         CertificateAssociationStatus = "DISASSOCIATED"
+	CertificateAssociationStatusEXPIRED               CertificateAssociationStatus = "EXPIRED"
+	CertificateAssociationStatusFAILED                CertificateAssociationStatus = "FAILED"
+)
+
+type GatewayType string
+
+const (
+	GatewayTypeEXTERNAL GatewayType = "EXTERNAL"
+	GatewayTypeINTERNAL GatewayType = "INTERNAL"
+)
+
+type Protocol string
+
+const (
+	ProtocolHTTP  Protocol = "HTTP"
+	ProtocolHTTPS Protocol = "HTTPS"
+)
+
+type ResponderGatewayStatus string
+
+const (
+	ResponderGatewayStatusPENDINGCREATION    ResponderGatewayStatus = "PENDING_CREATION"
+	ResponderGatewayStatusACTIVE             ResponderGatewayStatus = "ACTIVE"
+	ResponderGatewayStatusPENDINGDELETION    ResponderGatewayStatus = "PENDING_DELETION"
+	ResponderGatewayStatusDELETED            ResponderGatewayStatus = "DELETED"
+	ResponderGatewayStatusERROR              ResponderGatewayStatus = "ERROR"
+	ResponderGatewayStatusPENDINGUPDATE      ResponderGatewayStatus = "PENDING_UPDATE"
+	ResponderGatewayStatusISOLATED           ResponderGatewayStatus = "ISOLATED"
+	ResponderGatewayStatusPENDINGISOLATION   ResponderGatewayStatus = "PENDING_ISOLATION"
+	ResponderGatewayStatusPENDINGRESTORATION ResponderGatewayStatus = "PENDING_RESTORATION"
+)

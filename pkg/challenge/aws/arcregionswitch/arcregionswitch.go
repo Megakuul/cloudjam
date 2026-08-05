@@ -6,10 +6,10 @@ package arcregionswitch
 import "encoding/json"
 
 type AssociatedAlarm struct {
-	AlarmType          *string `json:"AlarmType,omitempty"`
-	CrossAccountRole   *string `json:"CrossAccountRole,omitempty"`
-	ExternalId         *string `json:"ExternalId,omitempty"`
-	ResourceIdentifier *string `json:"ResourceIdentifier,omitempty"`
+	AlarmType          *AlarmType `json:"AlarmType,omitempty"`
+	CrossAccountRole   *string    `json:"CrossAccountRole,omitempty"`
+	ExternalId         *string    `json:"ExternalId,omitempty"`
+	ResourceIdentifier *string    `json:"ResourceIdentifier,omitempty"`
 }
 
 type HealthCheckState struct {
@@ -29,30 +29,30 @@ type PlanRoute53HealthChecks struct {
 }
 
 type TriggerCondition struct {
-	AssociatedAlarmName *string `json:"AssociatedAlarmName,omitempty"`
-	Condition           *string `json:"Condition,omitempty"`
+	AssociatedAlarmName *string         `json:"AssociatedAlarmName,omitempty"`
+	Condition           *AlarmCondition `json:"Condition,omitempty"`
 }
 
 type Trigger struct {
-	Action                           *string            `json:"Action,omitempty"`
-	Conditions                       []TriggerCondition `json:"Conditions,omitempty"`
-	Description                      *string            `json:"Description,omitempty"`
-	MinDelayMinutesBetweenExecutions *float64           `json:"MinDelayMinutesBetweenExecutions,omitempty"`
-	TargetRegion                     *string            `json:"TargetRegion,omitempty"`
+	Action                           *WorkflowTargetAction `json:"Action,omitempty"`
+	Conditions                       []TriggerCondition    `json:"Conditions,omitempty"`
+	Description                      *string               `json:"Description,omitempty"`
+	MinDelayMinutesBetweenExecutions *float64              `json:"MinDelayMinutesBetweenExecutions,omitempty"`
+	TargetRegion                     *string               `json:"TargetRegion,omitempty"`
 }
 
 type Step struct {
-	Description                 *string         `json:"Description,omitempty"`
-	ExecutionBlockConfiguration json.RawMessage `json:"ExecutionBlockConfiguration,omitempty"`
-	ExecutionBlockType          *string         `json:"ExecutionBlockType,omitempty"`
-	Name                        *string         `json:"Name,omitempty"`
+	Description                 *string             `json:"Description,omitempty"`
+	ExecutionBlockConfiguration json.RawMessage     `json:"ExecutionBlockConfiguration,omitempty"`
+	ExecutionBlockType          *ExecutionBlockType `json:"ExecutionBlockType,omitempty"`
+	Name                        *string             `json:"Name,omitempty"`
 }
 
 type Workflow struct {
-	Steps                []Step  `json:"Steps,omitempty"`
-	WorkflowDescription  *string `json:"WorkflowDescription,omitempty"`
-	WorkflowTargetAction *string `json:"WorkflowTargetAction,omitempty"`
-	WorkflowTargetRegion *string `json:"WorkflowTargetRegion,omitempty"`
+	Steps                []Step                `json:"Steps,omitempty"`
+	WorkflowDescription  *string               `json:"WorkflowDescription,omitempty"`
+	WorkflowTargetAction *WorkflowTargetAction `json:"WorkflowTargetAction,omitempty"`
+	WorkflowTargetRegion *string               `json:"WorkflowTargetRegion,omitempty"`
 }
 
 type Plan struct {
@@ -65,7 +65,7 @@ type Plan struct {
 	Owner                        *string                       `json:"Owner,omitempty"`
 	PlanHealthChecks             []string                      `json:"PlanHealthChecks,omitempty"`
 	PrimaryRegion                *string                       `json:"PrimaryRegion,omitempty"`
-	RecoveryApproach             *string                       `json:"RecoveryApproach,omitempty"`
+	RecoveryApproach             *RecoveryApproach             `json:"RecoveryApproach,omitempty"`
 	RecoveryTimeObjectiveMinutes *float64                      `json:"RecoveryTimeObjectiveMinutes,omitempty"`
 	Regions                      []string                      `json:"Regions,omitempty"`
 	ReportConfiguration          *ReportConfiguration          `json:"ReportConfiguration,omitempty"`
@@ -77,3 +77,54 @@ type Plan struct {
 }
 
 func (Plan) CloudControlType() string { return "AWS::ARCRegionSwitch::Plan" }
+
+type AlarmType string
+
+const (
+	AlarmTypeApplicationHealth AlarmType = "applicationHealth"
+	AlarmTypeTrigger           AlarmType = "trigger"
+)
+
+type RecoveryApproach string
+
+const (
+	RecoveryApproachActiveActive  RecoveryApproach = "activeActive"
+	RecoveryApproachActivePassive RecoveryApproach = "activePassive"
+)
+
+type WorkflowTargetAction string
+
+const (
+	WorkflowTargetActionActivate     WorkflowTargetAction = "activate"
+	WorkflowTargetActionDeactivate   WorkflowTargetAction = "deactivate"
+	WorkflowTargetActionPostRecovery WorkflowTargetAction = "postRecovery"
+)
+
+type AlarmCondition string
+
+const (
+	AlarmConditionRed   AlarmCondition = "red"
+	AlarmConditionGreen AlarmCondition = "green"
+)
+
+type ExecutionBlockType string
+
+const (
+	ExecutionBlockTypeARCRegionSwitchPlan         ExecutionBlockType = "ARCRegionSwitchPlan"
+	ExecutionBlockTypeARCRoutingControl           ExecutionBlockType = "ARCRoutingControl"
+	ExecutionBlockTypeAuroraGlobalDatabase        ExecutionBlockType = "AuroraGlobalDatabase"
+	ExecutionBlockTypeAuroraProvisionedScaling    ExecutionBlockType = "AuroraProvisionedScaling"
+	ExecutionBlockTypeAuroraServerlessScaling     ExecutionBlockType = "AuroraServerlessScaling"
+	ExecutionBlockTypeCustomActionLambda          ExecutionBlockType = "CustomActionLambda"
+	ExecutionBlockTypeDocumentDb                  ExecutionBlockType = "DocumentDb"
+	ExecutionBlockTypeEC2AutoScaling              ExecutionBlockType = "EC2AutoScaling"
+	ExecutionBlockTypeECSServiceScaling           ExecutionBlockType = "ECSServiceScaling"
+	ExecutionBlockTypeEKSResourceScaling          ExecutionBlockType = "EKSResourceScaling"
+	ExecutionBlockTypeLambdaEventSourceMapping    ExecutionBlockType = "LambdaEventSourceMapping"
+	ExecutionBlockTypeManualApproval              ExecutionBlockType = "ManualApproval"
+	ExecutionBlockTypeNeptuneGlobalDatabase       ExecutionBlockType = "NeptuneGlobalDatabase"
+	ExecutionBlockTypeParallel                    ExecutionBlockType = "Parallel"
+	ExecutionBlockTypeRdsCreateCrossRegionReplica ExecutionBlockType = "RdsCreateCrossRegionReplica"
+	ExecutionBlockTypeRdsPromoteReadReplica       ExecutionBlockType = "RdsPromoteReadReplica"
+	ExecutionBlockTypeRoute53HealthCheck          ExecutionBlockType = "Route53HealthCheck"
+)

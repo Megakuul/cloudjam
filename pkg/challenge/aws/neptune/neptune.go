@@ -36,7 +36,7 @@ type DBCluster struct {
 	GlobalClusterIdentifier        *string                         `json:"GlobalClusterIdentifier,omitempty"`
 	IamAuthEnabled                 *bool                           `json:"IamAuthEnabled,omitempty"`
 	KmsKeyId                       *string                         `json:"KmsKeyId,omitempty"`
-	NetworkType                    *string                         `json:"NetworkType,omitempty"`
+	NetworkType                    *DBClusterNetworkType           `json:"NetworkType,omitempty"`
 	Port                           *string                         `json:"Port,omitempty"`
 	PreferredBackupWindow          *string                         `json:"PreferredBackupWindow,omitempty"`
 	PreferredMaintenanceWindow     *string                         `json:"PreferredMaintenanceWindow,omitempty"`
@@ -147,13 +147,26 @@ type GlobalClusterTag struct {
 }
 
 type GlobalCluster struct {
-	DeletionProtection        *bool              `json:"DeletionProtection,omitempty"`
-	Engine                    *string            `json:"Engine,omitempty"`
-	EngineVersion             *string            `json:"EngineVersion,omitempty"`
-	GlobalClusterIdentifier   *string            `json:"GlobalClusterIdentifier,omitempty"`
-	SourceDBClusterIdentifier *string            `json:"SourceDBClusterIdentifier,omitempty"`
-	StorageEncrypted          *bool              `json:"StorageEncrypted,omitempty"`
-	Tags                      []GlobalClusterTag `json:"Tags,omitempty"`
+	DeletionProtection        *bool                `json:"DeletionProtection,omitempty"`
+	Engine                    *GlobalClusterEngine `json:"Engine,omitempty"`
+	EngineVersion             *string              `json:"EngineVersion,omitempty"`
+	GlobalClusterIdentifier   *string              `json:"GlobalClusterIdentifier,omitempty"`
+	SourceDBClusterIdentifier *string              `json:"SourceDBClusterIdentifier,omitempty"`
+	StorageEncrypted          *bool                `json:"StorageEncrypted,omitempty"`
+	Tags                      []GlobalClusterTag   `json:"Tags,omitempty"`
 }
 
 func (GlobalCluster) CloudControlType() string { return "AWS::Neptune::GlobalCluster" }
+
+type DBClusterNetworkType string
+
+const (
+	DBClusterNetworkTypeIPV4 DBClusterNetworkType = "IPV4"
+	DBClusterNetworkTypeDUAL DBClusterNetworkType = "DUAL"
+)
+
+type GlobalClusterEngine string
+
+const (
+	GlobalClusterEngineNeptune GlobalClusterEngine = "neptune"
+)

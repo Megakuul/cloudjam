@@ -14,9 +14,9 @@ func (DefaultViewAssociation) CloudControlType() string {
 
 type Index struct {
 	Arn        *string           `json:"Arn,omitempty"`
-	IndexState *string           `json:"IndexState,omitempty"`
+	IndexState *IndexState       `json:"IndexState,omitempty"`
 	Tags       map[string]string `json:"Tags,omitempty"`
-	Type       *string           `json:"Type,omitempty"`
+	Type       *IndexType        `json:"Type,omitempty"`
 }
 
 func (Index) CloudControlType() string { return "AWS::ResourceExplorer2::Index" }
@@ -39,3 +39,20 @@ type View struct {
 }
 
 func (View) CloudControlType() string { return "AWS::ResourceExplorer2::View" }
+
+type IndexState string
+
+const (
+	IndexStateACTIVE   IndexState = "ACTIVE"
+	IndexStateCREATING IndexState = "CREATING"
+	IndexStateDELETING IndexState = "DELETING"
+	IndexStateDELETED  IndexState = "DELETED"
+	IndexStateUPDATING IndexState = "UPDATING"
+)
+
+type IndexType string
+
+const (
+	IndexTypeLOCAL      IndexType = "LOCAL"
+	IndexTypeAGGREGATOR IndexType = "AGGREGATOR"
+)

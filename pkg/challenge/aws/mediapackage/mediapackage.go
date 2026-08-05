@@ -65,8 +65,8 @@ type Authorization struct {
 }
 
 type EncryptionContractConfiguration struct {
-	PresetSpeke20Audio *string `json:"PresetSpeke20Audio,omitempty"`
-	PresetSpeke20Video *string `json:"PresetSpeke20Video,omitempty"`
+	PresetSpeke20Audio *EncryptionContractConfigurationPresetSpeke20Audio `json:"PresetSpeke20Audio,omitempty"`
+	PresetSpeke20Video *EncryptionContractConfigurationPresetSpeke20Video `json:"PresetSpeke20Video,omitempty"`
 }
 
 type SpekeKeyProvider struct {
@@ -79,29 +79,29 @@ type SpekeKeyProvider struct {
 }
 
 type CmafEncryption struct {
-	ConstantInitializationVector *string           `json:"ConstantInitializationVector,omitempty"`
-	EncryptionMethod             *string           `json:"EncryptionMethod,omitempty"`
-	KeyRotationIntervalSeconds   *int              `json:"KeyRotationIntervalSeconds,omitempty"`
-	SpekeKeyProvider             *SpekeKeyProvider `json:"SpekeKeyProvider,omitempty"`
+	ConstantInitializationVector *string                         `json:"ConstantInitializationVector,omitempty"`
+	EncryptionMethod             *CmafEncryptionEncryptionMethod `json:"EncryptionMethod,omitempty"`
+	KeyRotationIntervalSeconds   *int                            `json:"KeyRotationIntervalSeconds,omitempty"`
+	SpekeKeyProvider             *SpekeKeyProvider               `json:"SpekeKeyProvider,omitempty"`
 }
 
 type HlsManifest struct {
-	AdMarkers                      *string  `json:"AdMarkers,omitempty"`
-	AdTriggers                     []string `json:"AdTriggers,omitempty"`
-	AdsOnDeliveryRestrictions      *string  `json:"AdsOnDeliveryRestrictions,omitempty"`
-	Id                             *string  `json:"Id,omitempty"`
-	IncludeIframeOnlyStream        *bool    `json:"IncludeIframeOnlyStream,omitempty"`
-	ManifestName                   *string  `json:"ManifestName,omitempty"`
-	PlaylistType                   *string  `json:"PlaylistType,omitempty"`
-	PlaylistWindowSeconds          *int     `json:"PlaylistWindowSeconds,omitempty"`
-	ProgramDateTimeIntervalSeconds *int     `json:"ProgramDateTimeIntervalSeconds,omitempty"`
-	Url                            *string  `json:"Url,omitempty"`
+	AdMarkers                      *HlsManifestAdMarkers       `json:"AdMarkers,omitempty"`
+	AdTriggers                     []HlsManifestAdTriggersItem `json:"AdTriggers,omitempty"`
+	AdsOnDeliveryRestrictions      *AdsOnDeliveryRestrictions  `json:"AdsOnDeliveryRestrictions,omitempty"`
+	Id                             *string                     `json:"Id,omitempty"`
+	IncludeIframeOnlyStream        *bool                       `json:"IncludeIframeOnlyStream,omitempty"`
+	ManifestName                   *string                     `json:"ManifestName,omitempty"`
+	PlaylistType                   *HlsManifestPlaylistType    `json:"PlaylistType,omitempty"`
+	PlaylistWindowSeconds          *int                        `json:"PlaylistWindowSeconds,omitempty"`
+	ProgramDateTimeIntervalSeconds *int                        `json:"ProgramDateTimeIntervalSeconds,omitempty"`
+	Url                            *string                     `json:"Url,omitempty"`
 }
 
 type StreamSelection struct {
-	MaxVideoBitsPerSecond *int    `json:"MaxVideoBitsPerSecond,omitempty"`
-	MinVideoBitsPerSecond *int    `json:"MinVideoBitsPerSecond,omitempty"`
-	StreamOrder           *string `json:"StreamOrder,omitempty"`
+	MaxVideoBitsPerSecond *int                        `json:"MaxVideoBitsPerSecond,omitempty"`
+	MinVideoBitsPerSecond *int                        `json:"MinVideoBitsPerSecond,omitempty"`
+	StreamOrder           *StreamSelectionStreamOrder `json:"StreamOrder,omitempty"`
 }
 
 type CmafPackage struct {
@@ -118,45 +118,45 @@ type DashEncryption struct {
 }
 
 type DashPackage struct {
-	AdTriggers                        []string         `json:"AdTriggers,omitempty"`
-	AdsOnDeliveryRestrictions         *string          `json:"AdsOnDeliveryRestrictions,omitempty"`
-	Encryption                        *DashEncryption  `json:"Encryption,omitempty"`
-	IncludeIframeOnlyStream           *bool            `json:"IncludeIframeOnlyStream,omitempty"`
-	ManifestLayout                    *string          `json:"ManifestLayout,omitempty"`
-	ManifestWindowSeconds             *int             `json:"ManifestWindowSeconds,omitempty"`
-	MinBufferTimeSeconds              *int             `json:"MinBufferTimeSeconds,omitempty"`
-	MinUpdatePeriodSeconds            *int             `json:"MinUpdatePeriodSeconds,omitempty"`
-	PeriodTriggers                    []string         `json:"PeriodTriggers,omitempty"`
-	Profile                           *string          `json:"Profile,omitempty"`
-	SegmentDurationSeconds            *int             `json:"SegmentDurationSeconds,omitempty"`
-	SegmentTemplateFormat             *string          `json:"SegmentTemplateFormat,omitempty"`
-	StreamSelection                   *StreamSelection `json:"StreamSelection,omitempty"`
-	SuggestedPresentationDelaySeconds *int             `json:"SuggestedPresentationDelaySeconds,omitempty"`
-	UtcTiming                         *string          `json:"UtcTiming,omitempty"`
-	UtcTimingUri                      *string          `json:"UtcTimingUri,omitempty"`
+	AdTriggers                        []DashPackageAdTriggersItem       `json:"AdTriggers,omitempty"`
+	AdsOnDeliveryRestrictions         *AdsOnDeliveryRestrictions        `json:"AdsOnDeliveryRestrictions,omitempty"`
+	Encryption                        *DashEncryption                   `json:"Encryption,omitempty"`
+	IncludeIframeOnlyStream           *bool                             `json:"IncludeIframeOnlyStream,omitempty"`
+	ManifestLayout                    *DashPackageManifestLayout        `json:"ManifestLayout,omitempty"`
+	ManifestWindowSeconds             *int                              `json:"ManifestWindowSeconds,omitempty"`
+	MinBufferTimeSeconds              *int                              `json:"MinBufferTimeSeconds,omitempty"`
+	MinUpdatePeriodSeconds            *int                              `json:"MinUpdatePeriodSeconds,omitempty"`
+	PeriodTriggers                    []DashPackagePeriodTriggersItem   `json:"PeriodTriggers,omitempty"`
+	Profile                           *DashPackageProfile               `json:"Profile,omitempty"`
+	SegmentDurationSeconds            *int                              `json:"SegmentDurationSeconds,omitempty"`
+	SegmentTemplateFormat             *DashPackageSegmentTemplateFormat `json:"SegmentTemplateFormat,omitempty"`
+	StreamSelection                   *StreamSelection                  `json:"StreamSelection,omitempty"`
+	SuggestedPresentationDelaySeconds *int                              `json:"SuggestedPresentationDelaySeconds,omitempty"`
+	UtcTiming                         *DashPackageUtcTiming             `json:"UtcTiming,omitempty"`
+	UtcTimingUri                      *string                           `json:"UtcTimingUri,omitempty"`
 }
 
 type HlsEncryption struct {
-	ConstantInitializationVector *string           `json:"ConstantInitializationVector,omitempty"`
-	EncryptionMethod             *string           `json:"EncryptionMethod,omitempty"`
-	KeyRotationIntervalSeconds   *int              `json:"KeyRotationIntervalSeconds,omitempty"`
-	RepeatExtXKey                *bool             `json:"RepeatExtXKey,omitempty"`
-	SpekeKeyProvider             *SpekeKeyProvider `json:"SpekeKeyProvider,omitempty"`
+	ConstantInitializationVector *string                        `json:"ConstantInitializationVector,omitempty"`
+	EncryptionMethod             *HlsEncryptionEncryptionMethod `json:"EncryptionMethod,omitempty"`
+	KeyRotationIntervalSeconds   *int                           `json:"KeyRotationIntervalSeconds,omitempty"`
+	RepeatExtXKey                *bool                          `json:"RepeatExtXKey,omitempty"`
+	SpekeKeyProvider             *SpekeKeyProvider              `json:"SpekeKeyProvider,omitempty"`
 }
 
 type HlsPackage struct {
-	AdMarkers                      *string          `json:"AdMarkers,omitempty"`
-	AdTriggers                     []string         `json:"AdTriggers,omitempty"`
-	AdsOnDeliveryRestrictions      *string          `json:"AdsOnDeliveryRestrictions,omitempty"`
-	Encryption                     *HlsEncryption   `json:"Encryption,omitempty"`
-	IncludeDvbSubtitles            *bool            `json:"IncludeDvbSubtitles,omitempty"`
-	IncludeIframeOnlyStream        *bool            `json:"IncludeIframeOnlyStream,omitempty"`
-	PlaylistType                   *string          `json:"PlaylistType,omitempty"`
-	PlaylistWindowSeconds          *int             `json:"PlaylistWindowSeconds,omitempty"`
-	ProgramDateTimeIntervalSeconds *int             `json:"ProgramDateTimeIntervalSeconds,omitempty"`
-	SegmentDurationSeconds         *int             `json:"SegmentDurationSeconds,omitempty"`
-	StreamSelection                *StreamSelection `json:"StreamSelection,omitempty"`
-	UseAudioRenditionGroup         *bool            `json:"UseAudioRenditionGroup,omitempty"`
+	AdMarkers                      *HlsPackageAdMarkers       `json:"AdMarkers,omitempty"`
+	AdTriggers                     []HlsPackageAdTriggersItem `json:"AdTriggers,omitempty"`
+	AdsOnDeliveryRestrictions      *AdsOnDeliveryRestrictions `json:"AdsOnDeliveryRestrictions,omitempty"`
+	Encryption                     *HlsEncryption             `json:"Encryption,omitempty"`
+	IncludeDvbSubtitles            *bool                      `json:"IncludeDvbSubtitles,omitempty"`
+	IncludeIframeOnlyStream        *bool                      `json:"IncludeIframeOnlyStream,omitempty"`
+	PlaylistType                   *HlsPackagePlaylistType    `json:"PlaylistType,omitempty"`
+	PlaylistWindowSeconds          *int                       `json:"PlaylistWindowSeconds,omitempty"`
+	ProgramDateTimeIntervalSeconds *int                       `json:"ProgramDateTimeIntervalSeconds,omitempty"`
+	SegmentDurationSeconds         *int                       `json:"SegmentDurationSeconds,omitempty"`
+	StreamSelection                *StreamSelection           `json:"StreamSelection,omitempty"`
+	UseAudioRenditionGroup         *bool                      `json:"UseAudioRenditionGroup,omitempty"`
 }
 
 type MssEncryption struct {
@@ -176,29 +176,29 @@ type OriginEndpointTag struct {
 }
 
 type OriginEndpoint struct {
-	Arn                    *string             `json:"Arn,omitempty"`
-	Authorization          *Authorization      `json:"Authorization,omitempty"`
-	ChannelId              *string             `json:"ChannelId,omitempty"`
-	CmafPackage            *CmafPackage        `json:"CmafPackage,omitempty"`
-	DashPackage            *DashPackage        `json:"DashPackage,omitempty"`
-	Description            *string             `json:"Description,omitempty"`
-	HlsPackage             *HlsPackage         `json:"HlsPackage,omitempty"`
-	Id                     *string             `json:"Id,omitempty"`
-	ManifestName           *string             `json:"ManifestName,omitempty"`
-	MssPackage             *MssPackage         `json:"MssPackage,omitempty"`
-	Origination            *string             `json:"Origination,omitempty"`
-	StartoverWindowSeconds *int                `json:"StartoverWindowSeconds,omitempty"`
-	Tags                   []OriginEndpointTag `json:"Tags,omitempty"`
-	TimeDelaySeconds       *int                `json:"TimeDelaySeconds,omitempty"`
-	Url                    *string             `json:"Url,omitempty"`
-	Whitelist              []string            `json:"Whitelist,omitempty"`
+	Arn                    *string                    `json:"Arn,omitempty"`
+	Authorization          *Authorization             `json:"Authorization,omitempty"`
+	ChannelId              *string                    `json:"ChannelId,omitempty"`
+	CmafPackage            *CmafPackage               `json:"CmafPackage,omitempty"`
+	DashPackage            *DashPackage               `json:"DashPackage,omitempty"`
+	Description            *string                    `json:"Description,omitempty"`
+	HlsPackage             *HlsPackage                `json:"HlsPackage,omitempty"`
+	Id                     *string                    `json:"Id,omitempty"`
+	ManifestName           *string                    `json:"ManifestName,omitempty"`
+	MssPackage             *MssPackage                `json:"MssPackage,omitempty"`
+	Origination            *OriginEndpointOrigination `json:"Origination,omitempty"`
+	StartoverWindowSeconds *int                       `json:"StartoverWindowSeconds,omitempty"`
+	Tags                   []OriginEndpointTag        `json:"Tags,omitempty"`
+	TimeDelaySeconds       *int                       `json:"TimeDelaySeconds,omitempty"`
+	Url                    *string                    `json:"Url,omitempty"`
+	Whitelist              []string                   `json:"Whitelist,omitempty"`
 }
 
 func (OriginEndpoint) CloudControlType() string { return "AWS::MediaPackage::OriginEndpoint" }
 
 type PackagingConfigurationEncryptionContractConfiguration struct {
-	PresetSpeke20Audio *string `json:"PresetSpeke20Audio,omitempty"`
-	PresetSpeke20Video *string `json:"PresetSpeke20Video,omitempty"`
+	PresetSpeke20Audio *PackagingConfigurationEncryptionContractConfigurationPresetSpeke20Audio `json:"PresetSpeke20Audio,omitempty"`
+	PresetSpeke20Video *PackagingConfigurationEncryptionContractConfigurationPresetSpeke20Video `json:"PresetSpeke20Video,omitempty"`
 }
 
 type PackagingConfigurationSpekeKeyProvider struct {
@@ -213,18 +213,18 @@ type PackagingConfigurationCmafEncryption struct {
 }
 
 type PackagingConfigurationStreamSelection struct {
-	MaxVideoBitsPerSecond *int    `json:"MaxVideoBitsPerSecond,omitempty"`
-	MinVideoBitsPerSecond *int    `json:"MinVideoBitsPerSecond,omitempty"`
-	StreamOrder           *string `json:"StreamOrder,omitempty"`
+	MaxVideoBitsPerSecond *int                                              `json:"MaxVideoBitsPerSecond,omitempty"`
+	MinVideoBitsPerSecond *int                                              `json:"MinVideoBitsPerSecond,omitempty"`
+	StreamOrder           *PackagingConfigurationStreamSelectionStreamOrder `json:"StreamOrder,omitempty"`
 }
 
 type PackagingConfigurationHlsManifest struct {
-	AdMarkers                      *string                                `json:"AdMarkers,omitempty"`
-	IncludeIframeOnlyStream        *bool                                  `json:"IncludeIframeOnlyStream,omitempty"`
-	ManifestName                   *string                                `json:"ManifestName,omitempty"`
-	ProgramDateTimeIntervalSeconds *int                                   `json:"ProgramDateTimeIntervalSeconds,omitempty"`
-	RepeatExtXKey                  *bool                                  `json:"RepeatExtXKey,omitempty"`
-	StreamSelection                *PackagingConfigurationStreamSelection `json:"StreamSelection,omitempty"`
+	AdMarkers                      *PackagingConfigurationHlsManifestAdMarkers `json:"AdMarkers,omitempty"`
+	IncludeIframeOnlyStream        *bool                                       `json:"IncludeIframeOnlyStream,omitempty"`
+	ManifestName                   *string                                     `json:"ManifestName,omitempty"`
+	ProgramDateTimeIntervalSeconds *int                                        `json:"ProgramDateTimeIntervalSeconds,omitempty"`
+	RepeatExtXKey                  *bool                                       `json:"RepeatExtXKey,omitempty"`
+	StreamSelection                *PackagingConfigurationStreamSelection      `json:"StreamSelection,omitempty"`
 }
 
 type PackagingConfigurationCmafPackage struct {
@@ -235,11 +235,11 @@ type PackagingConfigurationCmafPackage struct {
 }
 
 type DashManifest struct {
-	ManifestLayout       *string                                `json:"ManifestLayout,omitempty"`
+	ManifestLayout       *DashManifestManifestLayout            `json:"ManifestLayout,omitempty"`
 	ManifestName         *string                                `json:"ManifestName,omitempty"`
 	MinBufferTimeSeconds *int                                   `json:"MinBufferTimeSeconds,omitempty"`
-	Profile              *string                                `json:"Profile,omitempty"`
-	ScteMarkersSource    *string                                `json:"ScteMarkersSource,omitempty"`
+	Profile              *DashManifestProfile                   `json:"Profile,omitempty"`
+	ScteMarkersSource    *DashManifestScteMarkersSource         `json:"ScteMarkersSource,omitempty"`
 	StreamSelection      *PackagingConfigurationStreamSelection `json:"StreamSelection,omitempty"`
 }
 
@@ -248,19 +248,19 @@ type PackagingConfigurationDashEncryption struct {
 }
 
 type PackagingConfigurationDashPackage struct {
-	DashManifests                         []DashManifest                        `json:"DashManifests,omitempty"`
-	Encryption                            *PackagingConfigurationDashEncryption `json:"Encryption,omitempty"`
-	IncludeEncoderConfigurationInSegments *bool                                 `json:"IncludeEncoderConfigurationInSegments,omitempty"`
-	IncludeIframeOnlyStream               *bool                                 `json:"IncludeIframeOnlyStream,omitempty"`
-	PeriodTriggers                        []string                              `json:"PeriodTriggers,omitempty"`
-	SegmentDurationSeconds                *int                                  `json:"SegmentDurationSeconds,omitempty"`
-	SegmentTemplateFormat                 *string                               `json:"SegmentTemplateFormat,omitempty"`
+	DashManifests                         []DashManifest                                          `json:"DashManifests,omitempty"`
+	Encryption                            *PackagingConfigurationDashEncryption                   `json:"Encryption,omitempty"`
+	IncludeEncoderConfigurationInSegments *bool                                                   `json:"IncludeEncoderConfigurationInSegments,omitempty"`
+	IncludeIframeOnlyStream               *bool                                                   `json:"IncludeIframeOnlyStream,omitempty"`
+	PeriodTriggers                        []PackagingConfigurationDashPackagePeriodTriggersItem   `json:"PeriodTriggers,omitempty"`
+	SegmentDurationSeconds                *int                                                    `json:"SegmentDurationSeconds,omitempty"`
+	SegmentTemplateFormat                 *PackagingConfigurationDashPackageSegmentTemplateFormat `json:"SegmentTemplateFormat,omitempty"`
 }
 
 type PackagingConfigurationHlsEncryption struct {
-	ConstantInitializationVector *string                                 `json:"ConstantInitializationVector,omitempty"`
-	EncryptionMethod             *string                                 `json:"EncryptionMethod,omitempty"`
-	SpekeKeyProvider             *PackagingConfigurationSpekeKeyProvider `json:"SpekeKeyProvider,omitempty"`
+	ConstantInitializationVector *string                                              `json:"ConstantInitializationVector,omitempty"`
+	EncryptionMethod             *PackagingConfigurationHlsEncryptionEncryptionMethod `json:"EncryptionMethod,omitempty"`
+	SpekeKeyProvider             *PackagingConfigurationSpekeKeyProvider              `json:"SpekeKeyProvider,omitempty"`
 }
 
 type PackagingConfigurationHlsPackage struct {
@@ -330,3 +330,262 @@ type PackagingGroup struct {
 }
 
 func (PackagingGroup) CloudControlType() string { return "AWS::MediaPackage::PackagingGroup" }
+
+type CmafEncryptionEncryptionMethod string
+
+const (
+	CmafEncryptionEncryptionMethodSAMPLEAES CmafEncryptionEncryptionMethod = "SAMPLE_AES"
+	CmafEncryptionEncryptionMethodAESCTR    CmafEncryptionEncryptionMethod = "AES_CTR"
+)
+
+type EncryptionContractConfigurationPresetSpeke20Audio string
+
+const (
+	EncryptionContractConfigurationPresetSpeke20AudioPRESETAUDIO1 EncryptionContractConfigurationPresetSpeke20Audio = "PRESET-AUDIO-1"
+	EncryptionContractConfigurationPresetSpeke20AudioPRESETAUDIO2 EncryptionContractConfigurationPresetSpeke20Audio = "PRESET-AUDIO-2"
+	EncryptionContractConfigurationPresetSpeke20AudioPRESETAUDIO3 EncryptionContractConfigurationPresetSpeke20Audio = "PRESET-AUDIO-3"
+	EncryptionContractConfigurationPresetSpeke20AudioSHARED       EncryptionContractConfigurationPresetSpeke20Audio = "SHARED"
+	EncryptionContractConfigurationPresetSpeke20AudioUNENCRYPTED  EncryptionContractConfigurationPresetSpeke20Audio = "UNENCRYPTED"
+)
+
+type EncryptionContractConfigurationPresetSpeke20Video string
+
+const (
+	EncryptionContractConfigurationPresetSpeke20VideoPRESETVIDEO1 EncryptionContractConfigurationPresetSpeke20Video = "PRESET-VIDEO-1"
+	EncryptionContractConfigurationPresetSpeke20VideoPRESETVIDEO2 EncryptionContractConfigurationPresetSpeke20Video = "PRESET-VIDEO-2"
+	EncryptionContractConfigurationPresetSpeke20VideoPRESETVIDEO3 EncryptionContractConfigurationPresetSpeke20Video = "PRESET-VIDEO-3"
+	EncryptionContractConfigurationPresetSpeke20VideoPRESETVIDEO4 EncryptionContractConfigurationPresetSpeke20Video = "PRESET-VIDEO-4"
+	EncryptionContractConfigurationPresetSpeke20VideoPRESETVIDEO5 EncryptionContractConfigurationPresetSpeke20Video = "PRESET-VIDEO-5"
+	EncryptionContractConfigurationPresetSpeke20VideoPRESETVIDEO6 EncryptionContractConfigurationPresetSpeke20Video = "PRESET-VIDEO-6"
+	EncryptionContractConfigurationPresetSpeke20VideoPRESETVIDEO7 EncryptionContractConfigurationPresetSpeke20Video = "PRESET-VIDEO-7"
+	EncryptionContractConfigurationPresetSpeke20VideoPRESETVIDEO8 EncryptionContractConfigurationPresetSpeke20Video = "PRESET-VIDEO-8"
+	EncryptionContractConfigurationPresetSpeke20VideoSHARED       EncryptionContractConfigurationPresetSpeke20Video = "SHARED"
+	EncryptionContractConfigurationPresetSpeke20VideoUNENCRYPTED  EncryptionContractConfigurationPresetSpeke20Video = "UNENCRYPTED"
+)
+
+type HlsManifestAdMarkers string
+
+const (
+	HlsManifestAdMarkersNONE           HlsManifestAdMarkers = "NONE"
+	HlsManifestAdMarkersSCTE35ENHANCED HlsManifestAdMarkers = "SCTE35_ENHANCED"
+	HlsManifestAdMarkersPASSTHROUGH    HlsManifestAdMarkers = "PASSTHROUGH"
+	HlsManifestAdMarkersDATERANGE      HlsManifestAdMarkers = "DATERANGE"
+)
+
+type HlsManifestAdTriggersItem string
+
+const (
+	HlsManifestAdTriggersItemSPLICEINSERT                           HlsManifestAdTriggersItem = "SPLICE_INSERT"
+	HlsManifestAdTriggersItemBREAK                                  HlsManifestAdTriggersItem = "BREAK"
+	HlsManifestAdTriggersItemPROVIDERADVERTISEMENT                  HlsManifestAdTriggersItem = "PROVIDER_ADVERTISEMENT"
+	HlsManifestAdTriggersItemDISTRIBUTORADVERTISEMENT               HlsManifestAdTriggersItem = "DISTRIBUTOR_ADVERTISEMENT"
+	HlsManifestAdTriggersItemPROVIDERPLACEMENTOPPORTUNITY           HlsManifestAdTriggersItem = "PROVIDER_PLACEMENT_OPPORTUNITY"
+	HlsManifestAdTriggersItemDISTRIBUTORPLACEMENTOPPORTUNITY        HlsManifestAdTriggersItem = "DISTRIBUTOR_PLACEMENT_OPPORTUNITY"
+	HlsManifestAdTriggersItemPROVIDEROVERLAYPLACEMENTOPPORTUNITY    HlsManifestAdTriggersItem = "PROVIDER_OVERLAY_PLACEMENT_OPPORTUNITY"
+	HlsManifestAdTriggersItemDISTRIBUTOROVERLAYPLACEMENTOPPORTUNITY HlsManifestAdTriggersItem = "DISTRIBUTOR_OVERLAY_PLACEMENT_OPPORTUNITY"
+)
+
+type AdsOnDeliveryRestrictions string
+
+const (
+	AdsOnDeliveryRestrictionsNONE         AdsOnDeliveryRestrictions = "NONE"
+	AdsOnDeliveryRestrictionsRESTRICTED   AdsOnDeliveryRestrictions = "RESTRICTED"
+	AdsOnDeliveryRestrictionsUNRESTRICTED AdsOnDeliveryRestrictions = "UNRESTRICTED"
+	AdsOnDeliveryRestrictionsBOTH         AdsOnDeliveryRestrictions = "BOTH"
+)
+
+type HlsManifestPlaylistType string
+
+const (
+	HlsManifestPlaylistTypeNONE  HlsManifestPlaylistType = "NONE"
+	HlsManifestPlaylistTypeEVENT HlsManifestPlaylistType = "EVENT"
+	HlsManifestPlaylistTypeVOD   HlsManifestPlaylistType = "VOD"
+)
+
+type StreamSelectionStreamOrder string
+
+const (
+	StreamSelectionStreamOrderORIGINAL               StreamSelectionStreamOrder = "ORIGINAL"
+	StreamSelectionStreamOrderVIDEOBITRATEASCENDING  StreamSelectionStreamOrder = "VIDEO_BITRATE_ASCENDING"
+	StreamSelectionStreamOrderVIDEOBITRATEDESCENDING StreamSelectionStreamOrder = "VIDEO_BITRATE_DESCENDING"
+)
+
+type DashPackageAdTriggersItem string
+
+const (
+	DashPackageAdTriggersItemSPLICEINSERT                           DashPackageAdTriggersItem = "SPLICE_INSERT"
+	DashPackageAdTriggersItemBREAK                                  DashPackageAdTriggersItem = "BREAK"
+	DashPackageAdTriggersItemPROVIDERADVERTISEMENT                  DashPackageAdTriggersItem = "PROVIDER_ADVERTISEMENT"
+	DashPackageAdTriggersItemDISTRIBUTORADVERTISEMENT               DashPackageAdTriggersItem = "DISTRIBUTOR_ADVERTISEMENT"
+	DashPackageAdTriggersItemPROVIDERPLACEMENTOPPORTUNITY           DashPackageAdTriggersItem = "PROVIDER_PLACEMENT_OPPORTUNITY"
+	DashPackageAdTriggersItemDISTRIBUTORPLACEMENTOPPORTUNITY        DashPackageAdTriggersItem = "DISTRIBUTOR_PLACEMENT_OPPORTUNITY"
+	DashPackageAdTriggersItemPROVIDEROVERLAYPLACEMENTOPPORTUNITY    DashPackageAdTriggersItem = "PROVIDER_OVERLAY_PLACEMENT_OPPORTUNITY"
+	DashPackageAdTriggersItemDISTRIBUTOROVERLAYPLACEMENTOPPORTUNITY DashPackageAdTriggersItem = "DISTRIBUTOR_OVERLAY_PLACEMENT_OPPORTUNITY"
+)
+
+type DashPackageManifestLayout string
+
+const (
+	DashPackageManifestLayoutFULL               DashPackageManifestLayout = "FULL"
+	DashPackageManifestLayoutCOMPACT            DashPackageManifestLayout = "COMPACT"
+	DashPackageManifestLayoutDRMTOPLEVELCOMPACT DashPackageManifestLayout = "DRM_TOP_LEVEL_COMPACT"
+)
+
+type DashPackagePeriodTriggersItem string
+
+const (
+	DashPackagePeriodTriggersItemADS DashPackagePeriodTriggersItem = "ADS"
+)
+
+type DashPackageProfile string
+
+const (
+	DashPackageProfileNONE        DashPackageProfile = "NONE"
+	DashPackageProfileHBBTV15     DashPackageProfile = "HBBTV_1_5"
+	DashPackageProfileHYBRIDCAST  DashPackageProfile = "HYBRIDCAST"
+	DashPackageProfileDVBDASH2014 DashPackageProfile = "DVB_DASH_2014"
+)
+
+type DashPackageSegmentTemplateFormat string
+
+const (
+	DashPackageSegmentTemplateFormatNUMBERWITHTIMELINE DashPackageSegmentTemplateFormat = "NUMBER_WITH_TIMELINE"
+	DashPackageSegmentTemplateFormatTIMEWITHTIMELINE   DashPackageSegmentTemplateFormat = "TIME_WITH_TIMELINE"
+	DashPackageSegmentTemplateFormatNUMBERWITHDURATION DashPackageSegmentTemplateFormat = "NUMBER_WITH_DURATION"
+)
+
+type DashPackageUtcTiming string
+
+const (
+	DashPackageUtcTimingHTTPXSDATE DashPackageUtcTiming = "HTTP-XSDATE"
+	DashPackageUtcTimingHTTPISO    DashPackageUtcTiming = "HTTP-ISO"
+	DashPackageUtcTimingHTTPHEAD   DashPackageUtcTiming = "HTTP-HEAD"
+	DashPackageUtcTimingNONE       DashPackageUtcTiming = "NONE"
+)
+
+type HlsPackageAdMarkers string
+
+const (
+	HlsPackageAdMarkersNONE           HlsPackageAdMarkers = "NONE"
+	HlsPackageAdMarkersSCTE35ENHANCED HlsPackageAdMarkers = "SCTE35_ENHANCED"
+	HlsPackageAdMarkersPASSTHROUGH    HlsPackageAdMarkers = "PASSTHROUGH"
+	HlsPackageAdMarkersDATERANGE      HlsPackageAdMarkers = "DATERANGE"
+)
+
+type HlsPackageAdTriggersItem string
+
+const (
+	HlsPackageAdTriggersItemSPLICEINSERT                           HlsPackageAdTriggersItem = "SPLICE_INSERT"
+	HlsPackageAdTriggersItemBREAK                                  HlsPackageAdTriggersItem = "BREAK"
+	HlsPackageAdTriggersItemPROVIDERADVERTISEMENT                  HlsPackageAdTriggersItem = "PROVIDER_ADVERTISEMENT"
+	HlsPackageAdTriggersItemDISTRIBUTORADVERTISEMENT               HlsPackageAdTriggersItem = "DISTRIBUTOR_ADVERTISEMENT"
+	HlsPackageAdTriggersItemPROVIDERPLACEMENTOPPORTUNITY           HlsPackageAdTriggersItem = "PROVIDER_PLACEMENT_OPPORTUNITY"
+	HlsPackageAdTriggersItemDISTRIBUTORPLACEMENTOPPORTUNITY        HlsPackageAdTriggersItem = "DISTRIBUTOR_PLACEMENT_OPPORTUNITY"
+	HlsPackageAdTriggersItemPROVIDEROVERLAYPLACEMENTOPPORTUNITY    HlsPackageAdTriggersItem = "PROVIDER_OVERLAY_PLACEMENT_OPPORTUNITY"
+	HlsPackageAdTriggersItemDISTRIBUTOROVERLAYPLACEMENTOPPORTUNITY HlsPackageAdTriggersItem = "DISTRIBUTOR_OVERLAY_PLACEMENT_OPPORTUNITY"
+)
+
+type HlsEncryptionEncryptionMethod string
+
+const (
+	HlsEncryptionEncryptionMethodAES128    HlsEncryptionEncryptionMethod = "AES_128"
+	HlsEncryptionEncryptionMethodSAMPLEAES HlsEncryptionEncryptionMethod = "SAMPLE_AES"
+)
+
+type HlsPackagePlaylistType string
+
+const (
+	HlsPackagePlaylistTypeNONE  HlsPackagePlaylistType = "NONE"
+	HlsPackagePlaylistTypeEVENT HlsPackagePlaylistType = "EVENT"
+	HlsPackagePlaylistTypeVOD   HlsPackagePlaylistType = "VOD"
+)
+
+type OriginEndpointOrigination string
+
+const (
+	OriginEndpointOriginationALLOW OriginEndpointOrigination = "ALLOW"
+	OriginEndpointOriginationDENY  OriginEndpointOrigination = "DENY"
+)
+
+type PackagingConfigurationEncryptionContractConfigurationPresetSpeke20Audio string
+
+const (
+	PackagingConfigurationEncryptionContractConfigurationPresetSpeke20AudioPRESETAUDIO1 PackagingConfigurationEncryptionContractConfigurationPresetSpeke20Audio = "PRESET-AUDIO-1"
+	PackagingConfigurationEncryptionContractConfigurationPresetSpeke20AudioPRESETAUDIO2 PackagingConfigurationEncryptionContractConfigurationPresetSpeke20Audio = "PRESET-AUDIO-2"
+	PackagingConfigurationEncryptionContractConfigurationPresetSpeke20AudioPRESETAUDIO3 PackagingConfigurationEncryptionContractConfigurationPresetSpeke20Audio = "PRESET-AUDIO-3"
+	PackagingConfigurationEncryptionContractConfigurationPresetSpeke20AudioSHARED       PackagingConfigurationEncryptionContractConfigurationPresetSpeke20Audio = "SHARED"
+	PackagingConfigurationEncryptionContractConfigurationPresetSpeke20AudioUNENCRYPTED  PackagingConfigurationEncryptionContractConfigurationPresetSpeke20Audio = "UNENCRYPTED"
+)
+
+type PackagingConfigurationEncryptionContractConfigurationPresetSpeke20Video string
+
+const (
+	PackagingConfigurationEncryptionContractConfigurationPresetSpeke20VideoPRESETVIDEO1 PackagingConfigurationEncryptionContractConfigurationPresetSpeke20Video = "PRESET-VIDEO-1"
+	PackagingConfigurationEncryptionContractConfigurationPresetSpeke20VideoPRESETVIDEO2 PackagingConfigurationEncryptionContractConfigurationPresetSpeke20Video = "PRESET-VIDEO-2"
+	PackagingConfigurationEncryptionContractConfigurationPresetSpeke20VideoPRESETVIDEO3 PackagingConfigurationEncryptionContractConfigurationPresetSpeke20Video = "PRESET-VIDEO-3"
+	PackagingConfigurationEncryptionContractConfigurationPresetSpeke20VideoPRESETVIDEO4 PackagingConfigurationEncryptionContractConfigurationPresetSpeke20Video = "PRESET-VIDEO-4"
+	PackagingConfigurationEncryptionContractConfigurationPresetSpeke20VideoPRESETVIDEO5 PackagingConfigurationEncryptionContractConfigurationPresetSpeke20Video = "PRESET-VIDEO-5"
+	PackagingConfigurationEncryptionContractConfigurationPresetSpeke20VideoPRESETVIDEO6 PackagingConfigurationEncryptionContractConfigurationPresetSpeke20Video = "PRESET-VIDEO-6"
+	PackagingConfigurationEncryptionContractConfigurationPresetSpeke20VideoPRESETVIDEO7 PackagingConfigurationEncryptionContractConfigurationPresetSpeke20Video = "PRESET-VIDEO-7"
+	PackagingConfigurationEncryptionContractConfigurationPresetSpeke20VideoPRESETVIDEO8 PackagingConfigurationEncryptionContractConfigurationPresetSpeke20Video = "PRESET-VIDEO-8"
+	PackagingConfigurationEncryptionContractConfigurationPresetSpeke20VideoSHARED       PackagingConfigurationEncryptionContractConfigurationPresetSpeke20Video = "SHARED"
+	PackagingConfigurationEncryptionContractConfigurationPresetSpeke20VideoUNENCRYPTED  PackagingConfigurationEncryptionContractConfigurationPresetSpeke20Video = "UNENCRYPTED"
+)
+
+type PackagingConfigurationHlsManifestAdMarkers string
+
+const (
+	PackagingConfigurationHlsManifestAdMarkersNONE           PackagingConfigurationHlsManifestAdMarkers = "NONE"
+	PackagingConfigurationHlsManifestAdMarkersSCTE35ENHANCED PackagingConfigurationHlsManifestAdMarkers = "SCTE35_ENHANCED"
+	PackagingConfigurationHlsManifestAdMarkersPASSTHROUGH    PackagingConfigurationHlsManifestAdMarkers = "PASSTHROUGH"
+)
+
+type PackagingConfigurationStreamSelectionStreamOrder string
+
+const (
+	PackagingConfigurationStreamSelectionStreamOrderORIGINAL               PackagingConfigurationStreamSelectionStreamOrder = "ORIGINAL"
+	PackagingConfigurationStreamSelectionStreamOrderVIDEOBITRATEASCENDING  PackagingConfigurationStreamSelectionStreamOrder = "VIDEO_BITRATE_ASCENDING"
+	PackagingConfigurationStreamSelectionStreamOrderVIDEOBITRATEDESCENDING PackagingConfigurationStreamSelectionStreamOrder = "VIDEO_BITRATE_DESCENDING"
+)
+
+type DashManifestManifestLayout string
+
+const (
+	DashManifestManifestLayoutFULL    DashManifestManifestLayout = "FULL"
+	DashManifestManifestLayoutCOMPACT DashManifestManifestLayout = "COMPACT"
+)
+
+type DashManifestProfile string
+
+const (
+	DashManifestProfileNONE    DashManifestProfile = "NONE"
+	DashManifestProfileHBBTV15 DashManifestProfile = "HBBTV_1_5"
+)
+
+type DashManifestScteMarkersSource string
+
+const (
+	DashManifestScteMarkersSourceSEGMENTS DashManifestScteMarkersSource = "SEGMENTS"
+	DashManifestScteMarkersSourceMANIFEST DashManifestScteMarkersSource = "MANIFEST"
+)
+
+type PackagingConfigurationDashPackagePeriodTriggersItem string
+
+const (
+	PackagingConfigurationDashPackagePeriodTriggersItemADS PackagingConfigurationDashPackagePeriodTriggersItem = "ADS"
+)
+
+type PackagingConfigurationDashPackageSegmentTemplateFormat string
+
+const (
+	PackagingConfigurationDashPackageSegmentTemplateFormatNUMBERWITHTIMELINE PackagingConfigurationDashPackageSegmentTemplateFormat = "NUMBER_WITH_TIMELINE"
+	PackagingConfigurationDashPackageSegmentTemplateFormatTIMEWITHTIMELINE   PackagingConfigurationDashPackageSegmentTemplateFormat = "TIME_WITH_TIMELINE"
+	PackagingConfigurationDashPackageSegmentTemplateFormatNUMBERWITHDURATION PackagingConfigurationDashPackageSegmentTemplateFormat = "NUMBER_WITH_DURATION"
+)
+
+type PackagingConfigurationHlsEncryptionEncryptionMethod string
+
+const (
+	PackagingConfigurationHlsEncryptionEncryptionMethodAES128    PackagingConfigurationHlsEncryptionEncryptionMethod = "AES_128"
+	PackagingConfigurationHlsEncryptionEncryptionMethodSAMPLEAES PackagingConfigurationHlsEncryptionEncryptionMethod = "SAMPLE_AES"
+)

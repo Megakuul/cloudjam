@@ -14,7 +14,7 @@ type AllowList struct {
 	Description *string        `json:"Description,omitempty"`
 	Id          *string        `json:"Id,omitempty"`
 	Name        *string        `json:"Name,omitempty"`
-	Status      *string        `json:"Status,omitempty"`
+	Status      *Status        `json:"Status,omitempty"`
 	Tags        []Tag          `json:"Tags,omitempty"`
 }
 
@@ -58,24 +58,66 @@ type FindingsFilterTag struct {
 }
 
 type FindingsFilter struct {
-	Action          *string             `json:"Action,omitempty"`
-	Arn             *string             `json:"Arn,omitempty"`
-	Description     *string             `json:"Description,omitempty"`
-	FindingCriteria *FindingCriteria    `json:"FindingCriteria,omitempty"`
-	Id              *string             `json:"Id,omitempty"`
-	Name            *string             `json:"Name,omitempty"`
-	Position        *int                `json:"Position,omitempty"`
-	Tags            []FindingsFilterTag `json:"Tags,omitempty"`
+	Action          *FindingFilterAction `json:"Action,omitempty"`
+	Arn             *string              `json:"Arn,omitempty"`
+	Description     *string              `json:"Description,omitempty"`
+	FindingCriteria *FindingCriteria     `json:"FindingCriteria,omitempty"`
+	Id              *string              `json:"Id,omitempty"`
+	Name            *string              `json:"Name,omitempty"`
+	Position        *int                 `json:"Position,omitempty"`
+	Tags            []FindingsFilterTag  `json:"Tags,omitempty"`
 }
 
 func (FindingsFilter) CloudControlType() string { return "AWS::Macie::FindingsFilter" }
 
 type Session struct {
-	AutomatedDiscoveryStatus   *string `json:"AutomatedDiscoveryStatus,omitempty"`
-	AwsAccountId               *string `json:"AwsAccountId,omitempty"`
-	FindingPublishingFrequency *string `json:"FindingPublishingFrequency,omitempty"`
-	ServiceRole                *string `json:"ServiceRole,omitempty"`
-	Status                     *string `json:"Status,omitempty"`
+	AutomatedDiscoveryStatus   *SessionAutomatedDiscoveryStatus   `json:"AutomatedDiscoveryStatus,omitempty"`
+	AwsAccountId               *string                            `json:"AwsAccountId,omitempty"`
+	FindingPublishingFrequency *SessionFindingPublishingFrequency `json:"FindingPublishingFrequency,omitempty"`
+	ServiceRole                *string                            `json:"ServiceRole,omitempty"`
+	Status                     *SessionStatus                     `json:"Status,omitempty"`
 }
 
 func (Session) CloudControlType() string { return "AWS::Macie::Session" }
+
+type Status string
+
+const (
+	StatusOK                   Status = "OK"
+	StatusS3OBJECTNOTFOUND     Status = "S3_OBJECT_NOT_FOUND"
+	StatusS3USERACCESSDENIED   Status = "S3_USER_ACCESS_DENIED"
+	StatusS3OBJECTACCESSDENIED Status = "S3_OBJECT_ACCESS_DENIED"
+	StatusS3THROTTLED          Status = "S3_THROTTLED"
+	StatusS3OBJECTOVERSIZE     Status = "S3_OBJECT_OVERSIZE"
+	StatusS3OBJECTEMPTY        Status = "S3_OBJECT_EMPTY"
+	StatusUNKNOWNERROR         Status = "UNKNOWN_ERROR"
+)
+
+type FindingFilterAction string
+
+const (
+	FindingFilterActionARCHIVE FindingFilterAction = "ARCHIVE"
+	FindingFilterActionNOOP    FindingFilterAction = "NOOP"
+)
+
+type SessionAutomatedDiscoveryStatus string
+
+const (
+	SessionAutomatedDiscoveryStatusENABLED  SessionAutomatedDiscoveryStatus = "ENABLED"
+	SessionAutomatedDiscoveryStatusDISABLED SessionAutomatedDiscoveryStatus = "DISABLED"
+)
+
+type SessionFindingPublishingFrequency string
+
+const (
+	SessionFindingPublishingFrequencyFIFTEENMINUTES SessionFindingPublishingFrequency = "FIFTEEN_MINUTES"
+	SessionFindingPublishingFrequencyONEHOUR        SessionFindingPublishingFrequency = "ONE_HOUR"
+	SessionFindingPublishingFrequencySIXHOURS       SessionFindingPublishingFrequency = "SIX_HOURS"
+)
+
+type SessionStatus string
+
+const (
+	SessionStatusENABLED SessionStatus = "ENABLED"
+	SessionStatusPAUSED  SessionStatus = "PAUSED"
+)

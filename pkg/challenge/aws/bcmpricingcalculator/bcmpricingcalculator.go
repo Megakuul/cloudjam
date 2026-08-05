@@ -14,17 +14,33 @@ type Tag struct {
 }
 
 type BillScenario struct {
-	Arn                                   *string       `json:"Arn,omitempty"`
-	BillInterval                          *BillInterval `json:"BillInterval,omitempty"`
-	CostCategoryGroupSharingPreferenceArn *string       `json:"CostCategoryGroupSharingPreferenceArn,omitempty"`
-	CreatedAt                             *string       `json:"CreatedAt,omitempty"`
-	ExpiresAt                             *string       `json:"ExpiresAt,omitempty"`
-	FailureMessage                        *string       `json:"FailureMessage,omitempty"`
-	GroupSharingPreference                *string       `json:"GroupSharingPreference,omitempty"`
-	Id                                    *string       `json:"Id,omitempty"`
-	Name                                  *string       `json:"Name,omitempty"`
-	Status                                *string       `json:"Status,omitempty"`
-	Tags                                  []Tag         `json:"Tags,omitempty"`
+	Arn                                   *string                 `json:"Arn,omitempty"`
+	BillInterval                          *BillInterval           `json:"BillInterval,omitempty"`
+	CostCategoryGroupSharingPreferenceArn *string                 `json:"CostCategoryGroupSharingPreferenceArn,omitempty"`
+	CreatedAt                             *string                 `json:"CreatedAt,omitempty"`
+	ExpiresAt                             *string                 `json:"ExpiresAt,omitempty"`
+	FailureMessage                        *string                 `json:"FailureMessage,omitempty"`
+	GroupSharingPreference                *GroupSharingPreference `json:"GroupSharingPreference,omitempty"`
+	Id                                    *string                 `json:"Id,omitempty"`
+	Name                                  *string                 `json:"Name,omitempty"`
+	Status                                *BillScenarioStatus     `json:"Status,omitempty"`
+	Tags                                  []Tag                   `json:"Tags,omitempty"`
 }
 
 func (BillScenario) CloudControlType() string { return "AWS::BcmPricingCalculator::BillScenario" }
+
+type GroupSharingPreference string
+
+const (
+	GroupSharingPreferenceOPEN        GroupSharingPreference = "OPEN"
+	GroupSharingPreferencePRIORITIZED GroupSharingPreference = "PRIORITIZED"
+	GroupSharingPreferenceRESTRICTED  GroupSharingPreference = "RESTRICTED"
+)
+
+type BillScenarioStatus string
+
+const (
+	BillScenarioStatusREADY  BillScenarioStatus = "READY"
+	BillScenarioStatusLOCKED BillScenarioStatus = "LOCKED"
+	BillScenarioStatusFAILED BillScenarioStatus = "FAILED"
+)

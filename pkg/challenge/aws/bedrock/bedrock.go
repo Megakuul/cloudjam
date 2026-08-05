@@ -8,14 +8,14 @@ import "encoding/json"
 type ParameterDetail struct {
 	Description *string `json:"Description,omitempty"`
 	Required    *bool   `json:"Required,omitempty"`
-	Type        *string `json:"Type,omitempty"`
+	Type        *Type   `json:"Type,omitempty"`
 }
 
 type Function struct {
 	Description         *string                    `json:"Description,omitempty"`
 	Name                *string                    `json:"Name,omitempty"`
 	Parameters          map[string]ParameterDetail `json:"Parameters,omitempty"`
-	RequireConfirmation *string                    `json:"RequireConfirmation,omitempty"`
+	RequireConfirmation *RequireConfirmation       `json:"RequireConfirmation,omitempty"`
 }
 
 type FunctionSchema struct {
@@ -23,14 +23,14 @@ type FunctionSchema struct {
 }
 
 type AgentActionGroup struct {
-	ActionGroupExecutor            json.RawMessage `json:"ActionGroupExecutor,omitempty"`
-	ActionGroupName                *string         `json:"ActionGroupName,omitempty"`
-	ActionGroupState               *string         `json:"ActionGroupState,omitempty"`
-	ApiSchema                      json.RawMessage `json:"ApiSchema,omitempty"`
-	Description                    *string         `json:"Description,omitempty"`
-	FunctionSchema                 *FunctionSchema `json:"FunctionSchema,omitempty"`
-	ParentActionGroupSignature     *string         `json:"ParentActionGroupSignature,omitempty"`
-	SkipResourceInUseCheckOnDelete *bool           `json:"SkipResourceInUseCheckOnDelete,omitempty"`
+	ActionGroupExecutor            json.RawMessage       `json:"ActionGroupExecutor,omitempty"`
+	ActionGroupName                *string               `json:"ActionGroupName,omitempty"`
+	ActionGroupState               *ActionGroupState     `json:"ActionGroupState,omitempty"`
+	ApiSchema                      json.RawMessage       `json:"ApiSchema,omitempty"`
+	Description                    *string               `json:"Description,omitempty"`
+	FunctionSchema                 *FunctionSchema       `json:"FunctionSchema,omitempty"`
+	ParentActionGroupSignature     *ActionGroupSignature `json:"ParentActionGroupSignature,omitempty"`
+	SkipResourceInUseCheckOnDelete *bool                 `json:"SkipResourceInUseCheckOnDelete,omitempty"`
 }
 
 type AgentCollaboratorAgentDescriptor struct {
@@ -41,7 +41,7 @@ type AgentCollaborator struct {
 	AgentDescriptor          *AgentCollaboratorAgentDescriptor `json:"AgentDescriptor,omitempty"`
 	CollaborationInstruction *string                           `json:"CollaborationInstruction,omitempty"`
 	CollaboratorName         *string                           `json:"CollaboratorName,omitempty"`
-	RelayConversationHistory *string                           `json:"RelayConversationHistory,omitempty"`
+	RelayConversationHistory *RelayConversationHistory         `json:"RelayConversationHistory,omitempty"`
 }
 
 type OrchestrationExecutor struct {
@@ -58,9 +58,9 @@ type GuardrailConfiguration struct {
 }
 
 type AgentKnowledgeBase struct {
-	Description        *string `json:"Description,omitempty"`
-	KnowledgeBaseId    *string `json:"KnowledgeBaseId,omitempty"`
-	KnowledgeBaseState *string `json:"KnowledgeBaseState,omitempty"`
+	Description        *string             `json:"Description,omitempty"`
+	KnowledgeBaseId    *string             `json:"KnowledgeBaseId,omitempty"`
+	KnowledgeBaseState *KnowledgeBaseState `json:"KnowledgeBaseState,omitempty"`
 }
 
 type SessionSummaryConfiguration struct {
@@ -68,7 +68,7 @@ type SessionSummaryConfiguration struct {
 }
 
 type MemoryConfiguration struct {
-	EnabledMemoryTypes          []string                     `json:"EnabledMemoryTypes,omitempty"`
+	EnabledMemoryTypes          []MemoryType                 `json:"EnabledMemoryTypes,omitempty"`
 	SessionSummaryConfiguration *SessionSummaryConfiguration `json:"SessionSummaryConfiguration,omitempty"`
 	StorageDays                 *float64                     `json:"StorageDays,omitempty"`
 }
@@ -86,10 +86,10 @@ type PromptConfiguration struct {
 	BasePromptTemplate           *string                 `json:"BasePromptTemplate,omitempty"`
 	FoundationModel              *string                 `json:"FoundationModel,omitempty"`
 	InferenceConfiguration       *InferenceConfiguration `json:"InferenceConfiguration,omitempty"`
-	ParserMode                   *string                 `json:"ParserMode,omitempty"`
-	PromptCreationMode           *string                 `json:"PromptCreationMode,omitempty"`
-	PromptState                  *string                 `json:"PromptState,omitempty"`
-	PromptType                   *string                 `json:"PromptType,omitempty"`
+	ParserMode                   *CreationMode           `json:"ParserMode,omitempty"`
+	PromptCreationMode           *CreationMode           `json:"PromptCreationMode,omitempty"`
+	PromptState                  *PromptState            `json:"PromptState,omitempty"`
+	PromptType                   *PromptType             `json:"PromptType,omitempty"`
 }
 
 type PromptOverrideConfiguration struct {
@@ -100,12 +100,12 @@ type PromptOverrideConfiguration struct {
 type Agent struct {
 	ActionGroups                   []AgentActionGroup           `json:"ActionGroups,omitempty"`
 	AgentArn                       *string                      `json:"AgentArn,omitempty"`
-	AgentCollaboration             *string                      `json:"AgentCollaboration,omitempty"`
+	AgentCollaboration             *AgentCollaboration          `json:"AgentCollaboration,omitempty"`
 	AgentCollaborators             []AgentCollaborator          `json:"AgentCollaborators,omitempty"`
 	AgentId                        *string                      `json:"AgentId,omitempty"`
 	AgentName                      *string                      `json:"AgentName,omitempty"`
 	AgentResourceRoleArn           *string                      `json:"AgentResourceRoleArn,omitempty"`
-	AgentStatus                    *string                      `json:"AgentStatus,omitempty"`
+	AgentStatus                    *AgentStatus                 `json:"AgentStatus,omitempty"`
 	AgentVersion                   *string                      `json:"AgentVersion,omitempty"`
 	AutoPrepare                    *bool                        `json:"AutoPrepare,omitempty"`
 	CreatedAt                      *string                      `json:"CreatedAt,omitempty"`
@@ -119,7 +119,7 @@ type Agent struct {
 	Instruction                    *string                      `json:"Instruction,omitempty"`
 	KnowledgeBases                 []AgentKnowledgeBase         `json:"KnowledgeBases,omitempty"`
 	MemoryConfiguration            *MemoryConfiguration         `json:"MemoryConfiguration,omitempty"`
-	OrchestrationType              *string                      `json:"OrchestrationType,omitempty"`
+	OrchestrationType              *OrchestrationType           `json:"OrchestrationType,omitempty"`
 	PreparedAt                     *string                      `json:"PreparedAt,omitempty"`
 	PromptOverrideConfiguration    *PromptOverrideConfiguration `json:"PromptOverrideConfiguration,omitempty"`
 	RecommendedActions             []string                     `json:"RecommendedActions,omitempty"`
@@ -146,7 +146,7 @@ type AgentAlias struct {
 	AgentAliasHistoryEvents []AgentAliasHistoryEvent                 `json:"AgentAliasHistoryEvents,omitempty"`
 	AgentAliasId            *string                                  `json:"AgentAliasId,omitempty"`
 	AgentAliasName          *string                                  `json:"AgentAliasName,omitempty"`
-	AgentAliasStatus        *string                                  `json:"AgentAliasStatus,omitempty"`
+	AgentAliasStatus        *AgentAliasStatus                        `json:"AgentAliasStatus,omitempty"`
 	AgentId                 *string                                  `json:"AgentId,omitempty"`
 	CreatedAt               *string                                  `json:"CreatedAt,omitempty"`
 	Description             *string                                  `json:"Description,omitempty"`
@@ -175,9 +175,9 @@ type ApplicationInferenceProfile struct {
 	InferenceProfileName       *string                 `json:"InferenceProfileName,omitempty"`
 	ModelSource                json.RawMessage         `json:"ModelSource,omitempty"`
 	Models                     []InferenceProfileModel `json:"Models,omitempty"`
-	Status                     *string                 `json:"Status,omitempty"`
+	Status                     *InferenceProfileStatus `json:"Status,omitempty"`
 	Tags                       []Tag                   `json:"Tags,omitempty"`
-	Type                       *string                 `json:"Type,omitempty"`
+	Type                       *InferenceProfileType   `json:"Type,omitempty"`
 	UpdatedAt                  *string                 `json:"UpdatedAt,omitempty"`
 }
 
@@ -268,16 +268,16 @@ type BlueprintTag struct {
 }
 
 type Blueprint struct {
-	BlueprintArn         *string           `json:"BlueprintArn,omitempty"`
-	BlueprintName        *string           `json:"BlueprintName,omitempty"`
-	BlueprintStage       *string           `json:"BlueprintStage,omitempty"`
-	CreationTime         *string           `json:"CreationTime,omitempty"`
-	KmsEncryptionContext map[string]string `json:"KmsEncryptionContext,omitempty"`
-	KmsKeyId             *string           `json:"KmsKeyId,omitempty"`
-	LastModifiedTime     *string           `json:"LastModifiedTime,omitempty"`
-	Schema               map[string]any    `json:"Schema,omitempty"`
-	Tags                 []BlueprintTag    `json:"Tags,omitempty"`
-	Type                 *string           `json:"Type,omitempty"`
+	BlueprintArn         *string                  `json:"BlueprintArn,omitempty"`
+	BlueprintName        *string                  `json:"BlueprintName,omitempty"`
+	BlueprintStage       *BlueprintBlueprintStage `json:"BlueprintStage,omitempty"`
+	CreationTime         *string                  `json:"CreationTime,omitempty"`
+	KmsEncryptionContext map[string]string        `json:"KmsEncryptionContext,omitempty"`
+	KmsKeyId             *string                  `json:"KmsKeyId,omitempty"`
+	LastModifiedTime     *string                  `json:"LastModifiedTime,omitempty"`
+	Schema               map[string]any           `json:"Schema,omitempty"`
+	Tags                 []BlueprintTag           `json:"Tags,omitempty"`
+	Type                 *BlueprintType           `json:"Type,omitempty"`
 }
 
 func (Blueprint) CloudControlType() string { return "AWS::Bedrock::Blueprint" }
@@ -288,8 +288,8 @@ type EncryptionConfiguration struct {
 }
 
 type EntityTypeInfo struct {
-	EntityMetadata *string `json:"EntityMetadata,omitempty"`
-	EntityType     *string `json:"EntityType,omitempty"`
+	EntityMetadata *string     `json:"EntityMetadata,omitempty"`
+	EntityType     *EntityType `json:"EntityType,omitempty"`
 }
 
 type DataAutomationLibraryTag struct {
@@ -298,22 +298,22 @@ type DataAutomationLibraryTag struct {
 }
 
 type DataAutomationLibrary struct {
-	CreationTime            *string                    `json:"CreationTime,omitempty"`
-	EncryptionConfiguration *EncryptionConfiguration   `json:"EncryptionConfiguration,omitempty"`
-	EntityTypes             []EntityTypeInfo           `json:"EntityTypes,omitempty"`
-	LibraryArn              *string                    `json:"LibraryArn,omitempty"`
-	LibraryDescription      *string                    `json:"LibraryDescription,omitempty"`
-	LibraryName             *string                    `json:"LibraryName,omitempty"`
-	Status                  *string                    `json:"Status,omitempty"`
-	Tags                    []DataAutomationLibraryTag `json:"Tags,omitempty"`
+	CreationTime            *string                      `json:"CreationTime,omitempty"`
+	EncryptionConfiguration *EncryptionConfiguration     `json:"EncryptionConfiguration,omitempty"`
+	EntityTypes             []EntityTypeInfo             `json:"EntityTypes,omitempty"`
+	LibraryArn              *string                      `json:"LibraryArn,omitempty"`
+	LibraryDescription      *string                      `json:"LibraryDescription,omitempty"`
+	LibraryName             *string                      `json:"LibraryName,omitempty"`
+	Status                  *DataAutomationLibraryStatus `json:"Status,omitempty"`
+	Tags                    []DataAutomationLibraryTag   `json:"Tags,omitempty"`
 }
 
 func (DataAutomationLibrary) CloudControlType() string { return "AWS::Bedrock::DataAutomationLibrary" }
 
 type BlueprintItem struct {
-	BlueprintArn     *string `json:"BlueprintArn,omitempty"`
-	BlueprintStage   *string `json:"BlueprintStage,omitempty"`
-	BlueprintVersion *string `json:"BlueprintVersion,omitempty"`
+	BlueprintArn     *string         `json:"BlueprintArn,omitempty"`
+	BlueprintStage   *BlueprintStage `json:"BlueprintStage,omitempty"`
+	BlueprintVersion *string         `json:"BlueprintVersion,omitempty"`
 }
 
 type CustomOutputConfiguration struct {
@@ -321,24 +321,24 @@ type CustomOutputConfiguration struct {
 }
 
 type AudioLanguageConfiguration struct {
-	GenerativeOutputLanguage  *string  `json:"GenerativeOutputLanguage,omitempty"`
-	IdentifyMultipleLanguages *bool    `json:"IdentifyMultipleLanguages,omitempty"`
-	InputLanguages            []string `json:"InputLanguages,omitempty"`
+	GenerativeOutputLanguage  *AudioGenerativeOutputLanguage `json:"GenerativeOutputLanguage,omitempty"`
+	IdentifyMultipleLanguages *bool                          `json:"IdentifyMultipleLanguages,omitempty"`
+	InputLanguages            []Language                     `json:"InputLanguages,omitempty"`
 }
 
 type ModalityProcessingConfiguration struct {
-	State *string `json:"State,omitempty"`
+	State *State `json:"State,omitempty"`
 }
 
 type PIIEntitiesConfiguration struct {
-	PiiEntityTypes    []string `json:"PiiEntityTypes,omitempty"`
-	RedactionMaskMode *string  `json:"RedactionMaskMode,omitempty"`
+	PiiEntityTypes    []PIIEntityTypes      `json:"PiiEntityTypes,omitempty"`
+	RedactionMaskMode *PIIRedactionMaskMode `json:"RedactionMaskMode,omitempty"`
 }
 
 type SensitiveDataConfiguration struct {
-	DetectionMode            *string                   `json:"DetectionMode,omitempty"`
-	DetectionScope           []string                  `json:"DetectionScope,omitempty"`
-	PiiEntitiesConfiguration *PIIEntitiesConfiguration `json:"PiiEntitiesConfiguration,omitempty"`
+	DetectionMode            *SensitiveDataDetectionMode   `json:"DetectionMode,omitempty"`
+	DetectionScope           []SensitiveDataDetectionScope `json:"DetectionScope,omitempty"`
+	PiiEntitiesConfiguration *PIIEntitiesConfiguration     `json:"PiiEntitiesConfiguration,omitempty"`
 }
 
 type AudioOverrideConfiguration struct {
@@ -348,7 +348,7 @@ type AudioOverrideConfiguration struct {
 }
 
 type SplitterConfiguration struct {
-	State *string `json:"State,omitempty"`
+	State *State `json:"State,omitempty"`
 }
 
 type DocumentOverrideConfiguration struct {
@@ -363,10 +363,10 @@ type ImageOverrideConfiguration struct {
 }
 
 type ModalityRoutingConfiguration struct {
-	Jpeg *string `json:"jpeg,omitempty"`
-	Mov  *string `json:"mov,omitempty"`
-	Mp4  *string `json:"mp4,omitempty"`
-	Png  *string `json:"png,omitempty"`
+	Jpeg *DesiredModality `json:"jpeg,omitempty"`
+	Mov  *DesiredModality `json:"mov,omitempty"`
+	Mp4  *DesiredModality `json:"mp4,omitempty"`
+	Png  *DesiredModality `json:"png,omitempty"`
 }
 
 type VideoOverrideConfiguration struct {
@@ -383,11 +383,11 @@ type OverrideConfiguration struct {
 }
 
 type ChannelLabelingConfiguration struct {
-	State *string `json:"State,omitempty"`
+	State *State `json:"State,omitempty"`
 }
 
 type SpeakerLabelingConfiguration struct {
-	State *string `json:"State,omitempty"`
+	State *State `json:"State,omitempty"`
 }
 
 type TranscriptConfiguration struct {
@@ -400,9 +400,9 @@ type AudioExtractionCategoryTypeConfiguration struct {
 }
 
 type AudioExtractionCategory struct {
-	State             *string                                   `json:"State,omitempty"`
+	State             *State                                    `json:"State,omitempty"`
 	TypeConfiguration *AudioExtractionCategoryTypeConfiguration `json:"TypeConfiguration,omitempty"`
-	Types             []string                                  `json:"Types,omitempty"`
+	Types             []AudioExtractionCategoryType             `json:"Types,omitempty"`
 }
 
 type AudioStandardExtraction struct {
@@ -410,8 +410,8 @@ type AudioStandardExtraction struct {
 }
 
 type AudioStandardGenerativeField struct {
-	State *string  `json:"State,omitempty"`
-	Types []string `json:"Types,omitempty"`
+	State *State                             `json:"State,omitempty"`
+	Types []AudioStandardGenerativeFieldType `json:"Types,omitempty"`
 }
 
 type AudioStandardOutputConfiguration struct {
@@ -420,11 +420,11 @@ type AudioStandardOutputConfiguration struct {
 }
 
 type DocumentBoundingBox struct {
-	State *string `json:"State,omitempty"`
+	State *State `json:"State,omitempty"`
 }
 
 type DocumentExtractionGranularity struct {
-	Types []string `json:"Types,omitempty"`
+	Types []DocumentExtractionGranularityType `json:"Types,omitempty"`
 }
 
 type DocumentStandardExtraction struct {
@@ -433,15 +433,15 @@ type DocumentStandardExtraction struct {
 }
 
 type DocumentStandardGenerativeField struct {
-	State *string `json:"State,omitempty"`
+	State *State `json:"State,omitempty"`
 }
 
 type DocumentOutputAdditionalFileFormat struct {
-	State *string `json:"State,omitempty"`
+	State *State `json:"State,omitempty"`
 }
 
 type DocumentOutputTextFormat struct {
-	Types []string `json:"Types,omitempty"`
+	Types []DocumentOutputTextFormatType `json:"Types,omitempty"`
 }
 
 type DocumentOutputFormat struct {
@@ -456,12 +456,12 @@ type DocumentStandardOutputConfiguration struct {
 }
 
 type ImageBoundingBox struct {
-	State *string `json:"State,omitempty"`
+	State *State `json:"State,omitempty"`
 }
 
 type ImageExtractionCategory struct {
-	State *string  `json:"State,omitempty"`
-	Types []string `json:"Types,omitempty"`
+	State *State                        `json:"State,omitempty"`
+	Types []ImageExtractionCategoryType `json:"Types,omitempty"`
 }
 
 type ImageStandardExtraction struct {
@@ -470,8 +470,8 @@ type ImageStandardExtraction struct {
 }
 
 type ImageStandardGenerativeField struct {
-	State *string  `json:"State,omitempty"`
-	Types []string `json:"Types,omitempty"`
+	State *State                             `json:"State,omitempty"`
+	Types []ImageStandardGenerativeFieldType `json:"Types,omitempty"`
 }
 
 type ImageStandardOutputConfiguration struct {
@@ -480,12 +480,12 @@ type ImageStandardOutputConfiguration struct {
 }
 
 type VideoBoundingBox struct {
-	State *string `json:"State,omitempty"`
+	State *State `json:"State,omitempty"`
 }
 
 type VideoExtractionCategory struct {
-	State *string  `json:"State,omitempty"`
-	Types []string `json:"Types,omitempty"`
+	State *State                        `json:"State,omitempty"`
+	Types []VideoExtractionCategoryType `json:"Types,omitempty"`
 }
 
 type VideoStandardExtraction struct {
@@ -494,8 +494,8 @@ type VideoStandardExtraction struct {
 }
 
 type VideoStandardGenerativeField struct {
-	State *string  `json:"State,omitempty"`
-	Types []string `json:"Types,omitempty"`
+	State *State                             `json:"State,omitempty"`
+	Types []VideoStandardGenerativeFieldType `json:"Types,omitempty"`
 }
 
 type VideoStandardOutputConfiguration struct {
@@ -516,20 +516,20 @@ type DataAutomationProjectTag struct {
 }
 
 type DataAutomationProject struct {
-	CreationTime                *string                      `json:"CreationTime,omitempty"`
-	CustomOutputConfiguration   *CustomOutputConfiguration   `json:"CustomOutputConfiguration,omitempty"`
-	KmsEncryptionContext        map[string]string            `json:"KmsEncryptionContext,omitempty"`
-	KmsKeyId                    *string                      `json:"KmsKeyId,omitempty"`
-	LastModifiedTime            *string                      `json:"LastModifiedTime,omitempty"`
-	OverrideConfiguration       *OverrideConfiguration       `json:"OverrideConfiguration,omitempty"`
-	ProjectArn                  *string                      `json:"ProjectArn,omitempty"`
-	ProjectDescription          *string                      `json:"ProjectDescription,omitempty"`
-	ProjectName                 *string                      `json:"ProjectName,omitempty"`
-	ProjectStage                *string                      `json:"ProjectStage,omitempty"`
-	ProjectType                 *string                      `json:"ProjectType,omitempty"`
-	StandardOutputConfiguration *StandardOutputConfiguration `json:"StandardOutputConfiguration,omitempty"`
-	Status                      *string                      `json:"Status,omitempty"`
-	Tags                        []DataAutomationProjectTag   `json:"Tags,omitempty"`
+	CreationTime                *string                           `json:"CreationTime,omitempty"`
+	CustomOutputConfiguration   *CustomOutputConfiguration        `json:"CustomOutputConfiguration,omitempty"`
+	KmsEncryptionContext        map[string]string                 `json:"KmsEncryptionContext,omitempty"`
+	KmsKeyId                    *string                           `json:"KmsKeyId,omitempty"`
+	LastModifiedTime            *string                           `json:"LastModifiedTime,omitempty"`
+	OverrideConfiguration       *OverrideConfiguration            `json:"OverrideConfiguration,omitempty"`
+	ProjectArn                  *string                           `json:"ProjectArn,omitempty"`
+	ProjectDescription          *string                           `json:"ProjectDescription,omitempty"`
+	ProjectName                 *string                           `json:"ProjectName,omitempty"`
+	ProjectStage                *DataAutomationProjectStage       `json:"ProjectStage,omitempty"`
+	ProjectType                 *DataAutomationProjectProjectType `json:"ProjectType,omitempty"`
+	StandardOutputConfiguration *StandardOutputConfiguration      `json:"StandardOutputConfiguration,omitempty"`
+	Status                      *DataAutomationProjectStatus      `json:"Status,omitempty"`
+	Tags                        []DataAutomationProjectTag        `json:"Tags,omitempty"`
 }
 
 func (DataAutomationProject) CloudControlType() string { return "AWS::Bedrock::DataAutomationProject" }
@@ -546,7 +546,7 @@ type PatternObjectFilterConfiguration struct {
 
 type CrawlFilterConfiguration struct {
 	PatternObjectFilter *PatternObjectFilterConfiguration `json:"PatternObjectFilter,omitempty"`
-	Type                *string                           `json:"Type,omitempty"`
+	Type                *CrawlFilterConfigurationType     `json:"Type,omitempty"`
 }
 
 type ConfluenceCrawlerConfiguration struct {
@@ -554,10 +554,10 @@ type ConfluenceCrawlerConfiguration struct {
 }
 
 type ConfluenceSourceConfiguration struct {
-	AuthType             *string `json:"AuthType,omitempty"`
-	CredentialsSecretArn *string `json:"CredentialsSecretArn,omitempty"`
-	HostType             *string `json:"HostType,omitempty"`
-	HostUrl              *string `json:"HostUrl,omitempty"`
+	AuthType             *ConfluenceSourceConfigurationAuthType `json:"AuthType,omitempty"`
+	CredentialsSecretArn *string                                `json:"CredentialsSecretArn,omitempty"`
+	HostType             *ConfluenceSourceConfigurationHostType `json:"HostType,omitempty"`
+	HostUrl              *string                                `json:"HostUrl,omitempty"`
 }
 
 type ConfluenceDataSourceConfiguration struct {
@@ -566,20 +566,20 @@ type ConfluenceDataSourceConfiguration struct {
 }
 
 type DeletionProtectionConfiguration struct {
-	DeletionProtectionStatus    *string `json:"DeletionProtectionStatus,omitempty"`
-	DeletionProtectionThreshold *int    `json:"DeletionProtectionThreshold,omitempty"`
+	DeletionProtectionStatus    *EnabledOrDisabledState `json:"DeletionProtectionStatus,omitempty"`
+	DeletionProtectionThreshold *int                    `json:"DeletionProtectionThreshold,omitempty"`
 }
 
 type AudioExtractionConfiguration struct {
-	AudioExtractionStatus *string `json:"AudioExtractionStatus,omitempty"`
+	AudioExtractionStatus *EnabledOrDisabledState `json:"AudioExtractionStatus,omitempty"`
 }
 
 type ImageExtractionConfiguration struct {
-	ImageExtractionStatus *string `json:"ImageExtractionStatus,omitempty"`
+	ImageExtractionStatus *EnabledOrDisabledState `json:"ImageExtractionStatus,omitempty"`
 }
 
 type VideoExtractionConfiguration struct {
-	VideoExtractionStatus *string `json:"VideoExtractionStatus,omitempty"`
+	VideoExtractionStatus *EnabledOrDisabledState `json:"VideoExtractionStatus,omitempty"`
 }
 
 type MediaExtractionConfiguration struct {
@@ -605,9 +605,9 @@ type SalesforceCrawlerConfiguration struct {
 }
 
 type SalesforceSourceConfiguration struct {
-	AuthType             *string `json:"AuthType,omitempty"`
-	CredentialsSecretArn *string `json:"CredentialsSecretArn,omitempty"`
-	HostUrl              *string `json:"HostUrl,omitempty"`
+	AuthType             *SalesforceSourceConfigurationAuthType `json:"AuthType,omitempty"`
+	CredentialsSecretArn *string                                `json:"CredentialsSecretArn,omitempty"`
+	HostUrl              *string                                `json:"HostUrl,omitempty"`
 }
 
 type SalesforceDataSourceConfiguration struct {
@@ -620,12 +620,12 @@ type SharePointCrawlerConfiguration struct {
 }
 
 type SharePointSourceConfiguration struct {
-	AuthType             *string  `json:"AuthType,omitempty"`
-	CredentialsSecretArn *string  `json:"CredentialsSecretArn,omitempty"`
-	Domain               *string  `json:"Domain,omitempty"`
-	HostType             *string  `json:"HostType,omitempty"`
-	SiteUrls             []string `json:"SiteUrls,omitempty"`
-	TenantId             *string  `json:"TenantId,omitempty"`
+	AuthType             *SharePointSourceConfigurationAuthType `json:"AuthType,omitempty"`
+	CredentialsSecretArn *string                                `json:"CredentialsSecretArn,omitempty"`
+	Domain               *string                                `json:"Domain,omitempty"`
+	HostType             *SharePointSourceConfigurationHostType `json:"HostType,omitempty"`
+	SiteUrls             []string                               `json:"SiteUrls,omitempty"`
+	TenantId             *string                                `json:"TenantId,omitempty"`
 }
 
 type SharePointDataSourceConfiguration struct {
@@ -642,7 +642,7 @@ type WebCrawlerConfiguration struct {
 	CrawlerLimits    *WebCrawlerLimits `json:"CrawlerLimits,omitempty"`
 	ExclusionFilters []string          `json:"ExclusionFilters,omitempty"`
 	InclusionFilters []string          `json:"InclusionFilters,omitempty"`
-	Scope            *string           `json:"Scope,omitempty"`
+	Scope            *WebScopeType     `json:"Scope,omitempty"`
 	UserAgent        *string           `json:"UserAgent,omitempty"`
 	UserAgentHeader  *string           `json:"UserAgentHeader,omitempty"`
 }
@@ -670,7 +670,7 @@ type DataSourceConfiguration struct {
 	S3Configuration                            *S3DataSourceConfiguration                  `json:"S3Configuration,omitempty"`
 	SalesforceConfiguration                    *SalesforceDataSourceConfiguration          `json:"SalesforceConfiguration,omitempty"`
 	SharePointConfiguration                    *SharePointDataSourceConfiguration          `json:"SharePointConfiguration,omitempty"`
-	Type                                       *string                                     `json:"Type,omitempty"`
+	Type                                       *DataSourceType                             `json:"Type,omitempty"`
 	WebConfiguration                           *WebDataSourceConfiguration                 `json:"WebConfiguration,omitempty"`
 }
 
@@ -699,14 +699,14 @@ type SemanticChunkingConfiguration struct {
 }
 
 type ChunkingConfiguration struct {
-	ChunkingStrategy                  *string                            `json:"ChunkingStrategy,omitempty"`
+	ChunkingStrategy                  *ChunkingStrategy                  `json:"ChunkingStrategy,omitempty"`
 	FixedSizeChunkingConfiguration    *FixedSizeChunkingConfiguration    `json:"FixedSizeChunkingConfiguration,omitempty"`
 	HierarchicalChunkingConfiguration *HierarchicalChunkingConfiguration `json:"HierarchicalChunkingConfiguration,omitempty"`
 	SemanticChunkingConfiguration     *SemanticChunkingConfiguration     `json:"SemanticChunkingConfiguration,omitempty"`
 }
 
 type EnrichmentStrategyConfiguration struct {
-	Method *string `json:"Method,omitempty"`
+	Method *EnrichmentStrategyMethod `json:"Method,omitempty"`
 }
 
 type BedrockFoundationModelContextEnrichmentConfiguration struct {
@@ -716,7 +716,7 @@ type BedrockFoundationModelContextEnrichmentConfiguration struct {
 
 type ContextEnrichmentConfiguration struct {
 	BedrockFoundationModelConfiguration *BedrockFoundationModelContextEnrichmentConfiguration `json:"BedrockFoundationModelConfiguration,omitempty"`
-	Type                                *string                                               `json:"Type,omitempty"`
+	Type                                *ContextEnrichmentType                                `json:"Type,omitempty"`
 }
 
 type S3Location struct {
@@ -736,8 +736,8 @@ type TransformationFunction struct {
 }
 
 type Transformation struct {
-	StepToApply            *string                 `json:"StepToApply,omitempty"`
-	TransformationFunction *TransformationFunction `json:"TransformationFunction,omitempty"`
+	StepToApply            *TransformationStepToApply `json:"StepToApply,omitempty"`
+	TransformationFunction *TransformationFunction    `json:"TransformationFunction,omitempty"`
 }
 
 type CustomTransformationConfiguration struct {
@@ -746,7 +746,7 @@ type CustomTransformationConfiguration struct {
 }
 
 type BedrockDataAutomationConfiguration struct {
-	ParsingModality *string `json:"ParsingModality,omitempty"`
+	ParsingModality *ParsingModality `json:"ParsingModality,omitempty"`
 }
 
 type ParsingPrompt struct {
@@ -754,15 +754,15 @@ type ParsingPrompt struct {
 }
 
 type BedrockFoundationModelConfiguration struct {
-	ModelArn        *string        `json:"ModelArn,omitempty"`
-	ParsingModality *string        `json:"ParsingModality,omitempty"`
-	ParsingPrompt   *ParsingPrompt `json:"ParsingPrompt,omitempty"`
+	ModelArn        *string          `json:"ModelArn,omitempty"`
+	ParsingModality *ParsingModality `json:"ParsingModality,omitempty"`
+	ParsingPrompt   *ParsingPrompt   `json:"ParsingPrompt,omitempty"`
 }
 
 type ParsingConfiguration struct {
 	BedrockDataAutomationConfiguration  *BedrockDataAutomationConfiguration  `json:"BedrockDataAutomationConfiguration,omitempty"`
 	BedrockFoundationModelConfiguration *BedrockFoundationModelConfiguration `json:"BedrockFoundationModelConfiguration,omitempty"`
-	ParsingStrategy                     *string                              `json:"ParsingStrategy,omitempty"`
+	ParsingStrategy                     *ParsingStrategy                     `json:"ParsingStrategy,omitempty"`
 }
 
 type VectorIngestionConfiguration struct {
@@ -774,10 +774,10 @@ type VectorIngestionConfiguration struct {
 
 type DataSource struct {
 	CreatedAt                         *string                            `json:"CreatedAt,omitempty"`
-	DataDeletionPolicy                *string                            `json:"DataDeletionPolicy,omitempty"`
+	DataDeletionPolicy                *DataDeletionPolicy                `json:"DataDeletionPolicy,omitempty"`
 	DataSourceConfiguration           *DataSourceConfiguration           `json:"DataSourceConfiguration,omitempty"`
 	DataSourceId                      *string                            `json:"DataSourceId,omitempty"`
-	DataSourceStatus                  *string                            `json:"DataSourceStatus,omitempty"`
+	DataSourceStatus                  *DataSourceStatus                  `json:"DataSourceStatus,omitempty"`
 	Description                       *string                            `json:"Description,omitempty"`
 	FailureReasons                    []string                           `json:"FailureReasons,omitempty"`
 	KnowledgeBaseId                   *string                            `json:"KnowledgeBaseId,omitempty"`
@@ -795,8 +795,8 @@ type ModelEnforcement struct {
 }
 
 type SelectiveContentGuarding struct {
-	Messages *string `json:"Messages,omitempty"`
-	System   *string `json:"System,omitempty"`
+	Messages *SelectiveContentGuardingMessages `json:"Messages,omitempty"`
+	System   *SelectiveContentGuardingSystem   `json:"System,omitempty"`
 }
 
 type EnforcedGuardrailConfiguration struct {
@@ -808,7 +808,7 @@ type EnforcedGuardrailConfiguration struct {
 	GuardrailIdentifier      *string                   `json:"GuardrailIdentifier,omitempty"`
 	GuardrailVersion         *string                   `json:"GuardrailVersion,omitempty"`
 	ModelEnforcement         *ModelEnforcement         `json:"ModelEnforcement,omitempty"`
-	Owner                    *string                   `json:"Owner,omitempty"`
+	Owner                    *ConfigOwner              `json:"Owner,omitempty"`
 	SelectiveContentGuarding *SelectiveContentGuarding `json:"SelectiveContentGuarding,omitempty"`
 	UpdatedAt                *string                   `json:"UpdatedAt,omitempty"`
 	UpdatedBy                *string                   `json:"UpdatedBy,omitempty"`
@@ -819,23 +819,23 @@ func (EnforcedGuardrailConfiguration) CloudControlType() string {
 }
 
 type FlowConnection struct {
-	Configuration json.RawMessage `json:"Configuration,omitempty"`
-	Name          *string         `json:"Name,omitempty"`
-	Source        *string         `json:"Source,omitempty"`
-	Target        *string         `json:"Target,omitempty"`
-	Type          *string         `json:"Type,omitempty"`
+	Configuration json.RawMessage     `json:"Configuration,omitempty"`
+	Name          *string             `json:"Name,omitempty"`
+	Source        *string             `json:"Source,omitempty"`
+	Target        *string             `json:"Target,omitempty"`
+	Type          *FlowConnectionType `json:"Type,omitempty"`
 }
 
 type FlowNodeInput struct {
-	Category   *string `json:"Category,omitempty"`
-	Expression *string `json:"Expression,omitempty"`
-	Name       *string `json:"Name,omitempty"`
-	Type       *string `json:"Type,omitempty"`
+	Category   *FlowNodeInputCategory `json:"Category,omitempty"`
+	Expression *string                `json:"Expression,omitempty"`
+	Name       *string                `json:"Name,omitempty"`
+	Type       *FlowNodeIODataType    `json:"Type,omitempty"`
 }
 
 type FlowNodeOutput struct {
-	Name *string `json:"Name,omitempty"`
-	Type *string `json:"Type,omitempty"`
+	Name *string             `json:"Name,omitempty"`
+	Type *FlowNodeIODataType `json:"Type,omitempty"`
 }
 
 type FlowNode struct {
@@ -843,7 +843,7 @@ type FlowNode struct {
 	Inputs        []FlowNodeInput  `json:"Inputs,omitempty"`
 	Name          *string          `json:"Name,omitempty"`
 	Outputs       []FlowNodeOutput `json:"Outputs,omitempty"`
-	Type          *string          `json:"Type,omitempty"`
+	Type          *FlowNodeType    `json:"Type,omitempty"`
 }
 
 type FlowDefinition struct {
@@ -873,7 +873,7 @@ type Flow struct {
 	ExecutionRoleArn         *string                    `json:"ExecutionRoleArn,omitempty"`
 	Id                       *string                    `json:"Id,omitempty"`
 	Name                     *string                    `json:"Name,omitempty"`
-	Status                   *string                    `json:"Status,omitempty"`
+	Status                   *FlowStatus                `json:"Status,omitempty"`
 	Tags                     map[string]string          `json:"Tags,omitempty"`
 	TestAliasTags            map[string]string          `json:"TestAliasTags,omitempty"`
 	UpdatedAt                *string                    `json:"UpdatedAt,omitempty"`
@@ -884,8 +884,8 @@ type Flow struct {
 func (Flow) CloudControlType() string { return "AWS::Bedrock::Flow" }
 
 type FlowAliasConcurrencyConfiguration struct {
-	MaxConcurrency *float64 `json:"MaxConcurrency,omitempty"`
-	Type           *string  `json:"Type,omitempty"`
+	MaxConcurrency *float64         `json:"MaxConcurrency,omitempty"`
+	Type           *ConcurrencyType `json:"Type,omitempty"`
 }
 
 type FlowAliasRoutingConfigurationListItem struct {
@@ -909,22 +909,22 @@ type FlowAlias struct {
 func (FlowAlias) CloudControlType() string { return "AWS::Bedrock::FlowAlias" }
 
 type FlowVersionFlowConnection struct {
-	Configuration json.RawMessage `json:"Configuration,omitempty"`
-	Name          *string         `json:"Name,omitempty"`
-	Source        *string         `json:"Source,omitempty"`
-	Target        *string         `json:"Target,omitempty"`
-	Type          *string         `json:"Type,omitempty"`
+	Configuration json.RawMessage                `json:"Configuration,omitempty"`
+	Name          *string                        `json:"Name,omitempty"`
+	Source        *string                        `json:"Source,omitempty"`
+	Target        *string                        `json:"Target,omitempty"`
+	Type          *FlowVersionFlowConnectionType `json:"Type,omitempty"`
 }
 
 type FlowVersionFlowNodeInput struct {
-	Expression *string `json:"Expression,omitempty"`
-	Name       *string `json:"Name,omitempty"`
-	Type       *string `json:"Type,omitempty"`
+	Expression *string                        `json:"Expression,omitempty"`
+	Name       *string                        `json:"Name,omitempty"`
+	Type       *FlowVersionFlowNodeIODataType `json:"Type,omitempty"`
 }
 
 type FlowVersionFlowNodeOutput struct {
-	Name *string `json:"Name,omitempty"`
-	Type *string `json:"Type,omitempty"`
+	Name *string                        `json:"Name,omitempty"`
+	Type *FlowVersionFlowNodeIODataType `json:"Type,omitempty"`
 }
 
 type FlowVersionFlowNode struct {
@@ -932,7 +932,7 @@ type FlowVersionFlowNode struct {
 	Inputs        []FlowVersionFlowNodeInput  `json:"Inputs,omitempty"`
 	Name          *string                     `json:"Name,omitempty"`
 	Outputs       []FlowVersionFlowNodeOutput `json:"Outputs,omitempty"`
-	Type          *string                     `json:"Type,omitempty"`
+	Type          *FlowVersionFlowNodeType    `json:"Type,omitempty"`
 }
 
 type FlowVersionFlowDefinition struct {
@@ -949,7 +949,7 @@ type FlowVersion struct {
 	FlowArn                  *string                    `json:"FlowArn,omitempty"`
 	FlowId                   *string                    `json:"FlowId,omitempty"`
 	Name                     *string                    `json:"Name,omitempty"`
-	Status                   *string                    `json:"Status,omitempty"`
+	Status                   *FlowVersionFlowStatus     `json:"Status,omitempty"`
 	Version                  *string                    `json:"Version,omitempty"`
 }
 
@@ -961,19 +961,19 @@ type AutomatedReasoningPolicyConfig struct {
 }
 
 type ContentPolicyConfigContentFiltersTierConfig struct {
-	TierName *string `json:"TierName,omitempty"`
+	TierName *ContentFiltersTierName `json:"TierName,omitempty"`
 }
 
 type ContentFilterConfig struct {
-	InputAction      *string  `json:"InputAction,omitempty"`
-	InputEnabled     *bool    `json:"InputEnabled,omitempty"`
-	InputModalities  []string `json:"InputModalities,omitempty"`
-	InputStrength    *string  `json:"InputStrength,omitempty"`
-	OutputAction     *string  `json:"OutputAction,omitempty"`
-	OutputEnabled    *bool    `json:"OutputEnabled,omitempty"`
-	OutputModalities []string `json:"OutputModalities,omitempty"`
-	OutputStrength   *string  `json:"OutputStrength,omitempty"`
-	Type             *string  `json:"Type,omitempty"`
+	InputAction      *ContentFilterAction `json:"InputAction,omitempty"`
+	InputEnabled     *bool                `json:"InputEnabled,omitempty"`
+	InputModalities  []Modality           `json:"InputModalities,omitempty"`
+	InputStrength    *FilterStrength      `json:"InputStrength,omitempty"`
+	OutputAction     *ContentFilterAction `json:"OutputAction,omitempty"`
+	OutputEnabled    *bool                `json:"OutputEnabled,omitempty"`
+	OutputModalities []Modality           `json:"OutputModalities,omitempty"`
+	OutputStrength   *FilterStrength      `json:"OutputStrength,omitempty"`
+	Type             *ContentFilterType   `json:"Type,omitempty"`
 }
 
 type ContentPolicyConfig struct {
@@ -982,10 +982,10 @@ type ContentPolicyConfig struct {
 }
 
 type ContextualGroundingFilterConfig struct {
-	Action    *string  `json:"Action,omitempty"`
-	Enabled   *bool    `json:"Enabled,omitempty"`
-	Threshold *float64 `json:"Threshold,omitempty"`
-	Type      *string  `json:"Type,omitempty"`
+	Action    *ContextualGroundingAction     `json:"Action,omitempty"`
+	Enabled   *bool                          `json:"Enabled,omitempty"`
+	Threshold *float64                       `json:"Threshold,omitempty"`
+	Type      *ContextualGroundingFilterType `json:"Type,omitempty"`
 }
 
 type ContextualGroundingPolicyConfig struct {
@@ -997,23 +997,23 @@ type GuardrailCrossRegionConfig struct {
 }
 
 type PiiEntityConfig struct {
-	Action        *string `json:"Action,omitempty"`
-	InputAction   *string `json:"InputAction,omitempty"`
-	InputEnabled  *bool   `json:"InputEnabled,omitempty"`
-	OutputAction  *string `json:"OutputAction,omitempty"`
-	OutputEnabled *bool   `json:"OutputEnabled,omitempty"`
-	Type          *string `json:"Type,omitempty"`
+	Action        *SensitiveInformationAction `json:"Action,omitempty"`
+	InputAction   *SensitiveInformationAction `json:"InputAction,omitempty"`
+	InputEnabled  *bool                       `json:"InputEnabled,omitempty"`
+	OutputAction  *SensitiveInformationAction `json:"OutputAction,omitempty"`
+	OutputEnabled *bool                       `json:"OutputEnabled,omitempty"`
+	Type          *PiiEntityType              `json:"Type,omitempty"`
 }
 
 type RegexConfig struct {
-	Action        *string `json:"Action,omitempty"`
-	Description   *string `json:"Description,omitempty"`
-	InputAction   *string `json:"InputAction,omitempty"`
-	InputEnabled  *bool   `json:"InputEnabled,omitempty"`
-	Name          *string `json:"Name,omitempty"`
-	OutputAction  *string `json:"OutputAction,omitempty"`
-	OutputEnabled *bool   `json:"OutputEnabled,omitempty"`
-	Pattern       *string `json:"Pattern,omitempty"`
+	Action        *SensitiveInformationAction `json:"Action,omitempty"`
+	Description   *string                     `json:"Description,omitempty"`
+	InputAction   *SensitiveInformationAction `json:"InputAction,omitempty"`
+	InputEnabled  *bool                       `json:"InputEnabled,omitempty"`
+	Name          *string                     `json:"Name,omitempty"`
+	OutputAction  *SensitiveInformationAction `json:"OutputAction,omitempty"`
+	OutputEnabled *bool                       `json:"OutputEnabled,omitempty"`
+	Pattern       *string                     `json:"Pattern,omitempty"`
 }
 
 type SensitiveInformationPolicyConfig struct {
@@ -1027,18 +1027,18 @@ type GuardrailTag struct {
 }
 
 type TopicConfig struct {
-	Definition    *string  `json:"Definition,omitempty"`
-	Examples      []string `json:"Examples,omitempty"`
-	InputAction   *string  `json:"InputAction,omitempty"`
-	InputEnabled  *bool    `json:"InputEnabled,omitempty"`
-	Name          *string  `json:"Name,omitempty"`
-	OutputAction  *string  `json:"OutputAction,omitempty"`
-	OutputEnabled *bool    `json:"OutputEnabled,omitempty"`
-	Type          *string  `json:"Type,omitempty"`
+	Definition    *string      `json:"Definition,omitempty"`
+	Examples      []string     `json:"Examples,omitempty"`
+	InputAction   *TopicAction `json:"InputAction,omitempty"`
+	InputEnabled  *bool        `json:"InputEnabled,omitempty"`
+	Name          *string      `json:"Name,omitempty"`
+	OutputAction  *TopicAction `json:"OutputAction,omitempty"`
+	OutputEnabled *bool        `json:"OutputEnabled,omitempty"`
+	Type          *TopicType   `json:"Type,omitempty"`
 }
 
 type TopicPolicyConfigTopicsTierConfig struct {
-	TierName *string `json:"TierName,omitempty"`
+	TierName *TopicsTierName `json:"TierName,omitempty"`
 }
 
 type TopicPolicyConfig struct {
@@ -1047,19 +1047,19 @@ type TopicPolicyConfig struct {
 }
 
 type ManagedWordsConfig struct {
-	InputAction   *string `json:"InputAction,omitempty"`
-	InputEnabled  *bool   `json:"InputEnabled,omitempty"`
-	OutputAction  *string `json:"OutputAction,omitempty"`
-	OutputEnabled *bool   `json:"OutputEnabled,omitempty"`
-	Type          *string `json:"Type,omitempty"`
+	InputAction   *WordAction       `json:"InputAction,omitempty"`
+	InputEnabled  *bool             `json:"InputEnabled,omitempty"`
+	OutputAction  *WordAction       `json:"OutputAction,omitempty"`
+	OutputEnabled *bool             `json:"OutputEnabled,omitempty"`
+	Type          *ManagedWordsType `json:"Type,omitempty"`
 }
 
 type WordConfig struct {
-	InputAction   *string `json:"InputAction,omitempty"`
-	InputEnabled  *bool   `json:"InputEnabled,omitempty"`
-	OutputAction  *string `json:"OutputAction,omitempty"`
-	OutputEnabled *bool   `json:"OutputEnabled,omitempty"`
-	Text          *string `json:"Text,omitempty"`
+	InputAction   *WordAction `json:"InputAction,omitempty"`
+	InputEnabled  *bool       `json:"InputEnabled,omitempty"`
+	OutputAction  *WordAction `json:"OutputAction,omitempty"`
+	OutputEnabled *bool       `json:"OutputEnabled,omitempty"`
+	Text          *string     `json:"Text,omitempty"`
 }
 
 type WordPolicyConfig struct {
@@ -1082,7 +1082,7 @@ type Guardrail struct {
 	KmsKeyArn                        *string                           `json:"KmsKeyArn,omitempty"`
 	Name                             *string                           `json:"Name,omitempty"`
 	SensitiveInformationPolicyConfig *SensitiveInformationPolicyConfig `json:"SensitiveInformationPolicyConfig,omitempty"`
-	Status                           *string                           `json:"Status,omitempty"`
+	Status                           *GuardrailStatus                  `json:"Status,omitempty"`
 	StatusReasons                    []string                          `json:"StatusReasons,omitempty"`
 	Tags                             []GuardrailTag                    `json:"Tags,omitempty"`
 	TopicPolicyConfig                *TopicPolicyConfig                `json:"TopicPolicyConfig,omitempty"`
@@ -1124,9 +1124,9 @@ type IntelligentPromptRouter struct {
 	PromptRouterArn  *string                      `json:"PromptRouterArn,omitempty"`
 	PromptRouterName *string                      `json:"PromptRouterName,omitempty"`
 	RoutingCriteria  *RoutingCriteria             `json:"RoutingCriteria,omitempty"`
-	Status           *string                      `json:"Status,omitempty"`
+	Status           *PromptRouterStatus          `json:"Status,omitempty"`
 	Tags             []IntelligentPromptRouterTag `json:"Tags,omitempty"`
-	Type             *string                      `json:"Type,omitempty"`
+	Type             *PromptRouterType            `json:"Type,omitempty"`
 	UpdatedAt        *string                      `json:"UpdatedAt,omitempty"`
 }
 
@@ -1155,10 +1155,10 @@ type VideoConfiguration struct {
 }
 
 type BedrockEmbeddingModelConfiguration struct {
-	Audio             []AudioConfiguration `json:"Audio,omitempty"`
-	Dimensions        *int                 `json:"Dimensions,omitempty"`
-	EmbeddingDataType *string              `json:"EmbeddingDataType,omitempty"`
-	Video             []VideoConfiguration `json:"Video,omitempty"`
+	Audio             []AudioConfiguration                                 `json:"Audio,omitempty"`
+	Dimensions        *int                                                 `json:"Dimensions,omitempty"`
+	EmbeddingDataType *BedrockEmbeddingModelConfigurationEmbeddingDataType `json:"EmbeddingDataType,omitempty"`
+	Video             []VideoConfiguration                                 `json:"Video,omitempty"`
 }
 
 type EmbeddingModelConfiguration struct {
@@ -1172,14 +1172,14 @@ type ManagedKnowledgeBaseServerSideEncryptionConfiguration struct {
 type ManagedKnowledgeBaseConfiguration struct {
 	EmbeddingModelArn                 *string                                                `json:"EmbeddingModelArn,omitempty"`
 	EmbeddingModelConfiguration       *EmbeddingModelConfiguration                           `json:"EmbeddingModelConfiguration,omitempty"`
-	EmbeddingModelType                *string                                                `json:"EmbeddingModelType,omitempty"`
+	EmbeddingModelType                *EmbeddingModelType                                    `json:"EmbeddingModelType,omitempty"`
 	ServerSideEncryptionConfiguration *ManagedKnowledgeBaseServerSideEncryptionConfiguration `json:"ServerSideEncryptionConfiguration,omitempty"`
 }
 
 type RedshiftProvisionedAuthConfiguration struct {
-	DatabaseUser              *string `json:"DatabaseUser,omitempty"`
-	Type                      *string `json:"Type,omitempty"`
-	UsernamePasswordSecretArn *string `json:"UsernamePasswordSecretArn,omitempty"`
+	DatabaseUser              *string                      `json:"DatabaseUser,omitempty"`
+	Type                      *RedshiftProvisionedAuthType `json:"Type,omitempty"`
+	UsernamePasswordSecretArn *string                      `json:"UsernamePasswordSecretArn,omitempty"`
 }
 
 type RedshiftProvisionedConfiguration struct {
@@ -1188,8 +1188,8 @@ type RedshiftProvisionedConfiguration struct {
 }
 
 type RedshiftServerlessAuthConfiguration struct {
-	Type                      *string `json:"Type,omitempty"`
-	UsernamePasswordSecretArn *string `json:"UsernamePasswordSecretArn,omitempty"`
+	Type                      *RedshiftServerlessAuthType `json:"Type,omitempty"`
+	UsernamePasswordSecretArn *string                     `json:"UsernamePasswordSecretArn,omitempty"`
 }
 
 type RedshiftServerlessConfiguration struct {
@@ -1200,7 +1200,7 @@ type RedshiftServerlessConfiguration struct {
 type RedshiftQueryEngineConfiguration struct {
 	ProvisionedConfiguration *RedshiftProvisionedConfiguration `json:"ProvisionedConfiguration,omitempty"`
 	ServerlessConfiguration  *RedshiftServerlessConfiguration  `json:"ServerlessConfiguration,omitempty"`
-	Type                     *string                           `json:"Type,omitempty"`
+	Type                     *RedshiftQueryEngineType          `json:"Type,omitempty"`
 }
 
 type CuratedQuery struct {
@@ -1209,15 +1209,15 @@ type CuratedQuery struct {
 }
 
 type QueryGenerationColumn struct {
-	Description *string `json:"Description,omitempty"`
-	Inclusion   *string `json:"Inclusion,omitempty"`
-	Name        *string `json:"Name,omitempty"`
+	Description *string        `json:"Description,omitempty"`
+	Inclusion   *InclusionType `json:"Inclusion,omitempty"`
+	Name        *string        `json:"Name,omitempty"`
 }
 
 type QueryGenerationTable struct {
 	Columns     []QueryGenerationColumn `json:"Columns,omitempty"`
 	Description *string                 `json:"Description,omitempty"`
-	Inclusion   *string                 `json:"Inclusion,omitempty"`
+	Inclusion   *InclusionType          `json:"Inclusion,omitempty"`
 	Name        *string                 `json:"Name,omitempty"`
 }
 
@@ -1242,7 +1242,7 @@ type RedshiftQueryEngineRedshiftStorageConfiguration struct {
 type RedshiftQueryEngineStorageConfiguration struct {
 	AwsDataCatalogConfiguration *RedshiftQueryEngineAwsDataCatalogStorageConfiguration `json:"AwsDataCatalogConfiguration,omitempty"`
 	RedshiftConfiguration       *RedshiftQueryEngineRedshiftStorageConfiguration       `json:"RedshiftConfiguration,omitempty"`
-	Type                        *string                                                `json:"Type,omitempty"`
+	Type                        *RedshiftQueryEngineStorageType                        `json:"Type,omitempty"`
 }
 
 type RedshiftConfiguration struct {
@@ -1253,7 +1253,7 @@ type RedshiftConfiguration struct {
 
 type SqlKnowledgeBaseConfiguration struct {
 	RedshiftConfiguration *RedshiftConfiguration `json:"RedshiftConfiguration,omitempty"`
-	Type                  *string                `json:"Type,omitempty"`
+	Type                  *QueryEngineType       `json:"Type,omitempty"`
 }
 
 type KnowledgeBaseS3Location struct {
@@ -1261,8 +1261,8 @@ type KnowledgeBaseS3Location struct {
 }
 
 type SupplementalDataStorageLocation struct {
-	S3Location                          *KnowledgeBaseS3Location `json:"S3Location,omitempty"`
-	SupplementalDataStorageLocationType *string                  `json:"SupplementalDataStorageLocationType,omitempty"`
+	S3Location                          *KnowledgeBaseS3Location             `json:"S3Location,omitempty"`
+	SupplementalDataStorageLocationType *SupplementalDataStorageLocationType `json:"SupplementalDataStorageLocationType,omitempty"`
 }
 
 type SupplementalDataStorageConfiguration struct {
@@ -1279,7 +1279,7 @@ type KnowledgeBaseConfiguration struct {
 	KendraKnowledgeBaseConfiguration  *KendraKnowledgeBaseConfiguration  `json:"KendraKnowledgeBaseConfiguration,omitempty"`
 	ManagedKnowledgeBaseConfiguration *ManagedKnowledgeBaseConfiguration `json:"ManagedKnowledgeBaseConfiguration,omitempty"`
 	SqlKnowledgeBaseConfiguration     *SqlKnowledgeBaseConfiguration     `json:"SqlKnowledgeBaseConfiguration,omitempty"`
-	Type                              *string                            `json:"Type,omitempty"`
+	Type                              *KnowledgeBaseType                 `json:"Type,omitempty"`
 	VectorKnowledgeBaseConfiguration  *VectorKnowledgeBaseConfiguration  `json:"VectorKnowledgeBaseConfiguration,omitempty"`
 }
 
@@ -1377,7 +1377,7 @@ type StorageConfiguration struct {
 	PineconeConfiguration                 *PineconeConfiguration                 `json:"PineconeConfiguration,omitempty"`
 	RdsConfiguration                      *RdsConfiguration                      `json:"RdsConfiguration,omitempty"`
 	S3VectorsConfiguration                *S3VectorsConfiguration                `json:"S3VectorsConfiguration,omitempty"`
-	Type                                  *string                                `json:"Type,omitempty"`
+	Type                                  *KnowledgeBaseStorageType              `json:"Type,omitempty"`
 }
 
 type KnowledgeBase struct {
@@ -1389,7 +1389,7 @@ type KnowledgeBase struct {
 	KnowledgeBaseId            *string                     `json:"KnowledgeBaseId,omitempty"`
 	Name                       *string                     `json:"Name,omitempty"`
 	RoleArn                    *string                     `json:"RoleArn,omitempty"`
-	Status                     *string                     `json:"Status,omitempty"`
+	Status                     *KnowledgeBaseStatus        `json:"Status,omitempty"`
 	StorageConfiguration       *StorageConfiguration       `json:"StorageConfiguration,omitempty"`
 	Tags                       map[string]string           `json:"Tags,omitempty"`
 	UpdatedAt                  *string                     `json:"UpdatedAt,omitempty"`
@@ -1418,7 +1418,7 @@ type PromptVariant struct {
 	ModelId                      *string               `json:"ModelId,omitempty"`
 	Name                         *string               `json:"Name,omitempty"`
 	TemplateConfiguration        json.RawMessage       `json:"TemplateConfiguration,omitempty"`
-	TemplateType                 *string               `json:"TemplateType,omitempty"`
+	TemplateType                 *PromptTemplateType   `json:"TemplateType,omitempty"`
 }
 
 type Prompt struct {
@@ -1450,7 +1450,7 @@ type PromptVersionPromptVariant struct {
 	ModelId                      *string                            `json:"ModelId,omitempty"`
 	Name                         *string                            `json:"Name,omitempty"`
 	TemplateConfiguration        json.RawMessage                    `json:"TemplateConfiguration,omitempty"`
-	TemplateType                 *string                            `json:"TemplateType,omitempty"`
+	TemplateType                 *PromptVersionPromptTemplateType   `json:"TemplateType,omitempty"`
 }
 
 type PromptVersion struct {
@@ -1476,3 +1476,871 @@ type ResourcePolicy struct {
 }
 
 func (ResourcePolicy) CloudControlType() string { return "AWS::Bedrock::ResourcePolicy" }
+
+type ActionGroupState string
+
+const (
+	ActionGroupStateENABLED  ActionGroupState = "ENABLED"
+	ActionGroupStateDISABLED ActionGroupState = "DISABLED"
+)
+
+type Type string
+
+const (
+	TypeString  Type = "string"
+	TypeNumber  Type = "number"
+	TypeInteger Type = "integer"
+	TypeBoolean Type = "boolean"
+	TypeArray   Type = "array"
+)
+
+type RequireConfirmation string
+
+const (
+	RequireConfirmationENABLED  RequireConfirmation = "ENABLED"
+	RequireConfirmationDISABLED RequireConfirmation = "DISABLED"
+)
+
+type ActionGroupSignature string
+
+const (
+	ActionGroupSignatureAMAZONUserInput       ActionGroupSignature = "AMAZON.UserInput"
+	ActionGroupSignatureAMAZONCodeInterpreter ActionGroupSignature = "AMAZON.CodeInterpreter"
+)
+
+type AgentCollaboration string
+
+const (
+	AgentCollaborationDISABLED         AgentCollaboration = "DISABLED"
+	AgentCollaborationSUPERVISOR       AgentCollaboration = "SUPERVISOR"
+	AgentCollaborationSUPERVISORROUTER AgentCollaboration = "SUPERVISOR_ROUTER"
+)
+
+type RelayConversationHistory string
+
+const (
+	RelayConversationHistoryTOCOLLABORATOR RelayConversationHistory = "TO_COLLABORATOR"
+	RelayConversationHistoryDISABLED       RelayConversationHistory = "DISABLED"
+)
+
+type AgentStatus string
+
+const (
+	AgentStatusCREATING    AgentStatus = "CREATING"
+	AgentStatusPREPARING   AgentStatus = "PREPARING"
+	AgentStatusPREPARED    AgentStatus = "PREPARED"
+	AgentStatusNOTPREPARED AgentStatus = "NOT_PREPARED"
+	AgentStatusDELETING    AgentStatus = "DELETING"
+	AgentStatusFAILED      AgentStatus = "FAILED"
+	AgentStatusVERSIONING  AgentStatus = "VERSIONING"
+	AgentStatusUPDATING    AgentStatus = "UPDATING"
+)
+
+type KnowledgeBaseState string
+
+const (
+	KnowledgeBaseStateENABLED  KnowledgeBaseState = "ENABLED"
+	KnowledgeBaseStateDISABLED KnowledgeBaseState = "DISABLED"
+)
+
+type MemoryType string
+
+const (
+	MemoryTypeSESSIONSUMMARY MemoryType = "SESSION_SUMMARY"
+)
+
+type OrchestrationType string
+
+const (
+	OrchestrationTypeDEFAULT             OrchestrationType = "DEFAULT"
+	OrchestrationTypeCUSTOMORCHESTRATION OrchestrationType = "CUSTOM_ORCHESTRATION"
+)
+
+type CreationMode string
+
+const (
+	CreationModeDEFAULT    CreationMode = "DEFAULT"
+	CreationModeOVERRIDDEN CreationMode = "OVERRIDDEN"
+)
+
+type PromptState string
+
+const (
+	PromptStateENABLED  PromptState = "ENABLED"
+	PromptStateDISABLED PromptState = "DISABLED"
+)
+
+type PromptType string
+
+const (
+	PromptTypePREPROCESSING                   PromptType = "PRE_PROCESSING"
+	PromptTypeORCHESTRATION                   PromptType = "ORCHESTRATION"
+	PromptTypePOSTPROCESSING                  PromptType = "POST_PROCESSING"
+	PromptTypeROUTINGCLASSIFIER               PromptType = "ROUTING_CLASSIFIER"
+	PromptTypeMEMORYSUMMARIZATION             PromptType = "MEMORY_SUMMARIZATION"
+	PromptTypeKNOWLEDGEBASERESPONSEGENERATION PromptType = "KNOWLEDGE_BASE_RESPONSE_GENERATION"
+)
+
+type AgentAliasStatus string
+
+const (
+	AgentAliasStatusCREATING AgentAliasStatus = "CREATING"
+	AgentAliasStatusPREPARED AgentAliasStatus = "PREPARED"
+	AgentAliasStatusFAILED   AgentAliasStatus = "FAILED"
+	AgentAliasStatusUPDATING AgentAliasStatus = "UPDATING"
+	AgentAliasStatusDELETING AgentAliasStatus = "DELETING"
+)
+
+type InferenceProfileStatus string
+
+const (
+	InferenceProfileStatusACTIVE InferenceProfileStatus = "ACTIVE"
+)
+
+type InferenceProfileType string
+
+const (
+	InferenceProfileTypeAPPLICATION   InferenceProfileType = "APPLICATION"
+	InferenceProfileTypeSYSTEMDEFINED InferenceProfileType = "SYSTEM_DEFINED"
+)
+
+type BlueprintBlueprintStage string
+
+const (
+	BlueprintBlueprintStageDEVELOPMENT BlueprintBlueprintStage = "DEVELOPMENT"
+	BlueprintBlueprintStageLIVE        BlueprintBlueprintStage = "LIVE"
+)
+
+type BlueprintType string
+
+const (
+	BlueprintTypeDOCUMENT BlueprintType = "DOCUMENT"
+	BlueprintTypeIMAGE    BlueprintType = "IMAGE"
+	BlueprintTypeAUDIO    BlueprintType = "AUDIO"
+	BlueprintTypeVIDEO    BlueprintType = "VIDEO"
+)
+
+type EntityType string
+
+const (
+	EntityTypeVOCABULARY EntityType = "VOCABULARY"
+)
+
+type DataAutomationLibraryStatus string
+
+const (
+	DataAutomationLibraryStatusACTIVE   DataAutomationLibraryStatus = "ACTIVE"
+	DataAutomationLibraryStatusDELETING DataAutomationLibraryStatus = "DELETING"
+)
+
+type BlueprintStage string
+
+const (
+	BlueprintStageDEVELOPMENT BlueprintStage = "DEVELOPMENT"
+	BlueprintStageLIVE        BlueprintStage = "LIVE"
+)
+
+type AudioGenerativeOutputLanguage string
+
+const (
+	AudioGenerativeOutputLanguageDEFAULT AudioGenerativeOutputLanguage = "DEFAULT"
+	AudioGenerativeOutputLanguageEN      AudioGenerativeOutputLanguage = "EN"
+)
+
+type Language string
+
+const (
+	LanguageEN Language = "EN"
+	LanguageDE Language = "DE"
+	LanguageES Language = "ES"
+	LanguageFR Language = "FR"
+	LanguageIT Language = "IT"
+	LanguagePT Language = "PT"
+	LanguageJA Language = "JA"
+	LanguageKO Language = "KO"
+	LanguageCN Language = "CN"
+	LanguageTW Language = "TW"
+	LanguageHK Language = "HK"
+)
+
+type State string
+
+const (
+	StateENABLED  State = "ENABLED"
+	StateDISABLED State = "DISABLED"
+)
+
+type SensitiveDataDetectionMode string
+
+const (
+	SensitiveDataDetectionModeDETECTION             SensitiveDataDetectionMode = "DETECTION"
+	SensitiveDataDetectionModeDETECTIONANDREDACTION SensitiveDataDetectionMode = "DETECTION_AND_REDACTION"
+)
+
+type SensitiveDataDetectionScope string
+
+const (
+	SensitiveDataDetectionScopeSTANDARD SensitiveDataDetectionScope = "STANDARD"
+	SensitiveDataDetectionScopeCUSTOM   SensitiveDataDetectionScope = "CUSTOM"
+)
+
+type PIIEntityTypes string
+
+const (
+	PIIEntityTypesALL                                 PIIEntityTypes = "ALL"
+	PIIEntityTypesADDRESS                             PIIEntityTypes = "ADDRESS"
+	PIIEntityTypesAGE                                 PIIEntityTypes = "AGE"
+	PIIEntityTypesNAME                                PIIEntityTypes = "NAME"
+	PIIEntityTypesEMAIL                               PIIEntityTypes = "EMAIL"
+	PIIEntityTypesPHONE                               PIIEntityTypes = "PHONE"
+	PIIEntityTypesUSERNAME                            PIIEntityTypes = "USERNAME"
+	PIIEntityTypesPASSWORD                            PIIEntityTypes = "PASSWORD"
+	PIIEntityTypesDRIVERID                            PIIEntityTypes = "DRIVER_ID"
+	PIIEntityTypesLICENSEPLATE                        PIIEntityTypes = "LICENSE_PLATE"
+	PIIEntityTypesVEHICLEIDENTIFICATIONNUMBER         PIIEntityTypes = "VEHICLE_IDENTIFICATION_NUMBER"
+	PIIEntityTypesCREDITDEBITCARDCVV                  PIIEntityTypes = "CREDIT_DEBIT_CARD_CVV"
+	PIIEntityTypesCREDITDEBITCARDEXPIRY               PIIEntityTypes = "CREDIT_DEBIT_CARD_EXPIRY"
+	PIIEntityTypesCREDITDEBITCARDNUMBER               PIIEntityTypes = "CREDIT_DEBIT_CARD_NUMBER"
+	PIIEntityTypesPIN                                 PIIEntityTypes = "PIN"
+	PIIEntityTypesINTERNATIONALBANKACCOUNTNUMBER      PIIEntityTypes = "INTERNATIONAL_BANK_ACCOUNT_NUMBER"
+	PIIEntityTypesSWIFTCODE                           PIIEntityTypes = "SWIFT_CODE"
+	PIIEntityTypesIPADDRESS                           PIIEntityTypes = "IP_ADDRESS"
+	PIIEntityTypesMACADDRESS                          PIIEntityTypes = "MAC_ADDRESS"
+	PIIEntityTypesURL                                 PIIEntityTypes = "URL"
+	PIIEntityTypesAWSACCESSKEY                        PIIEntityTypes = "AWS_ACCESS_KEY"
+	PIIEntityTypesAWSSECRETKEY                        PIIEntityTypes = "AWS_SECRET_KEY"
+	PIIEntityTypesUSBANKACCOUNTNUMBER                 PIIEntityTypes = "US_BANK_ACCOUNT_NUMBER"
+	PIIEntityTypesUSBANKROUTINGNUMBER                 PIIEntityTypes = "US_BANK_ROUTING_NUMBER"
+	PIIEntityTypesUSINDIVIDUALTAXIDENTIFICATIONNUMBER PIIEntityTypes = "US_INDIVIDUAL_TAX_IDENTIFICATION_NUMBER"
+	PIIEntityTypesUSPASSPORTNUMBER                    PIIEntityTypes = "US_PASSPORT_NUMBER"
+	PIIEntityTypesUSSOCIALSECURITYNUMBER              PIIEntityTypes = "US_SOCIAL_SECURITY_NUMBER"
+	PIIEntityTypesCAHEALTHNUMBER                      PIIEntityTypes = "CA_HEALTH_NUMBER"
+	PIIEntityTypesCASOCIALINSURANCENUMBER             PIIEntityTypes = "CA_SOCIAL_INSURANCE_NUMBER"
+	PIIEntityTypesUKNATIONALHEALTHSERVICENUMBER       PIIEntityTypes = "UK_NATIONAL_HEALTH_SERVICE_NUMBER"
+	PIIEntityTypesUKNATIONALINSURANCENUMBER           PIIEntityTypes = "UK_NATIONAL_INSURANCE_NUMBER"
+	PIIEntityTypesUKUNIQUETAXPAYERREFERENCENUMBER     PIIEntityTypes = "UK_UNIQUE_TAXPAYER_REFERENCE_NUMBER"
+)
+
+type PIIRedactionMaskMode string
+
+const (
+	PIIRedactionMaskModePII        PIIRedactionMaskMode = "PII"
+	PIIRedactionMaskModeENTITYTYPE PIIRedactionMaskMode = "ENTITY_TYPE"
+)
+
+type DesiredModality string
+
+const (
+	DesiredModalityDOCUMENT DesiredModality = "DOCUMENT"
+	DesiredModalityIMAGE    DesiredModality = "IMAGE"
+	DesiredModalityVIDEO    DesiredModality = "VIDEO"
+	DesiredModalityAUDIO    DesiredModality = "AUDIO"
+)
+
+type DataAutomationProjectStage string
+
+const (
+	DataAutomationProjectStageDEVELOPMENT DataAutomationProjectStage = "DEVELOPMENT"
+	DataAutomationProjectStageLIVE        DataAutomationProjectStage = "LIVE"
+)
+
+type DataAutomationProjectProjectType string
+
+const (
+	DataAutomationProjectProjectTypeASYNC DataAutomationProjectProjectType = "ASYNC"
+	DataAutomationProjectProjectTypeSYNC  DataAutomationProjectProjectType = "SYNC"
+)
+
+type AudioExtractionCategoryType string
+
+const (
+	AudioExtractionCategoryTypeAUDIOCONTENTMODERATION AudioExtractionCategoryType = "AUDIO_CONTENT_MODERATION"
+	AudioExtractionCategoryTypeTRANSCRIPT             AudioExtractionCategoryType = "TRANSCRIPT"
+	AudioExtractionCategoryTypeTOPICCONTENTMODERATION AudioExtractionCategoryType = "TOPIC_CONTENT_MODERATION"
+)
+
+type AudioStandardGenerativeFieldType string
+
+const (
+	AudioStandardGenerativeFieldTypeAUDIOSUMMARY AudioStandardGenerativeFieldType = "AUDIO_SUMMARY"
+	AudioStandardGenerativeFieldTypeIAB          AudioStandardGenerativeFieldType = "IAB"
+	AudioStandardGenerativeFieldTypeTOPICSUMMARY AudioStandardGenerativeFieldType = "TOPIC_SUMMARY"
+)
+
+type DocumentExtractionGranularityType string
+
+const (
+	DocumentExtractionGranularityTypeDOCUMENT DocumentExtractionGranularityType = "DOCUMENT"
+	DocumentExtractionGranularityTypePAGE     DocumentExtractionGranularityType = "PAGE"
+	DocumentExtractionGranularityTypeELEMENT  DocumentExtractionGranularityType = "ELEMENT"
+	DocumentExtractionGranularityTypeWORD     DocumentExtractionGranularityType = "WORD"
+	DocumentExtractionGranularityTypeLINE     DocumentExtractionGranularityType = "LINE"
+)
+
+type DocumentOutputTextFormatType string
+
+const (
+	DocumentOutputTextFormatTypePLAINTEXT DocumentOutputTextFormatType = "PLAIN_TEXT"
+	DocumentOutputTextFormatTypeMARKDOWN  DocumentOutputTextFormatType = "MARKDOWN"
+	DocumentOutputTextFormatTypeHTML      DocumentOutputTextFormatType = "HTML"
+	DocumentOutputTextFormatTypeCSV       DocumentOutputTextFormatType = "CSV"
+)
+
+type ImageExtractionCategoryType string
+
+const (
+	ImageExtractionCategoryTypeCONTENTMODERATION ImageExtractionCategoryType = "CONTENT_MODERATION"
+	ImageExtractionCategoryTypeTEXTDETECTION     ImageExtractionCategoryType = "TEXT_DETECTION"
+	ImageExtractionCategoryTypeLOGOS             ImageExtractionCategoryType = "LOGOS"
+)
+
+type ImageStandardGenerativeFieldType string
+
+const (
+	ImageStandardGenerativeFieldTypeIMAGESUMMARY ImageStandardGenerativeFieldType = "IMAGE_SUMMARY"
+	ImageStandardGenerativeFieldTypeIAB          ImageStandardGenerativeFieldType = "IAB"
+)
+
+type VideoExtractionCategoryType string
+
+const (
+	VideoExtractionCategoryTypeCONTENTMODERATION VideoExtractionCategoryType = "CONTENT_MODERATION"
+	VideoExtractionCategoryTypeTEXTDETECTION     VideoExtractionCategoryType = "TEXT_DETECTION"
+	VideoExtractionCategoryTypeTRANSCRIPT        VideoExtractionCategoryType = "TRANSCRIPT"
+	VideoExtractionCategoryTypeLOGOS             VideoExtractionCategoryType = "LOGOS"
+)
+
+type VideoStandardGenerativeFieldType string
+
+const (
+	VideoStandardGenerativeFieldTypeVIDEOSUMMARY   VideoStandardGenerativeFieldType = "VIDEO_SUMMARY"
+	VideoStandardGenerativeFieldTypeIAB            VideoStandardGenerativeFieldType = "IAB"
+	VideoStandardGenerativeFieldTypeCHAPTERSUMMARY VideoStandardGenerativeFieldType = "CHAPTER_SUMMARY"
+)
+
+type DataAutomationProjectStatus string
+
+const (
+	DataAutomationProjectStatusCOMPLETED  DataAutomationProjectStatus = "COMPLETED"
+	DataAutomationProjectStatusINPROGRESS DataAutomationProjectStatus = "IN_PROGRESS"
+	DataAutomationProjectStatusFAILED     DataAutomationProjectStatus = "FAILED"
+)
+
+type DataDeletionPolicy string
+
+const (
+	DataDeletionPolicyRETAIN DataDeletionPolicy = "RETAIN"
+	DataDeletionPolicyDELETE DataDeletionPolicy = "DELETE"
+)
+
+type CrawlFilterConfigurationType string
+
+const (
+	CrawlFilterConfigurationTypePATTERN CrawlFilterConfigurationType = "PATTERN"
+)
+
+type ConfluenceSourceConfigurationAuthType string
+
+const (
+	ConfluenceSourceConfigurationAuthTypeBASIC                   ConfluenceSourceConfigurationAuthType = "BASIC"
+	ConfluenceSourceConfigurationAuthTypeOAUTH2CLIENTCREDENTIALS ConfluenceSourceConfigurationAuthType = "OAUTH2_CLIENT_CREDENTIALS"
+)
+
+type ConfluenceSourceConfigurationHostType string
+
+const (
+	ConfluenceSourceConfigurationHostTypeSAAS ConfluenceSourceConfigurationHostType = "SAAS"
+)
+
+type EnabledOrDisabledState string
+
+const (
+	EnabledOrDisabledStateENABLED  EnabledOrDisabledState = "ENABLED"
+	EnabledOrDisabledStateDISABLED EnabledOrDisabledState = "DISABLED"
+)
+
+type SalesforceSourceConfigurationAuthType string
+
+const (
+	SalesforceSourceConfigurationAuthTypeOAUTH2CLIENTCREDENTIALS SalesforceSourceConfigurationAuthType = "OAUTH2_CLIENT_CREDENTIALS"
+)
+
+type SharePointSourceConfigurationAuthType string
+
+const (
+	SharePointSourceConfigurationAuthTypeOAUTH2CLIENTCREDENTIALS                  SharePointSourceConfigurationAuthType = "OAUTH2_CLIENT_CREDENTIALS"
+	SharePointSourceConfigurationAuthTypeOAUTH2SHAREPOINTAPPONLYCLIENTCREDENTIALS SharePointSourceConfigurationAuthType = "OAUTH2_SHAREPOINT_APP_ONLY_CLIENT_CREDENTIALS"
+)
+
+type SharePointSourceConfigurationHostType string
+
+const (
+	SharePointSourceConfigurationHostTypeONLINE SharePointSourceConfigurationHostType = "ONLINE"
+)
+
+type DataSourceType string
+
+const (
+	DataSourceTypeS3                            DataSourceType = "S3"
+	DataSourceTypeCONFLUENCE                    DataSourceType = "CONFLUENCE"
+	DataSourceTypeSALESFORCE                    DataSourceType = "SALESFORCE"
+	DataSourceTypeSHAREPOINT                    DataSourceType = "SHAREPOINT"
+	DataSourceTypeWEB                           DataSourceType = "WEB"
+	DataSourceTypeCUSTOM                        DataSourceType = "CUSTOM"
+	DataSourceTypeREDSHIFTMETADATA              DataSourceType = "REDSHIFT_METADATA"
+	DataSourceTypeMANAGEDKNOWLEDGEBASECONNECTOR DataSourceType = "MANAGED_KNOWLEDGE_BASE_CONNECTOR"
+)
+
+type WebScopeType string
+
+const (
+	WebScopeTypeHOSTONLY   WebScopeType = "HOST_ONLY"
+	WebScopeTypeSUBDOMAINS WebScopeType = "SUBDOMAINS"
+)
+
+type DataSourceStatus string
+
+const (
+	DataSourceStatusAVAILABLE          DataSourceStatus = "AVAILABLE"
+	DataSourceStatusDELETING           DataSourceStatus = "DELETING"
+	DataSourceStatusDELETEUNSUCCESSFUL DataSourceStatus = "DELETE_UNSUCCESSFUL"
+	DataSourceStatusCREATING           DataSourceStatus = "CREATING"
+	DataSourceStatusUPDATING           DataSourceStatus = "UPDATING"
+	DataSourceStatusFAILED             DataSourceStatus = "FAILED"
+)
+
+type ChunkingStrategy string
+
+const (
+	ChunkingStrategyFIXEDSIZE    ChunkingStrategy = "FIXED_SIZE"
+	ChunkingStrategyNONE         ChunkingStrategy = "NONE"
+	ChunkingStrategyHIERARCHICAL ChunkingStrategy = "HIERARCHICAL"
+	ChunkingStrategySEMANTIC     ChunkingStrategy = "SEMANTIC"
+)
+
+type EnrichmentStrategyMethod string
+
+const (
+	EnrichmentStrategyMethodCHUNKENTITYEXTRACTION EnrichmentStrategyMethod = "CHUNK_ENTITY_EXTRACTION"
+)
+
+type ContextEnrichmentType string
+
+const (
+	ContextEnrichmentTypeBEDROCKFOUNDATIONMODEL ContextEnrichmentType = "BEDROCK_FOUNDATION_MODEL"
+)
+
+type TransformationStepToApply string
+
+const (
+	TransformationStepToApplyPOSTCHUNKING TransformationStepToApply = "POST_CHUNKING"
+)
+
+type ParsingModality string
+
+const (
+	ParsingModalityMULTIMODAL ParsingModality = "MULTIMODAL"
+)
+
+type ParsingStrategy string
+
+const (
+	ParsingStrategyBEDROCKFOUNDATIONMODEL ParsingStrategy = "BEDROCK_FOUNDATION_MODEL"
+	ParsingStrategyBEDROCKDATAAUTOMATION  ParsingStrategy = "BEDROCK_DATA_AUTOMATION"
+	ParsingStrategySMARTPARSING           ParsingStrategy = "SMART_PARSING"
+)
+
+type ConfigOwner string
+
+const (
+	ConfigOwnerACCOUNT      ConfigOwner = "ACCOUNT"
+	ConfigOwnerORGANIZATION ConfigOwner = "ORGANIZATION"
+)
+
+type SelectiveContentGuardingMessages string
+
+const (
+	SelectiveContentGuardingMessagesSELECTIVE     SelectiveContentGuardingMessages = "SELECTIVE"
+	SelectiveContentGuardingMessagesCOMPREHENSIVE SelectiveContentGuardingMessages = "COMPREHENSIVE"
+)
+
+type SelectiveContentGuardingSystem string
+
+const (
+	SelectiveContentGuardingSystemSELECTIVE     SelectiveContentGuardingSystem = "SELECTIVE"
+	SelectiveContentGuardingSystemCOMPREHENSIVE SelectiveContentGuardingSystem = "COMPREHENSIVE"
+)
+
+type FlowConnectionType string
+
+const (
+	FlowConnectionTypeData        FlowConnectionType = "Data"
+	FlowConnectionTypeConditional FlowConnectionType = "Conditional"
+)
+
+type FlowNodeInputCategory string
+
+const (
+	FlowNodeInputCategoryLoopCondition          FlowNodeInputCategory = "LoopCondition"
+	FlowNodeInputCategoryReturnValueToLoopStart FlowNodeInputCategory = "ReturnValueToLoopStart"
+	FlowNodeInputCategoryExitLoop               FlowNodeInputCategory = "ExitLoop"
+)
+
+type FlowNodeIODataType string
+
+const (
+	FlowNodeIODataTypeString  FlowNodeIODataType = "String"
+	FlowNodeIODataTypeNumber  FlowNodeIODataType = "Number"
+	FlowNodeIODataTypeBoolean FlowNodeIODataType = "Boolean"
+	FlowNodeIODataTypeObject  FlowNodeIODataType = "Object"
+	FlowNodeIODataTypeArray   FlowNodeIODataType = "Array"
+)
+
+type FlowNodeType string
+
+const (
+	FlowNodeTypeInput          FlowNodeType = "Input"
+	FlowNodeTypeOutput         FlowNodeType = "Output"
+	FlowNodeTypeKnowledgeBase  FlowNodeType = "KnowledgeBase"
+	FlowNodeTypeCondition      FlowNodeType = "Condition"
+	FlowNodeTypeLex            FlowNodeType = "Lex"
+	FlowNodeTypePrompt         FlowNodeType = "Prompt"
+	FlowNodeTypeLambdaFunction FlowNodeType = "LambdaFunction"
+	FlowNodeTypeAgent          FlowNodeType = "Agent"
+	FlowNodeTypeStorage        FlowNodeType = "Storage"
+	FlowNodeTypeRetrieval      FlowNodeType = "Retrieval"
+	FlowNodeTypeIterator       FlowNodeType = "Iterator"
+	FlowNodeTypeCollector      FlowNodeType = "Collector"
+	FlowNodeTypeInlineCode     FlowNodeType = "InlineCode"
+	FlowNodeTypeLoop           FlowNodeType = "Loop"
+	FlowNodeTypeLoopInput      FlowNodeType = "LoopInput"
+	FlowNodeTypeLoopController FlowNodeType = "LoopController"
+)
+
+type FlowStatus string
+
+const (
+	FlowStatusFailed      FlowStatus = "Failed"
+	FlowStatusPrepared    FlowStatus = "Prepared"
+	FlowStatusPreparing   FlowStatus = "Preparing"
+	FlowStatusNotPrepared FlowStatus = "NotPrepared"
+)
+
+type ConcurrencyType string
+
+const (
+	ConcurrencyTypeAutomatic ConcurrencyType = "Automatic"
+	ConcurrencyTypeManual    ConcurrencyType = "Manual"
+)
+
+type FlowVersionFlowConnectionType string
+
+const (
+	FlowVersionFlowConnectionTypeData        FlowVersionFlowConnectionType = "Data"
+	FlowVersionFlowConnectionTypeConditional FlowVersionFlowConnectionType = "Conditional"
+)
+
+type FlowVersionFlowNodeIODataType string
+
+const (
+	FlowVersionFlowNodeIODataTypeString  FlowVersionFlowNodeIODataType = "String"
+	FlowVersionFlowNodeIODataTypeNumber  FlowVersionFlowNodeIODataType = "Number"
+	FlowVersionFlowNodeIODataTypeBoolean FlowVersionFlowNodeIODataType = "Boolean"
+	FlowVersionFlowNodeIODataTypeObject  FlowVersionFlowNodeIODataType = "Object"
+	FlowVersionFlowNodeIODataTypeArray   FlowVersionFlowNodeIODataType = "Array"
+)
+
+type FlowVersionFlowNodeType string
+
+const (
+	FlowVersionFlowNodeTypeInput          FlowVersionFlowNodeType = "Input"
+	FlowVersionFlowNodeTypeOutput         FlowVersionFlowNodeType = "Output"
+	FlowVersionFlowNodeTypeKnowledgeBase  FlowVersionFlowNodeType = "KnowledgeBase"
+	FlowVersionFlowNodeTypeCondition      FlowVersionFlowNodeType = "Condition"
+	FlowVersionFlowNodeTypeLex            FlowVersionFlowNodeType = "Lex"
+	FlowVersionFlowNodeTypePrompt         FlowVersionFlowNodeType = "Prompt"
+	FlowVersionFlowNodeTypeLambdaFunction FlowVersionFlowNodeType = "LambdaFunction"
+	FlowVersionFlowNodeTypeAgent          FlowVersionFlowNodeType = "Agent"
+	FlowVersionFlowNodeTypeIterator       FlowVersionFlowNodeType = "Iterator"
+	FlowVersionFlowNodeTypeCollector      FlowVersionFlowNodeType = "Collector"
+	FlowVersionFlowNodeTypeStorage        FlowVersionFlowNodeType = "Storage"
+	FlowVersionFlowNodeTypeRetrieval      FlowVersionFlowNodeType = "Retrieval"
+	FlowVersionFlowNodeTypeInlineCode     FlowVersionFlowNodeType = "InlineCode"
+	FlowVersionFlowNodeTypeLoop           FlowVersionFlowNodeType = "Loop"
+	FlowVersionFlowNodeTypeLoopInput      FlowVersionFlowNodeType = "LoopInput"
+	FlowVersionFlowNodeTypeLoopController FlowVersionFlowNodeType = "LoopController"
+)
+
+type FlowVersionFlowStatus string
+
+const (
+	FlowVersionFlowStatusFailed      FlowVersionFlowStatus = "Failed"
+	FlowVersionFlowStatusPrepared    FlowVersionFlowStatus = "Prepared"
+	FlowVersionFlowStatusPreparing   FlowVersionFlowStatus = "Preparing"
+	FlowVersionFlowStatusNotPrepared FlowVersionFlowStatus = "NotPrepared"
+)
+
+type ContentFiltersTierName string
+
+const (
+	ContentFiltersTierNameCLASSIC  ContentFiltersTierName = "CLASSIC"
+	ContentFiltersTierNameSTANDARD ContentFiltersTierName = "STANDARD"
+)
+
+type ContentFilterAction string
+
+const (
+	ContentFilterActionBLOCK ContentFilterAction = "BLOCK"
+	ContentFilterActionNONE  ContentFilterAction = "NONE"
+)
+
+type Modality string
+
+const (
+	ModalityTEXT  Modality = "TEXT"
+	ModalityIMAGE Modality = "IMAGE"
+)
+
+type FilterStrength string
+
+const (
+	FilterStrengthNONE   FilterStrength = "NONE"
+	FilterStrengthLOW    FilterStrength = "LOW"
+	FilterStrengthMEDIUM FilterStrength = "MEDIUM"
+	FilterStrengthHIGH   FilterStrength = "HIGH"
+)
+
+type ContentFilterType string
+
+const (
+	ContentFilterTypeSEXUAL       ContentFilterType = "SEXUAL"
+	ContentFilterTypeVIOLENCE     ContentFilterType = "VIOLENCE"
+	ContentFilterTypeHATE         ContentFilterType = "HATE"
+	ContentFilterTypeINSULTS      ContentFilterType = "INSULTS"
+	ContentFilterTypeMISCONDUCT   ContentFilterType = "MISCONDUCT"
+	ContentFilterTypePROMPTATTACK ContentFilterType = "PROMPT_ATTACK"
+)
+
+type ContextualGroundingAction string
+
+const (
+	ContextualGroundingActionBLOCK ContextualGroundingAction = "BLOCK"
+	ContextualGroundingActionNONE  ContextualGroundingAction = "NONE"
+)
+
+type ContextualGroundingFilterType string
+
+const (
+	ContextualGroundingFilterTypeGROUNDING ContextualGroundingFilterType = "GROUNDING"
+	ContextualGroundingFilterTypeRELEVANCE ContextualGroundingFilterType = "RELEVANCE"
+)
+
+type SensitiveInformationAction string
+
+const (
+	SensitiveInformationActionBLOCK     SensitiveInformationAction = "BLOCK"
+	SensitiveInformationActionANONYMIZE SensitiveInformationAction = "ANONYMIZE"
+	SensitiveInformationActionNONE      SensitiveInformationAction = "NONE"
+)
+
+type PiiEntityType string
+
+const (
+	PiiEntityTypeADDRESS                             PiiEntityType = "ADDRESS"
+	PiiEntityTypeAGE                                 PiiEntityType = "AGE"
+	PiiEntityTypeAWSACCESSKEY                        PiiEntityType = "AWS_ACCESS_KEY"
+	PiiEntityTypeAWSSECRETKEY                        PiiEntityType = "AWS_SECRET_KEY"
+	PiiEntityTypeCAHEALTHNUMBER                      PiiEntityType = "CA_HEALTH_NUMBER"
+	PiiEntityTypeCASOCIALINSURANCENUMBER             PiiEntityType = "CA_SOCIAL_INSURANCE_NUMBER"
+	PiiEntityTypeCREDITDEBITCARDCVV                  PiiEntityType = "CREDIT_DEBIT_CARD_CVV"
+	PiiEntityTypeCREDITDEBITCARDEXPIRY               PiiEntityType = "CREDIT_DEBIT_CARD_EXPIRY"
+	PiiEntityTypeCREDITDEBITCARDNUMBER               PiiEntityType = "CREDIT_DEBIT_CARD_NUMBER"
+	PiiEntityTypeDRIVERID                            PiiEntityType = "DRIVER_ID"
+	PiiEntityTypeEMAIL                               PiiEntityType = "EMAIL"
+	PiiEntityTypeINTERNATIONALBANKACCOUNTNUMBER      PiiEntityType = "INTERNATIONAL_BANK_ACCOUNT_NUMBER"
+	PiiEntityTypeIPADDRESS                           PiiEntityType = "IP_ADDRESS"
+	PiiEntityTypeLICENSEPLATE                        PiiEntityType = "LICENSE_PLATE"
+	PiiEntityTypeMACADDRESS                          PiiEntityType = "MAC_ADDRESS"
+	PiiEntityTypeNAME                                PiiEntityType = "NAME"
+	PiiEntityTypePASSWORD                            PiiEntityType = "PASSWORD"
+	PiiEntityTypePHONE                               PiiEntityType = "PHONE"
+	PiiEntityTypePIN                                 PiiEntityType = "PIN"
+	PiiEntityTypeSWIFTCODE                           PiiEntityType = "SWIFT_CODE"
+	PiiEntityTypeUKNATIONALHEALTHSERVICENUMBER       PiiEntityType = "UK_NATIONAL_HEALTH_SERVICE_NUMBER"
+	PiiEntityTypeUKNATIONALINSURANCENUMBER           PiiEntityType = "UK_NATIONAL_INSURANCE_NUMBER"
+	PiiEntityTypeUKUNIQUETAXPAYERREFERENCENUMBER     PiiEntityType = "UK_UNIQUE_TAXPAYER_REFERENCE_NUMBER"
+	PiiEntityTypeURL                                 PiiEntityType = "URL"
+	PiiEntityTypeUSERNAME                            PiiEntityType = "USERNAME"
+	PiiEntityTypeUSBANKACCOUNTNUMBER                 PiiEntityType = "US_BANK_ACCOUNT_NUMBER"
+	PiiEntityTypeUSBANKROUTINGNUMBER                 PiiEntityType = "US_BANK_ROUTING_NUMBER"
+	PiiEntityTypeUSINDIVIDUALTAXIDENTIFICATIONNUMBER PiiEntityType = "US_INDIVIDUAL_TAX_IDENTIFICATION_NUMBER"
+	PiiEntityTypeUSPASSPORTNUMBER                    PiiEntityType = "US_PASSPORT_NUMBER"
+	PiiEntityTypeUSSOCIALSECURITYNUMBER              PiiEntityType = "US_SOCIAL_SECURITY_NUMBER"
+	PiiEntityTypeVEHICLEIDENTIFICATIONNUMBER         PiiEntityType = "VEHICLE_IDENTIFICATION_NUMBER"
+)
+
+type GuardrailStatus string
+
+const (
+	GuardrailStatusCREATING   GuardrailStatus = "CREATING"
+	GuardrailStatusUPDATING   GuardrailStatus = "UPDATING"
+	GuardrailStatusVERSIONING GuardrailStatus = "VERSIONING"
+	GuardrailStatusREADY      GuardrailStatus = "READY"
+	GuardrailStatusFAILED     GuardrailStatus = "FAILED"
+	GuardrailStatusDELETING   GuardrailStatus = "DELETING"
+)
+
+type TopicAction string
+
+const (
+	TopicActionBLOCK TopicAction = "BLOCK"
+	TopicActionNONE  TopicAction = "NONE"
+)
+
+type TopicType string
+
+const (
+	TopicTypeDENY TopicType = "DENY"
+)
+
+type TopicsTierName string
+
+const (
+	TopicsTierNameCLASSIC  TopicsTierName = "CLASSIC"
+	TopicsTierNameSTANDARD TopicsTierName = "STANDARD"
+)
+
+type WordAction string
+
+const (
+	WordActionBLOCK WordAction = "BLOCK"
+	WordActionNONE  WordAction = "NONE"
+)
+
+type ManagedWordsType string
+
+const (
+	ManagedWordsTypePROFANITY ManagedWordsType = "PROFANITY"
+)
+
+type PromptRouterStatus string
+
+const (
+	PromptRouterStatusAVAILABLE PromptRouterStatus = "AVAILABLE"
+)
+
+type PromptRouterType string
+
+const (
+	PromptRouterTypeCustom  PromptRouterType = "custom"
+	PromptRouterTypeDefault PromptRouterType = "default"
+)
+
+type BedrockEmbeddingModelConfigurationEmbeddingDataType string
+
+const (
+	BedrockEmbeddingModelConfigurationEmbeddingDataTypeFLOAT32 BedrockEmbeddingModelConfigurationEmbeddingDataType = "FLOAT32"
+	BedrockEmbeddingModelConfigurationEmbeddingDataTypeBINARY  BedrockEmbeddingModelConfigurationEmbeddingDataType = "BINARY"
+)
+
+type EmbeddingModelType string
+
+const (
+	EmbeddingModelTypeCUSTOM  EmbeddingModelType = "CUSTOM"
+	EmbeddingModelTypeMANAGED EmbeddingModelType = "MANAGED"
+)
+
+type RedshiftProvisionedAuthType string
+
+const (
+	RedshiftProvisionedAuthTypeIAM              RedshiftProvisionedAuthType = "IAM"
+	RedshiftProvisionedAuthTypeUSERNAMEPASSWORD RedshiftProvisionedAuthType = "USERNAME_PASSWORD"
+	RedshiftProvisionedAuthTypeUSERNAME         RedshiftProvisionedAuthType = "USERNAME"
+)
+
+type RedshiftServerlessAuthType string
+
+const (
+	RedshiftServerlessAuthTypeIAM              RedshiftServerlessAuthType = "IAM"
+	RedshiftServerlessAuthTypeUSERNAMEPASSWORD RedshiftServerlessAuthType = "USERNAME_PASSWORD"
+)
+
+type RedshiftQueryEngineType string
+
+const (
+	RedshiftQueryEngineTypeSERVERLESS  RedshiftQueryEngineType = "SERVERLESS"
+	RedshiftQueryEngineTypePROVISIONED RedshiftQueryEngineType = "PROVISIONED"
+)
+
+type InclusionType string
+
+const (
+	InclusionTypeINCLUDE InclusionType = "INCLUDE"
+	InclusionTypeEXCLUDE InclusionType = "EXCLUDE"
+)
+
+type RedshiftQueryEngineStorageType string
+
+const (
+	RedshiftQueryEngineStorageTypeREDSHIFT       RedshiftQueryEngineStorageType = "REDSHIFT"
+	RedshiftQueryEngineStorageTypeAWSDATACATALOG RedshiftQueryEngineStorageType = "AWS_DATA_CATALOG"
+)
+
+type QueryEngineType string
+
+const (
+	QueryEngineTypeREDSHIFT QueryEngineType = "REDSHIFT"
+)
+
+type KnowledgeBaseType string
+
+const (
+	KnowledgeBaseTypeVECTOR  KnowledgeBaseType = "VECTOR"
+	KnowledgeBaseTypeKENDRA  KnowledgeBaseType = "KENDRA"
+	KnowledgeBaseTypeSQL     KnowledgeBaseType = "SQL"
+	KnowledgeBaseTypeMANAGED KnowledgeBaseType = "MANAGED"
+)
+
+type SupplementalDataStorageLocationType string
+
+const (
+	SupplementalDataStorageLocationTypeS3 SupplementalDataStorageLocationType = "S3"
+)
+
+type KnowledgeBaseStatus string
+
+const (
+	KnowledgeBaseStatusCREATING           KnowledgeBaseStatus = "CREATING"
+	KnowledgeBaseStatusACTIVE             KnowledgeBaseStatus = "ACTIVE"
+	KnowledgeBaseStatusDELETING           KnowledgeBaseStatus = "DELETING"
+	KnowledgeBaseStatusUPDATING           KnowledgeBaseStatus = "UPDATING"
+	KnowledgeBaseStatusFAILED             KnowledgeBaseStatus = "FAILED"
+	KnowledgeBaseStatusDELETEUNSUCCESSFUL KnowledgeBaseStatus = "DELETE_UNSUCCESSFUL"
+	KnowledgeBaseStatusUPDATEUNSUCCESSFUL KnowledgeBaseStatus = "UPDATE_UNSUCCESSFUL"
+)
+
+type KnowledgeBaseStorageType string
+
+const (
+	KnowledgeBaseStorageTypeOPENSEARCHSERVERLESS     KnowledgeBaseStorageType = "OPENSEARCH_SERVERLESS"
+	KnowledgeBaseStorageTypePINECONE                 KnowledgeBaseStorageType = "PINECONE"
+	KnowledgeBaseStorageTypeRDS                      KnowledgeBaseStorageType = "RDS"
+	KnowledgeBaseStorageTypeMONGODBATLAS             KnowledgeBaseStorageType = "MONGO_DB_ATLAS"
+	KnowledgeBaseStorageTypeNEPTUNEANALYTICS         KnowledgeBaseStorageType = "NEPTUNE_ANALYTICS"
+	KnowledgeBaseStorageTypeS3VECTORS                KnowledgeBaseStorageType = "S3_VECTORS"
+	KnowledgeBaseStorageTypeOPENSEARCHMANAGEDCLUSTER KnowledgeBaseStorageType = "OPENSEARCH_MANAGED_CLUSTER"
+)
+
+type PromptTemplateType string
+
+const (
+	PromptTemplateTypeTEXT PromptTemplateType = "TEXT"
+	PromptTemplateTypeCHAT PromptTemplateType = "CHAT"
+)
+
+type PromptVersionPromptTemplateType string
+
+const (
+	PromptVersionPromptTemplateTypeTEXT PromptVersionPromptTemplateType = "TEXT"
+	PromptVersionPromptTemplateTypeCHAT PromptVersionPromptTemplateType = "CHAT"
+)

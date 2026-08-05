@@ -183,23 +183,23 @@ type DatabaseSnapshotTag struct {
 }
 
 type DatabaseSnapshot struct {
-	Arn                               *string                   `json:"Arn,omitempty"`
-	CreatedAt                         *string                   `json:"CreatedAt,omitempty"`
-	Engine                            *string                   `json:"Engine,omitempty"`
-	EngineVersion                     *string                   `json:"EngineVersion,omitempty"`
-	FromRelationalDatabaseArn         *string                   `json:"FromRelationalDatabaseArn,omitempty"`
-	FromRelationalDatabaseBlueprintId *string                   `json:"FromRelationalDatabaseBlueprintId,omitempty"`
-	FromRelationalDatabaseBundleId    *string                   `json:"FromRelationalDatabaseBundleId,omitempty"`
-	FromRelationalDatabaseName        *string                   `json:"FromRelationalDatabaseName,omitempty"`
-	Location                          *DatabaseSnapshotLocation `json:"Location,omitempty"`
-	Name                              *string                   `json:"Name,omitempty"`
-	RelationalDatabaseName            *string                   `json:"RelationalDatabaseName,omitempty"`
-	RelationalDatabaseSnapshotName    *string                   `json:"RelationalDatabaseSnapshotName,omitempty"`
-	ResourceType                      *string                   `json:"ResourceType,omitempty"`
-	SizeInGb                          *int                      `json:"SizeInGb,omitempty"`
-	State                             *string                   `json:"State,omitempty"`
-	SupportCode                       *string                   `json:"SupportCode,omitempty"`
-	Tags                              []DatabaseSnapshotTag     `json:"Tags,omitempty"`
+	Arn                               *string                       `json:"Arn,omitempty"`
+	CreatedAt                         *string                       `json:"CreatedAt,omitempty"`
+	Engine                            *string                       `json:"Engine,omitempty"`
+	EngineVersion                     *string                       `json:"EngineVersion,omitempty"`
+	FromRelationalDatabaseArn         *string                       `json:"FromRelationalDatabaseArn,omitempty"`
+	FromRelationalDatabaseBlueprintId *string                       `json:"FromRelationalDatabaseBlueprintId,omitempty"`
+	FromRelationalDatabaseBundleId    *string                       `json:"FromRelationalDatabaseBundleId,omitempty"`
+	FromRelationalDatabaseName        *string                       `json:"FromRelationalDatabaseName,omitempty"`
+	Location                          *DatabaseSnapshotLocation     `json:"Location,omitempty"`
+	Name                              *string                       `json:"Name,omitempty"`
+	RelationalDatabaseName            *string                       `json:"RelationalDatabaseName,omitempty"`
+	RelationalDatabaseSnapshotName    *string                       `json:"RelationalDatabaseSnapshotName,omitempty"`
+	ResourceType                      *DatabaseSnapshotResourceType `json:"ResourceType,omitempty"`
+	SizeInGb                          *int                          `json:"SizeInGb,omitempty"`
+	State                             *string                       `json:"State,omitempty"`
+	SupportCode                       *string                       `json:"SupportCode,omitempty"`
+	Tags                              []DatabaseSnapshotTag         `json:"Tags,omitempty"`
 }
 
 func (DatabaseSnapshot) CloudControlType() string { return "AWS::Lightsail::DatabaseSnapshot" }
@@ -211,7 +211,7 @@ type AutoSnapshotAddOn struct {
 type AddOn struct {
 	AddOnType                *string            `json:"AddOnType,omitempty"`
 	AutoSnapshotAddOnRequest *AutoSnapshotAddOn `json:"AutoSnapshotAddOnRequest,omitempty"`
-	Status                   *string            `json:"Status,omitempty"`
+	Status                   *AddOnStatus       `json:"Status,omitempty"`
 }
 
 type Location struct {
@@ -255,19 +255,19 @@ type DiskSnapshotTag struct {
 }
 
 type DiskSnapshot struct {
-	CreatedAt          *string               `json:"CreatedAt,omitempty"`
-	DiskName           *string               `json:"DiskName,omitempty"`
-	DiskSnapshotArn    *string               `json:"DiskSnapshotArn,omitempty"`
-	DiskSnapshotName   *string               `json:"DiskSnapshotName,omitempty"`
-	FromDiskName       *string               `json:"FromDiskName,omitempty"`
-	IsFromAutoSnapshot *bool                 `json:"IsFromAutoSnapshot,omitempty"`
-	Location           *DiskSnapshotLocation `json:"Location,omitempty"`
-	Progress           *string               `json:"Progress,omitempty"`
-	ResourceType       *string               `json:"ResourceType,omitempty"`
-	SizeInGb           *int                  `json:"SizeInGb,omitempty"`
-	State              *string               `json:"State,omitempty"`
-	SupportCode        *string               `json:"SupportCode,omitempty"`
-	Tags               []DiskSnapshotTag     `json:"Tags,omitempty"`
+	CreatedAt          *string                   `json:"CreatedAt,omitempty"`
+	DiskName           *string                   `json:"DiskName,omitempty"`
+	DiskSnapshotArn    *string                   `json:"DiskSnapshotArn,omitempty"`
+	DiskSnapshotName   *string                   `json:"DiskSnapshotName,omitempty"`
+	FromDiskName       *string                   `json:"FromDiskName,omitempty"`
+	IsFromAutoSnapshot *bool                     `json:"IsFromAutoSnapshot,omitempty"`
+	Location           *DiskSnapshotLocation     `json:"Location,omitempty"`
+	Progress           *string                   `json:"Progress,omitempty"`
+	ResourceType       *DiskSnapshotResourceType `json:"ResourceType,omitempty"`
+	SizeInGb           *int                      `json:"SizeInGb,omitempty"`
+	State              *DiskSnapshotState        `json:"State,omitempty"`
+	SupportCode        *string                   `json:"SupportCode,omitempty"`
+	Tags               []DiskSnapshotTag         `json:"Tags,omitempty"`
 }
 
 func (DiskSnapshot) CloudControlType() string { return "AWS::Lightsail::DiskSnapshot" }
@@ -337,11 +337,11 @@ type Distribution struct {
 func (Distribution) CloudControlType() string { return "AWS::Lightsail::Distribution" }
 
 type DomainEntry struct {
-	Id      *string `json:"Id,omitempty"`
-	IsAlias *bool   `json:"IsAlias,omitempty"`
-	Name    *string `json:"Name,omitempty"`
-	Target  *string `json:"Target,omitempty"`
-	Type    *string `json:"Type,omitempty"`
+	Id      *string          `json:"Id,omitempty"`
+	IsAlias *bool            `json:"IsAlias,omitempty"`
+	Name    *string          `json:"Name,omitempty"`
+	Target  *string          `json:"Target,omitempty"`
+	Type    *DomainEntryType `json:"Type,omitempty"`
 }
 
 type DomainLocation struct {
@@ -355,14 +355,14 @@ type DomainTag struct {
 }
 
 type Domain struct {
-	Arn           *string         `json:"Arn,omitempty"`
-	CreatedAt     *string         `json:"CreatedAt,omitempty"`
-	DomainEntries []DomainEntry   `json:"DomainEntries,omitempty"`
-	DomainName    *string         `json:"DomainName,omitempty"`
-	Location      *DomainLocation `json:"Location,omitempty"`
-	ResourceType  *string         `json:"ResourceType,omitempty"`
-	SupportCode   *string         `json:"SupportCode,omitempty"`
-	Tags          []DomainTag     `json:"Tags,omitempty"`
+	Arn           *string             `json:"Arn,omitempty"`
+	CreatedAt     *string             `json:"CreatedAt,omitempty"`
+	DomainEntries []DomainEntry       `json:"DomainEntries,omitempty"`
+	DomainName    *string             `json:"DomainName,omitempty"`
+	Location      *DomainLocation     `json:"Location,omitempty"`
+	ResourceType  *DomainResourceType `json:"ResourceType,omitempty"`
+	SupportCode   *string             `json:"SupportCode,omitempty"`
+	Tags          []DomainTag         `json:"Tags,omitempty"`
 }
 
 func (Domain) CloudControlType() string { return "AWS::Lightsail::Domain" }
@@ -374,7 +374,7 @@ type InstanceAutoSnapshotAddOn struct {
 type InstanceAddOn struct {
 	AddOnType                *string                    `json:"AddOnType,omitempty"`
 	AutoSnapshotAddOnRequest *InstanceAutoSnapshotAddOn `json:"AutoSnapshotAddOnRequest,omitempty"`
-	Status                   *string                    `json:"Status,omitempty"`
+	Status                   *InstanceAddOnStatus       `json:"Status,omitempty"`
 }
 
 type InstanceDisk struct {
@@ -527,3 +527,67 @@ type StaticIp struct {
 }
 
 func (StaticIp) CloudControlType() string { return "AWS::Lightsail::StaticIp" }
+
+type DatabaseSnapshotResourceType string
+
+const (
+	DatabaseSnapshotResourceTypeRelationalDatabaseSnapshot DatabaseSnapshotResourceType = "RelationalDatabaseSnapshot"
+)
+
+type AddOnStatus string
+
+const (
+	AddOnStatusEnabling    AddOnStatus = "Enabling"
+	AddOnStatusDisabling   AddOnStatus = "Disabling"
+	AddOnStatusEnabled     AddOnStatus = "Enabled"
+	AddOnStatusTerminating AddOnStatus = "Terminating"
+	AddOnStatusTerminated  AddOnStatus = "Terminated"
+	AddOnStatusDisabled    AddOnStatus = "Disabled"
+	AddOnStatusFailed      AddOnStatus = "Failed"
+)
+
+type DiskSnapshotResourceType string
+
+const (
+	DiskSnapshotResourceTypeDiskSnapshot DiskSnapshotResourceType = "DiskSnapshot"
+)
+
+type DiskSnapshotState string
+
+const (
+	DiskSnapshotStatePending   DiskSnapshotState = "pending"
+	DiskSnapshotStateCompleted DiskSnapshotState = "completed"
+	DiskSnapshotStateError     DiskSnapshotState = "error"
+	DiskSnapshotStateUnknown   DiskSnapshotState = "unknown"
+)
+
+type DomainEntryType string
+
+const (
+	DomainEntryTypeA     DomainEntryType = "A"
+	DomainEntryTypeAAAA  DomainEntryType = "AAAA"
+	DomainEntryTypeCNAME DomainEntryType = "CNAME"
+	DomainEntryTypeMX    DomainEntryType = "MX"
+	DomainEntryTypeNS    DomainEntryType = "NS"
+	DomainEntryTypeSOA   DomainEntryType = "SOA"
+	DomainEntryTypeSRV   DomainEntryType = "SRV"
+	DomainEntryTypeTXT   DomainEntryType = "TXT"
+)
+
+type DomainResourceType string
+
+const (
+	DomainResourceTypeDomain DomainResourceType = "Domain"
+)
+
+type InstanceAddOnStatus string
+
+const (
+	InstanceAddOnStatusEnabling    InstanceAddOnStatus = "Enabling"
+	InstanceAddOnStatusDisabling   InstanceAddOnStatus = "Disabling"
+	InstanceAddOnStatusEnabled     InstanceAddOnStatus = "Enabled"
+	InstanceAddOnStatusTerminating InstanceAddOnStatus = "Terminating"
+	InstanceAddOnStatusTerminated  InstanceAddOnStatus = "Terminated"
+	InstanceAddOnStatusDisabled    InstanceAddOnStatus = "Disabled"
+	InstanceAddOnStatusFailed      InstanceAddOnStatus = "Failed"
+)

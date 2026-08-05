@@ -127,8 +127,8 @@ type Application struct {
 func (Application) CloudControlType() string { return "AWS::SecurityAgent::Application" }
 
 type Authentication struct {
-	ProviderType *string `json:"ProviderType,omitempty"`
-	Value        *string `json:"Value,omitempty"`
+	ProviderType *AuthenticationProviderType `json:"ProviderType,omitempty"`
+	Value        *string                     `json:"Value,omitempty"`
 }
 
 type Actor struct {
@@ -176,9 +176,9 @@ type CustomHeader struct {
 }
 
 type NetworkTrafficRule struct {
-	Effect                 *string `json:"Effect,omitempty"`
-	NetworkTrafficRuleType *string `json:"NetworkTrafficRuleType,omitempty"`
-	Pattern                *string `json:"Pattern,omitempty"`
+	Effect                 *NetworkTrafficRuleEffect                 `json:"Effect,omitempty"`
+	NetworkTrafficRuleType *NetworkTrafficRuleNetworkTrafficRuleType `json:"NetworkTrafficRuleType,omitempty"`
+	Pattern                *string                                   `json:"Pattern,omitempty"`
 }
 
 type NetworkTrafficConfig struct {
@@ -193,20 +193,20 @@ type PentestVpcConfig struct {
 }
 
 type Pentest struct {
-	AgentSpaceId            *string               `json:"AgentSpaceId,omitempty"`
-	Assets                  *Assets               `json:"Assets,omitempty"`
-	CleanUpStrategy         *string               `json:"CleanUpStrategy,omitempty"`
-	CodeRemediationStrategy *string               `json:"CodeRemediationStrategy,omitempty"`
-	CreatedAt               *string               `json:"CreatedAt,omitempty"`
-	DisableManagedSkills    []string              `json:"DisableManagedSkills,omitempty"`
-	ExcludeRiskTypes        []string              `json:"ExcludeRiskTypes,omitempty"`
-	LogConfig               *CloudWatchLog        `json:"LogConfig,omitempty"`
-	NetworkTrafficConfig    *NetworkTrafficConfig `json:"NetworkTrafficConfig,omitempty"`
-	PentestId               *string               `json:"PentestId,omitempty"`
-	ServiceRole             *string               `json:"ServiceRole,omitempty"`
-	Title                   *string               `json:"Title,omitempty"`
-	UpdatedAt               *string               `json:"UpdatedAt,omitempty"`
-	VpcConfig               *PentestVpcConfig     `json:"VpcConfig,omitempty"`
+	AgentSpaceId            *string                  `json:"AgentSpaceId,omitempty"`
+	Assets                  *Assets                  `json:"Assets,omitempty"`
+	CleanUpStrategy         *CleanUpStrategy         `json:"CleanUpStrategy,omitempty"`
+	CodeRemediationStrategy *CodeRemediationStrategy `json:"CodeRemediationStrategy,omitempty"`
+	CreatedAt               *string                  `json:"CreatedAt,omitempty"`
+	DisableManagedSkills    []SkillType              `json:"DisableManagedSkills,omitempty"`
+	ExcludeRiskTypes        []RiskType               `json:"ExcludeRiskTypes,omitempty"`
+	LogConfig               *CloudWatchLog           `json:"LogConfig,omitempty"`
+	NetworkTrafficConfig    *NetworkTrafficConfig    `json:"NetworkTrafficConfig,omitempty"`
+	PentestId               *string                  `json:"PentestId,omitempty"`
+	ServiceRole             *string                  `json:"ServiceRole,omitempty"`
+	Title                   *string                  `json:"Title,omitempty"`
+	UpdatedAt               *string                  `json:"UpdatedAt,omitempty"`
+	VpcConfig               *PentestVpcConfig        `json:"VpcConfig,omitempty"`
 }
 
 func (Pentest) CloudControlType() string { return "AWS::SecurityAgent::Pentest" }
@@ -225,13 +225,13 @@ type SecurityRequirementPackTag struct {
 }
 
 type SecurityRequirementPack struct {
-	Description          *string                      `json:"Description,omitempty"`
-	KmsKeyId             *string                      `json:"KmsKeyId,omitempty"`
-	Name                 *string                      `json:"Name,omitempty"`
-	PackId               *string                      `json:"PackId,omitempty"`
-	SecurityRequirements []SecurityRequirement        `json:"SecurityRequirements,omitempty"`
-	Status               *string                      `json:"Status,omitempty"`
-	Tags                 []SecurityRequirementPackTag `json:"Tags,omitempty"`
+	Description          *string                        `json:"Description,omitempty"`
+	KmsKeyId             *string                        `json:"KmsKeyId,omitempty"`
+	Name                 *string                        `json:"Name,omitempty"`
+	PackId               *string                        `json:"PackId,omitempty"`
+	SecurityRequirements []SecurityRequirement          `json:"SecurityRequirements,omitempty"`
+	Status               *SecurityRequirementPackStatus `json:"Status,omitempty"`
+	Tags                 []SecurityRequirementPackTag   `json:"Tags,omitempty"`
 }
 
 func (SecurityRequirementPack) CloudControlType() string {
@@ -244,9 +244,9 @@ type TargetDomainTag struct {
 }
 
 type DnsVerification struct {
-	DnsRecordName *string `json:"DnsRecordName,omitempty"`
-	DnsRecordType *string `json:"DnsRecordType,omitempty"`
-	Token         *string `json:"Token,omitempty"`
+	DnsRecordName *string                       `json:"DnsRecordName,omitempty"`
+	DnsRecordType *DnsVerificationDnsRecordType `json:"DnsRecordType,omitempty"`
+	Token         *string                       `json:"Token,omitempty"`
 }
 
 type HttpVerification struct {
@@ -255,21 +255,135 @@ type HttpVerification struct {
 }
 
 type VerificationDetails struct {
-	DnsTxt    *DnsVerification  `json:"DnsTxt,omitempty"`
-	HttpRoute *HttpVerification `json:"HttpRoute,omitempty"`
-	Method    *string           `json:"Method,omitempty"`
+	DnsTxt    *DnsVerification           `json:"DnsTxt,omitempty"`
+	HttpRoute *HttpVerification          `json:"HttpRoute,omitempty"`
+	Method    *VerificationDetailsMethod `json:"Method,omitempty"`
 }
 
 type TargetDomain struct {
-	CreatedAt                *string              `json:"CreatedAt,omitempty"`
-	Tags                     []TargetDomainTag    `json:"Tags,omitempty"`
-	TargetDomainId           *string              `json:"TargetDomainId,omitempty"`
-	TargetDomainName         *string              `json:"TargetDomainName,omitempty"`
-	VerificationDetails      *VerificationDetails `json:"VerificationDetails,omitempty"`
-	VerificationMethod       *string              `json:"VerificationMethod,omitempty"`
-	VerificationStatus       *string              `json:"VerificationStatus,omitempty"`
-	VerificationStatusReason *string              `json:"VerificationStatusReason,omitempty"`
-	VerifiedAt               *string              `json:"VerifiedAt,omitempty"`
+	CreatedAt                *string                         `json:"CreatedAt,omitempty"`
+	Tags                     []TargetDomainTag               `json:"Tags,omitempty"`
+	TargetDomainId           *string                         `json:"TargetDomainId,omitempty"`
+	TargetDomainName         *string                         `json:"TargetDomainName,omitempty"`
+	VerificationDetails      *VerificationDetails            `json:"VerificationDetails,omitempty"`
+	VerificationMethod       *TargetDomainVerificationMethod `json:"VerificationMethod,omitempty"`
+	VerificationStatus       *TargetDomainVerificationStatus `json:"VerificationStatus,omitempty"`
+	VerificationStatusReason *string                         `json:"VerificationStatusReason,omitempty"`
+	VerifiedAt               *string                         `json:"VerifiedAt,omitempty"`
 }
 
 func (TargetDomain) CloudControlType() string { return "AWS::SecurityAgent::TargetDomain" }
+
+type AuthenticationProviderType string
+
+const (
+	AuthenticationProviderTypeSECRETSMANAGER AuthenticationProviderType = "SECRETS_MANAGER"
+	AuthenticationProviderTypeAWSLAMBDA      AuthenticationProviderType = "AWS_LAMBDA"
+	AuthenticationProviderTypeAWSIAMROLE     AuthenticationProviderType = "AWS_IAM_ROLE"
+	AuthenticationProviderTypeAWSINTERNAL    AuthenticationProviderType = "AWS_INTERNAL"
+)
+
+type CleanUpStrategy string
+
+const (
+	CleanUpStrategyBESTEFFORTDELETE CleanUpStrategy = "BEST_EFFORT_DELETE"
+	CleanUpStrategyRETAINALL        CleanUpStrategy = "RETAIN_ALL"
+)
+
+type CodeRemediationStrategy string
+
+const (
+	CodeRemediationStrategyAUTOMATIC CodeRemediationStrategy = "AUTOMATIC"
+	CodeRemediationStrategyDISABLED  CodeRemediationStrategy = "DISABLED"
+)
+
+type SkillType string
+
+const (
+	SkillTypeFINDINGPERSONALIZATION SkillType = "FINDING_PERSONALIZATION"
+	SkillTypeLOGINOPTIMIZATION      SkillType = "LOGIN_OPTIMIZATION"
+)
+
+type RiskType string
+
+const (
+	RiskTypeCROSSSITESCRIPTING            RiskType = "CROSS_SITE_SCRIPTING"
+	RiskTypeDEFAULTCREDENTIALS            RiskType = "DEFAULT_CREDENTIALS"
+	RiskTypeINSECUREDIRECTOBJECTREFERENCE RiskType = "INSECURE_DIRECT_OBJECT_REFERENCE"
+	RiskTypePRIVILEGEESCALATION           RiskType = "PRIVILEGE_ESCALATION"
+	RiskTypeSERVERSIDETEMPLATEINJECTION   RiskType = "SERVER_SIDE_TEMPLATE_INJECTION"
+	RiskTypeCOMMANDINJECTION              RiskType = "COMMAND_INJECTION"
+	RiskTypeCODEINJECTION                 RiskType = "CODE_INJECTION"
+	RiskTypeSQLINJECTION                  RiskType = "SQL_INJECTION"
+	RiskTypeARBITRARYFILEUPLOAD           RiskType = "ARBITRARY_FILE_UPLOAD"
+	RiskTypeINSECUREDESERIALIZATION       RiskType = "INSECURE_DESERIALIZATION"
+	RiskTypeLOCALFILEINCLUSION            RiskType = "LOCAL_FILE_INCLUSION"
+	RiskTypeINFORMATIONDISCLOSURE         RiskType = "INFORMATION_DISCLOSURE"
+	RiskTypePATHTRAVERSAL                 RiskType = "PATH_TRAVERSAL"
+	RiskTypeSERVERSIDEREQUESTFORGERY      RiskType = "SERVER_SIDE_REQUEST_FORGERY"
+	RiskTypeJSONWEBTOKENVULNERABILITIES   RiskType = "JSON_WEB_TOKEN_VULNERABILITIES"
+	RiskTypeXMLEXTERNALENTITY             RiskType = "XML_EXTERNAL_ENTITY"
+	RiskTypeFILEDELETION                  RiskType = "FILE_DELETION"
+	RiskTypeOTHER                         RiskType = "OTHER"
+	RiskTypeGRAPHQLVULNERABILITIES        RiskType = "GRAPHQL_VULNERABILITIES"
+	RiskTypeBUSINESSLOGICVULNERABILITIES  RiskType = "BUSINESS_LOGIC_VULNERABILITIES"
+	RiskTypeCRYPTOGRAPHICVULNERABILITIES  RiskType = "CRYPTOGRAPHIC_VULNERABILITIES"
+	RiskTypeDENIALOFSERVICE               RiskType = "DENIAL_OF_SERVICE"
+	RiskTypeFILEACCESS                    RiskType = "FILE_ACCESS"
+	RiskTypeFILECREATION                  RiskType = "FILE_CREATION"
+	RiskTypeDATABASEMODIFICATION          RiskType = "DATABASE_MODIFICATION"
+	RiskTypeDATABASEACCESS                RiskType = "DATABASE_ACCESS"
+	RiskTypeOUTBOUNDSERVICEREQUEST        RiskType = "OUTBOUND_SERVICE_REQUEST"
+	RiskTypeUNKNOWN                       RiskType = "UNKNOWN"
+)
+
+type NetworkTrafficRuleEffect string
+
+const (
+	NetworkTrafficRuleEffectALLOW NetworkTrafficRuleEffect = "ALLOW"
+	NetworkTrafficRuleEffectDENY  NetworkTrafficRuleEffect = "DENY"
+)
+
+type NetworkTrafficRuleNetworkTrafficRuleType string
+
+const (
+	NetworkTrafficRuleNetworkTrafficRuleTypeURL NetworkTrafficRuleNetworkTrafficRuleType = "URL"
+)
+
+type SecurityRequirementPackStatus string
+
+const (
+	SecurityRequirementPackStatusENABLED  SecurityRequirementPackStatus = "ENABLED"
+	SecurityRequirementPackStatusDISABLED SecurityRequirementPackStatus = "DISABLED"
+)
+
+type DnsVerificationDnsRecordType string
+
+const (
+	DnsVerificationDnsRecordTypeTXT DnsVerificationDnsRecordType = "TXT"
+)
+
+type VerificationDetailsMethod string
+
+const (
+	VerificationDetailsMethodDNSTXT     VerificationDetailsMethod = "DNS_TXT"
+	VerificationDetailsMethodHTTPROUTE  VerificationDetailsMethod = "HTTP_ROUTE"
+	VerificationDetailsMethodPRIVATEVPC VerificationDetailsMethod = "PRIVATE_VPC"
+)
+
+type TargetDomainVerificationMethod string
+
+const (
+	TargetDomainVerificationMethodDNSTXT     TargetDomainVerificationMethod = "DNS_TXT"
+	TargetDomainVerificationMethodHTTPROUTE  TargetDomainVerificationMethod = "HTTP_ROUTE"
+	TargetDomainVerificationMethodPRIVATEVPC TargetDomainVerificationMethod = "PRIVATE_VPC"
+)
+
+type TargetDomainVerificationStatus string
+
+const (
+	TargetDomainVerificationStatusPENDING     TargetDomainVerificationStatus = "PENDING"
+	TargetDomainVerificationStatusVERIFIED    TargetDomainVerificationStatus = "VERIFIED"
+	TargetDomainVerificationStatusFAILED      TargetDomainVerificationStatus = "FAILED"
+	TargetDomainVerificationStatusUNREACHABLE TargetDomainVerificationStatus = "UNREACHABLE"
+)

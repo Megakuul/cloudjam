@@ -23,10 +23,10 @@ type Subscription struct {
 func (Subscription) CloudControlType() string { return "AWS::SNS::Subscription" }
 
 type LoggingConfig struct {
-	FailureFeedbackRoleArn    *string `json:"FailureFeedbackRoleArn,omitempty"`
-	Protocol                  *string `json:"Protocol,omitempty"`
-	SuccessFeedbackRoleArn    *string `json:"SuccessFeedbackRoleArn,omitempty"`
-	SuccessFeedbackSampleRate *string `json:"SuccessFeedbackSampleRate,omitempty"`
+	FailureFeedbackRoleArn    *string                `json:"FailureFeedbackRoleArn,omitempty"`
+	Protocol                  *LoggingConfigProtocol `json:"Protocol,omitempty"`
+	SuccessFeedbackRoleArn    *string                `json:"SuccessFeedbackRoleArn,omitempty"`
+	SuccessFeedbackSampleRate *string                `json:"SuccessFeedbackSampleRate,omitempty"`
 }
 
 type TopicSubscription struct {
@@ -72,3 +72,13 @@ type TopicPolicy struct {
 }
 
 func (TopicPolicy) CloudControlType() string { return "AWS::SNS::TopicPolicy" }
+
+type LoggingConfigProtocol string
+
+const (
+	LoggingConfigProtocolHttpS       LoggingConfigProtocol = "http/s"
+	LoggingConfigProtocolSqs         LoggingConfigProtocol = "sqs"
+	LoggingConfigProtocolLambda      LoggingConfigProtocol = "lambda"
+	LoggingConfigProtocolFirehose    LoggingConfigProtocol = "firehose"
+	LoggingConfigProtocolApplication LoggingConfigProtocol = "application"
+)

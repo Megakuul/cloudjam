@@ -9,19 +9,19 @@ type Tag struct {
 }
 
 type Accelerator struct {
-	AcceleratorArn   *string  `json:"AcceleratorArn,omitempty"`
-	DnsName          *string  `json:"DnsName,omitempty"`
-	DualStackDnsName *string  `json:"DualStackDnsName,omitempty"`
-	Enabled          *bool    `json:"Enabled,omitempty"`
-	FlowLogsEnabled  *bool    `json:"FlowLogsEnabled,omitempty"`
-	FlowLogsS3Bucket *string  `json:"FlowLogsS3Bucket,omitempty"`
-	FlowLogsS3Prefix *string  `json:"FlowLogsS3Prefix,omitempty"`
-	IpAddressType    *string  `json:"IpAddressType,omitempty"`
-	IpAddresses      []string `json:"IpAddresses,omitempty"`
-	Ipv4Addresses    []string `json:"Ipv4Addresses,omitempty"`
-	Ipv6Addresses    []string `json:"Ipv6Addresses,omitempty"`
-	Name             *string  `json:"Name,omitempty"`
-	Tags             []Tag    `json:"Tags,omitempty"`
+	AcceleratorArn   *string                   `json:"AcceleratorArn,omitempty"`
+	DnsName          *string                   `json:"DnsName,omitempty"`
+	DualStackDnsName *string                   `json:"DualStackDnsName,omitempty"`
+	Enabled          *bool                     `json:"Enabled,omitempty"`
+	FlowLogsEnabled  *bool                     `json:"FlowLogsEnabled,omitempty"`
+	FlowLogsS3Bucket *string                   `json:"FlowLogsS3Bucket,omitempty"`
+	FlowLogsS3Prefix *string                   `json:"FlowLogsS3Prefix,omitempty"`
+	IpAddressType    *AcceleratorIpAddressType `json:"IpAddressType,omitempty"`
+	IpAddresses      []string                  `json:"IpAddresses,omitempty"`
+	Ipv4Addresses    []string                  `json:"Ipv4Addresses,omitempty"`
+	Ipv6Addresses    []string                  `json:"Ipv6Addresses,omitempty"`
+	Name             *string                   `json:"Name,omitempty"`
+	Tags             []Tag                     `json:"Tags,omitempty"`
 }
 
 func (Accelerator) CloudControlType() string { return "AWS::GlobalAccelerator::Accelerator" }
@@ -62,17 +62,17 @@ type PortOverride struct {
 }
 
 type EndpointGroup struct {
-	EndpointConfigurations     []EndpointConfiguration `json:"EndpointConfigurations,omitempty"`
-	EndpointGroupArn           *string                 `json:"EndpointGroupArn,omitempty"`
-	EndpointGroupRegion        *string                 `json:"EndpointGroupRegion,omitempty"`
-	HealthCheckIntervalSeconds *int                    `json:"HealthCheckIntervalSeconds,omitempty"`
-	HealthCheckPath            *string                 `json:"HealthCheckPath,omitempty"`
-	HealthCheckPort            *int                    `json:"HealthCheckPort,omitempty"`
-	HealthCheckProtocol        *string                 `json:"HealthCheckProtocol,omitempty"`
-	ListenerArn                *string                 `json:"ListenerArn,omitempty"`
-	PortOverrides              []PortOverride          `json:"PortOverrides,omitempty"`
-	ThresholdCount             *int                    `json:"ThresholdCount,omitempty"`
-	TrafficDialPercentage      *float64                `json:"TrafficDialPercentage,omitempty"`
+	EndpointConfigurations     []EndpointConfiguration           `json:"EndpointConfigurations,omitempty"`
+	EndpointGroupArn           *string                           `json:"EndpointGroupArn,omitempty"`
+	EndpointGroupRegion        *string                           `json:"EndpointGroupRegion,omitempty"`
+	HealthCheckIntervalSeconds *int                              `json:"HealthCheckIntervalSeconds,omitempty"`
+	HealthCheckPath            *string                           `json:"HealthCheckPath,omitempty"`
+	HealthCheckPort            *int                              `json:"HealthCheckPort,omitempty"`
+	HealthCheckProtocol        *EndpointGroupHealthCheckProtocol `json:"HealthCheckProtocol,omitempty"`
+	ListenerArn                *string                           `json:"ListenerArn,omitempty"`
+	PortOverrides              []PortOverride                    `json:"PortOverrides,omitempty"`
+	ThresholdCount             *int                              `json:"ThresholdCount,omitempty"`
+	TrafficDialPercentage      *float64                          `json:"TrafficDialPercentage,omitempty"`
 }
 
 func (EndpointGroup) CloudControlType() string { return "AWS::GlobalAccelerator::EndpointGroup" }
@@ -83,11 +83,40 @@ type PortRange struct {
 }
 
 type Listener struct {
-	AcceleratorArn *string     `json:"AcceleratorArn,omitempty"`
-	ClientAffinity *string     `json:"ClientAffinity,omitempty"`
-	ListenerArn    *string     `json:"ListenerArn,omitempty"`
-	PortRanges     []PortRange `json:"PortRanges,omitempty"`
-	Protocol       *string     `json:"Protocol,omitempty"`
+	AcceleratorArn *string                 `json:"AcceleratorArn,omitempty"`
+	ClientAffinity *ListenerClientAffinity `json:"ClientAffinity,omitempty"`
+	ListenerArn    *string                 `json:"ListenerArn,omitempty"`
+	PortRanges     []PortRange             `json:"PortRanges,omitempty"`
+	Protocol       *ListenerProtocol       `json:"Protocol,omitempty"`
 }
 
 func (Listener) CloudControlType() string { return "AWS::GlobalAccelerator::Listener" }
+
+type AcceleratorIpAddressType string
+
+const (
+	AcceleratorIpAddressTypeIPV4      AcceleratorIpAddressType = "IPV4"
+	AcceleratorIpAddressTypeDUALSTACK AcceleratorIpAddressType = "DUAL_STACK"
+)
+
+type EndpointGroupHealthCheckProtocol string
+
+const (
+	EndpointGroupHealthCheckProtocolTCP   EndpointGroupHealthCheckProtocol = "TCP"
+	EndpointGroupHealthCheckProtocolHTTP  EndpointGroupHealthCheckProtocol = "HTTP"
+	EndpointGroupHealthCheckProtocolHTTPS EndpointGroupHealthCheckProtocol = "HTTPS"
+)
+
+type ListenerClientAffinity string
+
+const (
+	ListenerClientAffinityNONE     ListenerClientAffinity = "NONE"
+	ListenerClientAffinitySOURCEIP ListenerClientAffinity = "SOURCE_IP"
+)
+
+type ListenerProtocol string
+
+const (
+	ListenerProtocolTCP ListenerProtocol = "TCP"
+	ListenerProtocolUDP ListenerProtocol = "UDP"
+)

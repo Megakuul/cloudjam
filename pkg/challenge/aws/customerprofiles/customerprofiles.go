@@ -22,14 +22,14 @@ type ValueRange struct {
 type Range struct {
 	TimestampFormat *string     `json:"TimestampFormat,omitempty"`
 	TimestampSource *string     `json:"TimestampSource,omitempty"`
-	Unit            *string     `json:"Unit,omitempty"`
+	Unit            *RangeUnit  `json:"Unit,omitempty"`
 	Value           *int        `json:"Value,omitempty"`
 	ValueRange      *ValueRange `json:"ValueRange,omitempty"`
 }
 
 type Threshold struct {
-	Operator *string `json:"Operator,omitempty"`
-	Value    *string `json:"Value,omitempty"`
+	Operator *ThresholdOperator `json:"Operator,omitempty"`
+	Value    *string            `json:"Value,omitempty"`
 }
 
 type Conditions struct {
@@ -49,19 +49,19 @@ type Tag struct {
 }
 
 type CalculatedAttributeDefinition struct {
-	AttributeDetails        *AttributeDetails `json:"AttributeDetails,omitempty"`
-	CalculatedAttributeName *string           `json:"CalculatedAttributeName,omitempty"`
-	Conditions              *Conditions       `json:"Conditions,omitempty"`
-	CreatedAt               *string           `json:"CreatedAt,omitempty"`
-	Description             *string           `json:"Description,omitempty"`
-	DisplayName             *string           `json:"DisplayName,omitempty"`
-	DomainName              *string           `json:"DomainName,omitempty"`
-	LastUpdatedAt           *string           `json:"LastUpdatedAt,omitempty"`
-	Readiness               *Readiness        `json:"Readiness,omitempty"`
-	Statistic               *string           `json:"Statistic,omitempty"`
-	Status                  *string           `json:"Status,omitempty"`
-	Tags                    []Tag             `json:"Tags,omitempty"`
-	UseHistoricalData       *bool             `json:"UseHistoricalData,omitempty"`
+	AttributeDetails        *AttributeDetails                    `json:"AttributeDetails,omitempty"`
+	CalculatedAttributeName *string                              `json:"CalculatedAttributeName,omitempty"`
+	Conditions              *Conditions                          `json:"Conditions,omitempty"`
+	CreatedAt               *string                              `json:"CreatedAt,omitempty"`
+	Description             *string                              `json:"Description,omitempty"`
+	DisplayName             *string                              `json:"DisplayName,omitempty"`
+	DomainName              *string                              `json:"DomainName,omitempty"`
+	LastUpdatedAt           *string                              `json:"LastUpdatedAt,omitempty"`
+	Readiness               *Readiness                           `json:"Readiness,omitempty"`
+	Statistic               *Statistic                           `json:"Statistic,omitempty"`
+	Status                  *CalculatedAttributeDefinitionStatus `json:"Status,omitempty"`
+	Tags                    []Tag                                `json:"Tags,omitempty"`
+	UseHistoricalData       *bool                                `json:"UseHistoricalData,omitempty"`
 }
 
 func (CalculatedAttributeDefinition) CloudControlType() string {
@@ -79,8 +79,8 @@ type DataStore struct {
 }
 
 type ConflictResolution struct {
-	ConflictResolvingModel *string `json:"ConflictResolvingModel,omitempty"`
-	SourceName             *string `json:"SourceName,omitempty"`
+	ConflictResolvingModel *ConflictResolutionConflictResolvingModel `json:"ConflictResolvingModel,omitempty"`
+	SourceName             *string                                   `json:"SourceName,omitempty"`
 }
 
 type Consolidation struct {
@@ -104,8 +104,8 @@ type ExportingConfig struct {
 }
 
 type JobSchedule struct {
-	DayOfTheWeek *string `json:"DayOfTheWeek,omitempty"`
-	Time         *string `json:"Time,omitempty"`
+	DayOfTheWeek *JobScheduleDayOfTheWeek `json:"DayOfTheWeek,omitempty"`
+	Time         *string                  `json:"Time,omitempty"`
 }
 
 type Matching struct {
@@ -116,10 +116,10 @@ type Matching struct {
 }
 
 type AttributeTypesSelector struct {
-	Address                []string `json:"Address,omitempty"`
-	AttributeMatchingModel *string  `json:"AttributeMatchingModel,omitempty"`
-	EmailAddress           []string `json:"EmailAddress,omitempty"`
-	PhoneNumber            []string `json:"PhoneNumber,omitempty"`
+	Address                []string                                      `json:"Address,omitempty"`
+	AttributeMatchingModel *AttributeTypesSelectorAttributeMatchingModel `json:"AttributeMatchingModel,omitempty"`
+	EmailAddress           []string                                      `json:"EmailAddress,omitempty"`
+	PhoneNumber            []string                                      `json:"PhoneNumber,omitempty"`
 }
 
 type MatchingRule struct {
@@ -127,14 +127,14 @@ type MatchingRule struct {
 }
 
 type RuleBasedMatching struct {
-	AttributeTypesSelector         *AttributeTypesSelector `json:"AttributeTypesSelector,omitempty"`
-	ConflictResolution             *ConflictResolution     `json:"ConflictResolution,omitempty"`
-	Enabled                        *bool                   `json:"Enabled,omitempty"`
-	ExportingConfig                *ExportingConfig        `json:"ExportingConfig,omitempty"`
-	MatchingRules                  []MatchingRule          `json:"MatchingRules,omitempty"`
-	MaxAllowedRuleLevelForMatching *int                    `json:"MaxAllowedRuleLevelForMatching,omitempty"`
-	MaxAllowedRuleLevelForMerging  *int                    `json:"MaxAllowedRuleLevelForMerging,omitempty"`
-	Status                         *string                 `json:"Status,omitempty"`
+	AttributeTypesSelector         *AttributeTypesSelector  `json:"AttributeTypesSelector,omitempty"`
+	ConflictResolution             *ConflictResolution      `json:"ConflictResolution,omitempty"`
+	Enabled                        *bool                    `json:"Enabled,omitempty"`
+	ExportingConfig                *ExportingConfig         `json:"ExportingConfig,omitempty"`
+	MatchingRules                  []MatchingRule           `json:"MatchingRules,omitempty"`
+	MaxAllowedRuleLevelForMatching *int                     `json:"MaxAllowedRuleLevelForMatching,omitempty"`
+	MaxAllowedRuleLevelForMerging  *int                     `json:"MaxAllowedRuleLevelForMerging,omitempty"`
+	Status                         *RuleBasedMatchingStatus `json:"Status,omitempty"`
 }
 
 type DomainStats struct {
@@ -166,10 +166,10 @@ type Domain struct {
 func (Domain) CloudControlType() string { return "AWS::CustomerProfiles::Domain" }
 
 type DomainObjectTypeField struct {
-	ContentType *string `json:"ContentType,omitempty"`
-	FeatureType *string `json:"FeatureType,omitempty"`
-	Source      *string `json:"Source,omitempty"`
-	Target      *string `json:"Target,omitempty"`
+	ContentType *DomainObjectTypeFieldContentType `json:"ContentType,omitempty"`
+	FeatureType *DomainObjectTypeFieldFeatureType `json:"FeatureType,omitempty"`
+	Source      *string                           `json:"Source,omitempty"`
+	Target      *string                           `json:"Target,omitempty"`
 }
 
 type DomainObjectTypeTag struct {
@@ -191,7 +191,7 @@ type DomainObjectType struct {
 func (DomainObjectType) CloudControlType() string { return "AWS::CustomerProfiles::DomainObjectType" }
 
 type EventStreamDestinationDetails struct {
-	Status *string `json:"Status,omitempty"`
+	Status *Status `json:"Status,omitempty"`
 	Uri    *string `json:"Uri,omitempty"`
 }
 
@@ -206,7 +206,7 @@ type EventStream struct {
 	DomainName         *string                        `json:"DomainName,omitempty"`
 	EventStreamArn     *string                        `json:"EventStreamArn,omitempty"`
 	EventStreamName    *string                        `json:"EventStreamName,omitempty"`
-	State              *string                        `json:"State,omitempty"`
+	State              *EventStreamState              `json:"State,omitempty"`
 	Tags               []EventStreamTag               `json:"Tags,omitempty"`
 	Uri                *string                        `json:"Uri,omitempty"`
 }
@@ -214,10 +214,10 @@ type EventStream struct {
 func (EventStream) CloudControlType() string { return "AWS::CustomerProfiles::EventStream" }
 
 type ObjectAttribute struct {
-	ComparisonOperator *string  `json:"ComparisonOperator,omitempty"`
-	FieldName          *string  `json:"FieldName,omitempty"`
-	Source             *string  `json:"Source,omitempty"`
-	Values             []string `json:"Values,omitempty"`
+	ComparisonOperator *ObjectAttributeComparisonOperator `json:"ComparisonOperator,omitempty"`
+	FieldName          *string                            `json:"FieldName,omitempty"`
+	Source             *string                            `json:"Source,omitempty"`
+	Values             []string                           `json:"Values,omitempty"`
 }
 
 type EventTriggerDimension struct {
@@ -225,15 +225,15 @@ type EventTriggerDimension struct {
 }
 
 type EventTriggerCondition struct {
-	EventTriggerDimensions []EventTriggerDimension `json:"EventTriggerDimensions,omitempty"`
-	LogicalOperator        *string                 `json:"LogicalOperator,omitempty"`
+	EventTriggerDimensions []EventTriggerDimension      `json:"EventTriggerDimensions,omitempty"`
+	LogicalOperator        *EventTriggerLogicalOperator `json:"LogicalOperator,omitempty"`
 }
 
 type Period struct {
-	MaxInvocationsPerProfile *int    `json:"MaxInvocationsPerProfile,omitempty"`
-	Unit                     *string `json:"Unit,omitempty"`
-	Unlimited                *bool   `json:"Unlimited,omitempty"`
-	Value                    *int    `json:"Value,omitempty"`
+	MaxInvocationsPerProfile *int        `json:"MaxInvocationsPerProfile,omitempty"`
+	Unit                     *PeriodUnit `json:"Unit,omitempty"`
+	Unlimited                *bool       `json:"Unlimited,omitempty"`
+	Value                    *int        `json:"Value,omitempty"`
 }
 
 type EventTriggerLimits struct {
@@ -298,22 +298,22 @@ type SourceConnectorProperties struct {
 
 type SourceFlowConfig struct {
 	ConnectorProfileName      *string                    `json:"ConnectorProfileName,omitempty"`
-	ConnectorType             *string                    `json:"ConnectorType,omitempty"`
+	ConnectorType             *ConnectorType             `json:"ConnectorType,omitempty"`
 	IncrementalPullConfig     *IncrementalPullConfig     `json:"IncrementalPullConfig,omitempty"`
 	SourceConnectorProperties *SourceConnectorProperties `json:"SourceConnectorProperties,omitempty"`
 }
 
 type ConnectorOperator struct {
-	Marketo    *string `json:"Marketo,omitempty"`
-	S3         *string `json:"S3,omitempty"`
-	Salesforce *string `json:"Salesforce,omitempty"`
-	ServiceNow *string `json:"ServiceNow,omitempty"`
-	Zendesk    *string `json:"Zendesk,omitempty"`
+	Marketo    *MarketoConnectorOperator    `json:"Marketo,omitempty"`
+	S3         *S3ConnectorOperator         `json:"S3,omitempty"`
+	Salesforce *SalesforceConnectorOperator `json:"Salesforce,omitempty"`
+	ServiceNow *ServiceNowConnectorOperator `json:"ServiceNow,omitempty"`
+	Zendesk    *ZendeskConnectorOperator    `json:"Zendesk,omitempty"`
 }
 
 type TaskPropertiesMap struct {
-	OperatorPropertyKey *string `json:"OperatorPropertyKey,omitempty"`
-	Property            *string `json:"Property,omitempty"`
+	OperatorPropertyKey *OperatorPropertiesKeys `json:"OperatorPropertyKey,omitempty"`
+	Property            *string                 `json:"Property,omitempty"`
 }
 
 type Task struct {
@@ -321,17 +321,17 @@ type Task struct {
 	DestinationField  *string             `json:"DestinationField,omitempty"`
 	SourceFields      []string            `json:"SourceFields,omitempty"`
 	TaskProperties    []TaskPropertiesMap `json:"TaskProperties,omitempty"`
-	TaskType          *string             `json:"TaskType,omitempty"`
+	TaskType          *TaskType           `json:"TaskType,omitempty"`
 }
 
 type ScheduledTriggerProperties struct {
-	DataPullMode       *string  `json:"DataPullMode,omitempty"`
-	FirstExecutionFrom *float64 `json:"FirstExecutionFrom,omitempty"`
-	ScheduleEndTime    *float64 `json:"ScheduleEndTime,omitempty"`
-	ScheduleExpression *string  `json:"ScheduleExpression,omitempty"`
-	ScheduleOffset     *int     `json:"ScheduleOffset,omitempty"`
-	ScheduleStartTime  *float64 `json:"ScheduleStartTime,omitempty"`
-	Timezone           *string  `json:"Timezone,omitempty"`
+	DataPullMode       *ScheduledTriggerPropertiesDataPullMode `json:"DataPullMode,omitempty"`
+	FirstExecutionFrom *float64                                `json:"FirstExecutionFrom,omitempty"`
+	ScheduleEndTime    *float64                                `json:"ScheduleEndTime,omitempty"`
+	ScheduleExpression *string                                 `json:"ScheduleExpression,omitempty"`
+	ScheduleOffset     *int                                    `json:"ScheduleOffset,omitempty"`
+	ScheduleStartTime  *float64                                `json:"ScheduleStartTime,omitempty"`
+	Timezone           *string                                 `json:"Timezone,omitempty"`
 }
 
 type TriggerProperties struct {
@@ -340,7 +340,7 @@ type TriggerProperties struct {
 
 type TriggerConfig struct {
 	TriggerProperties *TriggerProperties `json:"TriggerProperties,omitempty"`
-	TriggerType       *string            `json:"TriggerType,omitempty"`
+	TriggerType       *TriggerType       `json:"TriggerType,omitempty"`
 }
 
 type FlowDefinition struct {
@@ -370,7 +370,7 @@ type Integration struct {
 	LastUpdatedAt     *string             `json:"LastUpdatedAt,omitempty"`
 	ObjectTypeName    *string             `json:"ObjectTypeName,omitempty"`
 	ObjectTypeNames   []ObjectTypeMapping `json:"ObjectTypeNames,omitempty"`
-	Scope             *string             `json:"Scope,omitempty"`
+	Scope             *IntegrationScope   `json:"Scope,omitempty"`
 	Tags              []IntegrationTag    `json:"Tags,omitempty"`
 	Uri               *string             `json:"Uri,omitempty"`
 }
@@ -378,9 +378,9 @@ type Integration struct {
 func (Integration) CloudControlType() string { return "AWS::CustomerProfiles::Integration" }
 
 type ObjectTypeField struct {
-	ContentType *string `json:"ContentType,omitempty"`
-	Source      *string `json:"Source,omitempty"`
-	Target      *string `json:"Target,omitempty"`
+	ContentType *ObjectTypeFieldContentType `json:"ContentType,omitempty"`
+	Source      *string                     `json:"Source,omitempty"`
+	Target      *string                     `json:"Target,omitempty"`
 }
 
 type FieldMap struct {
@@ -389,8 +389,8 @@ type FieldMap struct {
 }
 
 type ObjectTypeKey struct {
-	FieldNames          []string `json:"FieldNames,omitempty"`
-	StandardIdentifiers []string `json:"StandardIdentifiers,omitempty"`
+	FieldNames          []string                               `json:"FieldNames,omitempty"`
+	StandardIdentifiers []ObjectTypeKeyStandardIdentifiersItem `json:"StandardIdentifiers,omitempty"`
 }
 
 type KeyMap struct {
@@ -442,7 +442,7 @@ type RecommenderUpdate struct {
 	FailureReason       *string            `json:"FailureReason,omitempty"`
 	LastUpdatedDateTime *string            `json:"LastUpdatedDateTime,omitempty"`
 	RecommenderConfig   *RecommenderConfig `json:"RecommenderConfig,omitempty"`
-	Status              *string            `json:"Status,omitempty"`
+	Status              *RecommenderStatus `json:"Status,omitempty"`
 }
 
 type RecommenderTag struct {
@@ -475,7 +475,7 @@ type Recommender struct {
 	RecommenderConfig       *RecommenderConfig `json:"RecommenderConfig,omitempty"`
 	RecommenderName         *string            `json:"RecommenderName,omitempty"`
 	RecommenderRecipeName   *string            `json:"RecommenderRecipeName,omitempty"`
-	Status                  *string            `json:"Status,omitempty"`
+	Status                  *RecommenderStatus `json:"Status,omitempty"`
 	Tags                    []RecommenderTag   `json:"Tags,omitempty"`
 	TrainingMetrics         []TrainingMetrics  `json:"TrainingMetrics,omitempty"`
 }
@@ -489,20 +489,20 @@ type SourceSegment struct {
 type Group struct {
 	Dimensions     []json.RawMessage `json:"Dimensions,omitempty"`
 	SourceSegments []SourceSegment   `json:"SourceSegments,omitempty"`
-	SourceType     *string           `json:"SourceType,omitempty"`
-	Type           *string           `json:"Type,omitempty"`
+	SourceType     *IncludeOptions   `json:"SourceType,omitempty"`
+	Type           *IncludeOptions   `json:"Type,omitempty"`
 }
 
 type SegmentGroup struct {
-	Groups  []Group `json:"Groups,omitempty"`
-	Include *string `json:"Include,omitempty"`
+	Groups  []Group         `json:"Groups,omitempty"`
+	Include *IncludeOptions `json:"Include,omitempty"`
 }
 
 type SortAttribute struct {
-	DataType *string `json:"DataType,omitempty"`
-	Name     *string `json:"Name,omitempty"`
-	Order    *string `json:"Order,omitempty"`
-	Type     *string `json:"Type,omitempty"`
+	DataType *SegmentSortDataType `json:"DataType,omitempty"`
+	Name     *string              `json:"Name,omitempty"`
+	Order    *SegmentSortOrder    `json:"Order,omitempty"`
+	Type     *SortAttributeType   `json:"Type,omitempty"`
 }
 
 type SegmentSort struct {
@@ -515,17 +515,418 @@ type SegmentDefinitionTag struct {
 }
 
 type SegmentDefinition struct {
-	CreatedAt             *string                `json:"CreatedAt,omitempty"`
-	Description           *string                `json:"Description,omitempty"`
-	DisplayName           *string                `json:"DisplayName,omitempty"`
-	DomainName            *string                `json:"DomainName,omitempty"`
-	SegmentDefinitionArn  *string                `json:"SegmentDefinitionArn,omitempty"`
-	SegmentDefinitionName *string                `json:"SegmentDefinitionName,omitempty"`
-	SegmentGroups         *SegmentGroup          `json:"SegmentGroups,omitempty"`
-	SegmentSort           *SegmentSort           `json:"SegmentSort,omitempty"`
-	SegmentSqlQuery       *string                `json:"SegmentSqlQuery,omitempty"`
-	SegmentType           *string                `json:"SegmentType,omitempty"`
-	Tags                  []SegmentDefinitionTag `json:"Tags,omitempty"`
+	CreatedAt             *string                       `json:"CreatedAt,omitempty"`
+	Description           *string                       `json:"Description,omitempty"`
+	DisplayName           *string                       `json:"DisplayName,omitempty"`
+	DomainName            *string                       `json:"DomainName,omitempty"`
+	SegmentDefinitionArn  *string                       `json:"SegmentDefinitionArn,omitempty"`
+	SegmentDefinitionName *string                       `json:"SegmentDefinitionName,omitempty"`
+	SegmentGroups         *SegmentGroup                 `json:"SegmentGroups,omitempty"`
+	SegmentSort           *SegmentSort                  `json:"SegmentSort,omitempty"`
+	SegmentSqlQuery       *string                       `json:"SegmentSqlQuery,omitempty"`
+	SegmentType           *SegmentDefinitionSegmentType `json:"SegmentType,omitempty"`
+	Tags                  []SegmentDefinitionTag        `json:"Tags,omitempty"`
 }
 
 func (SegmentDefinition) CloudControlType() string { return "AWS::CustomerProfiles::SegmentDefinition" }
+
+type RangeUnit string
+
+const (
+	RangeUnitDAYS RangeUnit = "DAYS"
+)
+
+type ThresholdOperator string
+
+const (
+	ThresholdOperatorEQUALTO     ThresholdOperator = "EQUAL_TO"
+	ThresholdOperatorGREATERTHAN ThresholdOperator = "GREATER_THAN"
+	ThresholdOperatorLESSTHAN    ThresholdOperator = "LESS_THAN"
+	ThresholdOperatorNOTEQUALTO  ThresholdOperator = "NOT_EQUAL_TO"
+)
+
+type Statistic string
+
+const (
+	StatisticFIRSTOCCURRENCE Statistic = "FIRST_OCCURRENCE"
+	StatisticLASTOCCURRENCE  Statistic = "LAST_OCCURRENCE"
+	StatisticCOUNT           Statistic = "COUNT"
+	StatisticSUM             Statistic = "SUM"
+	StatisticMINIMUM         Statistic = "MINIMUM"
+	StatisticMAXIMUM         Statistic = "MAXIMUM"
+	StatisticAVERAGE         Statistic = "AVERAGE"
+	StatisticMAXOCCURRENCE   Statistic = "MAX_OCCURRENCE"
+)
+
+type CalculatedAttributeDefinitionStatus string
+
+const (
+	CalculatedAttributeDefinitionStatusINPROGRESS CalculatedAttributeDefinitionStatus = "IN_PROGRESS"
+	CalculatedAttributeDefinitionStatusPREPARING  CalculatedAttributeDefinitionStatus = "PREPARING"
+	CalculatedAttributeDefinitionStatusCOMPLETED  CalculatedAttributeDefinitionStatus = "COMPLETED"
+	CalculatedAttributeDefinitionStatusFAILED     CalculatedAttributeDefinitionStatus = "FAILED"
+)
+
+type ConflictResolutionConflictResolvingModel string
+
+const (
+	ConflictResolutionConflictResolvingModelRECENCY ConflictResolutionConflictResolvingModel = "RECENCY"
+	ConflictResolutionConflictResolvingModelSOURCE  ConflictResolutionConflictResolvingModel = "SOURCE"
+)
+
+type JobScheduleDayOfTheWeek string
+
+const (
+	JobScheduleDayOfTheWeekSUNDAY    JobScheduleDayOfTheWeek = "SUNDAY"
+	JobScheduleDayOfTheWeekMONDAY    JobScheduleDayOfTheWeek = "MONDAY"
+	JobScheduleDayOfTheWeekTUESDAY   JobScheduleDayOfTheWeek = "TUESDAY"
+	JobScheduleDayOfTheWeekWEDNESDAY JobScheduleDayOfTheWeek = "WEDNESDAY"
+	JobScheduleDayOfTheWeekTHURSDAY  JobScheduleDayOfTheWeek = "THURSDAY"
+	JobScheduleDayOfTheWeekFRIDAY    JobScheduleDayOfTheWeek = "FRIDAY"
+	JobScheduleDayOfTheWeekSATURDAY  JobScheduleDayOfTheWeek = "SATURDAY"
+)
+
+type AttributeTypesSelectorAttributeMatchingModel string
+
+const (
+	AttributeTypesSelectorAttributeMatchingModelONETOONE   AttributeTypesSelectorAttributeMatchingModel = "ONE_TO_ONE"
+	AttributeTypesSelectorAttributeMatchingModelMANYTOMANY AttributeTypesSelectorAttributeMatchingModel = "MANY_TO_MANY"
+)
+
+type RuleBasedMatchingStatus string
+
+const (
+	RuleBasedMatchingStatusPENDING    RuleBasedMatchingStatus = "PENDING"
+	RuleBasedMatchingStatusINPROGRESS RuleBasedMatchingStatus = "IN_PROGRESS"
+	RuleBasedMatchingStatusACTIVE     RuleBasedMatchingStatus = "ACTIVE"
+)
+
+type DomainObjectTypeFieldContentType string
+
+const (
+	DomainObjectTypeFieldContentTypeSTRING DomainObjectTypeFieldContentType = "STRING"
+	DomainObjectTypeFieldContentTypeNUMBER DomainObjectTypeFieldContentType = "NUMBER"
+)
+
+type DomainObjectTypeFieldFeatureType string
+
+const (
+	DomainObjectTypeFieldFeatureTypeTEXTUAL     DomainObjectTypeFieldFeatureType = "TEXTUAL"
+	DomainObjectTypeFieldFeatureTypeCATEGORICAL DomainObjectTypeFieldFeatureType = "CATEGORICAL"
+)
+
+type Status string
+
+const (
+	StatusHEALTHY   Status = "HEALTHY"
+	StatusUNHEALTHY Status = "UNHEALTHY"
+)
+
+type EventStreamState string
+
+const (
+	EventStreamStateRUNNING EventStreamState = "RUNNING"
+	EventStreamStateSTOPPED EventStreamState = "STOPPED"
+)
+
+type ObjectAttributeComparisonOperator string
+
+const (
+	ObjectAttributeComparisonOperatorINCLUSIVE          ObjectAttributeComparisonOperator = "INCLUSIVE"
+	ObjectAttributeComparisonOperatorEXCLUSIVE          ObjectAttributeComparisonOperator = "EXCLUSIVE"
+	ObjectAttributeComparisonOperatorCONTAINS           ObjectAttributeComparisonOperator = "CONTAINS"
+	ObjectAttributeComparisonOperatorBEGINSWITH         ObjectAttributeComparisonOperator = "BEGINS_WITH"
+	ObjectAttributeComparisonOperatorENDSWITH           ObjectAttributeComparisonOperator = "ENDS_WITH"
+	ObjectAttributeComparisonOperatorGREATERTHAN        ObjectAttributeComparisonOperator = "GREATER_THAN"
+	ObjectAttributeComparisonOperatorLESSTHAN           ObjectAttributeComparisonOperator = "LESS_THAN"
+	ObjectAttributeComparisonOperatorGREATERTHANOREQUAL ObjectAttributeComparisonOperator = "GREATER_THAN_OR_EQUAL"
+	ObjectAttributeComparisonOperatorLESSTHANOREQUAL    ObjectAttributeComparisonOperator = "LESS_THAN_OR_EQUAL"
+	ObjectAttributeComparisonOperatorEQUAL              ObjectAttributeComparisonOperator = "EQUAL"
+	ObjectAttributeComparisonOperatorBEFORE             ObjectAttributeComparisonOperator = "BEFORE"
+	ObjectAttributeComparisonOperatorAFTER              ObjectAttributeComparisonOperator = "AFTER"
+	ObjectAttributeComparisonOperatorON                 ObjectAttributeComparisonOperator = "ON"
+	ObjectAttributeComparisonOperatorBETWEEN            ObjectAttributeComparisonOperator = "BETWEEN"
+	ObjectAttributeComparisonOperatorNOTBETWEEN         ObjectAttributeComparisonOperator = "NOT_BETWEEN"
+)
+
+type EventTriggerLogicalOperator string
+
+const (
+	EventTriggerLogicalOperatorANY  EventTriggerLogicalOperator = "ANY"
+	EventTriggerLogicalOperatorALL  EventTriggerLogicalOperator = "ALL"
+	EventTriggerLogicalOperatorNONE EventTriggerLogicalOperator = "NONE"
+)
+
+type PeriodUnit string
+
+const (
+	PeriodUnitMINUTES PeriodUnit = "MINUTES"
+	PeriodUnitHOURS   PeriodUnit = "HOURS"
+	PeriodUnitDAYS    PeriodUnit = "DAYS"
+	PeriodUnitWEEKS   PeriodUnit = "WEEKS"
+	PeriodUnitMONTHS  PeriodUnit = "MONTHS"
+)
+
+type ConnectorType string
+
+const (
+	ConnectorTypeSalesforce ConnectorType = "Salesforce"
+	ConnectorTypeMarketo    ConnectorType = "Marketo"
+	ConnectorTypeServiceNow ConnectorType = "ServiceNow"
+	ConnectorTypeZendesk    ConnectorType = "Zendesk"
+	ConnectorTypeS3         ConnectorType = "S3"
+)
+
+type MarketoConnectorOperator string
+
+const (
+	MarketoConnectorOperatorPROJECTION          MarketoConnectorOperator = "PROJECTION"
+	MarketoConnectorOperatorLESSTHAN            MarketoConnectorOperator = "LESS_THAN"
+	MarketoConnectorOperatorGREATERTHAN         MarketoConnectorOperator = "GREATER_THAN"
+	MarketoConnectorOperatorBETWEEN             MarketoConnectorOperator = "BETWEEN"
+	MarketoConnectorOperatorADDITION            MarketoConnectorOperator = "ADDITION"
+	MarketoConnectorOperatorMULTIPLICATION      MarketoConnectorOperator = "MULTIPLICATION"
+	MarketoConnectorOperatorDIVISION            MarketoConnectorOperator = "DIVISION"
+	MarketoConnectorOperatorSUBTRACTION         MarketoConnectorOperator = "SUBTRACTION"
+	MarketoConnectorOperatorMASKALL             MarketoConnectorOperator = "MASK_ALL"
+	MarketoConnectorOperatorMASKFIRSTN          MarketoConnectorOperator = "MASK_FIRST_N"
+	MarketoConnectorOperatorMASKLASTN           MarketoConnectorOperator = "MASK_LAST_N"
+	MarketoConnectorOperatorVALIDATENONNULL     MarketoConnectorOperator = "VALIDATE_NON_NULL"
+	MarketoConnectorOperatorVALIDATENONZERO     MarketoConnectorOperator = "VALIDATE_NON_ZERO"
+	MarketoConnectorOperatorVALIDATENONNEGATIVE MarketoConnectorOperator = "VALIDATE_NON_NEGATIVE"
+	MarketoConnectorOperatorVALIDATENUMERIC     MarketoConnectorOperator = "VALIDATE_NUMERIC"
+	MarketoConnectorOperatorNOOP                MarketoConnectorOperator = "NO_OP"
+)
+
+type S3ConnectorOperator string
+
+const (
+	S3ConnectorOperatorPROJECTION           S3ConnectorOperator = "PROJECTION"
+	S3ConnectorOperatorLESSTHAN             S3ConnectorOperator = "LESS_THAN"
+	S3ConnectorOperatorGREATERTHAN          S3ConnectorOperator = "GREATER_THAN"
+	S3ConnectorOperatorBETWEEN              S3ConnectorOperator = "BETWEEN"
+	S3ConnectorOperatorLESSTHANOREQUALTO    S3ConnectorOperator = "LESS_THAN_OR_EQUAL_TO"
+	S3ConnectorOperatorGREATERTHANOREQUALTO S3ConnectorOperator = "GREATER_THAN_OR_EQUAL_TO"
+	S3ConnectorOperatorEQUALTO              S3ConnectorOperator = "EQUAL_TO"
+	S3ConnectorOperatorNOTEQUALTO           S3ConnectorOperator = "NOT_EQUAL_TO"
+	S3ConnectorOperatorADDITION             S3ConnectorOperator = "ADDITION"
+	S3ConnectorOperatorMULTIPLICATION       S3ConnectorOperator = "MULTIPLICATION"
+	S3ConnectorOperatorDIVISION             S3ConnectorOperator = "DIVISION"
+	S3ConnectorOperatorSUBTRACTION          S3ConnectorOperator = "SUBTRACTION"
+	S3ConnectorOperatorMASKALL              S3ConnectorOperator = "MASK_ALL"
+	S3ConnectorOperatorMASKFIRSTN           S3ConnectorOperator = "MASK_FIRST_N"
+	S3ConnectorOperatorMASKLASTN            S3ConnectorOperator = "MASK_LAST_N"
+	S3ConnectorOperatorVALIDATENONNULL      S3ConnectorOperator = "VALIDATE_NON_NULL"
+	S3ConnectorOperatorVALIDATENONZERO      S3ConnectorOperator = "VALIDATE_NON_ZERO"
+	S3ConnectorOperatorVALIDATENONNEGATIVE  S3ConnectorOperator = "VALIDATE_NON_NEGATIVE"
+	S3ConnectorOperatorVALIDATENUMERIC      S3ConnectorOperator = "VALIDATE_NUMERIC"
+	S3ConnectorOperatorNOOP                 S3ConnectorOperator = "NO_OP"
+)
+
+type SalesforceConnectorOperator string
+
+const (
+	SalesforceConnectorOperatorPROJECTION           SalesforceConnectorOperator = "PROJECTION"
+	SalesforceConnectorOperatorLESSTHAN             SalesforceConnectorOperator = "LESS_THAN"
+	SalesforceConnectorOperatorGREATERTHAN          SalesforceConnectorOperator = "GREATER_THAN"
+	SalesforceConnectorOperatorCONTAINS             SalesforceConnectorOperator = "CONTAINS"
+	SalesforceConnectorOperatorBETWEEN              SalesforceConnectorOperator = "BETWEEN"
+	SalesforceConnectorOperatorLESSTHANOREQUALTO    SalesforceConnectorOperator = "LESS_THAN_OR_EQUAL_TO"
+	SalesforceConnectorOperatorGREATERTHANOREQUALTO SalesforceConnectorOperator = "GREATER_THAN_OR_EQUAL_TO"
+	SalesforceConnectorOperatorEQUALTO              SalesforceConnectorOperator = "EQUAL_TO"
+	SalesforceConnectorOperatorNOTEQUALTO           SalesforceConnectorOperator = "NOT_EQUAL_TO"
+	SalesforceConnectorOperatorADDITION             SalesforceConnectorOperator = "ADDITION"
+	SalesforceConnectorOperatorMULTIPLICATION       SalesforceConnectorOperator = "MULTIPLICATION"
+	SalesforceConnectorOperatorDIVISION             SalesforceConnectorOperator = "DIVISION"
+	SalesforceConnectorOperatorSUBTRACTION          SalesforceConnectorOperator = "SUBTRACTION"
+	SalesforceConnectorOperatorMASKALL              SalesforceConnectorOperator = "MASK_ALL"
+	SalesforceConnectorOperatorMASKFIRSTN           SalesforceConnectorOperator = "MASK_FIRST_N"
+	SalesforceConnectorOperatorMASKLASTN            SalesforceConnectorOperator = "MASK_LAST_N"
+	SalesforceConnectorOperatorVALIDATENONNULL      SalesforceConnectorOperator = "VALIDATE_NON_NULL"
+	SalesforceConnectorOperatorVALIDATENONZERO      SalesforceConnectorOperator = "VALIDATE_NON_ZERO"
+	SalesforceConnectorOperatorVALIDATENONNEGATIVE  SalesforceConnectorOperator = "VALIDATE_NON_NEGATIVE"
+	SalesforceConnectorOperatorVALIDATENUMERIC      SalesforceConnectorOperator = "VALIDATE_NUMERIC"
+	SalesforceConnectorOperatorNOOP                 SalesforceConnectorOperator = "NO_OP"
+)
+
+type ServiceNowConnectorOperator string
+
+const (
+	ServiceNowConnectorOperatorPROJECTION           ServiceNowConnectorOperator = "PROJECTION"
+	ServiceNowConnectorOperatorLESSTHAN             ServiceNowConnectorOperator = "LESS_THAN"
+	ServiceNowConnectorOperatorGREATERTHAN          ServiceNowConnectorOperator = "GREATER_THAN"
+	ServiceNowConnectorOperatorCONTAINS             ServiceNowConnectorOperator = "CONTAINS"
+	ServiceNowConnectorOperatorBETWEEN              ServiceNowConnectorOperator = "BETWEEN"
+	ServiceNowConnectorOperatorLESSTHANOREQUALTO    ServiceNowConnectorOperator = "LESS_THAN_OR_EQUAL_TO"
+	ServiceNowConnectorOperatorGREATERTHANOREQUALTO ServiceNowConnectorOperator = "GREATER_THAN_OR_EQUAL_TO"
+	ServiceNowConnectorOperatorEQUALTO              ServiceNowConnectorOperator = "EQUAL_TO"
+	ServiceNowConnectorOperatorNOTEQUALTO           ServiceNowConnectorOperator = "NOT_EQUAL_TO"
+	ServiceNowConnectorOperatorADDITION             ServiceNowConnectorOperator = "ADDITION"
+	ServiceNowConnectorOperatorMULTIPLICATION       ServiceNowConnectorOperator = "MULTIPLICATION"
+	ServiceNowConnectorOperatorDIVISION             ServiceNowConnectorOperator = "DIVISION"
+	ServiceNowConnectorOperatorSUBTRACTION          ServiceNowConnectorOperator = "SUBTRACTION"
+	ServiceNowConnectorOperatorMASKALL              ServiceNowConnectorOperator = "MASK_ALL"
+	ServiceNowConnectorOperatorMASKFIRSTN           ServiceNowConnectorOperator = "MASK_FIRST_N"
+	ServiceNowConnectorOperatorMASKLASTN            ServiceNowConnectorOperator = "MASK_LAST_N"
+	ServiceNowConnectorOperatorVALIDATENONNULL      ServiceNowConnectorOperator = "VALIDATE_NON_NULL"
+	ServiceNowConnectorOperatorVALIDATENONZERO      ServiceNowConnectorOperator = "VALIDATE_NON_ZERO"
+	ServiceNowConnectorOperatorVALIDATENONNEGATIVE  ServiceNowConnectorOperator = "VALIDATE_NON_NEGATIVE"
+	ServiceNowConnectorOperatorVALIDATENUMERIC      ServiceNowConnectorOperator = "VALIDATE_NUMERIC"
+	ServiceNowConnectorOperatorNOOP                 ServiceNowConnectorOperator = "NO_OP"
+)
+
+type ZendeskConnectorOperator string
+
+const (
+	ZendeskConnectorOperatorPROJECTION          ZendeskConnectorOperator = "PROJECTION"
+	ZendeskConnectorOperatorGREATERTHAN         ZendeskConnectorOperator = "GREATER_THAN"
+	ZendeskConnectorOperatorADDITION            ZendeskConnectorOperator = "ADDITION"
+	ZendeskConnectorOperatorMULTIPLICATION      ZendeskConnectorOperator = "MULTIPLICATION"
+	ZendeskConnectorOperatorDIVISION            ZendeskConnectorOperator = "DIVISION"
+	ZendeskConnectorOperatorSUBTRACTION         ZendeskConnectorOperator = "SUBTRACTION"
+	ZendeskConnectorOperatorMASKALL             ZendeskConnectorOperator = "MASK_ALL"
+	ZendeskConnectorOperatorMASKFIRSTN          ZendeskConnectorOperator = "MASK_FIRST_N"
+	ZendeskConnectorOperatorMASKLASTN           ZendeskConnectorOperator = "MASK_LAST_N"
+	ZendeskConnectorOperatorVALIDATENONNULL     ZendeskConnectorOperator = "VALIDATE_NON_NULL"
+	ZendeskConnectorOperatorVALIDATENONZERO     ZendeskConnectorOperator = "VALIDATE_NON_ZERO"
+	ZendeskConnectorOperatorVALIDATENONNEGATIVE ZendeskConnectorOperator = "VALIDATE_NON_NEGATIVE"
+	ZendeskConnectorOperatorVALIDATENUMERIC     ZendeskConnectorOperator = "VALIDATE_NUMERIC"
+	ZendeskConnectorOperatorNOOP                ZendeskConnectorOperator = "NO_OP"
+)
+
+type OperatorPropertiesKeys string
+
+const (
+	OperatorPropertiesKeysVALUE                    OperatorPropertiesKeys = "VALUE"
+	OperatorPropertiesKeysVALUES                   OperatorPropertiesKeys = "VALUES"
+	OperatorPropertiesKeysDATATYPE                 OperatorPropertiesKeys = "DATA_TYPE"
+	OperatorPropertiesKeysUPPERBOUND               OperatorPropertiesKeys = "UPPER_BOUND"
+	OperatorPropertiesKeysLOWERBOUND               OperatorPropertiesKeys = "LOWER_BOUND"
+	OperatorPropertiesKeysSOURCEDATATYPE           OperatorPropertiesKeys = "SOURCE_DATA_TYPE"
+	OperatorPropertiesKeysDESTINATIONDATATYPE      OperatorPropertiesKeys = "DESTINATION_DATA_TYPE"
+	OperatorPropertiesKeysVALIDATIONACTION         OperatorPropertiesKeys = "VALIDATION_ACTION"
+	OperatorPropertiesKeysMASKVALUE                OperatorPropertiesKeys = "MASK_VALUE"
+	OperatorPropertiesKeysMASKLENGTH               OperatorPropertiesKeys = "MASK_LENGTH"
+	OperatorPropertiesKeysTRUNCATELENGTH           OperatorPropertiesKeys = "TRUNCATE_LENGTH"
+	OperatorPropertiesKeysMATHOPERATIONFIELDSORDER OperatorPropertiesKeys = "MATH_OPERATION_FIELDS_ORDER"
+	OperatorPropertiesKeysCONCATFORMAT             OperatorPropertiesKeys = "CONCAT_FORMAT"
+	OperatorPropertiesKeysSUBFIELDCATEGORYMAP      OperatorPropertiesKeys = "SUBFIELD_CATEGORY_MAP"
+)
+
+type TaskType string
+
+const (
+	TaskTypeArithmetic TaskType = "Arithmetic"
+	TaskTypeFilter     TaskType = "Filter"
+	TaskTypeMap        TaskType = "Map"
+	TaskTypeMask       TaskType = "Mask"
+	TaskTypeMerge      TaskType = "Merge"
+	TaskTypeTruncate   TaskType = "Truncate"
+	TaskTypeValidate   TaskType = "Validate"
+)
+
+type ScheduledTriggerPropertiesDataPullMode string
+
+const (
+	ScheduledTriggerPropertiesDataPullModeIncremental ScheduledTriggerPropertiesDataPullMode = "Incremental"
+	ScheduledTriggerPropertiesDataPullModeComplete    ScheduledTriggerPropertiesDataPullMode = "Complete"
+)
+
+type TriggerType string
+
+const (
+	TriggerTypeScheduled TriggerType = "Scheduled"
+	TriggerTypeEvent     TriggerType = "Event"
+	TriggerTypeOnDemand  TriggerType = "OnDemand"
+)
+
+type IntegrationScope string
+
+const (
+	IntegrationScopePROFILE IntegrationScope = "PROFILE"
+	IntegrationScopeDOMAIN  IntegrationScope = "DOMAIN"
+)
+
+type ObjectTypeFieldContentType string
+
+const (
+	ObjectTypeFieldContentTypeSTRING       ObjectTypeFieldContentType = "STRING"
+	ObjectTypeFieldContentTypeNUMBER       ObjectTypeFieldContentType = "NUMBER"
+	ObjectTypeFieldContentTypePHONENUMBER  ObjectTypeFieldContentType = "PHONE_NUMBER"
+	ObjectTypeFieldContentTypeEMAILADDRESS ObjectTypeFieldContentType = "EMAIL_ADDRESS"
+	ObjectTypeFieldContentTypeNAME         ObjectTypeFieldContentType = "NAME"
+)
+
+type ObjectTypeKeyStandardIdentifiersItem string
+
+const (
+	ObjectTypeKeyStandardIdentifiersItemPROFILE            ObjectTypeKeyStandardIdentifiersItem = "PROFILE"
+	ObjectTypeKeyStandardIdentifiersItemUNIQUE             ObjectTypeKeyStandardIdentifiersItem = "UNIQUE"
+	ObjectTypeKeyStandardIdentifiersItemSECONDARY          ObjectTypeKeyStandardIdentifiersItem = "SECONDARY"
+	ObjectTypeKeyStandardIdentifiersItemLOOKUPONLY         ObjectTypeKeyStandardIdentifiersItem = "LOOKUP_ONLY"
+	ObjectTypeKeyStandardIdentifiersItemNEWONLY            ObjectTypeKeyStandardIdentifiersItem = "NEW_ONLY"
+	ObjectTypeKeyStandardIdentifiersItemASSET              ObjectTypeKeyStandardIdentifiersItem = "ASSET"
+	ObjectTypeKeyStandardIdentifiersItemCASE               ObjectTypeKeyStandardIdentifiersItem = "CASE"
+	ObjectTypeKeyStandardIdentifiersItemORDER              ObjectTypeKeyStandardIdentifiersItem = "ORDER"
+	ObjectTypeKeyStandardIdentifiersItemAIRPREFERENCE      ObjectTypeKeyStandardIdentifiersItem = "AIR_PREFERENCE"
+	ObjectTypeKeyStandardIdentifiersItemAIRBOOKING         ObjectTypeKeyStandardIdentifiersItem = "AIR_BOOKING"
+	ObjectTypeKeyStandardIdentifiersItemAIRSEGMENT         ObjectTypeKeyStandardIdentifiersItem = "AIR_SEGMENT"
+	ObjectTypeKeyStandardIdentifiersItemHOTELPREFERENCE    ObjectTypeKeyStandardIdentifiersItem = "HOTEL_PREFERENCE"
+	ObjectTypeKeyStandardIdentifiersItemHOTELSTAYREVENUE   ObjectTypeKeyStandardIdentifiersItem = "HOTEL_STAY_REVENUE"
+	ObjectTypeKeyStandardIdentifiersItemHOTELRESERVATION   ObjectTypeKeyStandardIdentifiersItem = "HOTEL_RESERVATION"
+	ObjectTypeKeyStandardIdentifiersItemLOYALTY            ObjectTypeKeyStandardIdentifiersItem = "LOYALTY"
+	ObjectTypeKeyStandardIdentifiersItemLOYALTYTRANSACTION ObjectTypeKeyStandardIdentifiersItem = "LOYALTY_TRANSACTION"
+	ObjectTypeKeyStandardIdentifiersItemLOYALTYPROMOTION   ObjectTypeKeyStandardIdentifiersItem = "LOYALTY_PROMOTION"
+	ObjectTypeKeyStandardIdentifiersItemWEBANALYTICS       ObjectTypeKeyStandardIdentifiersItem = "WEB_ANALYTICS"
+	ObjectTypeKeyStandardIdentifiersItemDEVICE             ObjectTypeKeyStandardIdentifiersItem = "DEVICE"
+)
+
+type RecommenderStatus string
+
+const (
+	RecommenderStatusPENDING    RecommenderStatus = "PENDING"
+	RecommenderStatusINPROGRESS RecommenderStatus = "IN_PROGRESS"
+	RecommenderStatusSTOPPING   RecommenderStatus = "STOPPING"
+	RecommenderStatusSTARTING   RecommenderStatus = "STARTING"
+	RecommenderStatusACTIVE     RecommenderStatus = "ACTIVE"
+	RecommenderStatusINACTIVE   RecommenderStatus = "INACTIVE"
+	RecommenderStatusFAILED     RecommenderStatus = "FAILED"
+	RecommenderStatusDELETING   RecommenderStatus = "DELETING"
+)
+
+type IncludeOptions string
+
+const (
+	IncludeOptionsALL  IncludeOptions = "ALL"
+	IncludeOptionsANY  IncludeOptions = "ANY"
+	IncludeOptionsNONE IncludeOptions = "NONE"
+)
+
+type SegmentSortDataType string
+
+const (
+	SegmentSortDataTypeSTRING SegmentSortDataType = "STRING"
+	SegmentSortDataTypeNUMBER SegmentSortDataType = "NUMBER"
+	SegmentSortDataTypeDATE   SegmentSortDataType = "DATE"
+)
+
+type SegmentSortOrder string
+
+const (
+	SegmentSortOrderASC  SegmentSortOrder = "ASC"
+	SegmentSortOrderDESC SegmentSortOrder = "DESC"
+)
+
+type SortAttributeType string
+
+const (
+	SortAttributeTypePROFILE    SortAttributeType = "PROFILE"
+	SortAttributeTypeCALCULATED SortAttributeType = "CALCULATED"
+)
+
+type SegmentDefinitionSegmentType string
+
+const (
+	SegmentDefinitionSegmentTypeCLASSIC  SegmentDefinitionSegmentType = "CLASSIC"
+	SegmentDefinitionSegmentTypeENHANCED SegmentDefinitionSegmentType = "ENHANCED"
+)

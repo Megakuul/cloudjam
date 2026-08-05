@@ -9,7 +9,7 @@ type Tag struct {
 }
 
 type GraphDisplayConfig struct {
-	VisualType *string `json:"VisualType,omitempty"`
+	VisualType *VisualType `json:"VisualType,omitempty"`
 }
 
 type DisplayConfig struct {
@@ -18,21 +18,21 @@ type DisplayConfig struct {
 }
 
 type CostCategoryValues struct {
-	Key          *string  `json:"Key,omitempty"`
-	MatchOptions []string `json:"MatchOptions,omitempty"`
-	Values       []string `json:"Values,omitempty"`
+	Key          *string       `json:"Key,omitempty"`
+	MatchOptions []MatchOption `json:"MatchOptions,omitempty"`
+	Values       []string      `json:"Values,omitempty"`
 }
 
 type DimensionValues struct {
-	Key          *string  `json:"Key,omitempty"`
-	MatchOptions []string `json:"MatchOptions,omitempty"`
-	Values       []string `json:"Values,omitempty"`
+	Key          *Dimension    `json:"Key,omitempty"`
+	MatchOptions []MatchOption `json:"MatchOptions,omitempty"`
+	Values       []string      `json:"Values,omitempty"`
 }
 
 type TagValues struct {
-	Key          *string  `json:"Key,omitempty"`
-	MatchOptions []string `json:"MatchOptions,omitempty"`
-	Values       []string `json:"Values,omitempty"`
+	Key          *string       `json:"Key,omitempty"`
+	MatchOptions []MatchOption `json:"MatchOptions,omitempty"`
+	Values       []string      `json:"Values,omitempty"`
 }
 
 type CostAndUsageExpression struct {
@@ -45,13 +45,13 @@ type CostAndUsageExpression struct {
 }
 
 type GroupDefinition struct {
-	Key  *string `json:"Key,omitempty"`
-	Type *string `json:"Type,omitempty"`
+	Key  *string              `json:"Key,omitempty"`
+	Type *GroupDefinitionType `json:"Type,omitempty"`
 }
 
 type DateTimeValue struct {
-	Type  *string `json:"Type,omitempty"`
-	Value *string `json:"Value,omitempty"`
+	Type  *DateTimeType `json:"Type,omitempty"`
+	Value *string       `json:"Value,omitempty"`
 }
 
 type DateTimeRange struct {
@@ -61,9 +61,9 @@ type DateTimeRange struct {
 
 type CostAndUsageQuery struct {
 	Filter      *CostAndUsageExpression `json:"Filter,omitempty"`
-	Granularity *string                 `json:"Granularity,omitempty"`
+	Granularity *Granularity            `json:"Granularity,omitempty"`
 	GroupBy     []GroupDefinition       `json:"GroupBy,omitempty"`
-	Metrics     []string                `json:"Metrics,omitempty"`
+	Metrics     []MetricName            `json:"Metrics,omitempty"`
 	TimeRange   *DateTimeRange          `json:"TimeRange,omitempty"`
 }
 
@@ -77,30 +77,30 @@ type Expression struct {
 
 type ReservationCoverageQuery struct {
 	Filter      *Expression       `json:"Filter,omitempty"`
-	Granularity *string           `json:"Granularity,omitempty"`
+	Granularity *Granularity      `json:"Granularity,omitempty"`
 	GroupBy     []GroupDefinition `json:"GroupBy,omitempty"`
-	Metrics     []string          `json:"Metrics,omitempty"`
+	Metrics     []MetricName      `json:"Metrics,omitempty"`
 	TimeRange   *DateTimeRange    `json:"TimeRange,omitempty"`
 }
 
 type ReservationUtilizationQuery struct {
 	Filter      *Expression       `json:"Filter,omitempty"`
-	Granularity *string           `json:"Granularity,omitempty"`
+	Granularity *Granularity      `json:"Granularity,omitempty"`
 	GroupBy     []GroupDefinition `json:"GroupBy,omitempty"`
 	TimeRange   *DateTimeRange    `json:"TimeRange,omitempty"`
 }
 
 type SavingsPlansCoverageQuery struct {
 	Filter      *Expression       `json:"Filter,omitempty"`
-	Granularity *string           `json:"Granularity,omitempty"`
+	Granularity *Granularity      `json:"Granularity,omitempty"`
 	GroupBy     []GroupDefinition `json:"GroupBy,omitempty"`
-	Metrics     []string          `json:"Metrics,omitempty"`
+	Metrics     []MetricName      `json:"Metrics,omitempty"`
 	TimeRange   *DateTimeRange    `json:"TimeRange,omitempty"`
 }
 
 type SavingsPlansUtilizationQuery struct {
 	Filter      *Expression    `json:"Filter,omitempty"`
-	Granularity *string        `json:"Granularity,omitempty"`
+	Granularity *Granularity   `json:"Granularity,omitempty"`
 	TimeRange   *DateTimeRange `json:"TimeRange,omitempty"`
 }
 
@@ -127,14 +127,111 @@ type Widget struct {
 }
 
 type Dashboard struct {
-	Arn         *string  `json:"Arn,omitempty"`
-	CreatedAt   *string  `json:"CreatedAt,omitempty"`
-	Description *string  `json:"Description,omitempty"`
-	Name        *string  `json:"Name,omitempty"`
-	Tags        []Tag    `json:"Tags,omitempty"`
-	Type        *string  `json:"Type,omitempty"`
-	UpdatedAt   *string  `json:"UpdatedAt,omitempty"`
-	Widgets     []Widget `json:"Widgets,omitempty"`
+	Arn         *string        `json:"Arn,omitempty"`
+	CreatedAt   *string        `json:"CreatedAt,omitempty"`
+	Description *string        `json:"Description,omitempty"`
+	Name        *string        `json:"Name,omitempty"`
+	Tags        []Tag          `json:"Tags,omitempty"`
+	Type        *DashboardType `json:"Type,omitempty"`
+	UpdatedAt   *string        `json:"UpdatedAt,omitempty"`
+	Widgets     []Widget       `json:"Widgets,omitempty"`
 }
 
 func (Dashboard) CloudControlType() string { return "AWS::BCM::Dashboard" }
+
+type DashboardType string
+
+const (
+	DashboardTypeCUSTOM DashboardType = "CUSTOM"
+)
+
+type VisualType string
+
+const (
+	VisualTypeLINE  VisualType = "LINE"
+	VisualTypeBAR   VisualType = "BAR"
+	VisualTypeSTACK VisualType = "STACK"
+)
+
+type MatchOption string
+
+const (
+	MatchOptionEQUALS             MatchOption = "EQUALS"
+	MatchOptionABSENT             MatchOption = "ABSENT"
+	MatchOptionSTARTSWITH         MatchOption = "STARTS_WITH"
+	MatchOptionENDSWITH           MatchOption = "ENDS_WITH"
+	MatchOptionCONTAINS           MatchOption = "CONTAINS"
+	MatchOptionGREATERTHANOREQUAL MatchOption = "GREATER_THAN_OR_EQUAL"
+	MatchOptionCASESENSITIVE      MatchOption = "CASE_SENSITIVE"
+	MatchOptionCASEINSENSITIVE    MatchOption = "CASE_INSENSITIVE"
+)
+
+type Dimension string
+
+const (
+	DimensionAZ                 Dimension = "AZ"
+	DimensionINSTANCETYPE       Dimension = "INSTANCE_TYPE"
+	DimensionLINKEDACCOUNT      Dimension = "LINKED_ACCOUNT"
+	DimensionOPERATION          Dimension = "OPERATION"
+	DimensionPURCHASETYPE       Dimension = "PURCHASE_TYPE"
+	DimensionREGION             Dimension = "REGION"
+	DimensionSERVICE            Dimension = "SERVICE"
+	DimensionUSAGETYPE          Dimension = "USAGE_TYPE"
+	DimensionUSAGETYPEGROUP     Dimension = "USAGE_TYPE_GROUP"
+	DimensionRECORDTYPE         Dimension = "RECORD_TYPE"
+	DimensionOPERATINGSYSTEM    Dimension = "OPERATING_SYSTEM"
+	DimensionTENANCY            Dimension = "TENANCY"
+	DimensionSCOPE              Dimension = "SCOPE"
+	DimensionPLATFORM           Dimension = "PLATFORM"
+	DimensionSUBSCRIPTIONID     Dimension = "SUBSCRIPTION_ID"
+	DimensionLEGALENTITYNAME    Dimension = "LEGAL_ENTITY_NAME"
+	DimensionDEPLOYMENTOPTION   Dimension = "DEPLOYMENT_OPTION"
+	DimensionDATABASEENGINE     Dimension = "DATABASE_ENGINE"
+	DimensionCACHEENGINE        Dimension = "CACHE_ENGINE"
+	DimensionINSTANCETYPEFAMILY Dimension = "INSTANCE_TYPE_FAMILY"
+	DimensionBILLINGENTITY      Dimension = "BILLING_ENTITY"
+	DimensionRESERVATIONID      Dimension = "RESERVATION_ID"
+	DimensionRESOURCEID         Dimension = "RESOURCE_ID"
+	DimensionSAVINGSPLANSTYPE   Dimension = "SAVINGS_PLANS_TYPE"
+	DimensionTAGKEY             Dimension = "TAG_KEY"
+	DimensionCOSTCATEGORYNAME   Dimension = "COST_CATEGORY_NAME"
+)
+
+type Granularity string
+
+const (
+	GranularityHOURLY  Granularity = "HOURLY"
+	GranularityDAILY   Granularity = "DAILY"
+	GranularityMONTHLY Granularity = "MONTHLY"
+)
+
+type GroupDefinitionType string
+
+const (
+	GroupDefinitionTypeDIMENSION    GroupDefinitionType = "DIMENSION"
+	GroupDefinitionTypeTAG          GroupDefinitionType = "TAG"
+	GroupDefinitionTypeCOSTCATEGORY GroupDefinitionType = "COST_CATEGORY"
+)
+
+type MetricName string
+
+const (
+	MetricNameAmortizedCost              MetricName = "AmortizedCost"
+	MetricNameBlendedCost                MetricName = "BlendedCost"
+	MetricNameNetAmortizedCost           MetricName = "NetAmortizedCost"
+	MetricNameNetUnblendedCost           MetricName = "NetUnblendedCost"
+	MetricNameNormalizedUsageAmount      MetricName = "NormalizedUsageAmount"
+	MetricNameUnblendedCost              MetricName = "UnblendedCost"
+	MetricNameUsageQuantity              MetricName = "UsageQuantity"
+	MetricNameSpendCoveredBySavingsPlans MetricName = "SpendCoveredBySavingsPlans"
+	MetricNameHour                       MetricName = "Hour"
+	MetricNameUnit                       MetricName = "Unit"
+	MetricNameCost                       MetricName = "Cost"
+)
+
+type DateTimeType string
+
+const (
+	DateTimeTypeABSOLUTE DateTimeType = "ABSOLUTE"
+	DateTimeTypeRELATIVE DateTimeType = "RELATIVE"
+)

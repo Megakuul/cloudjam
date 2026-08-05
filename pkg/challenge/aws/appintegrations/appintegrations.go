@@ -4,7 +4,7 @@
 package appintegrations
 
 type ContactHandling struct {
-	Scope *string `json:"Scope,omitempty"`
+	Scope *ContactHandlingScope `json:"Scope,omitempty"`
 }
 
 type ApplicationConfig struct {
@@ -34,7 +34,7 @@ type Application struct {
 	ApplicationArn          *string                             `json:"ApplicationArn,omitempty"`
 	ApplicationConfig       *ApplicationConfig                  `json:"ApplicationConfig,omitempty"`
 	ApplicationSourceConfig *ApplicationApplicationSourceConfig `json:"ApplicationSourceConfig,omitempty"`
-	ApplicationType         *string                             `json:"ApplicationType,omitempty"`
+	ApplicationType         *ApplicationApplicationType         `json:"ApplicationType,omitempty"`
 	Description             *string                             `json:"Description,omitempty"`
 	Id                      *string                             `json:"Id,omitempty"`
 	IframeConfig            *IframeConfig                       `json:"IframeConfig,omitempty"`
@@ -98,3 +98,18 @@ type EventIntegration struct {
 }
 
 func (EventIntegration) CloudControlType() string { return "AWS::AppIntegrations::EventIntegration" }
+
+type ContactHandlingScope string
+
+const (
+	ContactHandlingScopeCROSSCONTACTS ContactHandlingScope = "CROSS_CONTACTS"
+	ContactHandlingScopePERCONTACT    ContactHandlingScope = "PER_CONTACT"
+)
+
+type ApplicationApplicationType string
+
+const (
+	ApplicationApplicationTypeSTANDARD  ApplicationApplicationType = "STANDARD"
+	ApplicationApplicationTypeSERVICE   ApplicationApplicationType = "SERVICE"
+	ApplicationApplicationTypeMCPSERVER ApplicationApplicationType = "MCP_SERVER"
+)

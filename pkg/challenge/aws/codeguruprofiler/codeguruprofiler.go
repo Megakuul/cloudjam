@@ -21,9 +21,16 @@ type ProfilingGroup struct {
 	AgentPermissions                          *ProfilingGroupAgentPermissions `json:"AgentPermissions,omitempty"`
 	AnomalyDetectionNotificationConfiguration []Channel                       `json:"AnomalyDetectionNotificationConfiguration,omitempty"`
 	Arn                                       *string                         `json:"Arn,omitempty"`
-	ComputePlatform                           *string                         `json:"ComputePlatform,omitempty"`
+	ComputePlatform                           *ProfilingGroupComputePlatform  `json:"ComputePlatform,omitempty"`
 	ProfilingGroupName                        *string                         `json:"ProfilingGroupName,omitempty"`
 	Tags                                      []Tag                           `json:"Tags,omitempty"`
 }
 
 func (ProfilingGroup) CloudControlType() string { return "AWS::CodeGuruProfiler::ProfilingGroup" }
+
+type ProfilingGroupComputePlatform string
+
+const (
+	ProfilingGroupComputePlatformDefault   ProfilingGroupComputePlatform = "Default"
+	ProfilingGroupComputePlatformAWSLambda ProfilingGroupComputePlatform = "AWSLambda"
+)

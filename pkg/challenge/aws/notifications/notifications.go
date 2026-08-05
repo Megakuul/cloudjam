@@ -11,8 +11,8 @@ type ChannelAssociation struct {
 func (ChannelAssociation) CloudControlType() string { return "AWS::Notifications::ChannelAssociation" }
 
 type EventRuleStatusSummary struct {
-	Reason *string `json:"Reason,omitempty"`
-	Status *string `json:"Status,omitempty"`
+	Reason *string          `json:"Reason,omitempty"`
+	Status *EventRuleStatus `json:"Status,omitempty"`
 }
 
 type EventRule struct {
@@ -30,8 +30,8 @@ type EventRule struct {
 func (EventRule) CloudControlType() string { return "AWS::Notifications::EventRule" }
 
 type ManagedNotificationAccountContactAssociation struct {
-	ContactIdentifier                   *string `json:"ContactIdentifier,omitempty"`
-	ManagedNotificationConfigurationArn *string `json:"ManagedNotificationConfigurationArn,omitempty"`
+	ContactIdentifier                   *ContactIdentifier `json:"ContactIdentifier,omitempty"`
+	ManagedNotificationConfigurationArn *string            `json:"ManagedNotificationConfigurationArn,omitempty"`
 }
 
 func (ManagedNotificationAccountContactAssociation) CloudControlType() string {
@@ -53,13 +53,13 @@ type Tag struct {
 }
 
 type NotificationConfiguration struct {
-	AggregationDuration *string `json:"AggregationDuration,omitempty"`
-	Arn                 *string `json:"Arn,omitempty"`
-	CreationTime        *string `json:"CreationTime,omitempty"`
-	Description         *string `json:"Description,omitempty"`
-	Name                *string `json:"Name,omitempty"`
-	Status              *string `json:"Status,omitempty"`
-	Tags                []Tag   `json:"Tags,omitempty"`
+	AggregationDuration *AggregationDuration             `json:"AggregationDuration,omitempty"`
+	Arn                 *string                          `json:"Arn,omitempty"`
+	CreationTime        *string                          `json:"CreationTime,omitempty"`
+	Description         *string                          `json:"Description,omitempty"`
+	Name                *string                          `json:"Name,omitempty"`
+	Status              *NotificationConfigurationStatus `json:"Status,omitempty"`
+	Tags                []Tag                            `json:"Tags,omitempty"`
 }
 
 func (NotificationConfiguration) CloudControlType() string {
@@ -67,8 +67,8 @@ func (NotificationConfiguration) CloudControlType() string {
 }
 
 type NotificationHubStatusSummary struct {
-	NotificationHubStatus       *string `json:"NotificationHubStatus,omitempty"`
-	NotificationHubStatusReason *string `json:"NotificationHubStatusReason,omitempty"`
+	NotificationHubStatus       *NotificationHubStatus `json:"NotificationHubStatus,omitempty"`
+	NotificationHubStatusReason *string                `json:"NotificationHubStatusReason,omitempty"`
 }
 
 type NotificationHub struct {
@@ -87,3 +87,48 @@ type OrganizationalUnitAssociation struct {
 func (OrganizationalUnitAssociation) CloudControlType() string {
 	return "AWS::Notifications::OrganizationalUnitAssociation"
 }
+
+type EventRuleStatus string
+
+const (
+	EventRuleStatusACTIVE   EventRuleStatus = "ACTIVE"
+	EventRuleStatusINACTIVE EventRuleStatus = "INACTIVE"
+	EventRuleStatusCREATING EventRuleStatus = "CREATING"
+	EventRuleStatusUPDATING EventRuleStatus = "UPDATING"
+	EventRuleStatusDELETING EventRuleStatus = "DELETING"
+)
+
+type ContactIdentifier string
+
+const (
+	ContactIdentifierACCOUNTPRIMARY             ContactIdentifier = "ACCOUNT_PRIMARY"
+	ContactIdentifierACCOUNTALTERNATESECURITY   ContactIdentifier = "ACCOUNT_ALTERNATE_SECURITY"
+	ContactIdentifierACCOUNTALTERNATEOPERATIONS ContactIdentifier = "ACCOUNT_ALTERNATE_OPERATIONS"
+	ContactIdentifierACCOUNTALTERNATEBILLING    ContactIdentifier = "ACCOUNT_ALTERNATE_BILLING"
+)
+
+type AggregationDuration string
+
+const (
+	AggregationDurationLONG  AggregationDuration = "LONG"
+	AggregationDurationSHORT AggregationDuration = "SHORT"
+	AggregationDurationNONE  AggregationDuration = "NONE"
+)
+
+type NotificationConfigurationStatus string
+
+const (
+	NotificationConfigurationStatusACTIVE          NotificationConfigurationStatus = "ACTIVE"
+	NotificationConfigurationStatusPARTIALLYACTIVE NotificationConfigurationStatus = "PARTIALLY_ACTIVE"
+	NotificationConfigurationStatusINACTIVE        NotificationConfigurationStatus = "INACTIVE"
+	NotificationConfigurationStatusDELETING        NotificationConfigurationStatus = "DELETING"
+)
+
+type NotificationHubStatus string
+
+const (
+	NotificationHubStatusACTIVE        NotificationHubStatus = "ACTIVE"
+	NotificationHubStatusREGISTERING   NotificationHubStatus = "REGISTERING"
+	NotificationHubStatusDEREGISTERING NotificationHubStatus = "DEREGISTERING"
+	NotificationHubStatusINACTIVE      NotificationHubStatus = "INACTIVE"
+)

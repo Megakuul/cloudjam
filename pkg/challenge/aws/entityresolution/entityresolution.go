@@ -4,7 +4,7 @@
 package entityresolution
 
 type IdMappingIncrementalRunConfig struct {
-	IncrementalRunType *string `json:"IncrementalRunType,omitempty"`
+	IncrementalRunType *IdMappingIncrementalRunConfigIncrementalRunType `json:"IncrementalRunType,omitempty"`
 }
 
 type IntermediateSourceConfiguration struct {
@@ -23,23 +23,23 @@ type Rule struct {
 }
 
 type IdMappingRuleBasedProperties struct {
-	AttributeMatchingModel *string `json:"AttributeMatchingModel,omitempty"`
-	RecordMatchingModel    *string `json:"RecordMatchingModel,omitempty"`
-	RuleDefinitionType     *string `json:"RuleDefinitionType,omitempty"`
-	Rules                  []Rule  `json:"Rules,omitempty"`
+	AttributeMatchingModel *IdMappingRuleBasedPropertiesAttributeMatchingModel `json:"AttributeMatchingModel,omitempty"`
+	RecordMatchingModel    *IdMappingRuleBasedPropertiesRecordMatchingModel    `json:"RecordMatchingModel,omitempty"`
+	RuleDefinitionType     *IdMappingRuleBasedPropertiesRuleDefinitionType     `json:"RuleDefinitionType,omitempty"`
+	Rules                  []Rule                                              `json:"Rules,omitempty"`
 }
 
 type IdMappingTechniques struct {
-	IdMappingType        *string                       `json:"IdMappingType,omitempty"`
-	NormalizationVersion *string                       `json:"NormalizationVersion,omitempty"`
-	ProviderProperties   *ProviderProperties           `json:"ProviderProperties,omitempty"`
-	RuleBasedProperties  *IdMappingRuleBasedProperties `json:"RuleBasedProperties,omitempty"`
+	IdMappingType        *IdMappingTechniquesIdMappingType `json:"IdMappingType,omitempty"`
+	NormalizationVersion *string                           `json:"NormalizationVersion,omitempty"`
+	ProviderProperties   *ProviderProperties               `json:"ProviderProperties,omitempty"`
+	RuleBasedProperties  *IdMappingRuleBasedProperties     `json:"RuleBasedProperties,omitempty"`
 }
 
 type IdMappingWorkflowInputSource struct {
-	InputSourceARN *string `json:"InputSourceARN,omitempty"`
-	SchemaArn      *string `json:"SchemaArn,omitempty"`
-	Type           *string `json:"Type,omitempty"`
+	InputSourceARN *string                           `json:"InputSourceARN,omitempty"`
+	SchemaArn      *string                           `json:"SchemaArn,omitempty"`
+	Type           *IdMappingWorkflowInputSourceType `json:"Type,omitempty"`
 }
 
 type IdMappingWorkflowOutputSource struct {
@@ -79,16 +79,16 @@ type IdNamespaceRule struct {
 }
 
 type NamespaceRuleBasedProperties struct {
-	AttributeMatchingModel *string           `json:"AttributeMatchingModel,omitempty"`
-	RecordMatchingModels   []string          `json:"RecordMatchingModels,omitempty"`
-	RuleDefinitionTypes    []string          `json:"RuleDefinitionTypes,omitempty"`
-	Rules                  []IdNamespaceRule `json:"Rules,omitempty"`
+	AttributeMatchingModel *NamespaceRuleBasedPropertiesAttributeMatchingModel `json:"AttributeMatchingModel,omitempty"`
+	RecordMatchingModels   []RecordMatchingModel                               `json:"RecordMatchingModels,omitempty"`
+	RuleDefinitionTypes    []RuleDefinitionType                                `json:"RuleDefinitionTypes,omitempty"`
+	Rules                  []IdNamespaceRule                                   `json:"Rules,omitempty"`
 }
 
 type IdNamespaceIdMappingWorkflowProperties struct {
-	IdMappingType       *string                       `json:"IdMappingType,omitempty"`
-	ProviderProperties  *NamespaceProviderProperties  `json:"ProviderProperties,omitempty"`
-	RuleBasedProperties *NamespaceRuleBasedProperties `json:"RuleBasedProperties,omitempty"`
+	IdMappingType       *IdNamespaceIdMappingWorkflowPropertiesIdMappingType `json:"IdMappingType,omitempty"`
+	ProviderProperties  *NamespaceProviderProperties                         `json:"ProviderProperties,omitempty"`
+	RuleBasedProperties *NamespaceRuleBasedProperties                        `json:"RuleBasedProperties,omitempty"`
 }
 
 type IdNamespaceInputSource struct {
@@ -110,14 +110,14 @@ type IdNamespace struct {
 	InputSourceConfig           []IdNamespaceInputSource                 `json:"InputSourceConfig,omitempty"`
 	RoleArn                     *string                                  `json:"RoleArn,omitempty"`
 	Tags                        []IdNamespaceTag                         `json:"Tags,omitempty"`
-	Type                        *string                                  `json:"Type,omitempty"`
+	Type                        *IdNamespaceType                         `json:"Type,omitempty"`
 	UpdatedAt                   *string                                  `json:"UpdatedAt,omitempty"`
 }
 
 func (IdNamespace) CloudControlType() string { return "AWS::EntityResolution::IdNamespace" }
 
 type IncrementalRunConfig struct {
-	IncrementalRunType *string `json:"IncrementalRunType,omitempty"`
+	IncrementalRunType *IncrementalRunConfigIncrementalRunType `json:"IncrementalRunType,omitempty"`
 }
 
 type InputSource struct {
@@ -160,9 +160,9 @@ type MatchingWorkflowRule struct {
 }
 
 type RuleBasedProperties struct {
-	AttributeMatchingModel *string                `json:"AttributeMatchingModel,omitempty"`
-	MatchPurpose           *string                `json:"MatchPurpose,omitempty"`
-	Rules                  []MatchingWorkflowRule `json:"Rules,omitempty"`
+	AttributeMatchingModel *RuleBasedPropertiesAttributeMatchingModel `json:"AttributeMatchingModel,omitempty"`
+	MatchPurpose           *RuleBasedPropertiesMatchPurpose           `json:"MatchPurpose,omitempty"`
+	Rules                  []MatchingWorkflowRule                     `json:"Rules,omitempty"`
 }
 
 type MatchingConfig struct {
@@ -182,7 +182,7 @@ type RuleConditionProperties struct {
 type ResolutionTechniques struct {
 	EnableRealTimeMatching  *bool                               `json:"EnableRealTimeMatching,omitempty"`
 	ProviderProperties      *MatchingWorkflowProviderProperties `json:"ProviderProperties,omitempty"`
-	ResolutionType          *string                             `json:"ResolutionType,omitempty"`
+	ResolutionType          *ResolutionType                     `json:"ResolutionType,omitempty"`
 	RuleBasedProperties     *RuleBasedProperties                `json:"RuleBasedProperties,omitempty"`
 	RuleConditionProperties *RuleConditionProperties            `json:"RuleConditionProperties,omitempty"`
 }
@@ -209,23 +209,23 @@ type MatchingWorkflow struct {
 func (MatchingWorkflow) CloudControlType() string { return "AWS::EntityResolution::MatchingWorkflow" }
 
 type PolicyStatement struct {
-	Action      []string `json:"Action,omitempty"`
-	Arn         *string  `json:"Arn,omitempty"`
-	Condition   *string  `json:"Condition,omitempty"`
-	Effect      *string  `json:"Effect,omitempty"`
-	Principal   []string `json:"Principal,omitempty"`
-	StatementId *string  `json:"StatementId,omitempty"`
+	Action      []string         `json:"Action,omitempty"`
+	Arn         *string          `json:"Arn,omitempty"`
+	Condition   *string          `json:"Condition,omitempty"`
+	Effect      *StatementEffect `json:"Effect,omitempty"`
+	Principal   []string         `json:"Principal,omitempty"`
+	StatementId *string          `json:"StatementId,omitempty"`
 }
 
 func (PolicyStatement) CloudControlType() string { return "AWS::EntityResolution::PolicyStatement" }
 
 type SchemaInputAttribute struct {
-	FieldName *string `json:"FieldName,omitempty"`
-	GroupName *string `json:"GroupName,omitempty"`
-	Hashed    *bool   `json:"Hashed,omitempty"`
-	MatchKey  *string `json:"MatchKey,omitempty"`
-	SubType   *string `json:"SubType,omitempty"`
-	Type      *string `json:"Type,omitempty"`
+	FieldName *string              `json:"FieldName,omitempty"`
+	GroupName *string              `json:"GroupName,omitempty"`
+	Hashed    *bool                `json:"Hashed,omitempty"`
+	MatchKey  *string              `json:"MatchKey,omitempty"`
+	SubType   *string              `json:"SubType,omitempty"`
+	Type      *SchemaAttributeType `json:"Type,omitempty"`
 }
 
 type SchemaMappingTag struct {
@@ -245,3 +245,139 @@ type SchemaMapping struct {
 }
 
 func (SchemaMapping) CloudControlType() string { return "AWS::EntityResolution::SchemaMapping" }
+
+type IdMappingIncrementalRunConfigIncrementalRunType string
+
+const (
+	IdMappingIncrementalRunConfigIncrementalRunTypeONDEMAND IdMappingIncrementalRunConfigIncrementalRunType = "ON_DEMAND"
+)
+
+type IdMappingTechniquesIdMappingType string
+
+const (
+	IdMappingTechniquesIdMappingTypePROVIDER  IdMappingTechniquesIdMappingType = "PROVIDER"
+	IdMappingTechniquesIdMappingTypeRULEBASED IdMappingTechniquesIdMappingType = "RULE_BASED"
+)
+
+type IdMappingRuleBasedPropertiesAttributeMatchingModel string
+
+const (
+	IdMappingRuleBasedPropertiesAttributeMatchingModelONETOONE   IdMappingRuleBasedPropertiesAttributeMatchingModel = "ONE_TO_ONE"
+	IdMappingRuleBasedPropertiesAttributeMatchingModelMANYTOMANY IdMappingRuleBasedPropertiesAttributeMatchingModel = "MANY_TO_MANY"
+)
+
+type IdMappingRuleBasedPropertiesRecordMatchingModel string
+
+const (
+	IdMappingRuleBasedPropertiesRecordMatchingModelONESOURCETOONETARGET  IdMappingRuleBasedPropertiesRecordMatchingModel = "ONE_SOURCE_TO_ONE_TARGET"
+	IdMappingRuleBasedPropertiesRecordMatchingModelMANYSOURCETOONETARGET IdMappingRuleBasedPropertiesRecordMatchingModel = "MANY_SOURCE_TO_ONE_TARGET"
+)
+
+type IdMappingRuleBasedPropertiesRuleDefinitionType string
+
+const (
+	IdMappingRuleBasedPropertiesRuleDefinitionTypeSOURCE IdMappingRuleBasedPropertiesRuleDefinitionType = "SOURCE"
+	IdMappingRuleBasedPropertiesRuleDefinitionTypeTARGET IdMappingRuleBasedPropertiesRuleDefinitionType = "TARGET"
+)
+
+type IdMappingWorkflowInputSourceType string
+
+const (
+	IdMappingWorkflowInputSourceTypeSOURCE IdMappingWorkflowInputSourceType = "SOURCE"
+	IdMappingWorkflowInputSourceTypeTARGET IdMappingWorkflowInputSourceType = "TARGET"
+)
+
+type IdNamespaceIdMappingWorkflowPropertiesIdMappingType string
+
+const (
+	IdNamespaceIdMappingWorkflowPropertiesIdMappingTypePROVIDER  IdNamespaceIdMappingWorkflowPropertiesIdMappingType = "PROVIDER"
+	IdNamespaceIdMappingWorkflowPropertiesIdMappingTypeRULEBASED IdNamespaceIdMappingWorkflowPropertiesIdMappingType = "RULE_BASED"
+)
+
+type NamespaceRuleBasedPropertiesAttributeMatchingModel string
+
+const (
+	NamespaceRuleBasedPropertiesAttributeMatchingModelONETOONE   NamespaceRuleBasedPropertiesAttributeMatchingModel = "ONE_TO_ONE"
+	NamespaceRuleBasedPropertiesAttributeMatchingModelMANYTOMANY NamespaceRuleBasedPropertiesAttributeMatchingModel = "MANY_TO_MANY"
+)
+
+type RecordMatchingModel string
+
+const (
+	RecordMatchingModelONESOURCETOONETARGET  RecordMatchingModel = "ONE_SOURCE_TO_ONE_TARGET"
+	RecordMatchingModelMANYSOURCETOONETARGET RecordMatchingModel = "MANY_SOURCE_TO_ONE_TARGET"
+)
+
+type RuleDefinitionType string
+
+const (
+	RuleDefinitionTypeSOURCE RuleDefinitionType = "SOURCE"
+	RuleDefinitionTypeTARGET RuleDefinitionType = "TARGET"
+)
+
+type IdNamespaceType string
+
+const (
+	IdNamespaceTypeSOURCE IdNamespaceType = "SOURCE"
+	IdNamespaceTypeTARGET IdNamespaceType = "TARGET"
+)
+
+type IncrementalRunConfigIncrementalRunType string
+
+const (
+	IncrementalRunConfigIncrementalRunTypeIMMEDIATE IncrementalRunConfigIncrementalRunType = "IMMEDIATE"
+)
+
+type ResolutionType string
+
+const (
+	ResolutionTypeRULEMATCHING ResolutionType = "RULE_MATCHING"
+	ResolutionTypeMLMATCHING   ResolutionType = "ML_MATCHING"
+	ResolutionTypePROVIDER     ResolutionType = "PROVIDER"
+)
+
+type RuleBasedPropertiesAttributeMatchingModel string
+
+const (
+	RuleBasedPropertiesAttributeMatchingModelONETOONE   RuleBasedPropertiesAttributeMatchingModel = "ONE_TO_ONE"
+	RuleBasedPropertiesAttributeMatchingModelMANYTOMANY RuleBasedPropertiesAttributeMatchingModel = "MANY_TO_MANY"
+)
+
+type RuleBasedPropertiesMatchPurpose string
+
+const (
+	RuleBasedPropertiesMatchPurposeIDENTIFIERGENERATION RuleBasedPropertiesMatchPurpose = "IDENTIFIER_GENERATION"
+	RuleBasedPropertiesMatchPurposeINDEXING             RuleBasedPropertiesMatchPurpose = "INDEXING"
+)
+
+type StatementEffect string
+
+const (
+	StatementEffectAllow StatementEffect = "Allow"
+	StatementEffectDeny  StatementEffect = "Deny"
+)
+
+type SchemaAttributeType string
+
+const (
+	SchemaAttributeTypeNAME              SchemaAttributeType = "NAME"
+	SchemaAttributeTypeNAMEFIRST         SchemaAttributeType = "NAME_FIRST"
+	SchemaAttributeTypeNAMEMIDDLE        SchemaAttributeType = "NAME_MIDDLE"
+	SchemaAttributeTypeNAMELAST          SchemaAttributeType = "NAME_LAST"
+	SchemaAttributeTypeADDRESS           SchemaAttributeType = "ADDRESS"
+	SchemaAttributeTypeADDRESSSTREET1    SchemaAttributeType = "ADDRESS_STREET1"
+	SchemaAttributeTypeADDRESSSTREET2    SchemaAttributeType = "ADDRESS_STREET2"
+	SchemaAttributeTypeADDRESSSTREET3    SchemaAttributeType = "ADDRESS_STREET3"
+	SchemaAttributeTypeADDRESSCITY       SchemaAttributeType = "ADDRESS_CITY"
+	SchemaAttributeTypeADDRESSSTATE      SchemaAttributeType = "ADDRESS_STATE"
+	SchemaAttributeTypeADDRESSCOUNTRY    SchemaAttributeType = "ADDRESS_COUNTRY"
+	SchemaAttributeTypeADDRESSPOSTALCODE SchemaAttributeType = "ADDRESS_POSTALCODE"
+	SchemaAttributeTypePHONE             SchemaAttributeType = "PHONE"
+	SchemaAttributeTypePHONENUMBER       SchemaAttributeType = "PHONE_NUMBER"
+	SchemaAttributeTypePHONECOUNTRYCODE  SchemaAttributeType = "PHONE_COUNTRYCODE"
+	SchemaAttributeTypeEMAILADDRESS      SchemaAttributeType = "EMAIL_ADDRESS"
+	SchemaAttributeTypeUNIQUEID          SchemaAttributeType = "UNIQUE_ID"
+	SchemaAttributeTypeDATE              SchemaAttributeType = "DATE"
+	SchemaAttributeTypeSTRING            SchemaAttributeType = "STRING"
+	SchemaAttributeTypePROVIDERID        SchemaAttributeType = "PROVIDER_ID"
+)

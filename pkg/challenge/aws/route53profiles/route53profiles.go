@@ -9,12 +9,12 @@ type Tag struct {
 }
 
 type Profile struct {
-	Arn         *string `json:"Arn,omitempty"`
-	ClientToken *string `json:"ClientToken,omitempty"`
-	Id          *string `json:"Id,omitempty"`
-	Name        *string `json:"Name,omitempty"`
-	ShareStatus *string `json:"ShareStatus,omitempty"`
-	Tags        []Tag   `json:"Tags,omitempty"`
+	Arn         *string             `json:"Arn,omitempty"`
+	ClientToken *string             `json:"ClientToken,omitempty"`
+	Id          *string             `json:"Id,omitempty"`
+	Name        *string             `json:"Name,omitempty"`
+	ShareStatus *ProfileShareStatus `json:"ShareStatus,omitempty"`
+	Tags        []Tag               `json:"Tags,omitempty"`
 }
 
 func (Profile) CloudControlType() string { return "AWS::Route53Profiles::Profile" }
@@ -49,3 +49,11 @@ type ProfileResourceAssociation struct {
 func (ProfileResourceAssociation) CloudControlType() string {
 	return "AWS::Route53Profiles::ProfileResourceAssociation"
 }
+
+type ProfileShareStatus string
+
+const (
+	ProfileShareStatusNOTSHARED    ProfileShareStatus = "NOT_SHARED"
+	ProfileShareStatusSHAREDWITHME ProfileShareStatus = "SHARED_WITH_ME"
+	ProfileShareStatusSHAREDBYME   ProfileShareStatus = "SHARED_BY_ME"
+)

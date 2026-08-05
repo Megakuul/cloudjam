@@ -9,19 +9,65 @@ type Tag struct {
 }
 
 type ReportDefinition struct {
-	AdditionalArtifacts      []string `json:"AdditionalArtifacts,omitempty"`
-	AdditionalSchemaElements []string `json:"AdditionalSchemaElements,omitempty"`
-	BillingViewArn           *string  `json:"BillingViewArn,omitempty"`
-	Compression              *string  `json:"Compression,omitempty"`
-	Format                   *string  `json:"Format,omitempty"`
-	RefreshClosedReports     *bool    `json:"RefreshClosedReports,omitempty"`
-	ReportName               *string  `json:"ReportName,omitempty"`
-	ReportVersioning         *string  `json:"ReportVersioning,omitempty"`
-	S3Bucket                 *string  `json:"S3Bucket,omitempty"`
-	S3Prefix                 *string  `json:"S3Prefix,omitempty"`
-	S3Region                 *string  `json:"S3Region,omitempty"`
-	Tags                     []Tag    `json:"Tags,omitempty"`
-	TimeUnit                 *string  `json:"TimeUnit,omitempty"`
+	AdditionalArtifacts      []ReportDefinitionAdditionalArtifactsItem      `json:"AdditionalArtifacts,omitempty"`
+	AdditionalSchemaElements []ReportDefinitionAdditionalSchemaElementsItem `json:"AdditionalSchemaElements,omitempty"`
+	BillingViewArn           *string                                        `json:"BillingViewArn,omitempty"`
+	Compression              *ReportDefinitionCompression                   `json:"Compression,omitempty"`
+	Format                   *ReportDefinitionFormat                        `json:"Format,omitempty"`
+	RefreshClosedReports     *bool                                          `json:"RefreshClosedReports,omitempty"`
+	ReportName               *string                                        `json:"ReportName,omitempty"`
+	ReportVersioning         *ReportDefinitionReportVersioning              `json:"ReportVersioning,omitempty"`
+	S3Bucket                 *string                                        `json:"S3Bucket,omitempty"`
+	S3Prefix                 *string                                        `json:"S3Prefix,omitempty"`
+	S3Region                 *string                                        `json:"S3Region,omitempty"`
+	Tags                     []Tag                                          `json:"Tags,omitempty"`
+	TimeUnit                 *ReportDefinitionTimeUnit                      `json:"TimeUnit,omitempty"`
 }
 
 func (ReportDefinition) CloudControlType() string { return "AWS::CUR::ReportDefinition" }
+
+type ReportDefinitionAdditionalArtifactsItem string
+
+const (
+	ReportDefinitionAdditionalArtifactsItemREDSHIFT   ReportDefinitionAdditionalArtifactsItem = "REDSHIFT"
+	ReportDefinitionAdditionalArtifactsItemQUICKSIGHT ReportDefinitionAdditionalArtifactsItem = "QUICKSIGHT"
+	ReportDefinitionAdditionalArtifactsItemATHENA     ReportDefinitionAdditionalArtifactsItem = "ATHENA"
+)
+
+type ReportDefinitionAdditionalSchemaElementsItem string
+
+const (
+	ReportDefinitionAdditionalSchemaElementsItemRESOURCES                   ReportDefinitionAdditionalSchemaElementsItem = "RESOURCES"
+	ReportDefinitionAdditionalSchemaElementsItemSPLITCOSTALLOCATIONDATA     ReportDefinitionAdditionalSchemaElementsItem = "SPLIT_COST_ALLOCATION_DATA"
+	ReportDefinitionAdditionalSchemaElementsItemMANUALDISCOUNTCOMPATIBILITY ReportDefinitionAdditionalSchemaElementsItem = "MANUAL_DISCOUNT_COMPATIBILITY"
+)
+
+type ReportDefinitionCompression string
+
+const (
+	ReportDefinitionCompressionZIP     ReportDefinitionCompression = "ZIP"
+	ReportDefinitionCompressionGZIP    ReportDefinitionCompression = "GZIP"
+	ReportDefinitionCompressionParquet ReportDefinitionCompression = "Parquet"
+)
+
+type ReportDefinitionFormat string
+
+const (
+	ReportDefinitionFormatTextORcsv ReportDefinitionFormat = "textORcsv"
+	ReportDefinitionFormatParquet   ReportDefinitionFormat = "Parquet"
+)
+
+type ReportDefinitionReportVersioning string
+
+const (
+	ReportDefinitionReportVersioningCREATENEWREPORT ReportDefinitionReportVersioning = "CREATE_NEW_REPORT"
+	ReportDefinitionReportVersioningOVERWRITEREPORT ReportDefinitionReportVersioning = "OVERWRITE_REPORT"
+)
+
+type ReportDefinitionTimeUnit string
+
+const (
+	ReportDefinitionTimeUnitHOURLY  ReportDefinitionTimeUnit = "HOURLY"
+	ReportDefinitionTimeUnitDAILY   ReportDefinitionTimeUnit = "DAILY"
+	ReportDefinitionTimeUnitMONTHLY ReportDefinitionTimeUnit = "MONTHLY"
+)

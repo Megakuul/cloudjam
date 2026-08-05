@@ -4,10 +4,10 @@
 package workspaces
 
 type ConnectionAliasAssociation struct {
-	AssociatedAccountId  *string `json:"AssociatedAccountId,omitempty"`
-	AssociationStatus    *string `json:"AssociationStatus,omitempty"`
-	ConnectionIdentifier *string `json:"ConnectionIdentifier,omitempty"`
-	ResourceId           *string `json:"ResourceId,omitempty"`
+	AssociatedAccountId  *string                                      `json:"AssociatedAccountId,omitempty"`
+	AssociationStatus    *ConnectionAliasAssociationAssociationStatus `json:"AssociationStatus,omitempty"`
+	ConnectionIdentifier *string                                      `json:"ConnectionIdentifier,omitempty"`
+	ResourceId           *string                                      `json:"ResourceId,omitempty"`
 }
 
 type Tag struct {
@@ -16,11 +16,11 @@ type Tag struct {
 }
 
 type ConnectionAlias struct {
-	AliasId              *string                      `json:"AliasId,omitempty"`
-	Associations         []ConnectionAliasAssociation `json:"Associations,omitempty"`
-	ConnectionAliasState *string                      `json:"ConnectionAliasState,omitempty"`
-	ConnectionString     *string                      `json:"ConnectionString,omitempty"`
-	Tags                 []Tag                        `json:"Tags,omitempty"`
+	AliasId              *string                              `json:"AliasId,omitempty"`
+	Associations         []ConnectionAliasAssociation         `json:"Associations,omitempty"`
+	ConnectionAliasState *ConnectionAliasConnectionAliasState `json:"ConnectionAliasState,omitempty"`
+	ConnectionString     *string                              `json:"ConnectionString,omitempty"`
+	Tags                 []Tag                                `json:"Tags,omitempty"`
 }
 
 func (ConnectionAlias) CloudControlType() string { return "AWS::WorkSpaces::ConnectionAlias" }
@@ -75,8 +75,8 @@ type WorkspaceIpGroup struct {
 func (WorkspaceIpGroup) CloudControlType() string { return "AWS::WorkSpaces::WorkspaceIpGroup" }
 
 type ApplicationSettings struct {
-	SettingsGroup *string `json:"SettingsGroup,omitempty"`
-	Status        *string `json:"Status,omitempty"`
+	SettingsGroup *string                    `json:"SettingsGroup,omitempty"`
+	Status        *ApplicationSettingsStatus `json:"Status,omitempty"`
 }
 
 type Capacity struct {
@@ -104,9 +104,41 @@ type WorkspacesPool struct {
 	PoolArn             *string              `json:"PoolArn,omitempty"`
 	PoolId              *string              `json:"PoolId,omitempty"`
 	PoolName            *string              `json:"PoolName,omitempty"`
-	RunningMode         *string              `json:"RunningMode,omitempty"`
+	RunningMode         *RunningMode         `json:"RunningMode,omitempty"`
 	Tags                []WorkspacesPoolTag  `json:"Tags,omitempty"`
 	TimeoutSettings     *TimeoutSettings     `json:"TimeoutSettings,omitempty"`
 }
 
 func (WorkspacesPool) CloudControlType() string { return "AWS::WorkSpaces::WorkspacesPool" }
+
+type ConnectionAliasAssociationAssociationStatus string
+
+const (
+	ConnectionAliasAssociationAssociationStatusNOTASSOCIATED               ConnectionAliasAssociationAssociationStatus = "NOT_ASSOCIATED"
+	ConnectionAliasAssociationAssociationStatusPENDINGASSOCIATION          ConnectionAliasAssociationAssociationStatus = "PENDING_ASSOCIATION"
+	ConnectionAliasAssociationAssociationStatusASSOCIATEDWITHOWNERACCOUNT  ConnectionAliasAssociationAssociationStatus = "ASSOCIATED_WITH_OWNER_ACCOUNT"
+	ConnectionAliasAssociationAssociationStatusASSOCIATEDWITHSHAREDACCOUNT ConnectionAliasAssociationAssociationStatus = "ASSOCIATED_WITH_SHARED_ACCOUNT"
+	ConnectionAliasAssociationAssociationStatusPENDINGDISASSOCIATION       ConnectionAliasAssociationAssociationStatus = "PENDING_DISASSOCIATION"
+)
+
+type ConnectionAliasConnectionAliasState string
+
+const (
+	ConnectionAliasConnectionAliasStateCREATING ConnectionAliasConnectionAliasState = "CREATING"
+	ConnectionAliasConnectionAliasStateCREATED  ConnectionAliasConnectionAliasState = "CREATED"
+	ConnectionAliasConnectionAliasStateDELETING ConnectionAliasConnectionAliasState = "DELETING"
+)
+
+type ApplicationSettingsStatus string
+
+const (
+	ApplicationSettingsStatusDISABLED ApplicationSettingsStatus = "DISABLED"
+	ApplicationSettingsStatusENABLED  ApplicationSettingsStatus = "ENABLED"
+)
+
+type RunningMode string
+
+const (
+	RunningModeALWAYSON RunningMode = "ALWAYS_ON"
+	RunningModeAUTOSTOP RunningMode = "AUTO_STOP"
+)

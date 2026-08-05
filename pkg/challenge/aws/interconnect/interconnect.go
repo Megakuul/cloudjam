@@ -36,9 +36,21 @@ type Connection struct {
 	RemoteAccount      *ConnectionRemoteAccount `json:"RemoteAccount,omitempty"`
 	RemoteOwnerAccount *string                  `json:"RemoteOwnerAccount,omitempty"`
 	SharedId           *string                  `json:"SharedId,omitempty"`
-	State              *string                  `json:"State,omitempty"`
+	State              *ConnectionState         `json:"State,omitempty"`
 	Tags               []Tag                    `json:"Tags,omitempty"`
 	Type               *string                  `json:"Type,omitempty"`
 }
 
 func (Connection) CloudControlType() string { return "AWS::Interconnect::Connection" }
+
+type ConnectionState string
+
+const (
+	ConnectionStateAvailable ConnectionState = "available"
+	ConnectionStateRequested ConnectionState = "requested"
+	ConnectionStatePending   ConnectionState = "pending"
+	ConnectionStateDown      ConnectionState = "down"
+	ConnectionStateDeleting  ConnectionState = "deleting"
+	ConnectionStateDeleted   ConnectionState = "deleted"
+	ConnectionStateFailed    ConnectionState = "failed"
+)

@@ -4,8 +4,8 @@
 package cassandra
 
 type ReplicationSpecification struct {
-	RegionList          []string `json:"RegionList,omitempty"`
-	ReplicationStrategy *string  `json:"ReplicationStrategy,omitempty"`
+	RegionList          []string                                     `json:"RegionList,omitempty"`
+	ReplicationStrategy *ReplicationSpecificationReplicationStrategy `json:"ReplicationStrategy,omitempty"`
 }
 
 type Tag struct {
@@ -51,7 +51,7 @@ type ProvisionedThroughput struct {
 }
 
 type BillingMode struct {
-	Mode                  *string                `json:"Mode,omitempty"`
+	Mode                  *Mode                  `json:"Mode,omitempty"`
 	ProvisionedThroughput *ProvisionedThroughput `json:"ProvisionedThroughput,omitempty"`
 }
 
@@ -61,9 +61,9 @@ type TableTag struct {
 }
 
 type CdcSpecification struct {
-	Status   *string    `json:"Status,omitempty"`
-	Tags     []TableTag `json:"Tags,omitempty"`
-	ViewType *string    `json:"ViewType,omitempty"`
+	Status   *CdcStatus   `json:"Status,omitempty"`
+	Tags     []TableTag   `json:"Tags,omitempty"`
+	ViewType *CdcViewType `json:"ViewType,omitempty"`
 }
 
 type Column struct {
@@ -72,13 +72,13 @@ type Column struct {
 }
 
 type ClusteringKeyColumn struct {
-	Column  *Column `json:"Column,omitempty"`
-	OrderBy *string `json:"OrderBy,omitempty"`
+	Column  *Column                     `json:"Column,omitempty"`
+	OrderBy *ClusteringKeyColumnOrderBy `json:"OrderBy,omitempty"`
 }
 
 type EncryptionSpecification struct {
-	EncryptionType   *string `json:"EncryptionType,omitempty"`
-	KmsKeyIdentifier *string `json:"KmsKeyIdentifier,omitempty"`
+	EncryptionType   *EncryptionType `json:"EncryptionType,omitempty"`
+	KmsKeyIdentifier *string         `json:"KmsKeyIdentifier,omitempty"`
 }
 
 type ReplicaSpecification struct {
@@ -129,3 +129,47 @@ type Type struct {
 }
 
 func (Type) CloudControlType() string { return "AWS::Cassandra::Type" }
+
+type ReplicationSpecificationReplicationStrategy string
+
+const (
+	ReplicationSpecificationReplicationStrategySINGLEREGION ReplicationSpecificationReplicationStrategy = "SINGLE_REGION"
+	ReplicationSpecificationReplicationStrategyMULTIREGION  ReplicationSpecificationReplicationStrategy = "MULTI_REGION"
+)
+
+type Mode string
+
+const (
+	ModePROVISIONED Mode = "PROVISIONED"
+	ModeONDEMAND    Mode = "ON_DEMAND"
+)
+
+type CdcStatus string
+
+const (
+	CdcStatusENABLED  CdcStatus = "ENABLED"
+	CdcStatusDISABLED CdcStatus = "DISABLED"
+)
+
+type CdcViewType string
+
+const (
+	CdcViewTypeNEWIMAGE        CdcViewType = "NEW_IMAGE"
+	CdcViewTypeOLDIMAGE        CdcViewType = "OLD_IMAGE"
+	CdcViewTypeKEYSONLY        CdcViewType = "KEYS_ONLY"
+	CdcViewTypeNEWANDOLDIMAGES CdcViewType = "NEW_AND_OLD_IMAGES"
+)
+
+type ClusteringKeyColumnOrderBy string
+
+const (
+	ClusteringKeyColumnOrderByASC  ClusteringKeyColumnOrderBy = "ASC"
+	ClusteringKeyColumnOrderByDESC ClusteringKeyColumnOrderBy = "DESC"
+)
+
+type EncryptionType string
+
+const (
+	EncryptionTypeAWSOWNEDKMSKEY        EncryptionType = "AWS_OWNED_KMS_KEY"
+	EncryptionTypeCUSTOMERMANAGEDKMSKEY EncryptionType = "CUSTOMER_MANAGED_KMS_KEY"
+)

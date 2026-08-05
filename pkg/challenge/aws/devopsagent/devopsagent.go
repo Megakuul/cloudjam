@@ -60,13 +60,13 @@ type PrivateConnectionTag struct {
 }
 
 type PrivateConnection struct {
-	Arn                     *string                `json:"Arn,omitempty"`
-	Certificate             *string                `json:"Certificate,omitempty"`
-	CertificateExpiryTime   *string                `json:"CertificateExpiryTime,omitempty"`
-	ConnectionConfiguration map[string]any         `json:"ConnectionConfiguration,omitempty"`
-	Name                    *string                `json:"Name,omitempty"`
-	Status                  *string                `json:"Status,omitempty"`
-	Tags                    []PrivateConnectionTag `json:"Tags,omitempty"`
+	Arn                     *string                  `json:"Arn,omitempty"`
+	Certificate             *string                  `json:"Certificate,omitempty"`
+	CertificateExpiryTime   *string                  `json:"CertificateExpiryTime,omitempty"`
+	ConnectionConfiguration map[string]any           `json:"ConnectionConfiguration,omitempty"`
+	Name                    *string                  `json:"Name,omitempty"`
+	Status                  *PrivateConnectionStatus `json:"Status,omitempty"`
+	Tags                    []PrivateConnectionTag   `json:"Tags,omitempty"`
 }
 
 func (PrivateConnection) CloudControlType() string { return "AWS::DevOpsAgent::PrivateConnection" }
@@ -85,9 +85,34 @@ type Service struct {
 	PrivateConnectionName            *string             `json:"PrivateConnectionName,omitempty"`
 	ServiceDetails                   map[string]any      `json:"ServiceDetails,omitempty"`
 	ServiceId                        *string             `json:"ServiceId,omitempty"`
-	ServiceType                      *string             `json:"ServiceType,omitempty"`
+	ServiceType                      *ServiceType        `json:"ServiceType,omitempty"`
 	Tags                             []ServiceTag        `json:"Tags,omitempty"`
 	TargetUrlPrivateConnectionName   *string             `json:"TargetUrlPrivateConnectionName,omitempty"`
 }
 
 func (Service) CloudControlType() string { return "AWS::DevOpsAgent::Service" }
+
+type PrivateConnectionStatus string
+
+const (
+	PrivateConnectionStatusACTIVE           PrivateConnectionStatus = "ACTIVE"
+	PrivateConnectionStatusCREATEINPROGRESS PrivateConnectionStatus = "CREATE_IN_PROGRESS"
+	PrivateConnectionStatusCREATEFAILED     PrivateConnectionStatus = "CREATE_FAILED"
+	PrivateConnectionStatusDELETEINPROGRESS PrivateConnectionStatus = "DELETE_IN_PROGRESS"
+	PrivateConnectionStatusDELETEFAILED     PrivateConnectionStatus = "DELETE_FAILED"
+)
+
+type ServiceType string
+
+const (
+	ServiceTypeDynatrace         ServiceType = "dynatrace"
+	ServiceTypeMcpserver         ServiceType = "mcpserver"
+	ServiceTypeMcpserversplunk   ServiceType = "mcpserversplunk"
+	ServiceTypeMcpservernewrelic ServiceType = "mcpservernewrelic"
+	ServiceTypeGitlab            ServiceType = "gitlab"
+	ServiceTypeServicenow        ServiceType = "servicenow"
+	ServiceTypePagerduty         ServiceType = "pagerduty"
+	ServiceTypeAzureidentity     ServiceType = "azureidentity"
+	ServiceTypeMcpserversigv4    ServiceType = "mcpserversigv4"
+	ServiceTypeMcpservergrafana  ServiceType = "mcpservergrafana"
+)

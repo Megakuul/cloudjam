@@ -26,8 +26,8 @@ type IndexActionsResourceType struct {
 }
 
 type ScanActionResourceType struct {
-	MalwareScanner *string `json:"MalwareScanner,omitempty"`
-	ScanMode       *string `json:"ScanMode,omitempty"`
+	MalwareScanner *MalwareScanner `json:"MalwareScanner,omitempty"`
+	ScanMode       *ScanMode       `json:"ScanMode,omitempty"`
 }
 
 type BackupRuleResourceType struct {
@@ -47,9 +47,9 @@ type BackupRuleResourceType struct {
 }
 
 type ScanSettingResourceType struct {
-	MalwareScanner *string  `json:"MalwareScanner,omitempty"`
-	ResourceTypes  []string `json:"ResourceTypes,omitempty"`
-	ScannerRoleArn *string  `json:"ScannerRoleArn,omitempty"`
+	MalwareScanner *MalwareScanner `json:"MalwareScanner,omitempty"`
+	ResourceTypes  []string        `json:"ResourceTypes,omitempty"`
+	ScannerRoleArn *string         `json:"ScannerRoleArn,omitempty"`
 }
 
 type BackupPlanResourceType struct {
@@ -185,7 +185,7 @@ type LegalHold struct {
 	Description            *string                          `json:"Description,omitempty"`
 	LegalHoldId            *string                          `json:"LegalHoldId,omitempty"`
 	RecoveryPointSelection *LegalHoldRecoveryPointSelection `json:"RecoveryPointSelection,omitempty"`
-	Status                 *string                          `json:"Status,omitempty"`
+	Status                 *LegalHoldStatus                 `json:"Status,omitempty"`
 	Tags                   []LegalHoldTagsItem              `json:"Tags,omitempty"`
 	Title                  *string                          `json:"Title,omitempty"`
 }
@@ -246,11 +246,11 @@ type ReportPlan struct {
 func (ReportPlan) CloudControlType() string { return "AWS::Backup::ReportPlan" }
 
 type RestoreTestingRecoveryPointSelection struct {
-	Algorithm           *string  `json:"Algorithm,omitempty"`
-	ExcludeVaults       []string `json:"ExcludeVaults,omitempty"`
-	IncludeVaults       []string `json:"IncludeVaults,omitempty"`
-	RecoveryPointTypes  []string `json:"RecoveryPointTypes,omitempty"`
-	SelectionWindowDays *int     `json:"SelectionWindowDays,omitempty"`
+	Algorithm           *RestoreTestingRecoveryPointSelectionAlgorithm `json:"Algorithm,omitempty"`
+	ExcludeVaults       []string                                       `json:"ExcludeVaults,omitempty"`
+	IncludeVaults       []string                                       `json:"IncludeVaults,omitempty"`
+	RecoveryPointTypes  []RestoreTestingRecoveryPointType              `json:"RecoveryPointTypes,omitempty"`
+	SelectionWindowDays *int                                           `json:"SelectionWindowDays,omitempty"`
 }
 
 type RestoreTestingPlanTag struct {
@@ -312,3 +312,39 @@ type TieringConfiguration struct {
 }
 
 func (TieringConfiguration) CloudControlType() string { return "AWS::Backup::TieringConfiguration" }
+
+type MalwareScanner string
+
+const (
+	MalwareScannerGUARDDUTY MalwareScanner = "GUARDDUTY"
+)
+
+type ScanMode string
+
+const (
+	ScanModeFULLSCAN        ScanMode = "FULL_SCAN"
+	ScanModeINCREMENTALSCAN ScanMode = "INCREMENTAL_SCAN"
+)
+
+type LegalHoldStatus string
+
+const (
+	LegalHoldStatusCREATING  LegalHoldStatus = "CREATING"
+	LegalHoldStatusACTIVE    LegalHoldStatus = "ACTIVE"
+	LegalHoldStatusCANCELING LegalHoldStatus = "CANCELING"
+	LegalHoldStatusCANCELED  LegalHoldStatus = "CANCELED"
+)
+
+type RestoreTestingRecoveryPointSelectionAlgorithm string
+
+const (
+	RestoreTestingRecoveryPointSelectionAlgorithmLATESTWITHINWINDOW RestoreTestingRecoveryPointSelectionAlgorithm = "LATEST_WITHIN_WINDOW"
+	RestoreTestingRecoveryPointSelectionAlgorithmRANDOMWITHINWINDOW RestoreTestingRecoveryPointSelectionAlgorithm = "RANDOM_WITHIN_WINDOW"
+)
+
+type RestoreTestingRecoveryPointType string
+
+const (
+	RestoreTestingRecoveryPointTypeSNAPSHOT   RestoreTestingRecoveryPointType = "SNAPSHOT"
+	RestoreTestingRecoveryPointTypeCONTINUOUS RestoreTestingRecoveryPointType = "CONTINUOUS"
+)

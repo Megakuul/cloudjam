@@ -17,7 +17,7 @@ type EnvironmentAccountConnection struct {
 	Id                   *string `json:"Id,omitempty"`
 	ManagementAccountId  *string `json:"ManagementAccountId,omitempty"`
 	RoleArn              *string `json:"RoleArn,omitempty"`
-	Status               *string `json:"Status,omitempty"`
+	Status               *Status `json:"Status,omitempty"`
 	Tags                 []Tag   `json:"Tags,omitempty"`
 }
 
@@ -36,7 +36,7 @@ type EnvironmentTemplate struct {
 	DisplayName   *string                  `json:"DisplayName,omitempty"`
 	EncryptionKey *string                  `json:"EncryptionKey,omitempty"`
 	Name          *string                  `json:"Name,omitempty"`
-	Provisioning  *string                  `json:"Provisioning,omitempty"`
+	Provisioning  *Provisioning            `json:"Provisioning,omitempty"`
 	Tags          []EnvironmentTemplateTag `json:"Tags,omitempty"`
 }
 
@@ -48,13 +48,33 @@ type ServiceTemplateTag struct {
 }
 
 type ServiceTemplate struct {
-	Arn                  *string              `json:"Arn,omitempty"`
-	Description          *string              `json:"Description,omitempty"`
-	DisplayName          *string              `json:"DisplayName,omitempty"`
-	EncryptionKey        *string              `json:"EncryptionKey,omitempty"`
-	Name                 *string              `json:"Name,omitempty"`
-	PipelineProvisioning *string              `json:"PipelineProvisioning,omitempty"`
-	Tags                 []ServiceTemplateTag `json:"Tags,omitempty"`
+	Arn                  *string                      `json:"Arn,omitempty"`
+	Description          *string                      `json:"Description,omitempty"`
+	DisplayName          *string                      `json:"DisplayName,omitempty"`
+	EncryptionKey        *string                      `json:"EncryptionKey,omitempty"`
+	Name                 *string                      `json:"Name,omitempty"`
+	PipelineProvisioning *ServiceTemplateProvisioning `json:"PipelineProvisioning,omitempty"`
+	Tags                 []ServiceTemplateTag         `json:"Tags,omitempty"`
 }
 
 func (ServiceTemplate) CloudControlType() string { return "AWS::Proton::ServiceTemplate" }
+
+type Status string
+
+const (
+	StatusPENDING   Status = "PENDING"
+	StatusCONNECTED Status = "CONNECTED"
+	StatusREJECTED  Status = "REJECTED"
+)
+
+type Provisioning string
+
+const (
+	ProvisioningCUSTOMERMANAGED Provisioning = "CUSTOMER_MANAGED"
+)
+
+type ServiceTemplateProvisioning string
+
+const (
+	ServiceTemplateProvisioningCUSTOMERMANAGED ServiceTemplateProvisioning = "CUSTOMER_MANAGED"
+)

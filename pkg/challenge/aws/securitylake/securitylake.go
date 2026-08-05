@@ -78,7 +78,7 @@ type SubscriberTag struct {
 }
 
 type Subscriber struct {
-	AccessTypes           []string                      `json:"AccessTypes,omitempty"`
+	AccessTypes           []AccessTypesItem             `json:"AccessTypes,omitempty"`
 	DataLakeArn           *string                       `json:"DataLakeArn,omitempty"`
 	ResourceShareArn      *string                       `json:"ResourceShareArn,omitempty"`
 	ResourceShareName     *string                       `json:"ResourceShareName,omitempty"`
@@ -95,11 +95,11 @@ type Subscriber struct {
 func (Subscriber) CloudControlType() string { return "AWS::SecurityLake::Subscriber" }
 
 type HttpsNotificationConfiguration struct {
-	AuthorizationApiKeyName  *string `json:"AuthorizationApiKeyName,omitempty"`
-	AuthorizationApiKeyValue *string `json:"AuthorizationApiKeyValue,omitempty"`
-	Endpoint                 *string `json:"Endpoint,omitempty"`
-	HttpMethod               *string `json:"HttpMethod,omitempty"`
-	TargetRoleArn            *string `json:"TargetRoleArn,omitempty"`
+	AuthorizationApiKeyName  *string                                   `json:"AuthorizationApiKeyName,omitempty"`
+	AuthorizationApiKeyValue *string                                   `json:"AuthorizationApiKeyValue,omitempty"`
+	Endpoint                 *string                                   `json:"Endpoint,omitempty"`
+	HttpMethod               *HttpsNotificationConfigurationHttpMethod `json:"HttpMethod,omitempty"`
+	TargetRoleArn            *string                                   `json:"TargetRoleArn,omitempty"`
 }
 
 type NotificationConfiguration struct {
@@ -116,3 +116,17 @@ type SubscriberNotification struct {
 func (SubscriberNotification) CloudControlType() string {
 	return "AWS::SecurityLake::SubscriberNotification"
 }
+
+type AccessTypesItem string
+
+const (
+	AccessTypesItemLAKEFORMATION AccessTypesItem = "LAKEFORMATION"
+	AccessTypesItemS3            AccessTypesItem = "S3"
+)
+
+type HttpsNotificationConfigurationHttpMethod string
+
+const (
+	HttpsNotificationConfigurationHttpMethodPOST HttpsNotificationConfigurationHttpMethod = "POST"
+	HttpsNotificationConfigurationHttpMethodPUT  HttpsNotificationConfigurationHttpMethod = "PUT"
+)

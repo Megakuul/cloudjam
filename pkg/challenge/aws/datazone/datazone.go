@@ -33,7 +33,7 @@ type Connection struct {
 	ProjectId                        *string                   `json:"ProjectId,omitempty"`
 	ProjectIdentifier                *string                   `json:"ProjectIdentifier,omitempty"`
 	Props                            json.RawMessage           `json:"Props,omitempty"`
-	Scope                            *string                   `json:"Scope,omitempty"`
+	Scope                            *ConnectionScope          `json:"Scope,omitempty"`
 	Type                             *string                   `json:"Type,omitempty"`
 }
 
@@ -64,7 +64,7 @@ type DataSource struct {
 	Description           *string                      `json:"Description,omitempty"`
 	DomainId              *string                      `json:"DomainId,omitempty"`
 	DomainIdentifier      *string                      `json:"DomainIdentifier,omitempty"`
-	EnableSetting         *string                      `json:"EnableSetting,omitempty"`
+	EnableSetting         *EnableSetting               `json:"EnableSetting,omitempty"`
 	EnvironmentId         *string                      `json:"EnvironmentId,omitempty"`
 	EnvironmentIdentifier *string                      `json:"EnvironmentIdentifier,omitempty"`
 	Id                    *string                      `json:"Id,omitempty"`
@@ -77,7 +77,7 @@ type DataSource struct {
 	PublishOnImport       *bool                        `json:"PublishOnImport,omitempty"`
 	Recommendation        *RecommendationConfiguration `json:"Recommendation,omitempty"`
 	Schedule              *ScheduleConfiguration       `json:"Schedule,omitempty"`
-	Status                *string                      `json:"Status,omitempty"`
+	Status                *DataSourceStatus            `json:"Status,omitempty"`
 	Type                  *string                      `json:"Type,omitempty"`
 	UpdatedAt             *string                      `json:"UpdatedAt,omitempty"`
 }
@@ -85,9 +85,9 @@ type DataSource struct {
 func (DataSource) CloudControlType() string { return "AWS::DataZone::DataSource" }
 
 type SingleSignOn struct {
-	IdcInstanceArn *string `json:"IdcInstanceArn,omitempty"`
-	Type           *string `json:"Type,omitempty"`
-	UserAssignment *string `json:"UserAssignment,omitempty"`
+	IdcInstanceArn *string         `json:"IdcInstanceArn,omitempty"`
+	Type           *AuthType       `json:"Type,omitempty"`
+	UserAssignment *UserAssignment `json:"UserAssignment,omitempty"`
 }
 
 type Tag struct {
@@ -96,22 +96,22 @@ type Tag struct {
 }
 
 type Domain struct {
-	Arn                 *string       `json:"Arn,omitempty"`
-	CreatedAt           *string       `json:"CreatedAt,omitempty"`
-	Description         *string       `json:"Description,omitempty"`
-	DomainExecutionRole *string       `json:"DomainExecutionRole,omitempty"`
-	DomainVersion       *string       `json:"DomainVersion,omitempty"`
-	Id                  *string       `json:"Id,omitempty"`
-	KmsKeyIdentifier    *string       `json:"KmsKeyIdentifier,omitempty"`
-	LastUpdatedAt       *string       `json:"LastUpdatedAt,omitempty"`
-	ManagedAccountId    *string       `json:"ManagedAccountId,omitempty"`
-	Name                *string       `json:"Name,omitempty"`
-	PortalUrl           *string       `json:"PortalUrl,omitempty"`
-	RootDomainUnitId    *string       `json:"RootDomainUnitId,omitempty"`
-	ServiceRole         *string       `json:"ServiceRole,omitempty"`
-	SingleSignOn        *SingleSignOn `json:"SingleSignOn,omitempty"`
-	Status              *string       `json:"Status,omitempty"`
-	Tags                []Tag         `json:"Tags,omitempty"`
+	Arn                 *string              `json:"Arn,omitempty"`
+	CreatedAt           *string              `json:"CreatedAt,omitempty"`
+	Description         *string              `json:"Description,omitempty"`
+	DomainExecutionRole *string              `json:"DomainExecutionRole,omitempty"`
+	DomainVersion       *DomainDomainVersion `json:"DomainVersion,omitempty"`
+	Id                  *string              `json:"Id,omitempty"`
+	KmsKeyIdentifier    *string              `json:"KmsKeyIdentifier,omitempty"`
+	LastUpdatedAt       *string              `json:"LastUpdatedAt,omitempty"`
+	ManagedAccountId    *string              `json:"ManagedAccountId,omitempty"`
+	Name                *string              `json:"Name,omitempty"`
+	PortalUrl           *string              `json:"PortalUrl,omitempty"`
+	RootDomainUnitId    *string              `json:"RootDomainUnitId,omitempty"`
+	ServiceRole         *string              `json:"ServiceRole,omitempty"`
+	SingleSignOn        *SingleSignOn        `json:"SingleSignOn,omitempty"`
+	Status              *DomainStatus        `json:"Status,omitempty"`
+	Tags                []Tag                `json:"Tags,omitempty"`
 }
 
 func (Domain) CloudControlType() string { return "AWS::DataZone::Domain" }
@@ -159,7 +159,7 @@ type Environment struct {
 	ProjectId                      *string                `json:"ProjectId,omitempty"`
 	ProjectIdentifier              *string                `json:"ProjectIdentifier,omitempty"`
 	Provider                       *string                `json:"Provider,omitempty"`
-	Status                         *string                `json:"Status,omitempty"`
+	Status                         *EnvironmentStatus     `json:"Status,omitempty"`
 	UpdatedAt                      *string                `json:"UpdatedAt,omitempty"`
 	UserParameters                 []EnvironmentParameter `json:"UserParameters,omitempty"`
 }
@@ -239,57 +239,57 @@ type Model struct {
 }
 
 type FormType struct {
-	CreatedAt               *string `json:"CreatedAt,omitempty"`
-	CreatedBy               *string `json:"CreatedBy,omitempty"`
-	Description             *string `json:"Description,omitempty"`
-	DomainId                *string `json:"DomainId,omitempty"`
-	DomainIdentifier        *string `json:"DomainIdentifier,omitempty"`
-	FormTypeIdentifier      *string `json:"FormTypeIdentifier,omitempty"`
-	Model                   *Model  `json:"Model,omitempty"`
-	Name                    *string `json:"Name,omitempty"`
-	OwningProjectId         *string `json:"OwningProjectId,omitempty"`
-	OwningProjectIdentifier *string `json:"OwningProjectIdentifier,omitempty"`
-	Revision                *string `json:"Revision,omitempty"`
-	Status                  *string `json:"Status,omitempty"`
+	CreatedAt               *string         `json:"CreatedAt,omitempty"`
+	CreatedBy               *string         `json:"CreatedBy,omitempty"`
+	Description             *string         `json:"Description,omitempty"`
+	DomainId                *string         `json:"DomainId,omitempty"`
+	DomainIdentifier        *string         `json:"DomainIdentifier,omitempty"`
+	FormTypeIdentifier      *string         `json:"FormTypeIdentifier,omitempty"`
+	Model                   *Model          `json:"Model,omitempty"`
+	Name                    *string         `json:"Name,omitempty"`
+	OwningProjectId         *string         `json:"OwningProjectId,omitempty"`
+	OwningProjectIdentifier *string         `json:"OwningProjectIdentifier,omitempty"`
+	Revision                *string         `json:"Revision,omitempty"`
+	Status                  *FormTypeStatus `json:"Status,omitempty"`
 }
 
 func (FormType) CloudControlType() string { return "AWS::DataZone::FormType" }
 
 type GroupProfile struct {
-	DomainId         *string `json:"DomainId,omitempty"`
-	DomainIdentifier *string `json:"DomainIdentifier,omitempty"`
-	GroupIdentifier  *string `json:"GroupIdentifier,omitempty"`
-	GroupName        *string `json:"GroupName,omitempty"`
-	GroupType        *string `json:"GroupType,omitempty"`
-	Id               *string `json:"Id,omitempty"`
-	RolePrincipalArn *string `json:"RolePrincipalArn,omitempty"`
-	RolePrincipalId  *string `json:"RolePrincipalId,omitempty"`
-	Status           *string `json:"Status,omitempty"`
+	DomainId         *string             `json:"DomainId,omitempty"`
+	DomainIdentifier *string             `json:"DomainIdentifier,omitempty"`
+	GroupIdentifier  *string             `json:"GroupIdentifier,omitempty"`
+	GroupName        *string             `json:"GroupName,omitempty"`
+	GroupType        *GroupType          `json:"GroupType,omitempty"`
+	Id               *string             `json:"Id,omitempty"`
+	RolePrincipalArn *string             `json:"RolePrincipalArn,omitempty"`
+	RolePrincipalId  *string             `json:"RolePrincipalId,omitempty"`
+	Status           *GroupProfileStatus `json:"Status,omitempty"`
 }
 
 func (GroupProfile) CloudControlType() string { return "AWS::DataZone::GroupProfile" }
 
 type Owner struct {
-	DomainIdentifier *string        `json:"DomainIdentifier,omitempty"`
-	EntityIdentifier *string        `json:"EntityIdentifier,omitempty"`
-	EntityType       *string        `json:"EntityType,omitempty"`
-	Owner            map[string]any `json:"Owner,omitempty"`
-	OwnerIdentifier  *string        `json:"OwnerIdentifier,omitempty"`
-	OwnerType        *string        `json:"OwnerType,omitempty"`
+	DomainIdentifier *string          `json:"DomainIdentifier,omitempty"`
+	EntityIdentifier *string          `json:"EntityIdentifier,omitempty"`
+	EntityType       *OwnerEntityType `json:"EntityType,omitempty"`
+	Owner            map[string]any   `json:"Owner,omitempty"`
+	OwnerIdentifier  *string          `json:"OwnerIdentifier,omitempty"`
+	OwnerType        *OwnerOwnerType  `json:"OwnerType,omitempty"`
 }
 
 func (Owner) CloudControlType() string { return "AWS::DataZone::Owner" }
 
 type PolicyGrant struct {
-	CreatedAt        *string         `json:"CreatedAt,omitempty"`
-	CreatedBy        *string         `json:"CreatedBy,omitempty"`
-	Detail           json.RawMessage `json:"Detail,omitempty"`
-	DomainIdentifier *string         `json:"DomainIdentifier,omitempty"`
-	EntityIdentifier *string         `json:"EntityIdentifier,omitempty"`
-	EntityType       *string         `json:"EntityType,omitempty"`
-	GrantId          *string         `json:"GrantId,omitempty"`
-	PolicyType       *string         `json:"PolicyType,omitempty"`
-	Principal        json.RawMessage `json:"Principal,omitempty"`
+	CreatedAt        *string            `json:"CreatedAt,omitempty"`
+	CreatedBy        *string            `json:"CreatedBy,omitempty"`
+	Detail           json.RawMessage    `json:"Detail,omitempty"`
+	DomainIdentifier *string            `json:"DomainIdentifier,omitempty"`
+	EntityIdentifier *string            `json:"EntityIdentifier,omitempty"`
+	EntityType       *TargetEntityType  `json:"EntityType,omitempty"`
+	GrantId          *string            `json:"GrantId,omitempty"`
+	PolicyType       *ManagedPolicyType `json:"PolicyType,omitempty"`
+	Principal        json.RawMessage    `json:"Principal,omitempty"`
 }
 
 func (PolicyGrant) CloudControlType() string { return "AWS::DataZone::PolicyGrant" }
@@ -300,8 +300,8 @@ type Member struct {
 }
 
 type ProjectMembershipAssignment struct {
-	Designation *string `json:"Designation,omitempty"`
-	Member      *Member `json:"Member,omitempty"`
+	Designation *UserDesignation `json:"Designation,omitempty"`
+	Member      *Member          `json:"Member,omitempty"`
 }
 
 type ResourceTag struct {
@@ -336,7 +336,7 @@ type Project struct {
 	ProjectExecutionRole  *string                                 `json:"ProjectExecutionRole,omitempty"`
 	ProjectProfileId      *string                                 `json:"ProjectProfileId,omitempty"`
 	ProjectProfileVersion *string                                 `json:"ProjectProfileVersion,omitempty"`
-	ProjectStatus         *string                                 `json:"ProjectStatus,omitempty"`
+	ProjectStatus         *ProjectStatus                          `json:"ProjectStatus,omitempty"`
 	ResourceTags          []ResourceTag                           `json:"ResourceTags,omitempty"`
 	UserParameters        []EnvironmentConfigurationUserParameter `json:"UserParameters,omitempty"`
 }
@@ -344,12 +344,12 @@ type Project struct {
 func (Project) CloudControlType() string { return "AWS::DataZone::Project" }
 
 type ProjectMembership struct {
-	Designation          *string         `json:"Designation,omitempty"`
-	DomainIdentifier     *string         `json:"DomainIdentifier,omitempty"`
-	Member               json.RawMessage `json:"Member,omitempty"`
-	MemberIdentifier     *string         `json:"MemberIdentifier,omitempty"`
-	MemberIdentifierType *string         `json:"MemberIdentifierType,omitempty"`
-	ProjectIdentifier    *string         `json:"ProjectIdentifier,omitempty"`
+	Designation          *ProjectMembershipUserDesignation `json:"Designation,omitempty"`
+	DomainIdentifier     *string                           `json:"DomainIdentifier,omitempty"`
+	Member               json.RawMessage                   `json:"Member,omitempty"`
+	MemberIdentifier     *string                           `json:"MemberIdentifier,omitempty"`
+	MemberIdentifierType *MemberIdentifierType             `json:"MemberIdentifierType,omitempty"`
+	ProjectIdentifier    *string                           `json:"ProjectIdentifier,omitempty"`
 }
 
 func (ProjectMembership) CloudControlType() string { return "AWS::DataZone::ProjectMembership" }
@@ -378,7 +378,7 @@ type EnvironmentConfiguration struct {
 	AwsAccount                 *AwsAccount                                `json:"AwsAccount,omitempty"`
 	AwsRegion                  *Region                                    `json:"AwsRegion,omitempty"`
 	ConfigurationParameters    *EnvironmentConfigurationParametersDetails `json:"ConfigurationParameters,omitempty"`
-	DeploymentMode             *string                                    `json:"DeploymentMode,omitempty"`
+	DeploymentMode             *DeploymentMode                            `json:"DeploymentMode,omitempty"`
 	DeploymentOrder            *float64                                   `json:"DeploymentOrder,omitempty"`
 	Description                *string                                    `json:"Description,omitempty"`
 	EnvironmentBlueprintId     *string                                    `json:"EnvironmentBlueprintId,omitempty"`
@@ -408,7 +408,7 @@ type ProjectProfile struct {
 	Name                           *string                    `json:"Name,omitempty"`
 	ProjectResourceTags            []ResourceTagParameter     `json:"ProjectResourceTags,omitempty"`
 	ProjectResourceTagsDescription *string                    `json:"ProjectResourceTagsDescription,omitempty"`
-	Status                         *string                    `json:"Status,omitempty"`
+	Status                         *Status                    `json:"Status,omitempty"`
 	UseDefaultConfigurations       *bool                      `json:"UseDefaultConfigurations,omitempty"`
 }
 
@@ -442,15 +442,227 @@ type SubscriptionTarget struct {
 func (SubscriptionTarget) CloudControlType() string { return "AWS::DataZone::SubscriptionTarget" }
 
 type UserProfile struct {
-	Details          json.RawMessage `json:"Details,omitempty"`
-	DomainId         *string         `json:"DomainId,omitempty"`
-	DomainIdentifier *string         `json:"DomainIdentifier,omitempty"`
-	Id               *string         `json:"Id,omitempty"`
-	SessionName      *string         `json:"SessionName,omitempty"`
-	Status           *string         `json:"Status,omitempty"`
-	Type             *string         `json:"Type,omitempty"`
-	UserIdentifier   *string         `json:"UserIdentifier,omitempty"`
-	UserType         *string         `json:"UserType,omitempty"`
+	Details          json.RawMessage    `json:"Details,omitempty"`
+	DomainId         *string            `json:"DomainId,omitempty"`
+	DomainIdentifier *string            `json:"DomainIdentifier,omitempty"`
+	Id               *string            `json:"Id,omitempty"`
+	SessionName      *string            `json:"SessionName,omitempty"`
+	Status           *UserProfileStatus `json:"Status,omitempty"`
+	Type             *UserProfileType   `json:"Type,omitempty"`
+	UserIdentifier   *string            `json:"UserIdentifier,omitempty"`
+	UserType         *UserType          `json:"UserType,omitempty"`
 }
 
 func (UserProfile) CloudControlType() string { return "AWS::DataZone::UserProfile" }
+
+type ConnectionScope string
+
+const (
+	ConnectionScopeDOMAIN  ConnectionScope = "DOMAIN"
+	ConnectionScopePROJECT ConnectionScope = "PROJECT"
+)
+
+type EnableSetting string
+
+const (
+	EnableSettingENABLED  EnableSetting = "ENABLED"
+	EnableSettingDISABLED EnableSetting = "DISABLED"
+)
+
+type DataSourceStatus string
+
+const (
+	DataSourceStatusCREATING       DataSourceStatus = "CREATING"
+	DataSourceStatusFAILEDCREATION DataSourceStatus = "FAILED_CREATION"
+	DataSourceStatusREADY          DataSourceStatus = "READY"
+	DataSourceStatusUPDATING       DataSourceStatus = "UPDATING"
+	DataSourceStatusFAILEDUPDATE   DataSourceStatus = "FAILED_UPDATE"
+	DataSourceStatusRUNNING        DataSourceStatus = "RUNNING"
+	DataSourceStatusDELETING       DataSourceStatus = "DELETING"
+	DataSourceStatusFAILEDDELETION DataSourceStatus = "FAILED_DELETION"
+)
+
+type DomainDomainVersion string
+
+const (
+	DomainDomainVersionV1 DomainDomainVersion = "V1"
+	DomainDomainVersionV2 DomainDomainVersion = "V2"
+)
+
+type AuthType string
+
+const (
+	AuthTypeIAMIDC   AuthType = "IAM_IDC"
+	AuthTypeDISABLED AuthType = "DISABLED"
+)
+
+type UserAssignment string
+
+const (
+	UserAssignmentAUTOMATIC UserAssignment = "AUTOMATIC"
+	UserAssignmentMANUAL    UserAssignment = "MANUAL"
+)
+
+type DomainStatus string
+
+const (
+	DomainStatusCREATING       DomainStatus = "CREATING"
+	DomainStatusAVAILABLE      DomainStatus = "AVAILABLE"
+	DomainStatusCREATIONFAILED DomainStatus = "CREATION_FAILED"
+	DomainStatusDELETING       DomainStatus = "DELETING"
+	DomainStatusDELETED        DomainStatus = "DELETED"
+	DomainStatusDELETIONFAILED DomainStatus = "DELETION_FAILED"
+)
+
+type EnvironmentStatus string
+
+const (
+	EnvironmentStatusACTIVE           EnvironmentStatus = "ACTIVE"
+	EnvironmentStatusCREATING         EnvironmentStatus = "CREATING"
+	EnvironmentStatusUPDATING         EnvironmentStatus = "UPDATING"
+	EnvironmentStatusDELETING         EnvironmentStatus = "DELETING"
+	EnvironmentStatusCREATEFAILED     EnvironmentStatus = "CREATE_FAILED"
+	EnvironmentStatusUPDATEFAILED     EnvironmentStatus = "UPDATE_FAILED"
+	EnvironmentStatusDELETEFAILED     EnvironmentStatus = "DELETE_FAILED"
+	EnvironmentStatusVALIDATIONFAILED EnvironmentStatus = "VALIDATION_FAILED"
+	EnvironmentStatusSUSPENDED        EnvironmentStatus = "SUSPENDED"
+	EnvironmentStatusDISABLED         EnvironmentStatus = "DISABLED"
+	EnvironmentStatusEXPIRED          EnvironmentStatus = "EXPIRED"
+	EnvironmentStatusDELETED          EnvironmentStatus = "DELETED"
+	EnvironmentStatusINACCESSIBLE     EnvironmentStatus = "INACCESSIBLE"
+)
+
+type FormTypeStatus string
+
+const (
+	FormTypeStatusENABLED  FormTypeStatus = "ENABLED"
+	FormTypeStatusDISABLED FormTypeStatus = "DISABLED"
+)
+
+type GroupType string
+
+const (
+	GroupTypeDATAZONESSOGROUP    GroupType = "DATAZONE_SSO_GROUP"
+	GroupTypeIAMROLESESSIONGROUP GroupType = "IAM_ROLE_SESSION_GROUP"
+)
+
+type GroupProfileStatus string
+
+const (
+	GroupProfileStatusASSIGNED    GroupProfileStatus = "ASSIGNED"
+	GroupProfileStatusNOTASSIGNED GroupProfileStatus = "NOT_ASSIGNED"
+)
+
+type OwnerEntityType string
+
+const (
+	OwnerEntityTypeDOMAINUNIT OwnerEntityType = "DOMAIN_UNIT"
+)
+
+type OwnerOwnerType string
+
+const (
+	OwnerOwnerTypeUSER  OwnerOwnerType = "USER"
+	OwnerOwnerTypeGROUP OwnerOwnerType = "GROUP"
+)
+
+type TargetEntityType string
+
+const (
+	TargetEntityTypeDOMAINUNIT                        TargetEntityType = "DOMAIN_UNIT"
+	TargetEntityTypeENVIRONMENTBLUEPRINTCONFIGURATION TargetEntityType = "ENVIRONMENT_BLUEPRINT_CONFIGURATION"
+	TargetEntityTypeENVIRONMENTPROFILE                TargetEntityType = "ENVIRONMENT_PROFILE"
+	TargetEntityTypeASSETTYPE                         TargetEntityType = "ASSET_TYPE"
+)
+
+type ManagedPolicyType string
+
+const (
+	ManagedPolicyTypeCREATEDOMAINUNIT                 ManagedPolicyType = "CREATE_DOMAIN_UNIT"
+	ManagedPolicyTypeOVERRIDEDOMAINUNITOWNERS         ManagedPolicyType = "OVERRIDE_DOMAIN_UNIT_OWNERS"
+	ManagedPolicyTypeADDTOPROJECTMEMBERPOOL           ManagedPolicyType = "ADD_TO_PROJECT_MEMBER_POOL"
+	ManagedPolicyTypeOVERRIDEPROJECTOWNERS            ManagedPolicyType = "OVERRIDE_PROJECT_OWNERS"
+	ManagedPolicyTypeCREATEGLOSSARY                   ManagedPolicyType = "CREATE_GLOSSARY"
+	ManagedPolicyTypeCREATEFORMTYPE                   ManagedPolicyType = "CREATE_FORM_TYPE"
+	ManagedPolicyTypeCREATEASSETTYPE                  ManagedPolicyType = "CREATE_ASSET_TYPE"
+	ManagedPolicyTypeCREATEPROJECT                    ManagedPolicyType = "CREATE_PROJECT"
+	ManagedPolicyTypeCREATEENVIRONMENTPROFILE         ManagedPolicyType = "CREATE_ENVIRONMENT_PROFILE"
+	ManagedPolicyTypeDELEGATECREATEENVIRONMENTPROFILE ManagedPolicyType = "DELEGATE_CREATE_ENVIRONMENT_PROFILE"
+	ManagedPolicyTypeCREATEENVIRONMENT                ManagedPolicyType = "CREATE_ENVIRONMENT"
+	ManagedPolicyTypeCREATEENVIRONMENTFROMBLUEPRINT   ManagedPolicyType = "CREATE_ENVIRONMENT_FROM_BLUEPRINT"
+	ManagedPolicyTypeCREATEPROJECTFROMPROJECTPROFILE  ManagedPolicyType = "CREATE_PROJECT_FROM_PROJECT_PROFILE"
+)
+
+type UserDesignation string
+
+const (
+	UserDesignationPROJECTOWNER       UserDesignation = "PROJECT_OWNER"
+	UserDesignationPROJECTCONTRIBUTOR UserDesignation = "PROJECT_CONTRIBUTOR"
+)
+
+type ProjectStatus string
+
+const (
+	ProjectStatusACTIVE       ProjectStatus = "ACTIVE"
+	ProjectStatusMOVING       ProjectStatus = "MOVING"
+	ProjectStatusDELETING     ProjectStatus = "DELETING"
+	ProjectStatusDELETEFAILED ProjectStatus = "DELETE_FAILED"
+	ProjectStatusUPDATING     ProjectStatus = "UPDATING"
+	ProjectStatusUPDATEFAILED ProjectStatus = "UPDATE_FAILED"
+)
+
+type ProjectMembershipUserDesignation string
+
+const (
+	ProjectMembershipUserDesignationPROJECTOWNER           ProjectMembershipUserDesignation = "PROJECT_OWNER"
+	ProjectMembershipUserDesignationPROJECTCONTRIBUTOR     ProjectMembershipUserDesignation = "PROJECT_CONTRIBUTOR"
+	ProjectMembershipUserDesignationPROJECTCATALOGVIEWER   ProjectMembershipUserDesignation = "PROJECT_CATALOG_VIEWER"
+	ProjectMembershipUserDesignationPROJECTCATALOGCONSUMER ProjectMembershipUserDesignation = "PROJECT_CATALOG_CONSUMER"
+	ProjectMembershipUserDesignationPROJECTCATALOGSTEWARD  ProjectMembershipUserDesignation = "PROJECT_CATALOG_STEWARD"
+)
+
+type MemberIdentifierType string
+
+const (
+	MemberIdentifierTypeUSERIDENTIFIER  MemberIdentifierType = "USER_IDENTIFIER"
+	MemberIdentifierTypeGROUPIDENTIFIER MemberIdentifierType = "GROUP_IDENTIFIER"
+)
+
+type DeploymentMode string
+
+const (
+	DeploymentModeONCREATE DeploymentMode = "ON_CREATE"
+	DeploymentModeONDEMAND DeploymentMode = "ON_DEMAND"
+)
+
+type Status string
+
+const (
+	StatusENABLED  Status = "ENABLED"
+	StatusDISABLED Status = "DISABLED"
+)
+
+type UserProfileStatus string
+
+const (
+	UserProfileStatusASSIGNED    UserProfileStatus = "ASSIGNED"
+	UserProfileStatusNOTASSIGNED UserProfileStatus = "NOT_ASSIGNED"
+	UserProfileStatusACTIVATED   UserProfileStatus = "ACTIVATED"
+	UserProfileStatusDEACTIVATED UserProfileStatus = "DEACTIVATED"
+)
+
+type UserProfileType string
+
+const (
+	UserProfileTypeIAM UserProfileType = "IAM"
+	UserProfileTypeSSO UserProfileType = "SSO"
+)
+
+type UserType string
+
+const (
+	UserTypeIAMUSER        UserType = "IAM_USER"
+	UserTypeIAMROLE        UserType = "IAM_ROLE"
+	UserTypeSSOUSER        UserType = "SSO_USER"
+	UserTypeIAMROLESESSION UserType = "IAM_ROLE_SESSION"
+)

@@ -29,21 +29,43 @@ type Tag struct {
 }
 
 type Environment struct {
-	AwsAccountId              *string               `json:"AwsAccountId,omitempty"`
-	DataBundles               []string              `json:"DataBundles,omitempty"`
-	DedicatedServiceAccountId *string               `json:"DedicatedServiceAccountId,omitempty"`
-	Description               *string               `json:"Description,omitempty"`
-	EnvironmentArn            *string               `json:"EnvironmentArn,omitempty"`
-	EnvironmentId             *string               `json:"EnvironmentId,omitempty"`
-	EnvironmentUrl            *string               `json:"EnvironmentUrl,omitempty"`
-	FederationMode            *string               `json:"FederationMode,omitempty"`
-	FederationParameters      *FederationParameters `json:"FederationParameters,omitempty"`
-	KmsKeyId                  *string               `json:"KmsKeyId,omitempty"`
-	Name                      *string               `json:"Name,omitempty"`
-	SageMakerStudioDomainUrl  *string               `json:"SageMakerStudioDomainUrl,omitempty"`
-	Status                    *string               `json:"Status,omitempty"`
-	SuperuserParameters       *SuperuserParameters  `json:"SuperuserParameters,omitempty"`
-	Tags                      []Tag                 `json:"Tags,omitempty"`
+	AwsAccountId              *string                    `json:"AwsAccountId,omitempty"`
+	DataBundles               []string                   `json:"DataBundles,omitempty"`
+	DedicatedServiceAccountId *string                    `json:"DedicatedServiceAccountId,omitempty"`
+	Description               *string                    `json:"Description,omitempty"`
+	EnvironmentArn            *string                    `json:"EnvironmentArn,omitempty"`
+	EnvironmentId             *string                    `json:"EnvironmentId,omitempty"`
+	EnvironmentUrl            *string                    `json:"EnvironmentUrl,omitempty"`
+	FederationMode            *EnvironmentFederationMode `json:"FederationMode,omitempty"`
+	FederationParameters      *FederationParameters      `json:"FederationParameters,omitempty"`
+	KmsKeyId                  *string                    `json:"KmsKeyId,omitempty"`
+	Name                      *string                    `json:"Name,omitempty"`
+	SageMakerStudioDomainUrl  *string                    `json:"SageMakerStudioDomainUrl,omitempty"`
+	Status                    *EnvironmentStatus         `json:"Status,omitempty"`
+	SuperuserParameters       *SuperuserParameters       `json:"SuperuserParameters,omitempty"`
+	Tags                      []Tag                      `json:"Tags,omitempty"`
 }
 
 func (Environment) CloudControlType() string { return "AWS::FinSpace::Environment" }
+
+type EnvironmentFederationMode string
+
+const (
+	EnvironmentFederationModeLOCAL     EnvironmentFederationMode = "LOCAL"
+	EnvironmentFederationModeFEDERATED EnvironmentFederationMode = "FEDERATED"
+)
+
+type EnvironmentStatus string
+
+const (
+	EnvironmentStatusCREATEREQUESTED EnvironmentStatus = "CREATE_REQUESTED"
+	EnvironmentStatusCREATING        EnvironmentStatus = "CREATING"
+	EnvironmentStatusCREATED         EnvironmentStatus = "CREATED"
+	EnvironmentStatusDELETEREQUESTED EnvironmentStatus = "DELETE_REQUESTED"
+	EnvironmentStatusDELETING        EnvironmentStatus = "DELETING"
+	EnvironmentStatusDELETED         EnvironmentStatus = "DELETED"
+	EnvironmentStatusFAILEDCREATION  EnvironmentStatus = "FAILED_CREATION"
+	EnvironmentStatusFAILEDDELETION  EnvironmentStatus = "FAILED_DELETION"
+	EnvironmentStatusRETRYDELETION   EnvironmentStatus = "RETRY_DELETION"
+	EnvironmentStatusSUSPENDED       EnvironmentStatus = "SUSPENDED"
+)

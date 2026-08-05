@@ -17,22 +17,22 @@ type Tag struct {
 }
 
 type ApplicationInstance struct {
-	ApplicationInstanceId           *string                   `json:"ApplicationInstanceId,omitempty"`
-	ApplicationInstanceIdToReplace  *string                   `json:"ApplicationInstanceIdToReplace,omitempty"`
-	Arn                             *string                   `json:"Arn,omitempty"`
-	CreatedTime                     *int                      `json:"CreatedTime,omitempty"`
-	DefaultRuntimeContextDevice     *string                   `json:"DefaultRuntimeContextDevice,omitempty"`
-	DefaultRuntimeContextDeviceName *string                   `json:"DefaultRuntimeContextDeviceName,omitempty"`
-	Description                     *string                   `json:"Description,omitempty"`
-	HealthStatus                    *string                   `json:"HealthStatus,omitempty"`
-	LastUpdatedTime                 *int                      `json:"LastUpdatedTime,omitempty"`
-	ManifestOverridesPayload        *ManifestOverridesPayload `json:"ManifestOverridesPayload,omitempty"`
-	ManifestPayload                 *ManifestPayload          `json:"ManifestPayload,omitempty"`
-	Name                            *string                   `json:"Name,omitempty"`
-	RuntimeRoleArn                  *string                   `json:"RuntimeRoleArn,omitempty"`
-	Status                          *string                   `json:"Status,omitempty"`
-	StatusDescription               *string                   `json:"StatusDescription,omitempty"`
-	Tags                            []Tag                     `json:"Tags,omitempty"`
+	ApplicationInstanceId           *string                          `json:"ApplicationInstanceId,omitempty"`
+	ApplicationInstanceIdToReplace  *string                          `json:"ApplicationInstanceIdToReplace,omitempty"`
+	Arn                             *string                          `json:"Arn,omitempty"`
+	CreatedTime                     *int                             `json:"CreatedTime,omitempty"`
+	DefaultRuntimeContextDevice     *string                          `json:"DefaultRuntimeContextDevice,omitempty"`
+	DefaultRuntimeContextDeviceName *string                          `json:"DefaultRuntimeContextDeviceName,omitempty"`
+	Description                     *string                          `json:"Description,omitempty"`
+	HealthStatus                    *ApplicationInstanceHealthStatus `json:"HealthStatus,omitempty"`
+	LastUpdatedTime                 *int                             `json:"LastUpdatedTime,omitempty"`
+	ManifestOverridesPayload        *ManifestOverridesPayload        `json:"ManifestOverridesPayload,omitempty"`
+	ManifestPayload                 *ManifestPayload                 `json:"ManifestPayload,omitempty"`
+	Name                            *string                          `json:"Name,omitempty"`
+	RuntimeRoleArn                  *string                          `json:"RuntimeRoleArn,omitempty"`
+	Status                          *ApplicationInstanceStatus       `json:"Status,omitempty"`
+	StatusDescription               *string                          `json:"StatusDescription,omitempty"`
+	Tags                            []Tag                            `json:"Tags,omitempty"`
 }
 
 func (ApplicationInstance) CloudControlType() string { return "AWS::Panorama::ApplicationInstance" }
@@ -62,18 +62,50 @@ type Package struct {
 func (Package) CloudControlType() string { return "AWS::Panorama::Package" }
 
 type PackageVersion struct {
-	IsLatestPatch             *bool   `json:"IsLatestPatch,omitempty"`
-	MarkLatest                *bool   `json:"MarkLatest,omitempty"`
-	OwnerAccount              *string `json:"OwnerAccount,omitempty"`
-	PackageArn                *string `json:"PackageArn,omitempty"`
-	PackageId                 *string `json:"PackageId,omitempty"`
-	PackageName               *string `json:"PackageName,omitempty"`
-	PackageVersion            *string `json:"PackageVersion,omitempty"`
-	PatchVersion              *string `json:"PatchVersion,omitempty"`
-	RegisteredTime            *int    `json:"RegisteredTime,omitempty"`
-	Status                    *string `json:"Status,omitempty"`
-	StatusDescription         *string `json:"StatusDescription,omitempty"`
-	UpdatedLatestPatchVersion *string `json:"UpdatedLatestPatchVersion,omitempty"`
+	IsLatestPatch             *bool                 `json:"IsLatestPatch,omitempty"`
+	MarkLatest                *bool                 `json:"MarkLatest,omitempty"`
+	OwnerAccount              *string               `json:"OwnerAccount,omitempty"`
+	PackageArn                *string               `json:"PackageArn,omitempty"`
+	PackageId                 *string               `json:"PackageId,omitempty"`
+	PackageName               *string               `json:"PackageName,omitempty"`
+	PackageVersion            *string               `json:"PackageVersion,omitempty"`
+	PatchVersion              *string               `json:"PatchVersion,omitempty"`
+	RegisteredTime            *int                  `json:"RegisteredTime,omitempty"`
+	Status                    *PackageVersionStatus `json:"Status,omitempty"`
+	StatusDescription         *string               `json:"StatusDescription,omitempty"`
+	UpdatedLatestPatchVersion *string               `json:"UpdatedLatestPatchVersion,omitempty"`
 }
 
 func (PackageVersion) CloudControlType() string { return "AWS::Panorama::PackageVersion" }
+
+type ApplicationInstanceHealthStatus string
+
+const (
+	ApplicationInstanceHealthStatusRUNNING      ApplicationInstanceHealthStatus = "RUNNING"
+	ApplicationInstanceHealthStatusERROR        ApplicationInstanceHealthStatus = "ERROR"
+	ApplicationInstanceHealthStatusNOTAVAILABLE ApplicationInstanceHealthStatus = "NOT_AVAILABLE"
+)
+
+type ApplicationInstanceStatus string
+
+const (
+	ApplicationInstanceStatusDEPLOYMENTPENDING    ApplicationInstanceStatus = "DEPLOYMENT_PENDING"
+	ApplicationInstanceStatusDEPLOYMENTREQUESTED  ApplicationInstanceStatus = "DEPLOYMENT_REQUESTED"
+	ApplicationInstanceStatusDEPLOYMENTINPROGRESS ApplicationInstanceStatus = "DEPLOYMENT_IN_PROGRESS"
+	ApplicationInstanceStatusDEPLOYMENTERROR      ApplicationInstanceStatus = "DEPLOYMENT_ERROR"
+	ApplicationInstanceStatusDEPLOYMENTSUCCEEDED  ApplicationInstanceStatus = "DEPLOYMENT_SUCCEEDED"
+	ApplicationInstanceStatusREMOVALPENDING       ApplicationInstanceStatus = "REMOVAL_PENDING"
+	ApplicationInstanceStatusREMOVALREQUESTED     ApplicationInstanceStatus = "REMOVAL_REQUESTED"
+	ApplicationInstanceStatusREMOVALINPROGRESS    ApplicationInstanceStatus = "REMOVAL_IN_PROGRESS"
+	ApplicationInstanceStatusREMOVALFAILED        ApplicationInstanceStatus = "REMOVAL_FAILED"
+	ApplicationInstanceStatusREMOVALSUCCEEDED     ApplicationInstanceStatus = "REMOVAL_SUCCEEDED"
+)
+
+type PackageVersionStatus string
+
+const (
+	PackageVersionStatusREGISTERPENDING   PackageVersionStatus = "REGISTER_PENDING"
+	PackageVersionStatusREGISTERCOMPLETED PackageVersionStatus = "REGISTER_COMPLETED"
+	PackageVersionStatusFAILED            PackageVersionStatus = "FAILED"
+	PackageVersionStatusDELETING          PackageVersionStatus = "DELETING"
+)

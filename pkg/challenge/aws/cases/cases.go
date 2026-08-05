@@ -30,12 +30,12 @@ type DomainTag struct {
 }
 
 type Domain struct {
-	CreatedTime  *string     `json:"CreatedTime,omitempty"`
-	DomainArn    *string     `json:"DomainArn,omitempty"`
-	DomainId     *string     `json:"DomainId,omitempty"`
-	DomainStatus *string     `json:"DomainStatus,omitempty"`
-	Name         *string     `json:"Name,omitempty"`
-	Tags         []DomainTag `json:"Tags,omitempty"`
+	CreatedTime  *string       `json:"CreatedTime,omitempty"`
+	DomainArn    *string       `json:"DomainArn,omitempty"`
+	DomainId     *string       `json:"DomainId,omitempty"`
+	DomainStatus *DomainStatus `json:"DomainStatus,omitempty"`
+	Name         *string       `json:"Name,omitempty"`
+	Tags         []DomainTag   `json:"Tags,omitempty"`
 }
 
 func (Domain) CloudControlType() string { return "AWS::Cases::Domain" }
@@ -62,9 +62,9 @@ type Field struct {
 	FieldId          *string          `json:"FieldId,omitempty"`
 	LastModifiedTime *string          `json:"LastModifiedTime,omitempty"`
 	Name             *string          `json:"Name,omitempty"`
-	Namespace        *string          `json:"Namespace,omitempty"`
+	Namespace        *FieldNamespace  `json:"Namespace,omitempty"`
 	Tags             []FieldTag       `json:"Tags,omitempty"`
-	Type             *string          `json:"Type,omitempty"`
+	Type             *FieldType       `json:"Type,omitempty"`
 }
 
 func (Field) CloudControlType() string { return "AWS::Cases::Field" }
@@ -114,10 +114,44 @@ type Template struct {
 	Name                *string              `json:"Name,omitempty"`
 	RequiredFields      []RequiredField      `json:"RequiredFields,omitempty"`
 	Rules               []TemplateRule       `json:"Rules,omitempty"`
-	Status              *string              `json:"Status,omitempty"`
+	Status              *TemplateStatus      `json:"Status,omitempty"`
 	Tags                []TemplateTag        `json:"Tags,omitempty"`
 	TemplateArn         *string              `json:"TemplateArn,omitempty"`
 	TemplateId          *string              `json:"TemplateId,omitempty"`
 }
 
 func (Template) CloudControlType() string { return "AWS::Cases::Template" }
+
+type DomainStatus string
+
+const (
+	DomainStatusActive             DomainStatus = "Active"
+	DomainStatusCreationInProgress DomainStatus = "CreationInProgress"
+	DomainStatusCreationFailed     DomainStatus = "CreationFailed"
+)
+
+type FieldNamespace string
+
+const (
+	FieldNamespaceSystem FieldNamespace = "System"
+	FieldNamespaceCustom FieldNamespace = "Custom"
+)
+
+type FieldType string
+
+const (
+	FieldTypeText         FieldType = "Text"
+	FieldTypeNumber       FieldType = "Number"
+	FieldTypeBoolean      FieldType = "Boolean"
+	FieldTypeDateTime     FieldType = "DateTime"
+	FieldTypeSingleSelect FieldType = "SingleSelect"
+	FieldTypeUrl          FieldType = "Url"
+	FieldTypeUser         FieldType = "User"
+)
+
+type TemplateStatus string
+
+const (
+	TemplateStatusActive   TemplateStatus = "Active"
+	TemplateStatusInactive TemplateStatus = "Inactive"
+)

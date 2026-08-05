@@ -138,15 +138,15 @@ type SAMLProviderTag struct {
 }
 
 type SAMLProvider struct {
-	AddPrivateKey           *string           `json:"AddPrivateKey,omitempty"`
-	Arn                     *string           `json:"Arn,omitempty"`
-	AssertionEncryptionMode *string           `json:"AssertionEncryptionMode,omitempty"`
-	Name                    *string           `json:"Name,omitempty"`
-	PrivateKeyList          []SAMLPrivateKey  `json:"PrivateKeyList,omitempty"`
-	RemovePrivateKey        *string           `json:"RemovePrivateKey,omitempty"`
-	SamlMetadataDocument    *string           `json:"SamlMetadataDocument,omitempty"`
-	SamlProviderUUID        *string           `json:"SamlProviderUUID,omitempty"`
-	Tags                    []SAMLProviderTag `json:"Tags,omitempty"`
+	AddPrivateKey           *string                              `json:"AddPrivateKey,omitempty"`
+	Arn                     *string                              `json:"Arn,omitempty"`
+	AssertionEncryptionMode *SAMLProviderAssertionEncryptionMode `json:"AssertionEncryptionMode,omitempty"`
+	Name                    *string                              `json:"Name,omitempty"`
+	PrivateKeyList          []SAMLPrivateKey                     `json:"PrivateKeyList,omitempty"`
+	RemovePrivateKey        *string                              `json:"RemovePrivateKey,omitempty"`
+	SamlMetadataDocument    *string                              `json:"SamlMetadataDocument,omitempty"`
+	SamlProviderUUID        *string                              `json:"SamlProviderUUID,omitempty"`
+	Tags                    []SAMLProviderTag                    `json:"Tags,omitempty"`
 }
 
 func (SAMLProvider) CloudControlType() string { return "AWS::IAM::SAMLProvider" }
@@ -236,3 +236,10 @@ type VirtualMFADevice struct {
 }
 
 func (VirtualMFADevice) CloudControlType() string { return "AWS::IAM::VirtualMFADevice" }
+
+type SAMLProviderAssertionEncryptionMode string
+
+const (
+	SAMLProviderAssertionEncryptionModeAllowed  SAMLProviderAssertionEncryptionMode = "Allowed"
+	SAMLProviderAssertionEncryptionModeRequired SAMLProviderAssertionEncryptionMode = "Required"
+)

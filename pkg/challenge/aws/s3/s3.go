@@ -10,8 +10,8 @@ type AccessGrantsLocationConfiguration struct {
 }
 
 type Grantee struct {
-	GranteeIdentifier *string `json:"GranteeIdentifier,omitempty"`
-	GranteeType       *string `json:"GranteeType,omitempty"`
+	GranteeIdentifier *string             `json:"GranteeIdentifier,omitempty"`
+	GranteeType       *GranteeGranteeType `json:"GranteeType,omitempty"`
 }
 
 type Tag struct {
@@ -27,8 +27,8 @@ type AccessGrant struct {
 	ApplicationArn                    *string                            `json:"ApplicationArn,omitempty"`
 	GrantScope                        *string                            `json:"GrantScope,omitempty"`
 	Grantee                           *Grantee                           `json:"Grantee,omitempty"`
-	Permission                        *string                            `json:"Permission,omitempty"`
-	S3PrefixType                      *string                            `json:"S3PrefixType,omitempty"`
+	Permission                        *AccessGrantPermission             `json:"Permission,omitempty"`
+	S3PrefixType                      *AccessGrantS3PrefixType           `json:"S3PrefixType,omitempty"`
 	Tags                              []Tag                              `json:"Tags,omitempty"`
 }
 
@@ -85,7 +85,7 @@ type AccessPoint struct {
 	Bucket                         *string                         `json:"Bucket,omitempty"`
 	BucketAccountId                *string                         `json:"BucketAccountId,omitempty"`
 	Name                           *string                         `json:"Name,omitempty"`
-	NetworkOrigin                  *string                         `json:"NetworkOrigin,omitempty"`
+	NetworkOrigin                  *AccessPointNetworkOrigin       `json:"NetworkOrigin,omitempty"`
 	Policy                         map[string]any                  `json:"Policy,omitempty"`
 	PublicAccessBlockConfiguration *PublicAccessBlockConfiguration `json:"PublicAccessBlockConfiguration,omitempty"`
 	Tags                           []AccessPointTag                `json:"Tags,omitempty"`
@@ -95,14 +95,14 @@ type AccessPoint struct {
 func (AccessPoint) CloudControlType() string { return "AWS::S3::AccessPoint" }
 
 type AccelerateConfiguration struct {
-	AccelerationStatus *string `json:"AccelerationStatus,omitempty"`
+	AccelerationStatus *AccelerateConfigurationAccelerationStatus `json:"AccelerationStatus,omitempty"`
 }
 
 type Destination struct {
-	BucketAccountId *string `json:"BucketAccountId,omitempty"`
-	BucketArn       *string `json:"BucketArn,omitempty"`
-	Format          *string `json:"Format,omitempty"`
-	Prefix          *string `json:"Prefix,omitempty"`
+	BucketAccountId *string            `json:"BucketAccountId,omitempty"`
+	BucketArn       *string            `json:"BucketArn,omitempty"`
+	Format          *DestinationFormat `json:"Format,omitempty"`
+	Prefix          *string            `json:"Prefix,omitempty"`
 }
 
 type DataExport struct {
@@ -127,12 +127,12 @@ type AnalyticsConfiguration struct {
 }
 
 type BlockedEncryptionTypes struct {
-	EncryptionType []string `json:"EncryptionType,omitempty"`
+	EncryptionType []BlockedEncryptionTypeListItem `json:"EncryptionType,omitempty"`
 }
 
 type ServerSideEncryptionByDefault struct {
-	KMSMasterKeyID *string `json:"KMSMasterKeyID,omitempty"`
-	SSEAlgorithm   *string `json:"SSEAlgorithm,omitempty"`
+	KMSMasterKeyID *string                                    `json:"KMSMasterKeyID,omitempty"`
+	SSEAlgorithm   *ServerSideEncryptionByDefaultSSEAlgorithm `json:"SSEAlgorithm,omitempty"`
 }
 
 type ServerSideEncryptionRule struct {
@@ -146,12 +146,12 @@ type BucketEncryption struct {
 }
 
 type CorsRule struct {
-	AllowedHeaders []string `json:"AllowedHeaders,omitempty"`
-	AllowedMethods []string `json:"AllowedMethods,omitempty"`
-	AllowedOrigins []string `json:"AllowedOrigins,omitempty"`
-	ExposedHeaders []string `json:"ExposedHeaders,omitempty"`
-	Id             *string  `json:"Id,omitempty"`
-	MaxAge         *int     `json:"MaxAge,omitempty"`
+	AllowedHeaders []string                     `json:"AllowedHeaders,omitempty"`
+	AllowedMethods []CorsRuleAllowedMethodsItem `json:"AllowedMethods,omitempty"`
+	AllowedOrigins []string                     `json:"AllowedOrigins,omitempty"`
+	ExposedHeaders []string                     `json:"ExposedHeaders,omitempty"`
+	Id             *string                      `json:"Id,omitempty"`
+	MaxAge         *int                         `json:"MaxAge,omitempty"`
 }
 
 type CorsConfiguration struct {
@@ -159,26 +159,26 @@ type CorsConfiguration struct {
 }
 
 type Tiering struct {
-	AccessTier *string `json:"AccessTier,omitempty"`
-	Days       *int    `json:"Days,omitempty"`
+	AccessTier *TieringAccessTier `json:"AccessTier,omitempty"`
+	Days       *int               `json:"Days,omitempty"`
 }
 
 type IntelligentTieringConfiguration struct {
-	Id         *string     `json:"Id,omitempty"`
-	Prefix     *string     `json:"Prefix,omitempty"`
-	Status     *string     `json:"Status,omitempty"`
-	TagFilters []TagFilter `json:"TagFilters,omitempty"`
-	Tierings   []Tiering   `json:"Tierings,omitempty"`
+	Id         *string                                `json:"Id,omitempty"`
+	Prefix     *string                                `json:"Prefix,omitempty"`
+	Status     *IntelligentTieringConfigurationStatus `json:"Status,omitempty"`
+	TagFilters []TagFilter                            `json:"TagFilters,omitempty"`
+	Tierings   []Tiering                              `json:"Tierings,omitempty"`
 }
 
 type InventoryConfiguration struct {
-	Destination            *Destination `json:"Destination,omitempty"`
-	Enabled                *bool        `json:"Enabled,omitempty"`
-	Id                     *string      `json:"Id,omitempty"`
-	IncludedObjectVersions *string      `json:"IncludedObjectVersions,omitempty"`
-	OptionalFields         []string     `json:"OptionalFields,omitempty"`
-	Prefix                 *string      `json:"Prefix,omitempty"`
-	ScheduleFrequency      *string      `json:"ScheduleFrequency,omitempty"`
+	Destination            *Destination                                  `json:"Destination,omitempty"`
+	Enabled                *bool                                         `json:"Enabled,omitempty"`
+	Id                     *string                                       `json:"Id,omitempty"`
+	IncludedObjectVersions *InventoryConfigurationIncludedObjectVersions `json:"IncludedObjectVersions,omitempty"`
+	OptionalFields         []InventoryConfigurationOptionalFieldsItem    `json:"OptionalFields,omitempty"`
+	Prefix                 *string                                       `json:"Prefix,omitempty"`
+	ScheduleFrequency      *InventoryConfigurationScheduleFrequency      `json:"ScheduleFrequency,omitempty"`
 }
 
 type AbortIncompleteMultipartUpload struct {
@@ -191,15 +191,15 @@ type NoncurrentVersionExpiration struct {
 }
 
 type NoncurrentVersionTransition struct {
-	NewerNoncurrentVersions *int    `json:"NewerNoncurrentVersions,omitempty"`
-	StorageClass            *string `json:"StorageClass,omitempty"`
-	TransitionInDays        *int    `json:"TransitionInDays,omitempty"`
+	NewerNoncurrentVersions *int                                     `json:"NewerNoncurrentVersions,omitempty"`
+	StorageClass            *NoncurrentVersionTransitionStorageClass `json:"StorageClass,omitempty"`
+	TransitionInDays        *int                                     `json:"TransitionInDays,omitempty"`
 }
 
 type Transition struct {
-	StorageClass     *string `json:"StorageClass,omitempty"`
-	TransitionDate   *string `json:"TransitionDate,omitempty"`
-	TransitionInDays *int    `json:"TransitionInDays,omitempty"`
+	StorageClass     *TransitionStorageClass `json:"StorageClass,omitempty"`
+	TransitionDate   *string                 `json:"TransitionDate,omitempty"`
+	TransitionInDays *int                    `json:"TransitionInDays,omitempty"`
 }
 
 type Rule struct {
@@ -215,15 +215,15 @@ type Rule struct {
 	ObjectSizeGreaterThan             *string                         `json:"ObjectSizeGreaterThan,omitempty"`
 	ObjectSizeLessThan                *string                         `json:"ObjectSizeLessThan,omitempty"`
 	Prefix                            *string                         `json:"Prefix,omitempty"`
-	Status                            *string                         `json:"Status,omitempty"`
+	Status                            *RuleStatus                     `json:"Status,omitempty"`
 	TagFilters                        []TagFilter                     `json:"TagFilters,omitempty"`
 	Transition                        *Transition                     `json:"Transition,omitempty"`
 	Transitions                       []Transition                    `json:"Transitions,omitempty"`
 }
 
 type LifecycleConfiguration struct {
-	Rules                              []Rule  `json:"Rules,omitempty"`
-	TransitionDefaultMinimumObjectSize *string `json:"TransitionDefaultMinimumObjectSize,omitempty"`
+	Rules                              []Rule                                                    `json:"Rules,omitempty"`
+	TransitionDefaultMinimumObjectSize *LifecycleConfigurationTransitionDefaultMinimumObjectSize `json:"TransitionDefaultMinimumObjectSize,omitempty"`
 }
 
 type LoggingConfiguration struct {
@@ -233,34 +233,34 @@ type LoggingConfiguration struct {
 }
 
 type MetadataTableEncryptionConfiguration struct {
-	KmsKeyArn    *string `json:"KmsKeyArn,omitempty"`
-	SseAlgorithm *string `json:"SseAlgorithm,omitempty"`
+	KmsKeyArn    *string                                           `json:"KmsKeyArn,omitempty"`
+	SseAlgorithm *MetadataTableEncryptionConfigurationSseAlgorithm `json:"SseAlgorithm,omitempty"`
 }
 
 type AnnotationTableConfiguration struct {
-	ConfigurationState      *string                               `json:"ConfigurationState,omitempty"`
-	EncryptionConfiguration *MetadataTableEncryptionConfiguration `json:"EncryptionConfiguration,omitempty"`
-	Role                    *string                               `json:"Role,omitempty"`
-	TableArn                *string                               `json:"TableArn,omitempty"`
-	TableName               *string                               `json:"TableName,omitempty"`
+	ConfigurationState      *AnnotationTableConfigurationConfigurationState `json:"ConfigurationState,omitempty"`
+	EncryptionConfiguration *MetadataTableEncryptionConfiguration           `json:"EncryptionConfiguration,omitempty"`
+	Role                    *string                                         `json:"Role,omitempty"`
+	TableArn                *string                                         `json:"TableArn,omitempty"`
+	TableName               *string                                         `json:"TableName,omitempty"`
 }
 
 type MetadataDestination struct {
-	TableBucketArn  *string `json:"TableBucketArn,omitempty"`
-	TableBucketType *string `json:"TableBucketType,omitempty"`
-	TableNamespace  *string `json:"TableNamespace,omitempty"`
+	TableBucketArn  *string                             `json:"TableBucketArn,omitempty"`
+	TableBucketType *MetadataDestinationTableBucketType `json:"TableBucketType,omitempty"`
+	TableNamespace  *string                             `json:"TableNamespace,omitempty"`
 }
 
 type InventoryTableConfiguration struct {
-	ConfigurationState      *string                               `json:"ConfigurationState,omitempty"`
-	EncryptionConfiguration *MetadataTableEncryptionConfiguration `json:"EncryptionConfiguration,omitempty"`
-	TableArn                *string                               `json:"TableArn,omitempty"`
-	TableName               *string                               `json:"TableName,omitempty"`
+	ConfigurationState      *InventoryTableConfigurationConfigurationState `json:"ConfigurationState,omitempty"`
+	EncryptionConfiguration *MetadataTableEncryptionConfiguration          `json:"EncryptionConfiguration,omitempty"`
+	TableArn                *string                                        `json:"TableArn,omitempty"`
+	TableName               *string                                        `json:"TableName,omitempty"`
 }
 
 type RecordExpiration struct {
-	Days       *int    `json:"Days,omitempty"`
-	Expiration *string `json:"Expiration,omitempty"`
+	Days       *int                        `json:"Days,omitempty"`
+	Expiration *RecordExpirationExpiration `json:"Expiration,omitempty"`
 }
 
 type JournalTableConfiguration struct {
@@ -338,9 +338,9 @@ type NotificationConfiguration struct {
 }
 
 type DefaultRetention struct {
-	Days  *int    `json:"Days,omitempty"`
-	Mode  *string `json:"Mode,omitempty"`
-	Years *int    `json:"Years,omitempty"`
+	Days  *int                  `json:"Days,omitempty"`
+	Mode  *DefaultRetentionMode `json:"Mode,omitempty"`
+	Years *int                  `json:"Years,omitempty"`
 }
 
 type ObjectLockRule struct {
@@ -353,7 +353,7 @@ type ObjectLockConfiguration struct {
 }
 
 type OwnershipControlsRule struct {
-	ObjectOwnership *string `json:"ObjectOwnership,omitempty"`
+	ObjectOwnership *OwnershipControlsRuleObjectOwnership `json:"ObjectOwnership,omitempty"`
 }
 
 type OwnershipControls struct {
@@ -368,7 +368,7 @@ type BucketPublicAccessBlockConfiguration struct {
 }
 
 type DeleteMarkerReplication struct {
-	Status *string `json:"Status,omitempty"`
+	Status *DeleteMarkerReplicationStatus `json:"Status,omitempty"`
 }
 
 type AccessControlTranslation struct {
@@ -385,22 +385,22 @@ type ReplicationTimeValue struct {
 
 type Metrics struct {
 	EventThreshold *ReplicationTimeValue `json:"EventThreshold,omitempty"`
-	Status         *string               `json:"Status,omitempty"`
+	Status         *MetricsStatus        `json:"Status,omitempty"`
 }
 
 type ReplicationTime struct {
-	Status *string               `json:"Status,omitempty"`
-	Time   *ReplicationTimeValue `json:"Time,omitempty"`
+	Status *ReplicationTimeStatus `json:"Status,omitempty"`
+	Time   *ReplicationTimeValue  `json:"Time,omitempty"`
 }
 
 type ReplicationDestination struct {
-	AccessControlTranslation *AccessControlTranslation `json:"AccessControlTranslation,omitempty"`
-	Account                  *string                   `json:"Account,omitempty"`
-	Bucket                   *string                   `json:"Bucket,omitempty"`
-	EncryptionConfiguration  *EncryptionConfiguration  `json:"EncryptionConfiguration,omitempty"`
-	Metrics                  *Metrics                  `json:"Metrics,omitempty"`
-	ReplicationTime          *ReplicationTime          `json:"ReplicationTime,omitempty"`
-	StorageClass             *string                   `json:"StorageClass,omitempty"`
+	AccessControlTranslation *AccessControlTranslation           `json:"AccessControlTranslation,omitempty"`
+	Account                  *string                             `json:"Account,omitempty"`
+	Bucket                   *string                             `json:"Bucket,omitempty"`
+	EncryptionConfiguration  *EncryptionConfiguration            `json:"EncryptionConfiguration,omitempty"`
+	Metrics                  *Metrics                            `json:"Metrics,omitempty"`
+	ReplicationTime          *ReplicationTime                    `json:"ReplicationTime,omitempty"`
+	StorageClass             *ReplicationDestinationStorageClass `json:"StorageClass,omitempty"`
 }
 
 type ReplicationRuleAndOperator struct {
@@ -415,11 +415,11 @@ type ReplicationRuleFilter struct {
 }
 
 type ReplicaModifications struct {
-	Status *string `json:"Status,omitempty"`
+	Status *ReplicaModificationsStatus `json:"Status,omitempty"`
 }
 
 type SseKmsEncryptedObjects struct {
-	Status *string `json:"Status,omitempty"`
+	Status *SseKmsEncryptedObjectsStatus `json:"Status,omitempty"`
 }
 
 type SourceSelectionCriteria struct {
@@ -435,7 +435,7 @@ type ReplicationRule struct {
 	Prefix                  *string                  `json:"Prefix,omitempty"`
 	Priority                *int                     `json:"Priority,omitempty"`
 	SourceSelectionCriteria *SourceSelectionCriteria `json:"SourceSelectionCriteria,omitempty"`
-	Status                  *string                  `json:"Status,omitempty"`
+	Status                  *ReplicationRuleStatus   `json:"Status,omitempty"`
 }
 
 type ReplicationConfiguration struct {
@@ -449,20 +449,20 @@ type BucketTag struct {
 }
 
 type VersioningConfiguration struct {
-	Status *string `json:"Status,omitempty"`
+	Status *VersioningConfigurationStatus `json:"Status,omitempty"`
 }
 
 type RedirectAllRequestsTo struct {
-	HostName *string `json:"HostName,omitempty"`
-	Protocol *string `json:"Protocol,omitempty"`
+	HostName *string                        `json:"HostName,omitempty"`
+	Protocol *RedirectAllRequestsToProtocol `json:"Protocol,omitempty"`
 }
 
 type RedirectRule struct {
-	HostName             *string `json:"HostName,omitempty"`
-	HttpRedirectCode     *string `json:"HttpRedirectCode,omitempty"`
-	Protocol             *string `json:"Protocol,omitempty"`
-	ReplaceKeyPrefixWith *string `json:"ReplaceKeyPrefixWith,omitempty"`
-	ReplaceKeyWith       *string `json:"ReplaceKeyWith,omitempty"`
+	HostName             *string               `json:"HostName,omitempty"`
+	HttpRedirectCode     *string               `json:"HttpRedirectCode,omitempty"`
+	Protocol             *RedirectRuleProtocol `json:"Protocol,omitempty"`
+	ReplaceKeyPrefixWith *string               `json:"ReplaceKeyPrefixWith,omitempty"`
+	ReplaceKeyWith       *string               `json:"ReplaceKeyWith,omitempty"`
 }
 
 type RoutingRuleCondition struct {
@@ -483,15 +483,15 @@ type WebsiteConfiguration struct {
 }
 
 type Bucket struct {
-	AbacStatus                       *string                               `json:"AbacStatus,omitempty"`
+	AbacStatus                       *BucketAbacStatus                     `json:"AbacStatus,omitempty"`
 	AccelerateConfiguration          *AccelerateConfiguration              `json:"AccelerateConfiguration,omitempty"`
-	AccessControl                    *string                               `json:"AccessControl,omitempty"`
+	AccessControl                    *BucketAccessControl                  `json:"AccessControl,omitempty"`
 	AnalyticsConfigurations          []AnalyticsConfiguration              `json:"AnalyticsConfigurations,omitempty"`
 	Arn                              *string                               `json:"Arn,omitempty"`
 	BucketEncryption                 *BucketEncryption                     `json:"BucketEncryption,omitempty"`
 	BucketName                       *string                               `json:"BucketName,omitempty"`
 	BucketNamePrefix                 *string                               `json:"BucketNamePrefix,omitempty"`
-	BucketNamespace                  *string                               `json:"BucketNamespace,omitempty"`
+	BucketNamespace                  *BucketBucketNamespace                `json:"BucketNamespace,omitempty"`
 	CorsConfiguration                *CorsConfiguration                    `json:"CorsConfiguration,omitempty"`
 	DomainName                       *string                               `json:"DomainName,omitempty"`
 	DualStackDomainName              *string                               `json:"DualStackDomainName,omitempty"`
@@ -547,7 +547,7 @@ type MultiRegionAccessPoint struct {
 func (MultiRegionAccessPoint) CloudControlType() string { return "AWS::S3::MultiRegionAccessPoint" }
 
 type MultiRegionAccessPointPolicyPolicyStatus struct {
-	IsPublic *string `json:"IsPublic,omitempty"`
+	IsPublic *MultiRegionAccessPointPolicyPolicyStatusIsPublic `json:"IsPublic,omitempty"`
 }
 
 type MultiRegionAccessPointPolicy struct {
@@ -632,12 +632,12 @@ type CloudWatchMetrics struct {
 }
 
 type S3BucketDestination struct {
-	AccountId           *string        `json:"AccountId,omitempty"`
-	Arn                 *string        `json:"Arn,omitempty"`
-	Encryption          map[string]any `json:"Encryption,omitempty"`
-	Format              *string        `json:"Format,omitempty"`
-	OutputSchemaVersion *string        `json:"OutputSchemaVersion,omitempty"`
-	Prefix              *string        `json:"Prefix,omitempty"`
+	AccountId           *string                                 `json:"AccountId,omitempty"`
+	Arn                 *string                                 `json:"Arn,omitempty"`
+	Encryption          map[string]any                          `json:"Encryption,omitempty"`
+	Format              *S3BucketDestinationFormat              `json:"Format,omitempty"`
+	OutputSchemaVersion *S3BucketDestinationOutputSchemaVersion `json:"OutputSchemaVersion,omitempty"`
+	Prefix              *string                                 `json:"Prefix,omitempty"`
 }
 
 type StorageLensTableDestination struct {
@@ -735,3 +735,332 @@ type StorageLensGroup struct {
 }
 
 func (StorageLensGroup) CloudControlType() string { return "AWS::S3::StorageLensGroup" }
+
+type GranteeGranteeType string
+
+const (
+	GranteeGranteeTypeIAM            GranteeGranteeType = "IAM"
+	GranteeGranteeTypeDIRECTORYUSER  GranteeGranteeType = "DIRECTORY_USER"
+	GranteeGranteeTypeDIRECTORYGROUP GranteeGranteeType = "DIRECTORY_GROUP"
+)
+
+type AccessGrantPermission string
+
+const (
+	AccessGrantPermissionREAD      AccessGrantPermission = "READ"
+	AccessGrantPermissionWRITE     AccessGrantPermission = "WRITE"
+	AccessGrantPermissionREADWRITE AccessGrantPermission = "READWRITE"
+)
+
+type AccessGrantS3PrefixType string
+
+const (
+	AccessGrantS3PrefixTypeObject AccessGrantS3PrefixType = "Object"
+)
+
+type AccessPointNetworkOrigin string
+
+const (
+	AccessPointNetworkOriginInternet AccessPointNetworkOrigin = "Internet"
+	AccessPointNetworkOriginVPC      AccessPointNetworkOrigin = "VPC"
+)
+
+type BucketAbacStatus string
+
+const (
+	BucketAbacStatusEnabled  BucketAbacStatus = "Enabled"
+	BucketAbacStatusDisabled BucketAbacStatus = "Disabled"
+)
+
+type AccelerateConfigurationAccelerationStatus string
+
+const (
+	AccelerateConfigurationAccelerationStatusEnabled   AccelerateConfigurationAccelerationStatus = "Enabled"
+	AccelerateConfigurationAccelerationStatusSuspended AccelerateConfigurationAccelerationStatus = "Suspended"
+)
+
+type BucketAccessControl string
+
+const (
+	BucketAccessControlAuthenticatedRead      BucketAccessControl = "AuthenticatedRead"
+	BucketAccessControlAwsExecRead            BucketAccessControl = "AwsExecRead"
+	BucketAccessControlBucketOwnerFullControl BucketAccessControl = "BucketOwnerFullControl"
+	BucketAccessControlBucketOwnerRead        BucketAccessControl = "BucketOwnerRead"
+	BucketAccessControlLogDeliveryWrite       BucketAccessControl = "LogDeliveryWrite"
+	BucketAccessControlPrivate                BucketAccessControl = "Private"
+	BucketAccessControlPublicRead             BucketAccessControl = "PublicRead"
+	BucketAccessControlPublicReadWrite        BucketAccessControl = "PublicReadWrite"
+)
+
+type DestinationFormat string
+
+const (
+	DestinationFormatCSV     DestinationFormat = "CSV"
+	DestinationFormatORC     DestinationFormat = "ORC"
+	DestinationFormatParquet DestinationFormat = "Parquet"
+)
+
+type BlockedEncryptionTypeListItem string
+
+const (
+	BlockedEncryptionTypeListItemNONE BlockedEncryptionTypeListItem = "NONE"
+	BlockedEncryptionTypeListItemSSEC BlockedEncryptionTypeListItem = "SSE-C"
+)
+
+type ServerSideEncryptionByDefaultSSEAlgorithm string
+
+const (
+	ServerSideEncryptionByDefaultSSEAlgorithmAwsKms     ServerSideEncryptionByDefaultSSEAlgorithm = "aws:kms"
+	ServerSideEncryptionByDefaultSSEAlgorithmAES256     ServerSideEncryptionByDefaultSSEAlgorithm = "AES256"
+	ServerSideEncryptionByDefaultSSEAlgorithmAwsKmsDsse ServerSideEncryptionByDefaultSSEAlgorithm = "aws:kms:dsse"
+)
+
+type BucketBucketNamespace string
+
+const (
+	BucketBucketNamespaceGlobal          BucketBucketNamespace = "global"
+	BucketBucketNamespaceAccountRegional BucketBucketNamespace = "account-regional"
+)
+
+type CorsRuleAllowedMethodsItem string
+
+const (
+	CorsRuleAllowedMethodsItemGET    CorsRuleAllowedMethodsItem = "GET"
+	CorsRuleAllowedMethodsItemPUT    CorsRuleAllowedMethodsItem = "PUT"
+	CorsRuleAllowedMethodsItemHEAD   CorsRuleAllowedMethodsItem = "HEAD"
+	CorsRuleAllowedMethodsItemPOST   CorsRuleAllowedMethodsItem = "POST"
+	CorsRuleAllowedMethodsItemDELETE CorsRuleAllowedMethodsItem = "DELETE"
+)
+
+type IntelligentTieringConfigurationStatus string
+
+const (
+	IntelligentTieringConfigurationStatusDisabled IntelligentTieringConfigurationStatus = "Disabled"
+	IntelligentTieringConfigurationStatusEnabled  IntelligentTieringConfigurationStatus = "Enabled"
+)
+
+type TieringAccessTier string
+
+const (
+	TieringAccessTierARCHIVEACCESS     TieringAccessTier = "ARCHIVE_ACCESS"
+	TieringAccessTierDEEPARCHIVEACCESS TieringAccessTier = "DEEP_ARCHIVE_ACCESS"
+)
+
+type InventoryConfigurationIncludedObjectVersions string
+
+const (
+	InventoryConfigurationIncludedObjectVersionsAll     InventoryConfigurationIncludedObjectVersions = "All"
+	InventoryConfigurationIncludedObjectVersionsCurrent InventoryConfigurationIncludedObjectVersions = "Current"
+)
+
+type InventoryConfigurationOptionalFieldsItem string
+
+const (
+	InventoryConfigurationOptionalFieldsItemSize                         InventoryConfigurationOptionalFieldsItem = "Size"
+	InventoryConfigurationOptionalFieldsItemLastModifiedDate             InventoryConfigurationOptionalFieldsItem = "LastModifiedDate"
+	InventoryConfigurationOptionalFieldsItemStorageClass                 InventoryConfigurationOptionalFieldsItem = "StorageClass"
+	InventoryConfigurationOptionalFieldsItemETag                         InventoryConfigurationOptionalFieldsItem = "ETag"
+	InventoryConfigurationOptionalFieldsItemIsMultipartUploaded          InventoryConfigurationOptionalFieldsItem = "IsMultipartUploaded"
+	InventoryConfigurationOptionalFieldsItemReplicationStatus            InventoryConfigurationOptionalFieldsItem = "ReplicationStatus"
+	InventoryConfigurationOptionalFieldsItemEncryptionStatus             InventoryConfigurationOptionalFieldsItem = "EncryptionStatus"
+	InventoryConfigurationOptionalFieldsItemObjectLockRetainUntilDate    InventoryConfigurationOptionalFieldsItem = "ObjectLockRetainUntilDate"
+	InventoryConfigurationOptionalFieldsItemObjectLockMode               InventoryConfigurationOptionalFieldsItem = "ObjectLockMode"
+	InventoryConfigurationOptionalFieldsItemObjectLockLegalHoldStatus    InventoryConfigurationOptionalFieldsItem = "ObjectLockLegalHoldStatus"
+	InventoryConfigurationOptionalFieldsItemIntelligentTieringAccessTier InventoryConfigurationOptionalFieldsItem = "IntelligentTieringAccessTier"
+	InventoryConfigurationOptionalFieldsItemBucketKeyStatus              InventoryConfigurationOptionalFieldsItem = "BucketKeyStatus"
+	InventoryConfigurationOptionalFieldsItemChecksumAlgorithm            InventoryConfigurationOptionalFieldsItem = "ChecksumAlgorithm"
+	InventoryConfigurationOptionalFieldsItemObjectAccessControlList      InventoryConfigurationOptionalFieldsItem = "ObjectAccessControlList"
+	InventoryConfigurationOptionalFieldsItemObjectOwner                  InventoryConfigurationOptionalFieldsItem = "ObjectOwner"
+	InventoryConfigurationOptionalFieldsItemLifecycleExpirationDate      InventoryConfigurationOptionalFieldsItem = "LifecycleExpirationDate"
+)
+
+type InventoryConfigurationScheduleFrequency string
+
+const (
+	InventoryConfigurationScheduleFrequencyDaily  InventoryConfigurationScheduleFrequency = "Daily"
+	InventoryConfigurationScheduleFrequencyWeekly InventoryConfigurationScheduleFrequency = "Weekly"
+)
+
+type NoncurrentVersionTransitionStorageClass string
+
+const (
+	NoncurrentVersionTransitionStorageClassDEEPARCHIVE        NoncurrentVersionTransitionStorageClass = "DEEP_ARCHIVE"
+	NoncurrentVersionTransitionStorageClassGLACIER            NoncurrentVersionTransitionStorageClass = "GLACIER"
+	NoncurrentVersionTransitionStorageClassGlacier            NoncurrentVersionTransitionStorageClass = "Glacier"
+	NoncurrentVersionTransitionStorageClassGLACIERIR          NoncurrentVersionTransitionStorageClass = "GLACIER_IR"
+	NoncurrentVersionTransitionStorageClassINTELLIGENTTIERING NoncurrentVersionTransitionStorageClass = "INTELLIGENT_TIERING"
+	NoncurrentVersionTransitionStorageClassONEZONEIA          NoncurrentVersionTransitionStorageClass = "ONEZONE_IA"
+	NoncurrentVersionTransitionStorageClassSTANDARDIA         NoncurrentVersionTransitionStorageClass = "STANDARD_IA"
+)
+
+type RuleStatus string
+
+const (
+	RuleStatusEnabled  RuleStatus = "Enabled"
+	RuleStatusDisabled RuleStatus = "Disabled"
+)
+
+type TransitionStorageClass string
+
+const (
+	TransitionStorageClassDEEPARCHIVE        TransitionStorageClass = "DEEP_ARCHIVE"
+	TransitionStorageClassGLACIER            TransitionStorageClass = "GLACIER"
+	TransitionStorageClassGlacier            TransitionStorageClass = "Glacier"
+	TransitionStorageClassGLACIERIR          TransitionStorageClass = "GLACIER_IR"
+	TransitionStorageClassINTELLIGENTTIERING TransitionStorageClass = "INTELLIGENT_TIERING"
+	TransitionStorageClassONEZONEIA          TransitionStorageClass = "ONEZONE_IA"
+	TransitionStorageClassSTANDARDIA         TransitionStorageClass = "STANDARD_IA"
+)
+
+type LifecycleConfigurationTransitionDefaultMinimumObjectSize string
+
+const (
+	LifecycleConfigurationTransitionDefaultMinimumObjectSizeVariesByStorageClass  LifecycleConfigurationTransitionDefaultMinimumObjectSize = "varies_by_storage_class"
+	LifecycleConfigurationTransitionDefaultMinimumObjectSizeAllStorageClasses128K LifecycleConfigurationTransitionDefaultMinimumObjectSize = "all_storage_classes_128K"
+)
+
+type AnnotationTableConfigurationConfigurationState string
+
+const (
+	AnnotationTableConfigurationConfigurationStateENABLED  AnnotationTableConfigurationConfigurationState = "ENABLED"
+	AnnotationTableConfigurationConfigurationStateDISABLED AnnotationTableConfigurationConfigurationState = "DISABLED"
+)
+
+type MetadataTableEncryptionConfigurationSseAlgorithm string
+
+const (
+	MetadataTableEncryptionConfigurationSseAlgorithmAwsKms MetadataTableEncryptionConfigurationSseAlgorithm = "aws:kms"
+	MetadataTableEncryptionConfigurationSseAlgorithmAES256 MetadataTableEncryptionConfigurationSseAlgorithm = "AES256"
+)
+
+type MetadataDestinationTableBucketType string
+
+const (
+	MetadataDestinationTableBucketTypeAws      MetadataDestinationTableBucketType = "aws"
+	MetadataDestinationTableBucketTypeCustomer MetadataDestinationTableBucketType = "customer"
+)
+
+type InventoryTableConfigurationConfigurationState string
+
+const (
+	InventoryTableConfigurationConfigurationStateENABLED  InventoryTableConfigurationConfigurationState = "ENABLED"
+	InventoryTableConfigurationConfigurationStateDISABLED InventoryTableConfigurationConfigurationState = "DISABLED"
+)
+
+type RecordExpirationExpiration string
+
+const (
+	RecordExpirationExpirationENABLED  RecordExpirationExpiration = "ENABLED"
+	RecordExpirationExpirationDISABLED RecordExpirationExpiration = "DISABLED"
+)
+
+type DefaultRetentionMode string
+
+const (
+	DefaultRetentionModeCOMPLIANCE DefaultRetentionMode = "COMPLIANCE"
+	DefaultRetentionModeGOVERNANCE DefaultRetentionMode = "GOVERNANCE"
+)
+
+type OwnershipControlsRuleObjectOwnership string
+
+const (
+	OwnershipControlsRuleObjectOwnershipObjectWriter         OwnershipControlsRuleObjectOwnership = "ObjectWriter"
+	OwnershipControlsRuleObjectOwnershipBucketOwnerPreferred OwnershipControlsRuleObjectOwnership = "BucketOwnerPreferred"
+	OwnershipControlsRuleObjectOwnershipBucketOwnerEnforced  OwnershipControlsRuleObjectOwnership = "BucketOwnerEnforced"
+)
+
+type DeleteMarkerReplicationStatus string
+
+const (
+	DeleteMarkerReplicationStatusDisabled DeleteMarkerReplicationStatus = "Disabled"
+	DeleteMarkerReplicationStatusEnabled  DeleteMarkerReplicationStatus = "Enabled"
+)
+
+type MetricsStatus string
+
+const (
+	MetricsStatusDisabled MetricsStatus = "Disabled"
+	MetricsStatusEnabled  MetricsStatus = "Enabled"
+)
+
+type ReplicationTimeStatus string
+
+const (
+	ReplicationTimeStatusDisabled ReplicationTimeStatus = "Disabled"
+	ReplicationTimeStatusEnabled  ReplicationTimeStatus = "Enabled"
+)
+
+type ReplicationDestinationStorageClass string
+
+const (
+	ReplicationDestinationStorageClassDEEPARCHIVE        ReplicationDestinationStorageClass = "DEEP_ARCHIVE"
+	ReplicationDestinationStorageClassGLACIER            ReplicationDestinationStorageClass = "GLACIER"
+	ReplicationDestinationStorageClassGLACIERIR          ReplicationDestinationStorageClass = "GLACIER_IR"
+	ReplicationDestinationStorageClassINTELLIGENTTIERING ReplicationDestinationStorageClass = "INTELLIGENT_TIERING"
+	ReplicationDestinationStorageClassONEZONEIA          ReplicationDestinationStorageClass = "ONEZONE_IA"
+	ReplicationDestinationStorageClassREDUCEDREDUNDANCY  ReplicationDestinationStorageClass = "REDUCED_REDUNDANCY"
+	ReplicationDestinationStorageClassSTANDARD           ReplicationDestinationStorageClass = "STANDARD"
+	ReplicationDestinationStorageClassSTANDARDIA         ReplicationDestinationStorageClass = "STANDARD_IA"
+)
+
+type ReplicaModificationsStatus string
+
+const (
+	ReplicaModificationsStatusEnabled  ReplicaModificationsStatus = "Enabled"
+	ReplicaModificationsStatusDisabled ReplicaModificationsStatus = "Disabled"
+)
+
+type SseKmsEncryptedObjectsStatus string
+
+const (
+	SseKmsEncryptedObjectsStatusDisabled SseKmsEncryptedObjectsStatus = "Disabled"
+	SseKmsEncryptedObjectsStatusEnabled  SseKmsEncryptedObjectsStatus = "Enabled"
+)
+
+type ReplicationRuleStatus string
+
+const (
+	ReplicationRuleStatusDisabled ReplicationRuleStatus = "Disabled"
+	ReplicationRuleStatusEnabled  ReplicationRuleStatus = "Enabled"
+)
+
+type VersioningConfigurationStatus string
+
+const (
+	VersioningConfigurationStatusEnabled   VersioningConfigurationStatus = "Enabled"
+	VersioningConfigurationStatusSuspended VersioningConfigurationStatus = "Suspended"
+)
+
+type RedirectAllRequestsToProtocol string
+
+const (
+	RedirectAllRequestsToProtocolHttp  RedirectAllRequestsToProtocol = "http"
+	RedirectAllRequestsToProtocolHttps RedirectAllRequestsToProtocol = "https"
+)
+
+type RedirectRuleProtocol string
+
+const (
+	RedirectRuleProtocolHttp  RedirectRuleProtocol = "http"
+	RedirectRuleProtocolHttps RedirectRuleProtocol = "https"
+)
+
+type MultiRegionAccessPointPolicyPolicyStatusIsPublic string
+
+const (
+	MultiRegionAccessPointPolicyPolicyStatusIsPublicTrue  MultiRegionAccessPointPolicyPolicyStatusIsPublic = "true"
+	MultiRegionAccessPointPolicyPolicyStatusIsPublicFalse MultiRegionAccessPointPolicyPolicyStatusIsPublic = "false"
+)
+
+type S3BucketDestinationFormat string
+
+const (
+	S3BucketDestinationFormatCSV     S3BucketDestinationFormat = "CSV"
+	S3BucketDestinationFormatParquet S3BucketDestinationFormat = "Parquet"
+)
+
+type S3BucketDestinationOutputSchemaVersion string
+
+const (
+	S3BucketDestinationOutputSchemaVersionV1 S3BucketDestinationOutputSchemaVersion = "V_1"
+)

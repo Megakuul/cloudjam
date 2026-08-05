@@ -22,7 +22,7 @@ type Firewall struct {
 	AvailabilityZoneMappings         []AvailabilityZoneMapping `json:"AvailabilityZoneMappings,omitempty"`
 	DeleteProtection                 *bool                     `json:"DeleteProtection,omitempty"`
 	Description                      *string                   `json:"Description,omitempty"`
-	EnabledAnalysisTypes             []string                  `json:"EnabledAnalysisTypes,omitempty"`
+	EnabledAnalysisTypes             []EnabledAnalysisType     `json:"EnabledAnalysisTypes,omitempty"`
 	EndpointIds                      []string                  `json:"EndpointIds,omitempty"`
 	FirewallArn                      *string                   `json:"FirewallArn,omitempty"`
 	FirewallId                       *string                   `json:"FirewallId,omitempty"`
@@ -53,12 +53,12 @@ type StatefulEngineOptionsFlowTimeouts struct {
 
 type StatefulEngineOptions struct {
 	FlowTimeouts          *StatefulEngineOptionsFlowTimeouts `json:"FlowTimeouts,omitempty"`
-	RuleOrder             *string                            `json:"RuleOrder,omitempty"`
-	StreamExceptionPolicy *string                            `json:"StreamExceptionPolicy,omitempty"`
+	RuleOrder             *RuleOrder                         `json:"RuleOrder,omitempty"`
+	StreamExceptionPolicy *StreamExceptionPolicy             `json:"StreamExceptionPolicy,omitempty"`
 }
 
 type StatefulRuleGroupOverride struct {
-	Action *string `json:"Action,omitempty"`
+	Action *OverrideAction `json:"Action,omitempty"`
 }
 
 type StatefulRuleGroupReference struct {
@@ -120,9 +120,9 @@ type FirewallPolicy struct {
 func (FirewallPolicy) CloudControlType() string { return "AWS::NetworkFirewall::FirewallPolicy" }
 
 type LogDestinationConfig struct {
-	LogDestination     map[string]string `json:"LogDestination,omitempty"`
-	LogDestinationType *string           `json:"LogDestinationType,omitempty"`
-	LogType            *string           `json:"LogType,omitempty"`
+	LogDestination     map[string]string                       `json:"LogDestination,omitempty"`
+	LogDestinationType *LogDestinationConfigLogDestinationType `json:"LogDestinationType,omitempty"`
+	LogType            *LogDestinationConfigLogType            `json:"LogType,omitempty"`
 }
 
 type LoggingConfigurationLoggingConfiguration struct {
@@ -162,18 +162,18 @@ type RuleVariables struct {
 }
 
 type RulesSourceList struct {
-	GeneratedRulesType *string  `json:"GeneratedRulesType,omitempty"`
-	TargetTypes        []string `json:"TargetTypes,omitempty"`
-	Targets            []string `json:"Targets,omitempty"`
+	GeneratedRulesType *GeneratedRulesType `json:"GeneratedRulesType,omitempty"`
+	TargetTypes        []TargetType        `json:"TargetTypes,omitempty"`
+	Targets            []string            `json:"Targets,omitempty"`
 }
 
 type Header struct {
-	Destination     *string `json:"Destination,omitempty"`
-	DestinationPort *string `json:"DestinationPort,omitempty"`
-	Direction       *string `json:"Direction,omitempty"`
-	Protocol        *string `json:"Protocol,omitempty"`
-	Source          *string `json:"Source,omitempty"`
-	SourcePort      *string `json:"SourcePort,omitempty"`
+	Destination     *string          `json:"Destination,omitempty"`
+	DestinationPort *string          `json:"DestinationPort,omitempty"`
+	Direction       *HeaderDirection `json:"Direction,omitempty"`
+	Protocol        *HeaderProtocol  `json:"Protocol,omitempty"`
+	Source          *string          `json:"Source,omitempty"`
+	SourcePort      *string          `json:"SourcePort,omitempty"`
 }
 
 type RuleOption struct {
@@ -182,9 +182,9 @@ type RuleOption struct {
 }
 
 type StatefulRule struct {
-	Action      *string      `json:"Action,omitempty"`
-	Header      *Header      `json:"Header,omitempty"`
-	RuleOptions []RuleOption `json:"RuleOptions,omitempty"`
+	Action      *StatefulRuleAction `json:"Action,omitempty"`
+	Header      *Header             `json:"Header,omitempty"`
+	RuleOptions []RuleOption        `json:"RuleOptions,omitempty"`
 }
 
 type RuleGroupDimension struct {
@@ -214,8 +214,8 @@ type Address struct {
 }
 
 type TCPFlagField struct {
-	Flags []string `json:"Flags,omitempty"`
-	Masks []string `json:"Masks,omitempty"`
+	Flags []TCPFlag `json:"Flags,omitempty"`
+	Masks []TCPFlag `json:"Masks,omitempty"`
 }
 
 type MatchAttributes struct {
@@ -250,7 +250,7 @@ type RulesSource struct {
 }
 
 type StatefulRuleOptions struct {
-	RuleOrder *string `json:"RuleOrder,omitempty"`
+	RuleOrder *RuleGroupRuleOrder `json:"RuleOrder,omitempty"`
 }
 
 type RuleGroupRuleGroup struct {
@@ -261,7 +261,7 @@ type RuleGroupRuleGroup struct {
 }
 
 type RuleGroupSummaryConfiguration struct {
-	RuleOptions []string `json:"RuleOptions,omitempty"`
+	RuleOptions []SummaryRuleOption `json:"RuleOptions,omitempty"`
 }
 
 type RuleGroupTag struct {
@@ -278,14 +278,14 @@ type RuleGroup struct {
 	RuleGroupName        *string                        `json:"RuleGroupName,omitempty"`
 	SummaryConfiguration *RuleGroupSummaryConfiguration `json:"SummaryConfiguration,omitempty"`
 	Tags                 []RuleGroupTag                 `json:"Tags,omitempty"`
-	Type                 *string                        `json:"Type,omitempty"`
+	Type                 *RuleGroupType                 `json:"Type,omitempty"`
 }
 
 func (RuleGroup) CloudControlType() string { return "AWS::NetworkFirewall::RuleGroup" }
 
 type ServerCertificateConfigurationCheckCertificateRevocationStatus struct {
-	RevokedStatusAction *string `json:"RevokedStatusAction,omitempty"`
-	UnknownStatusAction *string `json:"UnknownStatusAction,omitempty"`
+	RevokedStatusAction *RevokedStatusAction `json:"RevokedStatusAction,omitempty"`
+	UnknownStatusAction *UnknownStatusAction `json:"UnknownStatusAction,omitempty"`
 }
 
 type TLSInspectionConfigurationPortRange struct {
@@ -362,3 +362,154 @@ type VpcEndpointAssociation struct {
 func (VpcEndpointAssociation) CloudControlType() string {
 	return "AWS::NetworkFirewall::VpcEndpointAssociation"
 }
+
+type EnabledAnalysisType string
+
+const (
+	EnabledAnalysisTypeTLSSNI   EnabledAnalysisType = "TLS_SNI"
+	EnabledAnalysisTypeHTTPHOST EnabledAnalysisType = "HTTP_HOST"
+)
+
+type RuleOrder string
+
+const (
+	RuleOrderDEFAULTACTIONORDER RuleOrder = "DEFAULT_ACTION_ORDER"
+	RuleOrderSTRICTORDER        RuleOrder = "STRICT_ORDER"
+)
+
+type StreamExceptionPolicy string
+
+const (
+	StreamExceptionPolicyDROP     StreamExceptionPolicy = "DROP"
+	StreamExceptionPolicyCONTINUE StreamExceptionPolicy = "CONTINUE"
+	StreamExceptionPolicyREJECT   StreamExceptionPolicy = "REJECT"
+)
+
+type OverrideAction string
+
+const (
+	OverrideActionDROPTOALERT OverrideAction = "DROP_TO_ALERT"
+)
+
+type LogDestinationConfigLogDestinationType string
+
+const (
+	LogDestinationConfigLogDestinationTypeS3                  LogDestinationConfigLogDestinationType = "S3"
+	LogDestinationConfigLogDestinationTypeCloudWatchLogs      LogDestinationConfigLogDestinationType = "CloudWatchLogs"
+	LogDestinationConfigLogDestinationTypeKinesisDataFirehose LogDestinationConfigLogDestinationType = "KinesisDataFirehose"
+)
+
+type LogDestinationConfigLogType string
+
+const (
+	LogDestinationConfigLogTypeALERT LogDestinationConfigLogType = "ALERT"
+	LogDestinationConfigLogTypeFLOW  LogDestinationConfigLogType = "FLOW"
+	LogDestinationConfigLogTypeTLS   LogDestinationConfigLogType = "TLS"
+)
+
+type GeneratedRulesType string
+
+const (
+	GeneratedRulesTypeALLOWLIST  GeneratedRulesType = "ALLOWLIST"
+	GeneratedRulesTypeDENYLIST   GeneratedRulesType = "DENYLIST"
+	GeneratedRulesTypeALERTLIST  GeneratedRulesType = "ALERTLIST"
+	GeneratedRulesTypeREJECTLIST GeneratedRulesType = "REJECTLIST"
+)
+
+type TargetType string
+
+const (
+	TargetTypeTLSSNI   TargetType = "TLS_SNI"
+	TargetTypeHTTPHOST TargetType = "HTTP_HOST"
+)
+
+type StatefulRuleAction string
+
+const (
+	StatefulRuleActionPASS   StatefulRuleAction = "PASS"
+	StatefulRuleActionDROP   StatefulRuleAction = "DROP"
+	StatefulRuleActionALERT  StatefulRuleAction = "ALERT"
+	StatefulRuleActionREJECT StatefulRuleAction = "REJECT"
+)
+
+type HeaderDirection string
+
+const (
+	HeaderDirectionFORWARD HeaderDirection = "FORWARD"
+	HeaderDirectionANY     HeaderDirection = "ANY"
+)
+
+type HeaderProtocol string
+
+const (
+	HeaderProtocolIP     HeaderProtocol = "IP"
+	HeaderProtocolTCP    HeaderProtocol = "TCP"
+	HeaderProtocolUDP    HeaderProtocol = "UDP"
+	HeaderProtocolICMP   HeaderProtocol = "ICMP"
+	HeaderProtocolHTTP   HeaderProtocol = "HTTP"
+	HeaderProtocolFTP    HeaderProtocol = "FTP"
+	HeaderProtocolTLS    HeaderProtocol = "TLS"
+	HeaderProtocolSMB    HeaderProtocol = "SMB"
+	HeaderProtocolDNS    HeaderProtocol = "DNS"
+	HeaderProtocolDCERPC HeaderProtocol = "DCERPC"
+	HeaderProtocolSSH    HeaderProtocol = "SSH"
+	HeaderProtocolSMTP   HeaderProtocol = "SMTP"
+	HeaderProtocolIMAP   HeaderProtocol = "IMAP"
+	HeaderProtocolMSN    HeaderProtocol = "MSN"
+	HeaderProtocolKRB5   HeaderProtocol = "KRB5"
+	HeaderProtocolIKEV2  HeaderProtocol = "IKEV2"
+	HeaderProtocolTFTP   HeaderProtocol = "TFTP"
+	HeaderProtocolNTP    HeaderProtocol = "NTP"
+	HeaderProtocolDHCP   HeaderProtocol = "DHCP"
+)
+
+type TCPFlag string
+
+const (
+	TCPFlagFIN TCPFlag = "FIN"
+	TCPFlagSYN TCPFlag = "SYN"
+	TCPFlagRST TCPFlag = "RST"
+	TCPFlagPSH TCPFlag = "PSH"
+	TCPFlagACK TCPFlag = "ACK"
+	TCPFlagURG TCPFlag = "URG"
+	TCPFlagECE TCPFlag = "ECE"
+	TCPFlagCWR TCPFlag = "CWR"
+)
+
+type RuleGroupRuleOrder string
+
+const (
+	RuleGroupRuleOrderDEFAULTACTIONORDER RuleGroupRuleOrder = "DEFAULT_ACTION_ORDER"
+	RuleGroupRuleOrderSTRICTORDER        RuleGroupRuleOrder = "STRICT_ORDER"
+)
+
+type SummaryRuleOption string
+
+const (
+	SummaryRuleOptionSID      SummaryRuleOption = "SID"
+	SummaryRuleOptionMSG      SummaryRuleOption = "MSG"
+	SummaryRuleOptionMETADATA SummaryRuleOption = "METADATA"
+)
+
+type RuleGroupType string
+
+const (
+	RuleGroupTypeSTATELESS RuleGroupType = "STATELESS"
+	RuleGroupTypeSTATEFUL  RuleGroupType = "STATEFUL"
+)
+
+type RevokedStatusAction string
+
+const (
+	RevokedStatusActionPASS   RevokedStatusAction = "PASS"
+	RevokedStatusActionDROP   RevokedStatusAction = "DROP"
+	RevokedStatusActionREJECT RevokedStatusAction = "REJECT"
+)
+
+type UnknownStatusAction string
+
+const (
+	UnknownStatusActionPASS   UnknownStatusAction = "PASS"
+	UnknownStatusActionDROP   UnknownStatusAction = "DROP"
+	UnknownStatusActionREJECT UnknownStatusAction = "REJECT"
+)

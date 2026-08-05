@@ -6,12 +6,12 @@ package qbusiness
 import "encoding/json"
 
 type AttachmentsConfiguration struct {
-	AttachmentsControlMode *string `json:"AttachmentsControlMode,omitempty"`
+	AttachmentsControlMode *AttachmentsControlMode `json:"AttachmentsControlMode,omitempty"`
 }
 
 type AutoSubscriptionConfiguration struct {
-	AutoSubscribe           *string `json:"AutoSubscribe,omitempty"`
-	DefaultSubscriptionType *string `json:"DefaultSubscriptionType,omitempty"`
+	AutoSubscribe           *AutoSubscriptionStatus `json:"AutoSubscribe,omitempty"`
+	DefaultSubscriptionType *SubscriptionType       `json:"DefaultSubscriptionType,omitempty"`
 }
 
 type EncryptionConfiguration struct {
@@ -19,11 +19,11 @@ type EncryptionConfiguration struct {
 }
 
 type PersonalizationConfiguration struct {
-	PersonalizationControlMode *string `json:"PersonalizationControlMode,omitempty"`
+	PersonalizationControlMode *PersonalizationControlMode `json:"PersonalizationControlMode,omitempty"`
 }
 
 type QAppsConfiguration struct {
-	QAppsControlMode *string `json:"QAppsControlMode,omitempty"`
+	QAppsControlMode *QAppsControlMode `json:"QAppsControlMode,omitempty"`
 }
 
 type QuickSightConfiguration struct {
@@ -48,12 +48,12 @@ type Application struct {
 	IamIdentityProviderArn        *string                        `json:"IamIdentityProviderArn,omitempty"`
 	IdentityCenterApplicationArn  *string                        `json:"IdentityCenterApplicationArn,omitempty"`
 	IdentityCenterInstanceArn     *string                        `json:"IdentityCenterInstanceArn,omitempty"`
-	IdentityType                  *string                        `json:"IdentityType,omitempty"`
+	IdentityType                  *IdentityType                  `json:"IdentityType,omitempty"`
 	PersonalizationConfiguration  *PersonalizationConfiguration  `json:"PersonalizationConfiguration,omitempty"`
 	QAppsConfiguration            *QAppsConfiguration            `json:"QAppsConfiguration,omitempty"`
 	QuickSightConfiguration       *QuickSightConfiguration       `json:"QuickSightConfiguration,omitempty"`
 	RoleArn                       *string                        `json:"RoleArn,omitempty"`
-	Status                        *string                        `json:"Status,omitempty"`
+	Status                        *ApplicationStatus             `json:"Status,omitempty"`
 	Tags                          []Tag                          `json:"Tags,omitempty"`
 	UpdatedAt                     *string                        `json:"UpdatedAt,omitempty"`
 }
@@ -88,9 +88,9 @@ type ActionConfiguration struct {
 }
 
 type DataAccessorAuthenticationDetail struct {
-	AuthenticationConfiguration json.RawMessage `json:"AuthenticationConfiguration,omitempty"`
-	AuthenticationType          *string         `json:"AuthenticationType,omitempty"`
-	ExternalIds                 []string        `json:"ExternalIds,omitempty"`
+	AuthenticationConfiguration json.RawMessage                 `json:"AuthenticationConfiguration,omitempty"`
+	AuthenticationType          *DataAccessorAuthenticationType `json:"AuthenticationType,omitempty"`
+	ExternalIds                 []string                        `json:"ExternalIds,omitempty"`
 }
 
 type DataAccessorTag struct {
@@ -115,20 +115,20 @@ type DataAccessor struct {
 func (DataAccessor) CloudControlType() string { return "AWS::QBusiness::DataAccessor" }
 
 type DocumentAttributeCondition struct {
-	Key      *string         `json:"Key,omitempty"`
-	Operator *string         `json:"Operator,omitempty"`
-	Value    json.RawMessage `json:"Value,omitempty"`
+	Key      *string                              `json:"Key,omitempty"`
+	Operator *DocumentEnrichmentConditionOperator `json:"Operator,omitempty"`
+	Value    json.RawMessage                      `json:"Value,omitempty"`
 }
 
 type DocumentAttributeTarget struct {
-	AttributeValueOperator *string         `json:"AttributeValueOperator,omitempty"`
-	Key                    *string         `json:"Key,omitempty"`
-	Value                  json.RawMessage `json:"Value,omitempty"`
+	AttributeValueOperator *AttributeValueOperator `json:"AttributeValueOperator,omitempty"`
+	Key                    *string                 `json:"Key,omitempty"`
+	Value                  json.RawMessage         `json:"Value,omitempty"`
 }
 
 type InlineDocumentEnrichmentConfiguration struct {
 	Condition               *DocumentAttributeCondition `json:"Condition,omitempty"`
-	DocumentContentOperator *string                     `json:"DocumentContentOperator,omitempty"`
+	DocumentContentOperator *DocumentContentOperator    `json:"DocumentContentOperator,omitempty"`
 	Target                  *DocumentAttributeTarget    `json:"Target,omitempty"`
 }
 
@@ -146,15 +146,15 @@ type DocumentEnrichmentConfiguration struct {
 }
 
 type AudioExtractionConfiguration struct {
-	AudioExtractionStatus *string `json:"AudioExtractionStatus,omitempty"`
+	AudioExtractionStatus *AudioExtractionStatus `json:"AudioExtractionStatus,omitempty"`
 }
 
 type ImageExtractionConfiguration struct {
-	ImageExtractionStatus *string `json:"ImageExtractionStatus,omitempty"`
+	ImageExtractionStatus *ImageExtractionStatus `json:"ImageExtractionStatus,omitempty"`
 }
 
 type VideoExtractionConfiguration struct {
-	VideoExtractionStatus *string `json:"VideoExtractionStatus,omitempty"`
+	VideoExtractionStatus *VideoExtractionStatus `json:"VideoExtractionStatus,omitempty"`
 }
 
 type MediaExtractionConfiguration struct {
@@ -185,7 +185,7 @@ type DataSource struct {
 	IndexId                         *string                          `json:"IndexId,omitempty"`
 	MediaExtractionConfiguration    *MediaExtractionConfiguration    `json:"MediaExtractionConfiguration,omitempty"`
 	RoleArn                         *string                          `json:"RoleArn,omitempty"`
-	Status                          *string                          `json:"Status,omitempty"`
+	Status                          *DataSourceStatus                `json:"Status,omitempty"`
 	SyncSchedule                    *string                          `json:"SyncSchedule,omitempty"`
 	Tags                            []DataSourceTag                  `json:"Tags,omitempty"`
 	Type                            *string                          `json:"Type,omitempty"`
@@ -200,9 +200,9 @@ type IndexCapacityConfiguration struct {
 }
 
 type DocumentAttributeConfiguration struct {
-	Name   *string `json:"Name,omitempty"`
-	Search *string `json:"Search,omitempty"`
-	Type   *string `json:"Type,omitempty"`
+	Name   *string        `json:"Name,omitempty"`
+	Search *Status        `json:"Search,omitempty"`
+	Type   *AttributeType `json:"Type,omitempty"`
 }
 
 type TextDocumentStatistics struct {
@@ -229,18 +229,18 @@ type Index struct {
 	IndexArn                        *string                          `json:"IndexArn,omitempty"`
 	IndexId                         *string                          `json:"IndexId,omitempty"`
 	IndexStatistics                 *IndexStatistics                 `json:"IndexStatistics,omitempty"`
-	Status                          *string                          `json:"Status,omitempty"`
+	Status                          *IndexStatus                     `json:"Status,omitempty"`
 	Tags                            []IndexTag                       `json:"Tags,omitempty"`
-	Type                            *string                          `json:"Type,omitempty"`
+	Type                            *IndexType                       `json:"Type,omitempty"`
 	UpdatedAt                       *string                          `json:"UpdatedAt,omitempty"`
 }
 
 func (Index) CloudControlType() string { return "AWS::QBusiness::Index" }
 
 type Condition struct {
-	ConditionKey      *string  `json:"ConditionKey,omitempty"`
-	ConditionOperator *string  `json:"ConditionOperator,omitempty"`
-	ConditionValues   []string `json:"ConditionValues,omitempty"`
+	ConditionKey      *string                     `json:"ConditionKey,omitempty"`
+	ConditionOperator *ConditionConditionOperator `json:"ConditionOperator,omitempty"`
+	ConditionValues   []string                    `json:"ConditionValues,omitempty"`
 }
 
 type Permission struct {
@@ -255,7 +255,7 @@ func (Permission) CloudControlType() string { return "AWS::QBusiness::Permission
 
 type CustomPluginConfiguration struct {
 	ApiSchema     json.RawMessage `json:"ApiSchema,omitempty"`
-	ApiSchemaType *string         `json:"ApiSchemaType,omitempty"`
+	ApiSchemaType *APISchemaType  `json:"ApiSchemaType,omitempty"`
 	Description   *string         `json:"Description,omitempty"`
 }
 
@@ -267,16 +267,16 @@ type PluginTag struct {
 type Plugin struct {
 	ApplicationId             *string                    `json:"ApplicationId,omitempty"`
 	AuthConfiguration         json.RawMessage            `json:"AuthConfiguration,omitempty"`
-	BuildStatus               *string                    `json:"BuildStatus,omitempty"`
+	BuildStatus               *PluginBuildStatus         `json:"BuildStatus,omitempty"`
 	CreatedAt                 *string                    `json:"CreatedAt,omitempty"`
 	CustomPluginConfiguration *CustomPluginConfiguration `json:"CustomPluginConfiguration,omitempty"`
 	DisplayName               *string                    `json:"DisplayName,omitempty"`
 	PluginArn                 *string                    `json:"PluginArn,omitempty"`
 	PluginId                  *string                    `json:"PluginId,omitempty"`
 	ServerUrl                 *string                    `json:"ServerUrl,omitempty"`
-	State                     *string                    `json:"State,omitempty"`
+	State                     *PluginState               `json:"State,omitempty"`
 	Tags                      []PluginTag                `json:"Tags,omitempty"`
-	Type                      *string                    `json:"Type,omitempty"`
+	Type                      *PluginType                `json:"Type,omitempty"`
 	UpdatedAt                 *string                    `json:"UpdatedAt,omitempty"`
 }
 
@@ -288,23 +288,23 @@ type RetrieverTag struct {
 }
 
 type Retriever struct {
-	ApplicationId *string         `json:"ApplicationId,omitempty"`
-	Configuration json.RawMessage `json:"Configuration,omitempty"`
-	CreatedAt     *string         `json:"CreatedAt,omitempty"`
-	DisplayName   *string         `json:"DisplayName,omitempty"`
-	RetrieverArn  *string         `json:"RetrieverArn,omitempty"`
-	RetrieverId   *string         `json:"RetrieverId,omitempty"`
-	RoleArn       *string         `json:"RoleArn,omitempty"`
-	Status        *string         `json:"Status,omitempty"`
-	Tags          []RetrieverTag  `json:"Tags,omitempty"`
-	Type          *string         `json:"Type,omitempty"`
-	UpdatedAt     *string         `json:"UpdatedAt,omitempty"`
+	ApplicationId *string          `json:"ApplicationId,omitempty"`
+	Configuration json.RawMessage  `json:"Configuration,omitempty"`
+	CreatedAt     *string          `json:"CreatedAt,omitempty"`
+	DisplayName   *string          `json:"DisplayName,omitempty"`
+	RetrieverArn  *string          `json:"RetrieverArn,omitempty"`
+	RetrieverId   *string          `json:"RetrieverId,omitempty"`
+	RoleArn       *string          `json:"RoleArn,omitempty"`
+	Status        *RetrieverStatus `json:"Status,omitempty"`
+	Tags          []RetrieverTag   `json:"Tags,omitempty"`
+	Type          *RetrieverType   `json:"Type,omitempty"`
+	UpdatedAt     *string          `json:"UpdatedAt,omitempty"`
 }
 
 func (Retriever) CloudControlType() string { return "AWS::QBusiness::Retriever" }
 
 type BrowserExtensionConfiguration struct {
-	EnabledBrowserExtensions []string `json:"EnabledBrowserExtensions,omitempty"`
+	EnabledBrowserExtensions []BrowserExtension `json:"EnabledBrowserExtensions,omitempty"`
 }
 
 type CustomizationConfiguration struct {
@@ -320,23 +320,270 @@ type WebExperienceTag struct {
 }
 
 type WebExperience struct {
-	ApplicationId                 *string                        `json:"ApplicationId,omitempty"`
-	BrowserExtensionConfiguration *BrowserExtensionConfiguration `json:"BrowserExtensionConfiguration,omitempty"`
-	CreatedAt                     *string                        `json:"CreatedAt,omitempty"`
-	CustomizationConfiguration    *CustomizationConfiguration    `json:"CustomizationConfiguration,omitempty"`
-	DefaultEndpoint               *string                        `json:"DefaultEndpoint,omitempty"`
-	IdentityProviderConfiguration json.RawMessage                `json:"IdentityProviderConfiguration,omitempty"`
-	Origins                       []string                       `json:"Origins,omitempty"`
-	RoleArn                       *string                        `json:"RoleArn,omitempty"`
-	SamplePromptsControlMode      *string                        `json:"SamplePromptsControlMode,omitempty"`
-	Status                        *string                        `json:"Status,omitempty"`
-	Subtitle                      *string                        `json:"Subtitle,omitempty"`
-	Tags                          []WebExperienceTag             `json:"Tags,omitempty"`
-	Title                         *string                        `json:"Title,omitempty"`
-	UpdatedAt                     *string                        `json:"UpdatedAt,omitempty"`
-	WebExperienceArn              *string                        `json:"WebExperienceArn,omitempty"`
-	WebExperienceId               *string                        `json:"WebExperienceId,omitempty"`
-	WelcomeMessage                *string                        `json:"WelcomeMessage,omitempty"`
+	ApplicationId                 *string                                `json:"ApplicationId,omitempty"`
+	BrowserExtensionConfiguration *BrowserExtensionConfiguration         `json:"BrowserExtensionConfiguration,omitempty"`
+	CreatedAt                     *string                                `json:"CreatedAt,omitempty"`
+	CustomizationConfiguration    *CustomizationConfiguration            `json:"CustomizationConfiguration,omitempty"`
+	DefaultEndpoint               *string                                `json:"DefaultEndpoint,omitempty"`
+	IdentityProviderConfiguration json.RawMessage                        `json:"IdentityProviderConfiguration,omitempty"`
+	Origins                       []string                               `json:"Origins,omitempty"`
+	RoleArn                       *string                                `json:"RoleArn,omitempty"`
+	SamplePromptsControlMode      *WebExperienceSamplePromptsControlMode `json:"SamplePromptsControlMode,omitempty"`
+	Status                        *WebExperienceStatus                   `json:"Status,omitempty"`
+	Subtitle                      *string                                `json:"Subtitle,omitempty"`
+	Tags                          []WebExperienceTag                     `json:"Tags,omitempty"`
+	Title                         *string                                `json:"Title,omitempty"`
+	UpdatedAt                     *string                                `json:"UpdatedAt,omitempty"`
+	WebExperienceArn              *string                                `json:"WebExperienceArn,omitempty"`
+	WebExperienceId               *string                                `json:"WebExperienceId,omitempty"`
+	WelcomeMessage                *string                                `json:"WelcomeMessage,omitempty"`
 }
 
 func (WebExperience) CloudControlType() string { return "AWS::QBusiness::WebExperience" }
+
+type AttachmentsControlMode string
+
+const (
+	AttachmentsControlModeENABLED  AttachmentsControlMode = "ENABLED"
+	AttachmentsControlModeDISABLED AttachmentsControlMode = "DISABLED"
+)
+
+type AutoSubscriptionStatus string
+
+const (
+	AutoSubscriptionStatusENABLED  AutoSubscriptionStatus = "ENABLED"
+	AutoSubscriptionStatusDISABLED AutoSubscriptionStatus = "DISABLED"
+)
+
+type SubscriptionType string
+
+const (
+	SubscriptionTypeQLITE     SubscriptionType = "Q_LITE"
+	SubscriptionTypeQBUSINESS SubscriptionType = "Q_BUSINESS"
+)
+
+type IdentityType string
+
+const (
+	IdentityTypeAWSIAMIDPSAML    IdentityType = "AWS_IAM_IDP_SAML"
+	IdentityTypeAWSIAMIDPOIDC    IdentityType = "AWS_IAM_IDP_OIDC"
+	IdentityTypeAWSIAMIDC        IdentityType = "AWS_IAM_IDC"
+	IdentityTypeAWSQUICKSIGHTIDP IdentityType = "AWS_QUICKSIGHT_IDP"
+	IdentityTypeANONYMOUS        IdentityType = "ANONYMOUS"
+)
+
+type PersonalizationControlMode string
+
+const (
+	PersonalizationControlModeENABLED  PersonalizationControlMode = "ENABLED"
+	PersonalizationControlModeDISABLED PersonalizationControlMode = "DISABLED"
+)
+
+type QAppsControlMode string
+
+const (
+	QAppsControlModeENABLED  QAppsControlMode = "ENABLED"
+	QAppsControlModeDISABLED QAppsControlMode = "DISABLED"
+)
+
+type ApplicationStatus string
+
+const (
+	ApplicationStatusCREATING ApplicationStatus = "CREATING"
+	ApplicationStatusACTIVE   ApplicationStatus = "ACTIVE"
+	ApplicationStatusDELETING ApplicationStatus = "DELETING"
+	ApplicationStatusFAILED   ApplicationStatus = "FAILED"
+	ApplicationStatusUPDATING ApplicationStatus = "UPDATING"
+)
+
+type DataAccessorAuthenticationType string
+
+const (
+	DataAccessorAuthenticationTypeAWSIAMIDCTTI      DataAccessorAuthenticationType = "AWS_IAM_IDC_TTI"
+	DataAccessorAuthenticationTypeAWSIAMIDCAUTHCODE DataAccessorAuthenticationType = "AWS_IAM_IDC_AUTH_CODE"
+)
+
+type DocumentEnrichmentConditionOperator string
+
+const (
+	DocumentEnrichmentConditionOperatorGREATERTHAN         DocumentEnrichmentConditionOperator = "GREATER_THAN"
+	DocumentEnrichmentConditionOperatorGREATERTHANOREQUALS DocumentEnrichmentConditionOperator = "GREATER_THAN_OR_EQUALS"
+	DocumentEnrichmentConditionOperatorLESSTHAN            DocumentEnrichmentConditionOperator = "LESS_THAN"
+	DocumentEnrichmentConditionOperatorLESSTHANOREQUALS    DocumentEnrichmentConditionOperator = "LESS_THAN_OR_EQUALS"
+	DocumentEnrichmentConditionOperatorEQUALS              DocumentEnrichmentConditionOperator = "EQUALS"
+	DocumentEnrichmentConditionOperatorNOTEQUALS           DocumentEnrichmentConditionOperator = "NOT_EQUALS"
+	DocumentEnrichmentConditionOperatorCONTAINS            DocumentEnrichmentConditionOperator = "CONTAINS"
+	DocumentEnrichmentConditionOperatorNOTCONTAINS         DocumentEnrichmentConditionOperator = "NOT_CONTAINS"
+	DocumentEnrichmentConditionOperatorEXISTS              DocumentEnrichmentConditionOperator = "EXISTS"
+	DocumentEnrichmentConditionOperatorNOTEXISTS           DocumentEnrichmentConditionOperator = "NOT_EXISTS"
+	DocumentEnrichmentConditionOperatorBEGINSWITH          DocumentEnrichmentConditionOperator = "BEGINS_WITH"
+)
+
+type DocumentContentOperator string
+
+const (
+	DocumentContentOperatorDELETE DocumentContentOperator = "DELETE"
+)
+
+type AttributeValueOperator string
+
+const (
+	AttributeValueOperatorDELETE AttributeValueOperator = "DELETE"
+)
+
+type AudioExtractionStatus string
+
+const (
+	AudioExtractionStatusENABLED  AudioExtractionStatus = "ENABLED"
+	AudioExtractionStatusDISABLED AudioExtractionStatus = "DISABLED"
+)
+
+type ImageExtractionStatus string
+
+const (
+	ImageExtractionStatusENABLED  ImageExtractionStatus = "ENABLED"
+	ImageExtractionStatusDISABLED ImageExtractionStatus = "DISABLED"
+)
+
+type VideoExtractionStatus string
+
+const (
+	VideoExtractionStatusENABLED  VideoExtractionStatus = "ENABLED"
+	VideoExtractionStatusDISABLED VideoExtractionStatus = "DISABLED"
+)
+
+type DataSourceStatus string
+
+const (
+	DataSourceStatusPENDINGCREATION DataSourceStatus = "PENDING_CREATION"
+	DataSourceStatusCREATING        DataSourceStatus = "CREATING"
+	DataSourceStatusACTIVE          DataSourceStatus = "ACTIVE"
+	DataSourceStatusDELETING        DataSourceStatus = "DELETING"
+	DataSourceStatusFAILED          DataSourceStatus = "FAILED"
+	DataSourceStatusUPDATING        DataSourceStatus = "UPDATING"
+)
+
+type Status string
+
+const (
+	StatusENABLED  Status = "ENABLED"
+	StatusDISABLED Status = "DISABLED"
+)
+
+type AttributeType string
+
+const (
+	AttributeTypeSTRING     AttributeType = "STRING"
+	AttributeTypeSTRINGLIST AttributeType = "STRING_LIST"
+	AttributeTypeNUMBER     AttributeType = "NUMBER"
+	AttributeTypeDATE       AttributeType = "DATE"
+)
+
+type IndexStatus string
+
+const (
+	IndexStatusCREATING IndexStatus = "CREATING"
+	IndexStatusACTIVE   IndexStatus = "ACTIVE"
+	IndexStatusDELETING IndexStatus = "DELETING"
+	IndexStatusFAILED   IndexStatus = "FAILED"
+	IndexStatusUPDATING IndexStatus = "UPDATING"
+)
+
+type IndexType string
+
+const (
+	IndexTypeENTERPRISE IndexType = "ENTERPRISE"
+	IndexTypeSTARTER    IndexType = "STARTER"
+)
+
+type ConditionConditionOperator string
+
+const (
+	ConditionConditionOperatorStringEquals ConditionConditionOperator = "StringEquals"
+)
+
+type PluginBuildStatus string
+
+const (
+	PluginBuildStatusREADY            PluginBuildStatus = "READY"
+	PluginBuildStatusCREATEINPROGRESS PluginBuildStatus = "CREATE_IN_PROGRESS"
+	PluginBuildStatusCREATEFAILED     PluginBuildStatus = "CREATE_FAILED"
+	PluginBuildStatusUPDATEINPROGRESS PluginBuildStatus = "UPDATE_IN_PROGRESS"
+	PluginBuildStatusUPDATEFAILED     PluginBuildStatus = "UPDATE_FAILED"
+	PluginBuildStatusDELETEINPROGRESS PluginBuildStatus = "DELETE_IN_PROGRESS"
+	PluginBuildStatusDELETEFAILED     PluginBuildStatus = "DELETE_FAILED"
+)
+
+type APISchemaType string
+
+const (
+	APISchemaTypeOPENAPIV3 APISchemaType = "OPEN_API_V3"
+)
+
+type PluginState string
+
+const (
+	PluginStateENABLED  PluginState = "ENABLED"
+	PluginStateDISABLED PluginState = "DISABLED"
+)
+
+type PluginType string
+
+const (
+	PluginTypeSERVICENOW            PluginType = "SERVICE_NOW"
+	PluginTypeSALESFORCE            PluginType = "SALESFORCE"
+	PluginTypeJIRA                  PluginType = "JIRA"
+	PluginTypeZENDESK               PluginType = "ZENDESK"
+	PluginTypeCUSTOM                PluginType = "CUSTOM"
+	PluginTypeQUICKSIGHT            PluginType = "QUICKSIGHT"
+	PluginTypeSERVICENOWNOWPLATFORM PluginType = "SERVICENOW_NOW_PLATFORM"
+	PluginTypeJIRACLOUD             PluginType = "JIRA_CLOUD"
+	PluginTypeSALESFORCECRM         PluginType = "SALESFORCE_CRM"
+	PluginTypeZENDESKSUITE          PluginType = "ZENDESK_SUITE"
+	PluginTypeATLASSIANCONFLUENCE   PluginType = "ATLASSIAN_CONFLUENCE"
+	PluginTypeGOOGLECALENDAR        PluginType = "GOOGLE_CALENDAR"
+	PluginTypeMICROSOFTTEAMS        PluginType = "MICROSOFT_TEAMS"
+	PluginTypeMICROSOFTEXCHANGE     PluginType = "MICROSOFT_EXCHANGE"
+	PluginTypePAGERDUTYADVANCE      PluginType = "PAGERDUTY_ADVANCE"
+	PluginTypeSMARTSHEET            PluginType = "SMARTSHEET"
+	PluginTypeASANA                 PluginType = "ASANA"
+)
+
+type RetrieverStatus string
+
+const (
+	RetrieverStatusCREATING RetrieverStatus = "CREATING"
+	RetrieverStatusACTIVE   RetrieverStatus = "ACTIVE"
+	RetrieverStatusFAILED   RetrieverStatus = "FAILED"
+)
+
+type RetrieverType string
+
+const (
+	RetrieverTypeNATIVEINDEX RetrieverType = "NATIVE_INDEX"
+	RetrieverTypeKENDRAINDEX RetrieverType = "KENDRA_INDEX"
+)
+
+type BrowserExtension string
+
+const (
+	BrowserExtensionFIREFOX BrowserExtension = "FIREFOX"
+	BrowserExtensionCHROME  BrowserExtension = "CHROME"
+)
+
+type WebExperienceSamplePromptsControlMode string
+
+const (
+	WebExperienceSamplePromptsControlModeENABLED  WebExperienceSamplePromptsControlMode = "ENABLED"
+	WebExperienceSamplePromptsControlModeDISABLED WebExperienceSamplePromptsControlMode = "DISABLED"
+)
+
+type WebExperienceStatus string
+
+const (
+	WebExperienceStatusCREATING          WebExperienceStatus = "CREATING"
+	WebExperienceStatusACTIVE            WebExperienceStatus = "ACTIVE"
+	WebExperienceStatusDELETING          WebExperienceStatus = "DELETING"
+	WebExperienceStatusFAILED            WebExperienceStatus = "FAILED"
+	WebExperienceStatusPENDINGAUTHCONFIG WebExperienceStatus = "PENDING_AUTH_CONFIG"
+)

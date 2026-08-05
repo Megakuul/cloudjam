@@ -13,9 +13,9 @@ type LogGroupNameConfiguration struct {
 }
 
 type LogsEncryptionConfiguration struct {
-	EncryptionConflictResolutionStrategy *string `json:"EncryptionConflictResolutionStrategy,omitempty"`
-	EncryptionStrategy                   *string `json:"EncryptionStrategy,omitempty"`
-	KmsKeyArn                            *string `json:"KmsKeyArn,omitempty"`
+	EncryptionConflictResolutionStrategy *LogsEncryptionConfigurationEncryptionConflictResolutionStrategy `json:"EncryptionConflictResolutionStrategy,omitempty"`
+	EncryptionStrategy                   *LogsEncryptionConfigurationEncryptionStrategy                   `json:"EncryptionStrategy,omitempty"`
+	KmsKeyArn                            *string                                                          `json:"KmsKeyArn,omitempty"`
 }
 
 type DestinationLogsConfiguration struct {
@@ -40,9 +40,9 @@ type CentralizationRuleDestination struct {
 }
 
 type SourceLogsConfiguration struct {
-	DataSourceSelectionCriteria *string `json:"DataSourceSelectionCriteria,omitempty"`
-	EncryptedLogGroupStrategy   *string `json:"EncryptedLogGroupStrategy,omitempty"`
-	LogGroupSelectionCriteria   *string `json:"LogGroupSelectionCriteria,omitempty"`
+	DataSourceSelectionCriteria *string                                           `json:"DataSourceSelectionCriteria,omitempty"`
+	EncryptedLogGroupStrategy   *SourceLogsConfigurationEncryptedLogGroupStrategy `json:"EncryptedLogGroupStrategy,omitempty"`
+	LogGroupSelectionCriteria   *string                                           `json:"LogGroupSelectionCriteria,omitempty"`
 }
 
 type SourceMetricsConfiguration struct {
@@ -103,12 +103,12 @@ type CloudtrailParameters struct {
 }
 
 type ELBLoadBalancerLoggingParameters struct {
-	FieldDelimiter *string `json:"FieldDelimiter,omitempty"`
-	OutputFormat   *string `json:"OutputFormat,omitempty"`
+	FieldDelimiter *string                                       `json:"FieldDelimiter,omitempty"`
+	OutputFormat   *ELBLoadBalancerLoggingParametersOutputFormat `json:"OutputFormat,omitempty"`
 }
 
 type TelemetryDestinationConfigurationLogDeliveryParameters struct {
-	LogTypes []string `json:"LogTypes,omitempty"`
+	LogTypes []TelemetryDestinationConfigurationLogDeliveryParametersLogTypesItem `json:"LogTypes,omitempty"`
 }
 
 type VPCFlowLogParameters struct {
@@ -118,7 +118,7 @@ type VPCFlowLogParameters struct {
 }
 
 type ActionCondition struct {
-	Action *string `json:"Action,omitempty"`
+	Action *Action `json:"Action,omitempty"`
 }
 
 type LabelNameCondition struct {
@@ -131,14 +131,14 @@ type Condition struct {
 }
 
 type Filter struct {
-	Behavior    *string     `json:"Behavior,omitempty"`
-	Conditions  []Condition `json:"Conditions,omitempty"`
-	Requirement *string     `json:"Requirement,omitempty"`
+	Behavior    *FilterBehavior    `json:"Behavior,omitempty"`
+	Conditions  []Condition        `json:"Conditions,omitempty"`
+	Requirement *FilterRequirement `json:"Requirement,omitempty"`
 }
 
 type LoggingFilter struct {
-	DefaultBehavior *string  `json:"DefaultBehavior,omitempty"`
-	Filters         []Filter `json:"Filters,omitempty"`
+	DefaultBehavior *FilterBehavior `json:"DefaultBehavior,omitempty"`
+	Filters         []Filter        `json:"Filters,omitempty"`
 }
 
 type SingleHeader struct {
@@ -153,7 +153,7 @@ type FieldToMatch struct {
 }
 
 type WAFLoggingParameters struct {
-	LogType        *string        `json:"LogType,omitempty"`
+	LogType        *WAFLogType    `json:"LogType,omitempty"`
 	LoggingFilter  *LoggingFilter `json:"LoggingFilter,omitempty"`
 	RedactedFields []FieldToMatch `json:"RedactedFields,omitempty"`
 }
@@ -161,7 +161,7 @@ type WAFLoggingParameters struct {
 type TelemetryDestinationConfiguration struct {
 	CloudtrailParameters             *CloudtrailParameters                                   `json:"CloudtrailParameters,omitempty"`
 	DestinationPattern               *string                                                 `json:"DestinationPattern,omitempty"`
-	DestinationType                  *string                                                 `json:"DestinationType,omitempty"`
+	DestinationType                  *DestinationType                                        `json:"DestinationType,omitempty"`
 	ELBLoadBalancerLoggingParameters *ELBLoadBalancerLoggingParameters                       `json:"ELBLoadBalancerLoggingParameters,omitempty"`
 	LogDeliveryParameters            *TelemetryDestinationConfigurationLogDeliveryParameters `json:"LogDeliveryParameters,omitempty"`
 	RetentionInDays                  *int                                                    `json:"RetentionInDays,omitempty"`
@@ -174,11 +174,11 @@ type TelemetryRule struct {
 	AllowFieldUpdates        *bool                              `json:"AllowFieldUpdates,omitempty"`
 	DestinationConfiguration *TelemetryDestinationConfiguration `json:"DestinationConfiguration,omitempty"`
 	Regions                  []string                           `json:"Regions,omitempty"`
-	ResourceType             *string                            `json:"ResourceType,omitempty"`
+	ResourceType             *ResourceType                      `json:"ResourceType,omitempty"`
 	Scope                    *string                            `json:"Scope,omitempty"`
 	SelectionCriteria        *string                            `json:"SelectionCriteria,omitempty"`
-	TelemetrySourceTypes     []string                           `json:"TelemetrySourceTypes,omitempty"`
-	TelemetryType            *string                            `json:"TelemetryType,omitempty"`
+	TelemetrySourceTypes     []TelemetrySourceType              `json:"TelemetrySourceTypes,omitempty"`
+	TelemetryType            *TelemetryType                     `json:"TelemetryType,omitempty"`
 }
 
 type OrganizationTelemetryRuleTag struct {
@@ -199,8 +199,8 @@ func (OrganizationTelemetryRule) CloudControlType() string {
 }
 
 type EncryptionConfig struct {
-	KmsKeyArn    *string `json:"KmsKeyArn,omitempty"`
-	SseAlgorithm *string `json:"SseAlgorithm,omitempty"`
+	KmsKeyArn    *string                       `json:"KmsKeyArn,omitempty"`
+	SseAlgorithm *EncryptionConfigSseAlgorithm `json:"SseAlgorithm,omitempty"`
 }
 
 type LogSource struct {
@@ -227,8 +227,8 @@ func (S3TableIntegration) CloudControlType() string {
 }
 
 type TelemetryEnrichment struct {
-	Scope  *string `json:"Scope,omitempty"`
-	Status *string `json:"Status,omitempty"`
+	Scope  *Scope  `json:"Scope,omitempty"`
+	Status *Status `json:"Status,omitempty"`
 }
 
 func (TelemetryEnrichment) CloudControlType() string {
@@ -254,7 +254,7 @@ type TelemetryPipeline struct {
 	CreatedTimeStamp    *float64                        `json:"CreatedTimeStamp,omitempty"`
 	LastUpdateTimeStamp *float64                        `json:"LastUpdateTimeStamp,omitempty"`
 	Name                *string                         `json:"Name,omitempty"`
-	Status              *string                         `json:"Status,omitempty"`
+	Status              *TelemetryPipelineStatus        `json:"Status,omitempty"`
 	StatusReason        *TelemetryPipelineStatusReason  `json:"StatusReason,omitempty"`
 	Tags                []TelemetryPipelinesTag         `json:"Tags,omitempty"`
 }
@@ -265,7 +265,7 @@ type TelemetryPipelines struct {
 	Name               *string                         `json:"Name,omitempty"`
 	Pipeline           *TelemetryPipeline              `json:"Pipeline,omitempty"`
 	PipelineIdentifier *string                         `json:"PipelineIdentifier,omitempty"`
-	Status             *string                         `json:"Status,omitempty"`
+	Status             *TelemetryPipelineStatus        `json:"Status,omitempty"`
 	StatusReason       *TelemetryPipelineStatusReason  `json:"StatusReason,omitempty"`
 	Tags               []TelemetryPipelinesTag         `json:"Tags,omitempty"`
 }
@@ -300,12 +300,12 @@ type TelemetryRuleCloudtrailParameters struct {
 }
 
 type TelemetryRuleELBLoadBalancerLoggingParameters struct {
-	FieldDelimiter *string `json:"FieldDelimiter,omitempty"`
-	OutputFormat   *string `json:"OutputFormat,omitempty"`
+	FieldDelimiter *string                                                    `json:"FieldDelimiter,omitempty"`
+	OutputFormat   *TelemetryRuleELBLoadBalancerLoggingParametersOutputFormat `json:"OutputFormat,omitempty"`
 }
 
 type TelemetryRuleTelemetryDestinationConfigurationLogDeliveryParameters struct {
-	LogTypes []string `json:"LogTypes,omitempty"`
+	LogTypes []TelemetryRuleTelemetryDestinationConfigurationLogDeliveryParametersLogTypesItem `json:"LogTypes,omitempty"`
 }
 
 type TelemetryRuleVPCFlowLogParameters struct {
@@ -315,7 +315,7 @@ type TelemetryRuleVPCFlowLogParameters struct {
 }
 
 type TelemetryRuleActionCondition struct {
-	Action *string `json:"Action,omitempty"`
+	Action *TelemetryRuleAction `json:"Action,omitempty"`
 }
 
 type TelemetryRuleLabelNameCondition struct {
@@ -328,14 +328,14 @@ type TelemetryRuleCondition struct {
 }
 
 type TelemetryRuleFilter struct {
-	Behavior    *string                  `json:"Behavior,omitempty"`
-	Conditions  []TelemetryRuleCondition `json:"Conditions,omitempty"`
-	Requirement *string                  `json:"Requirement,omitempty"`
+	Behavior    *TelemetryRuleFilterBehavior    `json:"Behavior,omitempty"`
+	Conditions  []TelemetryRuleCondition        `json:"Conditions,omitempty"`
+	Requirement *TelemetryRuleFilterRequirement `json:"Requirement,omitempty"`
 }
 
 type TelemetryRuleLoggingFilter struct {
-	DefaultBehavior *string               `json:"DefaultBehavior,omitempty"`
-	Filters         []TelemetryRuleFilter `json:"Filters,omitempty"`
+	DefaultBehavior *TelemetryRuleFilterBehavior `json:"DefaultBehavior,omitempty"`
+	Filters         []TelemetryRuleFilter        `json:"Filters,omitempty"`
 }
 
 type TelemetryRuleSingleHeader struct {
@@ -350,7 +350,7 @@ type TelemetryRuleFieldToMatch struct {
 }
 
 type TelemetryRuleWAFLoggingParameters struct {
-	LogType        *string                     `json:"LogType,omitempty"`
+	LogType        *TelemetryRuleWAFLogType    `json:"LogType,omitempty"`
 	LoggingFilter  *TelemetryRuleLoggingFilter `json:"LoggingFilter,omitempty"`
 	RedactedFields []TelemetryRuleFieldToMatch `json:"RedactedFields,omitempty"`
 }
@@ -358,7 +358,7 @@ type TelemetryRuleWAFLoggingParameters struct {
 type TelemetryRuleTelemetryDestinationConfiguration struct {
 	CloudtrailParameters             *TelemetryRuleCloudtrailParameters                                   `json:"CloudtrailParameters,omitempty"`
 	DestinationPattern               *string                                                              `json:"DestinationPattern,omitempty"`
-	DestinationType                  *string                                                              `json:"DestinationType,omitempty"`
+	DestinationType                  *TelemetryRuleDestinationType                                        `json:"DestinationType,omitempty"`
 	ELBLoadBalancerLoggingParameters *TelemetryRuleELBLoadBalancerLoggingParameters                       `json:"ELBLoadBalancerLoggingParameters,omitempty"`
 	LogDeliveryParameters            *TelemetryRuleTelemetryDestinationConfigurationLogDeliveryParameters `json:"LogDeliveryParameters,omitempty"`
 	RetentionInDays                  *int                                                                 `json:"RetentionInDays,omitempty"`
@@ -371,10 +371,10 @@ type TelemetryRuleTelemetryRule2 struct {
 	AllowFieldUpdates        *bool                                           `json:"AllowFieldUpdates,omitempty"`
 	DestinationConfiguration *TelemetryRuleTelemetryDestinationConfiguration `json:"DestinationConfiguration,omitempty"`
 	Regions                  []string                                        `json:"Regions,omitempty"`
-	ResourceType             *string                                         `json:"ResourceType,omitempty"`
+	ResourceType             *TelemetryRuleResourceType                      `json:"ResourceType,omitempty"`
 	SelectionCriteria        *string                                         `json:"SelectionCriteria,omitempty"`
-	TelemetrySourceTypes     []string                                        `json:"TelemetrySourceTypes,omitempty"`
-	TelemetryType            *string                                         `json:"TelemetryType,omitempty"`
+	TelemetrySourceTypes     []TelemetryRuleTelemetrySourceType              `json:"TelemetrySourceTypes,omitempty"`
+	TelemetryType            *TelemetryRuleTelemetryType                     `json:"TelemetryType,omitempty"`
 }
 
 type TelemetryRuleTag struct {
@@ -393,3 +393,224 @@ type TelemetryRuleTelemetryRule struct {
 func (TelemetryRuleTelemetryRule) CloudControlType() string {
 	return "AWS::ObservabilityAdmin::TelemetryRule"
 }
+
+type LogsEncryptionConfigurationEncryptionConflictResolutionStrategy string
+
+const (
+	LogsEncryptionConfigurationEncryptionConflictResolutionStrategyALLOW LogsEncryptionConfigurationEncryptionConflictResolutionStrategy = "ALLOW"
+	LogsEncryptionConfigurationEncryptionConflictResolutionStrategySKIP  LogsEncryptionConfigurationEncryptionConflictResolutionStrategy = "SKIP"
+)
+
+type LogsEncryptionConfigurationEncryptionStrategy string
+
+const (
+	LogsEncryptionConfigurationEncryptionStrategyCUSTOMERMANAGED LogsEncryptionConfigurationEncryptionStrategy = "CUSTOMER_MANAGED"
+	LogsEncryptionConfigurationEncryptionStrategyAWSOWNED        LogsEncryptionConfigurationEncryptionStrategy = "AWS_OWNED"
+)
+
+type SourceLogsConfigurationEncryptedLogGroupStrategy string
+
+const (
+	SourceLogsConfigurationEncryptedLogGroupStrategyALLOW SourceLogsConfigurationEncryptedLogGroupStrategy = "ALLOW"
+	SourceLogsConfigurationEncryptedLogGroupStrategySKIP  SourceLogsConfigurationEncryptedLogGroupStrategy = "SKIP"
+)
+
+type DestinationType string
+
+const (
+	DestinationTypeCloudWatchLogs DestinationType = "cloud-watch-logs"
+)
+
+type ELBLoadBalancerLoggingParametersOutputFormat string
+
+const (
+	ELBLoadBalancerLoggingParametersOutputFormatPlain ELBLoadBalancerLoggingParametersOutputFormat = "plain"
+	ELBLoadBalancerLoggingParametersOutputFormatJson  ELBLoadBalancerLoggingParametersOutputFormat = "json"
+)
+
+type TelemetryDestinationConfigurationLogDeliveryParametersLogTypesItem string
+
+const (
+	TelemetryDestinationConfigurationLogDeliveryParametersLogTypesItemSECURITYFINDINGLOGS TelemetryDestinationConfigurationLogDeliveryParametersLogTypesItem = "SECURITY_FINDING_LOGS"
+)
+
+type WAFLogType string
+
+const (
+	WAFLogTypeWAFLOGS WAFLogType = "WAF_LOGS"
+)
+
+type FilterBehavior string
+
+const (
+	FilterBehaviorKEEP FilterBehavior = "KEEP"
+	FilterBehaviorDROP FilterBehavior = "DROP"
+)
+
+type Action string
+
+const (
+	ActionALLOW           Action = "ALLOW"
+	ActionBLOCK           Action = "BLOCK"
+	ActionCOUNT           Action = "COUNT"
+	ActionCAPTCHA         Action = "CAPTCHA"
+	ActionCHALLENGE       Action = "CHALLENGE"
+	ActionEXCLUDEDASCOUNT Action = "EXCLUDED_AS_COUNT"
+)
+
+type FilterRequirement string
+
+const (
+	FilterRequirementMEETSALL FilterRequirement = "MEETS_ALL"
+	FilterRequirementMEETSANY FilterRequirement = "MEETS_ANY"
+)
+
+type ResourceType string
+
+const (
+	ResourceTypeAWSEC2VPC                             ResourceType = "AWS::EC2::VPC"
+	ResourceTypeAWSWAFv2WebACL                        ResourceType = "AWS::WAFv2::WebACL"
+	ResourceTypeAWSCloudTrail                         ResourceType = "AWS::CloudTrail"
+	ResourceTypeAWSEKSCluster                         ResourceType = "AWS::EKS::Cluster"
+	ResourceTypeAWSElasticLoadBalancingV2LoadBalancer ResourceType = "AWS::ElasticLoadBalancingV2::LoadBalancer"
+	ResourceTypeAWSEC2Instance                        ResourceType = "AWS::EC2::Instance"
+	ResourceTypeAWSSecurityHubHub                     ResourceType = "AWS::SecurityHub::Hub"
+)
+
+type TelemetrySourceType string
+
+const (
+	TelemetrySourceTypeVPCFLOWLOGS              TelemetrySourceType = "VPC_FLOW_LOGS"
+	TelemetrySourceTypeROUTE53RESOLVERQUERYLOGS TelemetrySourceType = "ROUTE53_RESOLVER_QUERY_LOGS"
+	TelemetrySourceTypeEKSAUDITLOGS             TelemetrySourceType = "EKS_AUDIT_LOGS"
+	TelemetrySourceTypeEKSAUTHENTICATORLOGS     TelemetrySourceType = "EKS_AUTHENTICATOR_LOGS"
+	TelemetrySourceTypeEKSCONTROLLERMANAGERLOGS TelemetrySourceType = "EKS_CONTROLLER_MANAGER_LOGS"
+	TelemetrySourceTypeEKSSCHEDULERLOGS         TelemetrySourceType = "EKS_SCHEDULER_LOGS"
+	TelemetrySourceTypeEKSAPILOGS               TelemetrySourceType = "EKS_API_LOGS"
+)
+
+type TelemetryType string
+
+const (
+	TelemetryTypeLogs    TelemetryType = "Logs"
+	TelemetryTypeMetrics TelemetryType = "Metrics"
+)
+
+type EncryptionConfigSseAlgorithm string
+
+const (
+	EncryptionConfigSseAlgorithmAES256 EncryptionConfigSseAlgorithm = "AES256"
+	EncryptionConfigSseAlgorithmAwsKms EncryptionConfigSseAlgorithm = "aws:kms"
+)
+
+type Scope string
+
+const (
+	ScopeACCOUNT Scope = "ACCOUNT"
+)
+
+type Status string
+
+const (
+	StatusRUNNING  Status = "RUNNING"
+	StatusSTOPPED  Status = "STOPPED"
+	StatusIMPAIRED Status = "IMPAIRED"
+)
+
+type TelemetryPipelineStatus string
+
+const (
+	TelemetryPipelineStatusCREATING     TelemetryPipelineStatus = "CREATING"
+	TelemetryPipelineStatusACTIVE       TelemetryPipelineStatus = "ACTIVE"
+	TelemetryPipelineStatusUPDATING     TelemetryPipelineStatus = "UPDATING"
+	TelemetryPipelineStatusDELETING     TelemetryPipelineStatus = "DELETING"
+	TelemetryPipelineStatusCREATEFAILED TelemetryPipelineStatus = "CREATE_FAILED"
+	TelemetryPipelineStatusUPDATEFAILED TelemetryPipelineStatus = "UPDATE_FAILED"
+)
+
+type TelemetryRuleDestinationType string
+
+const (
+	TelemetryRuleDestinationTypeCloudWatchLogs TelemetryRuleDestinationType = "cloud-watch-logs"
+)
+
+type TelemetryRuleELBLoadBalancerLoggingParametersOutputFormat string
+
+const (
+	TelemetryRuleELBLoadBalancerLoggingParametersOutputFormatPlain TelemetryRuleELBLoadBalancerLoggingParametersOutputFormat = "plain"
+	TelemetryRuleELBLoadBalancerLoggingParametersOutputFormatJson  TelemetryRuleELBLoadBalancerLoggingParametersOutputFormat = "json"
+)
+
+type TelemetryRuleTelemetryDestinationConfigurationLogDeliveryParametersLogTypesItem string
+
+const (
+	TelemetryRuleTelemetryDestinationConfigurationLogDeliveryParametersLogTypesItemAPPLICATIONLOGS     TelemetryRuleTelemetryDestinationConfigurationLogDeliveryParametersLogTypesItem = "APPLICATION_LOGS"
+	TelemetryRuleTelemetryDestinationConfigurationLogDeliveryParametersLogTypesItemUSAGELOGS           TelemetryRuleTelemetryDestinationConfigurationLogDeliveryParametersLogTypesItem = "USAGE_LOGS"
+	TelemetryRuleTelemetryDestinationConfigurationLogDeliveryParametersLogTypesItemSECURITYFINDINGLOGS TelemetryRuleTelemetryDestinationConfigurationLogDeliveryParametersLogTypesItem = "SECURITY_FINDING_LOGS"
+)
+
+type TelemetryRuleWAFLogType string
+
+const (
+	TelemetryRuleWAFLogTypeWAFLOGS TelemetryRuleWAFLogType = "WAF_LOGS"
+)
+
+type TelemetryRuleFilterBehavior string
+
+const (
+	TelemetryRuleFilterBehaviorKEEP TelemetryRuleFilterBehavior = "KEEP"
+	TelemetryRuleFilterBehaviorDROP TelemetryRuleFilterBehavior = "DROP"
+)
+
+type TelemetryRuleAction string
+
+const (
+	TelemetryRuleActionALLOW           TelemetryRuleAction = "ALLOW"
+	TelemetryRuleActionBLOCK           TelemetryRuleAction = "BLOCK"
+	TelemetryRuleActionCOUNT           TelemetryRuleAction = "COUNT"
+	TelemetryRuleActionCAPTCHA         TelemetryRuleAction = "CAPTCHA"
+	TelemetryRuleActionCHALLENGE       TelemetryRuleAction = "CHALLENGE"
+	TelemetryRuleActionEXCLUDEDASCOUNT TelemetryRuleAction = "EXCLUDED_AS_COUNT"
+)
+
+type TelemetryRuleFilterRequirement string
+
+const (
+	TelemetryRuleFilterRequirementMEETSALL TelemetryRuleFilterRequirement = "MEETS_ALL"
+	TelemetryRuleFilterRequirementMEETSANY TelemetryRuleFilterRequirement = "MEETS_ANY"
+)
+
+type TelemetryRuleResourceType string
+
+const (
+	TelemetryRuleResourceTypeAWSEC2VPC                             TelemetryRuleResourceType = "AWS::EC2::VPC"
+	TelemetryRuleResourceTypeAWSWAFv2WebACL                        TelemetryRuleResourceType = "AWS::WAFv2::WebACL"
+	TelemetryRuleResourceTypeAWSCloudTrail                         TelemetryRuleResourceType = "AWS::CloudTrail"
+	TelemetryRuleResourceTypeAWSEKSCluster                         TelemetryRuleResourceType = "AWS::EKS::Cluster"
+	TelemetryRuleResourceTypeAWSElasticLoadBalancingV2LoadBalancer TelemetryRuleResourceType = "AWS::ElasticLoadBalancingV2::LoadBalancer"
+	TelemetryRuleResourceTypeAWSEC2Instance                        TelemetryRuleResourceType = "AWS::EC2::Instance"
+	TelemetryRuleResourceTypeAWSBedrockAgentCoreRuntime            TelemetryRuleResourceType = "AWS::BedrockAgentCore::Runtime"
+	TelemetryRuleResourceTypeAWSBedrockAgentCoreBrowser            TelemetryRuleResourceType = "AWS::BedrockAgentCore::Browser"
+	TelemetryRuleResourceTypeAWSBedrockAgentCoreCodeInterpreter    TelemetryRuleResourceType = "AWS::BedrockAgentCore::CodeInterpreter"
+	TelemetryRuleResourceTypeAWSSecurityHubHub                     TelemetryRuleResourceType = "AWS::SecurityHub::Hub"
+)
+
+type TelemetryRuleTelemetrySourceType string
+
+const (
+	TelemetryRuleTelemetrySourceTypeVPCFLOWLOGS              TelemetryRuleTelemetrySourceType = "VPC_FLOW_LOGS"
+	TelemetryRuleTelemetrySourceTypeROUTE53RESOLVERQUERYLOGS TelemetryRuleTelemetrySourceType = "ROUTE53_RESOLVER_QUERY_LOGS"
+	TelemetryRuleTelemetrySourceTypeEKSAUDITLOGS             TelemetryRuleTelemetrySourceType = "EKS_AUDIT_LOGS"
+	TelemetryRuleTelemetrySourceTypeEKSAUTHENTICATORLOGS     TelemetryRuleTelemetrySourceType = "EKS_AUTHENTICATOR_LOGS"
+	TelemetryRuleTelemetrySourceTypeEKSCONTROLLERMANAGERLOGS TelemetryRuleTelemetrySourceType = "EKS_CONTROLLER_MANAGER_LOGS"
+	TelemetryRuleTelemetrySourceTypeEKSSCHEDULERLOGS         TelemetryRuleTelemetrySourceType = "EKS_SCHEDULER_LOGS"
+	TelemetryRuleTelemetrySourceTypeEKSAPILOGS               TelemetryRuleTelemetrySourceType = "EKS_API_LOGS"
+)
+
+type TelemetryRuleTelemetryType string
+
+const (
+	TelemetryRuleTelemetryTypeLogs    TelemetryRuleTelemetryType = "Logs"
+	TelemetryRuleTelemetryTypeTraces  TelemetryRuleTelemetryType = "Traces"
+	TelemetryRuleTelemetryTypeMetrics TelemetryRuleTelemetryType = "Metrics"
+)

@@ -6,12 +6,12 @@ package logs
 import "encoding/json"
 
 type AccountPolicy struct {
-	AccountId         *string `json:"AccountId,omitempty"`
-	PolicyDocument    *string `json:"PolicyDocument,omitempty"`
-	PolicyName        *string `json:"PolicyName,omitempty"`
-	PolicyType        *string `json:"PolicyType,omitempty"`
-	Scope             *string `json:"Scope,omitempty"`
-	SelectionCriteria *string `json:"SelectionCriteria,omitempty"`
+	AccountId         *string                  `json:"AccountId,omitempty"`
+	PolicyDocument    *string                  `json:"PolicyDocument,omitempty"`
+	PolicyName        *string                  `json:"PolicyName,omitempty"`
+	PolicyType        *AccountPolicyPolicyType `json:"PolicyType,omitempty"`
+	Scope             *AccountPolicyScope      `json:"Scope,omitempty"`
+	SelectionCriteria *string                  `json:"SelectionCriteria,omitempty"`
 }
 
 func (AccountPolicy) CloudControlType() string { return "AWS::Logs::AccountPolicy" }
@@ -64,16 +64,16 @@ type DeliverySourceTag struct {
 }
 
 type DeliverySource struct {
-	Arn                         *string             `json:"Arn,omitempty"`
-	DeliverySourceConfiguration map[string]string   `json:"DeliverySourceConfiguration,omitempty"`
-	LogType                     *string             `json:"LogType,omitempty"`
-	Name                        *string             `json:"Name,omitempty"`
-	ResourceArn                 *string             `json:"ResourceArn,omitempty"`
-	ResourceArns                []string            `json:"ResourceArns,omitempty"`
-	Service                     *string             `json:"Service,omitempty"`
-	Status                      *string             `json:"Status,omitempty"`
-	StatusReason                *string             `json:"StatusReason,omitempty"`
-	Tags                        []DeliverySourceTag `json:"Tags,omitempty"`
+	Arn                         *string                     `json:"Arn,omitempty"`
+	DeliverySourceConfiguration map[string]string           `json:"DeliverySourceConfiguration,omitempty"`
+	LogType                     *string                     `json:"LogType,omitempty"`
+	Name                        *string                     `json:"Name,omitempty"`
+	ResourceArn                 *string                     `json:"ResourceArn,omitempty"`
+	ResourceArns                []string                    `json:"ResourceArns,omitempty"`
+	Service                     *string                     `json:"Service,omitempty"`
+	Status                      *DeliverySourceStatus       `json:"Status,omitempty"`
+	StatusReason                *DeliverySourceStatusReason `json:"StatusReason,omitempty"`
+	Tags                        []DeliverySourceTag         `json:"Tags,omitempty"`
 }
 
 func (DeliverySource) CloudControlType() string { return "AWS::Logs::DeliverySource" }
@@ -107,26 +107,26 @@ type IntegrationResourceConfig struct {
 }
 
 type Integration struct {
-	IntegrationName   *string                    `json:"IntegrationName,omitempty"`
-	IntegrationStatus *string                    `json:"IntegrationStatus,omitempty"`
-	IntegrationType   *string                    `json:"IntegrationType,omitempty"`
-	ResourceConfig    *IntegrationResourceConfig `json:"ResourceConfig,omitempty"`
+	IntegrationName   *string                       `json:"IntegrationName,omitempty"`
+	IntegrationStatus *IntegrationIntegrationStatus `json:"IntegrationStatus,omitempty"`
+	IntegrationType   *IntegrationIntegrationType   `json:"IntegrationType,omitempty"`
+	ResourceConfig    *IntegrationResourceConfig    `json:"ResourceConfig,omitempty"`
 }
 
 func (Integration) CloudControlType() string { return "AWS::Logs::Integration" }
 
 type LogAnomalyDetector struct {
-	AccountId             *string  `json:"AccountId,omitempty"`
-	AnomalyDetectorArn    *string  `json:"AnomalyDetectorArn,omitempty"`
-	AnomalyDetectorStatus *string  `json:"AnomalyDetectorStatus,omitempty"`
-	AnomalyVisibilityTime *float64 `json:"AnomalyVisibilityTime,omitempty"`
-	CreationTimeStamp     *float64 `json:"CreationTimeStamp,omitempty"`
-	DetectorName          *string  `json:"DetectorName,omitempty"`
-	EvaluationFrequency   *string  `json:"EvaluationFrequency,omitempty"`
-	FilterPattern         *string  `json:"FilterPattern,omitempty"`
-	KmsKeyId              *string  `json:"KmsKeyId,omitempty"`
-	LastModifiedTimeStamp *float64 `json:"LastModifiedTimeStamp,omitempty"`
-	LogGroupArnList       []string `json:"LogGroupArnList,omitempty"`
+	AccountId             *string                                `json:"AccountId,omitempty"`
+	AnomalyDetectorArn    *string                                `json:"AnomalyDetectorArn,omitempty"`
+	AnomalyDetectorStatus *string                                `json:"AnomalyDetectorStatus,omitempty"`
+	AnomalyVisibilityTime *float64                               `json:"AnomalyVisibilityTime,omitempty"`
+	CreationTimeStamp     *float64                               `json:"CreationTimeStamp,omitempty"`
+	DetectorName          *string                                `json:"DetectorName,omitempty"`
+	EvaluationFrequency   *LogAnomalyDetectorEvaluationFrequency `json:"EvaluationFrequency,omitempty"`
+	FilterPattern         *string                                `json:"FilterPattern,omitempty"`
+	KmsKeyId              *string                                `json:"KmsKeyId,omitempty"`
+	LastModifiedTimeStamp *float64                               `json:"LastModifiedTimeStamp,omitempty"`
+	LogGroupArnList       []string                               `json:"LogGroupArnList,omitempty"`
 }
 
 func (LogAnomalyDetector) CloudControlType() string { return "AWS::Logs::LogAnomalyDetector" }
@@ -137,17 +137,17 @@ type LogGroupTag struct {
 }
 
 type LogGroup struct {
-	Arn                              *string          `json:"Arn,omitempty"`
-	BearerTokenAuthenticationEnabled *bool            `json:"BearerTokenAuthenticationEnabled,omitempty"`
-	DataProtectionPolicy             map[string]any   `json:"DataProtectionPolicy,omitempty"`
-	DeletionProtectionEnabled        *bool            `json:"DeletionProtectionEnabled,omitempty"`
-	FieldIndexPolicies               []map[string]any `json:"FieldIndexPolicies,omitempty"`
-	KmsKeyId                         *string          `json:"KmsKeyId,omitempty"`
-	LogGroupClass                    *string          `json:"LogGroupClass,omitempty"`
-	LogGroupName                     *string          `json:"LogGroupName,omitempty"`
-	ResourcePolicyDocument           map[string]any   `json:"ResourcePolicyDocument,omitempty"`
-	RetentionInDays                  *int             `json:"RetentionInDays,omitempty"`
-	Tags                             []LogGroupTag    `json:"Tags,omitempty"`
+	Arn                              *string                `json:"Arn,omitempty"`
+	BearerTokenAuthenticationEnabled *bool                  `json:"BearerTokenAuthenticationEnabled,omitempty"`
+	DataProtectionPolicy             map[string]any         `json:"DataProtectionPolicy,omitempty"`
+	DeletionProtectionEnabled        *bool                  `json:"DeletionProtectionEnabled,omitempty"`
+	FieldIndexPolicies               []map[string]any       `json:"FieldIndexPolicies,omitempty"`
+	KmsKeyId                         *string                `json:"KmsKeyId,omitempty"`
+	LogGroupClass                    *LogGroupLogGroupClass `json:"LogGroupClass,omitempty"`
+	LogGroupName                     *string                `json:"LogGroupName,omitempty"`
+	ResourcePolicyDocument           map[string]any         `json:"ResourcePolicyDocument,omitempty"`
+	RetentionInDays                  *int                   `json:"RetentionInDays,omitempty"`
+	Tags                             []LogGroupTag          `json:"Tags,omitempty"`
 }
 
 func (LogGroup) CloudControlType() string { return "AWS::Logs::LogGroup" }
@@ -165,12 +165,12 @@ type Dimension struct {
 }
 
 type MetricTransformation struct {
-	DefaultValue    *float64    `json:"DefaultValue,omitempty"`
-	Dimensions      []Dimension `json:"Dimensions,omitempty"`
-	MetricName      *string     `json:"MetricName,omitempty"`
-	MetricNamespace *string     `json:"MetricNamespace,omitempty"`
-	MetricValue     *string     `json:"MetricValue,omitempty"`
-	Unit            *string     `json:"Unit,omitempty"`
+	DefaultValue    *float64                  `json:"DefaultValue,omitempty"`
+	Dimensions      []Dimension               `json:"Dimensions,omitempty"`
+	MetricName      *string                   `json:"MetricName,omitempty"`
+	MetricNamespace *string                   `json:"MetricNamespace,omitempty"`
+	MetricValue     *string                   `json:"MetricValue,omitempty"`
+	Unit            *MetricTransformationUnit `json:"Unit,omitempty"`
 }
 
 type MetricFilter struct {
@@ -192,12 +192,12 @@ type QueryParameter struct {
 }
 
 type QueryDefinition struct {
-	LogGroupNames     []string         `json:"LogGroupNames,omitempty"`
-	Name              *string          `json:"Name,omitempty"`
-	Parameters        []QueryParameter `json:"Parameters,omitempty"`
-	QueryDefinitionId *string          `json:"QueryDefinitionId,omitempty"`
-	QueryLanguage     *string          `json:"QueryLanguage,omitempty"`
-	QueryString       *string          `json:"QueryString,omitempty"`
+	LogGroupNames     []LogGroup                    `json:"LogGroupNames,omitempty"`
+	Name              *string                       `json:"Name,omitempty"`
+	Parameters        []QueryParameter              `json:"Parameters,omitempty"`
+	QueryDefinitionId *string                       `json:"QueryDefinitionId,omitempty"`
+	QueryLanguage     *QueryDefinitionQueryLanguage `json:"QueryLanguage,omitempty"`
+	QueryString       *string                       `json:"QueryString,omitempty"`
 }
 
 func (QueryDefinition) CloudControlType() string { return "AWS::Logs::QueryDefinition" }
@@ -224,39 +224,39 @@ type ScheduledQueryTagsItem struct {
 }
 
 type ScheduledQuery struct {
-	CreationTime             *float64                  `json:"CreationTime,omitempty"`
-	Description              *string                   `json:"Description,omitempty"`
-	DestinationConfiguration *DestinationConfiguration `json:"DestinationConfiguration,omitempty"`
-	ExecutionRoleArn         *string                   `json:"ExecutionRoleArn,omitempty"`
-	LastExecutionStatus      *string                   `json:"LastExecutionStatus,omitempty"`
-	LastTriggeredTime        *float64                  `json:"LastTriggeredTime,omitempty"`
-	LastUpdatedTime          *float64                  `json:"LastUpdatedTime,omitempty"`
-	LogGroupIdentifiers      []string                  `json:"LogGroupIdentifiers,omitempty"`
-	Name                     *string                   `json:"Name,omitempty"`
-	QueryLanguage            *string                   `json:"QueryLanguage,omitempty"`
-	QueryString              *string                   `json:"QueryString,omitempty"`
-	ScheduleEndTime          *float64                  `json:"ScheduleEndTime,omitempty"`
-	ScheduleExpression       *string                   `json:"ScheduleExpression,omitempty"`
-	ScheduleStartTime        *float64                  `json:"ScheduleStartTime,omitempty"`
-	ScheduledQueryArn        *string                   `json:"ScheduledQueryArn,omitempty"`
-	StartTimeOffset          *int                      `json:"StartTimeOffset,omitempty"`
-	State                    *string                   `json:"State,omitempty"`
-	Tags                     []ScheduledQueryTagsItem  `json:"Tags,omitempty"`
-	Timezone                 *string                   `json:"Timezone,omitempty"`
+	CreationTime             *float64                           `json:"CreationTime,omitempty"`
+	Description              *string                            `json:"Description,omitempty"`
+	DestinationConfiguration *DestinationConfiguration          `json:"DestinationConfiguration,omitempty"`
+	ExecutionRoleArn         *string                            `json:"ExecutionRoleArn,omitempty"`
+	LastExecutionStatus      *ScheduledQueryLastExecutionStatus `json:"LastExecutionStatus,omitempty"`
+	LastTriggeredTime        *float64                           `json:"LastTriggeredTime,omitempty"`
+	LastUpdatedTime          *float64                           `json:"LastUpdatedTime,omitempty"`
+	LogGroupIdentifiers      []string                           `json:"LogGroupIdentifiers,omitempty"`
+	Name                     *string                            `json:"Name,omitempty"`
+	QueryLanguage            *string                            `json:"QueryLanguage,omitempty"`
+	QueryString              *string                            `json:"QueryString,omitempty"`
+	ScheduleEndTime          *float64                           `json:"ScheduleEndTime,omitempty"`
+	ScheduleExpression       *string                            `json:"ScheduleExpression,omitempty"`
+	ScheduleStartTime        *float64                           `json:"ScheduleStartTime,omitempty"`
+	ScheduledQueryArn        *string                            `json:"ScheduledQueryArn,omitempty"`
+	StartTimeOffset          *int                               `json:"StartTimeOffset,omitempty"`
+	State                    *ScheduledQueryState               `json:"State,omitempty"`
+	Tags                     []ScheduledQueryTagsItem           `json:"Tags,omitempty"`
+	Timezone                 *string                            `json:"Timezone,omitempty"`
 }
 
 func (ScheduledQuery) CloudControlType() string { return "AWS::Logs::ScheduledQuery" }
 
 type SubscriptionFilter struct {
-	ApplyOnTransformedLogs *bool    `json:"ApplyOnTransformedLogs,omitempty"`
-	DestinationArn         *string  `json:"DestinationArn,omitempty"`
-	Distribution           *string  `json:"Distribution,omitempty"`
-	EmitSystemFields       []string `json:"EmitSystemFields,omitempty"`
-	FieldSelectionCriteria *string  `json:"FieldSelectionCriteria,omitempty"`
-	FilterName             *string  `json:"FilterName,omitempty"`
-	FilterPattern          *string  `json:"FilterPattern,omitempty"`
-	LogGroupName           *string  `json:"LogGroupName,omitempty"`
-	RoleArn                *string  `json:"RoleArn,omitempty"`
+	ApplyOnTransformedLogs *bool                           `json:"ApplyOnTransformedLogs,omitempty"`
+	DestinationArn         *string                         `json:"DestinationArn,omitempty"`
+	Distribution           *SubscriptionFilterDistribution `json:"Distribution,omitempty"`
+	EmitSystemFields       []string                        `json:"EmitSystemFields,omitempty"`
+	FieldSelectionCriteria *string                         `json:"FieldSelectionCriteria,omitempty"`
+	FilterName             *string                         `json:"FilterName,omitempty"`
+	FilterPattern          *string                         `json:"FilterPattern,omitempty"`
+	LogGroupName           *string                         `json:"LogGroupName,omitempty"`
+	RoleArn                *string                         `json:"RoleArn,omitempty"`
 }
 
 func (SubscriptionFilter) CloudControlType() string { return "AWS::Logs::SubscriptionFilter" }
@@ -308,12 +308,12 @@ type ProcessorGrok struct {
 }
 
 type ProcessorListToMap struct {
-	Flatten          *bool   `json:"Flatten,omitempty"`
-	FlattenedElement *string `json:"FlattenedElement,omitempty"`
-	Key              *string `json:"Key,omitempty"`
-	Source           *string `json:"Source,omitempty"`
-	Target           *string `json:"Target,omitempty"`
-	ValueKey         *string `json:"ValueKey,omitempty"`
+	Flatten          *bool                               `json:"Flatten,omitempty"`
+	FlattenedElement *ProcessorListToMapFlattenedElement `json:"FlattenedElement,omitempty"`
+	Key              *string                             `json:"Key,omitempty"`
+	Source           *string                             `json:"Source,omitempty"`
+	Target           *string                             `json:"Target,omitempty"`
+	ValueKey         *string                             `json:"ValueKey,omitempty"`
 }
 
 type ProcessorLowerCaseString struct {
@@ -358,10 +358,10 @@ type ParseRoute53 struct {
 }
 
 type ParseToOCSF struct {
-	EventSource    *string `json:"EventSource,omitempty"`
-	MappingVersion *string `json:"MappingVersion,omitempty"`
-	OcsfVersion    *string `json:"OcsfVersion,omitempty"`
-	Source         *string `json:"Source,omitempty"`
+	EventSource    *EventSource `json:"EventSource,omitempty"`
+	MappingVersion *string      `json:"MappingVersion,omitempty"`
+	OcsfVersion    *OcsfVersion `json:"OcsfVersion,omitempty"`
+	Source         *string      `json:"Source,omitempty"`
 }
 
 type ParseVPC struct {
@@ -406,8 +406,8 @@ type ProcessorTrimString struct {
 }
 
 type TypeConverterEntry struct {
-	Key  *string `json:"Key,omitempty"`
-	Type *string `json:"Type,omitempty"`
+	Key  *string                 `json:"Key,omitempty"`
+	Type *TypeConverterEntryType `json:"Type,omitempty"`
 }
 
 type ProcessorTypeConverter struct {
@@ -450,3 +450,161 @@ type Transformer struct {
 }
 
 func (Transformer) CloudControlType() string { return "AWS::Logs::Transformer" }
+
+type AccountPolicyPolicyType string
+
+const (
+	AccountPolicyPolicyTypeDATAPROTECTIONPOLICY     AccountPolicyPolicyType = "DATA_PROTECTION_POLICY"
+	AccountPolicyPolicyTypeSUBSCRIPTIONFILTERPOLICY AccountPolicyPolicyType = "SUBSCRIPTION_FILTER_POLICY"
+	AccountPolicyPolicyTypeFIELDINDEXPOLICY         AccountPolicyPolicyType = "FIELD_INDEX_POLICY"
+	AccountPolicyPolicyTypeTRANSFORMERPOLICY        AccountPolicyPolicyType = "TRANSFORMER_POLICY"
+	AccountPolicyPolicyTypeMETRICEXTRACTIONPOLICY   AccountPolicyPolicyType = "METRIC_EXTRACTION_POLICY"
+)
+
+type AccountPolicyScope string
+
+const (
+	AccountPolicyScopeALL AccountPolicyScope = "ALL"
+)
+
+type DeliverySourceStatus string
+
+const (
+	DeliverySourceStatusACTIVE   DeliverySourceStatus = "ACTIVE"
+	DeliverySourceStatusINACTIVE DeliverySourceStatus = "INACTIVE"
+)
+
+type DeliverySourceStatusReason string
+
+const (
+	DeliverySourceStatusReasonRESOURCEDELETED DeliverySourceStatusReason = "RESOURCE_DELETED"
+)
+
+type IntegrationIntegrationStatus string
+
+const (
+	IntegrationIntegrationStatusPROVISIONING IntegrationIntegrationStatus = "PROVISIONING"
+	IntegrationIntegrationStatusACTIVE       IntegrationIntegrationStatus = "ACTIVE"
+	IntegrationIntegrationStatusFAILED       IntegrationIntegrationStatus = "FAILED"
+)
+
+type IntegrationIntegrationType string
+
+const (
+	IntegrationIntegrationTypeOPENSEARCH IntegrationIntegrationType = "OPENSEARCH"
+)
+
+type LogAnomalyDetectorEvaluationFrequency string
+
+const (
+	LogAnomalyDetectorEvaluationFrequencyFIVEMIN    LogAnomalyDetectorEvaluationFrequency = "FIVE_MIN"
+	LogAnomalyDetectorEvaluationFrequencyTENMIN     LogAnomalyDetectorEvaluationFrequency = "TEN_MIN"
+	LogAnomalyDetectorEvaluationFrequencyFIFTEENMIN LogAnomalyDetectorEvaluationFrequency = "FIFTEEN_MIN"
+	LogAnomalyDetectorEvaluationFrequencyTHIRTYMIN  LogAnomalyDetectorEvaluationFrequency = "THIRTY_MIN"
+	LogAnomalyDetectorEvaluationFrequencyONEHOUR    LogAnomalyDetectorEvaluationFrequency = "ONE_HOUR"
+)
+
+type LogGroupLogGroupClass string
+
+const (
+	LogGroupLogGroupClassSTANDARD         LogGroupLogGroupClass = "STANDARD"
+	LogGroupLogGroupClassINFREQUENTACCESS LogGroupLogGroupClass = "INFREQUENT_ACCESS"
+	LogGroupLogGroupClassDELIVERY         LogGroupLogGroupClass = "DELIVERY"
+)
+
+type MetricTransformationUnit string
+
+const (
+	MetricTransformationUnitSeconds         MetricTransformationUnit = "Seconds"
+	MetricTransformationUnitMicroseconds    MetricTransformationUnit = "Microseconds"
+	MetricTransformationUnitMilliseconds    MetricTransformationUnit = "Milliseconds"
+	MetricTransformationUnitBytes           MetricTransformationUnit = "Bytes"
+	MetricTransformationUnitKilobytes       MetricTransformationUnit = "Kilobytes"
+	MetricTransformationUnitMegabytes       MetricTransformationUnit = "Megabytes"
+	MetricTransformationUnitGigabytes       MetricTransformationUnit = "Gigabytes"
+	MetricTransformationUnitTerabytes       MetricTransformationUnit = "Terabytes"
+	MetricTransformationUnitBits            MetricTransformationUnit = "Bits"
+	MetricTransformationUnitKilobits        MetricTransformationUnit = "Kilobits"
+	MetricTransformationUnitMegabits        MetricTransformationUnit = "Megabits"
+	MetricTransformationUnitGigabits        MetricTransformationUnit = "Gigabits"
+	MetricTransformationUnitTerabits        MetricTransformationUnit = "Terabits"
+	MetricTransformationUnitPercent         MetricTransformationUnit = "Percent"
+	MetricTransformationUnitCount           MetricTransformationUnit = "Count"
+	MetricTransformationUnitBytesSecond     MetricTransformationUnit = "Bytes/Second"
+	MetricTransformationUnitKilobytesSecond MetricTransformationUnit = "Kilobytes/Second"
+	MetricTransformationUnitMegabytesSecond MetricTransformationUnit = "Megabytes/Second"
+	MetricTransformationUnitGigabytesSecond MetricTransformationUnit = "Gigabytes/Second"
+	MetricTransformationUnitTerabytesSecond MetricTransformationUnit = "Terabytes/Second"
+	MetricTransformationUnitBitsSecond      MetricTransformationUnit = "Bits/Second"
+	MetricTransformationUnitKilobitsSecond  MetricTransformationUnit = "Kilobits/Second"
+	MetricTransformationUnitMegabitsSecond  MetricTransformationUnit = "Megabits/Second"
+	MetricTransformationUnitGigabitsSecond  MetricTransformationUnit = "Gigabits/Second"
+	MetricTransformationUnitTerabitsSecond  MetricTransformationUnit = "Terabits/Second"
+	MetricTransformationUnitCountSecond     MetricTransformationUnit = "Count/Second"
+	MetricTransformationUnitNone            MetricTransformationUnit = "None"
+)
+
+type QueryDefinitionQueryLanguage string
+
+const (
+	QueryDefinitionQueryLanguageCWLI QueryDefinitionQueryLanguage = "CWLI"
+	QueryDefinitionQueryLanguageSQL  QueryDefinitionQueryLanguage = "SQL"
+	QueryDefinitionQueryLanguagePPL  QueryDefinitionQueryLanguage = "PPL"
+)
+
+type ScheduledQueryLastExecutionStatus string
+
+const (
+	ScheduledQueryLastExecutionStatusPending      ScheduledQueryLastExecutionStatus = "Pending"
+	ScheduledQueryLastExecutionStatusInvalidQuery ScheduledQueryLastExecutionStatus = "InvalidQuery"
+	ScheduledQueryLastExecutionStatusComplete     ScheduledQueryLastExecutionStatus = "Complete"
+	ScheduledQueryLastExecutionStatusFailed       ScheduledQueryLastExecutionStatus = "Failed"
+	ScheduledQueryLastExecutionStatusTimeout      ScheduledQueryLastExecutionStatus = "Timeout"
+)
+
+type ScheduledQueryState string
+
+const (
+	ScheduledQueryStateENABLED  ScheduledQueryState = "ENABLED"
+	ScheduledQueryStateDISABLED ScheduledQueryState = "DISABLED"
+)
+
+type SubscriptionFilterDistribution string
+
+const (
+	SubscriptionFilterDistributionRandom      SubscriptionFilterDistribution = "Random"
+	SubscriptionFilterDistributionByLogStream SubscriptionFilterDistribution = "ByLogStream"
+)
+
+type ProcessorListToMapFlattenedElement string
+
+const (
+	ProcessorListToMapFlattenedElementFirst ProcessorListToMapFlattenedElement = "first"
+	ProcessorListToMapFlattenedElementLast  ProcessorListToMapFlattenedElement = "last"
+)
+
+type EventSource string
+
+const (
+	EventSourceCloudTrail      EventSource = "CloudTrail"
+	EventSourceRoute53Resolver EventSource = "Route53Resolver"
+	EventSourceVPCFlow         EventSource = "VPCFlow"
+	EventSourceEKSAudit        EventSource = "EKSAudit"
+	EventSourceAWSWAF          EventSource = "AWSWAF"
+)
+
+type OcsfVersion string
+
+const (
+	OcsfVersionV11 OcsfVersion = "V1.1"
+	OcsfVersionV15 OcsfVersion = "V1.5"
+)
+
+type TypeConverterEntryType string
+
+const (
+	TypeConverterEntryTypeBoolean TypeConverterEntryType = "boolean"
+	TypeConverterEntryTypeInteger TypeConverterEntryType = "integer"
+	TypeConverterEntryTypeDouble  TypeConverterEntryType = "double"
+	TypeConverterEntryTypeString  TypeConverterEntryType = "string"
+)

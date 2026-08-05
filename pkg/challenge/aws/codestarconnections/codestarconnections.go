@@ -26,32 +26,66 @@ type RepositoryLinkTag struct {
 }
 
 type RepositoryLink struct {
-	ConnectionArn     *string             `json:"ConnectionArn,omitempty"`
-	EncryptionKeyArn  *string             `json:"EncryptionKeyArn,omitempty"`
-	OwnerId           *string             `json:"OwnerId,omitempty"`
-	ProviderType      *string             `json:"ProviderType,omitempty"`
-	RepositoryLinkArn *string             `json:"RepositoryLinkArn,omitempty"`
-	RepositoryLinkId  *string             `json:"RepositoryLinkId,omitempty"`
-	RepositoryName    *string             `json:"RepositoryName,omitempty"`
-	Tags              []RepositoryLinkTag `json:"Tags,omitempty"`
+	ConnectionArn     *string                     `json:"ConnectionArn,omitempty"`
+	EncryptionKeyArn  *string                     `json:"EncryptionKeyArn,omitempty"`
+	OwnerId           *string                     `json:"OwnerId,omitempty"`
+	ProviderType      *RepositoryLinkProviderType `json:"ProviderType,omitempty"`
+	RepositoryLinkArn *string                     `json:"RepositoryLinkArn,omitempty"`
+	RepositoryLinkId  *string                     `json:"RepositoryLinkId,omitempty"`
+	RepositoryName    *string                     `json:"RepositoryName,omitempty"`
+	Tags              []RepositoryLinkTag         `json:"Tags,omitempty"`
 }
 
 func (RepositoryLink) CloudControlType() string { return "AWS::CodeStarConnections::RepositoryLink" }
 
 type SyncConfiguration struct {
-	Branch                  *string `json:"Branch,omitempty"`
-	ConfigFile              *string `json:"ConfigFile,omitempty"`
-	OwnerId                 *string `json:"OwnerId,omitempty"`
-	ProviderType            *string `json:"ProviderType,omitempty"`
-	PublishDeploymentStatus *string `json:"PublishDeploymentStatus,omitempty"`
-	RepositoryLinkId        *string `json:"RepositoryLinkId,omitempty"`
-	RepositoryName          *string `json:"RepositoryName,omitempty"`
-	ResourceName            *string `json:"ResourceName,omitempty"`
-	RoleArn                 *string `json:"RoleArn,omitempty"`
-	SyncType                *string `json:"SyncType,omitempty"`
-	TriggerResourceUpdateOn *string `json:"TriggerResourceUpdateOn,omitempty"`
+	Branch                  *string                                   `json:"Branch,omitempty"`
+	ConfigFile              *string                                   `json:"ConfigFile,omitempty"`
+	OwnerId                 *string                                   `json:"OwnerId,omitempty"`
+	ProviderType            *SyncConfigurationProviderType            `json:"ProviderType,omitempty"`
+	PublishDeploymentStatus *SyncConfigurationPublishDeploymentStatus `json:"PublishDeploymentStatus,omitempty"`
+	RepositoryLinkId        *string                                   `json:"RepositoryLinkId,omitempty"`
+	RepositoryName          *string                                   `json:"RepositoryName,omitempty"`
+	ResourceName            *string                                   `json:"ResourceName,omitempty"`
+	RoleArn                 *string                                   `json:"RoleArn,omitempty"`
+	SyncType                *string                                   `json:"SyncType,omitempty"`
+	TriggerResourceUpdateOn *SyncConfigurationTriggerResourceUpdateOn `json:"TriggerResourceUpdateOn,omitempty"`
 }
 
 func (SyncConfiguration) CloudControlType() string {
 	return "AWS::CodeStarConnections::SyncConfiguration"
 }
+
+type RepositoryLinkProviderType string
+
+const (
+	RepositoryLinkProviderTypeGitHub            RepositoryLinkProviderType = "GitHub"
+	RepositoryLinkProviderTypeBitbucket         RepositoryLinkProviderType = "Bitbucket"
+	RepositoryLinkProviderTypeGitHubEnterprise  RepositoryLinkProviderType = "GitHubEnterprise"
+	RepositoryLinkProviderTypeGitLab            RepositoryLinkProviderType = "GitLab"
+	RepositoryLinkProviderTypeGitLabSelfManaged RepositoryLinkProviderType = "GitLabSelfManaged"
+)
+
+type SyncConfigurationProviderType string
+
+const (
+	SyncConfigurationProviderTypeGitHub            SyncConfigurationProviderType = "GitHub"
+	SyncConfigurationProviderTypeBitbucket         SyncConfigurationProviderType = "Bitbucket"
+	SyncConfigurationProviderTypeGitHubEnterprise  SyncConfigurationProviderType = "GitHubEnterprise"
+	SyncConfigurationProviderTypeGitLab            SyncConfigurationProviderType = "GitLab"
+	SyncConfigurationProviderTypeGitLabSelfManaged SyncConfigurationProviderType = "GitLabSelfManaged"
+)
+
+type SyncConfigurationPublishDeploymentStatus string
+
+const (
+	SyncConfigurationPublishDeploymentStatusENABLED  SyncConfigurationPublishDeploymentStatus = "ENABLED"
+	SyncConfigurationPublishDeploymentStatusDISABLED SyncConfigurationPublishDeploymentStatus = "DISABLED"
+)
+
+type SyncConfigurationTriggerResourceUpdateOn string
+
+const (
+	SyncConfigurationTriggerResourceUpdateOnANYCHANGE  SyncConfigurationTriggerResourceUpdateOn = "ANY_CHANGE"
+	SyncConfigurationTriggerResourceUpdateOnFILECHANGE SyncConfigurationTriggerResourceUpdateOn = "FILE_CHANGE"
+)

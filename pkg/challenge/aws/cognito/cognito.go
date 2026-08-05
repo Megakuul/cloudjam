@@ -99,11 +99,11 @@ func (LogDeliveryConfiguration) CloudControlType() string {
 }
 
 type AssetType struct {
-	Bytes      *string `json:"Bytes,omitempty"`
-	Category   *string `json:"Category,omitempty"`
-	ColorMode  *string `json:"ColorMode,omitempty"`
-	Extension  *string `json:"Extension,omitempty"`
-	ResourceId *string `json:"ResourceId,omitempty"`
+	Bytes      *string        `json:"Bytes,omitempty"`
+	Category   *CategoryType  `json:"Category,omitempty"`
+	ColorMode  *ColorModeType `json:"ColorMode,omitempty"`
+	Extension  *ExtensionType `json:"Extension,omitempty"`
+	ResourceId *string        `json:"ResourceId,omitempty"`
 }
 
 type ManagedLoginBranding struct {
@@ -119,13 +119,13 @@ type ManagedLoginBranding struct {
 func (ManagedLoginBranding) CloudControlType() string { return "AWS::Cognito::ManagedLoginBranding" }
 
 type Terms struct {
-	ClientId    *string           `json:"ClientId,omitempty"`
-	Enforcement *string           `json:"Enforcement,omitempty"`
-	Links       map[string]string `json:"Links,omitempty"`
-	TermsId     *string           `json:"TermsId,omitempty"`
-	TermsName   *string           `json:"TermsName,omitempty"`
-	TermsSource *string           `json:"TermsSource,omitempty"`
-	UserPoolId  *string           `json:"UserPoolId,omitempty"`
+	ClientId    *string               `json:"ClientId,omitempty"`
+	Enforcement *TermsEnforcementType `json:"Enforcement,omitempty"`
+	Links       map[string]string     `json:"Links,omitempty"`
+	TermsId     *string               `json:"TermsId,omitempty"`
+	TermsName   *string               `json:"TermsName,omitempty"`
+	TermsSource *TermsSourceType      `json:"TermsSource,omitempty"`
+	UserPoolId  *string               `json:"UserPoolId,omitempty"`
 }
 
 func (Terms) CloudControlType() string { return "AWS::Cognito::Terms" }
@@ -165,12 +165,12 @@ type EmailConfiguration struct {
 }
 
 type IssuerConfiguration struct {
-	Type *string `json:"Type,omitempty"`
+	Type *IssuerConfigurationType `json:"Type,omitempty"`
 }
 
 type KeyConfiguration struct {
-	KeyType   *string `json:"KeyType,omitempty"`
-	KmsKeyArn *string `json:"KmsKeyArn,omitempty"`
+	KeyType   *EncryptionKeyType `json:"KeyType,omitempty"`
+	KmsKeyArn *string            `json:"KmsKeyArn,omitempty"`
 }
 
 type CustomEmailSender struct {
@@ -294,42 +294,42 @@ type VerificationMessageTemplate struct {
 }
 
 type UserPool struct {
-	AccountRecoverySetting      *AccountRecoverySetting      `json:"AccountRecoverySetting,omitempty"`
-	AdminCreateUserConfig       *AdminCreateUserConfig       `json:"AdminCreateUserConfig,omitempty"`
-	AliasAttributes             []string                     `json:"AliasAttributes,omitempty"`
-	Arn                         *string                      `json:"Arn,omitempty"`
-	AutoVerifiedAttributes      []string                     `json:"AutoVerifiedAttributes,omitempty"`
-	DeletionProtection          *string                      `json:"DeletionProtection,omitempty"`
-	DeviceConfiguration         *DeviceConfiguration         `json:"DeviceConfiguration,omitempty"`
-	EmailAuthenticationMessage  *string                      `json:"EmailAuthenticationMessage,omitempty"`
-	EmailAuthenticationSubject  *string                      `json:"EmailAuthenticationSubject,omitempty"`
-	EmailConfiguration          *EmailConfiguration          `json:"EmailConfiguration,omitempty"`
-	EmailVerificationMessage    *string                      `json:"EmailVerificationMessage,omitempty"`
-	EmailVerificationSubject    *string                      `json:"EmailVerificationSubject,omitempty"`
-	EnabledMfas                 []string                     `json:"EnabledMfas,omitempty"`
-	IssuerConfiguration         *IssuerConfiguration         `json:"IssuerConfiguration,omitempty"`
-	KeyConfiguration            *KeyConfiguration            `json:"KeyConfiguration,omitempty"`
-	LambdaConfig                *LambdaConfig                `json:"LambdaConfig,omitempty"`
-	MfaConfiguration            *string                      `json:"MfaConfiguration,omitempty"`
-	Policies                    *Policies                    `json:"Policies,omitempty"`
-	ProviderName                *string                      `json:"ProviderName,omitempty"`
-	ProviderURL                 *string                      `json:"ProviderURL,omitempty"`
-	Schema                      []SchemaAttribute            `json:"Schema,omitempty"`
-	SmsAuthenticationMessage    *string                      `json:"SmsAuthenticationMessage,omitempty"`
-	SmsConfiguration            *SmsConfiguration            `json:"SmsConfiguration,omitempty"`
-	SmsVerificationMessage      *string                      `json:"SmsVerificationMessage,omitempty"`
-	UserAttributeUpdateSettings *UserAttributeUpdateSettings `json:"UserAttributeUpdateSettings,omitempty"`
-	UserPoolAddOns              *UserPoolAddOns              `json:"UserPoolAddOns,omitempty"`
-	UserPoolId                  *string                      `json:"UserPoolId,omitempty"`
-	UserPoolName                *string                      `json:"UserPoolName,omitempty"`
-	UserPoolTags                map[string]string            `json:"UserPoolTags,omitempty"`
-	UserPoolTier                *string                      `json:"UserPoolTier,omitempty"`
-	UsernameAttributes          []string                     `json:"UsernameAttributes,omitempty"`
-	UsernameConfiguration       *UsernameConfiguration       `json:"UsernameConfiguration,omitempty"`
-	VerificationMessageTemplate *VerificationMessageTemplate `json:"VerificationMessageTemplate,omitempty"`
-	WebAuthnFactorConfiguration *string                      `json:"WebAuthnFactorConfiguration,omitempty"`
-	WebAuthnRelyingPartyID      *string                      `json:"WebAuthnRelyingPartyID,omitempty"`
-	WebAuthnUserVerification    *string                      `json:"WebAuthnUserVerification,omitempty"`
+	AccountRecoverySetting      *AccountRecoverySetting              `json:"AccountRecoverySetting,omitempty"`
+	AdminCreateUserConfig       *AdminCreateUserConfig               `json:"AdminCreateUserConfig,omitempty"`
+	AliasAttributes             []string                             `json:"AliasAttributes,omitempty"`
+	Arn                         *string                              `json:"Arn,omitempty"`
+	AutoVerifiedAttributes      []string                             `json:"AutoVerifiedAttributes,omitempty"`
+	DeletionProtection          *string                              `json:"DeletionProtection,omitempty"`
+	DeviceConfiguration         *DeviceConfiguration                 `json:"DeviceConfiguration,omitempty"`
+	EmailAuthenticationMessage  *string                              `json:"EmailAuthenticationMessage,omitempty"`
+	EmailAuthenticationSubject  *string                              `json:"EmailAuthenticationSubject,omitempty"`
+	EmailConfiguration          *EmailConfiguration                  `json:"EmailConfiguration,omitempty"`
+	EmailVerificationMessage    *string                              `json:"EmailVerificationMessage,omitempty"`
+	EmailVerificationSubject    *string                              `json:"EmailVerificationSubject,omitempty"`
+	EnabledMfas                 []string                             `json:"EnabledMfas,omitempty"`
+	IssuerConfiguration         *IssuerConfiguration                 `json:"IssuerConfiguration,omitempty"`
+	KeyConfiguration            *KeyConfiguration                    `json:"KeyConfiguration,omitempty"`
+	LambdaConfig                *LambdaConfig                        `json:"LambdaConfig,omitempty"`
+	MfaConfiguration            *string                              `json:"MfaConfiguration,omitempty"`
+	Policies                    *Policies                            `json:"Policies,omitempty"`
+	ProviderName                *string                              `json:"ProviderName,omitempty"`
+	ProviderURL                 *string                              `json:"ProviderURL,omitempty"`
+	Schema                      []SchemaAttribute                    `json:"Schema,omitempty"`
+	SmsAuthenticationMessage    *string                              `json:"SmsAuthenticationMessage,omitempty"`
+	SmsConfiguration            *SmsConfiguration                    `json:"SmsConfiguration,omitempty"`
+	SmsVerificationMessage      *string                              `json:"SmsVerificationMessage,omitempty"`
+	UserAttributeUpdateSettings *UserAttributeUpdateSettings         `json:"UserAttributeUpdateSettings,omitempty"`
+	UserPoolAddOns              *UserPoolAddOns                      `json:"UserPoolAddOns,omitempty"`
+	UserPoolId                  *string                              `json:"UserPoolId,omitempty"`
+	UserPoolName                *string                              `json:"UserPoolName,omitempty"`
+	UserPoolTags                map[string]string                    `json:"UserPoolTags,omitempty"`
+	UserPoolTier                *UserPoolUserPoolTier                `json:"UserPoolTier,omitempty"`
+	UsernameAttributes          []string                             `json:"UsernameAttributes,omitempty"`
+	UsernameConfiguration       *UsernameConfiguration               `json:"UsernameConfiguration,omitempty"`
+	VerificationMessageTemplate *VerificationMessageTemplate         `json:"VerificationMessageTemplate,omitempty"`
+	WebAuthnFactorConfiguration *UserPoolWebAuthnFactorConfiguration `json:"WebAuthnFactorConfiguration,omitempty"`
+	WebAuthnRelyingPartyID      *string                              `json:"WebAuthnRelyingPartyID,omitempty"`
+	WebAuthnUserVerification    *string                              `json:"WebAuthnUserVerification,omitempty"`
 }
 
 func (UserPool) CloudControlType() string { return "AWS::Cognito::UserPool" }
@@ -343,8 +343,8 @@ type AnalyticsConfiguration struct {
 }
 
 type RefreshTokenRotation struct {
-	Feature                 *string `json:"Feature,omitempty"`
-	RetryGracePeriodSeconds *int    `json:"RetryGracePeriodSeconds,omitempty"`
+	Feature                 *RefreshTokenRotationFeature `json:"Feature,omitempty"`
+	RetryGracePeriodSeconds *int                         `json:"RetryGracePeriodSeconds,omitempty"`
 }
 
 type TokenValidityUnits struct {
@@ -626,3 +626,89 @@ type UserPoolUserToGroupAttachment struct {
 func (UserPoolUserToGroupAttachment) CloudControlType() string {
 	return "AWS::Cognito::UserPoolUserToGroupAttachment"
 }
+
+type CategoryType string
+
+const (
+	CategoryTypeFAVICONICO           CategoryType = "FAVICON_ICO"
+	CategoryTypeFAVICONSVG           CategoryType = "FAVICON_SVG"
+	CategoryTypeEMAILGRAPHIC         CategoryType = "EMAIL_GRAPHIC"
+	CategoryTypeSMSGRAPHIC           CategoryType = "SMS_GRAPHIC"
+	CategoryTypeAUTHAPPGRAPHIC       CategoryType = "AUTH_APP_GRAPHIC"
+	CategoryTypePASSWORDGRAPHIC      CategoryType = "PASSWORD_GRAPHIC"
+	CategoryTypePASSKEYGRAPHIC       CategoryType = "PASSKEY_GRAPHIC"
+	CategoryTypePAGEHEADERLOGO       CategoryType = "PAGE_HEADER_LOGO"
+	CategoryTypePAGEHEADERBACKGROUND CategoryType = "PAGE_HEADER_BACKGROUND"
+	CategoryTypePAGEFOOTERLOGO       CategoryType = "PAGE_FOOTER_LOGO"
+	CategoryTypePAGEFOOTERBACKGROUND CategoryType = "PAGE_FOOTER_BACKGROUND"
+	CategoryTypePAGEBACKGROUND       CategoryType = "PAGE_BACKGROUND"
+	CategoryTypeFORMBACKGROUND       CategoryType = "FORM_BACKGROUND"
+	CategoryTypeFORMLOGO             CategoryType = "FORM_LOGO"
+	CategoryTypeIDPBUTTONICON        CategoryType = "IDP_BUTTON_ICON"
+)
+
+type ColorModeType string
+
+const (
+	ColorModeTypeLIGHT   ColorModeType = "LIGHT"
+	ColorModeTypeDARK    ColorModeType = "DARK"
+	ColorModeTypeDYNAMIC ColorModeType = "DYNAMIC"
+)
+
+type ExtensionType string
+
+const (
+	ExtensionTypeICO  ExtensionType = "ICO"
+	ExtensionTypeJPEG ExtensionType = "JPEG"
+	ExtensionTypePNG  ExtensionType = "PNG"
+	ExtensionTypeSVG  ExtensionType = "SVG"
+	ExtensionTypeWEBP ExtensionType = "WEBP"
+)
+
+type TermsEnforcementType string
+
+const (
+	TermsEnforcementTypeNONE TermsEnforcementType = "NONE"
+)
+
+type TermsSourceType string
+
+const (
+	TermsSourceTypeLINK TermsSourceType = "LINK"
+)
+
+type IssuerConfigurationType string
+
+const (
+	IssuerConfigurationTypeORIGINAL IssuerConfigurationType = "ORIGINAL"
+	IssuerConfigurationTypeUPDATED  IssuerConfigurationType = "UPDATED"
+)
+
+type EncryptionKeyType string
+
+const (
+	EncryptionKeyTypeAWSOWNEDKEY        EncryptionKeyType = "AWS_OWNED_KEY"
+	EncryptionKeyTypeCUSTOMERMANAGEDKEY EncryptionKeyType = "CUSTOMER_MANAGED_KEY"
+)
+
+type UserPoolUserPoolTier string
+
+const (
+	UserPoolUserPoolTierLITE       UserPoolUserPoolTier = "LITE"
+	UserPoolUserPoolTierESSENTIALS UserPoolUserPoolTier = "ESSENTIALS"
+	UserPoolUserPoolTierPLUS       UserPoolUserPoolTier = "PLUS"
+)
+
+type UserPoolWebAuthnFactorConfiguration string
+
+const (
+	UserPoolWebAuthnFactorConfigurationSINGLEFACTOR                    UserPoolWebAuthnFactorConfiguration = "SINGLE_FACTOR"
+	UserPoolWebAuthnFactorConfigurationMULTIFACTORWITHUSERVERIFICATION UserPoolWebAuthnFactorConfiguration = "MULTI_FACTOR_WITH_USER_VERIFICATION"
+)
+
+type RefreshTokenRotationFeature string
+
+const (
+	RefreshTokenRotationFeatureENABLED  RefreshTokenRotationFeature = "ENABLED"
+	RefreshTokenRotationFeatureDISABLED RefreshTokenRotationFeature = "DISABLED"
+)

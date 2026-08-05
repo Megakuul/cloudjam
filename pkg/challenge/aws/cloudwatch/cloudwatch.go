@@ -115,7 +115,7 @@ type AlarmMuteRule struct {
 	Name                 *string                   `json:"Name,omitempty"`
 	Rule                 *AlarmMuteRuleRule        `json:"Rule,omitempty"`
 	StartDate            *string                   `json:"StartDate,omitempty"`
-	Status               *string                   `json:"Status,omitempty"`
+	Status               *AlarmMuteRuleStatus      `json:"Status,omitempty"`
 	Tags                 []AlarmMuteRuleTag        `json:"Tags,omitempty"`
 }
 
@@ -230,12 +230,12 @@ type InsightRuleTag struct {
 }
 
 type InsightRule struct {
-	ApplyOnTransformedLogs *bool            `json:"ApplyOnTransformedLogs,omitempty"`
-	Arn                    *string          `json:"Arn,omitempty"`
-	RuleBody               *string          `json:"RuleBody,omitempty"`
-	RuleName               *string          `json:"RuleName,omitempty"`
-	RuleState              *string          `json:"RuleState,omitempty"`
-	Tags                   []InsightRuleTag `json:"Tags,omitempty"`
+	ApplyOnTransformedLogs *bool                 `json:"ApplyOnTransformedLogs,omitempty"`
+	Arn                    *string               `json:"Arn,omitempty"`
+	RuleBody               *string               `json:"RuleBody,omitempty"`
+	RuleName               *string               `json:"RuleName,omitempty"`
+	RuleState              *InsightRuleRuleState `json:"RuleState,omitempty"`
+	Tags                   []InsightRuleTag      `json:"Tags,omitempty"`
 }
 
 func (InsightRule) CloudControlType() string { return "AWS::CloudWatch::InsightRule" }
@@ -321,7 +321,29 @@ func (MetricStream) CloudControlType() string { return "AWS::CloudWatch::MetricS
 
 type OTelEnrichment struct {
 	AccountId *string `json:"AccountId,omitempty"`
-	Status    *string `json:"Status,omitempty"`
+	Status    *Status `json:"Status,omitempty"`
 }
 
 func (OTelEnrichment) CloudControlType() string { return "AWS::CloudWatch::OTelEnrichment" }
+
+type AlarmMuteRuleStatus string
+
+const (
+	AlarmMuteRuleStatusSCHEDULED AlarmMuteRuleStatus = "SCHEDULED"
+	AlarmMuteRuleStatusACTIVE    AlarmMuteRuleStatus = "ACTIVE"
+	AlarmMuteRuleStatusEXPIRED   AlarmMuteRuleStatus = "EXPIRED"
+)
+
+type InsightRuleRuleState string
+
+const (
+	InsightRuleRuleStateENABLED  InsightRuleRuleState = "ENABLED"
+	InsightRuleRuleStateDISABLED InsightRuleRuleState = "DISABLED"
+)
+
+type Status string
+
+const (
+	StatusRUNNING Status = "RUNNING"
+	StatusSTOPPED Status = "STOPPED"
+)

@@ -11,17 +11,17 @@ type Tag struct {
 }
 
 type AgentStatus struct {
-	AgentStatusArn     *string  `json:"AgentStatusArn,omitempty"`
-	Description        *string  `json:"Description,omitempty"`
-	DisplayOrder       *int     `json:"DisplayOrder,omitempty"`
-	InstanceArn        *string  `json:"InstanceArn,omitempty"`
-	LastModifiedRegion *string  `json:"LastModifiedRegion,omitempty"`
-	LastModifiedTime   *float64 `json:"LastModifiedTime,omitempty"`
-	Name               *string  `json:"Name,omitempty"`
-	ResetOrderNumber   *bool    `json:"ResetOrderNumber,omitempty"`
-	State              *string  `json:"State,omitempty"`
-	Tags               []Tag    `json:"Tags,omitempty"`
-	Type               *string  `json:"Type,omitempty"`
+	AgentStatusArn     *string           `json:"AgentStatusArn,omitempty"`
+	Description        *string           `json:"Description,omitempty"`
+	DisplayOrder       *int              `json:"DisplayOrder,omitempty"`
+	InstanceArn        *string           `json:"InstanceArn,omitempty"`
+	LastModifiedRegion *string           `json:"LastModifiedRegion,omitempty"`
+	LastModifiedTime   *float64          `json:"LastModifiedTime,omitempty"`
+	Name               *string           `json:"Name,omitempty"`
+	ResetOrderNumber   *bool             `json:"ResetOrderNumber,omitempty"`
+	State              *AgentStatusState `json:"State,omitempty"`
+	Tags               []Tag             `json:"Tags,omitempty"`
+	Type               *AgentStatusType  `json:"Type,omitempty"`
 }
 
 func (AgentStatus) CloudControlType() string { return "AWS::Connect::AgentStatus" }
@@ -39,14 +39,14 @@ type ContactFlowTag struct {
 }
 
 type ContactFlow struct {
-	ContactFlowArn *string          `json:"ContactFlowArn,omitempty"`
-	Content        *string          `json:"Content,omitempty"`
-	Description    *string          `json:"Description,omitempty"`
-	InstanceArn    *string          `json:"InstanceArn,omitempty"`
-	Name           *string          `json:"Name,omitempty"`
-	State          *string          `json:"State,omitempty"`
-	Tags           []ContactFlowTag `json:"Tags,omitempty"`
-	Type           *string          `json:"Type,omitempty"`
+	ContactFlowArn *string           `json:"ContactFlowArn,omitempty"`
+	Content        *string           `json:"Content,omitempty"`
+	Description    *string           `json:"Description,omitempty"`
+	InstanceArn    *string           `json:"InstanceArn,omitempty"`
+	Name           *string           `json:"Name,omitempty"`
+	State          *ContactFlowState `json:"State,omitempty"`
+	Tags           []ContactFlowTag  `json:"Tags,omitempty"`
+	Type           *ContactFlowType  `json:"Type,omitempty"`
 }
 
 func (ContactFlow) CloudControlType() string { return "AWS::Connect::ContactFlow" }
@@ -130,18 +130,18 @@ type DataTableTag struct {
 }
 
 type DataTable struct {
-	Arn                *string               `json:"Arn,omitempty"`
-	CreatedTime        *float64              `json:"CreatedTime,omitempty"`
-	Description        *string               `json:"Description,omitempty"`
-	InstanceArn        *string               `json:"InstanceArn,omitempty"`
-	LastModifiedRegion *string               `json:"LastModifiedRegion,omitempty"`
-	LastModifiedTime   *float64              `json:"LastModifiedTime,omitempty"`
-	LockVersion        *DataTableLockVersion `json:"LockVersion,omitempty"`
-	Name               *string               `json:"Name,omitempty"`
-	Status             *string               `json:"Status,omitempty"`
-	Tags               []DataTableTag        `json:"Tags,omitempty"`
-	TimeZone           *string               `json:"TimeZone,omitempty"`
-	ValueLockLevel     *string               `json:"ValueLockLevel,omitempty"`
+	Arn                *string                  `json:"Arn,omitempty"`
+	CreatedTime        *float64                 `json:"CreatedTime,omitempty"`
+	Description        *string                  `json:"Description,omitempty"`
+	InstanceArn        *string                  `json:"InstanceArn,omitempty"`
+	LastModifiedRegion *string                  `json:"LastModifiedRegion,omitempty"`
+	LastModifiedTime   *float64                 `json:"LastModifiedTime,omitempty"`
+	LockVersion        *DataTableLockVersion    `json:"LockVersion,omitempty"`
+	Name               *string                  `json:"Name,omitempty"`
+	Status             *DataTableStatus         `json:"Status,omitempty"`
+	Tags               []DataTableTag           `json:"Tags,omitempty"`
+	TimeZone           *string                  `json:"TimeZone,omitempty"`
+	ValueLockLevel     *DataTableValueLockLevel `json:"ValueLockLevel,omitempty"`
 }
 
 func (DataTable) CloudControlType() string { return "AWS::Connect::DataTable" }
@@ -180,7 +180,7 @@ type DataTableAttribute struct {
 	Name               *string                        `json:"Name,omitempty"`
 	Primary            *bool                          `json:"Primary,omitempty"`
 	Validation         *DataTableAttributeValidation  `json:"Validation,omitempty"`
-	ValueType          *string                        `json:"ValueType,omitempty"`
+	ValueType          *DataTableAttributeValueType   `json:"ValueType,omitempty"`
 }
 
 func (DataTableAttribute) CloudControlType() string { return "AWS::Connect::DataTableAttribute" }
@@ -230,19 +230,19 @@ type AutoEvaluationConfiguration struct {
 }
 
 type EvaluationFormItemEnablementSource struct {
-	RefId *string `json:"RefId,omitempty"`
-	Type  *string `json:"Type,omitempty"`
+	RefId *string                                 `json:"RefId,omitempty"`
+	Type  *EvaluationFormItemEnablementSourceType `json:"Type,omitempty"`
 }
 
 type EvaluationFormItemEnablementSourceValue struct {
-	RefId *string `json:"RefId,omitempty"`
-	Type  *string `json:"Type,omitempty"`
+	RefId *string                                      `json:"RefId,omitempty"`
+	Type  *EvaluationFormItemEnablementSourceValueType `json:"Type,omitempty"`
 }
 
 type EvaluationFormItemEnablementExpression struct {
-	Comparator *string                                   `json:"Comparator,omitempty"`
-	Source     *EvaluationFormItemEnablementSource       `json:"Source,omitempty"`
-	Values     []EvaluationFormItemEnablementSourceValue `json:"Values,omitempty"`
+	Comparator *EvaluationFormItemEnablementExpressionComparator `json:"Comparator,omitempty"`
+	Source     *EvaluationFormItemEnablementSource               `json:"Source,omitempty"`
+	Values     []EvaluationFormItemEnablementSourceValue         `json:"Values,omitempty"`
 }
 
 type EvaluationFormItemEnablementConditionOperand struct {
@@ -251,23 +251,23 @@ type EvaluationFormItemEnablementConditionOperand struct {
 
 type EvaluationFormItemEnablementCondition struct {
 	Operands []EvaluationFormItemEnablementConditionOperand `json:"Operands,omitempty"`
-	Operator *string                                        `json:"Operator,omitempty"`
+	Operator *EvaluationFormItemEnablementConditionOperator `json:"Operator,omitempty"`
 }
 
 type EvaluationFormItemEnablementConfiguration struct {
-	Action        *string                                `json:"Action,omitempty"`
-	Condition     *EvaluationFormItemEnablementCondition `json:"Condition,omitempty"`
-	DefaultAction *string                                `json:"DefaultAction,omitempty"`
+	Action        *EvaluationFormItemEnablementConfigurationAction        `json:"Action,omitempty"`
+	Condition     *EvaluationFormItemEnablementCondition                  `json:"Condition,omitempty"`
+	DefaultAction *EvaluationFormItemEnablementConfigurationDefaultAction `json:"DefaultAction,omitempty"`
 }
 
 type EvaluationFormQuestionAutomationAnswerSource struct {
-	SourceType *string `json:"SourceType,omitempty"`
+	SourceType *EvaluationFormQuestionAutomationAnswerSourceSourceType `json:"SourceType,omitempty"`
 }
 
 type MultiSelectQuestionRuleCategoryAutomation struct {
-	Category     *string  `json:"Category,omitempty"`
-	Condition    *string  `json:"Condition,omitempty"`
-	OptionRefIds []string `json:"OptionRefIds,omitempty"`
+	Category     *string                                             `json:"Category,omitempty"`
+	Condition    *MultiSelectQuestionRuleCategoryAutomationCondition `json:"Condition,omitempty"`
+	OptionRefIds []string                                            `json:"OptionRefIds,omitempty"`
 }
 
 type EvaluationFormMultiSelectQuestionAutomationOption struct {
@@ -299,13 +299,13 @@ type EvaluationFormMultiSelectQuestionOption struct {
 }
 
 type EvaluationFormMultiSelectQuestionProperties struct {
-	Automation *EvaluationFormMultiSelectQuestionAutomation `json:"Automation,omitempty"`
-	DisplayAs  *string                                      `json:"DisplayAs,omitempty"`
-	Options    []EvaluationFormMultiSelectQuestionOption    `json:"Options,omitempty"`
+	Automation *EvaluationFormMultiSelectQuestionAutomation          `json:"Automation,omitempty"`
+	DisplayAs  *EvaluationFormMultiSelectQuestionPropertiesDisplayAs `json:"DisplayAs,omitempty"`
+	Options    []EvaluationFormMultiSelectQuestionOption             `json:"Options,omitempty"`
 }
 
 type NumericQuestionPropertyValueAutomation struct {
-	Label *string `json:"Label,omitempty"`
+	Label *NumericQuestionPropertyValueAutomationLabel `json:"Label,omitempty"`
 }
 
 type EvaluationFormNumericQuestionAutomation struct {
@@ -330,9 +330,9 @@ type EvaluationFormNumericQuestionProperties struct {
 }
 
 type SingleSelectQuestionRuleCategoryAutomation struct {
-	Category    *string `json:"Category,omitempty"`
-	Condition   *string `json:"Condition,omitempty"`
-	OptionRefId *string `json:"OptionRefId,omitempty"`
+	Category    *string                                              `json:"Category,omitempty"`
+	Condition   *SingleSelectQuestionRuleCategoryAutomationCondition `json:"Condition,omitempty"`
+	OptionRefId *string                                              `json:"OptionRefId,omitempty"`
 }
 
 type EvaluationFormSingleSelectQuestionAutomationOption struct {
@@ -355,9 +355,9 @@ type EvaluationFormSingleSelectQuestionOption struct {
 }
 
 type EvaluationFormSingleSelectQuestionProperties struct {
-	Automation *EvaluationFormSingleSelectQuestionAutomation `json:"Automation,omitempty"`
-	DisplayAs  *string                                       `json:"DisplayAs,omitempty"`
-	Options    []EvaluationFormSingleSelectQuestionOption    `json:"Options,omitempty"`
+	Automation *EvaluationFormSingleSelectQuestionAutomation          `json:"Automation,omitempty"`
+	DisplayAs  *EvaluationFormSingleSelectQuestionPropertiesDisplayAs `json:"DisplayAs,omitempty"`
+	Options    []EvaluationFormSingleSelectQuestionOption             `json:"Options,omitempty"`
 }
 
 type EvaluationFormTextQuestionAutomation struct {
@@ -382,9 +382,9 @@ type QuestionPointsConfiguration struct {
 }
 
 type EvaluationFormScoreThreshold struct {
-	MaxScorePercentage  *float64 `json:"MaxScorePercentage,omitempty"`
-	MinScorePercentage  *float64 `json:"MinScorePercentage,omitempty"`
-	PerformanceCategory *string  `json:"PerformanceCategory,omitempty"`
+	MaxScorePercentage  *float64                                         `json:"MaxScorePercentage,omitempty"`
+	MinScorePercentage  *float64                                         `json:"MinScorePercentage,omitempty"`
+	PerformanceCategory *EvaluationFormScoreThresholdPerformanceCategory `json:"PerformanceCategory,omitempty"`
 }
 
 type EvaluationFormQuestionScoringConfiguration struct {
@@ -397,7 +397,7 @@ type EvaluationFormQuestion struct {
 	Enablement             *EvaluationFormItemEnablementConfiguration  `json:"Enablement,omitempty"`
 	Instructions           *string                                     `json:"Instructions,omitempty"`
 	NotApplicableEnabled   *bool                                       `json:"NotApplicableEnabled,omitempty"`
-	QuestionType           *string                                     `json:"QuestionType,omitempty"`
+	QuestionType           *EvaluationFormQuestionQuestionType         `json:"QuestionType,omitempty"`
 	QuestionTypeProperties *EvaluationFormQuestionTypeProperties       `json:"QuestionTypeProperties,omitempty"`
 	RefId                  *string                                     `json:"RefId,omitempty"`
 	ScoringConfiguration   *EvaluationFormQuestionScoringConfiguration `json:"ScoringConfiguration,omitempty"`
@@ -425,7 +425,7 @@ type EvaluationFormBaseItem struct {
 }
 
 type EvaluationFormLanguageConfiguration struct {
-	FormLanguage *string `json:"FormLanguage,omitempty"`
+	FormLanguage *EvaluationFormLanguageConfigurationFormLanguage `json:"FormLanguage,omitempty"`
 }
 
 type EvaluationReviewNotificationRecipientValue struct {
@@ -433,7 +433,7 @@ type EvaluationReviewNotificationRecipientValue struct {
 }
 
 type EvaluationReviewNotificationRecipient struct {
-	Type  *string                                     `json:"Type,omitempty"`
+	Type  *EvaluationReviewNotificationRecipientType  `json:"Type,omitempty"`
 	Value *EvaluationReviewNotificationRecipientValue `json:"Value,omitempty"`
 }
 
@@ -443,9 +443,9 @@ type EvaluationReviewConfiguration struct {
 }
 
 type ScoringStrategy struct {
-	Mode            *string                        `json:"Mode,omitempty"`
+	Mode            *ScoringStrategyMode           `json:"Mode,omitempty"`
 	ScoreThresholds []EvaluationFormScoreThreshold `json:"ScoreThresholds,omitempty"`
-	Status          *string                        `json:"Status,omitempty"`
+	Status          *ScoringStrategyStatus         `json:"Status,omitempty"`
 }
 
 type EvaluationFormTag struct {
@@ -454,7 +454,7 @@ type EvaluationFormTag struct {
 }
 
 type EvaluationFormTargetConfiguration struct {
-	ContactInteractionType *string `json:"ContactInteractionType,omitempty"`
+	ContactInteractionType *EvaluationFormTargetConfigurationContactInteractionType `json:"ContactInteractionType,omitempty"`
 }
 
 type EvaluationForm struct {
@@ -466,7 +466,7 @@ type EvaluationForm struct {
 	LanguageConfiguration       *EvaluationFormLanguageConfiguration `json:"LanguageConfiguration,omitempty"`
 	ReviewConfiguration         *EvaluationReviewConfiguration       `json:"ReviewConfiguration,omitempty"`
 	ScoringStrategy             *ScoringStrategy                     `json:"ScoringStrategy,omitempty"`
-	Status                      *string                              `json:"Status,omitempty"`
+	Status                      *EvaluationFormStatus                `json:"Status,omitempty"`
 	Tags                        []EvaluationFormTag                  `json:"Tags,omitempty"`
 	TargetConfiguration         *EvaluationFormTargetConfiguration   `json:"TargetConfiguration,omitempty"`
 	Title                       *string                              `json:"Title,omitempty"`
@@ -485,7 +485,7 @@ type HoursOfOperationTimeSlice struct {
 }
 
 type HoursOfOperationConfig struct {
-	Day       *string                    `json:"Day,omitempty"`
+	Day       *HoursOfOperationConfigDay `json:"Day,omitempty"`
 	EndTime   *HoursOfOperationTimeSlice `json:"EndTime,omitempty"`
 	StartTime *HoursOfOperationTimeSlice `json:"StartTime,omitempty"`
 }
@@ -496,17 +496,17 @@ type OverrideTimeSlice struct {
 }
 
 type HoursOfOperationOverrideConfig struct {
-	Day       *string            `json:"Day,omitempty"`
-	EndTime   *OverrideTimeSlice `json:"EndTime,omitempty"`
-	StartTime *OverrideTimeSlice `json:"StartTime,omitempty"`
+	Day       *HoursOfOperationOverrideConfigDay `json:"Day,omitempty"`
+	EndTime   *OverrideTimeSlice                 `json:"EndTime,omitempty"`
+	StartTime *OverrideTimeSlice                 `json:"StartTime,omitempty"`
 }
 
 type RecurrencePattern struct {
-	ByMonth             []int   `json:"ByMonth,omitempty"`
-	ByMonthDay          []int   `json:"ByMonthDay,omitempty"`
-	ByWeekdayOccurrence []int   `json:"ByWeekdayOccurrence,omitempty"`
-	Frequency           *string `json:"Frequency,omitempty"`
-	Interval            *int    `json:"Interval,omitempty"`
+	ByMonth             []int                `json:"ByMonth,omitempty"`
+	ByMonthDay          []int                `json:"ByMonthDay,omitempty"`
+	ByWeekdayOccurrence []int                `json:"ByWeekdayOccurrence,omitempty"`
+	Frequency           *RecurrenceFrequency `json:"Frequency,omitempty"`
+	Interval            *int                 `json:"Interval,omitempty"`
 }
 
 type RecurrenceConfig struct {
@@ -520,7 +520,7 @@ type HoursOfOperationOverride struct {
 	OverrideConfig             []HoursOfOperationOverrideConfig `json:"OverrideConfig,omitempty"`
 	OverrideDescription        *string                          `json:"OverrideDescription,omitempty"`
 	OverrideName               *string                          `json:"OverrideName,omitempty"`
-	OverrideType               *string                          `json:"OverrideType,omitempty"`
+	OverrideType               *OverrideType                    `json:"OverrideType,omitempty"`
 	RecurrenceConfig           *RecurrenceConfig                `json:"RecurrenceConfig,omitempty"`
 }
 
@@ -566,16 +566,16 @@ type InstanceTag struct {
 }
 
 type Instance struct {
-	Arn                    *string       `json:"Arn,omitempty"`
-	Attributes             *Attributes   `json:"Attributes,omitempty"`
-	CreatedTime            *string       `json:"CreatedTime,omitempty"`
-	DirectoryId            *string       `json:"DirectoryId,omitempty"`
-	Id                     *string       `json:"Id,omitempty"`
-	IdentityManagementType *string       `json:"IdentityManagementType,omitempty"`
-	InstanceAlias          *string       `json:"InstanceAlias,omitempty"`
-	InstanceStatus         *string       `json:"InstanceStatus,omitempty"`
-	ServiceRole            *string       `json:"ServiceRole,omitempty"`
-	Tags                   []InstanceTag `json:"Tags,omitempty"`
+	Arn                    *string                         `json:"Arn,omitempty"`
+	Attributes             *Attributes                     `json:"Attributes,omitempty"`
+	CreatedTime            *string                         `json:"CreatedTime,omitempty"`
+	DirectoryId            *string                         `json:"DirectoryId,omitempty"`
+	Id                     *string                         `json:"Id,omitempty"`
+	IdentityManagementType *InstanceIdentityManagementType `json:"IdentityManagementType,omitempty"`
+	InstanceAlias          *string                         `json:"InstanceAlias,omitempty"`
+	InstanceStatus         *InstanceInstanceStatus         `json:"InstanceStatus,omitempty"`
+	ServiceRole            *string                         `json:"ServiceRole,omitempty"`
+	Tags                   []InstanceTag                   `json:"Tags,omitempty"`
 }
 
 func (Instance) CloudControlType() string { return "AWS::Connect::Instance" }
@@ -589,8 +589,8 @@ type KinesisStreamConfig struct {
 }
 
 type EncryptionConfig struct {
-	EncryptionType *string `json:"EncryptionType,omitempty"`
-	KeyId          *string `json:"KeyId,omitempty"`
+	EncryptionType *EncryptionType `json:"EncryptionType,omitempty"`
+	KeyId          *string         `json:"KeyId,omitempty"`
 }
 
 type KinesisVideoStreamConfig struct {
@@ -606,14 +606,14 @@ type S3Config struct {
 }
 
 type InstanceStorageConfig struct {
-	AssociationId            *string                   `json:"AssociationId,omitempty"`
-	InstanceArn              *string                   `json:"InstanceArn,omitempty"`
-	KinesisFirehoseConfig    *KinesisFirehoseConfig    `json:"KinesisFirehoseConfig,omitempty"`
-	KinesisStreamConfig      *KinesisStreamConfig      `json:"KinesisStreamConfig,omitempty"`
-	KinesisVideoStreamConfig *KinesisVideoStreamConfig `json:"KinesisVideoStreamConfig,omitempty"`
-	ResourceType             *string                   `json:"ResourceType,omitempty"`
-	S3Config                 *S3Config                 `json:"S3Config,omitempty"`
-	StorageType              *string                   `json:"StorageType,omitempty"`
+	AssociationId            *string                      `json:"AssociationId,omitempty"`
+	InstanceArn              *string                      `json:"InstanceArn,omitempty"`
+	KinesisFirehoseConfig    *KinesisFirehoseConfig       `json:"KinesisFirehoseConfig,omitempty"`
+	KinesisStreamConfig      *KinesisStreamConfig         `json:"KinesisStreamConfig,omitempty"`
+	KinesisVideoStreamConfig *KinesisVideoStreamConfig    `json:"KinesisVideoStreamConfig,omitempty"`
+	ResourceType             *InstanceStorageResourceType `json:"ResourceType,omitempty"`
+	S3Config                 *S3Config                    `json:"S3Config,omitempty"`
+	StorageType              *StorageType                 `json:"StorageType,omitempty"`
 }
 
 func (InstanceStorageConfig) CloudControlType() string { return "AWS::Connect::InstanceStorageConfig" }
@@ -627,7 +627,7 @@ type IntegrationAssociation struct {
 	InstanceId               *string                     `json:"InstanceId,omitempty"`
 	IntegrationArn           *string                     `json:"IntegrationArn,omitempty"`
 	IntegrationAssociationId *string                     `json:"IntegrationAssociationId,omitempty"`
-	IntegrationType          *string                     `json:"IntegrationType,omitempty"`
+	IntegrationType          *IntegrationType            `json:"IntegrationType,omitempty"`
 	Tags                     []IntegrationAssociationTag `json:"Tags,omitempty"`
 }
 
@@ -661,7 +661,7 @@ type Notification struct {
 	ExpiresAt   *string              `json:"ExpiresAt,omitempty"`
 	Id          *string              `json:"Id,omitempty"`
 	InstanceArn *string              `json:"InstanceArn,omitempty"`
-	Priority    *string              `json:"Priority,omitempty"`
+	Priority    *Priority            `json:"Priority,omitempty"`
 	Recipients  []string             `json:"Recipients,omitempty"`
 	Tags        []NotificationTag    `json:"Tags,omitempty"`
 }
@@ -754,9 +754,9 @@ type Queue struct {
 	OutboundEmailConfig      *OutboundEmailConfig  `json:"OutboundEmailConfig,omitempty"`
 	QueueArn                 *string               `json:"QueueArn,omitempty"`
 	QuickConnectArns         []string              `json:"QuickConnectArns,omitempty"`
-	Status                   *string               `json:"Status,omitempty"`
+	Status                   *QueueStatus          `json:"Status,omitempty"`
 	Tags                     []QueueTag            `json:"Tags,omitempty"`
-	Type                     *string               `json:"Type,omitempty"`
+	Type                     *QueueType            `json:"Type,omitempty"`
 }
 
 func (Queue) CloudControlType() string { return "AWS::Connect::Queue" }
@@ -766,7 +766,7 @@ type FlowQuickConnectConfig struct {
 }
 
 type PhoneNumberQuickConnectConfig struct {
-	PhoneNumber *string `json:"PhoneNumber,omitempty"`
+	PhoneNumber *PhoneNumber `json:"PhoneNumber,omitempty"`
 }
 
 type QueueQuickConnectConfig struct {
@@ -783,7 +783,7 @@ type QuickConnectConfig struct {
 	FlowConfig       *FlowQuickConnectConfig        `json:"FlowConfig,omitempty"`
 	PhoneConfig      *PhoneNumberQuickConnectConfig `json:"PhoneConfig,omitempty"`
 	QueueConfig      *QueueQuickConnectConfig       `json:"QueueConfig,omitempty"`
-	QuickConnectType *string                        `json:"QuickConnectType,omitempty"`
+	QuickConnectType *QuickConnectType              `json:"QuickConnectType,omitempty"`
 	UserConfig       *UserQuickConnectConfig        `json:"UserConfig,omitempty"`
 }
 
@@ -793,20 +793,20 @@ type QuickConnectTag struct {
 }
 
 type QuickConnect struct {
-	Description        *string             `json:"Description,omitempty"`
-	InstanceArn        *string             `json:"InstanceArn,omitempty"`
-	Name               *string             `json:"Name,omitempty"`
-	QuickConnectArn    *string             `json:"QuickConnectArn,omitempty"`
-	QuickConnectConfig *QuickConnectConfig `json:"QuickConnectConfig,omitempty"`
-	QuickConnectType   *string             `json:"QuickConnectType,omitempty"`
-	Tags               []QuickConnectTag   `json:"Tags,omitempty"`
+	Description        *string                       `json:"Description,omitempty"`
+	InstanceArn        *string                       `json:"InstanceArn,omitempty"`
+	Name               *string                       `json:"Name,omitempty"`
+	QuickConnectArn    *string                       `json:"QuickConnectArn,omitempty"`
+	QuickConnectConfig *QuickConnectConfig           `json:"QuickConnectConfig,omitempty"`
+	QuickConnectType   *QuickConnectQuickConnectType `json:"QuickConnectType,omitempty"`
+	Tags               []QuickConnectTag             `json:"Tags,omitempty"`
 }
 
 func (QuickConnect) CloudControlType() string { return "AWS::Connect::QuickConnect" }
 
 type RoutingProfileQueueReference struct {
-	Channel  *string `json:"Channel,omitempty"`
-	QueueArn *string `json:"QueueArn,omitempty"`
+	Channel  *Channel `json:"Channel,omitempty"`
+	QueueArn *string  `json:"QueueArn,omitempty"`
 }
 
 type RoutingProfileManualAssignmentQueueConfig struct {
@@ -814,11 +814,11 @@ type RoutingProfileManualAssignmentQueueConfig struct {
 }
 
 type CrossChannelBehavior struct {
-	BehaviorType *string `json:"BehaviorType,omitempty"`
+	BehaviorType *BehaviorType `json:"BehaviorType,omitempty"`
 }
 
 type MediaConcurrency struct {
-	Channel              *string               `json:"Channel,omitempty"`
+	Channel              *Channel              `json:"Channel,omitempty"`
 	Concurrency          *int                  `json:"Concurrency,omitempty"`
 	CrossChannelBehavior *CrossChannelBehavior `json:"CrossChannelBehavior,omitempty"`
 }
@@ -835,7 +835,7 @@ type RoutingProfileTag struct {
 }
 
 type RoutingProfile struct {
-	AgentAvailabilityTimer       *string                                     `json:"AgentAvailabilityTimer,omitempty"`
+	AgentAvailabilityTimer       *RoutingProfileAgentAvailabilityTimer       `json:"AgentAvailabilityTimer,omitempty"`
 	DefaultOutboundQueueArn      *string                                     `json:"DefaultOutboundQueueArn,omitempty"`
 	Description                  *string                                     `json:"Description,omitempty"`
 	InstanceArn                  *string                                     `json:"InstanceArn,omitempty"`
@@ -854,16 +854,16 @@ type SlaTargetFieldValue struct {
 }
 
 type AssignSlaActionCaseSlaConfiguration struct {
-	FieldId           *string               `json:"FieldId,omitempty"`
-	Name              *string               `json:"Name,omitempty"`
-	TargetFieldValues []SlaTargetFieldValue `json:"TargetFieldValues,omitempty"`
-	TargetSlaMinutes  *float64              `json:"TargetSlaMinutes,omitempty"`
-	Type              *string               `json:"Type,omitempty"`
+	FieldId           *string                                  `json:"FieldId,omitempty"`
+	Name              *string                                  `json:"Name,omitempty"`
+	TargetFieldValues []SlaTargetFieldValue                    `json:"TargetFieldValues,omitempty"`
+	TargetSlaMinutes  *float64                                 `json:"TargetSlaMinutes,omitempty"`
+	Type              *AssignSlaActionCaseSlaConfigurationType `json:"Type,omitempty"`
 }
 
 type AssignSlaAction struct {
 	CaseSlaConfiguration *AssignSlaActionCaseSlaConfiguration `json:"CaseSlaConfiguration,omitempty"`
-	SlaAssignmentType    *string                              `json:"SlaAssignmentType,omitempty"`
+	SlaAssignmentType    *AssignSlaActionSlaAssignmentType    `json:"SlaAssignmentType,omitempty"`
 }
 
 type FieldValue struct {
@@ -893,12 +893,12 @@ type NotificationRecipientType struct {
 }
 
 type SendNotificationAction struct {
-	Content        *string                    `json:"Content,omitempty"`
-	ContentType    *string                    `json:"ContentType,omitempty"`
-	DeliveryMethod *string                    `json:"DeliveryMethod,omitempty"`
-	Exclusion      *NotificationRecipientType `json:"Exclusion,omitempty"`
-	Recipient      *NotificationRecipientType `json:"Recipient,omitempty"`
-	Subject        *string                    `json:"Subject,omitempty"`
+	Content        *string                               `json:"Content,omitempty"`
+	ContentType    *SendNotificationActionContentType    `json:"ContentType,omitempty"`
+	DeliveryMethod *SendNotificationActionDeliveryMethod `json:"DeliveryMethod,omitempty"`
+	Exclusion      *NotificationRecipientType            `json:"Exclusion,omitempty"`
+	Recipient      *NotificationRecipientType            `json:"Recipient,omitempty"`
+	Subject        *string                               `json:"Subject,omitempty"`
 }
 
 type SubmitAutoEvaluationAction struct {
@@ -934,8 +934,8 @@ type RuleTag struct {
 }
 
 type RuleTriggerEventSource struct {
-	EventSourceName           *string `json:"EventSourceName,omitempty"`
-	IntegrationAssociationArn *string `json:"IntegrationAssociationArn,omitempty"`
+	EventSourceName           *RuleTriggerEventSourceEventSourceName `json:"EventSourceName,omitempty"`
+	IntegrationAssociationArn *string                                `json:"IntegrationAssociationArn,omitempty"`
 }
 
 type Rule struct {
@@ -943,7 +943,7 @@ type Rule struct {
 	Function           *string                 `json:"Function,omitempty"`
 	InstanceArn        *string                 `json:"InstanceArn,omitempty"`
 	Name               *string                 `json:"Name,omitempty"`
-	PublishStatus      *string                 `json:"PublishStatus,omitempty"`
+	PublishStatus      *RulePublishStatus      `json:"PublishStatus,omitempty"`
 	RuleArn            *string                 `json:"RuleArn,omitempty"`
 	Tags               []RuleTag               `json:"Tags,omitempty"`
 	TriggerEventSource *RuleTriggerEventSource `json:"TriggerEventSource,omitempty"`
@@ -970,15 +970,15 @@ type FlowModule struct {
 }
 
 type Application struct {
-	ApplicationPermissions []string `json:"ApplicationPermissions,omitempty"`
-	Namespace              *string  `json:"Namespace,omitempty"`
-	Type                   *string  `json:"Type,omitempty"`
+	ApplicationPermissions []string         `json:"ApplicationPermissions,omitempty"`
+	Namespace              *string          `json:"Namespace,omitempty"`
+	Type                   *ApplicationType `json:"Type,omitempty"`
 }
 
 type PrimaryAttributeValue struct {
-	AccessType    *string  `json:"AccessType,omitempty"`
-	AttributeName *string  `json:"AttributeName,omitempty"`
-	Values        []string `json:"Values,omitempty"`
+	AccessType    *PrimaryAttributeValueAccessType `json:"AccessType,omitempty"`
+	AttributeName *string                          `json:"AttributeName,omitempty"`
+	Values        []string                         `json:"Values,omitempty"`
 }
 
 type PrimaryAttributeAccessControlConfigurationItem struct {
@@ -1044,7 +1044,7 @@ type TaskTemplateField struct {
 	Description         *string          `json:"Description,omitempty"`
 	Id                  *FieldIdentifier `json:"Id,omitempty"`
 	SingleSelectOptions []string         `json:"SingleSelectOptions,omitempty"`
-	Type                *string          `json:"Type,omitempty"`
+	Type                *FieldType       `json:"Type,omitempty"`
 }
 
 type TaskTemplateTag struct {
@@ -1063,7 +1063,7 @@ type TaskTemplate struct {
 	InstanceArn              *string                  `json:"InstanceArn,omitempty"`
 	Name                     *string                  `json:"Name,omitempty"`
 	SelfAssignContactFlowArn *string                  `json:"SelfAssignContactFlowArn,omitempty"`
-	Status                   *string                  `json:"Status,omitempty"`
+	Status                   *Status                  `json:"Status,omitempty"`
 	Tags                     []TaskTemplateTag        `json:"Tags,omitempty"`
 }
 
@@ -1081,7 +1081,7 @@ type EntryPointVoiceCallEntryPointParameters struct {
 
 type EntryPoint struct {
 	ChatEntryPointParameters      *EntryPointChatEntryPointParameters      `json:"ChatEntryPointParameters,omitempty"`
-	Type                          *string                                  `json:"Type,omitempty"`
+	Type                          *EntryPointType                          `json:"Type,omitempty"`
 	VoiceCallEntryPointParameters *EntryPointVoiceCallEntryPointParameters `json:"VoiceCallEntryPointParameters,omitempty"`
 }
 
@@ -1091,17 +1091,17 @@ type TestCaseTag struct {
 }
 
 type TestCase struct {
-	Content            *string       `json:"Content,omitempty"`
-	Description        *string       `json:"Description,omitempty"`
-	EntryPoint         *EntryPoint   `json:"EntryPoint,omitempty"`
-	InitializationData *string       `json:"InitializationData,omitempty"`
-	InstanceArn        *string       `json:"InstanceArn,omitempty"`
-	LastModifiedRegion *string       `json:"LastModifiedRegion,omitempty"`
-	LastModifiedTime   *float64      `json:"LastModifiedTime,omitempty"`
-	Name               *string       `json:"Name,omitempty"`
-	Status             *string       `json:"Status,omitempty"`
-	Tags               []TestCaseTag `json:"Tags,omitempty"`
-	TestCaseArn        *string       `json:"TestCaseArn,omitempty"`
+	Content            *string         `json:"Content,omitempty"`
+	Description        *string         `json:"Description,omitempty"`
+	EntryPoint         *EntryPoint     `json:"EntryPoint,omitempty"`
+	InitializationData *string         `json:"InitializationData,omitempty"`
+	InstanceArn        *string         `json:"InstanceArn,omitempty"`
+	LastModifiedRegion *string         `json:"LastModifiedRegion,omitempty"`
+	LastModifiedTime   *float64        `json:"LastModifiedTime,omitempty"`
+	Name               *string         `json:"Name,omitempty"`
+	Status             *TestCaseStatus `json:"Status,omitempty"`
+	Tags               []TestCaseTag   `json:"Tags,omitempty"`
+	TestCaseArn        *string         `json:"TestCaseArn,omitempty"`
 }
 
 func (TestCase) CloudControlType() string { return "AWS::Connect::TestCase" }
@@ -1112,13 +1112,13 @@ type TrafficDistributionGroupTag struct {
 }
 
 type TrafficDistributionGroup struct {
-	Description                 *string                       `json:"Description,omitempty"`
-	InstanceArn                 *string                       `json:"InstanceArn,omitempty"`
-	IsDefault                   *bool                         `json:"IsDefault,omitempty"`
-	Name                        *string                       `json:"Name,omitempty"`
-	Status                      *string                       `json:"Status,omitempty"`
-	Tags                        []TrafficDistributionGroupTag `json:"Tags,omitempty"`
-	TrafficDistributionGroupArn *string                       `json:"TrafficDistributionGroupArn,omitempty"`
+	Description                 *string                         `json:"Description,omitempty"`
+	InstanceArn                 *string                         `json:"InstanceArn,omitempty"`
+	IsDefault                   *bool                           `json:"IsDefault,omitempty"`
+	Name                        *string                         `json:"Name,omitempty"`
+	Status                      *TrafficDistributionGroupStatus `json:"Status,omitempty"`
+	Tags                        []TrafficDistributionGroupTag   `json:"Tags,omitempty"`
+	TrafficDistributionGroupArn *string                         `json:"TrafficDistributionGroupArn,omitempty"`
 }
 
 func (TrafficDistributionGroup) CloudControlType() string {
@@ -1126,20 +1126,20 @@ func (TrafficDistributionGroup) CloudControlType() string {
 }
 
 type AfterContactWorkConfig struct {
-	AfterContactWorkMode      *string `json:"AfterContactWorkMode,omitempty"`
-	AfterContactWorkTimeLimit *int    `json:"AfterContactWorkTimeLimit,omitempty"`
+	AfterContactWorkMode      *AfterContactWorkMode `json:"AfterContactWorkMode,omitempty"`
+	AfterContactWorkTimeLimit *int                  `json:"AfterContactWorkTimeLimit,omitempty"`
 }
 
 type AfterContactWorkConfigPerChannel struct {
 	AfterContactWorkConfig                   *AfterContactWorkConfig `json:"AfterContactWorkConfig,omitempty"`
 	AgentFirstCallbackAfterContactWorkConfig *AfterContactWorkConfig `json:"AgentFirstCallbackAfterContactWorkConfig,omitempty"`
-	Channel                                  *string                 `json:"Channel,omitempty"`
+	Channel                                  *UserChannel            `json:"Channel,omitempty"`
 }
 
 type AutoAcceptConfig struct {
-	AgentFirstCallbackAutoAccept *bool   `json:"AgentFirstCallbackAutoAccept,omitempty"`
-	AutoAccept                   *bool   `json:"AutoAccept,omitempty"`
-	Channel                      *string `json:"Channel,omitempty"`
+	AgentFirstCallbackAutoAccept *bool        `json:"AgentFirstCallbackAutoAccept,omitempty"`
+	AutoAccept                   *bool        `json:"AutoAccept,omitempty"`
+	Channel                      *UserChannel `json:"Channel,omitempty"`
 }
 
 type UserIdentityInfo struct {
@@ -1151,22 +1151,22 @@ type UserIdentityInfo struct {
 }
 
 type PersistentConnectionConfig struct {
-	Channel              *string `json:"Channel,omitempty"`
-	PersistentConnection *bool   `json:"PersistentConnection,omitempty"`
+	Channel              *UserChannel `json:"Channel,omitempty"`
+	PersistentConnection *bool        `json:"PersistentConnection,omitempty"`
 }
 
 type UserPhoneConfig struct {
-	AfterContactWorkTimeLimit *int    `json:"AfterContactWorkTimeLimit,omitempty"`
-	AutoAccept                *bool   `json:"AutoAccept,omitempty"`
-	DeskPhoneNumber           *string `json:"DeskPhoneNumber,omitempty"`
-	PersistentConnection      *bool   `json:"PersistentConnection,omitempty"`
-	PhoneType                 *string `json:"PhoneType,omitempty"`
+	AfterContactWorkTimeLimit *int       `json:"AfterContactWorkTimeLimit,omitempty"`
+	AutoAccept                *bool      `json:"AutoAccept,omitempty"`
+	DeskPhoneNumber           *string    `json:"DeskPhoneNumber,omitempty"`
+	PersistentConnection      *bool      `json:"PersistentConnection,omitempty"`
+	PhoneType                 *PhoneType `json:"PhoneType,omitempty"`
 }
 
 type PhoneNumberConfig struct {
-	Channel     *string `json:"Channel,omitempty"`
-	PhoneNumber *string `json:"PhoneNumber,omitempty"`
-	PhoneType   *string `json:"PhoneType,omitempty"`
+	Channel     *UserChannel `json:"Channel,omitempty"`
+	PhoneNumber *string      `json:"PhoneNumber,omitempty"`
+	PhoneType   *PhoneType   `json:"PhoneType,omitempty"`
 }
 
 type UserTag struct {
@@ -1181,8 +1181,8 @@ type UserProficiency struct {
 }
 
 type VoiceEnhancementConfig struct {
-	Channel              *string `json:"Channel,omitempty"`
-	VoiceEnhancementMode *string `json:"VoiceEnhancementMode,omitempty"`
+	Channel              *UserChannel          `json:"Channel,omitempty"`
+	VoiceEnhancementMode *VoiceEnhancementMode `json:"VoiceEnhancementMode,omitempty"`
 }
 
 type User struct {
@@ -1300,8 +1300,8 @@ type ViewVersion struct {
 func (ViewVersion) CloudControlType() string { return "AWS::Connect::ViewVersion" }
 
 type MediaItem struct {
-	Source *string `json:"Source,omitempty"`
-	Type   *string `json:"Type,omitempty"`
+	Source *string    `json:"Source,omitempty"`
+	Type   *MediaType `json:"Type,omitempty"`
 }
 
 type WorkspacePage struct {
@@ -1353,7 +1353,7 @@ type WorkspaceThemePalette struct {
 }
 
 type FontFamily struct {
-	Default *string `json:"Default,omitempty"`
+	Default *WorkspaceFontFamily `json:"Default,omitempty"`
 }
 
 type WorkspaceThemeTypography struct {
@@ -1382,7 +1382,575 @@ type Workspace struct {
 	Tags         []WorkspaceTag  `json:"Tags,omitempty"`
 	Theme        *WorkspaceTheme `json:"Theme,omitempty"`
 	Title        *string         `json:"Title,omitempty"`
-	Visibility   *string         `json:"Visibility,omitempty"`
+	Visibility   *Visibility     `json:"Visibility,omitempty"`
 }
 
 func (Workspace) CloudControlType() string { return "AWS::Connect::Workspace" }
+
+type AgentStatusState string
+
+const (
+	AgentStatusStateENABLED  AgentStatusState = "ENABLED"
+	AgentStatusStateDISABLED AgentStatusState = "DISABLED"
+)
+
+type AgentStatusType string
+
+const (
+	AgentStatusTypeROUTABLE AgentStatusType = "ROUTABLE"
+	AgentStatusTypeCUSTOM   AgentStatusType = "CUSTOM"
+	AgentStatusTypeOFFLINE  AgentStatusType = "OFFLINE"
+)
+
+type ContactFlowState string
+
+const (
+	ContactFlowStateACTIVE   ContactFlowState = "ACTIVE"
+	ContactFlowStateARCHIVED ContactFlowState = "ARCHIVED"
+)
+
+type ContactFlowType string
+
+const (
+	ContactFlowTypeCONTACTFLOW     ContactFlowType = "CONTACT_FLOW"
+	ContactFlowTypeCUSTOMERQUEUE   ContactFlowType = "CUSTOMER_QUEUE"
+	ContactFlowTypeCUSTOMERHOLD    ContactFlowType = "CUSTOMER_HOLD"
+	ContactFlowTypeCUSTOMERWHISPER ContactFlowType = "CUSTOMER_WHISPER"
+	ContactFlowTypeAGENTHOLD       ContactFlowType = "AGENT_HOLD"
+	ContactFlowTypeAGENTWHISPER    ContactFlowType = "AGENT_WHISPER"
+	ContactFlowTypeOUTBOUNDWHISPER ContactFlowType = "OUTBOUND_WHISPER"
+	ContactFlowTypeAGENTTRANSFER   ContactFlowType = "AGENT_TRANSFER"
+	ContactFlowTypeQUEUETRANSFER   ContactFlowType = "QUEUE_TRANSFER"
+	ContactFlowTypeCAMPAIGN        ContactFlowType = "CAMPAIGN"
+)
+
+type DataTableStatus string
+
+const (
+	DataTableStatusPUBLISHED DataTableStatus = "PUBLISHED"
+)
+
+type DataTableValueLockLevel string
+
+const (
+	DataTableValueLockLevelNONE         DataTableValueLockLevel = "NONE"
+	DataTableValueLockLevelDATATABLE    DataTableValueLockLevel = "DATA_TABLE"
+	DataTableValueLockLevelPRIMARYVALUE DataTableValueLockLevel = "PRIMARY_VALUE"
+	DataTableValueLockLevelATTRIBUTE    DataTableValueLockLevel = "ATTRIBUTE"
+	DataTableValueLockLevelVALUE        DataTableValueLockLevel = "VALUE"
+)
+
+type DataTableAttributeValueType string
+
+const (
+	DataTableAttributeValueTypeTEXT       DataTableAttributeValueType = "TEXT"
+	DataTableAttributeValueTypeNUMBER     DataTableAttributeValueType = "NUMBER"
+	DataTableAttributeValueTypeBOOLEAN    DataTableAttributeValueType = "BOOLEAN"
+	DataTableAttributeValueTypeTEXTLIST   DataTableAttributeValueType = "TEXT_LIST"
+	DataTableAttributeValueTypeNUMBERLIST DataTableAttributeValueType = "NUMBER_LIST"
+)
+
+type EvaluationFormItemEnablementConfigurationAction string
+
+const (
+	EvaluationFormItemEnablementConfigurationActionDISABLE EvaluationFormItemEnablementConfigurationAction = "DISABLE"
+	EvaluationFormItemEnablementConfigurationActionENABLE  EvaluationFormItemEnablementConfigurationAction = "ENABLE"
+)
+
+type EvaluationFormItemEnablementExpressionComparator string
+
+const (
+	EvaluationFormItemEnablementExpressionComparatorIN    EvaluationFormItemEnablementExpressionComparator = "IN"
+	EvaluationFormItemEnablementExpressionComparatorNOTIN EvaluationFormItemEnablementExpressionComparator = "NOT_IN"
+	EvaluationFormItemEnablementExpressionComparatorALLIN EvaluationFormItemEnablementExpressionComparator = "ALL_IN"
+	EvaluationFormItemEnablementExpressionComparatorEXACT EvaluationFormItemEnablementExpressionComparator = "EXACT"
+)
+
+type EvaluationFormItemEnablementSourceType string
+
+const (
+	EvaluationFormItemEnablementSourceTypeQUESTIONREFID EvaluationFormItemEnablementSourceType = "QUESTION_REF_ID"
+)
+
+type EvaluationFormItemEnablementSourceValueType string
+
+const (
+	EvaluationFormItemEnablementSourceValueTypeOPTIONREFID EvaluationFormItemEnablementSourceValueType = "OPTION_REF_ID"
+)
+
+type EvaluationFormItemEnablementConditionOperator string
+
+const (
+	EvaluationFormItemEnablementConditionOperatorOR  EvaluationFormItemEnablementConditionOperator = "OR"
+	EvaluationFormItemEnablementConditionOperatorAND EvaluationFormItemEnablementConditionOperator = "AND"
+)
+
+type EvaluationFormItemEnablementConfigurationDefaultAction string
+
+const (
+	EvaluationFormItemEnablementConfigurationDefaultActionDISABLE EvaluationFormItemEnablementConfigurationDefaultAction = "DISABLE"
+	EvaluationFormItemEnablementConfigurationDefaultActionENABLE  EvaluationFormItemEnablementConfigurationDefaultAction = "ENABLE"
+)
+
+type EvaluationFormQuestionQuestionType string
+
+const (
+	EvaluationFormQuestionQuestionTypeNUMERIC      EvaluationFormQuestionQuestionType = "NUMERIC"
+	EvaluationFormQuestionQuestionTypeSINGLESELECT EvaluationFormQuestionQuestionType = "SINGLESELECT"
+	EvaluationFormQuestionQuestionTypeTEXT         EvaluationFormQuestionQuestionType = "TEXT"
+	EvaluationFormQuestionQuestionTypeMULTISELECT  EvaluationFormQuestionQuestionType = "MULTISELECT"
+	EvaluationFormQuestionQuestionTypeDATETIME     EvaluationFormQuestionQuestionType = "DATETIME"
+)
+
+type EvaluationFormQuestionAutomationAnswerSourceSourceType string
+
+const (
+	EvaluationFormQuestionAutomationAnswerSourceSourceTypeCONTACTLENSDATA EvaluationFormQuestionAutomationAnswerSourceSourceType = "CONTACT_LENS_DATA"
+	EvaluationFormQuestionAutomationAnswerSourceSourceTypeGENAI           EvaluationFormQuestionAutomationAnswerSourceSourceType = "GEN_AI"
+)
+
+type MultiSelectQuestionRuleCategoryAutomationCondition string
+
+const (
+	MultiSelectQuestionRuleCategoryAutomationConditionPRESENT    MultiSelectQuestionRuleCategoryAutomationCondition = "PRESENT"
+	MultiSelectQuestionRuleCategoryAutomationConditionNOTPRESENT MultiSelectQuestionRuleCategoryAutomationCondition = "NOT_PRESENT"
+)
+
+type EvaluationFormMultiSelectQuestionPropertiesDisplayAs string
+
+const (
+	EvaluationFormMultiSelectQuestionPropertiesDisplayAsDROPDOWN EvaluationFormMultiSelectQuestionPropertiesDisplayAs = "DROPDOWN"
+	EvaluationFormMultiSelectQuestionPropertiesDisplayAsCHECKBOX EvaluationFormMultiSelectQuestionPropertiesDisplayAs = "CHECKBOX"
+)
+
+type NumericQuestionPropertyValueAutomationLabel string
+
+const (
+	NumericQuestionPropertyValueAutomationLabelOVERALLCUSTOMERSENTIMENTSCORE      NumericQuestionPropertyValueAutomationLabel = "OVERALL_CUSTOMER_SENTIMENT_SCORE"
+	NumericQuestionPropertyValueAutomationLabelOVERALLAGENTSENTIMENTSCORE         NumericQuestionPropertyValueAutomationLabel = "OVERALL_AGENT_SENTIMENT_SCORE"
+	NumericQuestionPropertyValueAutomationLabelNONTALKTIME                        NumericQuestionPropertyValueAutomationLabel = "NON_TALK_TIME"
+	NumericQuestionPropertyValueAutomationLabelNONTALKTIMEPERCENTAGE              NumericQuestionPropertyValueAutomationLabel = "NON_TALK_TIME_PERCENTAGE"
+	NumericQuestionPropertyValueAutomationLabelNUMBEROFINTERRUPTIONS              NumericQuestionPropertyValueAutomationLabel = "NUMBER_OF_INTERRUPTIONS"
+	NumericQuestionPropertyValueAutomationLabelCONTACTDURATION                    NumericQuestionPropertyValueAutomationLabel = "CONTACT_DURATION"
+	NumericQuestionPropertyValueAutomationLabelAGENTINTERACTIONDURATION           NumericQuestionPropertyValueAutomationLabel = "AGENT_INTERACTION_DURATION"
+	NumericQuestionPropertyValueAutomationLabelCUSTOMERHOLDTIME                   NumericQuestionPropertyValueAutomationLabel = "CUSTOMER_HOLD_TIME"
+	NumericQuestionPropertyValueAutomationLabelLONGESTHOLDDURATION                NumericQuestionPropertyValueAutomationLabel = "LONGEST_HOLD_DURATION"
+	NumericQuestionPropertyValueAutomationLabelNUMBEROFHOLDS                      NumericQuestionPropertyValueAutomationLabel = "NUMBER_OF_HOLDS"
+	NumericQuestionPropertyValueAutomationLabelAGENTINTERACTIONANDHOLDDURATION    NumericQuestionPropertyValueAutomationLabel = "AGENT_INTERACTION_AND_HOLD_DURATION"
+	NumericQuestionPropertyValueAutomationLabelCUSTOMERSENTIMENTSCOREWITHOUTAGENT NumericQuestionPropertyValueAutomationLabel = "CUSTOMER_SENTIMENT_SCORE_WITHOUT_AGENT"
+	NumericQuestionPropertyValueAutomationLabelCUSTOMERSENTIMENTSCOREWITHAGENT    NumericQuestionPropertyValueAutomationLabel = "CUSTOMER_SENTIMENT_SCORE_WITH_AGENT"
+)
+
+type SingleSelectQuestionRuleCategoryAutomationCondition string
+
+const (
+	SingleSelectQuestionRuleCategoryAutomationConditionPRESENT    SingleSelectQuestionRuleCategoryAutomationCondition = "PRESENT"
+	SingleSelectQuestionRuleCategoryAutomationConditionNOTPRESENT SingleSelectQuestionRuleCategoryAutomationCondition = "NOT_PRESENT"
+)
+
+type EvaluationFormSingleSelectQuestionPropertiesDisplayAs string
+
+const (
+	EvaluationFormSingleSelectQuestionPropertiesDisplayAsDROPDOWN EvaluationFormSingleSelectQuestionPropertiesDisplayAs = "DROPDOWN"
+	EvaluationFormSingleSelectQuestionPropertiesDisplayAsRADIO    EvaluationFormSingleSelectQuestionPropertiesDisplayAs = "RADIO"
+)
+
+type EvaluationFormScoreThresholdPerformanceCategory string
+
+const (
+	EvaluationFormScoreThresholdPerformanceCategoryNEEDSIMPROVEMENT    EvaluationFormScoreThresholdPerformanceCategory = "NEEDS_IMPROVEMENT"
+	EvaluationFormScoreThresholdPerformanceCategoryEXCEEDSEXPECTATIONS EvaluationFormScoreThresholdPerformanceCategory = "EXCEEDS_EXPECTATIONS"
+)
+
+type EvaluationFormLanguageConfigurationFormLanguage string
+
+const (
+	EvaluationFormLanguageConfigurationFormLanguageDeDE EvaluationFormLanguageConfigurationFormLanguage = "de-DE"
+	EvaluationFormLanguageConfigurationFormLanguageEnUS EvaluationFormLanguageConfigurationFormLanguage = "en-US"
+	EvaluationFormLanguageConfigurationFormLanguageEsES EvaluationFormLanguageConfigurationFormLanguage = "es-ES"
+	EvaluationFormLanguageConfigurationFormLanguageFrFR EvaluationFormLanguageConfigurationFormLanguage = "fr-FR"
+	EvaluationFormLanguageConfigurationFormLanguageItIT EvaluationFormLanguageConfigurationFormLanguage = "it-IT"
+	EvaluationFormLanguageConfigurationFormLanguagePtBR EvaluationFormLanguageConfigurationFormLanguage = "pt-BR"
+	EvaluationFormLanguageConfigurationFormLanguageJaJP EvaluationFormLanguageConfigurationFormLanguage = "ja-JP"
+	EvaluationFormLanguageConfigurationFormLanguageKoKR EvaluationFormLanguageConfigurationFormLanguage = "ko-KR"
+	EvaluationFormLanguageConfigurationFormLanguageZhCN EvaluationFormLanguageConfigurationFormLanguage = "zh-CN"
+)
+
+type EvaluationReviewNotificationRecipientType string
+
+const (
+	EvaluationReviewNotificationRecipientTypeUSERID EvaluationReviewNotificationRecipientType = "USER_ID"
+)
+
+type ScoringStrategyMode string
+
+const (
+	ScoringStrategyModeQUESTIONONLY ScoringStrategyMode = "QUESTION_ONLY"
+	ScoringStrategyModeSECTIONONLY  ScoringStrategyMode = "SECTION_ONLY"
+	ScoringStrategyModePOINTSBASED  ScoringStrategyMode = "POINTS_BASED"
+)
+
+type ScoringStrategyStatus string
+
+const (
+	ScoringStrategyStatusENABLED  ScoringStrategyStatus = "ENABLED"
+	ScoringStrategyStatusDISABLED ScoringStrategyStatus = "DISABLED"
+)
+
+type EvaluationFormStatus string
+
+const (
+	EvaluationFormStatusDRAFT  EvaluationFormStatus = "DRAFT"
+	EvaluationFormStatusACTIVE EvaluationFormStatus = "ACTIVE"
+)
+
+type EvaluationFormTargetConfigurationContactInteractionType string
+
+const (
+	EvaluationFormTargetConfigurationContactInteractionTypeAGENT     EvaluationFormTargetConfigurationContactInteractionType = "AGENT"
+	EvaluationFormTargetConfigurationContactInteractionTypeAUTOMATED EvaluationFormTargetConfigurationContactInteractionType = "AUTOMATED"
+	EvaluationFormTargetConfigurationContactInteractionTypeCUSTOMER  EvaluationFormTargetConfigurationContactInteractionType = "CUSTOMER"
+)
+
+type HoursOfOperationConfigDay string
+
+const (
+	HoursOfOperationConfigDaySUNDAY    HoursOfOperationConfigDay = "SUNDAY"
+	HoursOfOperationConfigDayMONDAY    HoursOfOperationConfigDay = "MONDAY"
+	HoursOfOperationConfigDayTUESDAY   HoursOfOperationConfigDay = "TUESDAY"
+	HoursOfOperationConfigDayWEDNESDAY HoursOfOperationConfigDay = "WEDNESDAY"
+	HoursOfOperationConfigDayTHURSDAY  HoursOfOperationConfigDay = "THURSDAY"
+	HoursOfOperationConfigDayFRIDAY    HoursOfOperationConfigDay = "FRIDAY"
+	HoursOfOperationConfigDaySATURDAY  HoursOfOperationConfigDay = "SATURDAY"
+)
+
+type HoursOfOperationOverrideConfigDay string
+
+const (
+	HoursOfOperationOverrideConfigDaySUNDAY    HoursOfOperationOverrideConfigDay = "SUNDAY"
+	HoursOfOperationOverrideConfigDayMONDAY    HoursOfOperationOverrideConfigDay = "MONDAY"
+	HoursOfOperationOverrideConfigDayTUESDAY   HoursOfOperationOverrideConfigDay = "TUESDAY"
+	HoursOfOperationOverrideConfigDayWEDNESDAY HoursOfOperationOverrideConfigDay = "WEDNESDAY"
+	HoursOfOperationOverrideConfigDayTHURSDAY  HoursOfOperationOverrideConfigDay = "THURSDAY"
+	HoursOfOperationOverrideConfigDayFRIDAY    HoursOfOperationOverrideConfigDay = "FRIDAY"
+	HoursOfOperationOverrideConfigDaySATURDAY  HoursOfOperationOverrideConfigDay = "SATURDAY"
+)
+
+type OverrideType string
+
+const (
+	OverrideTypeSTANDARD OverrideType = "STANDARD"
+	OverrideTypeOPEN     OverrideType = "OPEN"
+	OverrideTypeCLOSED   OverrideType = "CLOSED"
+)
+
+type RecurrenceFrequency string
+
+const (
+	RecurrenceFrequencyWEEKLY  RecurrenceFrequency = "WEEKLY"
+	RecurrenceFrequencyMONTHLY RecurrenceFrequency = "MONTHLY"
+	RecurrenceFrequencyYEARLY  RecurrenceFrequency = "YEARLY"
+)
+
+type InstanceIdentityManagementType string
+
+const (
+	InstanceIdentityManagementTypeSAML              InstanceIdentityManagementType = "SAML"
+	InstanceIdentityManagementTypeCONNECTMANAGED    InstanceIdentityManagementType = "CONNECT_MANAGED"
+	InstanceIdentityManagementTypeEXISTINGDIRECTORY InstanceIdentityManagementType = "EXISTING_DIRECTORY"
+)
+
+type InstanceInstanceStatus string
+
+const (
+	InstanceInstanceStatusCREATIONINPROGRESS InstanceInstanceStatus = "CREATION_IN_PROGRESS"
+	InstanceInstanceStatusCREATIONFAILED     InstanceInstanceStatus = "CREATION_FAILED"
+	InstanceInstanceStatusACTIVE             InstanceInstanceStatus = "ACTIVE"
+)
+
+type EncryptionType string
+
+const (
+	EncryptionTypeKMS EncryptionType = "KMS"
+)
+
+type InstanceStorageResourceType string
+
+const (
+	InstanceStorageResourceTypeCHATTRANSCRIPTS                      InstanceStorageResourceType = "CHAT_TRANSCRIPTS"
+	InstanceStorageResourceTypeCALLRECORDINGS                       InstanceStorageResourceType = "CALL_RECORDINGS"
+	InstanceStorageResourceTypeSCHEDULEDREPORTS                     InstanceStorageResourceType = "SCHEDULED_REPORTS"
+	InstanceStorageResourceTypeMEDIASTREAMS                         InstanceStorageResourceType = "MEDIA_STREAMS"
+	InstanceStorageResourceTypeCONTACTTRACERECORDS                  InstanceStorageResourceType = "CONTACT_TRACE_RECORDS"
+	InstanceStorageResourceTypeAGENTEVENTS                          InstanceStorageResourceType = "AGENT_EVENTS"
+	InstanceStorageResourceTypeREALTIMECONTACTANALYSISSEGMENTS      InstanceStorageResourceType = "REAL_TIME_CONTACT_ANALYSIS_SEGMENTS"
+	InstanceStorageResourceTypeATTACHMENTS                          InstanceStorageResourceType = "ATTACHMENTS"
+	InstanceStorageResourceTypeCONTACTEVALUATIONS                   InstanceStorageResourceType = "CONTACT_EVALUATIONS"
+	InstanceStorageResourceTypeSCREENRECORDINGS                     InstanceStorageResourceType = "SCREEN_RECORDINGS"
+	InstanceStorageResourceTypeREALTIMECONTACTANALYSISCHATSEGMENTS  InstanceStorageResourceType = "REAL_TIME_CONTACT_ANALYSIS_CHAT_SEGMENTS"
+	InstanceStorageResourceTypeREALTIMECONTACTANALYSISVOICESEGMENTS InstanceStorageResourceType = "REAL_TIME_CONTACT_ANALYSIS_VOICE_SEGMENTS"
+	InstanceStorageResourceTypeEMAILMESSAGES                        InstanceStorageResourceType = "EMAIL_MESSAGES"
+)
+
+type StorageType string
+
+const (
+	StorageTypeS3                 StorageType = "S3"
+	StorageTypeKINESISVIDEOSTREAM StorageType = "KINESIS_VIDEO_STREAM"
+	StorageTypeKINESISSTREAM      StorageType = "KINESIS_STREAM"
+	StorageTypeKINESISFIREHOSE    StorageType = "KINESIS_FIREHOSE"
+)
+
+type IntegrationType string
+
+const (
+	IntegrationTypeLEXBOT               IntegrationType = "LEX_BOT"
+	IntegrationTypeLAMBDAFUNCTION       IntegrationType = "LAMBDA_FUNCTION"
+	IntegrationTypeAPPLICATION          IntegrationType = "APPLICATION"
+	IntegrationTypeCASESDOMAIN          IntegrationType = "CASES_DOMAIN"
+	IntegrationTypeWISDOMASSISTANT      IntegrationType = "WISDOM_ASSISTANT"
+	IntegrationTypeWISDOMKNOWLEDGEBASE  IntegrationType = "WISDOM_KNOWLEDGE_BASE"
+	IntegrationTypeWISDOMQUICKRESPONSES IntegrationType = "WISDOM_QUICK_RESPONSES"
+	IntegrationTypeFILESCANNER          IntegrationType = "FILE_SCANNER"
+	IntegrationTypeMESSAGEPROCESSOR     IntegrationType = "MESSAGE_PROCESSOR"
+	IntegrationTypeQMESSAGETEMPLATES    IntegrationType = "Q_MESSAGE_TEMPLATES"
+	IntegrationTypeSESIDENTITY          IntegrationType = "SES_IDENTITY"
+)
+
+type Priority string
+
+const (
+	PriorityHIGH Priority = "HIGH"
+	PriorityLOW  Priority = "LOW"
+)
+
+type QueueStatus string
+
+const (
+	QueueStatusENABLED  QueueStatus = "ENABLED"
+	QueueStatusDISABLED QueueStatus = "DISABLED"
+)
+
+type QueueType string
+
+const (
+	QueueTypeSTANDARD QueueType = "STANDARD"
+	QueueTypeAGENT    QueueType = "AGENT"
+)
+
+type QuickConnectType string
+
+const (
+	QuickConnectTypePHONENUMBER QuickConnectType = "PHONE_NUMBER"
+	QuickConnectTypeQUEUE       QuickConnectType = "QUEUE"
+	QuickConnectTypeUSER        QuickConnectType = "USER"
+	QuickConnectTypeFLOW        QuickConnectType = "FLOW"
+)
+
+type QuickConnectQuickConnectType string
+
+const (
+	QuickConnectQuickConnectTypePHONENUMBER QuickConnectQuickConnectType = "PHONE_NUMBER"
+	QuickConnectQuickConnectTypeQUEUE       QuickConnectQuickConnectType = "QUEUE"
+	QuickConnectQuickConnectTypeUSER        QuickConnectQuickConnectType = "USER"
+	QuickConnectQuickConnectTypeFLOW        QuickConnectQuickConnectType = "FLOW"
+)
+
+type RoutingProfileAgentAvailabilityTimer string
+
+const (
+	RoutingProfileAgentAvailabilityTimerTIMESINCELASTACTIVITY RoutingProfileAgentAvailabilityTimer = "TIME_SINCE_LAST_ACTIVITY"
+	RoutingProfileAgentAvailabilityTimerTIMESINCELASTINBOUND  RoutingProfileAgentAvailabilityTimer = "TIME_SINCE_LAST_INBOUND"
+)
+
+type Channel string
+
+const (
+	ChannelVOICE Channel = "VOICE"
+	ChannelCHAT  Channel = "CHAT"
+	ChannelTASK  Channel = "TASK"
+	ChannelEMAIL Channel = "EMAIL"
+)
+
+type BehaviorType string
+
+const (
+	BehaviorTypeROUTECURRENTCHANNELONLY BehaviorType = "ROUTE_CURRENT_CHANNEL_ONLY"
+	BehaviorTypeROUTEANYCHANNEL         BehaviorType = "ROUTE_ANY_CHANNEL"
+)
+
+type AssignSlaActionCaseSlaConfigurationType string
+
+const (
+	AssignSlaActionCaseSlaConfigurationTypeCaseField AssignSlaActionCaseSlaConfigurationType = "CaseField"
+)
+
+type AssignSlaActionSlaAssignmentType string
+
+const (
+	AssignSlaActionSlaAssignmentTypeCASES AssignSlaActionSlaAssignmentType = "CASES"
+)
+
+type SendNotificationActionContentType string
+
+const (
+	SendNotificationActionContentTypePLAINTEXT SendNotificationActionContentType = "PLAIN_TEXT"
+)
+
+type SendNotificationActionDeliveryMethod string
+
+const (
+	SendNotificationActionDeliveryMethodEMAIL SendNotificationActionDeliveryMethod = "EMAIL"
+)
+
+type RulePublishStatus string
+
+const (
+	RulePublishStatusDRAFT     RulePublishStatus = "DRAFT"
+	RulePublishStatusPUBLISHED RulePublishStatus = "PUBLISHED"
+)
+
+type RuleTriggerEventSourceEventSourceName string
+
+const (
+	RuleTriggerEventSourceEventSourceNameOnEmailAnalysisAvailable         RuleTriggerEventSourceEventSourceName = "OnEmailAnalysisAvailable"
+	RuleTriggerEventSourceEventSourceNameOnContactEvaluationSubmit        RuleTriggerEventSourceEventSourceName = "OnContactEvaluationSubmit"
+	RuleTriggerEventSourceEventSourceNameOnPostCallAnalysisAvailable      RuleTriggerEventSourceEventSourceName = "OnPostCallAnalysisAvailable"
+	RuleTriggerEventSourceEventSourceNameOnRealTimeCallAnalysisAvailable  RuleTriggerEventSourceEventSourceName = "OnRealTimeCallAnalysisAvailable"
+	RuleTriggerEventSourceEventSourceNameOnRealTimeChatAnalysisAvailable  RuleTriggerEventSourceEventSourceName = "OnRealTimeChatAnalysisAvailable"
+	RuleTriggerEventSourceEventSourceNameOnPostChatAnalysisAvailable      RuleTriggerEventSourceEventSourceName = "OnPostChatAnalysisAvailable"
+	RuleTriggerEventSourceEventSourceNameOnZendeskTicketCreate            RuleTriggerEventSourceEventSourceName = "OnZendeskTicketCreate"
+	RuleTriggerEventSourceEventSourceNameOnZendeskTicketStatusUpdate      RuleTriggerEventSourceEventSourceName = "OnZendeskTicketStatusUpdate"
+	RuleTriggerEventSourceEventSourceNameOnSalesforceCaseCreate           RuleTriggerEventSourceEventSourceName = "OnSalesforceCaseCreate"
+	RuleTriggerEventSourceEventSourceNameOnMetricDataUpdate               RuleTriggerEventSourceEventSourceName = "OnMetricDataUpdate"
+	RuleTriggerEventSourceEventSourceNameOnCaseCreate                     RuleTriggerEventSourceEventSourceName = "OnCaseCreate"
+	RuleTriggerEventSourceEventSourceNameOnCaseUpdate                     RuleTriggerEventSourceEventSourceName = "OnCaseUpdate"
+	RuleTriggerEventSourceEventSourceNameOnSlaBreach                      RuleTriggerEventSourceEventSourceName = "OnSlaBreach"
+	RuleTriggerEventSourceEventSourceNameOnSchedulePublish                RuleTriggerEventSourceEventSourceName = "OnSchedulePublish"
+	RuleTriggerEventSourceEventSourceNameOnScheduleUpdate                 RuleTriggerEventSourceEventSourceName = "OnScheduleUpdate"
+	RuleTriggerEventSourceEventSourceNameOnScheduleTimeOffRequestActivity RuleTriggerEventSourceEventSourceName = "OnScheduleTimeOffRequestActivity"
+)
+
+type ApplicationType string
+
+const (
+	ApplicationTypeMCP                   ApplicationType = "MCP"
+	ApplicationTypeTHIRDPARTYAPPLICATION ApplicationType = "THIRD_PARTY_APPLICATION"
+)
+
+type PrimaryAttributeValueAccessType string
+
+const (
+	PrimaryAttributeValueAccessTypeALLOW PrimaryAttributeValueAccessType = "ALLOW"
+)
+
+type FieldType string
+
+const (
+	FieldTypeNAME           FieldType = "NAME"
+	FieldTypeDESCRIPTION    FieldType = "DESCRIPTION"
+	FieldTypeSCHEDULEDTIME  FieldType = "SCHEDULED_TIME"
+	FieldTypeQUICKCONNECT   FieldType = "QUICK_CONNECT"
+	FieldTypeURL            FieldType = "URL"
+	FieldTypeNUMBER         FieldType = "NUMBER"
+	FieldTypeTEXT           FieldType = "TEXT"
+	FieldTypeTEXTAREA       FieldType = "TEXT_AREA"
+	FieldTypeDATETIME       FieldType = "DATE_TIME"
+	FieldTypeBOOLEAN        FieldType = "BOOLEAN"
+	FieldTypeSINGLESELECT   FieldType = "SINGLE_SELECT"
+	FieldTypeEMAIL          FieldType = "EMAIL"
+	FieldTypeEXPIRYDURATION FieldType = "EXPIRY_DURATION"
+	FieldTypeSELFASSIGN     FieldType = "SELF_ASSIGN"
+)
+
+type Status string
+
+const (
+	StatusACTIVE   Status = "ACTIVE"
+	StatusINACTIVE Status = "INACTIVE"
+)
+
+type EntryPointType string
+
+const (
+	EntryPointTypeVOICECALL EntryPointType = "VOICE_CALL"
+	EntryPointTypeCHAT      EntryPointType = "CHAT"
+)
+
+type TestCaseStatus string
+
+const (
+	TestCaseStatusSAVED     TestCaseStatus = "SAVED"
+	TestCaseStatusPUBLISHED TestCaseStatus = "PUBLISHED"
+)
+
+type TrafficDistributionGroupStatus string
+
+const (
+	TrafficDistributionGroupStatusCREATIONINPROGRESS TrafficDistributionGroupStatus = "CREATION_IN_PROGRESS"
+	TrafficDistributionGroupStatusACTIVE             TrafficDistributionGroupStatus = "ACTIVE"
+	TrafficDistributionGroupStatusCREATIONFAILED     TrafficDistributionGroupStatus = "CREATION_FAILED"
+	TrafficDistributionGroupStatusPENDINGDELETION    TrafficDistributionGroupStatus = "PENDING_DELETION"
+	TrafficDistributionGroupStatusDELETIONFAILED     TrafficDistributionGroupStatus = "DELETION_FAILED"
+	TrafficDistributionGroupStatusUPDATEINPROGRESS   TrafficDistributionGroupStatus = "UPDATE_IN_PROGRESS"
+)
+
+type AfterContactWorkMode string
+
+const (
+	AfterContactWorkModeON       AfterContactWorkMode = "ON"
+	AfterContactWorkModeOFF      AfterContactWorkMode = "OFF"
+	AfterContactWorkModeONDEMAND AfterContactWorkMode = "ON_DEMAND"
+)
+
+type UserChannel string
+
+const (
+	UserChannelVOICE UserChannel = "VOICE"
+	UserChannelCHAT  UserChannel = "CHAT"
+	UserChannelTASK  UserChannel = "TASK"
+	UserChannelEMAIL UserChannel = "EMAIL"
+)
+
+type PhoneType string
+
+const (
+	PhoneTypeSOFTPHONE PhoneType = "SOFT_PHONE"
+	PhoneTypeDESKPHONE PhoneType = "DESK_PHONE"
+)
+
+type VoiceEnhancementMode string
+
+const (
+	VoiceEnhancementModeNONE             VoiceEnhancementMode = "NONE"
+	VoiceEnhancementModeVOICEISOLATION   VoiceEnhancementMode = "VOICE_ISOLATION"
+	VoiceEnhancementModeNOISESUPPRESSION VoiceEnhancementMode = "NOISE_SUPPRESSION"
+)
+
+type MediaType string
+
+const (
+	MediaTypeIMAGELOGOLIGHTFAVICON    MediaType = "IMAGE_LOGO_LIGHT_FAVICON"
+	MediaTypeIMAGELOGODARKFAVICON     MediaType = "IMAGE_LOGO_DARK_FAVICON"
+	MediaTypeIMAGELOGOLIGHTHORIZONTAL MediaType = "IMAGE_LOGO_LIGHT_HORIZONTAL"
+	MediaTypeIMAGELOGODARKHORIZONTAL  MediaType = "IMAGE_LOGO_DARK_HORIZONTAL"
+)
+
+type WorkspaceFontFamily string
+
+const (
+	WorkspaceFontFamilyARIAL         WorkspaceFontFamily = "ARIAL"
+	WorkspaceFontFamilyCOURIERNEW    WorkspaceFontFamily = "COURIER_NEW"
+	WorkspaceFontFamilyGEORGIA       WorkspaceFontFamily = "GEORGIA"
+	WorkspaceFontFamilyTIMESNEWROMAN WorkspaceFontFamily = "TIMES_NEW_ROMAN"
+	WorkspaceFontFamilyTREBUCHET     WorkspaceFontFamily = "TREBUCHET"
+	WorkspaceFontFamilyVERDANA       WorkspaceFontFamily = "VERDANA"
+)
+
+type Visibility string
+
+const (
+	VisibilityALL      Visibility = "ALL"
+	VisibilityASSIGNED Visibility = "ASSIGNED"
+	VisibilityNONE     Visibility = "NONE"
+)

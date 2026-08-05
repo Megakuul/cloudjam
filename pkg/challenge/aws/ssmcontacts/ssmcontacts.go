@@ -30,23 +30,23 @@ type Tag struct {
 }
 
 type Contact struct {
-	Alias       *string `json:"Alias,omitempty"`
-	Arn         *string `json:"Arn,omitempty"`
-	DisplayName *string `json:"DisplayName,omitempty"`
-	Plan        []Stage `json:"Plan,omitempty"`
-	Tags        []Tag   `json:"Tags,omitempty"`
-	Type        *string `json:"Type,omitempty"`
+	Alias       *string      `json:"Alias,omitempty"`
+	Arn         *string      `json:"Arn,omitempty"`
+	DisplayName *string      `json:"DisplayName,omitempty"`
+	Plan        []Stage      `json:"Plan,omitempty"`
+	Tags        []Tag        `json:"Tags,omitempty"`
+	Type        *ContactType `json:"Type,omitempty"`
 }
 
 func (Contact) CloudControlType() string { return "AWS::SSMContacts::Contact" }
 
 type ContactChannel struct {
-	Arn             *string `json:"Arn,omitempty"`
-	ChannelAddress  *string `json:"ChannelAddress,omitempty"`
-	ChannelName     *string `json:"ChannelName,omitempty"`
-	ChannelType     *string `json:"ChannelType,omitempty"`
-	ContactId       *string `json:"ContactId,omitempty"`
-	DeferActivation *bool   `json:"DeferActivation,omitempty"`
+	Arn             *string                    `json:"Arn,omitempty"`
+	ChannelAddress  *string                    `json:"ChannelAddress,omitempty"`
+	ChannelName     *string                    `json:"ChannelName,omitempty"`
+	ChannelType     *ContactChannelChannelType `json:"ChannelType,omitempty"`
+	ContactId       *string                    `json:"ContactId,omitempty"`
+	DeferActivation *bool                      `json:"DeferActivation,omitempty"`
 }
 
 func (ContactChannel) CloudControlType() string { return "AWS::SSMContacts::ContactChannel" }
@@ -92,12 +92,12 @@ type CoverageTime struct {
 
 type ShiftCoverage struct {
 	CoverageTimes []CoverageTime `json:"CoverageTimes,omitempty"`
-	DayOfWeek     *string        `json:"DayOfWeek,omitempty"`
+	DayOfWeek     *DayOfWeek     `json:"DayOfWeek,omitempty"`
 }
 
 type WeeklySetting struct {
-	DayOfWeek   *string `json:"DayOfWeek,omitempty"`
-	HandOffTime *string `json:"HandOffTime,omitempty"`
+	DayOfWeek   *DayOfWeek `json:"DayOfWeek,omitempty"`
+	HandOffTime *string    `json:"HandOffTime,omitempty"`
 }
 
 type RecurrenceSettings struct {
@@ -125,3 +125,31 @@ type Rotation struct {
 }
 
 func (Rotation) CloudControlType() string { return "AWS::SSMContacts::Rotation" }
+
+type ContactType string
+
+const (
+	ContactTypePERSONAL       ContactType = "PERSONAL"
+	ContactTypeESCALATION     ContactType = "ESCALATION"
+	ContactTypeONCALLSCHEDULE ContactType = "ONCALL_SCHEDULE"
+)
+
+type ContactChannelChannelType string
+
+const (
+	ContactChannelChannelTypeSMS   ContactChannelChannelType = "SMS"
+	ContactChannelChannelTypeVOICE ContactChannelChannelType = "VOICE"
+	ContactChannelChannelTypeEMAIL ContactChannelChannelType = "EMAIL"
+)
+
+type DayOfWeek string
+
+const (
+	DayOfWeekMON DayOfWeek = "MON"
+	DayOfWeekTUE DayOfWeek = "TUE"
+	DayOfWeekWED DayOfWeek = "WED"
+	DayOfWeekTHU DayOfWeek = "THU"
+	DayOfWeekFRI DayOfWeek = "FRI"
+	DayOfWeekSAT DayOfWeek = "SAT"
+	DayOfWeekSUN DayOfWeek = "SUN"
+)

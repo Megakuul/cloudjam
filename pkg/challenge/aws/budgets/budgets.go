@@ -110,8 +110,8 @@ type Budget struct {
 func (Budget) CloudControlType() string { return "AWS::Budgets::Budget" }
 
 type ActionThreshold struct {
-	Type  *string  `json:"Type,omitempty"`
-	Value *float64 `json:"Value,omitempty"`
+	Type  *ActionThresholdType `json:"Type,omitempty"`
+	Value *float64             `json:"Value,omitempty"`
 }
 
 type IamActionDefinition struct {
@@ -127,9 +127,9 @@ type ScpActionDefinition struct {
 }
 
 type SsmActionDefinition struct {
-	InstanceIds []string `json:"InstanceIds,omitempty"`
-	Region      *string  `json:"Region,omitempty"`
-	Subtype     *string  `json:"Subtype,omitempty"`
+	InstanceIds []string                    `json:"InstanceIds,omitempty"`
+	Region      *string                     `json:"Region,omitempty"`
+	Subtype     *SsmActionDefinitionSubtype `json:"Subtype,omitempty"`
 }
 
 type Definition struct {
@@ -144,21 +144,64 @@ type BudgetsActionResourceTag struct {
 }
 
 type BudgetsActionSubscriber struct {
-	Address *string `json:"Address,omitempty"`
-	Type    *string `json:"Type,omitempty"`
+	Address *string                      `json:"Address,omitempty"`
+	Type    *BudgetsActionSubscriberType `json:"Type,omitempty"`
 }
 
 type BudgetsAction struct {
-	ActionId         *string                    `json:"ActionId,omitempty"`
-	ActionThreshold  *ActionThreshold           `json:"ActionThreshold,omitempty"`
-	ActionType       *string                    `json:"ActionType,omitempty"`
-	ApprovalModel    *string                    `json:"ApprovalModel,omitempty"`
-	BudgetName       *string                    `json:"BudgetName,omitempty"`
-	Definition       *Definition                `json:"Definition,omitempty"`
-	ExecutionRoleArn *string                    `json:"ExecutionRoleArn,omitempty"`
-	NotificationType *string                    `json:"NotificationType,omitempty"`
-	ResourceTags     []BudgetsActionResourceTag `json:"ResourceTags,omitempty"`
-	Subscribers      []BudgetsActionSubscriber  `json:"Subscribers,omitempty"`
+	ActionId         *string                        `json:"ActionId,omitempty"`
+	ActionThreshold  *ActionThreshold               `json:"ActionThreshold,omitempty"`
+	ActionType       *BudgetsActionActionType       `json:"ActionType,omitempty"`
+	ApprovalModel    *BudgetsActionApprovalModel    `json:"ApprovalModel,omitempty"`
+	BudgetName       *string                        `json:"BudgetName,omitempty"`
+	Definition       *Definition                    `json:"Definition,omitempty"`
+	ExecutionRoleArn *string                        `json:"ExecutionRoleArn,omitempty"`
+	NotificationType *BudgetsActionNotificationType `json:"NotificationType,omitempty"`
+	ResourceTags     []BudgetsActionResourceTag     `json:"ResourceTags,omitempty"`
+	Subscribers      []BudgetsActionSubscriber      `json:"Subscribers,omitempty"`
 }
 
 func (BudgetsAction) CloudControlType() string { return "AWS::Budgets::BudgetsAction" }
+
+type ActionThresholdType string
+
+const (
+	ActionThresholdTypePERCENTAGE    ActionThresholdType = "PERCENTAGE"
+	ActionThresholdTypeABSOLUTEVALUE ActionThresholdType = "ABSOLUTE_VALUE"
+)
+
+type BudgetsActionActionType string
+
+const (
+	BudgetsActionActionTypeAPPLYIAMPOLICY  BudgetsActionActionType = "APPLY_IAM_POLICY"
+	BudgetsActionActionTypeAPPLYSCPPOLICY  BudgetsActionActionType = "APPLY_SCP_POLICY"
+	BudgetsActionActionTypeRUNSSMDOCUMENTS BudgetsActionActionType = "RUN_SSM_DOCUMENTS"
+)
+
+type BudgetsActionApprovalModel string
+
+const (
+	BudgetsActionApprovalModelAUTOMATIC BudgetsActionApprovalModel = "AUTOMATIC"
+	BudgetsActionApprovalModelMANUAL    BudgetsActionApprovalModel = "MANUAL"
+)
+
+type SsmActionDefinitionSubtype string
+
+const (
+	SsmActionDefinitionSubtypeSTOPEC2INSTANCES SsmActionDefinitionSubtype = "STOP_EC2_INSTANCES"
+	SsmActionDefinitionSubtypeSTOPRDSINSTANCES SsmActionDefinitionSubtype = "STOP_RDS_INSTANCES"
+)
+
+type BudgetsActionNotificationType string
+
+const (
+	BudgetsActionNotificationTypeACTUAL     BudgetsActionNotificationType = "ACTUAL"
+	BudgetsActionNotificationTypeFORECASTED BudgetsActionNotificationType = "FORECASTED"
+)
+
+type BudgetsActionSubscriberType string
+
+const (
+	BudgetsActionSubscriberTypeSNS   BudgetsActionSubscriberType = "SNS"
+	BudgetsActionSubscriberTypeEMAIL BudgetsActionSubscriberType = "EMAIL"
+)

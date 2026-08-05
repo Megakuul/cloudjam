@@ -27,7 +27,7 @@ type ReplicationSet struct {
 func (ReplicationSet) CloudControlType() string { return "AWS::SSMIncidents::ReplicationSet" }
 
 type DynamicSsmParameterValue struct {
-	Variable *string `json:"Variable,omitempty"`
+	Variable *VariableType `json:"Variable,omitempty"`
 }
 
 type DynamicSsmParameter struct {
@@ -41,12 +41,12 @@ type SsmParameter struct {
 }
 
 type SsmAutomation struct {
-	DocumentName      *string               `json:"DocumentName,omitempty"`
-	DocumentVersion   *string               `json:"DocumentVersion,omitempty"`
-	DynamicParameters []DynamicSsmParameter `json:"DynamicParameters,omitempty"`
-	Parameters        []SsmParameter        `json:"Parameters,omitempty"`
-	RoleArn           *string               `json:"RoleArn,omitempty"`
-	TargetAccount     *string               `json:"TargetAccount,omitempty"`
+	DocumentName      *string                     `json:"DocumentName,omitempty"`
+	DocumentVersion   *string                     `json:"DocumentVersion,omitempty"`
+	DynamicParameters []DynamicSsmParameter       `json:"DynamicParameters,omitempty"`
+	Parameters        []SsmParameter              `json:"Parameters,omitempty"`
+	RoleArn           *string                     `json:"RoleArn,omitempty"`
+	TargetAccount     *SsmAutomationTargetAccount `json:"TargetAccount,omitempty"`
 }
 
 type Action struct {
@@ -102,3 +102,17 @@ type ResponsePlan struct {
 }
 
 func (ResponsePlan) CloudControlType() string { return "AWS::SSMIncidents::ResponsePlan" }
+
+type VariableType string
+
+const (
+	VariableTypeINCIDENTRECORDARN VariableType = "INCIDENT_RECORD_ARN"
+	VariableTypeINVOLVEDRESOURCES VariableType = "INVOLVED_RESOURCES"
+)
+
+type SsmAutomationTargetAccount string
+
+const (
+	SsmAutomationTargetAccountIMPACTEDACCOUNT          SsmAutomationTargetAccount = "IMPACTED_ACCOUNT"
+	SsmAutomationTargetAccountRESPONSEPLANOWNERACCOUNT SsmAutomationTargetAccount = "RESPONSE_PLAN_OWNER_ACCOUNT"
+)

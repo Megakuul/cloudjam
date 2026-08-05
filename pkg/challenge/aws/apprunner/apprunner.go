@@ -29,7 +29,7 @@ type ObservabilityConfigurationTag struct {
 }
 
 type TraceConfiguration struct {
-	Vendor *string `json:"Vendor,omitempty"`
+	Vendor *TraceConfigurationVendor `json:"Vendor,omitempty"`
 }
 
 type ObservabilityConfiguration struct {
@@ -50,12 +50,12 @@ type EncryptionConfiguration struct {
 }
 
 type HealthCheckConfiguration struct {
-	HealthyThreshold   *int    `json:"HealthyThreshold,omitempty"`
-	Interval           *int    `json:"Interval,omitempty"`
-	Path               *string `json:"Path,omitempty"`
-	Protocol           *string `json:"Protocol,omitempty"`
-	Timeout            *int    `json:"Timeout,omitempty"`
-	UnhealthyThreshold *int    `json:"UnhealthyThreshold,omitempty"`
+	HealthyThreshold   *int                              `json:"HealthyThreshold,omitempty"`
+	Interval           *int                              `json:"Interval,omitempty"`
+	Path               *string                           `json:"Path,omitempty"`
+	Protocol           *HealthCheckConfigurationProtocol `json:"Protocol,omitempty"`
+	Timeout            *int                              `json:"Timeout,omitempty"`
+	UnhealthyThreshold *int                              `json:"UnhealthyThreshold,omitempty"`
 }
 
 type InstanceConfiguration struct {
@@ -65,8 +65,8 @@ type InstanceConfiguration struct {
 }
 
 type EgressConfiguration struct {
-	EgressType      *string `json:"EgressType,omitempty"`
-	VpcConnectorArn *string `json:"VpcConnectorArn,omitempty"`
+	EgressType      *EgressConfigurationEgressType `json:"EgressType,omitempty"`
+	VpcConnectorArn *string                        `json:"VpcConnectorArn,omitempty"`
 }
 
 type IngressConfiguration struct {
@@ -74,9 +74,9 @@ type IngressConfiguration struct {
 }
 
 type NetworkConfiguration struct {
-	EgressConfiguration  *EgressConfiguration  `json:"EgressConfiguration,omitempty"`
-	IngressConfiguration *IngressConfiguration `json:"IngressConfiguration,omitempty"`
-	IpAddressType        *string               `json:"IpAddressType,omitempty"`
+	EgressConfiguration  *EgressConfiguration               `json:"EgressConfiguration,omitempty"`
+	IngressConfiguration *IngressConfiguration              `json:"IngressConfiguration,omitempty"`
+	IpAddressType        *NetworkConfigurationIpAddressType `json:"IpAddressType,omitempty"`
 }
 
 type ServiceObservabilityConfiguration struct {
@@ -95,22 +95,22 @@ type KeyValuePair struct {
 }
 
 type CodeConfigurationValues struct {
-	BuildCommand                *string        `json:"BuildCommand,omitempty"`
-	Port                        *string        `json:"Port,omitempty"`
-	Runtime                     *string        `json:"Runtime,omitempty"`
-	RuntimeEnvironmentSecrets   []KeyValuePair `json:"RuntimeEnvironmentSecrets,omitempty"`
-	RuntimeEnvironmentVariables []KeyValuePair `json:"RuntimeEnvironmentVariables,omitempty"`
-	StartCommand                *string        `json:"StartCommand,omitempty"`
+	BuildCommand                *string                         `json:"BuildCommand,omitempty"`
+	Port                        *string                         `json:"Port,omitempty"`
+	Runtime                     *CodeConfigurationValuesRuntime `json:"Runtime,omitempty"`
+	RuntimeEnvironmentSecrets   []KeyValuePair                  `json:"RuntimeEnvironmentSecrets,omitempty"`
+	RuntimeEnvironmentVariables []KeyValuePair                  `json:"RuntimeEnvironmentVariables,omitempty"`
+	StartCommand                *string                         `json:"StartCommand,omitempty"`
 }
 
 type CodeConfiguration struct {
-	CodeConfigurationValues *CodeConfigurationValues `json:"CodeConfigurationValues,omitempty"`
-	ConfigurationSource     *string                  `json:"ConfigurationSource,omitempty"`
+	CodeConfigurationValues *CodeConfigurationValues              `json:"CodeConfigurationValues,omitempty"`
+	ConfigurationSource     *CodeConfigurationConfigurationSource `json:"ConfigurationSource,omitempty"`
 }
 
 type SourceCodeVersion struct {
-	Type  *string `json:"Type,omitempty"`
-	Value *string `json:"Value,omitempty"`
+	Type  *SourceCodeVersionType `json:"Type,omitempty"`
+	Value *string                `json:"Value,omitempty"`
 }
 
 type CodeRepository struct {
@@ -128,9 +128,9 @@ type ImageConfiguration struct {
 }
 
 type ImageRepository struct {
-	ImageConfiguration  *ImageConfiguration `json:"ImageConfiguration,omitempty"`
-	ImageIdentifier     *string             `json:"ImageIdentifier,omitempty"`
-	ImageRepositoryType *string             `json:"ImageRepositoryType,omitempty"`
+	ImageConfiguration  *ImageConfiguration                 `json:"ImageConfiguration,omitempty"`
+	ImageIdentifier     *string                             `json:"ImageIdentifier,omitempty"`
+	ImageRepositoryType *ImageRepositoryImageRepositoryType `json:"ImageRepositoryType,omitempty"`
 }
 
 type SourceConfiguration struct {
@@ -190,13 +190,91 @@ type VpcIngressConnectionTag struct {
 }
 
 type VpcIngressConnection struct {
-	DomainName               *string                   `json:"DomainName,omitempty"`
-	IngressVpcConfiguration  *IngressVpcConfiguration  `json:"IngressVpcConfiguration,omitempty"`
-	ServiceArn               *string                   `json:"ServiceArn,omitempty"`
-	Status                   *string                   `json:"Status,omitempty"`
-	Tags                     []VpcIngressConnectionTag `json:"Tags,omitempty"`
-	VpcIngressConnectionArn  *string                   `json:"VpcIngressConnectionArn,omitempty"`
-	VpcIngressConnectionName *string                   `json:"VpcIngressConnectionName,omitempty"`
+	DomainName               *string                     `json:"DomainName,omitempty"`
+	IngressVpcConfiguration  *IngressVpcConfiguration    `json:"IngressVpcConfiguration,omitempty"`
+	ServiceArn               *string                     `json:"ServiceArn,omitempty"`
+	Status                   *VpcIngressConnectionStatus `json:"Status,omitempty"`
+	Tags                     []VpcIngressConnectionTag   `json:"Tags,omitempty"`
+	VpcIngressConnectionArn  *string                     `json:"VpcIngressConnectionArn,omitempty"`
+	VpcIngressConnectionName *string                     `json:"VpcIngressConnectionName,omitempty"`
 }
 
 func (VpcIngressConnection) CloudControlType() string { return "AWS::AppRunner::VpcIngressConnection" }
+
+type TraceConfigurationVendor string
+
+const (
+	TraceConfigurationVendorAWSXRAY TraceConfigurationVendor = "AWSXRAY"
+)
+
+type HealthCheckConfigurationProtocol string
+
+const (
+	HealthCheckConfigurationProtocolTCP  HealthCheckConfigurationProtocol = "TCP"
+	HealthCheckConfigurationProtocolHTTP HealthCheckConfigurationProtocol = "HTTP"
+)
+
+type EgressConfigurationEgressType string
+
+const (
+	EgressConfigurationEgressTypeDEFAULT EgressConfigurationEgressType = "DEFAULT"
+	EgressConfigurationEgressTypeVPC     EgressConfigurationEgressType = "VPC"
+)
+
+type NetworkConfigurationIpAddressType string
+
+const (
+	NetworkConfigurationIpAddressTypeIPV4      NetworkConfigurationIpAddressType = "IPV4"
+	NetworkConfigurationIpAddressTypeDUALSTACK NetworkConfigurationIpAddressType = "DUAL_STACK"
+)
+
+type CodeConfigurationValuesRuntime string
+
+const (
+	CodeConfigurationValuesRuntimePYTHON3    CodeConfigurationValuesRuntime = "PYTHON_3"
+	CodeConfigurationValuesRuntimeNODEJS12   CodeConfigurationValuesRuntime = "NODEJS_12"
+	CodeConfigurationValuesRuntimeNODEJS14   CodeConfigurationValuesRuntime = "NODEJS_14"
+	CodeConfigurationValuesRuntimeCORRETTO8  CodeConfigurationValuesRuntime = "CORRETTO_8"
+	CodeConfigurationValuesRuntimeCORRETTO11 CodeConfigurationValuesRuntime = "CORRETTO_11"
+	CodeConfigurationValuesRuntimeNODEJS16   CodeConfigurationValuesRuntime = "NODEJS_16"
+	CodeConfigurationValuesRuntimeGO1        CodeConfigurationValuesRuntime = "GO_1"
+	CodeConfigurationValuesRuntimeDOTNET6    CodeConfigurationValuesRuntime = "DOTNET_6"
+	CodeConfigurationValuesRuntimePHP81      CodeConfigurationValuesRuntime = "PHP_81"
+	CodeConfigurationValuesRuntimeRUBY31     CodeConfigurationValuesRuntime = "RUBY_31"
+	CodeConfigurationValuesRuntimePYTHON311  CodeConfigurationValuesRuntime = "PYTHON_311"
+	CodeConfigurationValuesRuntimeNODEJS18   CodeConfigurationValuesRuntime = "NODEJS_18"
+	CodeConfigurationValuesRuntimeNODEJS22   CodeConfigurationValuesRuntime = "NODEJS_22"
+)
+
+type CodeConfigurationConfigurationSource string
+
+const (
+	CodeConfigurationConfigurationSourceREPOSITORY CodeConfigurationConfigurationSource = "REPOSITORY"
+	CodeConfigurationConfigurationSourceAPI        CodeConfigurationConfigurationSource = "API"
+)
+
+type SourceCodeVersionType string
+
+const (
+	SourceCodeVersionTypeBRANCH SourceCodeVersionType = "BRANCH"
+)
+
+type ImageRepositoryImageRepositoryType string
+
+const (
+	ImageRepositoryImageRepositoryTypeECR       ImageRepositoryImageRepositoryType = "ECR"
+	ImageRepositoryImageRepositoryTypeECRPUBLIC ImageRepositoryImageRepositoryType = "ECR_PUBLIC"
+)
+
+type VpcIngressConnectionStatus string
+
+const (
+	VpcIngressConnectionStatusAVAILABLE       VpcIngressConnectionStatus = "AVAILABLE"
+	VpcIngressConnectionStatusPENDINGCREATION VpcIngressConnectionStatus = "PENDING_CREATION"
+	VpcIngressConnectionStatusPENDINGUPDATE   VpcIngressConnectionStatus = "PENDING_UPDATE"
+	VpcIngressConnectionStatusPENDINGDELETION VpcIngressConnectionStatus = "PENDING_DELETION"
+	VpcIngressConnectionStatusFAILEDCREATION  VpcIngressConnectionStatus = "FAILED_CREATION"
+	VpcIngressConnectionStatusFAILEDUPDATE    VpcIngressConnectionStatus = "FAILED_UPDATE"
+	VpcIngressConnectionStatusFAILEDDELETION  VpcIngressConnectionStatus = "FAILED_DELETION"
+	VpcIngressConnectionStatusDELETED         VpcIngressConnectionStatus = "DELETED"
+)

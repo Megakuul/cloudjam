@@ -11,7 +11,7 @@ type SlateSource struct {
 }
 
 type LogConfigurationForChannel struct {
-	LogTypes []string `json:"LogTypes,omitempty"`
+	LogTypes []LogType `json:"LogTypes,omitempty"`
 }
 
 type DashPlaylistSettings struct {
@@ -22,8 +22,8 @@ type DashPlaylistSettings struct {
 }
 
 type HlsPlaylistSettings struct {
-	AdMarkupType          []string `json:"AdMarkupType,omitempty"`
-	ManifestWindowSeconds *float64 `json:"ManifestWindowSeconds,omitempty"`
+	AdMarkupType          []AdMarkupType `json:"AdMarkupType,omitempty"`
+	ManifestWindowSeconds *float64       `json:"ManifestWindowSeconds,omitempty"`
 }
 
 type RequestOutputItem struct {
@@ -49,9 +49,9 @@ type Channel struct {
 	FillerSlate            *SlateSource                `json:"FillerSlate,omitempty"`
 	LogConfiguration       *LogConfigurationForChannel `json:"LogConfiguration,omitempty"`
 	Outputs                []RequestOutputItem         `json:"Outputs,omitempty"`
-	PlaybackMode           *string                     `json:"PlaybackMode,omitempty"`
+	PlaybackMode           *PlaybackMode               `json:"PlaybackMode,omitempty"`
 	Tags                   []Tag                       `json:"Tags,omitempty"`
-	Tier                   *string                     `json:"Tier,omitempty"`
+	Tier                   *Tier                       `json:"Tier,omitempty"`
 	TimeShiftConfiguration *TimeShiftConfiguration     `json:"TimeShiftConfiguration,omitempty"`
 }
 
@@ -67,7 +67,7 @@ func (ChannelPolicy) CloudControlType() string { return "AWS::MediaTailor::Chann
 type HttpPackageConfiguration struct {
 	Path        *string `json:"Path,omitempty"`
 	SourceGroup *string `json:"SourceGroup,omitempty"`
-	Type        *string `json:"Type,omitempty"`
+	Type        *Type   `json:"Type,omitempty"`
 }
 
 type LiveSourceTag struct {
@@ -86,14 +86,14 @@ type LiveSource struct {
 func (LiveSource) CloudControlType() string { return "AWS::MediaTailor::LiveSource" }
 
 type AdConditioningConfiguration struct {
-	StreamingMediaFileConditioning *string `json:"StreamingMediaFileConditioning,omitempty"`
+	StreamingMediaFileConditioning *StreamingMediaFileConditioning `json:"StreamingMediaFileConditioning,omitempty"`
 }
 
 type HttpRequest struct {
-	Body            *string           `json:"Body,omitempty"`
-	CompressRequest *string           `json:"CompressRequest,omitempty"`
-	Headers         map[string]string `json:"Headers,omitempty"`
-	HttpMethod      *string           `json:"HttpMethod,omitempty"`
+	Body            *string                     `json:"Body,omitempty"`
+	CompressRequest *HttpRequestCompressRequest `json:"CompressRequest,omitempty"`
+	Headers         map[string]string           `json:"Headers,omitempty"`
+	HttpMethod      *HttpRequestHttpMethod      `json:"HttpMethod,omitempty"`
 }
 
 type AdDecisionServerConfiguration struct {
@@ -114,9 +114,9 @@ type AdsPersonalizationTimeouts struct {
 }
 
 type AvailSuppression struct {
-	FillPolicy *string `json:"FillPolicy,omitempty"`
-	Mode       *string `json:"Mode,omitempty"`
-	Value      *string `json:"Value,omitempty"`
+	FillPolicy *AvailSuppressionFillPolicy `json:"FillPolicy,omitempty"`
+	Mode       *AvailSuppressionMode       `json:"Mode,omitempty"`
+	Value      *string                     `json:"Value,omitempty"`
 }
 
 type Bumper struct {
@@ -130,9 +130,9 @@ type CdnConfiguration struct {
 }
 
 type DashConfiguration struct {
-	ManifestEndpointPrefix *string `json:"ManifestEndpointPrefix,omitempty"`
-	MpdLocation            *string `json:"MpdLocation,omitempty"`
-	OriginManifestType     *string `json:"OriginManifestType,omitempty"`
+	ManifestEndpointPrefix *string                              `json:"ManifestEndpointPrefix,omitempty"`
+	MpdLocation            *string                              `json:"MpdLocation,omitempty"`
+	OriginManifestType     *DashConfigurationOriginManifestType `json:"OriginManifestType,omitempty"`
 }
 
 type HlsConfiguration struct {
@@ -186,7 +186,7 @@ type PlaybackConfiguration struct {
 	DashConfiguration                   *DashConfiguration             `json:"DashConfiguration,omitempty"`
 	FunctionMapping                     map[string]string              `json:"FunctionMapping,omitempty"`
 	HlsConfiguration                    *HlsConfiguration              `json:"HlsConfiguration,omitempty"`
-	InsertionMode                       *string                        `json:"InsertionMode,omitempty"`
+	InsertionMode                       *InsertionMode                 `json:"InsertionMode,omitempty"`
 	LivePreRollConfiguration            *LivePreRollConfiguration      `json:"LivePreRollConfiguration,omitempty"`
 	LogConfiguration                    *LogConfiguration              `json:"LogConfiguration,omitempty"`
 	ManifestProcessingRules             *ManifestProcessingRules       `json:"ManifestProcessingRules,omitempty"`
@@ -212,7 +212,7 @@ type SecretsManagerAccessTokenConfiguration struct {
 }
 
 type AccessConfiguration struct {
-	AccessType                             *string                                 `json:"AccessType,omitempty"`
+	AccessType                             *AccessType                             `json:"AccessType,omitempty"`
 	SecretsManagerAccessTokenConfiguration *SecretsManagerAccessTokenConfiguration `json:"SecretsManagerAccessTokenConfiguration,omitempty"`
 }
 
@@ -247,9 +247,9 @@ type SourceLocation struct {
 func (SourceLocation) CloudControlType() string { return "AWS::MediaTailor::SourceLocation" }
 
 type VodSourceHttpPackageConfiguration struct {
-	Path        *string `json:"Path,omitempty"`
-	SourceGroup *string `json:"SourceGroup,omitempty"`
-	Type        *string `json:"Type,omitempty"`
+	Path        *string        `json:"Path,omitempty"`
+	SourceGroup *string        `json:"SourceGroup,omitempty"`
+	Type        *VodSourceType `json:"Type,omitempty"`
 }
 
 type VodSourceTag struct {
@@ -266,3 +266,102 @@ type VodSource struct {
 }
 
 func (VodSource) CloudControlType() string { return "AWS::MediaTailor::VodSource" }
+
+type LogType string
+
+const (
+	LogTypeASRUN LogType = "AS_RUN"
+)
+
+type AdMarkupType string
+
+const (
+	AdMarkupTypeDATERANGE      AdMarkupType = "DATERANGE"
+	AdMarkupTypeSCTE35ENHANCED AdMarkupType = "SCTE35_ENHANCED"
+)
+
+type PlaybackMode string
+
+const (
+	PlaybackModeLOOP   PlaybackMode = "LOOP"
+	PlaybackModeLINEAR PlaybackMode = "LINEAR"
+)
+
+type Tier string
+
+const (
+	TierBASIC    Tier = "BASIC"
+	TierSTANDARD Tier = "STANDARD"
+)
+
+type Type string
+
+const (
+	TypeDASH Type = "DASH"
+	TypeHLS  Type = "HLS"
+)
+
+type StreamingMediaFileConditioning string
+
+const (
+	StreamingMediaFileConditioningTRANSCODE StreamingMediaFileConditioning = "TRANSCODE"
+	StreamingMediaFileConditioningNONE      StreamingMediaFileConditioning = "NONE"
+)
+
+type HttpRequestCompressRequest string
+
+const (
+	HttpRequestCompressRequestNONE HttpRequestCompressRequest = "NONE"
+	HttpRequestCompressRequestGZIP HttpRequestCompressRequest = "GZIP"
+)
+
+type HttpRequestHttpMethod string
+
+const (
+	HttpRequestHttpMethodGET  HttpRequestHttpMethod = "GET"
+	HttpRequestHttpMethodPOST HttpRequestHttpMethod = "POST"
+)
+
+type AvailSuppressionFillPolicy string
+
+const (
+	AvailSuppressionFillPolicyPARTIALAVAIL  AvailSuppressionFillPolicy = "PARTIAL_AVAIL"
+	AvailSuppressionFillPolicyFULLAVAILONLY AvailSuppressionFillPolicy = "FULL_AVAIL_ONLY"
+)
+
+type AvailSuppressionMode string
+
+const (
+	AvailSuppressionModeOFF            AvailSuppressionMode = "OFF"
+	AvailSuppressionModeBEHINDLIVEEDGE AvailSuppressionMode = "BEHIND_LIVE_EDGE"
+	AvailSuppressionModeAFTERLIVEEDGE  AvailSuppressionMode = "AFTER_LIVE_EDGE"
+)
+
+type DashConfigurationOriginManifestType string
+
+const (
+	DashConfigurationOriginManifestTypeSINGLEPERIOD DashConfigurationOriginManifestType = "SINGLE_PERIOD"
+	DashConfigurationOriginManifestTypeMULTIPERIOD  DashConfigurationOriginManifestType = "MULTI_PERIOD"
+)
+
+type InsertionMode string
+
+const (
+	InsertionModeSTITCHEDONLY InsertionMode = "STITCHED_ONLY"
+	InsertionModePLAYERSELECT InsertionMode = "PLAYER_SELECT"
+)
+
+type AccessType string
+
+const (
+	AccessTypeS3SIGV4                   AccessType = "S3_SIGV4"
+	AccessTypeSECRETSMANAGERACCESSTOKEN AccessType = "SECRETS_MANAGER_ACCESS_TOKEN"
+	AccessTypeAUTODETECTSIGV4           AccessType = "AUTODETECT_SIGV4"
+)
+
+type VodSourceType string
+
+const (
+	VodSourceTypeDASH VodSourceType = "DASH"
+	VodSourceTypeHLS  VodSourceType = "HLS"
+)

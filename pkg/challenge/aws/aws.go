@@ -1,14 +1,6 @@
-// Package aws reads and writes cloud control resources from a challenge plugin.
-//
-// The resource types live in the per service subpackages and are generated from
-// the aws resource schemas, so a resource is a plain struct of pointers with the
-// exact cloud control property names:
-//
-//	id, err := aws.Create(&s3.Bucket{BucketName: aws.String("demo")})
-//	bucket, err := aws.Get[*s3.Bucket](id)
-//	err = aws.Patch(id, &s3.Bucket{VersioningConfiguration: &s3.VersioningConfiguration{
-//		Status: aws.String("Enabled"),
-//	}})
+//go:build wasip1
+
+// Package aws contains a typesafe resource API that you can use when creating a plugin for an AWS provider.
 package aws
 
 import (
@@ -20,15 +12,11 @@ import (
 	"codeberg.org/megakuul/cloudjam/pkg/challenge/api"
 )
 
-//go:generate go run ./internal/generate -out .
-
-// Resource is a generated cloud control resource. T is always a pointer, e.g.
-// *s3.Bucket.
 type Resource interface {
 	CloudControlType() string
 }
 
-// Create provisions a resource and returns its primary identifier.
+// Create provisions a resource and returns its primary identifier (blocks until created).
 func Create[T Resource](resource T) (string, error) {
 	desired, err := json.Marshal(resource)
 	if err != nil {
@@ -47,7 +35,7 @@ func Create[T Resource](resource T) (string, error) {
 	return out.Identifier, nil
 }
 
-// Read loads a resource's live state, read only attributes included.
+// Read just queries the AWS API and returns the state of the resource.
 func Read[T Resource](identifier string) (T, error) {
 	resource := empty[T]()
 	out, err := api.ReadResource(api.ReadResourceInput{
@@ -63,8 +51,7 @@ func Read[T Resource](identifier string) (T, error) {
 	return resource, json.Unmarshal([]byte(out.State), resource)
 }
 
-// List returns every resource of a type, keyed by primary identifier. It is how
-// you find resources aws named itself (vpc-…, i-…, sg-…).
+// List returns every resource of a type.
 func List[T Resource]() (map[string]T, error) {
 	typeName := empty[T]().CloudControlType()
 	out, err := api.ListResource(api.ListResourceInput{Type: typeName})
@@ -82,15 +69,8 @@ func List[T Resource]() (map[string]T, error) {
 	return resources, nil
 }
 
-// Patch applies the fields you set on changes and leaves every other field
-// alone:
-//
-//	aws.Patch(id, &s3.Bucket{PublicAccessBlockConfiguration: &s3.BucketPublicAccessBlockConfiguration{
-//		BlockPublicAcls: aws.Bool(true),
-//	}})
-//
-// becomes [{"op":"add","path":"/PublicAccessBlockConfiguration/BlockPublicAcls","value":true}].
-func Patch[T Resource](identifier string, changes T) error {
+// Update updates the fields you set on the target (blocks until successful).
+func Update[T Resource](identifier string, changes T) error {
 	typeName := changes.CloudControlType()
 	operations := patch(reflect.ValueOf(changes), "")
 	if len(operations) == 0 {
@@ -110,7 +90,7 @@ func Patch[T Resource](identifier string, changes T) error {
 	return nil
 }
 
-// Delete removes a resource.
+// Delete removes a resource (non blocking).
 func Delete[T Resource](identifier string) error {
 	typeName := empty[T]().CloudControlType()
 	if _, err := api.DeleteResource(api.DeleteResourceInput{
