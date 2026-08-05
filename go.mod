@@ -22,7 +22,6 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/rds v1.119.5
 	github.com/aws/aws-sdk-go-v2/service/resourcegroupstaggingapi v1.33.5
 	github.com/aws/aws-sdk-go-v2/service/sts v1.45.3
-	github.com/awslabs/goformation/v7 v7.14.9
 	github.com/extism/go-pdk v1.1.3
 	github.com/extism/go-sdk v1.7.1
 	github.com/gobwas/glob v0.2.3
@@ -34,6 +33,7 @@ require (
 	github.com/megakuul/lake v0.4.1
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/viper v1.21.0
+	github.com/tetratelabs/wazero v1.12.0
 	golang.org/x/sync v0.22.0
 	google.golang.org/protobuf v1.36.11
 )
@@ -144,7 +144,6 @@ require (
 	github.com/spf13/pflag v1.0.10 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/tetratelabs/wabin v0.0.0-20230304001439-f6f874872834 // indirect
-	github.com/tetratelabs/wazero v1.12.0 // indirect
 	github.com/twpayne/go-geom v1.6.1 // indirect
 	github.com/urfave/cli/v2 v2.10.3 // indirect
 	github.com/xo/terminfo v0.0.0-20210125001918-ca9a967f8778 // indirect

@@ -53,7 +53,7 @@ func isAllowedInstance(instanceType string) bool {
 
 // Provider implements sandbox.Provider for aws organization accounts.
 type Provider struct {
-	logger slog.Logger
+	logger *slog.Logger
 
 	regions       []string
 	emailSuffix   string
@@ -83,6 +83,8 @@ var _ provider.Provider = (*Provider)(nil)
 // New creates the repository and resolves the organization management account.
 func New(ctx context.Context, config awssdk.Config) (*Provider, error) {
 	repository := &Provider{
+		// Nuke logs its progress, so this must never be nil.
+		logger:        slog.Default(),
 		adminRole:     "cloudjam-admin",
 		sandboxRole:   "cloudjam-sandbox",
 		regions:       []string{"us-east-1", "eu-central-1"},
