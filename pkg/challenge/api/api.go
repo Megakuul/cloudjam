@@ -2,15 +2,9 @@
 // Usually you do not need this, it is wrapped by the challenge pkg that provides a high level sdk.
 package api
 
-const InitName = "init"
-
-type InitInput struct {
-	Title       string            `json:"title,omitempty"`
-	Description string            `json:"description,omitempty"`
-	Clues       map[string]string `json:"clues,omitempty"`
-}
-
-type InitOutput struct{}
+import (
+	"log/slog"
+)
 
 const ReportName = "report"
 
@@ -19,6 +13,36 @@ type ReportInput struct {
 }
 
 type ReportOutput struct{}
+
+const LogName = "log"
+
+type LogInput struct {
+	Severity slog.Level `json:"severity,omitempty"`
+	Message  string     `json:"error,omitempty"`
+}
+
+type LogOutput struct{}
+
+const CreateMetaName = "create_meta"
+
+type CreateMetaInput struct {
+	Title        string            `json:"title,omitempty"`
+	Descriptions []string          `json:"descriptions,omitempty"`
+	Clues        map[string]string `json:"clues,omitempty"`
+	Assets       map[string]string `json:"assets,omitempty"`
+}
+
+type CreateMetaOutput struct{}
+
+const UpdateMetaName = "update_meta"
+
+type UpdateMetaInput struct {
+	AdditionalDescriptions []string          `json:"additional_descriptions,omitempty"`
+	AdditionalClues        map[string]string `json:"additional_clues,omitempty"`
+	AdditionalAssets       map[string]string `json:"additional_assets,omitempty"`
+}
+
+type UpdateMetaOutput struct{}
 
 const ReadScoreName = "read_score"
 
@@ -36,6 +60,26 @@ type UpdateScoreInput struct {
 }
 
 type UpdateScoreOutput struct{}
+
+const CreateAssetName = "create_asset"
+
+type CreateAssetInput []byte
+
+type CreateAssetOutput struct {
+	Name string `json:"name,omitempty"`
+	URL  string `json:"url,omitempty"`
+}
+
+const UpdateAssetName = "update_asset"
+
+type UpdateAssetInput struct {
+	OldName string `json:"old_name,omitempty"`
+	NewName string `json:"new_name,omitempty"`
+}
+
+type UpdateAssetOutput struct {
+	NewURL string `json:"new_url,omitempty"`
+}
 
 const CreateResourceName = "create_resource"
 

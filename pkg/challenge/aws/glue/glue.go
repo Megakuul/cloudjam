@@ -1032,7 +1032,6 @@ func (UserDefinedFunction) CloudControlType() string { return "AWS::Glue::UserDe
 type Workflow struct {
 	DefaultRunProperties map[string]any `json:"DefaultRunProperties,omitempty"`
 	Description          *string        `json:"Description,omitempty"`
-	Id                   *string        `json:"Id,omitempty"`
 	MaxConcurrentRuns    *int           `json:"MaxConcurrentRuns,omitempty"`
 	Name                 *string        `json:"Name,omitempty"`
 	Tags                 map[string]any `json:"Tags,omitempty"`

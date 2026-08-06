@@ -12,6 +12,12 @@ type ResourceController struct {
 	client *cloudcontrol.Client
 }
 
+// NewResourceController creates a aws resource controller.
+// Usually you would create the resource controller from provider.Resources(), this is just for external tooling.
+func NewResourceController(client *cloudcontrol.Client) *ResourceController {
+	return &ResourceController{client}
+}
+
 func (p *Provider) Resources(ctx context.Context, id string, lifetime time.Duration) (provider.ResourceController, error) {
 	cfg, err := p.assume(ctx, id, p.adminRole, lifetime)
 	if err != nil {

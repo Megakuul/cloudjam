@@ -2,104 +2,134 @@ package aws
 
 import (
 	"context"
-	"errors"
 	"fmt"
-	"regexp"
-	"sync"
+	"log/slog"
+	"strings"
 	"time"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
-	nuke_aws "github.com/gruntwork-io/cloud-nuke/aws"
-	nuke_config "github.com/gruntwork-io/cloud-nuke/config"
-	"github.com/gruntwork-io/cloud-nuke/util"
+	"github.com/ekristen/aws-nuke/v3/pkg/awsutil"
+	awsnuke "github.com/ekristen/aws-nuke/v3/pkg/nuke"
+	"github.com/ekristen/libnuke/pkg/filter"
+	libnuke "github.com/ekristen/libnuke/pkg/nuke"
+	"github.com/ekristen/libnuke/pkg/registry"
+	"github.com/ekristen/libnuke/pkg/scanner"
+	"github.com/ekristen/libnuke/pkg/settings"
+	"github.com/ekristen/libnuke/pkg/types"
+	"github.com/sirupsen/logrus"
+
+	_ "github.com/ekristen/aws-nuke/v3/resources"
 )
 
-func (p *Provider) Nuke(ctx context.Context, id string) error {
-	// retarded ctx api implemented by cloudgrunts nuke tool (this API guys I'M LOSING MY FUCKING MIND)
-	ctx = context.WithValue(ctx, util.ExcludeFirstSeenTagKey, true)
-	ctx = context.WithValue(ctx, util.AccountIdKey, id)
+func (p *Provider) Nuke(ctx context.Context, id string) (err error) {
+	// aws-nuke MutateOpts panics instead of returning when a region cannot
+	// serve a resource type, and this runs inside a long lived server.
+	defer func() {
+		if recovered := recover(); recovered != nil {
+			err = fmt.Errorf("nuke account %q panicked: %v", id, recovered)
+		}
+	}()
 
-	backoffTimeout := 10 * time.Second
+	if p.managementAccount == id {
+		return fmt.Errorf("account %q is the management account", id)
+	}
 
-	config, err := p.assume(ctx, id, p.adminRole, time.Hour*10)
+	config, err := p.assume(ctx, id, p.adminRole, 10*time.Hour)
 	if err != nil {
 		return err
 	}
-	p.logger.Info(fmt.Sprintf("starting nuke loop for account (account '%s')...", id))
-	for {
-		var retryErrs error
-		var retryErrsLock sync.Mutex
-		var regionWg sync.WaitGroup
+	// aws-nuke builds its own sessions per region and service, so it needs the
+	// assumed credentials as plain values. Handing it anything else means it
+	// falls back to the ambient credential chain and nukes the wrong account.
+	assumed, err := config.Credentials.Retrieve(ctx)
+	if err != nil {
+		return fmt.Errorf("retrieve assumed credentials: %w", err)
+	}
 
-		p.logger.Debug(fmt.Sprintf("nuking aws regional resources (account '%s')...", id))
-		for _, region := range p.regions {
-			regionWg.Add(1)
-			go func() {
-				defer regionWg.Done()
-				regionConfig := config.Copy()
-				regionConfig.Region = region
-				if err := nukeRegion(ctx, regionConfig, region, nuke_config.Config{}); err != nil {
-					retryErrsLock.Lock()
-					defer retryErrsLock.Unlock()
-					retryErrs = errors.Join(retryErrs, fmt.Errorf("%s: %w", region, err))
-				}
-			}()
+	account, err := awsutil.NewAccount(&awsutil.Credentials{
+		AccessKeyID:     assumed.AccessKeyID,
+		SecretAccessKey: assumed.SecretAccessKey,
+		SessionToken:    assumed.SessionToken,
+	}, nil)
+	if err != nil {
+		return fmt.Errorf("resolve account from assumed credentials: %w", err)
+	}
+	if account.ID() != id {
+		return fmt.Errorf("assumed credentials belong to account %q, not %q", account.ID(), id)
+	}
+
+	filters := filter.Filters{
+		"IAMRole": {
+			{Type: filter.Exact, Property: "Name", Value: p.adminRole},
+			{Type: filter.Exact, Property: "Name", Value: p.sandboxRole},
+		},
+		"IAMRolePolicy": {
+			{Type: filter.Exact, Property: "role:RoleName", Value: p.adminRole},
+			{Type: filter.Exact, Property: "role:RoleName", Value: p.sandboxRole},
+		},
+		"IAMRolePolicyAttachment": {
+			{Type: filter.Exact, Property: "RoleName", Value: p.adminRole},
+			{Type: filter.Exact, Property: "RoleName", Value: p.sandboxRole},
+		},
+	}
+
+	logger := logrus.New()
+	logger.SetOutput(logWriter{logger: p.logger})
+	logger.SetFormatter(&logrus.TextFormatter{DisableTimestamp: true, DisableColors: true})
+
+	runner := libnuke.New(&libnuke.Parameters{
+		NoDryRun:   true,
+		Force:      true,
+		ForceSleep: 3,
+		Quiet:      true,
+	}, filters, &settings.Settings{})
+	runner.SetLogger(logrus.NewEntry(logger))
+
+	resourceTypes := types.ResolveResourceTypes(
+		registry.GetNames(), nil, nil, nil,
+		registry.GetAlternativeResourceTypeMapping(),
+	)
+
+	// "global" is where iam, route53 and cloudfront live; without it the account
+	// keeps everything that is not regional.
+	regions := append([]string{awsutil.GlobalRegionID}, p.regions...)
+	for _, name := range regions {
+		region := awsnuke.NewRegion(name, account.ResourceTypeToServiceType, account.NewSession, account.NewConfig)
+
+		regionScanner, err := scanner.New(&scanner.Config{
+			Owner:         name,
+			ResourceTypes: resourceTypes,
+			Opts: &awsnuke.ListerOpts{
+				Region:    region,
+				AccountID: &id,
+				Logger:    logrus.NewEntry(logger).WithField("region", name),
+			},
+			Logger: logger,
+		})
+		if err != nil {
+			return fmt.Errorf("create scanner for %s: %w", name, err)
 		}
-		regionWg.Wait()
-
-		p.logger.Debug(fmt.Sprintf("nuking aws global resources (account '%s')...", id))
-		retryErrs = errors.Join(retryErrs, nukeRegion(ctx, config, "global", nuke_config.Config{
-			IAMRoles: nuke_config.ResourceType{ExcludeRule: nuke_config.FilterRule{
-				NamesRegExp: []nuke_config.Expression{
-					{RE: *regexp.MustCompile(fmt.Sprintf("^%s$", p.adminRole))},
-					{RE: *regexp.MustCompile(fmt.Sprintf("^%s$", p.sandboxRole))},
-				},
-			}},
-		}))
-
-		if retryErrs == nil {
-			return nil
+		if err := regionScanner.RegisterMutateOptsFunc(awsnuke.MutateOpts); err != nil {
+			return fmt.Errorf("register mutate func for %s: %w", name, err)
 		}
-		p.logger.Debug(fmt.Sprintf("nuke will retry due to remaining resources (account '%s'):\n%v", id, retryErrs))
-		select {
-		case <-ctx.Done():
-			return retryErrs
-		case <-time.After(backoffTimeout):
-			backoffTimeout *= 2
+		if err := runner.RegisterScanner(awsnuke.Account, regionScanner); err != nil {
+			return fmt.Errorf("register scanner for %s: %w", name, err)
 		}
 	}
+
+	p.logger.Info(fmt.Sprintf("nuking account '%s' in regions %s...", id, strings.Join(regions, ", ")))
+	if err := runner.Run(ctx); err != nil {
+		return fmt.Errorf("nuke account %q: %w", id, err)
+	}
+	p.logger.Info(fmt.Sprintf("nuked account '%s'", id))
+	return nil
 }
 
-func nukeRegion(ctx context.Context, config aws.Config, region string, nukeConfig nuke_config.Config) error {
-	registered := nuke_aws.GetAndInitRegisteredResources(config, region)
+// pipeline to transfer logrus to slog.
+type logWriter struct {
+	logger *slog.Logger
+}
 
-	var errs error
-	resourceCount := 0
-	for _, resource := range registered {
-		r := *resource
-		r.GetAndSetResourceConfig(nukeConfig)
-
-		ids, err := r.GetAndSetIdentifiers(ctx, nukeConfig)
-		if err != nil {
-			errs = errors.Join(errs, err)
-			continue
-		}
-		if len(ids) == 0 {
-			continue
-		}
-		resourceCount += len(ids)
-
-		for i := 0; i < len(ids); i += r.MaxBatchSize() {
-			if _, err := r.Nuke(ctx, ids[i:min(i+r.MaxBatchSize(), len(ids))]); err != nil {
-				errs = errors.Join(errs, fmt.Errorf("nuke %s: %w", r.ResourceName(), err))
-			}
-		}
-	}
-	// sounds paradox didn't we just nuke all resources.
-	// Well rechecking the resource count now will fail almost always due to the async aws deletion process.
-	// Therefore this function is only successfull if the account is already clean (otherwise it should retry).
-	if resourceCount > 0 {
-		errs = errors.Join(errs, fmt.Errorf("region not fully nuked (%d resources remaining)", resourceCount))
-	}
-	return errs
+func (w logWriter) Write(line []byte) (int, error) {
+	w.logger.Info(strings.TrimRight(string(line), "\n"))
+	return len(line), nil
 }

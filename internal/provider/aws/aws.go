@@ -1,16 +1,3 @@
-// aws implements the sandbox repository on top of AWS Organizations member accounts.
-//
-// Pool state is stored as tags on the organization account objects themselves
-// (cloudjam:state, cloudjam:owner, cloudjam:updated), so no external database
-// is required and the pool is fully visible in the aws console at all times.
-//
-// Accounts must be invited into the organization manually before Add is called.
-// Add then bootstraps the account: it creates an iam account alias, an
-// administrator role for deployments and cleanup, and attaches two service
-// control policies that block known instant money burners (see scp.go for the
-// researched deny list). Release wipes the account with aws-nuke or cloud-nuke
-// (fully non-interactive) and verifies afterwards that nothing expensive
-// survived before the account is put back into the ready pool.
 package aws
 
 import (
@@ -19,8 +6,6 @@ import (
 	"fmt"
 	"log/slog"
 	"path"
-	"slices"
-	"sync"
 	"time"
 
 	awssdk "github.com/aws/aws-sdk-go-v2/aws"
@@ -55,48 +40,43 @@ func isAllowedInstance(instanceType string) bool {
 type Provider struct {
 	logger *slog.Logger
 
-	regions       []string
-	emailSuffix   string
-	sandboxRole   string
-	adminRole     string
-	boundaryARN   string
-	instanceTypes []string
+	regions        []string
+	emailSuffix    string
+	sandboxRole    string
+	adminRole      string
+	boundaryPolicy string
+	createConfig   func(credentials.StaticCredentialsProvider) awssdk.Config
 
-	maxVolumeSize int
-	// blockedAccounts contains additional account ids that must never be acquired
-	// or cleaned (the management account is always blocked).
-	blockedAccounts   []string
+	// data is loaded on bootstrap from AWS
 	managementAccount string
-	createConfig      func(credentials.StaticCredentialsProvider) awssdk.Config
 	rootOU            string
 	cloudjamOU        string
+	// data is loaded on preparation
+	assetBucket string
 
 	organizations *organizations.Client
 	costexplorer  *costexplorer.Client
 	sts           *sts.Client
-
-	mutex sync.Mutex
 }
 
 var _ provider.Provider = (*Provider)(nil)
 
-// New creates the repository and resolves the organization management account.
-func New(ctx context.Context, config awssdk.Config) (*Provider, error) {
-	repository := &Provider{
-		// Nuke logs its progress, so this must never be nil.
-		logger:        slog.Default(),
-		adminRole:     "cloudjam-admin",
-		sandboxRole:   "cloudjam-sandbox",
-		regions:       []string{"us-east-1", "eu-central-1"},
-		instanceTypes: []string{"t2.*", "t3.*", "t3a.*", "t4g.*", "*.micro", "*.small"},
-		maxVolumeSize: 10,
+type ProviderOption func(*Provider)
 
+// New creates the repository and resolves the organization management account.
+func New(ctx context.Context, config awssdk.Config, opts ...ProviderOption) (*Provider, error) {
+	provider := &Provider{
+		logger:         slog.Default(),
+		regions:        []string{"us-east-1", "eu-central-1"},
+		emailSuffix:    "+cloudjam@example.com",
+		sandboxRole:    "cloudjam-sandbox",
+		adminRole:      "cloudjam-admin",
+		boundaryPolicy: "cloudjam-boundary",
 		createConfig: func(provider credentials.StaticCredentialsProvider) awssdk.Config {
 			newConfig := config.Copy()
 			newConfig.Credentials = provider
 			return newConfig
 		},
-
 		organizations: organizations.NewFromConfig(config, func(o *organizations.Options) {
 			o.Region = "us-east-1"
 		}),
@@ -105,14 +85,46 @@ func New(ctx context.Context, config awssdk.Config) (*Provider, error) {
 		}),
 		sts: sts.NewFromConfig(config),
 	}
+	for _, opt := range opts {
+		opt(provider)
+	}
 
-	organization, err := repository.organizations.DescribeOrganization(ctx, &organizations.DescribeOrganizationInput{})
+	organization, err := provider.organizations.DescribeOrganization(ctx, &organizations.DescribeOrganizationInput{})
 	if err != nil {
 		return nil, fmt.Errorf("failed to describe organization: %w", err)
 	}
-	repository.managementAccount = *organization.Organization.MasterAccountId
+	provider.managementAccount = *organization.Organization.MasterAccountId
 
-	return repository, nil
+	return provider, provider.bootstrap(ctx)
+}
+
+func WithLogger(logger *slog.Logger) ProviderOption {
+	return func(p *Provider) { p.logger = logger }
+}
+
+func WithRegions(regions ...string) ProviderOption {
+	return func(p *Provider) { p.regions = regions }
+}
+
+// WithEmailSuffix defines the emailsuffix used to create accounts
+// (the provider will generate dynamic uuids as prefix for each account).
+func WithEmailSuffix(suffix string) ProviderOption {
+	return func(p *Provider) { p.emailSuffix = suffix }
+}
+
+// WithAdminRole defines the name of the IAM admin role created in accounts.
+func WithAdminRole(adminRole string) ProviderOption {
+	return func(p *Provider) { p.adminRole = adminRole }
+}
+
+// WithSandboxRole defines the name of the IAM sandbox role created in accounts.
+func WithSandboxRole(sandboxRole string) ProviderOption {
+	return func(p *Provider) { p.sandboxRole = sandboxRole }
+}
+
+// WithBoundaryPolicy defines the name of the IAM boundary policy that is required on all created IAM resources.
+func WithBoundaryPolicy(boundaryPolicy string) ProviderOption {
+	return func(p *Provider) { p.boundaryPolicy = boundaryPolicy }
 }
 
 func (p *Provider) bootstrap(ctx context.Context) error {
@@ -165,7 +177,7 @@ func (p *Provider) bootstrap(ctx context.Context) error {
 		}
 	}
 
-	guardPolicyContent, err := guardControlPolicy(p.adminRole, p.sandboxRole, p.boundaryARN)
+	guardPolicyContent, err := guardControlPolicy(p.adminRole, p.sandboxRole, p.boundaryPolicy)
 	if err != nil {
 		return err
 	}
@@ -199,10 +211,6 @@ func (p *Provider) bootstrap(ctx context.Context) error {
 	}
 
 	return nil
-}
-
-func (p *Provider) blocked(id string) bool {
-	return id == p.managementAccount || slices.Contains(p.blockedAccounts, id)
 }
 
 // assume returns an sdk configuration with short-lived credentials for the

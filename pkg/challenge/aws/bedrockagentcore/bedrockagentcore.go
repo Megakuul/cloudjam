@@ -340,6 +340,21 @@ type Gateway struct {
 
 func (Gateway) CloudControlType() string { return "AWS::BedrockAgentCore::Gateway" }
 
+type GatewayRule struct {
+	Actions           []json.RawMessage  `json:"Actions,omitempty"`
+	Conditions        []json.RawMessage  `json:"Conditions,omitempty"`
+	CreatedAt         *string            `json:"CreatedAt,omitempty"`
+	Description       *string            `json:"Description,omitempty"`
+	GatewayArn        *string            `json:"GatewayArn,omitempty"`
+	GatewayIdentifier *string            `json:"GatewayIdentifier,omitempty"`
+	Priority          *float64           `json:"Priority,omitempty"`
+	RuleId            *string            `json:"RuleId,omitempty"`
+	Status            *GatewayRuleStatus `json:"Status,omitempty"`
+	UpdatedAt         *string            `json:"UpdatedAt,omitempty"`
+}
+
+func (GatewayRule) CloudControlType() string { return "AWS::BedrockAgentCore::GatewayRule" }
+
 type CredentialProviderConfiguration struct {
 	CredentialProvider     json.RawMessage         `json:"CredentialProvider,omitempty"`
 	CredentialProviderType *CredentialProviderType `json:"CredentialProviderType,omitempty"`
@@ -1775,6 +1790,15 @@ const (
 	GatewayStatusDELETING           GatewayStatus = "DELETING"
 	GatewayStatusREADY              GatewayStatus = "READY"
 	GatewayStatusFAILED             GatewayStatus = "FAILED"
+)
+
+type GatewayRuleStatus string
+
+const (
+	GatewayRuleStatusCREATING GatewayRuleStatus = "CREATING"
+	GatewayRuleStatusACTIVE   GatewayRuleStatus = "ACTIVE"
+	GatewayRuleStatusUPDATING GatewayRuleStatus = "UPDATING"
+	GatewayRuleStatusDELETING GatewayRuleStatus = "DELETING"
 )
 
 type CredentialProviderType string

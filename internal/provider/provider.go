@@ -2,6 +2,7 @@ package provider
 
 import (
 	"context"
+	"io"
 	"log/slog"
 	"time"
 )
@@ -27,6 +28,8 @@ type Provider interface {
 	Prepare(ctx context.Context, id string) error
 	// Nuke erases all contents of an account. This may also raze guardrails / configs, therefore Prepare() must be called before reusing.
 	Nuke(ctx context.Context, id string) error
+	// Assets creates a asset controller that can be used to modify resources on the account.
+	Assets(ctx context.Context, id string, lifetime time.Duration) (AssetController, error)
 	// Resources creates a resource controller that can be used to modify resources on the account.
 	Resources(ctx context.Context, id string, lifetime time.Duration) (ResourceController, error)
 	// Credentials generates shortlived credentials that a end-user will use to connect to the specified account.
@@ -37,6 +40,19 @@ type Provider interface {
 	Check(ctx context.Context, id string) ([]Leak, error)
 	// Cost returns aggregated cost data for the specified account in the specified time window (data might be delayed).
 	Cost(ctx context.Context, id string, window time.Duration) ([]Cost, error)
+}
+
+// AssetController provides a CRUD abstraction over the providers asset storage (e.g. for AWS it is s3).
+// The idea of assets is to provide them locally in the provider account for the challenge (e.g. a go binary that does something on lambda).
+type AssetController interface {
+	// Creates an asset on the path (provider specific) and returns a human readable accessible url (provider specific).
+	Create(ctx context.Context, path string, asset io.Reader) (string, error)
+	// Read reads the asset from the path and returns the human readable accessible url and the asset.
+	Read(ctx context.Context, path string) (string, io.ReadCloser, error)
+	// Update changes the assets path and returns teh new human readable accessible url.
+	Update(ctx context.Context, oldPath, newPath string) (string, error)
+	// Delete removes the asset from teh path.
+	Delete(ctx context.Context, path string) error
 }
 
 // ResourceController provides a CRUDL abstraction over the providers IaC API (e.g. for AWS it is cloud control json).

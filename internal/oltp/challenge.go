@@ -40,8 +40,9 @@ type Challenge struct {
 	DefinitionName dynamitedb.DataField[string] `json:"definition_name,omitempty"`
 
 	Title       dynamitedb.DataField[string]            `json:"title,omitempty"`
-	Description dynamitedb.DataField[string]            `json:"description,omitempty"`
+	Description dynamitedb.DataField[[]string]          `json:"description,omitempty"`
 	Clues       dynamitedb.DataField[map[string]string] `json:"clues,omitempty"`
+	Assets      dynamitedb.DataField[map[string]string] `json:"assets,omitempty"`
 	Errors      dynamitedb.DataField[[]string]          `json:"errors,omitempty"`
 
 	Scope dynamitedb.DataField[string] `json:"scope,omitempty"`

@@ -7,6 +7,8 @@
 package main
 
 import (
+	"fmt"
+	"log/slog"
 	"time"
 
 	"codeberg.org/megakuul/cloudjam/pkg/challenge"
@@ -71,21 +73,31 @@ func encrypted() (bool, error) {
 }
 
 func locked() (bool, error) {
+	slog.Debug("testing the locked")
 	b, err := aws.Read[*s3.Bucket](bucket)
 	if err != nil || b.PublicAccessBlockConfiguration == nil {
+		if err != nil {
+			slog.Error(err.Error())
+		}
+		slog.Debug(*b.Arn)
+		slog.Debug(fmt.Sprint(b.PublicAccessBlockConfiguration))
 		return false, err
 	}
+	slog.Debug("now performing the check")
 	block := b.PublicAccessBlockConfiguration
-	for _, flag := range []*bool{
-		block.BlockPublicAcls,
-		block.BlockPublicPolicy,
-		block.IgnorePublicAcls,
-		block.RestrictPublicBuckets,
-	} {
-		if flag == nil || !*flag {
-			return false, nil
-		}
+	if block.BlockPublicAcls == nil || !*block.BlockPublicAcls {
+		return false, nil
 	}
+	if block.BlockPublicPolicy == nil || !*block.BlockPublicPolicy {
+		return false, nil
+	}
+	if block.IgnorePublicAcls == nil || !*block.IgnorePublicAcls {
+		return false, nil
+	}
+	if block.RestrictPublicBuckets == nil || !*block.RestrictPublicBuckets {
+		return false, nil
+	}
+	slog.Debug("the final countdown")
 	return true, nil
 }
 

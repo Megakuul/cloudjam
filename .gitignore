@@ -2,3 +2,4 @@
 /.sockets
 /.direnv
 *.sock
+*.wasm

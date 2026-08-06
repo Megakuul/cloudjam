@@ -61,6 +61,7 @@ func guardControlPolicy(adminRole, sandboxRole, boundaryPolicy string) ([]byte, 
 					"arn:aws:iam::*:role/service-role/*",
 					"arn:aws:iam::*:role/OrganizationAccountAccessRole",
 					"arn:aws:iam::*:role/AWSControlTowerExecution",
+					"arn:aws:iam::*:role/aws-reserved/sso.amazonaws.com/*",
 				},
 				Condition: map[string]map[string]any{
 					"ArnNotLike": {"aws:PrincipalARN": adminRoleARN},

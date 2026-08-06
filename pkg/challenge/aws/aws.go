@@ -72,7 +72,7 @@ func List[T Resource]() (map[string]T, error) {
 // Update updates the fields you set on the target (blocks until successful).
 func Update[T Resource](identifier string, changes T) error {
 	typeName := changes.CloudControlType()
-	operations := patch(reflect.ValueOf(changes), "")
+	operations := patch(reflect.ValueOf(changes))
 	if len(operations) == 0 {
 		return fmt.Errorf("patch %s %q: no fields set", typeName, identifier)
 	}
@@ -108,10 +108,16 @@ type operation struct {
 	Value any    `json:"value"`
 }
 
-// patch walks the fields that are set and turns them into rfc 6902 operations.
+// patch turns the fields that are set into rfc 6902 operations, one per top
+// level property.
+//
 // "add" rather than "replace" because it works whether or not the property is
-// already there.
-func patch(value reflect.Value, path string) []operation {
+// already there. It does not descend into nested properties: rfc 6902 requires
+// the parent of an added path to exist, and /Foo/Bar is rejected outright when
+// the resource has no Foo yet — which is the normal case when a challenge is
+// adding configuration that was missing. So a nested property is written whole,
+// exactly as you wrote the struct literal.
+func patch(value reflect.Value) []operation {
 	value = reflect.Indirect(value)
 	operations := []operation{}
 
@@ -121,13 +127,7 @@ func patch(value reflect.Value, path string) []operation {
 			continue
 		}
 		name, _, _ := strings.Cut(value.Type().Field(i).Tag.Get("json"), ",")
-		at := path + "/" + name
-
-		if field.Kind() == reflect.Pointer && field.Elem().Kind() == reflect.Struct {
-			operations = append(operations, patch(field, at)...)
-			continue
-		}
-		operations = append(operations, operation{Op: "add", Path: at, Value: field.Interface()})
+		operations = append(operations, operation{Op: "add", Path: "/" + name, Value: field.Interface()})
 	}
 	return operations
 }

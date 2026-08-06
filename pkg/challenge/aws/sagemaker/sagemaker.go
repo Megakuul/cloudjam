@@ -218,6 +218,42 @@ type AppImageConfig struct {
 
 func (AppImageConfig) CloudControlType() string { return "AWS::SageMaker::AppImageConfig" }
 
+type ArtifactMetadataProperties struct {
+	CommitId    *string `json:"CommitId,omitempty"`
+	GeneratedBy *string `json:"GeneratedBy,omitempty"`
+	ProjectId   *string `json:"ProjectId,omitempty"`
+	Repository  *string `json:"Repository,omitempty"`
+}
+
+type ArtifactSourceType struct {
+	SourceIdType *ArtifactSourceTypeSourceIdType `json:"SourceIdType,omitempty"`
+	Value        *string                         `json:"Value,omitempty"`
+}
+
+type ArtifactSource struct {
+	SourceTypes []ArtifactSourceType `json:"SourceTypes,omitempty"`
+	SourceUri   *string              `json:"SourceUri,omitempty"`
+}
+
+type ArtifactTag struct {
+	Key   *string `json:"Key,omitempty"`
+	Value *string `json:"Value,omitempty"`
+}
+
+type Artifact struct {
+	Arn                *string                     `json:"Arn,omitempty"`
+	ArtifactName       *string                     `json:"ArtifactName,omitempty"`
+	ArtifactType       *string                     `json:"ArtifactType,omitempty"`
+	CreationTime       *string                     `json:"CreationTime,omitempty"`
+	LastModifiedTime   *string                     `json:"LastModifiedTime,omitempty"`
+	MetadataProperties *ArtifactMetadataProperties `json:"MetadataProperties,omitempty"`
+	Properties         map[string]string           `json:"Properties,omitempty"`
+	Source             *ArtifactSource             `json:"Source,omitempty"`
+	Tags               []ArtifactTag               `json:"Tags,omitempty"`
+}
+
+func (Artifact) CloudControlType() string { return "AWS::SageMaker::Artifact" }
+
 type ClusterAutoScalingConfig struct {
 	AutoScalerType *ClusterAutoScalingConfigAutoScalerType `json:"AutoScalerType,omitempty"`
 	Mode           *ClusterAutoScalingConfigMode           `json:"Mode,omitempty"`
@@ -3325,6 +3361,15 @@ const (
 	ResourceSpecInstanceTypeMlR6id16xlarge          ResourceSpecInstanceType = "ml.r6id.16xlarge"
 	ResourceSpecInstanceTypeMlR6id24xlarge          ResourceSpecInstanceType = "ml.r6id.24xlarge"
 	ResourceSpecInstanceTypeMlR6id32xlarge          ResourceSpecInstanceType = "ml.r6id.32xlarge"
+)
+
+type ArtifactSourceTypeSourceIdType string
+
+const (
+	ArtifactSourceTypeSourceIdTypeMD5Hash   ArtifactSourceTypeSourceIdType = "MD5Hash"
+	ArtifactSourceTypeSourceIdTypeS3ETag    ArtifactSourceTypeSourceIdType = "S3ETag"
+	ArtifactSourceTypeSourceIdTypeS3Version ArtifactSourceTypeSourceIdType = "S3Version"
+	ArtifactSourceTypeSourceIdTypeCustom    ArtifactSourceTypeSourceIdType = "Custom"
 )
 
 type ClusterAutoScalingConfigAutoScalerType string

@@ -29,12 +29,13 @@ type Check struct {
 // Challenge is a scenario: resources to provision and checks that score the
 // player's progress against them.
 type Challenge struct {
-	Title       string
-	Description string
-	Clues       map[string]string
-	Resources   []Resource
-	Checks      []Check
-	Interval    time.Duration // round check speed, defaults to 10s
+	Title        string
+	Descriptions []string
+	Clues        map[string]string
+	Assets       map[string][]byte
+	Resources    []Resource
+	Checks       []Check
+	Interval     time.Duration // round check speed, defaults to 10s
 
 	ids map[Resource]string
 }
@@ -46,10 +47,29 @@ func Start(c *Challenge) {
 	}
 	c.ids = map[Resource]string{}
 
-	if _, err := api.Init(api.InitInput{
-		Title:       c.Title,
-		Description: c.Description,
-		Clues:       c.Clues,
+	assets := map[string]string{}
+	for path, asset := range c.Assets {
+		assetMeta, err := api.CreateAsset(asset)
+		if err != nil {
+			c.report(fmt.Errorf("failed to create asset '%s': %w", path, err))
+			continue
+		}
+		newAssetMeta, err := api.UpdateAsset(api.UpdateAssetInput{
+			OldName: assetMeta.Name,
+			NewName: path,
+		})
+		if err != nil {
+			c.report(fmt.Errorf("failed to create asset '%s': %w", path, err))
+			continue
+		}
+		assets[newAssetMeta.NewURL] = path
+	}
+
+	if _, err := api.CreateMeta(api.CreateMetaInput{
+		Title:        c.Title,
+		Descriptions: c.Descriptions,
+		Clues:        c.Clues,
+		Assets:       assets,
 	}); err != nil {
 		c.report(err)
 	}
