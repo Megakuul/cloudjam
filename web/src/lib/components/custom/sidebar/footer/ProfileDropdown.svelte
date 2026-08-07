@@ -16,8 +16,6 @@
 		SunIcon,
 		MoonIcon,
 		LoaderCircleIcon,
-		CheckIcon,
-		SquareIcon,
 		LogOutIcon
 	} from '@lucide/svelte';
 	import WrappedTooltip from '$lib/components/custom/WrappedTooltip.svelte';
@@ -30,7 +28,6 @@
 
 	let open = $state(false);
 	let themeChanging = $state(false);
-	let dyslexiaChanging = $state(false);
 
 	let user = $derived(
 		page.data.session && page.data.session.user
@@ -72,145 +69,113 @@
 	async function toggleTheme() {
 		await setTheme(mode.current === 'light' ? 'dark' : 'light');
 	}
-
-	// Dyslexia Stuff
-	async function toggleDyslexic() {
-		{
-			dyslexiaChanging = true;
-			try {
-				await toggleDyslexia();
-				await invalidateAll();
-				toast.success('Dyslexia setting updated!');
-			} catch (e) {
-				toast.error('Unable to update dyslexia setting! Please report this as a bug');
-				console.error(e);
-			}
-			dyslexiaChanging = false;
-		}
-	}
 </script>
 
-{#if page.data.flags.bugBounty}
-	<Sidebar.MenuItem>
-		<Popover.Root bind:open>
-			<Popover.Trigger disabled={loading}>
-				{#snippet child({ props })}
-					<Sidebar.MenuButton
-						{...props}
-						size="lg"
-						class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-					>
-						{#if loading}
-							<div
-								class="flex aspect-square size-8 items-center justify-center rounded-lg text-sidebar-primary-foreground"
-							>
-								<Skeleton class="h-8 w-8 rounded-full" />
-							</div>
-							<div class="grid flex-1 text-start text-sm leading-tight">
-								<span class="truncate font-medium">
-									<Skeleton class="h-6 w-full" />
-								</span>
-							</div>
+<Sidebar.MenuItem>
+	<Popover.Root bind:open>
+		<Popover.Trigger disabled={loading}>
+			{#snippet child({ props })}
+				<Sidebar.MenuButton
+					{...props}
+					size="lg"
+					class="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
+				>
+					{#if loading}
+						<div
+							class="flex aspect-square size-8 items-center justify-center rounded-lg text-sidebar-primary-foreground"
+						>
+							<Skeleton class="h-8 w-8 rounded-full" />
+						</div>
+						<div class="grid flex-1 text-start text-sm leading-tight">
+							<span class="truncate font-medium">
+								<Skeleton class="h-6 w-full" />
+							</span>
+						</div>
+					{:else}
+						<div
+							class="flex aspect-square size-8 items-center justify-center rounded-lg text-sidebar-primary-foreground"
+						>
+							<AvatarRenderer image={user.image ?? ''} name={user.name ?? 'Unknown'} width="6" height="6" />
+						</div>
+						<div class="grid flex-1 text-start text-sm leading-tight">
+							<span>{user.name ?? 'Unknown'}</span>
+						</div>
+					{/if}
+
+					<ChevronsUpDownIcon class="ms-auto" />
+				</Sidebar.MenuButton>
+			{/snippet}
+		</Popover.Trigger>
+
+		<Popover.Content
+			align="start"
+			class="w-(--bits-dropdown-menu-anchor-width) min-w-48 rounded-lg"
+			side={sidebar.isMobile ? 'top' : 'right'}
+			sideOffset={15}
+		>
+			<Popover.Header class="flex flex-col items-center">
+				<AvatarRenderer image={user.image ?? ''} name={user.name ?? 'Unknown'} width="w-20" height="h-20" />
+				<Popover.Title class="inline-flex items-center text-2xl font-bold">
+					{user.name}
+					<span class="ml-2">
+						{#if user.permission === 'SUPERADMIN'}
+							<WrappedTooltip caption="Super Admin">
+								<ShieldPlusIcon class="h-6 w-6 fill-yellow-500 stroke-yellow-700" />
+							</WrappedTooltip>
+						{:else if user.permission === 'ADMIN'}
+							<WrappedTooltip caption="Admin">
+								<ShieldIcon class="h-6 w-6 fill-primary stroke-secondary-foreground" />
+							</WrappedTooltip>
+						{:else if user.permission === 'STANDARD'}
+							<WrappedTooltip caption="Standard">
+								<UserIcon class="h-6 w-6" />
+							</WrappedTooltip>
 						{:else}
-							<div
-								class="flex aspect-square size-8 items-center justify-center rounded-lg text-sidebar-primary-foreground"
-							>
-								<AvatarRenderer image={user.image ?? ''} name={user.name ?? 'Unknown'} width="6" height="6" />
-							</div>
-							<div class="grid flex-1 text-start text-sm leading-tight">
-								<span>{user.name ?? 'Unknown'}</span>
-							</div>
+							<WrappedTooltip caption="Unknown - Please Report this!">
+								<BadgeQuestionMarkIcon class="h-6 w-6" />
+							</WrappedTooltip>
 						{/if}
-
-						<ChevronsUpDownIcon class="ms-auto" />
-					</Sidebar.MenuButton>
-				{/snippet}
-			</Popover.Trigger>
-
-			<Popover.Content
-				align="start"
-				class="w-(--bits-dropdown-menu-anchor-width) min-w-48 rounded-lg"
-				side={sidebar.isMobile ? 'top' : 'right'}
-				sideOffset={15}
-			>
-				<Popover.Header class="flex flex-col items-center">
-					<AvatarRenderer image={user.image ?? ''} name={user.name ?? 'Unknown'} width="w-20" height="h-20" />
-					<Popover.Title class="inline-flex items-center text-2xl font-bold">
-						{user.name}
-						<span class="ml-2">
-							{#if user.permission === 'SUPERADMIN'}
-								<WrappedTooltip caption="Super Admin">
-									<ShieldPlusIcon class="h-6 w-6 fill-yellow-500 stroke-yellow-700" />
-								</WrappedTooltip>
-							{:else if user.permission === 'ADMIN'}
-								<WrappedTooltip caption="Admin">
-									<ShieldIcon class="h-6 w-6 fill-primary stroke-secondary-foreground" />
-								</WrappedTooltip>
-							{:else if user.permission === 'STANDARD'}
-								<WrappedTooltip caption="Standard">
-									<UserIcon class="h-6 w-6" />
-								</WrappedTooltip>
-							{:else}
-								<WrappedTooltip caption="Unknown - Please Report this!">
-									<BadgeQuestionMarkIcon class="h-6 w-6" />
-								</WrappedTooltip>
-							{/if}
-						</span>
-					</Popover.Title>
-					<Popover.Description>{user.email}</Popover.Description>
-				</Popover.Header>
-
-				<Field.Group>
-					<Field.Title>
-						<CogIcon class="h-4 w-4" />
-						Settings
-					</Field.Title>
-
-					<Field.Content>
-						<Field.Group>
-							<Field.Field orientation="horizontal" class="w-full">
-								<Field.Label>Theme</Field.Label>
-								<Button
-									variant="outline"
-									class="mr-auto ml-auto"
-									onclick={async () => await toggleTheme()}
-									disabled={themeChanging}
-									aria-busy={themeChanging}
-								>
-									{#if themeChanging}
-										<LoaderCircleIcon class="animate-spin" />
-									{:else if mode.current === 'light'}
-										<SunIcon class="" />
-									{:else}
-										<MoonIcon class="" />
-									{/if}
-								</Button>
-							</Field.Field>
-
-							<Field.Field orientation="horizontal">
-								<Field.Label class="font-dyslexic">Dyslexia</Field.Label>
-
-								<Button variant="outline" class="mr-auto ml-auto" onclick={async () => await toggleDyslexic()}>
-									{#if dyslexiaChanging}
-										<LoaderCircleIcon class="animate-spin" />
-									{:else if page.data.session?.user.useDyslexic}
-										<CheckIcon />
-									{:else}
-										<SquareIcon />
-									{/if}
-								</Button>
-							</Field.Field>
-						</Field.Group>
-					</Field.Content>
-				</Field.Group>
-
-				<SignOut class="mx-auto">
-					<span class={buttonVariants({ variant: 'destructive' }) + ' mt-4'} slot="submitButton">
-						<LogOutIcon class="mr-2" />
-						Logout
 					</span>
-				</SignOut>
-			</Popover.Content>
-		</Popover.Root>
-	</Sidebar.MenuItem>
-{/if}
+				</Popover.Title>
+				<Popover.Description>{user.email}</Popover.Description>
+			</Popover.Header>
+
+			<Field.Group>
+				<Field.Title>
+					<CogIcon class="h-4 w-4" />
+					Settings
+				</Field.Title>
+
+				<Field.Content>
+					<Field.Group>
+						<Field.Field orientation="horizontal" class="w-full">
+							<Field.Label>Theme</Field.Label>
+							<Button
+								variant="outline"
+								class="mr-auto ml-auto"
+								onclick={async () => await toggleTheme()}
+								disabled={themeChanging}
+								aria-busy={themeChanging}
+							>
+								{#if themeChanging}
+									<LoaderCircleIcon class="animate-spin" />
+								{:else if mode.current === 'light'}
+									<SunIcon class="" />
+								{:else}
+									<MoonIcon class="" />
+								{/if}
+							</Button>
+						</Field.Field>
+					</Field.Group>
+				</Field.Content>
+			</Field.Group>
+
+			<!--				<SignOut class="mx-auto">-->
+			<span class={buttonVariants({ variant: 'destructive' }) + ' mt-4'} slot="submitButton">
+				<LogOutIcon class="mr-2" />
+				Logout
+			</span>
+			<!--				</SignOut>-->
+		</Popover.Content>
+	</Popover.Root>
+</Sidebar.MenuItem>

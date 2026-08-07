@@ -1,8 +1,8 @@
 <script lang="ts">
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
-	import { afterNavigate, goto } from '$app/navigation';
-	import { getEmail, getPubId, Glue, setToken } from '$lib';
+	import { afterNavigate } from '$app/navigation';
+	import { getEmail, getPubId } from '$lib';
 	import { onMount } from 'svelte';
 	import { ModeWatcher } from 'mode-watcher';
 	import * as Sidebar from '$lib/components/shad/sidebar';

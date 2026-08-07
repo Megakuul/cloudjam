@@ -6,9 +6,9 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
-	import Input from '$lib/components/ui/input/input.svelte';
-	import Button from '$lib/components/ui/button/button.svelte';
-	import * as Alert from '$lib/components/ui/alert';
+	import Input from '$lib/components/shad/input/input.svelte';
+	import Button from '$lib/components/shad/button/button.svelte';
+	import * as Alert from '$lib/components/shad/alert';
 	import { Loader, OctagonAlert } from '@lucide/svelte';
 
 	let request = $state(create(RegisterRequestSchema, {}));
