@@ -24,7 +24,7 @@ func CreateAdministrator(ctx context.Context, email string, bucket *dynamitedb.B
 
 	err = dynamitedb.Create(ctx, bucket, &oltp.User{
 		UserID:       dynamitedb.Key("0"),
-		PubId:        dynamitedb.Set(uuid.NewString()),
+		PubID:        dynamitedb.Set(uuid.NewString()),
 		Username:     dynamitedb.Set("admin"),
 		Description:  dynamitedb.Set("Administrator Account"),
 		Organization: dynamitedb.Set("Admin"),

@@ -32,7 +32,7 @@ func New(name string, lifetime time.Duration, method jwt.SigningMethod, public a
 
 type TokenClaims struct {
 	jwt.RegisteredClaims
-	PubId   string `json:"pub_id,omitempty"`
+	PubID   string `json:"pub_id,omitempty"`
 	Email   string `json:"email,omitempty"`
 	Refresh bool   `json:"refresh,omitempty"`
 }
@@ -48,7 +48,7 @@ func (i *Issuer) Issue(ctx context.Context, subject, email, pubid string) (strin
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(i.lifetime)),
 			Subject:   subject,
 		},
-		PubId:   pubid,
+		PubID:   pubid,
 		Email:   email,
 		Refresh: false,
 	})

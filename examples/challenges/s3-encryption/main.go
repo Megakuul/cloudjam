@@ -1,89 +1,115 @@
+//go:build wasip1
+
 // Command s3-encryption is an example cloudjam challenge plugin.
 //
 // The player is dropped into an account containing an unencrypted, publicly
-// blockable S3 bucket. Points are awarded as they lock it down: enabling default
-// encryption, then blocking all public access.
-//
-// Build it as a wasip1 reactor:
-//
-//	GOOS=wasip1 GOARCH=wasm go build -buildmode=c-shared \
-//		-o s3-encryption.wasm ./examples/challenges/s3-encryption
+// exposed S3 bucket, and scores points as they lock it down.
 package main
 
 import (
+	"fmt"
+	"log/slog"
+	"time"
+
+	"codeberg.org/megakuul/cloudjam/pkg/challenge"
 	"codeberg.org/megakuul/cloudjam/pkg/challenge/aws"
-	"github.com/awslabs/goformation/v7/cloudformation/s3"
+	"codeberg.org/megakuul/cloudjam/pkg/challenge/aws/s3"
 )
 
-const bucketName = "cloudjam-s3-encryption"
+const bucket = "cloudjam-encrypt-me"
 
-func init() {
-	aws.Serve(aws.Config{
+func main() {
+	c := &challenge.Challenge{
 		Title: "Lock Down the Bucket",
 		Description: "A teammate spun up an S3 bucket with no encryption and no " +
-			"public-access guardrails. Secure it using the Cloud Control API.",
-		Clues: []aws.Clue{
-			{Text: "Default encryption lives under BucketEncryption.", Cost: 5},
-			{Text: "Block public access with a PublicAccessBlockConfiguration.", Cost: 5},
+			"public-access guardrails. Secure it.",
+		Clues: map[string]string{
+			"encryption": "Default encryption lives under BucketEncryption.",
+			"public":     "Block public access with a PublicAccessBlockConfiguration.",
 		},
-
-		// Provision the deliberately-insecure starting point.
-		Setup: func(c *aws.Context) error {
-			return c.Create(&s3.Bucket{
-				BucketName: aws.String(bucketName),
-			})
-		},
-
-		Objectives: []aws.Objective{
-			{
-				ID:          "default-encryption",
-				Description: "Enabled default encryption on the bucket",
-				Points:      50,
-				Check: func(c *aws.Context) (bool, error) {
-					var b s3.Bucket
-					if err := c.Read(bucketName, &b); err != nil {
-						return false, err
-					}
-					return hasDefaultEncryption(&b), nil
-				},
-			},
-			{
-				ID:          "block-public-access",
-				Description: "Blocked all public access to the bucket",
-				Points:      50,
-				Check: func(c *aws.Context) (bool, error) {
-					var b s3.Bucket
-					if err := c.Read(bucketName, &b); err != nil {
-						return false, err
-					}
-					return blocksAllPublicAccess(b.PublicAccessBlockConfiguration), nil
-				},
+		Resources: []challenge.Resource{
+			&s3.Bucket{
+				BucketName: new(bucket),
+				Tags:       []s3.BucketTag{{Key: new("cloudjam"), Value: new("s3-encryption")}},
 			},
 		},
-	})
+		Checks: []challenge.Check{
+			{
+				Name:   "Enabled default encryption on the bucket",
+				Points: 50,
+				Every:  15 * time.Second,
+				Done:   encrypted,
+			},
+			{
+				Name:   "Blocked public access to the bucket",
+				Points: 60,
+				Every:  15 * time.Second,
+				Done:   locked,
+			},
+			{
+				// Repeats: keeping the account tidy pays every round.
+				Name:   "Kept the bucket tagged",
+				Points: 5,
+				Every:  time.Minute,
+				Repeat: true,
+				Done:   tagged,
+			},
+		},
+	}
+	challenge.Start(c)
 }
 
-func hasDefaultEncryption(b *s3.Bucket) bool {
-	if b.BucketEncryption == nil {
-		return false
+func encrypted() (bool, error) {
+	b, err := aws.Read[*s3.Bucket](bucket)
+	if err != nil || b.BucketEncryption == nil {
+		return false, err
 	}
 	for _, rule := range b.BucketEncryption.ServerSideEncryptionConfiguration {
 		if rule.ServerSideEncryptionByDefault != nil {
-			return true
+			return true, nil
 		}
 	}
-	return false
+	return false, nil
 }
 
-func blocksAllPublicAccess(cfg *s3.Bucket_PublicAccessBlockConfiguration) bool {
-	if cfg == nil {
-		return false
+func locked() (bool, error) {
+	slog.Debug("testing the locked")
+	b, err := aws.Read[*s3.Bucket](bucket)
+	if err != nil || b.PublicAccessBlockConfiguration == nil {
+		if err != nil {
+			slog.Error(err.Error())
+		}
+		slog.Debug(*b.Arn)
+		slog.Debug(fmt.Sprint(b.PublicAccessBlockConfiguration))
+		return false, err
 	}
-	on := func(p *bool) bool { return p != nil && *p }
-	return on(cfg.BlockPublicAcls) &&
-		on(cfg.BlockPublicPolicy) &&
-		on(cfg.IgnorePublicAcls) &&
-		on(cfg.RestrictPublicBuckets)
+	slog.Debug("now performing the check")
+	block := b.PublicAccessBlockConfiguration
+	if block.BlockPublicAcls == nil || !*block.BlockPublicAcls {
+		return false, nil
+	}
+	if block.BlockPublicPolicy == nil || !*block.BlockPublicPolicy {
+		return false, nil
+	}
+	if block.IgnorePublicAcls == nil || !*block.IgnorePublicAcls {
+		return false, nil
+	}
+	if block.RestrictPublicBuckets == nil || !*block.RestrictPublicBuckets {
+		return false, nil
+	}
+	slog.Debug("the final countdown")
+	return true, nil
 }
 
-func main() {}
+func tagged() (bool, error) {
+	b, err := aws.Read[*s3.Bucket](bucket)
+	if err != nil {
+		return false, err
+	}
+	for _, tag := range b.Tags {
+		if tag.Key != nil && *tag.Key == "cloudjam" {
+			return true, nil
+		}
+	}
+	return false, nil
+}

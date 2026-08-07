@@ -61,6 +61,7 @@ func guardControlPolicy(adminRole, sandboxRole, boundaryPolicy string) ([]byte, 
 					"arn:aws:iam::*:role/service-role/*",
 					"arn:aws:iam::*:role/OrganizationAccountAccessRole",
 					"arn:aws:iam::*:role/AWSControlTowerExecution",
+					"arn:aws:iam::*:role/aws-reserved/sso.amazonaws.com/*",
 				},
 				Condition: map[string]map[string]any{
 					"ArnNotLike": {"aws:PrincipalARN": adminRoleARN},
@@ -147,14 +148,6 @@ func guardControlPolicy(adminRole, sandboxRole, boundaryPolicy string) ([]byte, 
 			},
 		},
 	})
-}
-
-// guardBoundaryPolicy creates a IAM permission boundary (policy) that should be attached to every entity.
-// The guardControlPolicy must enforce that all entities (users, roles, etc) use this permission boundary.
-// The boundary exists in order to create IAM challenges where the user has access to IAM without auto allowing privilege escalation.
-// (without this, a user who can modify policies could potentially gain root access and solve the challenge by infiltrating the account).
-func guardBoundaryPolicy(doc policyDocument) ([]byte, error) {
-	return json.Marshal(doc)
 }
 
 // costControlPolicy generates an SCP that denies common cost / commitment traps.

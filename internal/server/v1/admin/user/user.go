@@ -57,7 +57,7 @@ func (s *Server) Get(ctx context.Context, req *connect.Request[user.GetRequest])
 
 	return &connect.Response[user.GetResponse]{Msg: &user.GetResponse{User: &admin.User{
 		Id:           foundUser.UserID.Value(),
-		PubId:        foundUser.PubId.Value(),
+		PubId:        foundUser.PubID.Value(),
 		Username:     foundUser.Username.Value(),
 		Description:  foundUser.Description.Value(),
 		Organization: foundUser.Organization.Value(),
@@ -95,7 +95,7 @@ func (s *Server) List(ctx context.Context, req *connect.Request[user.ListRequest
 	for _, user := range users {
 		usersOutput = append(usersOutput, &admin.User{
 			Id:           user.UserID.Value(),
-			PubId:        user.PubId.Value(),
+			PubId:        user.PubID.Value(),
 			Username:     user.Username.Value(),
 			Description:  user.Description.Value(),
 			Organization: user.Organization.Value(),
@@ -148,7 +148,7 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[user.CreateReq
 
 	err = dynamitedb.Create(ctx, s.bucket, &oltp.User{
 		UserID:       dynamitedb.Key(userId),
-		PubId:        dynamitedb.Set(uuid.NewString()),
+		PubID:        dynamitedb.Set(uuid.NewString()),
 		Email:        dynamitedb.Set(req.Msg.Init.Email),
 		Username:     dynamitedb.Set(req.Msg.Init.Username),
 		Description:  dynamitedb.Set(req.Msg.Init.Description),

@@ -1,77 +1,168 @@
+//go:build wasip1
+
+// Package challenge is the plugin sdk.
 package challenge
 
-const Init = "init"
+import (
+	"encoding/json"
+	"fmt"
+	"time"
 
-type InitInput struct {
-	Title       string             `json:"title,omitempty"`
-	Description string             `json:"description,omitempty"`
-	Clues       map[string]float64 `json:"clues,omitempty"`
+	"codeberg.org/megakuul/cloudjam/pkg/challenge/api"
+)
+
+type Resource interface {
+	CloudControlType() string
 }
 
-type InitOutput struct{}
+type Check struct {
+	Name   string               // text shown next to the score update
+	Points float64              // points awarded if the check is positive (can also be negative).
+	Every  time.Duration        // throttles duration (zero evaluates on every loop iteration (which is defined by Challenge.Interval))
+	Repeat bool                 // should the points be awarded on every evaluation?
+	Done   func() (bool, error) // condition that tells if the check is successful.
 
-const ReadScore = "read_score"
-
-type ReadScoreInput struct{}
-
-type ReadScoreOutput struct {
-	Score float64 `json:"score,omitempty"`
+	last    time.Time
+	retired bool
 }
 
-const UpdateScore = "update_score"
+// Challenge is a scenario: resources to provision and checks that score the
+// player's progress against them.
+type Challenge struct {
+	Title        string
+	Descriptions []string
+	Clues        map[string]string
+	Assets       map[string][]byte
+	Resources    []Resource
+	Checks       []Check
+	Interval     time.Duration // round check speed, defaults to 10s
 
-type UpdateScoreInput struct {
-	Reason    string  `json:"reason,omitempty"`
-	Increment float64 `json:"increme,omitempty"`
+	ids map[Resource]string
 }
 
-type UpdateScoreOutput struct{}
+// Starts the specified challenge inside your wasm plugin.
+func Start(c *Challenge) {
+	if c.Interval <= 0 {
+		c.Interval = 10 * time.Second
+	}
+	c.ids = map[Resource]string{}
 
-const CreateResource = "create_resource"
+	assets := map[string]string{}
+	for path, asset := range c.Assets {
+		assetMeta, err := api.CreateAsset(asset)
+		if err != nil {
+			c.report(fmt.Errorf("failed to create asset '%s': %w", path, err))
+			continue
+		}
+		newAssetMeta, err := api.UpdateAsset(api.UpdateAssetInput{
+			OldName: assetMeta.Name,
+			NewName: path,
+		})
+		if err != nil {
+			c.report(fmt.Errorf("failed to create asset '%s': %w", path, err))
+			continue
+		}
+		assets[newAssetMeta.NewURL] = path
+	}
 
-type CreateResourceInput struct {
-	Type    string `json:"type,omitempty"`
-	Desired string `json:"desired,omitempty"`
+	if _, err := api.CreateMeta(api.CreateMetaInput{
+		Title:        c.Title,
+		Descriptions: c.Descriptions,
+		Clues:        c.Clues,
+		Assets:       assets,
+	}); err != nil {
+		c.report(err)
+	}
+
+	for {
+		c.provision()
+		c.evaluate()
+
+		if c.finished() {
+			return
+		}
+		time.Sleep(c.Interval)
+	}
 }
 
-type CreateResourceOutput struct{}
-
-const ReadResource = "register_resource"
-
-type ReadResourceInput struct {
-	Type       string `json:"type,omitempty"`
-	Identifier string `json:"identifier,omitempty"`
+// provision creates the resources that are not there yet, retrying every round.
+// It deliberately only ensures they exist: the player is supposed to change
+// them, and enforcing their properties would undo that.
+func (c *Challenge) provision() {
+	for _, resource := range c.Resources {
+		if c.ids[resource] != "" {
+			continue
+		}
+		desired, err := json.Marshal(resource)
+		if err != nil {
+			c.report(err)
+			continue
+		}
+		out, err := api.CreateResource(api.CreateResourceInput{
+			Type:    resource.CloudControlType(),
+			Desired: string(desired),
+		})
+		if err != nil {
+			c.report(fmt.Errorf("create %s: %w", resource.CloudControlType(), err))
+			continue
+		}
+		if out.Identifier == "" {
+			c.report(fmt.Errorf("create %s: failed", resource.CloudControlType()))
+			continue
+		}
+		c.ids[resource] = out.Identifier
+	}
 }
 
-type ReadResourceOutput struct {
-	State string `json:"state,omitempty"`
+// evaluate runs the checks that are due and awards the ones that pass.
+func (c *Challenge) evaluate() {
+	now := time.Now()
+	for i := range c.Checks {
+		check := &c.Checks[i]
+		if check.retired || check.Done == nil {
+			continue
+		}
+		if !check.last.IsZero() && now.Sub(check.last) < check.Every {
+			continue
+		}
+		check.last = now
+
+		passed, err := check.Done()
+		if err != nil {
+			c.report(fmt.Errorf("check %q: %w", check.Name, err))
+			continue
+		}
+		if !passed {
+			continue
+		}
+		if _, err := api.UpdateScore(api.UpdateScoreInput{
+			Reason:    check.Name,
+			Increment: check.Points,
+		}); err != nil {
+			// Leave it live so the award is attempted again next round.
+			c.report(fmt.Errorf("check %q: award: %w", check.Name, err))
+			continue
+		}
+		if !check.Repeat {
+			check.retired = true
+		}
+	}
 }
 
-const UpdateResource = "update_resource"
-
-type UpdateResourceInput struct {
-	Type       string `json:"type,omitempty"`
-	Identifier string `json:"identifier,omitempty"`
-	Patch      string `json:"patch,omitempty"`
+// finished reports whether anything is left: a resource still missing, or a
+// check that has not been retired.
+func (c *Challenge) finished() bool {
+	if len(c.ids) < len(c.Resources) {
+		return false
+	}
+	for _, check := range c.Checks {
+		if !check.retired && check.Done != nil {
+			return false
+		}
+	}
+	return true
 }
 
-type UpdateResourceOutput struct{}
-
-const DeleteResource = "delete_resource"
-
-type DeleteResourceInput struct {
-	Type       string `json:"type,omitempty"`
-	Identifier string `json:"identifier,omitempty"`
-}
-
-type DeleteResourceOutput struct{}
-
-const ListResource = "list_resource"
-
-type ListResourceInput struct {
-	Type string `json:"type,omitempty"`
-}
-
-type ListResourceOutput struct {
-	Resources map[string]string `json:"resources,omitempty"`
+func (c *Challenge) report(err error) {
+	api.Report(api.ReportInput{Error: err.Error()})
 }

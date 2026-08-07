@@ -5,51 +5,47 @@ import (
 	"fmt"
 	"time"
 
-	"codeberg.org/megakuul/cloudjam/internal/provider"
 	"github.com/aws/aws-sdk-go-v2/service/organizations"
 	orgtypes "github.com/aws/aws-sdk-go-v2/service/organizations/types"
 )
 
-func (r *Provider) Provision(ctx context.Context, name string) (*provider.Account, error) {
-	createResp, err := r.organizations.CreateAccount(ctx, &organizations.CreateAccountInput{
+func (p *Provider) Provision(ctx context.Context, name string) (string, error) {
+	createResp, err := p.organizations.CreateAccount(ctx, &organizations.CreateAccountInput{
 		AccountName:            &name,
-		Email:                  new(name + r.emailSuffix),
+		Email:                  new(name + p.emailSuffix),
 		IamUserAccessToBilling: orgtypes.IAMUserAccessToBillingDeny,
-		RoleName:               &r.adminRole,
+		RoleName:               &p.adminRole,
 	})
 	if err != nil {
-		return nil, err
+		return "", err
 	}
 	for {
 		select {
 		case <-ctx.Done():
-			return nil, ctx.Err()
+			return "", ctx.Err()
 		case <-time.After(time.Minute * 5):
 		}
-		descResp, err := r.organizations.DescribeCreateAccountStatus(ctx, &organizations.DescribeCreateAccountStatusInput{
+		descResp, err := p.organizations.DescribeCreateAccountStatus(ctx, &organizations.DescribeCreateAccountStatusInput{
 			CreateAccountRequestId: createResp.CreateAccountStatus.Id,
 		})
 		if err != nil {
-			return nil, err
+			return "", err
 		}
 		switch descResp.CreateAccountStatus.State {
 		case orgtypes.CreateAccountStateInProgress:
 			break
 		case orgtypes.CreateAccountStateFailed:
-			return nil, fmt.Errorf("account creation failed for '%s'; please inspect the account manually", *descResp.CreateAccountStatus.AccountId)
+			return "", fmt.Errorf("account creation failed for '%s'; please inspect the account manually", *descResp.CreateAccountStatus.AccountId)
 		}
 
-		_, err = r.organizations.MoveAccount(ctx, &organizations.MoveAccountInput{
+		_, err = p.organizations.MoveAccount(ctx, &organizations.MoveAccountInput{
 			AccountId:           descResp.CreateAccountStatus.AccountId,
-			SourceParentId:      &r.rootOU,
-			DestinationParentId: &r.cloudjamOU,
+			SourceParentId:      &p.rootOU,
+			DestinationParentId: &p.cloudjamOU,
 		})
 		if err != nil {
-			return nil, fmt.Errorf("account ou assignment failed for '%s': %w", *descResp.CreateAccountStatus.AccountId, err)
+			return "", fmt.Errorf("account ou assignment failed for '%s': %w", *descResp.CreateAccountStatus.AccountId, err)
 		}
-		return &provider.Account{
-			ID:   *descResp.CreateAccountStatus.AccountId,
-			Name: *descResp.CreateAccountStatus.AccountName,
-		}, nil
+		return *descResp.CreateAccountStatus.AccountId, nil
 	}
 }

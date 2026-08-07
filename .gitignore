@@ -3,3 +3,4 @@
 /.direnv
 *.sock
 .idea
+*.wasm
