@@ -44,6 +44,8 @@ type Check struct {
 type Scenario struct {
 	interval time.Duration // round check speed, defaults to 10s
 
+	bootstrap func() error
+
 	// init params exist to collect all metadata in the initial builder
 	// and then perform one single CreateMeta() call, after init is true, updates are incrementally.
 	initTitle        string
@@ -61,8 +63,9 @@ type Scenario struct {
 }
 
 // New creates the scenario for your plugin.
-func New(title string, interval time.Duration) *Scenario {
+func New(title string, interval time.Duration, boostrap func() error) *Scenario {
 	return &Scenario{
+		bootstrap:    boostrap,
 		initTitle:    title,
 		interval:     max(10*time.Second, interval),
 		init:         atomic.Bool{},
@@ -182,6 +185,10 @@ func (c *Scenario) Start() {
 		Clues:        c.initClues,
 		Assets:       c.initAssets,
 	}); err != nil {
+		c.report(err)
+	}
+
+	if err := c.bootstrap(); err != nil {
 		c.report(err)
 	}
 

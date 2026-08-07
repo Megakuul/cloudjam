@@ -13,5 +13,5 @@ func NewGlobalFlags() *GlobalFlags {
 }
 
 func (g *GlobalFlags) AttachFlags(flags *pflag.FlagSet) {
-	flags.BoolVarP(&g.Verbose, "verbose", "v", false, "Enable verbose outputs")
+	flags.BoolVarP(&g.Verbose, "verbose", "v", true, "Enable verbose outputs")
 }

@@ -19,7 +19,7 @@ import (
 const bucket = "cloudjam-encrypt-me"
 
 func main() {
-	challenge.New("Lock Down the Bucket", 10*time.Second).
+	challenge.New("Lock Down the Bucket", 10*time.Second, bootstrap).
 		AddDescription("A teammate spun up an S3 bucket with no encryption and no public-access guardrails. Secure it.").
 		AddClue("encryption", "Default encryption lives under BucketEncryption.").
 		AddClue("public", "Block public access with a PublicAccessBlockConfiguration.").
@@ -53,6 +53,16 @@ func encrypted() (bool, error) {
 		}
 	}
 	return false, nil
+}
+
+func bootstrap() error {
+	_, err := aws.Create(s3.Bucket{
+		BucketName: new(bucket),
+	})
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func locked() (bool, error) {
