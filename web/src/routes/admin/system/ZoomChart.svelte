@@ -28,7 +28,7 @@
 	} = $props();
 </script>
 
-<ChartContainer config={labels} class="-ml-3 w-full aspect-auto h-[250px]">
+<ChartContainer config={labels} class="-ml-3 aspect-auto h-[250px] w-full">
 	<AreaChart
 		{data}
 		x="date"
@@ -95,11 +95,11 @@
 				{#snippet formatter({ value, name, item })}
 					<div
 						style="--color-bg: {item.config?.color ?? item.color}"
-						class="self-stretch w-1 shrink-0 rounded-[2px] bg-(--color-bg)"
+						class="w-1 shrink-0 self-stretch rounded-[2px] bg-(--color-bg)"
 					></div>
-					<div class="flex flex-1 gap-6 justify-between items-center leading-none">
+					<div class="flex flex-1 items-center justify-between gap-6 leading-none">
 						<span class="whitespace-nowrap text-muted-foreground">{name}</span>
-						<span class="font-mono font-medium tabular-nums whitespace-nowrap text-foreground">
+						<span class="font-mono font-medium whitespace-nowrap text-foreground tabular-nums">
 							{typeof value === 'number' ? value.toLocaleString() : value}{unit ? ` ${unit}` : ''}
 						</span>
 					</div>

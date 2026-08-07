@@ -1,16 +1,22 @@
 <script lang="ts">
 	import { create, type Message } from '@bufbuild/protobuf';
 	import { CreateRequestSchema, type CreateRequest } from '$lib/sdk/v1/admin/user/user_pb';
-	import { TextField, ToggleButton } from 'svelte-ux';
-	import { Input } from 'svelte-ux';
 	import { Glue } from '$lib';
 	import { UserSchema } from '$lib/sdk/v1/admin/user_pb';
+	import { Input } from '$lib/components/shad/input';
+	import { Button } from '$lib/components/shad/button';
+	import * as Field from '$lib/components/shad/field';
+	import { User } from '@lucide/svelte';
 
 	let user = $state(
 		create(UserSchema, {
-			username: ''
+			username: '',
+			email: ''
 		})
 	);
+
+	let validator = $derived(Glue.Validate(UserSchema, user));
+	let validUsername = $derived(validator.violation.username !== undefined);
 </script>
 
 <h1>Create User</h1>
@@ -22,13 +28,16 @@
 	}}
 ></form>
 
-<ToggleButton buttonPlacement="after">Bodenlos</ToggleButton>
+<Button variant="outline">Bodenlos</Button>
 
-<Input placeholder="" />
-
-<TextField
-	bind:value={user.username}
-	label="Bombaclad"
-	placeholder="Enter your bombaclad"
-	error={Glue.Validate(UserSchema, user).violation.username}
-/>
+<Field.Field data-invalid={validUsername}>
+	<Field.Label for="username">Username</Field.Label>
+	<Input
+		bind:value={user.username}
+		id="username"
+		type="text"
+		placeholder="Enter your username"
+		aria-invalid={validUsername}
+	/>
+	<Field.Error>{validator.violation.username}</Field.Error>
+</Field.Field>

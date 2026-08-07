@@ -6,9 +6,9 @@
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { page } from '$app/state';
-	import Input from '$lib/components/ui/input/input.svelte';
-	import Button from '$lib/components/ui/button/button.svelte';
-	import * as Alert from '$lib/components/ui/alert';
+	import Input from '$lib/components/shad/input/input.svelte';
+	import Button from '$lib/components/shad/button/button.svelte';
+	import * as Alert from '$lib/components/shad/alert';
 	import { Loader, OctagonAlert } from '@lucide/svelte';
 
 	let request = $state(create(RegisterRequestSchema, {}));
@@ -30,7 +30,7 @@
 	<meta property="og:image" content="/favicon.png" />
 </svelte:head>
 
-<div class="flex justify-center items-center w-full">
+<div class="flex w-full items-center justify-center">
 	<form
 		class="mt-[10%] flex w-96 flex-col items-center gap-4 rounded-2xl border-[0.05rem] border-neutral/40 p-7 shadow-sm shadow-primary/20"
 		onsubmit={() =>

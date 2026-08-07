@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Glue, Submit } from '$lib';
-	import ScopeInput from '$lib/components/ScopeInput.svelte';
+	import ScopeInput from '$lib/components/custom/ScopeInput.svelte';
 	import * as Alert from '$lib/components/ui/alert';
 	import { Badge } from '$lib/components/ui/badge';
 	import { Button } from '$lib/components/ui/button';
@@ -73,7 +73,7 @@
 </script>
 
 <Card.Root class="w-full">
-	<Card.Header class="flex flex-row gap-4 items-center">
+	<Card.Header class="flex flex-row items-center gap-4">
 		<Icon svg={toSvg(user.pubId, 20)} width="4rem" height="4rem" class="rounded-lg bg-primary/5" />
 		<div class="flex flex-col gap-1">
 			<Card.Title class="text-2xl">{user.username}</Card.Title>
@@ -93,17 +93,17 @@
 	</Card.Header>
 	<Card.Content class="flex flex-col gap-6">
 		{#if user.privileged}
-			<p class="text-sm italic text-muted-foreground">
+			<p class="text-sm text-muted-foreground italic">
 				This user is privileged; role, scope and profile cannot be modified.
 			</p>
 		{:else}
 			<div class="flex flex-col gap-2">
 				<Card.Title>Organization</Card.Title>
 				{#if update.forbidden}
-					<p class="text-sm italic text-muted-foreground">You are not allowed to update this user.</p>
+					<p class="text-sm text-muted-foreground italic">You are not allowed to update this user.</p>
 				{:else}
 					<form
-						class="flex flex-row gap-2 items-center"
+						class="flex flex-row items-center gap-2"
 						onsubmit={() =>
 							Submit(async () => {
 								await Glue.user.update(create(UpdateRequestSchema, { mod: { ...user, organization: organization } }));
@@ -124,9 +124,9 @@
 			<div class="flex flex-col gap-2">
 				<Card.Title>Role</Card.Title>
 				{#if rolesForbidden || attachRole.forbidden}
-					<p class="text-sm italic text-muted-foreground">You are not allowed to attach roles.</p>
+					<p class="text-sm text-muted-foreground italic">You are not allowed to attach roles.</p>
 				{:else}
-					<div class="flex flex-row gap-2 items-center">
+					<div class="flex flex-row items-center gap-2">
 						<Select.Root type="single" bind:value={role}>
 							<Select.Trigger class="w-96 cursor-pointer">
 								{roles.find((r) => r.id === role)?.name ?? 'Select a role'}
@@ -161,13 +161,13 @@
 			<div class="flex flex-col gap-2">
 				<Card.Title>Scope</Card.Title>
 				{#if attach.forbidden}
-					<p class="text-sm italic text-muted-foreground">You are not allowed to attach scopes.</p>
+					<p class="text-sm text-muted-foreground italic">You are not allowed to attach scopes.</p>
 				{:else}
 					<p class="text-sm text-muted-foreground">
 						Moves the selected resource of this user into another scope you possess. User data is keyed by the user id,
 						login credentials by the email.
 					</p>
-					<div class="flex flex-row gap-2 items-center">
+					<div class="flex flex-row items-center gap-2">
 						<Select.Root type="single" bind:value={attachResource}>
 							<Select.Trigger class="w-48 cursor-pointer">
 								{resources.find((r) => r.value === attachResource)?.label}
@@ -210,11 +210,11 @@
 		<div class="flex flex-col gap-2">
 			<Card.Title>Reset Password</Card.Title>
 			{#if reset.forbidden}
-				<p class="text-sm italic text-muted-foreground">You are not allowed to reset passwords.</p>
+				<p class="text-sm text-muted-foreground italic">You are not allowed to reset passwords.</p>
 			{:else if resetCode}
 				<Alert.Root>
 					<Alert.Title>Reset code created</Alert.Title>
-					<Alert.Description class="flex flex-row gap-2 items-center font-mono text-xs break-all">
+					<Alert.Description class="flex flex-row items-center gap-2 font-mono text-xs break-all">
 						{resetCode}
 						<Button
 							variant="outline"
@@ -228,7 +228,7 @@
 					</Alert.Description>
 				</Alert.Root>
 			{:else}
-				<div class="flex flex-row gap-2 items-center">
+				<div class="flex flex-row items-center gap-2">
 					<Button
 						variant="outline"
 						class="cursor-pointer"
@@ -262,9 +262,9 @@
 			<div class="flex flex-col gap-2">
 				<Card.Title>Danger Zone</Card.Title>
 				{#if remove.forbidden}
-					<p class="text-sm italic text-muted-foreground">You are not allowed to delete this user.</p>
+					<p class="text-sm text-muted-foreground italic">You are not allowed to delete this user.</p>
 				{:else}
-					<div class="flex flex-row gap-2 items-center">
+					<div class="flex flex-row items-center gap-2">
 						{#if confirmDelete}
 							<Button
 								variant="destructive"

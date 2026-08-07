@@ -1,28 +1,12 @@
 <script lang="ts">
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
-	import { afterNavigate, goto } from '$app/navigation';
-	import { getEmail, getPubId, Glue, setToken } from '$lib';
+	import { afterNavigate } from '$app/navigation';
+	import { getEmail, getPubId } from '$lib';
 	import { onMount } from 'svelte';
-	import { toSvg } from 'jdenticon';
-	import { mode, ModeWatcher, toggleMode } from 'mode-watcher';
-	import {
-		SunIcon,
-		MoonIcon,
-		ChevronDown,
-		ChevronUp,
-		LogOut,
-		User,
-		Play,
-		ScreenShare,
-		WandSparkles,
-		Podium,
-		Flag,
-		ChartNoAxesCombined
-	} from '@lucide/svelte';
-	import Button from '$lib/components/ui/button/button.svelte';
-	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
-	import Badge from '$lib/components/ui/badge/badge.svelte';
+	import { ModeWatcher } from 'mode-watcher';
+	import * as Sidebar from '$lib/components/shad/sidebar';
+	import AppSidebar from '$lib/components/custom/sidebar/AppSidebar.svelte';
 
 	let { children } = $props();
 
@@ -38,118 +22,21 @@
 		pubId = getPubId();
 		email = getEmail();
 	});
-
-	let jamDropdown = $state(false);
-	let hofDropdown = $state(false);
-	let userDropdown = $state(false);
 </script>
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>
 
 <ModeWatcher />
 
-<div class="flex flex-row gap-1 justify-end items-center p-2 w-full">
-	<DropdownMenu.Root bind:open={jamDropdown}>
-		<DropdownMenu.Trigger>
-			<Button variant="ghost" class="h-12 p-4 font-bold {jamDropdown ? 'bg-accent text-accent-foreground' : ''}">
-				⚡️ Jam
-				<ChevronDown class="transition-transform duration-200 {jamDropdown ? 'rotate-180' : ''}" />
-			</Button>
-		</DropdownMenu.Trigger>
-		<DropdownMenu.Content align="end">
-			<DropdownMenu.Group>
-				<DropdownMenu.Label>Jam</DropdownMenu.Label>
-				<DropdownMenu.Separator />
-				<DropdownMenu.Item>
-					<Play />
-					<a href="/play">Play</a>
-				</DropdownMenu.Item>
-				<DropdownMenu.Item>
-					<ScreenShare />
-					<a href="/host">Host</a>
-				</DropdownMenu.Item>
-				<DropdownMenu.Item>
-					<WandSparkles />
-					<a href="/design">Design</a>
-				</DropdownMenu.Item>
-			</DropdownMenu.Group>
-		</DropdownMenu.Content>
-	</DropdownMenu.Root>
+<Sidebar.Provider>
+	<AppSidebar />
+	<span class="absolute md:hidden">
+		<Sidebar.Trigger />
+	</span>
 
-	<DropdownMenu.Root bind:open={hofDropdown}>
-		<DropdownMenu.Trigger>
-			<Button variant="ghost" class="h-12 p-4 font-bold {hofDropdown ? 'bg-accent text-accent-foreground' : ''}">
-				🏆 HoF
-				<ChevronDown class="transition-transform duration-200 {hofDropdown ? 'rotate-180' : ''}" />
-			</Button>
-		</DropdownMenu.Trigger>
-		<DropdownMenu.Content align="end">
-			<DropdownMenu.Group>
-				<DropdownMenu.Label>Hall of Fame</DropdownMenu.Label>
-				<DropdownMenu.Separator />
-				<DropdownMenu.Item>
-					<Podium />
-					<a href="/leaderboard">Leaderboard</a>
-				</DropdownMenu.Item>
-				<DropdownMenu.Item>
-					<Flag />
-					<a href="/tournament">Tournament</a>
-				</DropdownMenu.Item>
-				<DropdownMenu.Item>
-					<ChartNoAxesCombined />
-					<a href="/statistics">Statistics</a>
-				</DropdownMenu.Item>
-			</DropdownMenu.Group>
-		</DropdownMenu.Content>
-	</DropdownMenu.Root>
-
-	<DropdownMenu.Root bind:open={userDropdown}>
-		<DropdownMenu.Trigger>
-			<Button variant="ghost" class="h-12 p-4 {userDropdown ? 'bg-accent text-accent-foreground' : ''}">
-				<img
-					alt="user profile"
-					src={`data:image/svg+xml;base64,${btoa(toSvg(pubId, 40))}`}
-					class="rounded-lg bg-primary/5"
-				/>
-				<ChevronDown class="transition-transform duration-200 {userDropdown ? 'rotate-180' : ''}" />
-			</Button>
-		</DropdownMenu.Trigger>
-		<DropdownMenu.Content align="end">
-			<DropdownMenu.Group>
-				<DropdownMenu.Label>{email}</DropdownMenu.Label>
-				<DropdownMenu.Separator />
-				<DropdownMenu.Item>
-					<User />
-					<a href="/profile">Profile</a>
-				</DropdownMenu.Item>
-				<DropdownMenu.Item
-					onclick={(e) => {
-						e.stopPropagation();
-						e.preventDefault();
-						toggleMode();
-					}}
-				>
-					<SunIcon class="h-[1.2rem] w-[1.2rem] scale-100 rotate-0 transition-all! dark:scale-0 dark:-rotate-90" />
-					<MoonIcon
-						class="absolute h-[1.2rem] w-[1.2rem] scale-0 rotate-90 transition-all! dark:scale-100 dark:rotate-0"
-					/>
-					Theme
-				</DropdownMenu.Item>
-				<DropdownMenu.Item
-					variant="destructive"
-					onclick={() => {
-						setToken('');
-						goto('/login');
-					}}
-				>
-					<LogOut />
-					Logout
-				</DropdownMenu.Item>
-			</DropdownMenu.Group>
-		</DropdownMenu.Content>
-	</DropdownMenu.Root>
-</div>
-
-<div class="p-4 w-full">
-	{@render children()}
-</div>
+	<main class="h-dvh min-w-0 flex-1">
+		<section class="h-full min-w-0 p-3 sm:p-5">
+			{@render children?.()}
+		</section>
+	</main>
+</Sidebar.Provider>

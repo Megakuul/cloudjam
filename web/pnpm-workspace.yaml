@@ -1,0 +1,4 @@
+allowBuilds:
+  svelte-preprocess: true
+minimumReleaseAgeExclude:
+  - shadcn-svelte@1.5.0

@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { Glue, Submit } from '$lib';
-	import * as Alert from '$lib/components/ui/alert';
-	import { Badge } from '$lib/components/ui/badge';
-	import { Button } from '$lib/components/ui/button';
-	import * as Table from '$lib/components/ui/table';
+	import * as Alert from '$lib/components/shad/alert';
+	import { Badge } from '$lib/components/shad/badge';
+	import { Button } from '$lib/components/shad/button';
+	import * as Table from '$lib/components/shad/table';
 	import { ListRequestSchema as ListRolesRequestSchema } from '$lib/sdk/v1/admin/role/role_pb';
 	import type { Role } from '$lib/sdk/v1/admin/role_pb';
 	import { ListRequestSchema } from '$lib/sdk/v1/admin/user/user_pb';
