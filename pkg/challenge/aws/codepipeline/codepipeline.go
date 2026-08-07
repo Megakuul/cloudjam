@@ -42,7 +42,7 @@ type CustomActionType struct {
 	Version                 *string                   `json:"Version,omitempty"`
 }
 
-func (CustomActionType) CloudControlType() string { return "AWS::CodePipeline::CustomActionType" }
+func (CustomActionType) Type() string { return "AWS::CodePipeline::CustomActionType" }
 
 type EncryptionKey struct {
 	Id   *string `json:"Id,omitempty"`
@@ -223,7 +223,7 @@ type Pipeline struct {
 	Version                        *string                      `json:"Version,omitempty"`
 }
 
-func (Pipeline) CloudControlType() string { return "AWS::CodePipeline::Pipeline" }
+func (Pipeline) Type() string { return "AWS::CodePipeline::Pipeline" }
 
 type WebhookAuthConfiguration struct {
 	AllowedIPRange *string `json:"AllowedIPRange,omitempty"`
@@ -254,7 +254,7 @@ type Webhook struct {
 	Url                         *string                   `json:"Url,omitempty"`
 }
 
-func (Webhook) CloudControlType() string { return "AWS::CodePipeline::Webhook" }
+func (Webhook) Type() string { return "AWS::CodePipeline::Webhook" }
 
 type ArtifactStoreType string
 

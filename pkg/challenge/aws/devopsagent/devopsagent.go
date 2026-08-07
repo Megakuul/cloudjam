@@ -40,7 +40,7 @@ type AgentSpace struct {
 	UpdatedAt    *string      `json:"UpdatedAt,omitempty"`
 }
 
-func (AgentSpace) CloudControlType() string { return "AWS::DevOpsAgent::AgentSpace" }
+func (AgentSpace) Type() string { return "AWS::DevOpsAgent::AgentSpace" }
 
 type Association struct {
 	AgentSpaceId         *string        `json:"AgentSpaceId,omitempty"`
@@ -52,7 +52,7 @@ type Association struct {
 	UpdatedAt            *string        `json:"UpdatedAt,omitempty"`
 }
 
-func (Association) CloudControlType() string { return "AWS::DevOpsAgent::Association" }
+func (Association) Type() string { return "AWS::DevOpsAgent::Association" }
 
 type PrivateConnectionTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -69,7 +69,7 @@ type PrivateConnection struct {
 	Tags                    []PrivateConnectionTag   `json:"Tags,omitempty"`
 }
 
-func (PrivateConnection) CloudControlType() string { return "AWS::DevOpsAgent::PrivateConnection" }
+func (PrivateConnection) Type() string { return "AWS::DevOpsAgent::PrivateConnection" }
 
 type ServiceTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -90,7 +90,7 @@ type Service struct {
 	TargetUrlPrivateConnectionName   *string             `json:"TargetUrlPrivateConnectionName,omitempty"`
 }
 
-func (Service) CloudControlType() string { return "AWS::DevOpsAgent::Service" }
+func (Service) Type() string { return "AWS::DevOpsAgent::Service" }
 
 type PrivateConnectionStatus string
 

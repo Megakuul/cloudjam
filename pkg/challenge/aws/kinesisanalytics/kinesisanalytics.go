@@ -74,7 +74,7 @@ type Application struct {
 	Inputs                 []Input `json:"Inputs,omitempty"`
 }
 
-func (Application) CloudControlType() string { return "AWS::KinesisAnalytics::Application" }
+func (Application) Type() string { return "AWS::KinesisAnalytics::Application" }
 
 type DestinationSchema struct {
 	RecordFormatType *string `json:"RecordFormatType,omitempty"`
@@ -109,7 +109,7 @@ type ApplicationOutput struct {
 	Output          *Output `json:"Output,omitempty"`
 }
 
-func (ApplicationOutput) CloudControlType() string { return "AWS::KinesisAnalytics::ApplicationOutput" }
+func (ApplicationOutput) Type() string { return "AWS::KinesisAnalytics::ApplicationOutput" }
 
 type ApplicationReferenceDataSourceRecordColumn struct {
 	Mapping *string `json:"Mapping,omitempty"`
@@ -160,6 +160,6 @@ type ApplicationReferenceDataSource struct {
 	ReferenceDataSource *ReferenceDataSource `json:"ReferenceDataSource,omitempty"`
 }
 
-func (ApplicationReferenceDataSource) CloudControlType() string {
+func (ApplicationReferenceDataSource) Type() string {
 	return "AWS::KinesisAnalytics::ApplicationReferenceDataSource"
 }

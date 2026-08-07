@@ -21,7 +21,7 @@ type Group struct {
 	Tags                  []Tag                  `json:"Tags,omitempty"`
 }
 
-func (Group) CloudControlType() string { return "AWS::XRay::Group" }
+func (Group) Type() string { return "AWS::XRay::Group" }
 
 type ResourcePolicy struct {
 	BypassPolicyLockoutCheck *bool   `json:"BypassPolicyLockoutCheck,omitempty"`
@@ -29,7 +29,7 @@ type ResourcePolicy struct {
 	PolicyName               *string `json:"PolicyName,omitempty"`
 }
 
-func (ResourcePolicy) CloudControlType() string { return "AWS::XRay::ResourcePolicy" }
+func (ResourcePolicy) Type() string { return "AWS::XRay::ResourcePolicy" }
 
 type SamplingRateBoost struct {
 	CooldownWindowMinutes *int     `json:"CooldownWindowMinutes,omitempty"`
@@ -89,11 +89,11 @@ type SamplingRule struct {
 	Tags               []SamplingRuleTag         `json:"Tags,omitempty"`
 }
 
-func (SamplingRule) CloudControlType() string { return "AWS::XRay::SamplingRule" }
+func (SamplingRule) Type() string { return "AWS::XRay::SamplingRule" }
 
 type TransactionSearchConfig struct {
 	AccountId          *string  `json:"AccountId,omitempty"`
 	IndexingPercentage *float64 `json:"IndexingPercentage,omitempty"`
 }
 
-func (TransactionSearchConfig) CloudControlType() string { return "AWS::XRay::TransactionSearchConfig" }
+func (TransactionSearchConfig) Type() string { return "AWS::XRay::TransactionSearchConfig" }

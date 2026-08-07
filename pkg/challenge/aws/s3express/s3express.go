@@ -39,14 +39,14 @@ type AccessPoint struct {
 	VpcConfiguration               *VpcConfiguration               `json:"VpcConfiguration,omitempty"`
 }
 
-func (AccessPoint) CloudControlType() string { return "AWS::S3Express::AccessPoint" }
+func (AccessPoint) Type() string { return "AWS::S3Express::AccessPoint" }
 
 type BucketPolicy struct {
 	Bucket         *string         `json:"Bucket,omitempty"`
 	PolicyDocument json.RawMessage `json:"PolicyDocument,omitempty"`
 }
 
-func (BucketPolicy) CloudControlType() string { return "AWS::S3Express::BucketPolicy" }
+func (BucketPolicy) Type() string { return "AWS::S3Express::BucketPolicy" }
 
 type ServerSideEncryptionByDefault struct {
 	KMSMasterKeyID *string                                    `json:"KMSMasterKeyID,omitempty"`
@@ -121,7 +121,7 @@ type DirectoryBucket struct {
 	Tags                    []DirectoryBucketTag           `json:"Tags,omitempty"`
 }
 
-func (DirectoryBucket) CloudControlType() string { return "AWS::S3Express::DirectoryBucket" }
+func (DirectoryBucket) Type() string { return "AWS::S3Express::DirectoryBucket" }
 
 type AccessPointNetworkOrigin string
 

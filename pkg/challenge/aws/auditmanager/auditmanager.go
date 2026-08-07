@@ -63,7 +63,7 @@ type Assessment struct {
 	Tags                         []Tag                         `json:"Tags,omitempty"`
 }
 
-func (Assessment) CloudControlType() string { return "AWS::AuditManager::Assessment" }
+func (Assessment) Type() string { return "AWS::AuditManager::Assessment" }
 
 type ControlSetControl struct {
 	Id *string `json:"Id,omitempty"`
@@ -94,7 +94,7 @@ type AssessmentFramework struct {
 	Type           *AssessmentFrameworkType `json:"Type,omitempty"`
 }
 
-func (AssessmentFramework) CloudControlType() string { return "AWS::AuditManager::AssessmentFramework" }
+func (AssessmentFramework) Type() string { return "AWS::AuditManager::AssessmentFramework" }
 
 type AssessmentReportDestinationType string
 

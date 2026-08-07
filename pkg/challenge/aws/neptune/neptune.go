@@ -52,7 +52,7 @@ type DBCluster struct {
 	VpcSecurityGroupIds            []string                        `json:"VpcSecurityGroupIds,omitempty"`
 }
 
-func (DBCluster) CloudControlType() string { return "AWS::Neptune::DBCluster" }
+func (DBCluster) Type() string { return "AWS::Neptune::DBCluster" }
 
 type DBClusterParameterGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -67,9 +67,7 @@ type DBClusterParameterGroup struct {
 	Tags        []DBClusterParameterGroupTag `json:"Tags,omitempty"`
 }
 
-func (DBClusterParameterGroup) CloudControlType() string {
-	return "AWS::Neptune::DBClusterParameterGroup"
-}
+func (DBClusterParameterGroup) Type() string { return "AWS::Neptune::DBClusterParameterGroup" }
 
 type DBInstanceTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -93,7 +91,7 @@ type DBInstance struct {
 	Tags                       []DBInstanceTag `json:"Tags,omitempty"`
 }
 
-func (DBInstance) CloudControlType() string { return "AWS::Neptune::DBInstance" }
+func (DBInstance) Type() string { return "AWS::Neptune::DBInstance" }
 
 type DBParameterGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -108,7 +106,7 @@ type DBParameterGroup struct {
 	Tags        []DBParameterGroupTag `json:"Tags,omitempty"`
 }
 
-func (DBParameterGroup) CloudControlType() string { return "AWS::Neptune::DBParameterGroup" }
+func (DBParameterGroup) Type() string { return "AWS::Neptune::DBParameterGroup" }
 
 type DBSubnetGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -122,7 +120,7 @@ type DBSubnetGroup struct {
 	Tags                     []DBSubnetGroupTag `json:"Tags,omitempty"`
 }
 
-func (DBSubnetGroup) CloudControlType() string { return "AWS::Neptune::DBSubnetGroup" }
+func (DBSubnetGroup) Type() string { return "AWS::Neptune::DBSubnetGroup" }
 
 type EventSubscriptionTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -139,7 +137,7 @@ type EventSubscription struct {
 	Tags             []EventSubscriptionTag `json:"Tags,omitempty"`
 }
 
-func (EventSubscription) CloudControlType() string { return "AWS::Neptune::EventSubscription" }
+func (EventSubscription) Type() string { return "AWS::Neptune::EventSubscription" }
 
 type GlobalClusterTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -156,7 +154,7 @@ type GlobalCluster struct {
 	Tags                      []GlobalClusterTag   `json:"Tags,omitempty"`
 }
 
-func (GlobalCluster) CloudControlType() string { return "AWS::Neptune::GlobalCluster" }
+func (GlobalCluster) Type() string { return "AWS::Neptune::GlobalCluster" }
 
 type DBClusterNetworkType string
 

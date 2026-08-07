@@ -23,7 +23,7 @@ type Channel struct {
 	Tags         []Tag         `json:"Tags,omitempty"`
 }
 
-func (Channel) CloudControlType() string { return "AWS::CloudTrail::Channel" }
+func (Channel) Type() string { return "AWS::CloudTrail::Channel" }
 
 type RefreshScheduleFrequency struct {
 	Unit  *RefreshScheduleFrequencyUnit `json:"Unit,omitempty"`
@@ -60,7 +60,7 @@ type Dashboard struct {
 	Widgets                      []Widget         `json:"Widgets,omitempty"`
 }
 
-func (Dashboard) CloudControlType() string { return "AWS::CloudTrail::Dashboard" }
+func (Dashboard) Type() string { return "AWS::CloudTrail::Dashboard" }
 
 type AdvancedFieldSelector struct {
 	EndsWith      []string `json:"EndsWith,omitempty"`
@@ -114,14 +114,14 @@ type EventDataStore struct {
 	UpdatedTimestamp             *string                     `json:"UpdatedTimestamp,omitempty"`
 }
 
-func (EventDataStore) CloudControlType() string { return "AWS::CloudTrail::EventDataStore" }
+func (EventDataStore) Type() string { return "AWS::CloudTrail::EventDataStore" }
 
 type ResourcePolicy struct {
 	ResourceArn    *string         `json:"ResourceArn,omitempty"`
 	ResourcePolicy json.RawMessage `json:"ResourcePolicy,omitempty"`
 }
 
-func (ResourcePolicy) CloudControlType() string { return "AWS::CloudTrail::ResourcePolicy" }
+func (ResourcePolicy) Type() string { return "AWS::CloudTrail::ResourcePolicy" }
 
 type TrailAdvancedFieldSelector struct {
 	EndsWith      []string `json:"EndsWith,omitempty"`
@@ -187,7 +187,7 @@ type Trail struct {
 	TrailName                  *string                      `json:"TrailName,omitempty"`
 }
 
-func (Trail) CloudControlType() string { return "AWS::CloudTrail::Trail" }
+func (Trail) Type() string { return "AWS::CloudTrail::Trail" }
 
 type DestinationType string
 

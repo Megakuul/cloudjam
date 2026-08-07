@@ -22,9 +22,7 @@ type NotificationRule struct {
 	Targets       []Target                    `json:"Targets,omitempty"`
 }
 
-func (NotificationRule) CloudControlType() string {
-	return "AWS::CodeStarNotifications::NotificationRule"
-}
+func (NotificationRule) Type() string { return "AWS::CodeStarNotifications::NotificationRule" }
 
 type NotificationRuleDetailType string
 

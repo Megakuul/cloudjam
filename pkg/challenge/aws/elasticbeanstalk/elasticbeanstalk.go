@@ -31,7 +31,7 @@ type Application struct {
 	ResourceLifecycleConfig *ApplicationResourceLifecycleConfig `json:"ResourceLifecycleConfig,omitempty"`
 }
 
-func (Application) CloudControlType() string { return "AWS::ElasticBeanstalk::Application" }
+func (Application) Type() string { return "AWS::ElasticBeanstalk::Application" }
 
 type SourceBundle struct {
 	S3Bucket *string `json:"S3Bucket,omitempty"`
@@ -45,9 +45,7 @@ type ApplicationVersion struct {
 	SourceBundle    *SourceBundle `json:"SourceBundle,omitempty"`
 }
 
-func (ApplicationVersion) CloudControlType() string {
-	return "AWS::ElasticBeanstalk::ApplicationVersion"
-}
+func (ApplicationVersion) Type() string { return "AWS::ElasticBeanstalk::ApplicationVersion" }
 
 type ConfigurationOptionSetting struct {
 	Namespace    *string `json:"Namespace,omitempty"`
@@ -72,9 +70,7 @@ type ConfigurationTemplate struct {
 	TemplateName        *string                      `json:"TemplateName,omitempty"`
 }
 
-func (ConfigurationTemplate) CloudControlType() string {
-	return "AWS::ElasticBeanstalk::ConfigurationTemplate"
-}
+func (ConfigurationTemplate) Type() string { return "AWS::ElasticBeanstalk::ConfigurationTemplate" }
 
 type OptionSetting struct {
 	Namespace    *string `json:"Namespace,omitempty"`
@@ -110,4 +106,4 @@ type Environment struct {
 	VersionLabel      *string         `json:"VersionLabel,omitempty"`
 }
 
-func (Environment) CloudControlType() string { return "AWS::ElasticBeanstalk::Environment" }
+func (Environment) Type() string { return "AWS::ElasticBeanstalk::Environment" }

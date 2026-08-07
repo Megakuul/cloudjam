@@ -16,4 +16,4 @@ type Project struct {
 	Tags      []Tag   `json:"Tags,omitempty"`
 }
 
-func (Project) CloudControlType() string { return "AWS::BedrockMantle::Project" }
+func (Project) Type() string { return "AWS::BedrockMantle::Project" }

@@ -14,7 +14,7 @@ type Graph struct {
 	Tags              []Tag   `json:"Tags,omitempty"`
 }
 
-func (Graph) CloudControlType() string { return "AWS::Detective::Graph" }
+func (Graph) Type() string { return "AWS::Detective::Graph" }
 
 type MemberInvitation struct {
 	DisableEmailNotification *bool   `json:"DisableEmailNotification,omitempty"`
@@ -24,11 +24,11 @@ type MemberInvitation struct {
 	Message                  *string `json:"Message,omitempty"`
 }
 
-func (MemberInvitation) CloudControlType() string { return "AWS::Detective::MemberInvitation" }
+func (MemberInvitation) Type() string { return "AWS::Detective::MemberInvitation" }
 
 type OrganizationAdmin struct {
 	AccountId *string `json:"AccountId,omitempty"`
 	GraphArn  *string `json:"GraphArn,omitempty"`
 }
 
-func (OrganizationAdmin) CloudControlType() string { return "AWS::Detective::OrganizationAdmin" }
+func (OrganizationAdmin) Type() string { return "AWS::Detective::OrganizationAdmin" }

@@ -152,7 +152,7 @@ type CapacityProvider struct {
 	Tags                     []Tag                     `json:"Tags,omitempty"`
 }
 
-func (CapacityProvider) CloudControlType() string { return "AWS::ECS::CapacityProvider" }
+func (CapacityProvider) Type() string { return "AWS::ECS::CapacityProvider" }
 
 type ClusterSettings struct {
 	Name  *string `json:"Name,omitempty"`
@@ -209,7 +209,7 @@ type Cluster struct {
 	Tags                            []ClusterTag                   `json:"Tags,omitempty"`
 }
 
-func (Cluster) CloudControlType() string { return "AWS::ECS::Cluster" }
+func (Cluster) Type() string { return "AWS::ECS::Cluster" }
 
 type CapacityProviderStrategy struct {
 	Base             *int              `json:"Base,omitempty"`
@@ -223,7 +223,7 @@ type ClusterCapacityProviderAssociations struct {
 	DefaultCapacityProviderStrategy []CapacityProviderStrategy `json:"DefaultCapacityProviderStrategy,omitempty"`
 }
 
-func (ClusterCapacityProviderAssociations) CloudControlType() string {
+func (ClusterCapacityProviderAssociations) Type() string {
 	return "AWS::ECS::ClusterCapacityProviderAssociations"
 }
 
@@ -260,7 +260,7 @@ type Daemon struct {
 	UpdatedAt               *string                        `json:"UpdatedAt,omitempty"`
 }
 
-func (Daemon) CloudControlType() string { return "AWS::ECS::Daemon" }
+func (Daemon) Type() string { return "AWS::ECS::Daemon" }
 
 type ContainerDependency struct {
 	Condition     *string `json:"Condition,omitempty"`
@@ -412,7 +412,7 @@ type DaemonTaskDefinition struct {
 	Volumes                 []Volume                    `json:"Volumes,omitempty"`
 }
 
-func (DaemonTaskDefinition) CloudControlType() string { return "AWS::ECS::DaemonTaskDefinition" }
+func (DaemonTaskDefinition) Type() string { return "AWS::ECS::DaemonTaskDefinition" }
 
 type IngressPathSummary struct {
 	AccessType *AccessType `json:"AccessType,omitempty"`
@@ -529,7 +529,7 @@ type ExpressGatewayService struct {
 	UpdatedAt              *string                                    `json:"UpdatedAt,omitempty"`
 }
 
-func (ExpressGatewayService) CloudControlType() string { return "AWS::ECS::ExpressGatewayService" }
+func (ExpressGatewayService) Type() string { return "AWS::ECS::ExpressGatewayService" }
 
 type PrimaryTaskSet struct {
 	Cluster   *string `json:"Cluster,omitempty"`
@@ -537,7 +537,7 @@ type PrimaryTaskSet struct {
 	TaskSetId *string `json:"TaskSetId,omitempty"`
 }
 
-func (PrimaryTaskSet) CloudControlType() string { return "AWS::ECS::PrimaryTaskSet" }
+func (PrimaryTaskSet) Type() string { return "AWS::ECS::PrimaryTaskSet" }
 
 type ServiceCapacityProviderStrategyItem struct {
 	Base             *int    `json:"Base,omitempty"`
@@ -794,7 +794,7 @@ type Service struct {
 	VpcLatticeConfigurations      []VpcLatticeConfiguration             `json:"VpcLatticeConfigurations,omitempty"`
 }
 
-func (Service) CloudControlType() string { return "AWS::ECS::Service" }
+func (Service) Type() string { return "AWS::ECS::Service" }
 
 type TaskDefinitionContainerDependency struct {
 	Condition     *string `json:"Condition,omitempty"`
@@ -1063,7 +1063,7 @@ type TaskDefinition struct {
 	Volumes                 []TaskDefinitionVolume              `json:"Volumes,omitempty"`
 }
 
-func (TaskDefinition) CloudControlType() string { return "AWS::ECS::TaskDefinition" }
+func (TaskDefinition) Type() string { return "AWS::ECS::TaskDefinition" }
 
 type TaskSetCapacityProviderStrategyItem struct {
 	Base             *int    `json:"Base,omitempty"`
@@ -1120,7 +1120,7 @@ type TaskSet struct {
 	TaskDefinition           *string                               `json:"TaskDefinition,omitempty"`
 }
 
-func (TaskSet) CloudControlType() string { return "AWS::ECS::TaskSet" }
+func (TaskSet) Type() string { return "AWS::ECS::TaskSet" }
 
 type AutoScalingGroupProviderManagedDraining string
 

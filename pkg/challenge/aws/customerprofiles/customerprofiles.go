@@ -64,7 +64,7 @@ type CalculatedAttributeDefinition struct {
 	UseHistoricalData       *bool                                `json:"UseHistoricalData,omitempty"`
 }
 
-func (CalculatedAttributeDefinition) CloudControlType() string {
+func (CalculatedAttributeDefinition) Type() string {
 	return "AWS::CustomerProfiles::CalculatedAttributeDefinition"
 }
 
@@ -163,7 +163,7 @@ type Domain struct {
 	Tags                  []DomainTag        `json:"Tags,omitempty"`
 }
 
-func (Domain) CloudControlType() string { return "AWS::CustomerProfiles::Domain" }
+func (Domain) Type() string { return "AWS::CustomerProfiles::Domain" }
 
 type DomainObjectTypeField struct {
 	ContentType *DomainObjectTypeFieldContentType `json:"ContentType,omitempty"`
@@ -188,7 +188,7 @@ type DomainObjectType struct {
 	Tags           []DomainObjectTypeTag            `json:"Tags,omitempty"`
 }
 
-func (DomainObjectType) CloudControlType() string { return "AWS::CustomerProfiles::DomainObjectType" }
+func (DomainObjectType) Type() string { return "AWS::CustomerProfiles::DomainObjectType" }
 
 type EventStreamDestinationDetails struct {
 	Status *Status `json:"Status,omitempty"`
@@ -211,7 +211,7 @@ type EventStream struct {
 	Uri                *string                        `json:"Uri,omitempty"`
 }
 
-func (EventStream) CloudControlType() string { return "AWS::CustomerProfiles::EventStream" }
+func (EventStream) Type() string { return "AWS::CustomerProfiles::EventStream" }
 
 type ObjectAttribute struct {
 	ComparisonOperator *ObjectAttributeComparisonOperator `json:"ComparisonOperator,omitempty"`
@@ -259,7 +259,7 @@ type EventTrigger struct {
 	Tags                   []EventTriggerTag       `json:"Tags,omitempty"`
 }
 
-func (EventTrigger) CloudControlType() string { return "AWS::CustomerProfiles::EventTrigger" }
+func (EventTrigger) Type() string { return "AWS::CustomerProfiles::EventTrigger" }
 
 type IncrementalPullConfig struct {
 	DatetimeTypeFieldName *string `json:"DatetimeTypeFieldName,omitempty"`
@@ -375,7 +375,7 @@ type Integration struct {
 	Uri               *string             `json:"Uri,omitempty"`
 }
 
-func (Integration) CloudControlType() string { return "AWS::CustomerProfiles::Integration" }
+func (Integration) Type() string { return "AWS::CustomerProfiles::Integration" }
 
 type ObjectTypeField struct {
 	ContentType *ObjectTypeFieldContentType `json:"ContentType,omitempty"`
@@ -422,7 +422,7 @@ type ObjectType struct {
 	TemplateId                       *string         `json:"TemplateId,omitempty"`
 }
 
-func (ObjectType) CloudControlType() string { return "AWS::CustomerProfiles::ObjectType" }
+func (ObjectType) Type() string { return "AWS::CustomerProfiles::ObjectType" }
 
 type EventParameters struct {
 	EventType           *string  `json:"EventType,omitempty"`
@@ -480,7 +480,7 @@ type Recommender struct {
 	TrainingMetrics         []TrainingMetrics  `json:"TrainingMetrics,omitempty"`
 }
 
-func (Recommender) CloudControlType() string { return "AWS::CustomerProfiles::Recommender" }
+func (Recommender) Type() string { return "AWS::CustomerProfiles::Recommender" }
 
 type SourceSegment struct {
 	SegmentDefinitionName *string `json:"SegmentDefinitionName,omitempty"`
@@ -528,7 +528,7 @@ type SegmentDefinition struct {
 	Tags                  []SegmentDefinitionTag        `json:"Tags,omitempty"`
 }
 
-func (SegmentDefinition) CloudControlType() string { return "AWS::CustomerProfiles::SegmentDefinition" }
+func (SegmentDefinition) Type() string { return "AWS::CustomerProfiles::SegmentDefinition" }
 
 type RangeUnit string
 
@@ -860,25 +860,26 @@ const (
 type ObjectTypeKeyStandardIdentifiersItem string
 
 const (
-	ObjectTypeKeyStandardIdentifiersItemPROFILE            ObjectTypeKeyStandardIdentifiersItem = "PROFILE"
-	ObjectTypeKeyStandardIdentifiersItemUNIQUE             ObjectTypeKeyStandardIdentifiersItem = "UNIQUE"
-	ObjectTypeKeyStandardIdentifiersItemSECONDARY          ObjectTypeKeyStandardIdentifiersItem = "SECONDARY"
-	ObjectTypeKeyStandardIdentifiersItemLOOKUPONLY         ObjectTypeKeyStandardIdentifiersItem = "LOOKUP_ONLY"
-	ObjectTypeKeyStandardIdentifiersItemNEWONLY            ObjectTypeKeyStandardIdentifiersItem = "NEW_ONLY"
-	ObjectTypeKeyStandardIdentifiersItemASSET              ObjectTypeKeyStandardIdentifiersItem = "ASSET"
-	ObjectTypeKeyStandardIdentifiersItemCASE               ObjectTypeKeyStandardIdentifiersItem = "CASE"
-	ObjectTypeKeyStandardIdentifiersItemORDER              ObjectTypeKeyStandardIdentifiersItem = "ORDER"
-	ObjectTypeKeyStandardIdentifiersItemAIRPREFERENCE      ObjectTypeKeyStandardIdentifiersItem = "AIR_PREFERENCE"
-	ObjectTypeKeyStandardIdentifiersItemAIRBOOKING         ObjectTypeKeyStandardIdentifiersItem = "AIR_BOOKING"
-	ObjectTypeKeyStandardIdentifiersItemAIRSEGMENT         ObjectTypeKeyStandardIdentifiersItem = "AIR_SEGMENT"
-	ObjectTypeKeyStandardIdentifiersItemHOTELPREFERENCE    ObjectTypeKeyStandardIdentifiersItem = "HOTEL_PREFERENCE"
-	ObjectTypeKeyStandardIdentifiersItemHOTELSTAYREVENUE   ObjectTypeKeyStandardIdentifiersItem = "HOTEL_STAY_REVENUE"
-	ObjectTypeKeyStandardIdentifiersItemHOTELRESERVATION   ObjectTypeKeyStandardIdentifiersItem = "HOTEL_RESERVATION"
-	ObjectTypeKeyStandardIdentifiersItemLOYALTY            ObjectTypeKeyStandardIdentifiersItem = "LOYALTY"
-	ObjectTypeKeyStandardIdentifiersItemLOYALTYTRANSACTION ObjectTypeKeyStandardIdentifiersItem = "LOYALTY_TRANSACTION"
-	ObjectTypeKeyStandardIdentifiersItemLOYALTYPROMOTION   ObjectTypeKeyStandardIdentifiersItem = "LOYALTY_PROMOTION"
-	ObjectTypeKeyStandardIdentifiersItemWEBANALYTICS       ObjectTypeKeyStandardIdentifiersItem = "WEB_ANALYTICS"
-	ObjectTypeKeyStandardIdentifiersItemDEVICE             ObjectTypeKeyStandardIdentifiersItem = "DEVICE"
+	ObjectTypeKeyStandardIdentifiersItemPROFILE             ObjectTypeKeyStandardIdentifiersItem = "PROFILE"
+	ObjectTypeKeyStandardIdentifiersItemUNIQUE              ObjectTypeKeyStandardIdentifiersItem = "UNIQUE"
+	ObjectTypeKeyStandardIdentifiersItemSECONDARY           ObjectTypeKeyStandardIdentifiersItem = "SECONDARY"
+	ObjectTypeKeyStandardIdentifiersItemLOOKUPONLY          ObjectTypeKeyStandardIdentifiersItem = "LOOKUP_ONLY"
+	ObjectTypeKeyStandardIdentifiersItemNEWONLY             ObjectTypeKeyStandardIdentifiersItem = "NEW_ONLY"
+	ObjectTypeKeyStandardIdentifiersItemASSET               ObjectTypeKeyStandardIdentifiersItem = "ASSET"
+	ObjectTypeKeyStandardIdentifiersItemCASE                ObjectTypeKeyStandardIdentifiersItem = "CASE"
+	ObjectTypeKeyStandardIdentifiersItemORDER               ObjectTypeKeyStandardIdentifiersItem = "ORDER"
+	ObjectTypeKeyStandardIdentifiersItemAIRPREFERENCE       ObjectTypeKeyStandardIdentifiersItem = "AIR_PREFERENCE"
+	ObjectTypeKeyStandardIdentifiersItemAIRBOOKING          ObjectTypeKeyStandardIdentifiersItem = "AIR_BOOKING"
+	ObjectTypeKeyStandardIdentifiersItemAIRSEGMENT          ObjectTypeKeyStandardIdentifiersItem = "AIR_SEGMENT"
+	ObjectTypeKeyStandardIdentifiersItemHOTELPREFERENCE     ObjectTypeKeyStandardIdentifiersItem = "HOTEL_PREFERENCE"
+	ObjectTypeKeyStandardIdentifiersItemHOTELSTAYREVENUE    ObjectTypeKeyStandardIdentifiersItem = "HOTEL_STAY_REVENUE"
+	ObjectTypeKeyStandardIdentifiersItemHOTELRESERVATION    ObjectTypeKeyStandardIdentifiersItem = "HOTEL_RESERVATION"
+	ObjectTypeKeyStandardIdentifiersItemLOYALTY             ObjectTypeKeyStandardIdentifiersItem = "LOYALTY"
+	ObjectTypeKeyStandardIdentifiersItemLOYALTYTRANSACTION  ObjectTypeKeyStandardIdentifiersItem = "LOYALTY_TRANSACTION"
+	ObjectTypeKeyStandardIdentifiersItemLOYALTYPROMOTION    ObjectTypeKeyStandardIdentifiersItem = "LOYALTY_PROMOTION"
+	ObjectTypeKeyStandardIdentifiersItemWEBANALYTICS        ObjectTypeKeyStandardIdentifiersItem = "WEB_ANALYTICS"
+	ObjectTypeKeyStandardIdentifiersItemDEVICE              ObjectTypeKeyStandardIdentifiersItem = "DEVICE"
+	ObjectTypeKeyStandardIdentifiersItemCOMMUNICATIONRECORD ObjectTypeKeyStandardIdentifiersItem = "COMMUNICATION_RECORD"
 )
 
 type RecommenderStatus string

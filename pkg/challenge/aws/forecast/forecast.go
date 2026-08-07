@@ -33,7 +33,7 @@ type Dataset struct {
 	Tags             []DatasetTagsItem        `json:"Tags,omitempty"`
 }
 
-func (Dataset) CloudControlType() string { return "AWS::Forecast::Dataset" }
+func (Dataset) Type() string { return "AWS::Forecast::Dataset" }
 
 type Tag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -48,7 +48,7 @@ type DatasetGroup struct {
 	Tags             []Tag               `json:"Tags,omitempty"`
 }
 
-func (DatasetGroup) CloudControlType() string { return "AWS::Forecast::DatasetGroup" }
+func (DatasetGroup) Type() string { return "AWS::Forecast::DatasetGroup" }
 
 type DatasetDatasetType string
 

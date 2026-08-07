@@ -19,7 +19,7 @@ type Accessor struct {
 	Tags         []Tag                `json:"Tags,omitempty"`
 }
 
-func (Accessor) CloudControlType() string { return "AWS::ManagedBlockchain::Accessor" }
+func (Accessor) Type() string { return "AWS::ManagedBlockchain::Accessor" }
 
 type MemberFabricConfiguration struct {
 	AdminPassword *string `json:"AdminPassword,omitempty"`
@@ -71,7 +71,7 @@ type Member struct {
 	NetworkId            *string               `json:"NetworkId,omitempty"`
 }
 
-func (Member) CloudControlType() string { return "AWS::ManagedBlockchain::Member" }
+func (Member) Type() string { return "AWS::ManagedBlockchain::Member" }
 
 type NodeConfiguration struct {
 	AvailabilityZone *string `json:"AvailabilityZone,omitempty"`
@@ -86,7 +86,7 @@ type Node struct {
 	NodeId            *string            `json:"NodeId,omitempty"`
 }
 
-func (Node) CloudControlType() string { return "AWS::ManagedBlockchain::Node" }
+func (Node) Type() string { return "AWS::ManagedBlockchain::Node" }
 
 type AccessorType string
 

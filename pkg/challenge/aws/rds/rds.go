@@ -25,7 +25,7 @@ type CustomDBEngineVersion struct {
 	UseAwsProvidedLatestImage             *bool                        `json:"UseAwsProvidedLatestImage,omitempty"`
 }
 
-func (CustomDBEngineVersion) CloudControlType() string { return "AWS::RDS::CustomDBEngineVersion" }
+func (CustomDBEngineVersion) Type() string { return "AWS::RDS::CustomDBEngineVersion" }
 
 type DBClusterRole struct {
 	FeatureName *string `json:"FeatureName,omitempty"`
@@ -136,7 +136,7 @@ type DBCluster struct {
 	VpcSecurityGroupIds                []string                          `json:"VpcSecurityGroupIds,omitempty"`
 }
 
-func (DBCluster) CloudControlType() string { return "AWS::RDS::DBCluster" }
+func (DBCluster) Type() string { return "AWS::RDS::DBCluster" }
 
 type DBClusterParameterGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -151,7 +151,7 @@ type DBClusterParameterGroup struct {
 	Tags                        []DBClusterParameterGroupTag `json:"Tags,omitempty"`
 }
 
-func (DBClusterParameterGroup) CloudControlType() string { return "AWS::RDS::DBClusterParameterGroup" }
+func (DBClusterParameterGroup) Type() string { return "AWS::RDS::DBClusterParameterGroup" }
 
 type AdditionalStorageVolume struct {
 	AllocatedStorage    *string `json:"AllocatedStorage,omitempty"`
@@ -302,7 +302,7 @@ type DBInstance struct {
 	VPCSecurityGroups                         []string                    `json:"VPCSecurityGroups,omitempty"`
 }
 
-func (DBInstance) CloudControlType() string { return "AWS::RDS::DBInstance" }
+func (DBInstance) Type() string { return "AWS::RDS::DBInstance" }
 
 type DBParameterGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -317,7 +317,7 @@ type DBParameterGroup struct {
 	Tags                 []DBParameterGroupTag `json:"Tags,omitempty"`
 }
 
-func (DBParameterGroup) CloudControlType() string { return "AWS::RDS::DBParameterGroup" }
+func (DBParameterGroup) Type() string { return "AWS::RDS::DBParameterGroup" }
 
 type AuthFormat struct {
 	AuthScheme             *AuthFormatAuthScheme             `json:"AuthScheme,omitempty"`
@@ -351,7 +351,7 @@ type DBProxy struct {
 	VpcSubnetIds                []string                            `json:"VpcSubnetIds,omitempty"`
 }
 
-func (DBProxy) CloudControlType() string { return "AWS::RDS::DBProxy" }
+func (DBProxy) Type() string { return "AWS::RDS::DBProxy" }
 
 type DBProxyEndpointTagFormat struct {
 	Key   *string `json:"Key,omitempty"`
@@ -372,7 +372,7 @@ type DBProxyEndpoint struct {
 	VpcSubnetIds        []string                            `json:"VpcSubnetIds,omitempty"`
 }
 
-func (DBProxyEndpoint) CloudControlType() string { return "AWS::RDS::DBProxyEndpoint" }
+func (DBProxyEndpoint) Type() string { return "AWS::RDS::DBProxyEndpoint" }
 
 type ConnectionPoolConfigurationInfoFormat struct {
 	ConnectionBorrowTimeout   *int     `json:"ConnectionBorrowTimeout,omitempty"`
@@ -391,7 +391,7 @@ type DBProxyTargetGroup struct {
 	TargetGroupName                 *DBProxyTargetGroupTargetGroupName     `json:"TargetGroupName,omitempty"`
 }
 
-func (DBProxyTargetGroup) CloudControlType() string { return "AWS::RDS::DBProxyTargetGroup" }
+func (DBProxyTargetGroup) Type() string { return "AWS::RDS::DBProxyTargetGroup" }
 
 type Ingress struct {
 	CIDRIP                  *string `json:"CIDRIP,omitempty"`
@@ -413,7 +413,7 @@ type DBSecurityGroup struct {
 	Tags                   []DBSecurityGroupTag `json:"Tags,omitempty"`
 }
 
-func (DBSecurityGroup) CloudControlType() string { return "AWS::RDS::DBSecurityGroup" }
+func (DBSecurityGroup) Type() string { return "AWS::RDS::DBSecurityGroup" }
 
 type DBSecurityGroupIngress struct {
 	CIDRIP                  *string `json:"CIDRIP,omitempty"`
@@ -424,7 +424,7 @@ type DBSecurityGroupIngress struct {
 	Id                      *string `json:"Id,omitempty"`
 }
 
-func (DBSecurityGroupIngress) CloudControlType() string { return "AWS::RDS::DBSecurityGroupIngress" }
+func (DBSecurityGroupIngress) Type() string { return "AWS::RDS::DBSecurityGroupIngress" }
 
 type DBShardGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -443,7 +443,7 @@ type DBShardGroup struct {
 	Tags                   []DBShardGroupTag `json:"Tags,omitempty"`
 }
 
-func (DBShardGroup) CloudControlType() string { return "AWS::RDS::DBShardGroup" }
+func (DBShardGroup) Type() string { return "AWS::RDS::DBShardGroup" }
 
 type DBSubnetGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -458,7 +458,7 @@ type DBSubnetGroup struct {
 	Tags                     []DBSubnetGroupTag `json:"Tags,omitempty"`
 }
 
-func (DBSubnetGroup) CloudControlType() string { return "AWS::RDS::DBSubnetGroup" }
+func (DBSubnetGroup) Type() string { return "AWS::RDS::DBSubnetGroup" }
 
 type EventSubscriptionTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -475,7 +475,7 @@ type EventSubscription struct {
 	Tags             []EventSubscriptionTag `json:"Tags,omitempty"`
 }
 
-func (EventSubscription) CloudControlType() string { return "AWS::RDS::EventSubscription" }
+func (EventSubscription) Type() string { return "AWS::RDS::EventSubscription" }
 
 type GlobalEndpoint struct {
 	Address *string `json:"Address,omitempty"`
@@ -498,7 +498,7 @@ type GlobalCluster struct {
 	Tags                      []GlobalClusterTag   `json:"Tags,omitempty"`
 }
 
-func (GlobalCluster) CloudControlType() string { return "AWS::RDS::GlobalCluster" }
+func (GlobalCluster) Type() string { return "AWS::RDS::GlobalCluster" }
 
 type IntegrationTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -518,7 +518,7 @@ type Integration struct {
 	TargetArn                   *string           `json:"TargetArn,omitempty"`
 }
 
-func (Integration) CloudControlType() string { return "AWS::RDS::Integration" }
+func (Integration) Type() string { return "AWS::RDS::Integration" }
 
 type OptionSetting struct {
 	Name  *string `json:"Name,omitempty"`
@@ -548,7 +548,7 @@ type OptionGroup struct {
 	Tags                   []OptionGroupTag      `json:"Tags,omitempty"`
 }
 
-func (OptionGroup) CloudControlType() string { return "AWS::RDS::OptionGroup" }
+func (OptionGroup) Type() string { return "AWS::RDS::OptionGroup" }
 
 type CustomDBEngineVersionStatus string
 

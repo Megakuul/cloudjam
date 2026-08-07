@@ -25,4 +25,4 @@ type SpendingLimit struct {
 	UpdatedAt        *string     `json:"UpdatedAt,omitempty"`
 }
 
-func (SpendingLimit) CloudControlType() string { return "AWS::Braket::SpendingLimit" }
+func (SpendingLimit) Type() string { return "AWS::Braket::SpendingLimit" }

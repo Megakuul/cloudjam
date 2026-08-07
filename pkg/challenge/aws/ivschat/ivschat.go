@@ -35,7 +35,7 @@ type LoggingConfiguration struct {
 	Tags                     []Tag                      `json:"Tags,omitempty"`
 }
 
-func (LoggingConfiguration) CloudControlType() string { return "AWS::IVSChat::LoggingConfiguration" }
+func (LoggingConfiguration) Type() string { return "AWS::IVSChat::LoggingConfiguration" }
 
 type MessageReviewHandler struct {
 	FallbackResult *MessageReviewHandlerFallbackResult `json:"FallbackResult,omitempty"`
@@ -58,7 +58,7 @@ type Room struct {
 	Tags                            []RoomTag             `json:"Tags,omitempty"`
 }
 
-func (Room) CloudControlType() string { return "AWS::IVSChat::Room" }
+func (Room) Type() string { return "AWS::IVSChat::Room" }
 
 type LoggingConfigurationState string
 

@@ -139,7 +139,7 @@ type Component struct {
 	Variants             []ComponentVariant                         `json:"Variants,omitempty"`
 }
 
-func (Component) CloudControlType() string { return "AWS::AmplifyUIBuilder::Component" }
+func (Component) Type() string { return "AWS::AmplifyUIBuilder::Component" }
 
 type FormButton struct {
 	Children *string         `json:"Children,omitempty"`
@@ -263,7 +263,7 @@ type Form struct {
 	Tags              map[string]string           `json:"Tags,omitempty"`
 }
 
-func (Form) CloudControlType() string { return "AWS::AmplifyUIBuilder::Form" }
+func (Form) Type() string { return "AWS::AmplifyUIBuilder::Form" }
 
 type ThemeValue struct {
 	Children []ThemeValues `json:"Children,omitempty"`
@@ -287,7 +287,7 @@ type Theme struct {
 	Values          []ThemeValues     `json:"Values,omitempty"`
 }
 
-func (Theme) CloudControlType() string { return "AWS::AmplifyUIBuilder::Theme" }
+func (Theme) Type() string { return "AWS::AmplifyUIBuilder::Theme" }
 
 type SortDirection string
 

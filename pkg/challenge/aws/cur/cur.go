@@ -24,7 +24,7 @@ type ReportDefinition struct {
 	TimeUnit                 *ReportDefinitionTimeUnit                      `json:"TimeUnit,omitempty"`
 }
 
-func (ReportDefinition) CloudControlType() string { return "AWS::CUR::ReportDefinition" }
+func (ReportDefinition) Type() string { return "AWS::CUR::ReportDefinition" }
 
 type ReportDefinitionAdditionalArtifactsItem string
 

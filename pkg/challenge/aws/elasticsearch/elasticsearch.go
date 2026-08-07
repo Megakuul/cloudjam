@@ -110,4 +110,4 @@ type Domain struct {
 	VPCOptions                  *VPCOptions                    `json:"VPCOptions,omitempty"`
 }
 
-func (Domain) CloudControlType() string { return "AWS::Elasticsearch::Domain" }
+func (Domain) Type() string { return "AWS::Elasticsearch::Domain" }

@@ -62,7 +62,7 @@ type DocumentClassifier struct {
 	VpcConfig              *VpcConfig                          `json:"VpcConfig,omitempty"`
 }
 
-func (DocumentClassifier) CloudControlType() string { return "AWS::Comprehend::DocumentClassifier" }
+func (DocumentClassifier) Type() string { return "AWS::Comprehend::DocumentClassifier" }
 
 type FlywheelVpcConfig struct {
 	SecurityGroupIds []string `json:"SecurityGroupIds,omitempty"`
@@ -112,7 +112,7 @@ type Flywheel struct {
 	TaskConfig         *TaskConfig         `json:"TaskConfig,omitempty"`
 }
 
-func (Flywheel) CloudControlType() string { return "AWS::Comprehend::Flywheel" }
+func (Flywheel) Type() string { return "AWS::Comprehend::Flywheel" }
 
 type AugmentedManifestsListItemSplit string
 

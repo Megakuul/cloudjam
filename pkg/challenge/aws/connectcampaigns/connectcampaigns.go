@@ -49,4 +49,4 @@ type Campaign struct {
 	Tags               []Tag               `json:"Tags,omitempty"`
 }
 
-func (Campaign) CloudControlType() string { return "AWS::ConnectCampaigns::Campaign" }
+func (Campaign) Type() string { return "AWS::ConnectCampaigns::Campaign" }

@@ -40,7 +40,7 @@ type Channel struct {
 	Tags                      []Tag                      `json:"Tags,omitempty"`
 }
 
-func (Channel) CloudControlType() string { return "AWS::MediaPackageV2::Channel" }
+func (Channel) Type() string { return "AWS::MediaPackageV2::Channel" }
 
 type ChannelGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -57,7 +57,7 @@ type ChannelGroup struct {
 	Tags             []ChannelGroupTag `json:"Tags,omitempty"`
 }
 
-func (ChannelGroup) CloudControlType() string { return "AWS::MediaPackageV2::ChannelGroup" }
+func (ChannelGroup) Type() string { return "AWS::MediaPackageV2::ChannelGroup" }
 
 type ChannelPolicy struct {
 	ChannelGroupName *string         `json:"ChannelGroupName,omitempty"`
@@ -65,7 +65,7 @@ type ChannelPolicy struct {
 	Policy           json.RawMessage `json:"Policy,omitempty"`
 }
 
-func (ChannelPolicy) CloudControlType() string { return "AWS::MediaPackageV2::ChannelPolicy" }
+func (ChannelPolicy) Type() string { return "AWS::MediaPackageV2::ChannelPolicy" }
 
 type DashBaseUrl struct {
 	DvbPriority     *int    `json:"DvbPriority,omitempty"`
@@ -269,7 +269,7 @@ type OriginEndpoint struct {
 	UriSeparator                    *UriSeparator                        `json:"UriSeparator,omitempty"`
 }
 
-func (OriginEndpoint) CloudControlType() string { return "AWS::MediaPackageV2::OriginEndpoint" }
+func (OriginEndpoint) Type() string { return "AWS::MediaPackageV2::OriginEndpoint" }
 
 type CdnAuthConfiguration struct {
 	CdnIdentifierSecretArns []string `json:"CdnIdentifierSecretArns,omitempty"`
@@ -284,9 +284,7 @@ type OriginEndpointPolicy struct {
 	Policy               json.RawMessage       `json:"Policy,omitempty"`
 }
 
-func (OriginEndpointPolicy) CloudControlType() string {
-	return "AWS::MediaPackageV2::OriginEndpointPolicy"
-}
+func (OriginEndpointPolicy) Type() string { return "AWS::MediaPackageV2::OriginEndpointPolicy" }
 
 type InputType string
 

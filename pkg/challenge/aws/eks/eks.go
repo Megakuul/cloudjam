@@ -29,7 +29,7 @@ type AccessEntry struct {
 	Username         *string        `json:"Username,omitempty"`
 }
 
-func (AccessEntry) CloudControlType() string { return "AWS::EKS::AccessEntry" }
+func (AccessEntry) Type() string { return "AWS::EKS::AccessEntry" }
 
 type AddonNamespaceConfig struct {
 	Namespace *string `json:"Namespace,omitempty"`
@@ -59,7 +59,7 @@ type Addon struct {
 	Tags                    []AddonTag               `json:"Tags,omitempty"`
 }
 
-func (Addon) CloudControlType() string { return "AWS::EKS::Addon" }
+func (Addon) Type() string { return "AWS::EKS::Addon" }
 
 type AwsIdc struct {
 	IdcInstanceArn           *string `json:"IdcInstanceArn,omitempty"`
@@ -113,7 +113,7 @@ type Capability struct {
 	Version                 *string                            `json:"Version,omitempty"`
 }
 
-func (Capability) CloudControlType() string { return "AWS::EKS::Capability" }
+func (Capability) Type() string { return "AWS::EKS::Capability" }
 
 type AccessConfig struct {
 	AuthenticationMode                      *AccessConfigAuthenticationMode `json:"AuthenticationMode,omitempty"`
@@ -256,7 +256,7 @@ type Cluster struct {
 	ZonalShiftConfig           *ZonalShiftConfig          `json:"ZonalShiftConfig,omitempty"`
 }
 
-func (Cluster) CloudControlType() string { return "AWS::EKS::Cluster" }
+func (Cluster) Type() string { return "AWS::EKS::Cluster" }
 
 type Label struct {
 	Key   *string `json:"Key,omitempty"`
@@ -283,7 +283,7 @@ type FargateProfile struct {
 	Tags                []FargateProfileTag `json:"Tags,omitempty"`
 }
 
-func (FargateProfile) CloudControlType() string { return "AWS::EKS::FargateProfile" }
+func (FargateProfile) Type() string { return "AWS::EKS::FargateProfile" }
 
 type RequiredClaim struct {
 	Key   *string `json:"Key,omitempty"`
@@ -314,7 +314,7 @@ type IdentityProviderConfig struct {
 	Type                       *IdentityProviderConfigType `json:"Type,omitempty"`
 }
 
-func (IdentityProviderConfig) CloudControlType() string { return "AWS::EKS::IdentityProviderConfig" }
+func (IdentityProviderConfig) Type() string { return "AWS::EKS::IdentityProviderConfig" }
 
 type LaunchTemplateSpecification struct {
 	Id      *string `json:"Id,omitempty"`
@@ -394,7 +394,7 @@ type Nodegroup struct {
 	WarmPoolConfig     *WarmPoolConfig              `json:"WarmPoolConfig,omitempty"`
 }
 
-func (Nodegroup) CloudControlType() string { return "AWS::EKS::Nodegroup" }
+func (Nodegroup) Type() string { return "AWS::EKS::Nodegroup" }
 
 type PodIdentityAssociationTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -415,7 +415,7 @@ type PodIdentityAssociationPodIdentityAssociation struct {
 	TargetRoleArn      *string                     `json:"TargetRoleArn,omitempty"`
 }
 
-func (PodIdentityAssociationPodIdentityAssociation) CloudControlType() string {
+func (PodIdentityAssociationPodIdentityAssociation) Type() string {
 	return "AWS::EKS::PodIdentityAssociation"
 }
 

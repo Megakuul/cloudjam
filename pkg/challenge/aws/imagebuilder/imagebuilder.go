@@ -27,7 +27,7 @@ type Component struct {
 	Version             *string            `json:"Version,omitempty"`
 }
 
-func (Component) CloudControlType() string { return "AWS::ImageBuilder::Component" }
+func (Component) Type() string { return "AWS::ImageBuilder::Component" }
 
 type ComponentParameter struct {
 	Name  *string  `json:"Name,omitempty"`
@@ -94,7 +94,7 @@ type ContainerRecipe struct {
 	WorkingDirectory       *string                          `json:"WorkingDirectory,omitempty"`
 }
 
-func (ContainerRecipe) CloudControlType() string { return "AWS::ImageBuilder::ContainerRecipe" }
+func (ContainerRecipe) Type() string { return "AWS::ImageBuilder::ContainerRecipe" }
 
 type LaunchPermissionConfiguration struct {
 	OrganizationArns       []string `json:"OrganizationArns,omitempty"`
@@ -171,9 +171,7 @@ type DistributionConfiguration struct {
 	Tags          map[string]string `json:"Tags,omitempty"`
 }
 
-func (DistributionConfiguration) CloudControlType() string {
-	return "AWS::ImageBuilder::DistributionConfiguration"
-}
+func (DistributionConfiguration) Type() string { return "AWS::ImageBuilder::DistributionConfiguration" }
 
 type DeletionSettings struct {
 	ExecutionRole *string `json:"ExecutionRole,omitempty"`
@@ -243,7 +241,7 @@ type Image struct {
 	Workflows                      []WorkflowConfiguration         `json:"Workflows,omitempty"`
 }
 
-func (Image) CloudControlType() string { return "AWS::ImageBuilder::Image" }
+func (Image) Type() string { return "AWS::ImageBuilder::Image" }
 
 type ImagePipelineEcrConfiguration struct {
 	ContainerTags  []string `json:"ContainerTags,omitempty"`
@@ -309,7 +307,7 @@ type ImagePipeline struct {
 	Workflows                      []ImagePipelineWorkflowConfiguration     `json:"Workflows,omitempty"`
 }
 
-func (ImagePipeline) CloudControlType() string { return "AWS::ImageBuilder::ImagePipeline" }
+func (ImagePipeline) Type() string { return "AWS::ImageBuilder::ImagePipeline" }
 
 type SystemsManagerAgent struct {
 	UninstallAfterBuild *bool `json:"UninstallAfterBuild,omitempty"`
@@ -371,7 +369,7 @@ type ImageRecipe struct {
 	WorkingDirectory                *string                                 `json:"WorkingDirectory,omitempty"`
 }
 
-func (ImageRecipe) CloudControlType() string { return "AWS::ImageBuilder::ImageRecipe" }
+func (ImageRecipe) Type() string { return "AWS::ImageBuilder::ImageRecipe" }
 
 type InstanceMetadataOptions struct {
 	HttpPutResponseHopLimit *int                               `json:"HttpPutResponseHopLimit,omitempty"`
@@ -412,7 +410,7 @@ type InfrastructureConfiguration struct {
 	TerminateInstanceOnFailure *bool                    `json:"TerminateInstanceOnFailure,omitempty"`
 }
 
-func (InfrastructureConfiguration) CloudControlType() string {
+func (InfrastructureConfiguration) Type() string {
 	return "AWS::ImageBuilder::InfrastructureConfiguration"
 }
 
@@ -480,7 +478,7 @@ type LifecyclePolicy struct {
 	Tags              map[string]string            `json:"Tags,omitempty"`
 }
 
-func (LifecyclePolicy) CloudControlType() string { return "AWS::ImageBuilder::LifecyclePolicy" }
+func (LifecyclePolicy) Type() string { return "AWS::ImageBuilder::LifecyclePolicy" }
 
 type WorkflowLatestVersion struct {
 	Arn   *string `json:"Arn,omitempty"`
@@ -503,7 +501,7 @@ type Workflow struct {
 	Version           *string                `json:"Version,omitempty"`
 }
 
-func (Workflow) CloudControlType() string { return "AWS::ImageBuilder::Workflow" }
+func (Workflow) Type() string { return "AWS::ImageBuilder::Workflow" }
 
 type ComponentPlatform string
 

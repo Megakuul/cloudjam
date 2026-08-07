@@ -27,7 +27,7 @@ type BillScenario struct {
 	Tags                                  []Tag                   `json:"Tags,omitempty"`
 }
 
-func (BillScenario) CloudControlType() string { return "AWS::BcmPricingCalculator::BillScenario" }
+func (BillScenario) Type() string { return "AWS::BcmPricingCalculator::BillScenario" }
 
 type GroupSharingPreference string
 

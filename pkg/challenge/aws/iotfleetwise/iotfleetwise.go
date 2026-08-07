@@ -77,7 +77,7 @@ type Campaign struct {
 	TargetArn                     *string                  `json:"TargetArn,omitempty"`
 }
 
-func (Campaign) CloudControlType() string { return "AWS::IoTFleetWise::Campaign" }
+func (Campaign) Type() string { return "AWS::IoTFleetWise::Campaign" }
 
 type DecoderManifestTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -98,7 +98,7 @@ type DecoderManifest struct {
 	Tags                      []DecoderManifestTag           `json:"Tags,omitempty"`
 }
 
-func (DecoderManifest) CloudControlType() string { return "AWS::IoTFleetWise::DecoderManifest" }
+func (DecoderManifest) Type() string { return "AWS::IoTFleetWise::DecoderManifest" }
 
 type FleetTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -115,7 +115,7 @@ type Fleet struct {
 	Tags                 []FleetTag `json:"Tags,omitempty"`
 }
 
-func (Fleet) CloudControlType() string { return "AWS::IoTFleetWise::Fleet" }
+func (Fleet) Type() string { return "AWS::IoTFleetWise::Fleet" }
 
 type ModelManifestTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -134,7 +134,7 @@ type ModelManifest struct {
 	Tags                 []ModelManifestTag           `json:"Tags,omitempty"`
 }
 
-func (ModelManifest) CloudControlType() string { return "AWS::IoTFleetWise::ModelManifest" }
+func (ModelManifest) Type() string { return "AWS::IoTFleetWise::ModelManifest" }
 
 type NodeCounts struct {
 	TotalActuators  *float64 `json:"TotalActuators,omitempty"`
@@ -160,7 +160,7 @@ type SignalCatalog struct {
 	Tags                 []SignalCatalogTag `json:"Tags,omitempty"`
 }
 
-func (SignalCatalog) CloudControlType() string { return "AWS::IoTFleetWise::SignalCatalog" }
+func (SignalCatalog) Type() string { return "AWS::IoTFleetWise::SignalCatalog" }
 
 type StateTemplateTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -181,7 +181,7 @@ type StateTemplate struct {
 	Tags                    []StateTemplateTag `json:"Tags,omitempty"`
 }
 
-func (StateTemplate) CloudControlType() string { return "AWS::IoTFleetWise::StateTemplate" }
+func (StateTemplate) Type() string { return "AWS::IoTFleetWise::StateTemplate" }
 
 type StateTemplateAssociation struct {
 	Identifier                  *string         `json:"Identifier,omitempty"`
@@ -206,7 +206,7 @@ type Vehicle struct {
 	Tags                 []VehicleTag                `json:"Tags,omitempty"`
 }
 
-func (Vehicle) CloudControlType() string { return "AWS::IoTFleetWise::Vehicle" }
+func (Vehicle) Type() string { return "AWS::IoTFleetWise::Vehicle" }
 
 type UpdateCampaignAction string
 

@@ -20,4 +20,4 @@ type Domain struct {
 	Tags                              []Tag                              `json:"Tags,omitempty"`
 }
 
-func (Domain) CloudControlType() string { return "AWS::VoiceID::Domain" }
+func (Domain) Type() string { return "AWS::VoiceID::Domain" }

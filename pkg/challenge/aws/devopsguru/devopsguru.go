@@ -7,7 +7,7 @@ type LogAnomalyDetectionIntegration struct {
 	AccountId *string `json:"AccountId,omitempty"`
 }
 
-func (LogAnomalyDetectionIntegration) CloudControlType() string {
+func (LogAnomalyDetectionIntegration) Type() string {
 	return "AWS::DevOpsGuru::LogAnomalyDetectionIntegration"
 }
 
@@ -30,7 +30,7 @@ type NotificationChannel struct {
 	Id     *string                    `json:"Id,omitempty"`
 }
 
-func (NotificationChannel) CloudControlType() string { return "AWS::DevOpsGuru::NotificationChannel" }
+func (NotificationChannel) Type() string { return "AWS::DevOpsGuru::NotificationChannel" }
 
 type CloudFormationCollectionFilter struct {
 	StackNames []string `json:"StackNames,omitempty"`
@@ -51,7 +51,7 @@ type ResourceCollection struct {
 	ResourceCollectionType   *ResourceCollectionResourceCollectionType `json:"ResourceCollectionType,omitempty"`
 }
 
-func (ResourceCollection) CloudControlType() string { return "AWS::DevOpsGuru::ResourceCollection" }
+func (ResourceCollection) Type() string { return "AWS::DevOpsGuru::ResourceCollection" }
 
 type NotificationMessageType string
 

@@ -24,14 +24,14 @@ type AgentStatus struct {
 	Type               *AgentStatusType  `json:"Type,omitempty"`
 }
 
-func (AgentStatus) CloudControlType() string { return "AWS::Connect::AgentStatus" }
+func (AgentStatus) Type() string { return "AWS::Connect::AgentStatus" }
 
 type ApprovedOrigin struct {
 	InstanceId *string `json:"InstanceId,omitempty"`
 	Origin     *string `json:"Origin,omitempty"`
 }
 
-func (ApprovedOrigin) CloudControlType() string { return "AWS::Connect::ApprovedOrigin" }
+func (ApprovedOrigin) Type() string { return "AWS::Connect::ApprovedOrigin" }
 
 type ContactFlowTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -49,7 +49,7 @@ type ContactFlow struct {
 	Type           *ContactFlowType  `json:"Type,omitempty"`
 }
 
-func (ContactFlow) CloudControlType() string { return "AWS::Connect::ContactFlow" }
+func (ContactFlow) Type() string { return "AWS::Connect::ContactFlow" }
 
 type ContactFlowModuleExternalInvocationConfiguration struct {
 	Enabled *bool `json:"Enabled,omitempty"`
@@ -73,7 +73,7 @@ type ContactFlowModule struct {
 	Tags                            []ContactFlowModuleTag                            `json:"Tags,omitempty"`
 }
 
-func (ContactFlowModule) CloudControlType() string { return "AWS::Connect::ContactFlowModule" }
+func (ContactFlowModule) Type() string { return "AWS::Connect::ContactFlowModule" }
 
 type ContactFlowModuleAlias struct {
 	AliasId                   *string `json:"AliasId,omitempty"`
@@ -84,9 +84,7 @@ type ContactFlowModuleAlias struct {
 	Name                      *string `json:"Name,omitempty"`
 }
 
-func (ContactFlowModuleAlias) CloudControlType() string {
-	return "AWS::Connect::ContactFlowModuleAlias"
-}
+func (ContactFlowModuleAlias) Type() string { return "AWS::Connect::ContactFlowModuleAlias" }
 
 type ContactFlowModuleVersion struct {
 	ContactFlowModuleId         *string `json:"ContactFlowModuleId,omitempty"`
@@ -96,9 +94,7 @@ type ContactFlowModuleVersion struct {
 	Version                     *int    `json:"Version,omitempty"`
 }
 
-func (ContactFlowModuleVersion) CloudControlType() string {
-	return "AWS::Connect::ContactFlowModuleVersion"
-}
+func (ContactFlowModuleVersion) Type() string { return "AWS::Connect::ContactFlowModuleVersion" }
 
 type ContactFlowVersion struct {
 	ContactFlowId         *string `json:"ContactFlowId,omitempty"`
@@ -108,7 +104,7 @@ type ContactFlowVersion struct {
 	Version               *int    `json:"Version,omitempty"`
 }
 
-func (ContactFlowVersion) CloudControlType() string { return "AWS::Connect::ContactFlowVersion" }
+func (ContactFlowVersion) Type() string { return "AWS::Connect::ContactFlowVersion" }
 
 type DataLakeAssociation struct {
 	DataSetId        *string `json:"DataSetId,omitempty"`
@@ -118,7 +114,7 @@ type DataLakeAssociation struct {
 	TargetAccountId  *string `json:"TargetAccountId,omitempty"`
 }
 
-func (DataLakeAssociation) CloudControlType() string { return "AWS::Connect::DataLakeAssociation" }
+func (DataLakeAssociation) Type() string { return "AWS::Connect::DataLakeAssociation" }
 
 type DataTableLockVersion struct {
 	DataTable *string `json:"DataTable,omitempty"`
@@ -144,7 +140,7 @@ type DataTable struct {
 	ValueLockLevel     *DataTableValueLockLevel `json:"ValueLockLevel,omitempty"`
 }
 
-func (DataTable) CloudControlType() string { return "AWS::Connect::DataTable" }
+func (DataTable) Type() string { return "AWS::Connect::DataTable" }
 
 type DataTableAttributeLockVersion struct {
 	Attribute *string `json:"Attribute,omitempty"`
@@ -183,7 +179,7 @@ type DataTableAttribute struct {
 	ValueType          *DataTableAttributeValueType   `json:"ValueType,omitempty"`
 }
 
-func (DataTableAttribute) CloudControlType() string { return "AWS::Connect::DataTableAttribute" }
+func (DataTableAttribute) Type() string { return "AWS::Connect::DataTableAttribute" }
 
 type Value struct {
 	AttributeId    *string `json:"AttributeId,omitempty"`
@@ -202,7 +198,7 @@ type DataTableRecord struct {
 	RecordId        *string                         `json:"RecordId,omitempty"`
 }
 
-func (DataTableRecord) CloudControlType() string { return "AWS::Connect::DataTableRecord" }
+func (DataTableRecord) Type() string { return "AWS::Connect::DataTableRecord" }
 
 type AliasConfiguration struct {
 	EmailAddressArn *string `json:"EmailAddressArn,omitempty"`
@@ -223,7 +219,7 @@ type EmailAddress struct {
 	Tags                []EmailAddressTag    `json:"Tags,omitempty"`
 }
 
-func (EmailAddress) CloudControlType() string { return "AWS::Connect::EmailAddress" }
+func (EmailAddress) Type() string { return "AWS::Connect::EmailAddress" }
 
 type AutoEvaluationConfiguration struct {
 	Enabled *bool `json:"Enabled,omitempty"`
@@ -472,7 +468,7 @@ type EvaluationForm struct {
 	Title                       *string                              `json:"Title,omitempty"`
 }
 
-func (EvaluationForm) CloudControlType() string { return "AWS::Connect::EvaluationForm" }
+func (EvaluationForm) Type() string { return "AWS::Connect::EvaluationForm" }
 
 type HoursOfOperationsIdentifier struct {
 	Id   *string `json:"Id,omitempty"`
@@ -542,7 +538,7 @@ type HoursOfOperation struct {
 	TimeZone                  *string                       `json:"TimeZone,omitempty"`
 }
 
-func (HoursOfOperation) CloudControlType() string { return "AWS::Connect::HoursOfOperation" }
+func (HoursOfOperation) Type() string { return "AWS::Connect::HoursOfOperation" }
 
 type Attributes struct {
 	AutoResolveBestVoices     *bool `json:"AutoResolveBestVoices,omitempty"`
@@ -578,7 +574,7 @@ type Instance struct {
 	Tags                   []InstanceTag                   `json:"Tags,omitempty"`
 }
 
-func (Instance) CloudControlType() string { return "AWS::Connect::Instance" }
+func (Instance) Type() string { return "AWS::Connect::Instance" }
 
 type KinesisFirehoseConfig struct {
 	FirehoseArn *string `json:"FirehoseArn,omitempty"`
@@ -616,7 +612,7 @@ type InstanceStorageConfig struct {
 	StorageType              *StorageType                 `json:"StorageType,omitempty"`
 }
 
-func (InstanceStorageConfig) CloudControlType() string { return "AWS::Connect::InstanceStorageConfig" }
+func (InstanceStorageConfig) Type() string { return "AWS::Connect::InstanceStorageConfig" }
 
 type IntegrationAssociationTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -631,9 +627,7 @@ type IntegrationAssociation struct {
 	Tags                     []IntegrationAssociationTag `json:"Tags,omitempty"`
 }
 
-func (IntegrationAssociation) CloudControlType() string {
-	return "AWS::Connect::IntegrationAssociation"
-}
+func (IntegrationAssociation) Type() string { return "AWS::Connect::IntegrationAssociation" }
 
 type NotificationContent struct {
 	DeDE *string `json:"DeDE,omitempty"`
@@ -666,7 +660,7 @@ type Notification struct {
 	Tags        []NotificationTag    `json:"Tags,omitempty"`
 }
 
-func (Notification) CloudControlType() string { return "AWS::Connect::Notification" }
+func (Notification) Type() string { return "AWS::Connect::Notification" }
 
 type PhoneNumberTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -685,7 +679,7 @@ type PhoneNumber struct {
 	Type                 *string          `json:"Type,omitempty"`
 }
 
-func (PhoneNumber) CloudControlType() string { return "AWS::Connect::PhoneNumber" }
+func (PhoneNumber) Type() string { return "AWS::Connect::PhoneNumber" }
 
 type PredefinedAttributeAttributeConfiguration struct {
 	EnableValueValidationOnAssociation *bool `json:"EnableValueValidationOnAssociation,omitempty"`
@@ -706,7 +700,7 @@ type PredefinedAttribute struct {
 	Values                 *PredefinedAttributeValues                 `json:"Values,omitempty"`
 }
 
-func (PredefinedAttribute) CloudControlType() string { return "AWS::Connect::PredefinedAttribute" }
+func (PredefinedAttribute) Type() string { return "AWS::Connect::PredefinedAttribute" }
 
 type PromptTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -722,7 +716,7 @@ type Prompt struct {
 	Tags        []PromptTag `json:"Tags,omitempty"`
 }
 
-func (Prompt) CloudControlType() string { return "AWS::Connect::Prompt" }
+func (Prompt) Type() string { return "AWS::Connect::Prompt" }
 
 type QueueEmailAddress struct {
 	EmailAddressArn *string `json:"EmailAddressArn,omitempty"`
@@ -759,7 +753,7 @@ type Queue struct {
 	Type                     *QueueType            `json:"Type,omitempty"`
 }
 
-func (Queue) CloudControlType() string { return "AWS::Connect::Queue" }
+func (Queue) Type() string { return "AWS::Connect::Queue" }
 
 type FlowQuickConnectConfig struct {
 	ContactFlowArn *string `json:"ContactFlowArn,omitempty"`
@@ -802,7 +796,7 @@ type QuickConnect struct {
 	Tags               []QuickConnectTag             `json:"Tags,omitempty"`
 }
 
-func (QuickConnect) CloudControlType() string { return "AWS::Connect::QuickConnect" }
+func (QuickConnect) Type() string { return "AWS::Connect::QuickConnect" }
 
 type RoutingProfileQueueReference struct {
 	Channel  *Channel `json:"Channel,omitempty"`
@@ -847,7 +841,7 @@ type RoutingProfile struct {
 	Tags                         []RoutingProfileTag                         `json:"Tags,omitempty"`
 }
 
-func (RoutingProfile) CloudControlType() string { return "AWS::Connect::RoutingProfile" }
+func (RoutingProfile) Type() string { return "AWS::Connect::RoutingProfile" }
 
 type SlaTargetFieldValue struct {
 	StringValue *string `json:"StringValue,omitempty"`
@@ -949,7 +943,7 @@ type Rule struct {
 	TriggerEventSource *RuleTriggerEventSource `json:"TriggerEventSource,omitempty"`
 }
 
-func (Rule) CloudControlType() string { return "AWS::Connect::Rule" }
+func (Rule) Type() string { return "AWS::Connect::Rule" }
 
 type SecurityKey struct {
 	AssociationId *string `json:"AssociationId,omitempty"`
@@ -957,7 +951,7 @@ type SecurityKey struct {
 	Key           *string `json:"Key,omitempty"`
 }
 
-func (SecurityKey) CloudControlType() string { return "AWS::Connect::SecurityKey" }
+func (SecurityKey) Type() string { return "AWS::Connect::SecurityKey" }
 
 type SecurityProfileTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -1011,7 +1005,7 @@ type SecurityProfile struct {
 	Tags                                 []SecurityProfileTag                               `json:"Tags,omitempty"`
 }
 
-func (SecurityProfile) CloudControlType() string { return "AWS::Connect::SecurityProfile" }
+func (SecurityProfile) Type() string { return "AWS::Connect::SecurityProfile" }
 
 type FieldIdentifier struct {
 	Name *string `json:"Name,omitempty"`
@@ -1067,7 +1061,7 @@ type TaskTemplate struct {
 	Tags                     []TaskTemplateTag        `json:"Tags,omitempty"`
 }
 
-func (TaskTemplate) CloudControlType() string { return "AWS::Connect::TaskTemplate" }
+func (TaskTemplate) Type() string { return "AWS::Connect::TaskTemplate" }
 
 type EntryPointChatEntryPointParameters struct {
 	FlowId *string `json:"FlowId,omitempty"`
@@ -1104,7 +1098,7 @@ type TestCase struct {
 	TestCaseArn        *string         `json:"TestCaseArn,omitempty"`
 }
 
-func (TestCase) CloudControlType() string { return "AWS::Connect::TestCase" }
+func (TestCase) Type() string { return "AWS::Connect::TestCase" }
 
 type TrafficDistributionGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -1121,9 +1115,7 @@ type TrafficDistributionGroup struct {
 	TrafficDistributionGroupArn *string                         `json:"TrafficDistributionGroupArn,omitempty"`
 }
 
-func (TrafficDistributionGroup) CloudControlType() string {
-	return "AWS::Connect::TrafficDistributionGroup"
-}
+func (TrafficDistributionGroup) Type() string { return "AWS::Connect::TrafficDistributionGroup" }
 
 type AfterContactWorkConfig struct {
 	AfterContactWorkMode      *AfterContactWorkMode `json:"AfterContactWorkMode,omitempty"`
@@ -1205,7 +1197,7 @@ type User struct {
 	VoiceEnhancementConfigs     []VoiceEnhancementConfig           `json:"VoiceEnhancementConfigs,omitempty"`
 }
 
-func (User) CloudControlType() string { return "AWS::Connect::User" }
+func (User) Type() string { return "AWS::Connect::User" }
 
 type UserHierarchyGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -1220,7 +1212,7 @@ type UserHierarchyGroup struct {
 	UserHierarchyGroupArn *string                 `json:"UserHierarchyGroupArn,omitempty"`
 }
 
-func (UserHierarchyGroup) CloudControlType() string { return "AWS::Connect::UserHierarchyGroup" }
+func (UserHierarchyGroup) Type() string { return "AWS::Connect::UserHierarchyGroup" }
 
 type LevelFive struct {
 	HierarchyLevelArn *string `json:"HierarchyLevelArn,omitempty"`
@@ -1266,9 +1258,7 @@ type UserHierarchyStructure struct {
 	UserHierarchyStructureArn *string                                       `json:"UserHierarchyStructureArn,omitempty"`
 }
 
-func (UserHierarchyStructure) CloudControlType() string {
-	return "AWS::Connect::UserHierarchyStructure"
-}
+func (UserHierarchyStructure) Type() string { return "AWS::Connect::UserHierarchyStructure" }
 
 type ViewTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -1287,7 +1277,7 @@ type View struct {
 	ViewId            *string        `json:"ViewId,omitempty"`
 }
 
-func (View) CloudControlType() string { return "AWS::Connect::View" }
+func (View) Type() string { return "AWS::Connect::View" }
 
 type ViewVersion struct {
 	Version            *int    `json:"Version,omitempty"`
@@ -1297,7 +1287,7 @@ type ViewVersion struct {
 	ViewVersionArn     *string `json:"ViewVersionArn,omitempty"`
 }
 
-func (ViewVersion) CloudControlType() string { return "AWS::Connect::ViewVersion" }
+func (ViewVersion) Type() string { return "AWS::Connect::ViewVersion" }
 
 type MediaItem struct {
 	Source *string    `json:"Source,omitempty"`
@@ -1385,7 +1375,7 @@ type Workspace struct {
 	Visibility   *Visibility     `json:"Visibility,omitempty"`
 }
 
-func (Workspace) CloudControlType() string { return "AWS::Connect::Workspace" }
+func (Workspace) Type() string { return "AWS::Connect::Workspace" }
 
 type AgentStatusState string
 

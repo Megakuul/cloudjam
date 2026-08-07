@@ -23,7 +23,7 @@ type Alias struct {
 	Tags            []Tag            `json:"Tags,omitempty"`
 }
 
-func (Alias) CloudControlType() string { return "AWS::GameLift::Alias" }
+func (Alias) Type() string { return "AWS::GameLift::Alias" }
 
 type StorageLocation struct {
 	Bucket        *string `json:"Bucket,omitempty"`
@@ -48,7 +48,7 @@ type Build struct {
 	Version          *string               `json:"Version,omitempty"`
 }
 
-func (Build) CloudControlType() string { return "AWS::GameLift::Build" }
+func (Build) Type() string { return "AWS::GameLift::Build" }
 
 type DeploymentConfiguration struct {
 	ImpairmentStrategy       *DeploymentConfigurationImpairmentStrategy `json:"ImpairmentStrategy,omitempty"`
@@ -152,7 +152,7 @@ type ContainerFleet struct {
 	Tags                                        []ContainerFleetTag                           `json:"Tags,omitempty"`
 }
 
-func (ContainerFleet) CloudControlType() string { return "AWS::GameLift::ContainerFleet" }
+func (ContainerFleet) Type() string { return "AWS::GameLift::ContainerFleet" }
 
 type ContainerDependency struct {
 	Condition     *ContainerDependencyCondition `json:"Condition,omitempty"`
@@ -242,9 +242,7 @@ type ContainerGroupDefinition struct {
 	VersionNumber                 *int                                        `json:"VersionNumber,omitempty"`
 }
 
-func (ContainerGroupDefinition) CloudControlType() string {
-	return "AWS::GameLift::ContainerGroupDefinition"
-}
+func (ContainerGroupDefinition) Type() string { return "AWS::GameLift::ContainerGroupDefinition" }
 
 type AnywhereConfiguration struct {
 	Cost *string `json:"Cost,omitempty"`
@@ -359,7 +357,7 @@ type Fleet struct {
 	Tags                            []FleetTag                            `json:"Tags,omitempty"`
 }
 
-func (Fleet) CloudControlType() string { return "AWS::GameLift::Fleet" }
+func (Fleet) Type() string { return "AWS::GameLift::Fleet" }
 
 type TargetTrackingConfiguration struct {
 	TargetValue *float64 `json:"TargetValue,omitempty"`
@@ -403,7 +401,7 @@ type GameServerGroup struct {
 	VpcSubnets                 []string                    `json:"VpcSubnets,omitempty"`
 }
 
-func (GameServerGroup) CloudControlType() string { return "AWS::GameLift::GameServerGroup" }
+func (GameServerGroup) Type() string { return "AWS::GameLift::GameServerGroup" }
 
 type GameSessionQueueDestination struct {
 	DestinationArn *string `json:"DestinationArn,omitempty"`
@@ -441,7 +439,7 @@ type GameSessionQueue struct {
 	TimeoutInSeconds      *int                          `json:"TimeoutInSeconds,omitempty"`
 }
 
-func (GameSessionQueue) CloudControlType() string { return "AWS::GameLift::GameSessionQueue" }
+func (GameSessionQueue) Type() string { return "AWS::GameLift::GameSessionQueue" }
 
 type LocationTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -454,7 +452,7 @@ type Location struct {
 	Tags         []LocationTag `json:"Tags,omitempty"`
 }
 
-func (Location) CloudControlType() string { return "AWS::GameLift::Location" }
+func (Location) Type() string { return "AWS::GameLift::Location" }
 
 type GameProperty struct {
 	Key   *string `json:"Key,omitempty"`
@@ -487,9 +485,7 @@ type MatchmakingConfiguration struct {
 	Tags                     []MatchmakingConfigurationTag          `json:"Tags,omitempty"`
 }
 
-func (MatchmakingConfiguration) CloudControlType() string {
-	return "AWS::GameLift::MatchmakingConfiguration"
-}
+func (MatchmakingConfiguration) Type() string { return "AWS::GameLift::MatchmakingConfiguration" }
 
 type MatchmakingRuleSetTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -504,7 +500,7 @@ type MatchmakingRuleSet struct {
 	Tags         []MatchmakingRuleSetTag `json:"Tags,omitempty"`
 }
 
-func (MatchmakingRuleSet) CloudControlType() string { return "AWS::GameLift::MatchmakingRuleSet" }
+func (MatchmakingRuleSet) Type() string { return "AWS::GameLift::MatchmakingRuleSet" }
 
 type S3Location struct {
 	Bucket        *string `json:"Bucket,omitempty"`
@@ -530,7 +526,7 @@ type Script struct {
 	Version         *string     `json:"Version,omitempty"`
 }
 
-func (Script) CloudControlType() string { return "AWS::GameLift::Script" }
+func (Script) Type() string { return "AWS::GameLift::Script" }
 
 type RoutingStrategyType string
 

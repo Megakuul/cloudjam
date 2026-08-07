@@ -18,7 +18,7 @@ type Connector struct {
 	VpcInformation          *VpcInformation   `json:"VpcInformation,omitempty"`
 }
 
-func (Connector) CloudControlType() string { return "AWS::PCAConnectorAD::Connector" }
+func (Connector) Type() string { return "AWS::PCAConnectorAD::Connector" }
 
 type DirectoryRegistration struct {
 	DirectoryId              *string           `json:"DirectoryId,omitempty"`
@@ -26,18 +26,14 @@ type DirectoryRegistration struct {
 	Tags                     map[string]string `json:"Tags,omitempty"`
 }
 
-func (DirectoryRegistration) CloudControlType() string {
-	return "AWS::PCAConnectorAD::DirectoryRegistration"
-}
+func (DirectoryRegistration) Type() string { return "AWS::PCAConnectorAD::DirectoryRegistration" }
 
 type ServicePrincipalName struct {
 	ConnectorArn             *string `json:"ConnectorArn,omitempty"`
 	DirectoryRegistrationArn *string `json:"DirectoryRegistrationArn,omitempty"`
 }
 
-func (ServicePrincipalName) CloudControlType() string {
-	return "AWS::PCAConnectorAD::ServicePrincipalName"
-}
+func (ServicePrincipalName) Type() string { return "AWS::PCAConnectorAD::ServicePrincipalName" }
 
 type Template struct {
 	ConnectorArn                  *string           `json:"ConnectorArn,omitempty"`
@@ -48,7 +44,7 @@ type Template struct {
 	TemplateArn                   *string           `json:"TemplateArn,omitempty"`
 }
 
-func (Template) CloudControlType() string { return "AWS::PCAConnectorAD::Template" }
+func (Template) Type() string { return "AWS::PCAConnectorAD::Template" }
 
 type AccessRights struct {
 	AutoEnroll *AccessRight `json:"AutoEnroll,omitempty"`
@@ -62,7 +58,7 @@ type TemplateGroupAccessControlEntry struct {
 	TemplateArn             *string       `json:"TemplateArn,omitempty"`
 }
 
-func (TemplateGroupAccessControlEntry) CloudControlType() string {
+func (TemplateGroupAccessControlEntry) Type() string {
 	return "AWS::PCAConnectorAD::TemplateGroupAccessControlEntry"
 }
 

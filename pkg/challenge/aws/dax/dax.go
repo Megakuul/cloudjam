@@ -29,7 +29,7 @@ type Cluster struct {
 	Tags                          map[string]any    `json:"Tags,omitempty"`
 }
 
-func (Cluster) CloudControlType() string { return "AWS::DAX::Cluster" }
+func (Cluster) Type() string { return "AWS::DAX::Cluster" }
 
 type ParameterGroup struct {
 	Description         *string        `json:"Description,omitempty"`
@@ -38,7 +38,7 @@ type ParameterGroup struct {
 	ParameterNameValues map[string]any `json:"ParameterNameValues,omitempty"`
 }
 
-func (ParameterGroup) CloudControlType() string { return "AWS::DAX::ParameterGroup" }
+func (ParameterGroup) Type() string { return "AWS::DAX::ParameterGroup" }
 
 type SubnetGroup struct {
 	Description     *string  `json:"Description,omitempty"`
@@ -47,4 +47,4 @@ type SubnetGroup struct {
 	SubnetIds       []string `json:"SubnetIds,omitempty"`
 }
 
-func (SubnetGroup) CloudControlType() string { return "AWS::DAX::SubnetGroup" }
+func (SubnetGroup) Type() string { return "AWS::DAX::SubnetGroup" }

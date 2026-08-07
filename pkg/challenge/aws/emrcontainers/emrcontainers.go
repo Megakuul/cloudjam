@@ -66,7 +66,7 @@ type Endpoint struct {
 	VirtualClusterId            *string                 `json:"VirtualClusterId,omitempty"`
 }
 
-func (Endpoint) CloudControlType() string { return "AWS::EMRContainers::Endpoint" }
+func (Endpoint) Type() string { return "AWS::EMRContainers::Endpoint" }
 
 type EksInfo struct {
 	Namespace *string `json:"Namespace,omitempty"`
@@ -163,9 +163,7 @@ type SecurityConfiguration struct {
 	Tags                      []SecurityConfigurationTag `json:"Tags,omitempty"`
 }
 
-func (SecurityConfiguration) CloudControlType() string {
-	return "AWS::EMRContainers::SecurityConfiguration"
-}
+func (SecurityConfiguration) Type() string { return "AWS::EMRContainers::SecurityConfiguration" }
 
 type VirtualClusterEksInfo struct {
 	Namespace *string `json:"Namespace,omitempty"`
@@ -196,7 +194,7 @@ type VirtualCluster struct {
 	Tags                    []VirtualClusterTag              `json:"Tags,omitempty"`
 }
 
-func (VirtualCluster) CloudControlType() string { return "AWS::EMRContainers::VirtualCluster" }
+func (VirtualCluster) Type() string { return "AWS::EMRContainers::VirtualCluster" }
 
 type MonitoringConfigurationPersistentAppUI string
 

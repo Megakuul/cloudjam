@@ -175,7 +175,7 @@ type GlobalTable struct {
 	WriteProvisionedThroughputSettings *WriteProvisionedThroughputSettings      `json:"WriteProvisionedThroughputSettings,omitempty"`
 }
 
-func (GlobalTable) CloudControlType() string { return "AWS::DynamoDB::GlobalTable" }
+func (GlobalTable) Type() string { return "AWS::DynamoDB::GlobalTable" }
 
 type TableAttributeDefinition struct {
 	AttributeName *string `json:"AttributeName,omitempty"`
@@ -310,7 +310,7 @@ type Table struct {
 	WarmThroughput                   *TableWarmThroughput                   `json:"WarmThroughput,omitempty"`
 }
 
-func (Table) CloudControlType() string { return "AWS::DynamoDB::Table" }
+func (Table) Type() string { return "AWS::DynamoDB::Table" }
 
 type GlobalTableMultiRegionConsistency string
 

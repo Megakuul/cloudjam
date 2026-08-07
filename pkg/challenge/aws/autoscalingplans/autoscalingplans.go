@@ -79,4 +79,4 @@ type ScalingPlan struct {
 	ScalingPlanVersion  *string              `json:"ScalingPlanVersion,omitempty"`
 }
 
-func (ScalingPlan) CloudControlType() string { return "AWS::AutoScalingPlans::ScalingPlan" }
+func (ScalingPlan) Type() string { return "AWS::AutoScalingPlans::ScalingPlan" }

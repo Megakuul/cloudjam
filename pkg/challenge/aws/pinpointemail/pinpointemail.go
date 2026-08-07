@@ -34,7 +34,7 @@ type ConfigurationSet struct {
 	TrackingOptions   *TrackingOptions   `json:"TrackingOptions,omitempty"`
 }
 
-func (ConfigurationSet) CloudControlType() string { return "AWS::PinpointEmail::ConfigurationSet" }
+func (ConfigurationSet) Type() string { return "AWS::PinpointEmail::ConfigurationSet" }
 
 type DimensionConfiguration struct {
 	DefaultDimensionValue *string `json:"DefaultDimensionValue,omitempty"`
@@ -75,7 +75,7 @@ type ConfigurationSetEventDestination struct {
 	Id                   *string           `json:"Id,omitempty"`
 }
 
-func (ConfigurationSetEventDestination) CloudControlType() string {
+func (ConfigurationSetEventDestination) Type() string {
 	return "AWS::PinpointEmail::ConfigurationSetEventDestination"
 }
 
@@ -90,7 +90,7 @@ type DedicatedIpPool struct {
 	Tags     []DedicatedIpPoolTags `json:"Tags,omitempty"`
 }
 
-func (DedicatedIpPool) CloudControlType() string { return "AWS::PinpointEmail::DedicatedIpPool" }
+func (DedicatedIpPool) Type() string { return "AWS::PinpointEmail::DedicatedIpPool" }
 
 type MailFromAttributes struct {
 	BehaviorOnMxFailure *string `json:"BehaviorOnMxFailure,omitempty"`
@@ -117,4 +117,4 @@ type Identity struct {
 	Tags                      []IdentityTags      `json:"Tags,omitempty"`
 }
 
-func (Identity) CloudControlType() string { return "AWS::PinpointEmail::Identity" }
+func (Identity) Type() string { return "AWS::PinpointEmail::Identity" }

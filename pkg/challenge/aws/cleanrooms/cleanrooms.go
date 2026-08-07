@@ -43,7 +43,7 @@ type AnalysisTemplate struct {
 	Tags                       []Tag                      `json:"Tags,omitempty"`
 }
 
-func (AnalysisTemplate) CloudControlType() string { return "AWS::CleanRooms::AnalysisTemplate" }
+func (AnalysisTemplate) Type() string { return "AWS::CleanRooms::AnalysisTemplate" }
 
 type MLMemberAbilities struct {
 	CustomMLMemberAbilities []CustomMLMemberAbility `json:"CustomMLMemberAbilities,omitempty"`
@@ -121,7 +121,7 @@ type Collaboration struct {
 	Tags                        []CollaborationTag           `json:"Tags,omitempty"`
 }
 
-func (Collaboration) CloudControlType() string { return "AWS::CleanRooms::Collaboration" }
+func (Collaboration) Type() string { return "AWS::CleanRooms::Collaboration" }
 
 type ConfiguredTableAnalysisRulePolicy struct {
 	V1 json.RawMessage `json:"V1,omitempty"`
@@ -150,7 +150,7 @@ type ConfiguredTable struct {
 	Tags                      []ConfiguredTableTag     `json:"Tags,omitempty"`
 }
 
-func (ConfiguredTable) CloudControlType() string { return "AWS::CleanRooms::ConfiguredTable" }
+func (ConfiguredTable) Type() string { return "AWS::CleanRooms::ConfiguredTable" }
 
 type ConfiguredTableAssociationAnalysisRulePolicy struct {
 	V1 json.RawMessage `json:"V1,omitempty"`
@@ -178,9 +178,7 @@ type ConfiguredTableAssociation struct {
 	Tags                                    []ConfiguredTableAssociationTag          `json:"Tags,omitempty"`
 }
 
-func (ConfiguredTableAssociation) CloudControlType() string {
-	return "AWS::CleanRooms::ConfiguredTableAssociation"
-}
+func (ConfiguredTableAssociation) Type() string { return "AWS::CleanRooms::ConfiguredTableAssociation" }
 
 type IdMappingTableInputReferenceConfig struct {
 	InputReferenceArn      *string `json:"InputReferenceArn,omitempty"`
@@ -216,7 +214,7 @@ type IdMappingTable struct {
 	Tags                     []IdMappingTableTag                     `json:"Tags,omitempty"`
 }
 
-func (IdMappingTable) CloudControlType() string { return "AWS::CleanRooms::IdMappingTable" }
+func (IdMappingTable) Type() string { return "AWS::CleanRooms::IdMappingTable" }
 
 type IdMappingConfig struct {
 	AllowUseAsDimensionColumn *bool `json:"AllowUseAsDimensionColumn,omitempty"`
@@ -252,9 +250,7 @@ type IdNamespaceAssociation struct {
 	Tags                             []IdNamespaceAssociationTag                     `json:"Tags,omitempty"`
 }
 
-func (IdNamespaceAssociation) CloudControlType() string {
-	return "AWS::CleanRooms::IdNamespaceAssociation"
-}
+func (IdNamespaceAssociation) Type() string { return "AWS::CleanRooms::IdNamespaceAssociation" }
 
 type IntermediateTableAnalysisRulePolicy struct {
 	V1 json.RawMessage `json:"V1,omitempty"`
@@ -295,7 +291,7 @@ type IntermediateTable struct {
 	Tags                            []IntermediateTableTag           `json:"Tags,omitempty"`
 }
 
-func (IntermediateTable) CloudControlType() string { return "AWS::CleanRooms::IntermediateTable" }
+func (IntermediateTable) Type() string { return "AWS::CleanRooms::IntermediateTable" }
 
 type ProtectedJobS3OutputConfigurationInput struct {
 	Bucket    *string `json:"Bucket,omitempty"`
@@ -379,7 +375,7 @@ type Membership struct {
 	Tags                          []MembershipTag                              `json:"Tags,omitempty"`
 }
 
-func (Membership) CloudControlType() string { return "AWS::CleanRooms::Membership" }
+func (Membership) Type() string { return "AWS::CleanRooms::Membership" }
 
 type BudgetParameter struct {
 	AutoRefresh *BudgetParameterAutoRefresh `json:"AutoRefresh,omitempty"`
@@ -412,9 +408,7 @@ type PrivacyBudgetTemplate struct {
 	Tags                            []PrivacyBudgetTemplateTag              `json:"Tags,omitempty"`
 }
 
-func (PrivacyBudgetTemplate) CloudControlType() string {
-	return "AWS::CleanRooms::PrivacyBudgetTemplate"
-}
+func (PrivacyBudgetTemplate) Type() string { return "AWS::CleanRooms::PrivacyBudgetTemplate" }
 
 type AnalysisParameterType string
 

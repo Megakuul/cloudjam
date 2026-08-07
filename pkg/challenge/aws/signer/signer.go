@@ -11,7 +11,7 @@ type ProfilePermission struct {
 	StatementId    *string `json:"StatementId,omitempty"`
 }
 
-func (ProfilePermission) CloudControlType() string { return "AWS::Signer::ProfilePermission" }
+func (ProfilePermission) Type() string { return "AWS::Signer::ProfilePermission" }
 
 type SignatureValidityPeriod struct {
 	Type  *SignatureValidityPeriodType `json:"Type,omitempty"`
@@ -33,7 +33,7 @@ type SigningProfile struct {
 	Tags                    []Tag                    `json:"Tags,omitempty"`
 }
 
-func (SigningProfile) CloudControlType() string { return "AWS::Signer::SigningProfile" }
+func (SigningProfile) Type() string { return "AWS::Signer::SigningProfile" }
 
 type PlatformId string
 

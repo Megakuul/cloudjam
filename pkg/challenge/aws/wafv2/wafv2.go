@@ -19,7 +19,7 @@ type IPSet struct {
 	Tags             []Tag             `json:"Tags,omitempty"`
 }
 
-func (IPSet) CloudControlType() string { return "AWS::WAFv2::IPSet" }
+func (IPSet) Type() string { return "AWS::WAFv2::IPSet" }
 
 type ConditionActionCondition struct {
 	Action *ConditionActionConditionAction `json:"Action,omitempty"`
@@ -64,7 +64,7 @@ type LoggingConfiguration struct {
 	ResourceArn              *string                            `json:"ResourceArn,omitempty"`
 }
 
-func (LoggingConfiguration) CloudControlType() string { return "AWS::WAFv2::LoggingConfiguration" }
+func (LoggingConfiguration) Type() string { return "AWS::WAFv2::LoggingConfiguration" }
 
 type RegexPatternSetTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -81,7 +81,7 @@ type RegexPatternSet struct {
 	Tags                  []RegexPatternSetTag  `json:"Tags,omitempty"`
 }
 
-func (RegexPatternSet) CloudControlType() string { return "AWS::WAFv2::RegexPatternSet" }
+func (RegexPatternSet) Type() string { return "AWS::WAFv2::RegexPatternSet" }
 
 type LabelSummary struct {
 	Name *string `json:"Name,omitempty"`
@@ -469,7 +469,7 @@ type RuleGroup struct {
 	VisibilityConfig     *VisibilityConfig             `json:"VisibilityConfig,omitempty"`
 }
 
-func (RuleGroup) CloudControlType() string { return "AWS::WAFv2::RuleGroup" }
+func (RuleGroup) Type() string { return "AWS::WAFv2::RuleGroup" }
 
 type ApplicationAttribute struct {
 	Name   *string  `json:"Name,omitempty"`
@@ -1032,14 +1032,14 @@ type WebACL struct {
 	VisibilityConfig             *WebACLVisibilityConfig             `json:"VisibilityConfig,omitempty"`
 }
 
-func (WebACL) CloudControlType() string { return "AWS::WAFv2::WebACL" }
+func (WebACL) Type() string { return "AWS::WAFv2::WebACL" }
 
 type WebACLAssociation struct {
 	ResourceArn *string `json:"ResourceArn,omitempty"`
 	WebACLArn   *string `json:"WebACLArn,omitempty"`
 }
 
-func (WebACLAssociation) CloudControlType() string { return "AWS::WAFv2::WebACLAssociation" }
+func (WebACLAssociation) Type() string { return "AWS::WAFv2::WebACLAssociation" }
 
 type IPAddressVersion string
 

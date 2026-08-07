@@ -24,7 +24,7 @@ type ReplicationSet struct {
 	Tags              []Tag               `json:"Tags,omitempty"`
 }
 
-func (ReplicationSet) CloudControlType() string { return "AWS::SSMIncidents::ReplicationSet" }
+func (ReplicationSet) Type() string { return "AWS::SSMIncidents::ReplicationSet" }
 
 type DynamicSsmParameterValue struct {
 	Variable *VariableType `json:"Variable,omitempty"`
@@ -101,7 +101,7 @@ type ResponsePlan struct {
 	Tags             []ResponsePlanTag `json:"Tags,omitempty"`
 }
 
-func (ResponsePlan) CloudControlType() string { return "AWS::SSMIncidents::ResponsePlan" }
+func (ResponsePlan) Type() string { return "AWS::SSMIncidents::ResponsePlan" }
 
 type VariableType string
 

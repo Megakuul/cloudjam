@@ -179,4 +179,4 @@ type LifecyclePolicy struct {
 	Tags                   []Tag                   `json:"Tags,omitempty"`
 }
 
-func (LifecyclePolicy) CloudControlType() string { return "AWS::DLM::LifecyclePolicy" }
+func (LifecyclePolicy) Type() string { return "AWS::DLM::LifecyclePolicy" }

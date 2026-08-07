@@ -22,7 +22,7 @@ type DataCellsFilter struct {
 	TableName      *string         `json:"TableName,omitempty"`
 }
 
-func (DataCellsFilter) CloudControlType() string { return "AWS::LakeFormation::DataCellsFilter" }
+func (DataCellsFilter) Type() string { return "AWS::LakeFormation::DataCellsFilter" }
 
 type DataLakePrincipal struct {
 	DataLakePrincipalIdentifier *string `json:"DataLakePrincipalIdentifier,omitempty"`
@@ -48,7 +48,7 @@ type DataLakeSettings struct {
 	TrustedResourceOwners            []string               `json:"TrustedResourceOwners,omitempty"`
 }
 
-func (DataLakeSettings) CloudControlType() string { return "AWS::LakeFormation::DataLakeSettings" }
+func (DataLakeSettings) Type() string { return "AWS::LakeFormation::DataLakeSettings" }
 
 type PermissionsDataLakePrincipal struct {
 	DataLakePrincipalIdentifier *string `json:"DataLakePrincipalIdentifier,omitempty"`
@@ -98,7 +98,7 @@ type Permissions struct {
 	Resource                   *Resource                     `json:"Resource,omitempty"`
 }
 
-func (Permissions) CloudControlType() string { return "AWS::LakeFormation::Permissions" }
+func (Permissions) Type() string { return "AWS::LakeFormation::Permissions" }
 
 type PrincipalPermissionsDataLakePrincipal struct {
 	DataLakePrincipalIdentifier *string `json:"DataLakePrincipalIdentifier,omitempty"`
@@ -178,7 +178,7 @@ type PrincipalPermissionsPrincipalPermissions struct {
 	ResourceIdentifier         *string                                `json:"ResourceIdentifier,omitempty"`
 }
 
-func (PrincipalPermissionsPrincipalPermissions) CloudControlType() string {
+func (PrincipalPermissionsPrincipalPermissions) Type() string {
 	return "AWS::LakeFormation::PrincipalPermissions"
 }
 
@@ -191,7 +191,7 @@ type ResourceResource struct {
 	WithFederation       *bool   `json:"WithFederation,omitempty"`
 }
 
-func (ResourceResource) CloudControlType() string { return "AWS::LakeFormation::Resource" }
+func (ResourceResource) Type() string { return "AWS::LakeFormation::Resource" }
 
 type Tag struct {
 	CatalogId *string  `json:"CatalogId,omitempty"`
@@ -199,7 +199,7 @@ type Tag struct {
 	TagValues []string `json:"TagValues,omitempty"`
 }
 
-func (Tag) CloudControlType() string { return "AWS::LakeFormation::Tag" }
+func (Tag) Type() string { return "AWS::LakeFormation::Tag" }
 
 type LFTagPair struct {
 	CatalogId *string  `json:"CatalogId,omitempty"`
@@ -240,7 +240,7 @@ type TagAssociation struct {
 	TagsIdentifier     *string                 `json:"TagsIdentifier,omitempty"`
 }
 
-func (TagAssociation) CloudControlType() string { return "AWS::LakeFormation::TagAssociation" }
+func (TagAssociation) Type() string { return "AWS::LakeFormation::TagAssociation" }
 
 type Permission string
 

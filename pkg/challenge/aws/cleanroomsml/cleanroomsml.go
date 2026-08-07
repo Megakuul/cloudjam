@@ -35,9 +35,7 @@ type ConfiguredModelAlgorithm struct {
 	TrainingContainerConfig     *ContainerConfig          `json:"TrainingContainerConfig,omitempty"`
 }
 
-func (ConfiguredModelAlgorithm) CloudControlType() string {
-	return "AWS::CleanRoomsML::ConfiguredModelAlgorithm"
-}
+func (ConfiguredModelAlgorithm) Type() string { return "AWS::CleanRoomsML::ConfiguredModelAlgorithm" }
 
 type TrainedModelExportsMaxSize struct {
 	Unit  *TrainedModelExportsMaxSizeUnitType `json:"Unit,omitempty"`
@@ -116,7 +114,7 @@ type ConfiguredModelAlgorithmAssociation struct {
 	Tags                                   []ConfiguredModelAlgorithmAssociationTag `json:"Tags,omitempty"`
 }
 
-func (ConfiguredModelAlgorithmAssociation) CloudControlType() string {
+func (ConfiguredModelAlgorithmAssociation) Type() string {
 	return "AWS::CleanRoomsML::ConfiguredModelAlgorithmAssociation"
 }
 
@@ -160,7 +158,7 @@ type TrainingDataset struct {
 	TrainingDatasetArn *string                `json:"TrainingDatasetArn,omitempty"`
 }
 
-func (TrainingDataset) CloudControlType() string { return "AWS::CleanRoomsML::TrainingDataset" }
+func (TrainingDataset) Type() string { return "AWS::CleanRoomsML::TrainingDataset" }
 
 type TrainedModelExportFileType string
 

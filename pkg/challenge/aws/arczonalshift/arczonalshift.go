@@ -9,7 +9,7 @@ type AutoshiftObserverNotificationStatus struct {
 	Status    *AutoshiftObserverNotificationStatusAutoshiftObserverNotificationStatus `json:"Status,omitempty"`
 }
 
-func (AutoshiftObserverNotificationStatus) CloudControlType() string {
+func (AutoshiftObserverNotificationStatus) Type() string {
 	return "AWS::ARCZonalShift::AutoshiftObserverNotificationStatus"
 }
 
@@ -31,7 +31,7 @@ type ZonalAutoshiftConfiguration struct {
 	ZonalAutoshiftStatus     *ZonalAutoshiftStatus     `json:"ZonalAutoshiftStatus,omitempty"`
 }
 
-func (ZonalAutoshiftConfiguration) CloudControlType() string {
+func (ZonalAutoshiftConfiguration) Type() string {
 	return "AWS::ARCZonalShift::ZonalAutoshiftConfiguration"
 }
 

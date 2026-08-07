@@ -30,7 +30,7 @@ type TestCase struct {
 	TestCaseVersion *float64               `json:"TestCaseVersion,omitempty"`
 }
 
-func (TestCase) CloudControlType() string { return "AWS::AppTest::TestCase" }
+func (TestCase) Type() string { return "AWS::AppTest::TestCase" }
 
 type TestCaseLifecycle string
 

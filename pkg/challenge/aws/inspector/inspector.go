@@ -9,7 +9,7 @@ type AssessmentTarget struct {
 	ResourceGroupArn     *string `json:"ResourceGroupArn,omitempty"`
 }
 
-func (AssessmentTarget) CloudControlType() string { return "AWS::Inspector::AssessmentTarget" }
+func (AssessmentTarget) Type() string { return "AWS::Inspector::AssessmentTarget" }
 
 type Tag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -25,7 +25,7 @@ type AssessmentTemplate struct {
 	UserAttributesForFindings []Tag    `json:"UserAttributesForFindings,omitempty"`
 }
 
-func (AssessmentTemplate) CloudControlType() string { return "AWS::Inspector::AssessmentTemplate" }
+func (AssessmentTemplate) Type() string { return "AWS::Inspector::AssessmentTemplate" }
 
 type ResourceGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -37,4 +37,4 @@ type ResourceGroup struct {
 	ResourceGroupTags []ResourceGroupTag `json:"ResourceGroupTags,omitempty"`
 }
 
-func (ResourceGroup) CloudControlType() string { return "AWS::Inspector::ResourceGroup" }
+func (ResourceGroup) Type() string { return "AWS::Inspector::ResourceGroup" }

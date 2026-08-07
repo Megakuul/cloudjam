@@ -78,7 +78,7 @@ type Cluster struct {
 	VpcSecurityGroupIds              []string           `json:"VpcSecurityGroupIds,omitempty"`
 }
 
-func (Cluster) CloudControlType() string { return "AWS::Redshift::Cluster" }
+func (Cluster) Type() string { return "AWS::Redshift::Cluster" }
 
 type Parameter struct {
 	ParameterName  *string `json:"ParameterName,omitempty"`
@@ -98,7 +98,7 @@ type ClusterParameterGroup struct {
 	Tags                 []ClusterParameterGroupTag `json:"Tags,omitempty"`
 }
 
-func (ClusterParameterGroup) CloudControlType() string { return "AWS::Redshift::ClusterParameterGroup" }
+func (ClusterParameterGroup) Type() string { return "AWS::Redshift::ClusterParameterGroup" }
 
 type ClusterSecurityGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -111,7 +111,7 @@ type ClusterSecurityGroup struct {
 	Tags        []ClusterSecurityGroupTag `json:"Tags,omitempty"`
 }
 
-func (ClusterSecurityGroup) CloudControlType() string { return "AWS::Redshift::ClusterSecurityGroup" }
+func (ClusterSecurityGroup) Type() string { return "AWS::Redshift::ClusterSecurityGroup" }
 
 type ClusterSecurityGroupIngress struct {
 	CIDRIP                   *string `json:"CIDRIP,omitempty"`
@@ -121,9 +121,7 @@ type ClusterSecurityGroupIngress struct {
 	Id                       *string `json:"Id,omitempty"`
 }
 
-func (ClusterSecurityGroupIngress) CloudControlType() string {
-	return "AWS::Redshift::ClusterSecurityGroupIngress"
-}
+func (ClusterSecurityGroupIngress) Type() string { return "AWS::Redshift::ClusterSecurityGroupIngress" }
 
 type ClusterSubnetGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -137,7 +135,7 @@ type ClusterSubnetGroup struct {
 	Tags                   []ClusterSubnetGroupTag `json:"Tags,omitempty"`
 }
 
-func (ClusterSubnetGroup) CloudControlType() string { return "AWS::Redshift::ClusterSubnetGroup" }
+func (ClusterSubnetGroup) Type() string { return "AWS::Redshift::ClusterSubnetGroup" }
 
 type NetworkInterface struct {
 	AvailabilityZone   *string `json:"AvailabilityZone,omitempty"`
@@ -171,7 +169,7 @@ type EndpointAccess struct {
 	VpcSecurityGroups   []VpcSecurityGroup         `json:"VpcSecurityGroups,omitempty"`
 }
 
-func (EndpointAccess) CloudControlType() string { return "AWS::Redshift::EndpointAccess" }
+func (EndpointAccess) Type() string { return "AWS::Redshift::EndpointAccess" }
 
 type EndpointAuthorization struct {
 	Account           *string  `json:"Account,omitempty"`
@@ -188,7 +186,7 @@ type EndpointAuthorization struct {
 	VpcIds            []string `json:"VpcIds,omitempty"`
 }
 
-func (EndpointAuthorization) CloudControlType() string { return "AWS::Redshift::EndpointAuthorization" }
+func (EndpointAuthorization) Type() string { return "AWS::Redshift::EndpointAuthorization" }
 
 type EventSubscriptionTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -212,7 +210,7 @@ type EventSubscription struct {
 	Tags                     []EventSubscriptionTag                 `json:"Tags,omitempty"`
 }
 
-func (EventSubscription) CloudControlType() string { return "AWS::Redshift::EventSubscription" }
+func (EventSubscription) Type() string { return "AWS::Redshift::EventSubscription" }
 
 type IntegrationTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -230,7 +228,7 @@ type Integration struct {
 	TargetArn                   *string           `json:"TargetArn,omitempty"`
 }
 
-func (Integration) CloudControlType() string { return "AWS::Redshift::Integration" }
+func (Integration) Type() string { return "AWS::Redshift::Integration" }
 
 type ScheduledAction struct {
 	Enable                     *bool                 `json:"Enable,omitempty"`
@@ -245,7 +243,7 @@ type ScheduledAction struct {
 	TargetAction               map[string]any        `json:"TargetAction,omitempty"`
 }
 
-func (ScheduledAction) CloudControlType() string { return "AWS::Redshift::ScheduledAction" }
+func (ScheduledAction) Type() string { return "AWS::Redshift::ScheduledAction" }
 
 type SnapshotScheduleTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -261,7 +259,7 @@ type SnapshotSchedule struct {
 	Tags                   []SnapshotScheduleTag `json:"Tags,omitempty"`
 }
 
-func (SnapshotSchedule) CloudControlType() string { return "AWS::Redshift::SnapshotSchedule" }
+func (SnapshotSchedule) Type() string { return "AWS::Redshift::SnapshotSchedule" }
 
 type EventSubscriptionEventCategoriesItem string
 

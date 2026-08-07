@@ -8,7 +8,7 @@ type BatchScramSecret struct {
 	SecretArnList []string `json:"SecretArnList,omitempty"`
 }
 
-func (BatchScramSecret) CloudControlType() string { return "AWS::MSK::BatchScramSecret" }
+func (BatchScramSecret) Type() string { return "AWS::MSK::BatchScramSecret" }
 
 type EncryptionConfiguration struct {
 	KmsKeyArn *string `json:"KmsKeyArn,omitempty"`
@@ -131,7 +131,7 @@ type Channel struct {
 	TopicConfigurationList          []TopicConfiguration             `json:"TopicConfigurationList,omitempty"`
 }
 
-func (Channel) CloudControlType() string { return "AWS::MSK::Channel" }
+func (Channel) Type() string { return "AWS::MSK::Channel" }
 
 type PublicAccess struct {
 	Type *string `json:"Type,omitempty"`
@@ -255,6 +255,12 @@ type S3 struct {
 	Prefix  *string `json:"Prefix,omitempty"`
 }
 
+type AuthorizerLogs struct {
+	CloudWatchLogs *CloudWatchLogs `json:"CloudWatchLogs,omitempty"`
+	Firehose       *Firehose       `json:"Firehose,omitempty"`
+	S3             *S3             `json:"S3,omitempty"`
+}
+
 type BrokerLogs struct {
 	CloudWatchLogs *CloudWatchLogs `json:"CloudWatchLogs,omitempty"`
 	Firehose       *Firehose       `json:"Firehose,omitempty"`
@@ -262,7 +268,8 @@ type BrokerLogs struct {
 }
 
 type LoggingInfo struct {
-	BrokerLogs *BrokerLogs `json:"BrokerLogs,omitempty"`
+	AuthorizerLogs *AuthorizerLogs `json:"AuthorizerLogs,omitempty"`
+	BrokerLogs     *BrokerLogs     `json:"BrokerLogs,omitempty"`
 }
 
 type JmxExporter struct {
@@ -309,7 +316,7 @@ type Cluster struct {
 	ZookeeperAccess      *ZookeeperAccess           `json:"ZookeeperAccess,omitempty"`
 }
 
-func (Cluster) CloudControlType() string { return "AWS::MSK::Cluster" }
+func (Cluster) Type() string { return "AWS::MSK::Cluster" }
 
 type ClusterPolicy struct {
 	ClusterArn     *string        `json:"ClusterArn,omitempty"`
@@ -317,7 +324,7 @@ type ClusterPolicy struct {
 	Policy         map[string]any `json:"Policy,omitempty"`
 }
 
-func (ClusterPolicy) CloudControlType() string { return "AWS::MSK::ClusterPolicy" }
+func (ClusterPolicy) Type() string { return "AWS::MSK::ClusterPolicy" }
 
 type LatestRevision struct {
 	CreationTime *string `json:"CreationTime,omitempty"`
@@ -334,7 +341,7 @@ type Configuration struct {
 	ServerProperties  *string         `json:"ServerProperties,omitempty"`
 }
 
-func (Configuration) CloudControlType() string { return "AWS::MSK::Configuration" }
+func (Configuration) Type() string { return "AWS::MSK::Configuration" }
 
 type AmazonMskCluster struct {
 	MskClusterArn *string `json:"MskClusterArn,omitempty"`
@@ -456,7 +463,7 @@ type Replicator struct {
 	Tags                    []Tag             `json:"Tags,omitempty"`
 }
 
-func (Replicator) CloudControlType() string { return "AWS::MSK::Replicator" }
+func (Replicator) Type() string { return "AWS::MSK::Replicator" }
 
 type ServerlessClusterIam struct {
 	Enabled *bool `json:"Enabled,omitempty"`
@@ -483,7 +490,7 @@ type ServerlessCluster struct {
 	VpcConfigs           []VpcConfig                            `json:"VpcConfigs,omitempty"`
 }
 
-func (ServerlessCluster) CloudControlType() string { return "AWS::MSK::ServerlessCluster" }
+func (ServerlessCluster) Type() string { return "AWS::MSK::ServerlessCluster" }
 
 type Topic struct {
 	ClusterArn        *string `json:"ClusterArn,omitempty"`
@@ -494,7 +501,7 @@ type Topic struct {
 	TopicName         *string `json:"TopicName,omitempty"`
 }
 
-func (Topic) CloudControlType() string { return "AWS::MSK::Topic" }
+func (Topic) Type() string { return "AWS::MSK::Topic" }
 
 type VpcConnection struct {
 	Arn              *string           `json:"Arn,omitempty"`
@@ -506,7 +513,7 @@ type VpcConnection struct {
 	VpcId            *string           `json:"VpcId,omitempty"`
 }
 
-func (VpcConnection) CloudControlType() string { return "AWS::MSK::VpcConnection" }
+func (VpcConnection) Type() string { return "AWS::MSK::VpcConnection" }
 
 type IcebergCompressionType string
 

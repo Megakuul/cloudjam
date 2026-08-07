@@ -8,9 +8,7 @@ type AcceptedPortfolioShare struct {
 	PortfolioId    *string `json:"PortfolioId,omitempty"`
 }
 
-func (AcceptedPortfolioShare) CloudControlType() string {
-	return "AWS::ServiceCatalog::AcceptedPortfolioShare"
-}
+func (AcceptedPortfolioShare) Type() string { return "AWS::ServiceCatalog::AcceptedPortfolioShare" }
 
 type ProvisioningArtifactPropertiesInfo struct {
 	ImportFromPhysicalId *string `json:"ImportFromPhysicalId,omitempty"`
@@ -66,9 +64,7 @@ type CloudFormationProduct struct {
 	Tags                           []Tag                             `json:"Tags,omitempty"`
 }
 
-func (CloudFormationProduct) CloudControlType() string {
-	return "AWS::ServiceCatalog::CloudFormationProduct"
-}
+func (CloudFormationProduct) Type() string { return "AWS::ServiceCatalog::CloudFormationProduct" }
 
 type ProvisioningParameter struct {
 	Key   *string `json:"Key,omitempty"`
@@ -109,7 +105,7 @@ type CloudFormationProvisionedProduct struct {
 	Tags                     []CloudFormationProvisionedProductTag           `json:"Tags,omitempty"`
 }
 
-func (CloudFormationProvisionedProduct) CloudControlType() string {
+func (CloudFormationProvisionedProduct) Type() string {
 	return "AWS::ServiceCatalog::CloudFormationProvisionedProduct"
 }
 
@@ -122,7 +118,7 @@ type LaunchNotificationConstraint struct {
 	ProductId        *string  `json:"ProductId,omitempty"`
 }
 
-func (LaunchNotificationConstraint) CloudControlType() string {
+func (LaunchNotificationConstraint) Type() string {
 	return "AWS::ServiceCatalog::LaunchNotificationConstraint"
 }
 
@@ -136,9 +132,7 @@ type LaunchRoleConstraint struct {
 	RoleArn        *string `json:"RoleArn,omitempty"`
 }
 
-func (LaunchRoleConstraint) CloudControlType() string {
-	return "AWS::ServiceCatalog::LaunchRoleConstraint"
-}
+func (LaunchRoleConstraint) Type() string { return "AWS::ServiceCatalog::LaunchRoleConstraint" }
 
 type LaunchTemplateConstraint struct {
 	AcceptLanguage *string `json:"AcceptLanguage,omitempty"`
@@ -149,9 +143,7 @@ type LaunchTemplateConstraint struct {
 	Rules          *string `json:"Rules,omitempty"`
 }
 
-func (LaunchTemplateConstraint) CloudControlType() string {
-	return "AWS::ServiceCatalog::LaunchTemplateConstraint"
-}
+func (LaunchTemplateConstraint) Type() string { return "AWS::ServiceCatalog::LaunchTemplateConstraint" }
 
 type PortfolioTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -168,7 +160,7 @@ type Portfolio struct {
 	Tags           []PortfolioTag `json:"Tags,omitempty"`
 }
 
-func (Portfolio) CloudControlType() string { return "AWS::ServiceCatalog::Portfolio" }
+func (Portfolio) Type() string { return "AWS::ServiceCatalog::Portfolio" }
 
 type PortfolioPrincipalAssociation struct {
 	AcceptLanguage *string `json:"AcceptLanguage,omitempty"`
@@ -177,7 +169,7 @@ type PortfolioPrincipalAssociation struct {
 	PrincipalType  *string `json:"PrincipalType,omitempty"`
 }
 
-func (PortfolioPrincipalAssociation) CloudControlType() string {
+func (PortfolioPrincipalAssociation) Type() string {
 	return "AWS::ServiceCatalog::PortfolioPrincipalAssociation"
 }
 
@@ -188,7 +180,7 @@ type PortfolioProductAssociation struct {
 	SourcePortfolioId *string `json:"SourcePortfolioId,omitempty"`
 }
 
-func (PortfolioProductAssociation) CloudControlType() string {
+func (PortfolioProductAssociation) Type() string {
 	return "AWS::ServiceCatalog::PortfolioProductAssociation"
 }
 
@@ -199,7 +191,7 @@ type PortfolioShare struct {
 	ShareTagOptions *bool   `json:"ShareTagOptions,omitempty"`
 }
 
-func (PortfolioShare) CloudControlType() string { return "AWS::ServiceCatalog::PortfolioShare" }
+func (PortfolioShare) Type() string { return "AWS::ServiceCatalog::PortfolioShare" }
 
 type ResourceUpdateConstraint struct {
 	AcceptLanguage                *string `json:"AcceptLanguage,omitempty"`
@@ -210,9 +202,7 @@ type ResourceUpdateConstraint struct {
 	TagUpdateOnProvisionedProduct *string `json:"TagUpdateOnProvisionedProduct,omitempty"`
 }
 
-func (ResourceUpdateConstraint) CloudControlType() string {
-	return "AWS::ServiceCatalog::ResourceUpdateConstraint"
-}
+func (ResourceUpdateConstraint) Type() string { return "AWS::ServiceCatalog::ResourceUpdateConstraint" }
 
 type DefinitionParameter struct {
 	Key   *string `json:"Key,omitempty"`
@@ -228,7 +218,7 @@ type ServiceAction struct {
 	Name           *string                      `json:"Name,omitempty"`
 }
 
-func (ServiceAction) CloudControlType() string { return "AWS::ServiceCatalog::ServiceAction" }
+func (ServiceAction) Type() string { return "AWS::ServiceCatalog::ServiceAction" }
 
 type ServiceActionAssociation struct {
 	ProductId              *string `json:"ProductId,omitempty"`
@@ -236,9 +226,7 @@ type ServiceActionAssociation struct {
 	ServiceActionId        *string `json:"ServiceActionId,omitempty"`
 }
 
-func (ServiceActionAssociation) CloudControlType() string {
-	return "AWS::ServiceCatalog::ServiceActionAssociation"
-}
+func (ServiceActionAssociation) Type() string { return "AWS::ServiceCatalog::ServiceActionAssociation" }
 
 type StackSetConstraint struct {
 	AcceptLanguage       *string  `json:"AcceptLanguage,omitempty"`
@@ -253,7 +241,7 @@ type StackSetConstraint struct {
 	StackInstanceControl *string  `json:"StackInstanceControl,omitempty"`
 }
 
-func (StackSetConstraint) CloudControlType() string { return "AWS::ServiceCatalog::StackSetConstraint" }
+func (StackSetConstraint) Type() string { return "AWS::ServiceCatalog::StackSetConstraint" }
 
 type TagOption struct {
 	Active *bool   `json:"Active,omitempty"`
@@ -262,16 +250,14 @@ type TagOption struct {
 	Value  *string `json:"Value,omitempty"`
 }
 
-func (TagOption) CloudControlType() string { return "AWS::ServiceCatalog::TagOption" }
+func (TagOption) Type() string { return "AWS::ServiceCatalog::TagOption" }
 
 type TagOptionAssociation struct {
 	ResourceId  *string `json:"ResourceId,omitempty"`
 	TagOptionId *string `json:"TagOptionId,omitempty"`
 }
 
-func (TagOptionAssociation) CloudControlType() string {
-	return "AWS::ServiceCatalog::TagOptionAssociation"
-}
+func (TagOptionAssociation) Type() string { return "AWS::ServiceCatalog::TagOptionAssociation" }
 
 type CloudFormationProductProductType string
 

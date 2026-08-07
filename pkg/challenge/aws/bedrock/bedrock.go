@@ -129,7 +129,7 @@ type Agent struct {
 	UpdatedAt                      *string                      `json:"UpdatedAt,omitempty"`
 }
 
-func (Agent) CloudControlType() string { return "AWS::Bedrock::Agent" }
+func (Agent) Type() string { return "AWS::Bedrock::Agent" }
 
 type AgentAliasRoutingConfigurationListItem struct {
 	AgentVersion *string `json:"AgentVersion,omitempty"`
@@ -155,7 +155,7 @@ type AgentAlias struct {
 	UpdatedAt               *string                                  `json:"UpdatedAt,omitempty"`
 }
 
-func (AgentAlias) CloudControlType() string { return "AWS::Bedrock::AgentAlias" }
+func (AgentAlias) Type() string { return "AWS::Bedrock::AgentAlias" }
 
 type InferenceProfileModel struct {
 	ModelArn *string `json:"ModelArn,omitempty"`
@@ -181,9 +181,7 @@ type ApplicationInferenceProfile struct {
 	UpdatedAt                  *string                 `json:"UpdatedAt,omitempty"`
 }
 
-func (ApplicationInferenceProfile) CloudControlType() string {
-	return "AWS::Bedrock::ApplicationInferenceProfile"
-}
+func (ApplicationInferenceProfile) Type() string { return "AWS::Bedrock::ApplicationInferenceProfile" }
 
 type PolicyDefinitionRule struct {
 	AlternateExpression *string `json:"AlternateExpression,omitempty"`
@@ -236,9 +234,7 @@ type AutomatedReasoningPolicy struct {
 	Version          *string                       `json:"Version,omitempty"`
 }
 
-func (AutomatedReasoningPolicy) CloudControlType() string {
-	return "AWS::Bedrock::AutomatedReasoningPolicy"
-}
+func (AutomatedReasoningPolicy) Type() string { return "AWS::Bedrock::AutomatedReasoningPolicy" }
 
 type AutomatedReasoningPolicyVersionTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -258,7 +254,7 @@ type AutomatedReasoningPolicyVersion struct {
 	Version                   *string                              `json:"Version,omitempty"`
 }
 
-func (AutomatedReasoningPolicyVersion) CloudControlType() string {
+func (AutomatedReasoningPolicyVersion) Type() string {
 	return "AWS::Bedrock::AutomatedReasoningPolicyVersion"
 }
 
@@ -280,7 +276,7 @@ type Blueprint struct {
 	Type                 *BlueprintType           `json:"Type,omitempty"`
 }
 
-func (Blueprint) CloudControlType() string { return "AWS::Bedrock::Blueprint" }
+func (Blueprint) Type() string { return "AWS::Bedrock::Blueprint" }
 
 type EncryptionConfiguration struct {
 	KmsEncryptionContext map[string]string `json:"KmsEncryptionContext,omitempty"`
@@ -308,7 +304,7 @@ type DataAutomationLibrary struct {
 	Tags                    []DataAutomationLibraryTag   `json:"Tags,omitempty"`
 }
 
-func (DataAutomationLibrary) CloudControlType() string { return "AWS::Bedrock::DataAutomationLibrary" }
+func (DataAutomationLibrary) Type() string { return "AWS::Bedrock::DataAutomationLibrary" }
 
 type BlueprintItem struct {
 	BlueprintArn     *string         `json:"BlueprintArn,omitempty"`
@@ -532,7 +528,7 @@ type DataAutomationProject struct {
 	Tags                        []DataAutomationProjectTag        `json:"Tags,omitempty"`
 }
 
-func (DataAutomationProject) CloudControlType() string { return "AWS::Bedrock::DataAutomationProject" }
+func (DataAutomationProject) Type() string { return "AWS::Bedrock::DataAutomationProject" }
 
 type PatternObjectFilter struct {
 	ExclusionFilters []string `json:"ExclusionFilters,omitempty"`
@@ -787,7 +783,7 @@ type DataSource struct {
 	VectorIngestionConfiguration      *VectorIngestionConfiguration      `json:"VectorIngestionConfiguration,omitempty"`
 }
 
-func (DataSource) CloudControlType() string { return "AWS::Bedrock::DataSource" }
+func (DataSource) Type() string { return "AWS::Bedrock::DataSource" }
 
 type ModelEnforcement struct {
 	ExcludedModels []string `json:"ExcludedModels,omitempty"`
@@ -814,7 +810,7 @@ type EnforcedGuardrailConfiguration struct {
 	UpdatedBy                *string                   `json:"UpdatedBy,omitempty"`
 }
 
-func (EnforcedGuardrailConfiguration) CloudControlType() string {
+func (EnforcedGuardrailConfiguration) Type() string {
 	return "AWS::Bedrock::EnforcedGuardrailConfiguration"
 }
 
@@ -881,7 +877,7 @@ type Flow struct {
 	Version                  *string                    `json:"Version,omitempty"`
 }
 
-func (Flow) CloudControlType() string { return "AWS::Bedrock::Flow" }
+func (Flow) Type() string { return "AWS::Bedrock::Flow" }
 
 type FlowAliasConcurrencyConfiguration struct {
 	MaxConcurrency *float64         `json:"MaxConcurrency,omitempty"`
@@ -906,7 +902,7 @@ type FlowAlias struct {
 	UpdatedAt                *string                                 `json:"UpdatedAt,omitempty"`
 }
 
-func (FlowAlias) CloudControlType() string { return "AWS::Bedrock::FlowAlias" }
+func (FlowAlias) Type() string { return "AWS::Bedrock::FlowAlias" }
 
 type FlowVersionFlowConnection struct {
 	Configuration json.RawMessage                `json:"Configuration,omitempty"`
@@ -953,7 +949,7 @@ type FlowVersion struct {
 	Version                  *string                    `json:"Version,omitempty"`
 }
 
-func (FlowVersion) CloudControlType() string { return "AWS::Bedrock::FlowVersion" }
+func (FlowVersion) Type() string { return "AWS::Bedrock::FlowVersion" }
 
 type AutomatedReasoningPolicyConfig struct {
 	ConfidenceThreshold *float64 `json:"ConfidenceThreshold,omitempty"`
@@ -1091,7 +1087,7 @@ type Guardrail struct {
 	WordPolicyConfig                 *WordPolicyConfig                 `json:"WordPolicyConfig,omitempty"`
 }
 
-func (Guardrail) CloudControlType() string { return "AWS::Bedrock::Guardrail" }
+func (Guardrail) Type() string { return "AWS::Bedrock::Guardrail" }
 
 type GuardrailVersion struct {
 	Description         *string `json:"Description,omitempty"`
@@ -1101,7 +1097,7 @@ type GuardrailVersion struct {
 	Version             *string `json:"Version,omitempty"`
 }
 
-func (GuardrailVersion) CloudControlType() string { return "AWS::Bedrock::GuardrailVersion" }
+func (GuardrailVersion) Type() string { return "AWS::Bedrock::GuardrailVersion" }
 
 type PromptRouterTargetModel struct {
 	ModelArn *string `json:"ModelArn,omitempty"`
@@ -1130,9 +1126,7 @@ type IntelligentPromptRouter struct {
 	UpdatedAt        *string                      `json:"UpdatedAt,omitempty"`
 }
 
-func (IntelligentPromptRouter) CloudControlType() string {
-	return "AWS::Bedrock::IntelligentPromptRouter"
-}
+func (IntelligentPromptRouter) Type() string { return "AWS::Bedrock::IntelligentPromptRouter" }
 
 type KendraKnowledgeBaseConfiguration struct {
 	KendraIndexArn *string `json:"KendraIndexArn,omitempty"`
@@ -1395,7 +1389,7 @@ type KnowledgeBase struct {
 	UpdatedAt                  *string                     `json:"UpdatedAt,omitempty"`
 }
 
-func (KnowledgeBase) CloudControlType() string { return "AWS::Bedrock::KnowledgeBase" }
+func (KnowledgeBase) Type() string { return "AWS::Bedrock::KnowledgeBase" }
 
 type KnowledgeBasePolicy struct {
 	KnowledgeBaseId *string        `json:"KnowledgeBaseId,omitempty"`
@@ -1403,7 +1397,7 @@ type KnowledgeBasePolicy struct {
 	RevisionId      *string        `json:"RevisionId,omitempty"`
 }
 
-func (KnowledgeBasePolicy) CloudControlType() string { return "AWS::Bedrock::KnowledgeBasePolicy" }
+func (KnowledgeBasePolicy) Type() string { return "AWS::Bedrock::KnowledgeBasePolicy" }
 
 type PromptMetadataEntry struct {
 	Key   *string `json:"Key,omitempty"`
@@ -1435,7 +1429,7 @@ type Prompt struct {
 	Version                  *string           `json:"Version,omitempty"`
 }
 
-func (Prompt) CloudControlType() string { return "AWS::Bedrock::Prompt" }
+func (Prompt) Type() string { return "AWS::Bedrock::Prompt" }
 
 type PromptVersionPromptMetadataEntry struct {
 	Key   *string `json:"Key,omitempty"`
@@ -1468,14 +1462,14 @@ type PromptVersion struct {
 	Version                  *string                      `json:"Version,omitempty"`
 }
 
-func (PromptVersion) CloudControlType() string { return "AWS::Bedrock::PromptVersion" }
+func (PromptVersion) Type() string { return "AWS::Bedrock::PromptVersion" }
 
 type ResourcePolicy struct {
 	PolicyDocument map[string]any `json:"PolicyDocument,omitempty"`
 	ResourceArn    *string        `json:"ResourceArn,omitempty"`
 }
 
-func (ResourcePolicy) CloudControlType() string { return "AWS::Bedrock::ResourcePolicy" }
+func (ResourcePolicy) Type() string { return "AWS::Bedrock::ResourcePolicy" }
 
 type ActionGroupState string
 

@@ -19,7 +19,7 @@ type Agent struct {
 	VpcEndpointId     *string            `json:"VpcEndpointId,omitempty"`
 }
 
-func (Agent) CloudControlType() string { return "AWS::DataSync::Agent" }
+func (Agent) Type() string { return "AWS::DataSync::Agent" }
 
 type AzureBlobSasConfiguration struct {
 	AzureBlobSasToken *string `json:"AzureBlobSasToken,omitempty"`
@@ -60,7 +60,7 @@ type LocationAzureBlob struct {
 	Tags                        []LocationAzureBlobTag                        `json:"Tags,omitempty"`
 }
 
-func (LocationAzureBlob) CloudControlType() string { return "AWS::DataSync::LocationAzureBlob" }
+func (LocationAzureBlob) Type() string { return "AWS::DataSync::LocationAzureBlob" }
 
 type Ec2Config struct {
 	SecurityGroupArns []string `json:"SecurityGroupArns,omitempty"`
@@ -84,7 +84,7 @@ type LocationEFS struct {
 	Tags                    []LocationEFSTag                `json:"Tags,omitempty"`
 }
 
-func (LocationEFS) CloudControlType() string { return "AWS::DataSync::LocationEFS" }
+func (LocationEFS) Type() string { return "AWS::DataSync::LocationEFS" }
 
 type LocationFSxLustreTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -100,7 +100,7 @@ type LocationFSxLustre struct {
 	Tags              []LocationFSxLustreTag `json:"Tags,omitempty"`
 }
 
-func (LocationFSxLustre) CloudControlType() string { return "AWS::DataSync::LocationFSxLustre" }
+func (LocationFSxLustre) Type() string { return "AWS::DataSync::LocationFSxLustre" }
 
 type NfsMountOptions struct {
 	Version *NfsMountOptionsVersion `json:"Version,omitempty"`
@@ -159,7 +159,7 @@ type LocationFSxONTAP struct {
 	Tags                     []LocationFSxONTAPTag `json:"Tags,omitempty"`
 }
 
-func (LocationFSxONTAP) CloudControlType() string { return "AWS::DataSync::LocationFSxONTAP" }
+func (LocationFSxONTAP) Type() string { return "AWS::DataSync::LocationFSxONTAP" }
 
 type MountOptions struct {
 	Version *MountOptionsVersion `json:"Version,omitempty"`
@@ -188,7 +188,7 @@ type LocationFSxOpenZFS struct {
 	Tags              []LocationFSxOpenZFSTag     `json:"Tags,omitempty"`
 }
 
-func (LocationFSxOpenZFS) CloudControlType() string { return "AWS::DataSync::LocationFSxOpenZFS" }
+func (LocationFSxOpenZFS) Type() string { return "AWS::DataSync::LocationFSxOpenZFS" }
 
 type LocationFSxWindowsCmkSecretConfig struct {
 	KmsKeyArn *string `json:"KmsKeyArn,omitempty"`
@@ -224,7 +224,7 @@ type LocationFSxWindows struct {
 	User                *string                                `json:"User,omitempty"`
 }
 
-func (LocationFSxWindows) CloudControlType() string { return "AWS::DataSync::LocationFSxWindows" }
+func (LocationFSxWindows) Type() string { return "AWS::DataSync::LocationFSxWindows" }
 
 type LocationHDFSCmkSecretConfig struct {
 	KmsKeyArn *string `json:"KmsKeyArn,omitempty"`
@@ -276,7 +276,7 @@ type LocationHDFS struct {
 	Tags                []LocationHDFSTag                `json:"Tags,omitempty"`
 }
 
-func (LocationHDFS) CloudControlType() string { return "AWS::DataSync::LocationHDFS" }
+func (LocationHDFS) Type() string { return "AWS::DataSync::LocationHDFS" }
 
 type LocationNFSMountOptions struct {
 	Version *LocationNFSMountOptionsVersion `json:"Version,omitempty"`
@@ -301,7 +301,7 @@ type LocationNFS struct {
 	Tags           []LocationNFSTag         `json:"Tags,omitempty"`
 }
 
-func (LocationNFS) CloudControlType() string { return "AWS::DataSync::LocationNFS" }
+func (LocationNFS) Type() string { return "AWS::DataSync::LocationNFS" }
 
 type LocationObjectStorageCmkSecretConfig struct {
 	KmsKeyArn *string `json:"KmsKeyArn,omitempty"`
@@ -340,7 +340,7 @@ type LocationObjectStorage struct {
 	Tags                []LocationObjectStorageTag                `json:"Tags,omitempty"`
 }
 
-func (LocationObjectStorage) CloudControlType() string { return "AWS::DataSync::LocationObjectStorage" }
+func (LocationObjectStorage) Type() string { return "AWS::DataSync::LocationObjectStorage" }
 
 type S3Config struct {
 	BucketAccessRoleArn *string `json:"BucketAccessRoleArn,omitempty"`
@@ -361,7 +361,7 @@ type LocationS3 struct {
 	Tags           []LocationS3Tag           `json:"Tags,omitempty"`
 }
 
-func (LocationS3) CloudControlType() string { return "AWS::DataSync::LocationS3" }
+func (LocationS3) Type() string { return "AWS::DataSync::LocationS3" }
 
 type LocationSMBCmkSecretConfig struct {
 	KmsKeyArn *string `json:"KmsKeyArn,omitempty"`
@@ -407,7 +407,7 @@ type LocationSMB struct {
 	User                *string                         `json:"User,omitempty"`
 }
 
-func (LocationSMB) CloudControlType() string { return "AWS::DataSync::LocationSMB" }
+func (LocationSMB) Type() string { return "AWS::DataSync::LocationSMB" }
 
 type FilterRule struct {
 	FilterType *FilterRuleFilterType `json:"FilterType,omitempty"`
@@ -519,7 +519,7 @@ type Task struct {
 	TaskReportConfig                *TaskReportConfig `json:"TaskReportConfig,omitempty"`
 }
 
-func (Task) CloudControlType() string { return "AWS::DataSync::Task" }
+func (Task) Type() string { return "AWS::DataSync::Task" }
 
 type AgentEndpointType string
 

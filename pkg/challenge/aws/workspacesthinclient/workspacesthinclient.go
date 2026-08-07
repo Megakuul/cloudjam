@@ -41,7 +41,7 @@ type Environment struct {
 	UpdatedAt                   *string                                 `json:"UpdatedAt,omitempty"`
 }
 
-func (Environment) CloudControlType() string { return "AWS::WorkSpacesThinClient::Environment" }
+func (Environment) Type() string { return "AWS::WorkSpacesThinClient::Environment" }
 
 type EnvironmentDesktopType string
 

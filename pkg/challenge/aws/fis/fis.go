@@ -87,7 +87,7 @@ type ExperimentTemplate struct {
 	Targets                       map[string]ExperimentTemplateTarget              `json:"Targets,omitempty"`
 }
 
-func (ExperimentTemplate) CloudControlType() string { return "AWS::FIS::ExperimentTemplate" }
+func (ExperimentTemplate) Type() string { return "AWS::FIS::ExperimentTemplate" }
 
 type TargetAccountConfiguration struct {
 	AccountId            *string `json:"AccountId,omitempty"`
@@ -96,9 +96,7 @@ type TargetAccountConfiguration struct {
 	RoleArn              *string `json:"RoleArn,omitempty"`
 }
 
-func (TargetAccountConfiguration) CloudControlType() string {
-	return "AWS::FIS::TargetAccountConfiguration"
-}
+func (TargetAccountConfiguration) Type() string { return "AWS::FIS::TargetAccountConfiguration" }
 
 type ExperimentTemplateExperimentOptionsAccountTargeting string
 

@@ -58,7 +58,7 @@ type Application struct {
 	UpdatedAt                     *string                        `json:"UpdatedAt,omitempty"`
 }
 
-func (Application) CloudControlType() string { return "AWS::QBusiness::Application" }
+func (Application) Type() string { return "AWS::QBusiness::Application" }
 
 type DocumentAttribute struct {
 	Name  *string         `json:"Name,omitempty"`
@@ -112,7 +112,7 @@ type DataAccessor struct {
 	UpdatedAt            *string                           `json:"UpdatedAt,omitempty"`
 }
 
-func (DataAccessor) CloudControlType() string { return "AWS::QBusiness::DataAccessor" }
+func (DataAccessor) Type() string { return "AWS::QBusiness::DataAccessor" }
 
 type DocumentAttributeCondition struct {
 	Key      *string                              `json:"Key,omitempty"`
@@ -193,7 +193,7 @@ type DataSource struct {
 	VpcConfiguration                *DataSourceVpcConfiguration      `json:"VpcConfiguration,omitempty"`
 }
 
-func (DataSource) CloudControlType() string { return "AWS::QBusiness::DataSource" }
+func (DataSource) Type() string { return "AWS::QBusiness::DataSource" }
 
 type IndexCapacityConfiguration struct {
 	Units *float64 `json:"Units,omitempty"`
@@ -235,7 +235,7 @@ type Index struct {
 	UpdatedAt                       *string                          `json:"UpdatedAt,omitempty"`
 }
 
-func (Index) CloudControlType() string { return "AWS::QBusiness::Index" }
+func (Index) Type() string { return "AWS::QBusiness::Index" }
 
 type Condition struct {
 	ConditionKey      *string                     `json:"ConditionKey,omitempty"`
@@ -251,7 +251,7 @@ type Permission struct {
 	StatementId   *string     `json:"StatementId,omitempty"`
 }
 
-func (Permission) CloudControlType() string { return "AWS::QBusiness::Permission" }
+func (Permission) Type() string { return "AWS::QBusiness::Permission" }
 
 type CustomPluginConfiguration struct {
 	ApiSchema     json.RawMessage `json:"ApiSchema,omitempty"`
@@ -280,7 +280,7 @@ type Plugin struct {
 	UpdatedAt                 *string                    `json:"UpdatedAt,omitempty"`
 }
 
-func (Plugin) CloudControlType() string { return "AWS::QBusiness::Plugin" }
+func (Plugin) Type() string { return "AWS::QBusiness::Plugin" }
 
 type RetrieverTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -301,7 +301,7 @@ type Retriever struct {
 	UpdatedAt     *string          `json:"UpdatedAt,omitempty"`
 }
 
-func (Retriever) CloudControlType() string { return "AWS::QBusiness::Retriever" }
+func (Retriever) Type() string { return "AWS::QBusiness::Retriever" }
 
 type BrowserExtensionConfiguration struct {
 	EnabledBrowserExtensions []BrowserExtension `json:"EnabledBrowserExtensions,omitempty"`
@@ -339,7 +339,7 @@ type WebExperience struct {
 	WelcomeMessage                *string                                `json:"WelcomeMessage,omitempty"`
 }
 
-func (WebExperience) CloudControlType() string { return "AWS::QBusiness::WebExperience" }
+func (WebExperience) Type() string { return "AWS::QBusiness::WebExperience" }
 
 type AttachmentsControlMode string
 

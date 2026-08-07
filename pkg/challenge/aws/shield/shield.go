@@ -9,7 +9,7 @@ type DRTAccess struct {
 	RoleArn       *string  `json:"RoleArn,omitempty"`
 }
 
-func (DRTAccess) CloudControlType() string { return "AWS::Shield::DRTAccess" }
+func (DRTAccess) Type() string { return "AWS::Shield::DRTAccess" }
 
 type EmergencyContact struct {
 	ContactNotes *string `json:"ContactNotes,omitempty"`
@@ -23,7 +23,7 @@ type ProactiveEngagement struct {
 	ProactiveEngagementStatus *ProactiveEngagementProactiveEngagementStatus `json:"ProactiveEngagementStatus,omitempty"`
 }
 
-func (ProactiveEngagement) CloudControlType() string { return "AWS::Shield::ProactiveEngagement" }
+func (ProactiveEngagement) Type() string { return "AWS::Shield::ProactiveEngagement" }
 
 type ApplicationLayerAutomaticResponseConfiguration struct {
 	Action map[string]any                                        `json:"Action,omitempty"`
@@ -45,7 +45,7 @@ type Protection struct {
 	Tags                                           []Tag                                           `json:"Tags,omitempty"`
 }
 
-func (Protection) CloudControlType() string { return "AWS::Shield::Protection" }
+func (Protection) Type() string { return "AWS::Shield::Protection" }
 
 type ProtectionGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -62,7 +62,7 @@ type ProtectionGroup struct {
 	Tags               []ProtectionGroupTag         `json:"Tags,omitempty"`
 }
 
-func (ProtectionGroup) CloudControlType() string { return "AWS::Shield::ProtectionGroup" }
+func (ProtectionGroup) Type() string { return "AWS::Shield::ProtectionGroup" }
 
 type ProactiveEngagementProactiveEngagementStatus string
 

@@ -130,7 +130,7 @@ type Application struct {
 	WorkerTypeSpecifications    map[string]WorkerTypeSpecificationInput `json:"WorkerTypeSpecifications,omitempty"`
 }
 
-func (Application) CloudControlType() string { return "AWS::EMRServerless::Application" }
+func (Application) Type() string { return "AWS::EMRServerless::Application" }
 
 type Architecture string
 

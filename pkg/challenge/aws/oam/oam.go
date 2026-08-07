@@ -22,7 +22,7 @@ type Link struct {
 	Tags              map[string]string  `json:"Tags,omitempty"`
 }
 
-func (Link) CloudControlType() string { return "AWS::Oam::Link" }
+func (Link) Type() string { return "AWS::Oam::Link" }
 
 type Sink struct {
 	Arn    *string           `json:"Arn,omitempty"`
@@ -31,7 +31,7 @@ type Sink struct {
 	Tags   map[string]string `json:"Tags,omitempty"`
 }
 
-func (Sink) CloudControlType() string { return "AWS::Oam::Sink" }
+func (Sink) Type() string { return "AWS::Oam::Sink" }
 
 type ResourceType string
 

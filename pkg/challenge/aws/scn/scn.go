@@ -50,7 +50,7 @@ type Dataset struct {
 	Tags             []Tag                 `json:"Tags,omitempty"`
 }
 
-func (Dataset) CloudControlType() string { return "AWS::SCN::Dataset" }
+func (Dataset) Type() string { return "AWS::SCN::Dataset" }
 
 type NamespaceTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -67,7 +67,7 @@ type Namespace struct {
 	Tags             []NamespaceTag `json:"Tags,omitempty"`
 }
 
-func (Namespace) CloudControlType() string { return "AWS::SCN::Namespace" }
+func (Namespace) Type() string { return "AWS::SCN::Namespace" }
 
 type DataLakeDatasetPartitionFieldTransformType string
 

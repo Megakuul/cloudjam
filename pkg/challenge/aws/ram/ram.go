@@ -19,7 +19,7 @@ type Permission struct {
 	Version               *string        `json:"Version,omitempty"`
 }
 
-func (Permission) CloudControlType() string { return "AWS::RAM::Permission" }
+func (Permission) Type() string { return "AWS::RAM::Permission" }
 
 type ResourceShareConfiguration struct {
 	ExclusiveAccountAccess                  *bool `json:"ExclusiveAccountAccess,omitempty"`
@@ -48,7 +48,7 @@ type ResourceShare struct {
 	Tags                       []ResourceShareTag          `json:"Tags,omitempty"`
 }
 
-func (ResourceShare) CloudControlType() string { return "AWS::RAM::ResourceShare" }
+func (ResourceShare) Type() string { return "AWS::RAM::ResourceShare" }
 
 type ResourceShareFeatureSet string
 

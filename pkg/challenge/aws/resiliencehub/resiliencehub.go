@@ -45,7 +45,7 @@ type App struct {
 	Tags                  map[string]string         `json:"Tags,omitempty"`
 }
 
-func (App) CloudControlType() string { return "AWS::ResilienceHub::App" }
+func (App) Type() string { return "AWS::ResilienceHub::App" }
 
 type FailurePolicy struct {
 	RpoInSecs *int `json:"RpoInSecs,omitempty"`
@@ -69,7 +69,7 @@ type ResiliencyPolicy struct {
 	Tier                   *ResiliencyPolicyTier                   `json:"Tier,omitempty"`
 }
 
-func (ResiliencyPolicy) CloudControlType() string { return "AWS::ResilienceHub::ResiliencyPolicy" }
+func (ResiliencyPolicy) Type() string { return "AWS::ResilienceHub::ResiliencyPolicy" }
 
 type AppAppAssessmentSchedule string
 

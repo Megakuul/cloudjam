@@ -55,14 +55,59 @@ type Channel struct {
 	TimeShiftConfiguration *TimeShiftConfiguration     `json:"TimeShiftConfiguration,omitempty"`
 }
 
-func (Channel) CloudControlType() string { return "AWS::MediaTailor::Channel" }
+func (Channel) Type() string { return "AWS::MediaTailor::Channel" }
 
 type ChannelPolicy struct {
 	ChannelName *string         `json:"ChannelName,omitempty"`
 	Policy      json.RawMessage `json:"Policy,omitempty"`
 }
 
-func (ChannelPolicy) CloudControlType() string { return "AWS::MediaTailor::ChannelPolicy" }
+func (ChannelPolicy) Type() string { return "AWS::MediaTailor::ChannelPolicy" }
+
+type CustomOutputConfiguration struct {
+	Output  map[string]string `json:"Output,omitempty"`
+	Runtime *RuntimeType      `json:"Runtime,omitempty"`
+}
+
+type HttpRequestConfiguration struct {
+	Body                       *string           `json:"Body,omitempty"`
+	Headers                    map[string]string `json:"Headers,omitempty"`
+	MethodType                 *MethodType       `json:"MethodType,omitempty"`
+	Output                     map[string]string `json:"Output,omitempty"`
+	RequestTimeoutMilliseconds *int              `json:"RequestTimeoutMilliseconds,omitempty"`
+	Runtime                    *RuntimeType      `json:"Runtime,omitempty"`
+	Url                        *string           `json:"Url,omitempty"`
+}
+
+type FunctionRef struct {
+	FunctionId   *string `json:"FunctionId,omitempty"`
+	RunCondition *string `json:"RunCondition,omitempty"`
+}
+
+type SequentialExecutorConfiguration struct {
+	FunctionList        []FunctionRef     `json:"FunctionList,omitempty"`
+	Output              map[string]string `json:"Output,omitempty"`
+	Runtime             *RuntimeType      `json:"Runtime,omitempty"`
+	TimeoutMilliseconds *int              `json:"TimeoutMilliseconds,omitempty"`
+}
+
+type FunctionTag struct {
+	Key   *string `json:"Key,omitempty"`
+	Value *string `json:"Value,omitempty"`
+}
+
+type Function struct {
+	Arn                             *string                          `json:"Arn,omitempty"`
+	CustomOutputConfiguration       *CustomOutputConfiguration       `json:"CustomOutputConfiguration,omitempty"`
+	Description                     *string                          `json:"Description,omitempty"`
+	FunctionId                      *string                          `json:"FunctionId,omitempty"`
+	FunctionType                    *FunctionType                    `json:"FunctionType,omitempty"`
+	HttpRequestConfiguration        *HttpRequestConfiguration        `json:"HttpRequestConfiguration,omitempty"`
+	SequentialExecutorConfiguration *SequentialExecutorConfiguration `json:"SequentialExecutorConfiguration,omitempty"`
+	Tags                            []FunctionTag                    `json:"Tags,omitempty"`
+}
+
+func (Function) Type() string { return "AWS::MediaTailor::Function" }
 
 type HttpPackageConfiguration struct {
 	Path        *string `json:"Path,omitempty"`
@@ -83,7 +128,7 @@ type LiveSource struct {
 	Tags                      []LiveSourceTag            `json:"Tags,omitempty"`
 }
 
-func (LiveSource) CloudControlType() string { return "AWS::MediaTailor::LiveSource" }
+func (LiveSource) Type() string { return "AWS::MediaTailor::LiveSource" }
 
 type AdConditioningConfiguration struct {
 	StreamingMediaFileConditioning *StreamingMediaFileConditioning `json:"StreamingMediaFileConditioning,omitempty"`
@@ -201,9 +246,7 @@ type PlaybackConfiguration struct {
 	VideoContentSourceUrl               *string                        `json:"VideoContentSourceUrl,omitempty"`
 }
 
-func (PlaybackConfiguration) CloudControlType() string {
-	return "AWS::MediaTailor::PlaybackConfiguration"
-}
+func (PlaybackConfiguration) Type() string { return "AWS::MediaTailor::PlaybackConfiguration" }
 
 type SecretsManagerAccessTokenConfiguration struct {
 	HeaderName      *string `json:"HeaderName,omitempty"`
@@ -244,7 +287,7 @@ type SourceLocation struct {
 	Tags                                []SourceLocationTag                  `json:"Tags,omitempty"`
 }
 
-func (SourceLocation) CloudControlType() string { return "AWS::MediaTailor::SourceLocation" }
+func (SourceLocation) Type() string { return "AWS::MediaTailor::SourceLocation" }
 
 type VodSourceHttpPackageConfiguration struct {
 	Path        *string        `json:"Path,omitempty"`
@@ -265,7 +308,7 @@ type VodSource struct {
 	VodSourceName             *string                             `json:"VodSourceName,omitempty"`
 }
 
-func (VodSource) CloudControlType() string { return "AWS::MediaTailor::VodSource" }
+func (VodSource) Type() string { return "AWS::MediaTailor::VodSource" }
 
 type LogType string
 
@@ -292,6 +335,27 @@ type Tier string
 const (
 	TierBASIC    Tier = "BASIC"
 	TierSTANDARD Tier = "STANDARD"
+)
+
+type RuntimeType string
+
+const (
+	RuntimeTypeJSONATA RuntimeType = "JSONATA"
+)
+
+type FunctionType string
+
+const (
+	FunctionTypeHTTPREQUEST        FunctionType = "HTTP_REQUEST"
+	FunctionTypeCUSTOMOUTPUT       FunctionType = "CUSTOM_OUTPUT"
+	FunctionTypeSEQUENTIALEXECUTOR FunctionType = "SEQUENTIAL_EXECUTOR"
+)
+
+type MethodType string
+
+const (
+	MethodTypeGET  MethodType = "GET"
+	MethodTypePOST MethodType = "POST"
 )
 
 type Type string

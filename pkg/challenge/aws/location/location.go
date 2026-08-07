@@ -40,7 +40,7 @@ type APIKey struct {
 	UpdateTime   *string             `json:"UpdateTime,omitempty"`
 }
 
-func (APIKey) CloudControlType() string { return "AWS::Location::APIKey" }
+func (APIKey) Type() string { return "AWS::Location::APIKey" }
 
 type GeofenceCollectionTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -60,7 +60,7 @@ type GeofenceCollection struct {
 	UpdateTime            *string                 `json:"UpdateTime,omitempty"`
 }
 
-func (GeofenceCollection) CloudControlType() string { return "AWS::Location::GeofenceCollection" }
+func (GeofenceCollection) Type() string { return "AWS::Location::GeofenceCollection" }
 
 type MapConfiguration struct {
 	CustomLayers  []string `json:"CustomLayers,omitempty"`
@@ -85,7 +85,7 @@ type Map struct {
 	UpdateTime    *string           `json:"UpdateTime,omitempty"`
 }
 
-func (Map) CloudControlType() string { return "AWS::Location::Map" }
+func (Map) Type() string { return "AWS::Location::Map" }
 
 type DataSourceConfiguration struct {
 	IntendedUse *IntendedUse `json:"IntendedUse,omitempty"`
@@ -109,7 +109,7 @@ type PlaceIndex struct {
 	UpdateTime              *string                  `json:"UpdateTime,omitempty"`
 }
 
-func (PlaceIndex) CloudControlType() string { return "AWS::Location::PlaceIndex" }
+func (PlaceIndex) Type() string { return "AWS::Location::PlaceIndex" }
 
 type RouteCalculatorTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -128,7 +128,7 @@ type RouteCalculator struct {
 	UpdateTime     *string                     `json:"UpdateTime,omitempty"`
 }
 
-func (RouteCalculator) CloudControlType() string { return "AWS::Location::RouteCalculator" }
+func (RouteCalculator) Type() string { return "AWS::Location::RouteCalculator" }
 
 type TrackerTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -151,14 +151,14 @@ type Tracker struct {
 	UpdateTime                    *string             `json:"UpdateTime,omitempty"`
 }
 
-func (Tracker) CloudControlType() string { return "AWS::Location::Tracker" }
+func (Tracker) Type() string { return "AWS::Location::Tracker" }
 
 type TrackerConsumer struct {
 	ConsumerArn *string `json:"ConsumerArn,omitempty"`
 	TrackerName *string `json:"TrackerName,omitempty"`
 }
 
-func (TrackerConsumer) CloudControlType() string { return "AWS::Location::TrackerConsumer" }
+func (TrackerConsumer) Type() string { return "AWS::Location::TrackerConsumer" }
 
 type PricingPlan string
 

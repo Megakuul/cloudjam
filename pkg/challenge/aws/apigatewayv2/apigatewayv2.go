@@ -44,7 +44,7 @@ type Api struct {
 	Version                   *string           `json:"Version,omitempty"`
 }
 
-func (Api) CloudControlType() string { return "AWS::ApiGatewayV2::Api" }
+func (Api) Type() string { return "AWS::ApiGatewayV2::Api" }
 
 type IntegrationOverrides struct {
 	Description          *string `json:"Description,omitempty"`
@@ -91,7 +91,7 @@ type ApiGatewayManagedOverrides struct {
 	Stage       *StageOverrides       `json:"Stage,omitempty"`
 }
 
-func (ApiGatewayManagedOverrides) CloudControlType() string {
+func (ApiGatewayManagedOverrides) Type() string {
 	return "AWS::ApiGatewayV2::ApiGatewayManagedOverrides"
 }
 
@@ -103,7 +103,7 @@ type ApiMapping struct {
 	Stage         *string `json:"Stage,omitempty"`
 }
 
-func (ApiMapping) CloudControlType() string { return "AWS::ApiGatewayV2::ApiMapping" }
+func (ApiMapping) Type() string { return "AWS::ApiGatewayV2::ApiMapping" }
 
 type JWTConfiguration struct {
 	Audience []string `json:"Audience,omitempty"`
@@ -125,7 +125,7 @@ type Authorizer struct {
 	Name                           *string           `json:"Name,omitempty"`
 }
 
-func (Authorizer) CloudControlType() string { return "AWS::ApiGatewayV2::Authorizer" }
+func (Authorizer) Type() string { return "AWS::ApiGatewayV2::Authorizer" }
 
 type Deployment struct {
 	ApiId        *string `json:"ApiId,omitempty"`
@@ -134,7 +134,7 @@ type Deployment struct {
 	StageName    *string `json:"StageName,omitempty"`
 }
 
-func (Deployment) CloudControlType() string { return "AWS::ApiGatewayV2::Deployment" }
+func (Deployment) Type() string { return "AWS::ApiGatewayV2::Deployment" }
 
 type DomainNameConfiguration struct {
 	CertificateArn                      *string `json:"CertificateArn,omitempty"`
@@ -161,7 +161,7 @@ type DomainName struct {
 	Tags                     map[string]string         `json:"Tags,omitempty"`
 }
 
-func (DomainName) CloudControlType() string { return "AWS::ApiGatewayV2::DomainName" }
+func (DomainName) Type() string { return "AWS::ApiGatewayV2::DomainName" }
 
 type ResponseParameter struct {
 	Destination *string `json:"Destination,omitempty"`
@@ -198,7 +198,7 @@ type Integration struct {
 	TlsConfig                   *TlsConfig                      `json:"TlsConfig,omitempty"`
 }
 
-func (Integration) CloudControlType() string { return "AWS::ApiGatewayV2::Integration" }
+func (Integration) Type() string { return "AWS::ApiGatewayV2::Integration" }
 
 type IntegrationResponse struct {
 	ApiId                       *string        `json:"ApiId,omitempty"`
@@ -211,7 +211,7 @@ type IntegrationResponse struct {
 	TemplateSelectionExpression *string        `json:"TemplateSelectionExpression,omitempty"`
 }
 
-func (IntegrationResponse) CloudControlType() string { return "AWS::ApiGatewayV2::IntegrationResponse" }
+func (IntegrationResponse) Type() string { return "AWS::ApiGatewayV2::IntegrationResponse" }
 
 type Model struct {
 	ApiId       *string        `json:"ApiId,omitempty"`
@@ -222,7 +222,7 @@ type Model struct {
 	Schema      map[string]any `json:"Schema,omitempty"`
 }
 
-func (Model) CloudControlType() string { return "AWS::ApiGatewayV2::Model" }
+func (Model) Type() string { return "AWS::ApiGatewayV2::Model" }
 
 type Route struct {
 	ApiId                            *string        `json:"ApiId,omitempty"`
@@ -240,7 +240,7 @@ type Route struct {
 	Target                           *string        `json:"Target,omitempty"`
 }
 
-func (Route) CloudControlType() string { return "AWS::ApiGatewayV2::Route" }
+func (Route) Type() string { return "AWS::ApiGatewayV2::Route" }
 
 type RouteResponse struct {
 	ApiId                    *string         `json:"ApiId,omitempty"`
@@ -252,7 +252,7 @@ type RouteResponse struct {
 	RouteResponseKey         *string         `json:"RouteResponseKey,omitempty"`
 }
 
-func (RouteResponse) CloudControlType() string { return "AWS::ApiGatewayV2::RouteResponse" }
+func (RouteResponse) Type() string { return "AWS::ApiGatewayV2::RouteResponse" }
 
 type ActionInvokeApi struct {
 	ApiId         *string `json:"ApiId,omitempty"`
@@ -291,7 +291,7 @@ type RoutingRule struct {
 	RoutingRuleId  *string     `json:"RoutingRuleId,omitempty"`
 }
 
-func (RoutingRule) CloudControlType() string { return "AWS::ApiGatewayV2::RoutingRule" }
+func (RoutingRule) Type() string { return "AWS::ApiGatewayV2::RoutingRule" }
 
 type StageAccessLogSettings struct {
 	DestinationArn *string `json:"DestinationArn,omitempty"`
@@ -320,7 +320,7 @@ type Stage struct {
 	Tags                 map[string]any          `json:"Tags,omitempty"`
 }
 
-func (Stage) CloudControlType() string { return "AWS::ApiGatewayV2::Stage" }
+func (Stage) Type() string { return "AWS::ApiGatewayV2::Stage" }
 
 type VpcLink struct {
 	Name             *string           `json:"Name,omitempty"`
@@ -330,7 +330,7 @@ type VpcLink struct {
 	VpcLinkId        *string           `json:"VpcLinkId,omitempty"`
 }
 
-func (VpcLink) CloudControlType() string { return "AWS::ApiGatewayV2::VpcLink" }
+func (VpcLink) Type() string { return "AWS::ApiGatewayV2::VpcLink" }
 
 type DomainNameRoutingMode string
 

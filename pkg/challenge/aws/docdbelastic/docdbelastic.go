@@ -27,4 +27,4 @@ type Cluster struct {
 	VpcSecurityGroupIds        []string `json:"VpcSecurityGroupIds,omitempty"`
 }
 
-func (Cluster) CloudControlType() string { return "AWS::DocDBElastic::Cluster" }
+func (Cluster) Type() string { return "AWS::DocDBElastic::Cluster" }

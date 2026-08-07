@@ -18,7 +18,7 @@ type TapePool struct {
 	Tags                    []Tag                      `json:"Tags,omitempty"`
 }
 
-func (TapePool) CloudControlType() string { return "AWS::StorageGateway::TapePool" }
+func (TapePool) Type() string { return "AWS::StorageGateway::TapePool" }
 
 type TapePoolRetentionLockType string
 

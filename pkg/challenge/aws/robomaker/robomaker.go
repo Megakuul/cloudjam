@@ -9,7 +9,7 @@ type Fleet struct {
 	Tags map[string]string `json:"Tags,omitempty"`
 }
 
-func (Fleet) CloudControlType() string { return "AWS::RoboMaker::Fleet" }
+func (Fleet) Type() string { return "AWS::RoboMaker::Fleet" }
 
 type Robot struct {
 	Architecture      *RobotArchitecture `json:"Architecture,omitempty"`
@@ -20,7 +20,7 @@ type Robot struct {
 	Tags              map[string]string  `json:"Tags,omitempty"`
 }
 
-func (Robot) CloudControlType() string { return "AWS::RoboMaker::Robot" }
+func (Robot) Type() string { return "AWS::RoboMaker::Robot" }
 
 type RobotSoftwareSuite struct {
 	Name    *RobotSoftwareSuiteName    `json:"Name,omitempty"`
@@ -43,7 +43,7 @@ type RobotApplication struct {
 	Tags               map[string]string   `json:"Tags,omitempty"`
 }
 
-func (RobotApplication) CloudControlType() string { return "AWS::RoboMaker::RobotApplication" }
+func (RobotApplication) Type() string { return "AWS::RoboMaker::RobotApplication" }
 
 type RobotApplicationVersion struct {
 	Application        *string `json:"Application,omitempty"`
@@ -52,9 +52,7 @@ type RobotApplicationVersion struct {
 	CurrentRevisionId  *string `json:"CurrentRevisionId,omitempty"`
 }
 
-func (RobotApplicationVersion) CloudControlType() string {
-	return "AWS::RoboMaker::RobotApplicationVersion"
-}
+func (RobotApplicationVersion) Type() string { return "AWS::RoboMaker::RobotApplicationVersion" }
 
 type RenderingEngine struct {
 	Name    *RenderingEngineName `json:"Name,omitempty"`
@@ -89,9 +87,7 @@ type SimulationApplication struct {
 	Tags                    map[string]string                        `json:"Tags,omitempty"`
 }
 
-func (SimulationApplication) CloudControlType() string {
-	return "AWS::RoboMaker::SimulationApplication"
-}
+func (SimulationApplication) Type() string { return "AWS::RoboMaker::SimulationApplication" }
 
 type SimulationApplicationVersion struct {
 	Application        *string `json:"Application,omitempty"`
@@ -100,7 +96,7 @@ type SimulationApplicationVersion struct {
 	CurrentRevisionId  *string `json:"CurrentRevisionId,omitempty"`
 }
 
-func (SimulationApplicationVersion) CloudControlType() string {
+func (SimulationApplicationVersion) Type() string {
 	return "AWS::RoboMaker::SimulationApplicationVersion"
 }
 

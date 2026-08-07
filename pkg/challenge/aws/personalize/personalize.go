@@ -24,7 +24,7 @@ type Dataset struct {
 	SchemaArn        *string             `json:"SchemaArn,omitempty"`
 }
 
-func (Dataset) CloudControlType() string { return "AWS::Personalize::Dataset" }
+func (Dataset) Type() string { return "AWS::Personalize::Dataset" }
 
 type DatasetGroup struct {
 	DatasetGroupArn *string             `json:"DatasetGroupArn,omitempty"`
@@ -34,7 +34,7 @@ type DatasetGroup struct {
 	RoleArn         *string             `json:"RoleArn,omitempty"`
 }
 
-func (DatasetGroup) CloudControlType() string { return "AWS::Personalize::DatasetGroup" }
+func (DatasetGroup) Type() string { return "AWS::Personalize::DatasetGroup" }
 
 type Schema struct {
 	Domain    *SchemaDomain `json:"Domain,omitempty"`
@@ -43,7 +43,7 @@ type Schema struct {
 	SchemaArn *string       `json:"SchemaArn,omitempty"`
 }
 
-func (Schema) CloudControlType() string { return "AWS::Personalize::Schema" }
+func (Schema) Type() string { return "AWS::Personalize::Schema" }
 
 type SolutionConfigAutoMLConfig struct {
 	MetricName *string  `json:"MetricName,omitempty"`
@@ -109,7 +109,7 @@ type Solution struct {
 	SolutionConfig  *SolutionConfig `json:"SolutionConfig,omitempty"`
 }
 
-func (Solution) CloudControlType() string { return "AWS::Personalize::Solution" }
+func (Solution) Type() string { return "AWS::Personalize::Solution" }
 
 type DatasetDatasetType string
 

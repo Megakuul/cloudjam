@@ -44,7 +44,7 @@ type IdentityPool struct {
 	SupportedLoginProviders        map[string]any            `json:"SupportedLoginProviders,omitempty"`
 }
 
-func (IdentityPool) CloudControlType() string { return "AWS::Cognito::IdentityPool" }
+func (IdentityPool) Type() string { return "AWS::Cognito::IdentityPool" }
 
 type IdentityPoolPrincipalTag struct {
 	IdentityPoolId       *string        `json:"IdentityPoolId,omitempty"`
@@ -53,9 +53,7 @@ type IdentityPoolPrincipalTag struct {
 	UseDefaults          *bool          `json:"UseDefaults,omitempty"`
 }
 
-func (IdentityPoolPrincipalTag) CloudControlType() string {
-	return "AWS::Cognito::IdentityPoolPrincipalTag"
-}
+func (IdentityPoolPrincipalTag) Type() string { return "AWS::Cognito::IdentityPoolPrincipalTag" }
 
 type IdentityPoolRoleAttachment struct {
 	Id             *string         `json:"Id,omitempty"`
@@ -64,9 +62,7 @@ type IdentityPoolRoleAttachment struct {
 	Roles          json.RawMessage `json:"Roles,omitempty"`
 }
 
-func (IdentityPoolRoleAttachment) CloudControlType() string {
-	return "AWS::Cognito::IdentityPoolRoleAttachment"
-}
+func (IdentityPoolRoleAttachment) Type() string { return "AWS::Cognito::IdentityPoolRoleAttachment" }
 
 type CloudWatchLogsConfiguration struct {
 	LogGroupArn *string `json:"LogGroupArn,omitempty"`
@@ -94,9 +90,7 @@ type LogDeliveryConfiguration struct {
 	UserPoolId        *string            `json:"UserPoolId,omitempty"`
 }
 
-func (LogDeliveryConfiguration) CloudControlType() string {
-	return "AWS::Cognito::LogDeliveryConfiguration"
-}
+func (LogDeliveryConfiguration) Type() string { return "AWS::Cognito::LogDeliveryConfiguration" }
 
 type AssetType struct {
 	Bytes      *string        `json:"Bytes,omitempty"`
@@ -116,7 +110,7 @@ type ManagedLoginBranding struct {
 	UserPoolId               *string        `json:"UserPoolId,omitempty"`
 }
 
-func (ManagedLoginBranding) CloudControlType() string { return "AWS::Cognito::ManagedLoginBranding" }
+func (ManagedLoginBranding) Type() string { return "AWS::Cognito::ManagedLoginBranding" }
 
 type Terms struct {
 	ClientId    *string               `json:"ClientId,omitempty"`
@@ -128,7 +122,7 @@ type Terms struct {
 	UserPoolId  *string               `json:"UserPoolId,omitempty"`
 }
 
-func (Terms) CloudControlType() string { return "AWS::Cognito::Terms" }
+func (Terms) Type() string { return "AWS::Cognito::Terms" }
 
 type RecoveryOption struct {
 	Name     *string `json:"Name,omitempty"`
@@ -332,7 +326,7 @@ type UserPool struct {
 	WebAuthnUserVerification    *string                              `json:"WebAuthnUserVerification,omitempty"`
 }
 
-func (UserPool) CloudControlType() string { return "AWS::Cognito::UserPool" }
+func (UserPool) Type() string { return "AWS::Cognito::UserPool" }
 
 type AnalyticsConfiguration struct {
 	ApplicationArn *string `json:"ApplicationArn,omitempty"`
@@ -382,7 +376,7 @@ type UserPoolClient struct {
 	WriteAttributes                          []string                `json:"WriteAttributes,omitempty"`
 }
 
-func (UserPoolClient) CloudControlType() string { return "AWS::Cognito::UserPoolClient" }
+func (UserPoolClient) Type() string { return "AWS::Cognito::UserPoolClient" }
 
 type CustomDomainConfigType struct {
 	CertificateArn *string `json:"CertificateArn,omitempty"`
@@ -407,7 +401,7 @@ type UserPoolDomain struct {
 	UserPoolId             *string                 `json:"UserPoolId,omitempty"`
 }
 
-func (UserPoolDomain) CloudControlType() string { return "AWS::Cognito::UserPoolDomain" }
+func (UserPoolDomain) Type() string { return "AWS::Cognito::UserPoolDomain" }
 
 type UserPoolGroup struct {
 	Description *string `json:"Description,omitempty"`
@@ -417,7 +411,7 @@ type UserPoolGroup struct {
 	UserPoolId  *string `json:"UserPoolId,omitempty"`
 }
 
-func (UserPoolGroup) CloudControlType() string { return "AWS::Cognito::UserPoolGroup" }
+func (UserPoolGroup) Type() string { return "AWS::Cognito::UserPoolGroup" }
 
 type UserPoolIdentityProvider struct {
 	AttributeMapping map[string]string `json:"AttributeMapping,omitempty"`
@@ -428,9 +422,7 @@ type UserPoolIdentityProvider struct {
 	UserPoolId       *string           `json:"UserPoolId,omitempty"`
 }
 
-func (UserPoolIdentityProvider) CloudControlType() string {
-	return "AWS::Cognito::UserPoolIdentityProvider"
-}
+func (UserPoolIdentityProvider) Type() string { return "AWS::Cognito::UserPoolIdentityProvider" }
 
 type UserPoolRegionalConfigurationAttachmentEmailConfiguration struct {
 	ConfigurationSet    *string `json:"ConfigurationSet,omitempty"`
@@ -504,7 +496,7 @@ type UserPoolRegionalConfigurationAttachment struct {
 	UserPoolTags       map[string]string                                          `json:"UserPoolTags,omitempty"`
 }
 
-func (UserPoolRegionalConfigurationAttachment) CloudControlType() string {
+func (UserPoolRegionalConfigurationAttachment) Type() string {
 	return "AWS::Cognito::UserPoolRegionalConfigurationAttachment"
 }
 
@@ -514,7 +506,7 @@ type UserPoolReplica struct {
 	UserPoolTagsAtCreate map[string]string `json:"UserPoolTagsAtCreate,omitempty"`
 }
 
-func (UserPoolReplica) CloudControlType() string { return "AWS::Cognito::UserPoolReplica" }
+func (UserPoolReplica) Type() string { return "AWS::Cognito::UserPoolReplica" }
 
 type ResourceServerScopeType struct {
 	ScopeDescription *string `json:"ScopeDescription,omitempty"`
@@ -528,9 +520,7 @@ type UserPoolResourceServer struct {
 	UserPoolId *string                   `json:"UserPoolId,omitempty"`
 }
 
-func (UserPoolResourceServer) CloudControlType() string {
-	return "AWS::Cognito::UserPoolResourceServer"
-}
+func (UserPoolResourceServer) Type() string { return "AWS::Cognito::UserPoolResourceServer" }
 
 type AccountTakeoverActionType struct {
 	EventAction *string `json:"EventAction,omitempty"`
@@ -585,7 +575,7 @@ type UserPoolRiskConfigurationAttachment struct {
 	UserPoolId                              *string                                      `json:"UserPoolId,omitempty"`
 }
 
-func (UserPoolRiskConfigurationAttachment) CloudControlType() string {
+func (UserPoolRiskConfigurationAttachment) Type() string {
 	return "AWS::Cognito::UserPoolRiskConfigurationAttachment"
 }
 
@@ -595,7 +585,7 @@ type UserPoolUICustomizationAttachment struct {
 	UserPoolId *string `json:"UserPoolId,omitempty"`
 }
 
-func (UserPoolUICustomizationAttachment) CloudControlType() string {
+func (UserPoolUICustomizationAttachment) Type() string {
 	return "AWS::Cognito::UserPoolUICustomizationAttachment"
 }
 
@@ -615,7 +605,7 @@ type UserPoolUser struct {
 	ValidationData         []AttributeType   `json:"ValidationData,omitempty"`
 }
 
-func (UserPoolUser) CloudControlType() string { return "AWS::Cognito::UserPoolUser" }
+func (UserPoolUser) Type() string { return "AWS::Cognito::UserPoolUser" }
 
 type UserPoolUserToGroupAttachment struct {
 	GroupName  *string `json:"GroupName,omitempty"`
@@ -623,7 +613,7 @@ type UserPoolUserToGroupAttachment struct {
 	Username   *string `json:"Username,omitempty"`
 }
 
-func (UserPoolUserToGroupAttachment) CloudControlType() string {
+func (UserPoolUserToGroupAttachment) Type() string {
 	return "AWS::Cognito::UserPoolUserToGroupAttachment"
 }
 

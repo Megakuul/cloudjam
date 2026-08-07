@@ -716,7 +716,7 @@ type Bot struct {
 	TestBotAliasTags        []Tag                 `json:"TestBotAliasTags,omitempty"`
 }
 
-func (Bot) CloudControlType() string { return "AWS::Lex::Bot" }
+func (Bot) Type() string { return "AWS::Lex::Bot" }
 
 type BotAliasLambdaCodeHook struct {
 	CodeHookInterfaceVersion *string `json:"CodeHookInterfaceVersion,omitempty"`
@@ -794,7 +794,7 @@ type BotAlias struct {
 	SentimentAnalysisSettings *BotAliasSentimentAnalysisSettings   `json:"SentimentAnalysisSettings,omitempty"`
 }
 
-func (BotAlias) CloudControlType() string { return "AWS::Lex::BotAlias" }
+func (BotAlias) Type() string { return "AWS::Lex::BotAlias" }
 
 type BotVersionLocaleDetails struct {
 	SourceBotVersion *BotVersion `json:"SourceBotVersion,omitempty"`
@@ -812,7 +812,7 @@ type BotVersion struct {
 	Description                   *string                         `json:"Description,omitempty"`
 }
 
-func (BotVersion) CloudControlType() string { return "AWS::Lex::BotVersion" }
+func (BotVersion) Type() string { return "AWS::Lex::BotVersion" }
 
 type ResourcePolicy struct {
 	Id          *string        `json:"Id,omitempty"`
@@ -821,7 +821,7 @@ type ResourcePolicy struct {
 	RevisionId  *string        `json:"RevisionId,omitempty"`
 }
 
-func (ResourcePolicy) CloudControlType() string { return "AWS::Lex::ResourcePolicy" }
+func (ResourcePolicy) Type() string { return "AWS::Lex::ResourcePolicy" }
 
 type AudioFillerSettingsAudioType string
 

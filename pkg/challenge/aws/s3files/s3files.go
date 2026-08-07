@@ -37,7 +37,7 @@ type AccessPoint struct {
 	Tags           []AccessPointTag   `json:"Tags,omitempty"`
 }
 
-func (AccessPoint) CloudControlType() string { return "AWS::S3Files::AccessPoint" }
+func (AccessPoint) Type() string { return "AWS::S3Files::AccessPoint" }
 
 type ExpirationDataRule struct {
 	DaysAfterLastAccess *int `json:"DaysAfterLastAccess,omitempty"`
@@ -77,14 +77,14 @@ type FileSystem struct {
 	Tags                         []Tag                         `json:"Tags,omitempty"`
 }
 
-func (FileSystem) CloudControlType() string { return "AWS::S3Files::FileSystem" }
+func (FileSystem) Type() string { return "AWS::S3Files::FileSystem" }
 
 type FileSystemPolicy struct {
 	FileSystemId *string        `json:"FileSystemId,omitempty"`
 	Policy       map[string]any `json:"Policy,omitempty"`
 }
 
-func (FileSystemPolicy) CloudControlType() string { return "AWS::S3Files::FileSystemPolicy" }
+func (FileSystemPolicy) Type() string { return "AWS::S3Files::FileSystemPolicy" }
 
 type MountTarget struct {
 	AvailabilityZoneId *string                   `json:"AvailabilityZoneId,omitempty"`
@@ -102,7 +102,7 @@ type MountTarget struct {
 	VpcId              *string                   `json:"VpcId,omitempty"`
 }
 
-func (MountTarget) CloudControlType() string { return "AWS::S3Files::MountTarget" }
+func (MountTarget) Type() string { return "AWS::S3Files::MountTarget" }
 
 type AccessPointStatus string
 

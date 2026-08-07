@@ -22,7 +22,7 @@ type Deployment struct {
 	WorkloadName          *string           `json:"WorkloadName,omitempty"`
 }
 
-func (Deployment) CloudControlType() string { return "AWS::LaunchWizard::Deployment" }
+func (Deployment) Type() string { return "AWS::LaunchWizard::Deployment" }
 
 type DeploymentStatus string
 

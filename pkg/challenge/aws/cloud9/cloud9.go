@@ -28,4 +28,4 @@ type EnvironmentEC2 struct {
 	Tags                     []Tag        `json:"Tags,omitempty"`
 }
 
-func (EnvironmentEC2) CloudControlType() string { return "AWS::Cloud9::EnvironmentEC2" }
+func (EnvironmentEC2) Type() string { return "AWS::Cloud9::EnvironmentEC2" }

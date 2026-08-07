@@ -35,7 +35,7 @@ type ScalableTarget struct {
 	SuspendedState    *SuspendedState   `json:"SuspendedState,omitempty"`
 }
 
-func (ScalableTarget) CloudControlType() string { return "AWS::ApplicationAutoScaling::ScalableTarget" }
+func (ScalableTarget) Type() string { return "AWS::ApplicationAutoScaling::ScalableTarget" }
 
 type PredictiveScalingMetricDimension struct {
 	Name  *string `json:"Name,omitempty"`
@@ -187,4 +187,4 @@ type ScalingPolicy struct {
 	TargetTrackingScalingPolicyConfiguration *TargetTrackingScalingPolicyConfiguration `json:"TargetTrackingScalingPolicyConfiguration,omitempty"`
 }
 
-func (ScalingPolicy) CloudControlType() string { return "AWS::ApplicationAutoScaling::ScalingPolicy" }
+func (ScalingPolicy) Type() string { return "AWS::ApplicationAutoScaling::ScalingPolicy" }

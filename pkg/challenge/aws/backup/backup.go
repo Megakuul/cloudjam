@@ -67,7 +67,7 @@ type BackupPlan struct {
 	VersionId      *string                 `json:"VersionId,omitempty"`
 }
 
-func (BackupPlan) CloudControlType() string { return "AWS::Backup::BackupPlan" }
+func (BackupPlan) Type() string { return "AWS::Backup::BackupPlan" }
 
 type ConditionParameter struct {
 	ConditionKey   *string `json:"ConditionKey,omitempty"`
@@ -103,7 +103,7 @@ type BackupSelection struct {
 	SelectionId     *string                      `json:"SelectionId,omitempty"`
 }
 
-func (BackupSelection) CloudControlType() string { return "AWS::Backup::BackupSelection" }
+func (BackupSelection) Type() string { return "AWS::Backup::BackupSelection" }
 
 type LockConfigurationType struct {
 	ChangeableForDays *int `json:"ChangeableForDays,omitempty"`
@@ -126,7 +126,7 @@ type BackupVault struct {
 	Notifications     *NotificationObjectType `json:"Notifications,omitempty"`
 }
 
-func (BackupVault) CloudControlType() string { return "AWS::Backup::BackupVault" }
+func (BackupVault) Type() string { return "AWS::Backup::BackupVault" }
 
 type ControlInputParameter struct {
 	ParameterName  *string `json:"ParameterName,omitempty"`
@@ -161,7 +161,7 @@ type Framework struct {
 	FrameworkTags        []Tag              `json:"FrameworkTags,omitempty"`
 }
 
-func (Framework) CloudControlType() string { return "AWS::Backup::Framework" }
+func (Framework) Type() string { return "AWS::Backup::Framework" }
 
 type LegalHoldRecoveryPointSelectionDateRange struct {
 	FromDate *string `json:"FromDate,omitempty"`
@@ -190,7 +190,7 @@ type LegalHold struct {
 	Title                  *string                          `json:"Title,omitempty"`
 }
 
-func (LegalHold) CloudControlType() string { return "AWS::Backup::LegalHold" }
+func (LegalHold) Type() string { return "AWS::Backup::LegalHold" }
 
 type LogicallyAirGappedBackupVaultNotificationObjectType struct {
 	BackupVaultEvents []string `json:"BackupVaultEvents,omitempty"`
@@ -211,7 +211,7 @@ type LogicallyAirGappedBackupVault struct {
 	VaultType          *string                                              `json:"VaultType,omitempty"`
 }
 
-func (LogicallyAirGappedBackupVault) CloudControlType() string {
+func (LogicallyAirGappedBackupVault) Type() string {
 	return "AWS::Backup::LogicallyAirGappedBackupVault"
 }
 
@@ -243,7 +243,7 @@ type ReportPlan struct {
 	ReportSetting         *ReportPlanReportSetting         `json:"ReportSetting,omitempty"`
 }
 
-func (ReportPlan) CloudControlType() string { return "AWS::Backup::ReportPlan" }
+func (ReportPlan) Type() string { return "AWS::Backup::ReportPlan" }
 
 type RestoreTestingRecoveryPointSelection struct {
 	Algorithm           *RestoreTestingRecoveryPointSelectionAlgorithm `json:"Algorithm,omitempty"`
@@ -268,7 +268,7 @@ type RestoreTestingPlan struct {
 	Tags                       []RestoreTestingPlanTag               `json:"Tags,omitempty"`
 }
 
-func (RestoreTestingPlan) CloudControlType() string { return "AWS::Backup::RestoreTestingPlan" }
+func (RestoreTestingPlan) Type() string { return "AWS::Backup::RestoreTestingPlan" }
 
 type KeyValue struct {
 	Key   *string `json:"Key,omitempty"`
@@ -291,9 +291,7 @@ type RestoreTestingSelection struct {
 	ValidationWindowHours       *int                         `json:"ValidationWindowHours,omitempty"`
 }
 
-func (RestoreTestingSelection) CloudControlType() string {
-	return "AWS::Backup::RestoreTestingSelection"
-}
+func (RestoreTestingSelection) Type() string { return "AWS::Backup::RestoreTestingSelection" }
 
 type ResourceSelection struct {
 	ResourceType              *string  `json:"ResourceType,omitempty"`
@@ -311,7 +309,7 @@ type TieringConfiguration struct {
 	TieringConfigurationTags map[string]string   `json:"TieringConfigurationTags,omitempty"`
 }
 
-func (TieringConfiguration) CloudControlType() string { return "AWS::Backup::TieringConfiguration" }
+func (TieringConfiguration) Type() string { return "AWS::Backup::TieringConfiguration" }
 
 type MalwareScanner string
 

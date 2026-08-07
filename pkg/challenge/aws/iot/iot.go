@@ -64,9 +64,7 @@ type AccountAuditConfiguration struct {
 	RoleArn                               *string                                `json:"RoleArn,omitempty"`
 }
 
-func (AccountAuditConfiguration) CloudControlType() string {
-	return "AWS::IoT::AccountAuditConfiguration"
-}
+func (AccountAuditConfiguration) Type() string { return "AWS::IoT::AccountAuditConfiguration" }
 
 type Tag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -85,7 +83,7 @@ type Authorizer struct {
 	TokenSigningPublicKeys map[string]string `json:"TokenSigningPublicKeys,omitempty"`
 }
 
-func (Authorizer) CloudControlType() string { return "AWS::IoT::Authorizer" }
+func (Authorizer) Type() string { return "AWS::IoT::Authorizer" }
 
 type BillingGroupBillingGroupProperties struct {
 	BillingGroupDescription *string `json:"BillingGroupDescription,omitempty"`
@@ -104,7 +102,7 @@ type BillingGroup struct {
 	Tags                   []BillingGroupTag                   `json:"Tags,omitempty"`
 }
 
-func (BillingGroup) CloudControlType() string { return "AWS::IoT::BillingGroup" }
+func (BillingGroup) Type() string { return "AWS::IoT::BillingGroup" }
 
 type RegistrationConfig struct {
 	RoleArn      *string `json:"RoleArn,omitempty"`
@@ -130,7 +128,7 @@ type CACertificate struct {
 	VerificationCertificatePem *string                              `json:"VerificationCertificatePem,omitempty"`
 }
 
-func (CACertificate) CloudControlType() string { return "AWS::IoT::CACertificate" }
+func (CACertificate) Type() string { return "AWS::IoT::CACertificate" }
 
 type Certificate struct {
 	Arn                       *string                     `json:"Arn,omitempty"`
@@ -142,7 +140,7 @@ type Certificate struct {
 	Status                    *CertificateStatus          `json:"Status,omitempty"`
 }
 
-func (Certificate) CloudControlType() string { return "AWS::IoT::Certificate" }
+func (Certificate) Type() string { return "AWS::IoT::Certificate" }
 
 type CertificateProviderTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -157,7 +155,7 @@ type CertificateProvider struct {
 	Tags                        []CertificateProviderTag       `json:"Tags,omitempty"`
 }
 
-func (CertificateProvider) CloudControlType() string { return "AWS::IoT::CertificateProvider" }
+func (CertificateProvider) Type() string { return "AWS::IoT::CertificateProvider" }
 
 type CommandParameterValue struct {
 	B   *bool    `json:"B,omitempty"`
@@ -232,7 +230,7 @@ type Command struct {
 	Tags                []CommandTag         `json:"Tags,omitempty"`
 }
 
-func (Command) CloudControlType() string { return "AWS::IoT::Command" }
+func (Command) Type() string { return "AWS::IoT::Command" }
 
 type CustomMetricTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -247,7 +245,7 @@ type CustomMetric struct {
 	Tags        []CustomMetricTag       `json:"Tags,omitempty"`
 }
 
-func (CustomMetric) CloudControlType() string { return "AWS::IoT::CustomMetric" }
+func (CustomMetric) Type() string { return "AWS::IoT::CustomMetric" }
 
 type DimensionTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -262,7 +260,7 @@ type Dimension struct {
 	Type         *DimensionType `json:"Type,omitempty"`
 }
 
-func (Dimension) CloudControlType() string { return "AWS::IoT::Dimension" }
+func (Dimension) Type() string { return "AWS::IoT::Dimension" }
 
 type AuthorizerConfig struct {
 	AllowAuthorizerOverride *bool   `json:"AllowAuthorizerOverride,omitempty"`
@@ -313,7 +311,7 @@ type DomainConfiguration struct {
 	ValidationCertificateArn  *string                                       `json:"ValidationCertificateArn,omitempty"`
 }
 
-func (DomainConfiguration) CloudControlType() string { return "AWS::IoT::DomainConfiguration" }
+func (DomainConfiguration) Type() string { return "AWS::IoT::DomainConfiguration" }
 
 type EncryptionConfigurationConfigurationDetails struct {
 	ConfigurationStatus *EncryptionConfigurationConfigurationDetailsConfigurationStatus `json:"ConfigurationStatus,omitempty"`
@@ -330,7 +328,7 @@ type EncryptionConfiguration struct {
 	LastModifiedDate     *string                                      `json:"LastModifiedDate,omitempty"`
 }
 
-func (EncryptionConfiguration) CloudControlType() string { return "AWS::IoT::EncryptionConfiguration" }
+func (EncryptionConfiguration) Type() string { return "AWS::IoT::EncryptionConfiguration" }
 
 type AggregationType struct {
 	Name   *string  `json:"Name,omitempty"`
@@ -359,7 +357,7 @@ type FleetMetric struct {
 	Version          *float64         `json:"Version,omitempty"`
 }
 
-func (FleetMetric) CloudControlType() string { return "AWS::IoT::FleetMetric" }
+func (FleetMetric) Type() string { return "AWS::IoT::FleetMetric" }
 
 type AbortCriteria struct {
 	Action                    *Action      `json:"Action,omitempty"`
@@ -433,7 +431,7 @@ type JobTemplate struct {
 	TimeoutConfig              *JobTemplateTimeoutConfig              `json:"TimeoutConfig,omitempty"`
 }
 
-func (JobTemplate) CloudControlType() string { return "AWS::IoT::JobTemplate" }
+func (JobTemplate) Type() string { return "AWS::IoT::JobTemplate" }
 
 type EventConfiguration struct {
 	EventType      *string                     `json:"EventType,omitempty"`
@@ -448,7 +446,7 @@ type Logging struct {
 	RoleArn             *string                 `json:"RoleArn,omitempty"`
 }
 
-func (Logging) CloudControlType() string { return "AWS::IoT::Logging" }
+func (Logging) Type() string { return "AWS::IoT::Logging" }
 
 type AddThingsToThingGroupParams struct {
 	OverrideDynamicGroups *bool    `json:"OverrideDynamicGroups,omitempty"`
@@ -499,7 +497,7 @@ type MitigationAction struct {
 	Tags                []MitigationActionTag `json:"Tags,omitempty"`
 }
 
-func (MitigationAction) CloudControlType() string { return "AWS::IoT::MitigationAction" }
+func (MitigationAction) Type() string { return "AWS::IoT::MitigationAction" }
 
 type PolicyTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -514,7 +512,7 @@ type Policy struct {
 	Tags           []PolicyTag     `json:"Tags,omitempty"`
 }
 
-func (Policy) CloudControlType() string { return "AWS::IoT::Policy" }
+func (Policy) Type() string { return "AWS::IoT::Policy" }
 
 type PolicyPrincipalAttachment struct {
 	Id         *string `json:"Id,omitempty"`
@@ -522,9 +520,7 @@ type PolicyPrincipalAttachment struct {
 	Principal  *string `json:"Principal,omitempty"`
 }
 
-func (PolicyPrincipalAttachment) CloudControlType() string {
-	return "AWS::IoT::PolicyPrincipalAttachment"
-}
+func (PolicyPrincipalAttachment) Type() string { return "AWS::IoT::PolicyPrincipalAttachment" }
 
 type ProvisioningHook struct {
 	PayloadVersion *string `json:"PayloadVersion,omitempty"`
@@ -548,7 +544,7 @@ type ProvisioningTemplate struct {
 	TemplateType        *ProvisioningTemplateTemplateType `json:"TemplateType,omitempty"`
 }
 
-func (ProvisioningTemplate) CloudControlType() string { return "AWS::IoT::ProvisioningTemplate" }
+func (ProvisioningTemplate) Type() string { return "AWS::IoT::ProvisioningTemplate" }
 
 type ResourceSpecificLogging struct {
 	LogLevel   *ResourceSpecificLoggingLogLevel   `json:"LogLevel,omitempty"`
@@ -557,7 +553,7 @@ type ResourceSpecificLogging struct {
 	TargetType *ResourceSpecificLoggingTargetType `json:"TargetType,omitempty"`
 }
 
-func (ResourceSpecificLogging) CloudControlType() string { return "AWS::IoT::ResourceSpecificLogging" }
+func (ResourceSpecificLogging) Type() string { return "AWS::IoT::ResourceSpecificLogging" }
 
 type RoleAliasTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -572,7 +568,7 @@ type RoleAlias struct {
 	Tags                      []RoleAliasTag `json:"Tags,omitempty"`
 }
 
-func (RoleAlias) CloudControlType() string { return "AWS::IoT::RoleAlias" }
+func (RoleAlias) Type() string { return "AWS::IoT::RoleAlias" }
 
 type ScheduledAuditTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -589,7 +585,7 @@ type ScheduledAudit struct {
 	TargetCheckNames   []string                 `json:"TargetCheckNames,omitempty"`
 }
 
-func (ScheduledAudit) CloudControlType() string { return "AWS::IoT::ScheduledAudit" }
+func (ScheduledAudit) Type() string { return "AWS::IoT::ScheduledAudit" }
 
 type MetricDimension struct {
 	DimensionName *string                  `json:"DimensionName,omitempty"`
@@ -665,7 +661,7 @@ type SecurityProfile struct {
 	TargetArns                  []string                            `json:"TargetArns,omitempty"`
 }
 
-func (SecurityProfile) CloudControlType() string { return "AWS::IoT::SecurityProfile" }
+func (SecurityProfile) Type() string { return "AWS::IoT::SecurityProfile" }
 
 type SoftwarePackageTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -679,7 +675,7 @@ type SoftwarePackage struct {
 	Tags        []SoftwarePackageTag `json:"Tags,omitempty"`
 }
 
-func (SoftwarePackage) CloudControlType() string { return "AWS::IoT::SoftwarePackage" }
+func (SoftwarePackage) Type() string { return "AWS::IoT::SoftwarePackage" }
 
 type S3Location struct {
 	Bucket  *string `json:"Bucket,omitempty"`
@@ -715,7 +711,7 @@ type SoftwarePackageVersion struct {
 	VersionName          *string                     `json:"VersionName,omitempty"`
 }
 
-func (SoftwarePackageVersion) CloudControlType() string { return "AWS::IoT::SoftwarePackageVersion" }
+func (SoftwarePackageVersion) Type() string { return "AWS::IoT::SoftwarePackageVersion" }
 
 type AttributePayload struct {
 	Attributes map[string]string `json:"Attributes,omitempty"`
@@ -728,7 +724,7 @@ type Thing struct {
 	ThingName        *string           `json:"ThingName,omitempty"`
 }
 
-func (Thing) CloudControlType() string { return "AWS::IoT::Thing" }
+func (Thing) Type() string { return "AWS::IoT::Thing" }
 
 type ThingGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -754,7 +750,7 @@ type ThingGroup struct {
 	ThingGroupProperties *ThingGroupThingGroupProperties `json:"ThingGroupProperties,omitempty"`
 }
 
-func (ThingGroup) CloudControlType() string { return "AWS::IoT::ThingGroup" }
+func (ThingGroup) Type() string { return "AWS::IoT::ThingGroup" }
 
 type ThingPrincipalAttachment struct {
 	Id                 *string `json:"Id,omitempty"`
@@ -763,9 +759,7 @@ type ThingPrincipalAttachment struct {
 	ThingPrincipalType *string `json:"ThingPrincipalType,omitempty"`
 }
 
-func (ThingPrincipalAttachment) CloudControlType() string {
-	return "AWS::IoT::ThingPrincipalAttachment"
-}
+func (ThingPrincipalAttachment) Type() string { return "AWS::IoT::ThingPrincipalAttachment" }
 
 type ThingTypeTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -797,7 +791,7 @@ type ThingType struct {
 	ThingTypeProperties *ThingTypeThingTypeProperties `json:"ThingTypeProperties,omitempty"`
 }
 
-func (ThingType) CloudControlType() string { return "AWS::IoT::ThingType" }
+func (ThingType) Type() string { return "AWS::IoT::ThingType" }
 
 type TopicRuleTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -1088,7 +1082,7 @@ type TopicRule struct {
 	TopicRulePayload *TopicRulePayload `json:"TopicRulePayload,omitempty"`
 }
 
-func (TopicRule) CloudControlType() string { return "AWS::IoT::TopicRule" }
+func (TopicRule) Type() string { return "AWS::IoT::TopicRule" }
 
 type HttpUrlDestinationSummary struct {
 	ConfirmationUrl *string `json:"ConfirmationUrl,omitempty"`
@@ -1109,7 +1103,7 @@ type TopicRuleDestination struct {
 	VpcProperties     *VpcDestinationProperties   `json:"VpcProperties,omitempty"`
 }
 
-func (TopicRuleDestination) CloudControlType() string { return "AWS::IoT::TopicRuleDestination" }
+func (TopicRuleDestination) Type() string { return "AWS::IoT::TopicRuleDestination" }
 
 type AuthorizerStatus string
 

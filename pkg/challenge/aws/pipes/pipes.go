@@ -390,7 +390,7 @@ type Pipe struct {
 	TargetParameters     *PipeTargetParameters     `json:"TargetParameters,omitempty"`
 }
 
-func (Pipe) CloudControlType() string { return "AWS::Pipes::Pipe" }
+func (Pipe) Type() string { return "AWS::Pipes::Pipe" }
 
 type PipeState string
 

@@ -63,4 +63,4 @@ type Analyzer struct {
 	Type                  *string                        `json:"Type,omitempty"`
 }
 
-func (Analyzer) CloudControlType() string { return "AWS::AccessAnalyzer::Analyzer" }
+func (Analyzer) Type() string { return "AWS::AccessAnalyzer::Analyzer" }

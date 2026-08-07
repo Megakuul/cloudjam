@@ -486,7 +486,7 @@ type DeliveryStream struct {
 	Tags                                               []Tag                                               `json:"Tags,omitempty"`
 }
 
-func (DeliveryStream) CloudControlType() string { return "AWS::KinesisFirehose::DeliveryStream" }
+func (DeliveryStream) Type() string { return "AWS::KinesisFirehose::DeliveryStream" }
 
 type ProcessorType string
 

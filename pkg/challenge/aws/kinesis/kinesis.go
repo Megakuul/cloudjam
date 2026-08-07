@@ -8,7 +8,7 @@ type ResourcePolicy struct {
 	ResourcePolicy map[string]any `json:"ResourcePolicy,omitempty"`
 }
 
-func (ResourcePolicy) CloudControlType() string { return "AWS::Kinesis::ResourcePolicy" }
+func (ResourcePolicy) Type() string { return "AWS::Kinesis::ResourcePolicy" }
 
 type StreamEncryption struct {
 	EncryptionType *StreamEncryptionEncryptionType `json:"EncryptionType,omitempty"`
@@ -43,7 +43,7 @@ type Stream struct {
 	WarmThroughputObject     *WarmThroughputObject `json:"WarmThroughputObject,omitempty"`
 }
 
-func (Stream) CloudControlType() string { return "AWS::Kinesis::Stream" }
+func (Stream) Type() string { return "AWS::Kinesis::Stream" }
 
 type StreamConsumerTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -59,7 +59,7 @@ type StreamConsumer struct {
 	Tags                      []StreamConsumerTag `json:"Tags,omitempty"`
 }
 
-func (StreamConsumer) CloudControlType() string { return "AWS::Kinesis::StreamConsumer" }
+func (StreamConsumer) Type() string { return "AWS::Kinesis::StreamConsumer" }
 
 type EnhancedMetric string
 

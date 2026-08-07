@@ -12,7 +12,7 @@ type ResourcePolicy struct {
 	SecretId          *string         `json:"SecretId,omitempty"`
 }
 
-func (ResourcePolicy) CloudControlType() string { return "AWS::SecretsManager::ResourcePolicy" }
+func (ResourcePolicy) Type() string { return "AWS::SecretsManager::ResourcePolicy" }
 
 type ExternalSecretRotationMetadataItem struct {
 	Key   *string `json:"Key,omitempty"`
@@ -50,7 +50,7 @@ type RotationSchedule struct {
 	SecretId                       *string                              `json:"SecretId,omitempty"`
 }
 
-func (RotationSchedule) CloudControlType() string { return "AWS::SecretsManager::RotationSchedule" }
+func (RotationSchedule) Type() string { return "AWS::SecretsManager::RotationSchedule" }
 
 type GenerateSecretString struct {
 	ExcludeCharacters       *string `json:"ExcludeCharacters,omitempty"`
@@ -87,7 +87,7 @@ type Secret struct {
 	Type                 *string               `json:"Type,omitempty"`
 }
 
-func (Secret) CloudControlType() string { return "AWS::SecretsManager::Secret" }
+func (Secret) Type() string { return "AWS::SecretsManager::Secret" }
 
 type SecretTargetAttachment struct {
 	Id         *string `json:"Id,omitempty"`
@@ -96,6 +96,4 @@ type SecretTargetAttachment struct {
 	TargetType *string `json:"TargetType,omitempty"`
 }
 
-func (SecretTargetAttachment) CloudControlType() string {
-	return "AWS::SecretsManager::SecretTargetAttachment"
-}
+func (SecretTargetAttachment) Type() string { return "AWS::SecretsManager::SecretTargetAttachment" }

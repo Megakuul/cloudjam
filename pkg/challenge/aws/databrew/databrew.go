@@ -113,7 +113,7 @@ type Dataset struct {
 	Tags          []Tag          `json:"Tags,omitempty"`
 }
 
-func (Dataset) CloudControlType() string { return "AWS::DataBrew::Dataset" }
+func (Dataset) Type() string { return "AWS::DataBrew::Dataset" }
 
 type JobS3Location struct {
 	Bucket      *string `json:"Bucket,omitempty"`
@@ -248,7 +248,7 @@ type Job struct {
 	ValidationConfigurations []ValidationConfiguration `json:"ValidationConfigurations,omitempty"`
 }
 
-func (Job) CloudControlType() string { return "AWS::DataBrew::Job" }
+func (Job) Type() string { return "AWS::DataBrew::Job" }
 
 type Sample struct {
 	Size *int        `json:"Size,omitempty"`
@@ -269,7 +269,7 @@ type Project struct {
 	Tags        []ProjectTag `json:"Tags,omitempty"`
 }
 
-func (Project) CloudControlType() string { return "AWS::DataBrew::Project" }
+func (Project) Type() string { return "AWS::DataBrew::Project" }
 
 type Action struct {
 	Operation  *string         `json:"Operation,omitempty"`
@@ -299,7 +299,7 @@ type RecipeRecipe struct {
 	Tags        []RecipeTag  `json:"Tags,omitempty"`
 }
 
-func (RecipeRecipe) CloudControlType() string { return "AWS::DataBrew::Recipe" }
+func (RecipeRecipe) Type() string { return "AWS::DataBrew::Recipe" }
 
 type RulesetColumnSelector struct {
 	Name  *string `json:"Name,omitempty"`
@@ -339,7 +339,7 @@ type Ruleset struct {
 	TargetArn   *string      `json:"TargetArn,omitempty"`
 }
 
-func (Ruleset) CloudControlType() string { return "AWS::DataBrew::Ruleset" }
+func (Ruleset) Type() string { return "AWS::DataBrew::Ruleset" }
 
 type ScheduleTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -353,7 +353,7 @@ type Schedule struct {
 	Tags           []ScheduleTag `json:"Tags,omitempty"`
 }
 
-func (Schedule) CloudControlType() string { return "AWS::DataBrew::Schedule" }
+func (Schedule) Type() string { return "AWS::DataBrew::Schedule" }
 
 type DatasetFormat string
 

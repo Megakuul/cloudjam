@@ -40,4 +40,4 @@ type InvestigationGroup struct {
 	Tags                            []Tag                        `json:"Tags,omitempty"`
 }
 
-func (InvestigationGroup) CloudControlType() string { return "AWS::AIOps::InvestigationGroup" }
+func (InvestigationGroup) Type() string { return "AWS::AIOps::InvestigationGroup" }

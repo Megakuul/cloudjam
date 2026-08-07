@@ -77,7 +77,7 @@ type ComputeEnvironment struct {
 	UpdatePolicy              *UpdatePolicy     `json:"UpdatePolicy,omitempty"`
 }
 
-func (ComputeEnvironment) CloudControlType() string { return "AWS::Batch::ComputeEnvironment" }
+func (ComputeEnvironment) Type() string { return "AWS::Batch::ComputeEnvironment" }
 
 type ConsumableResource struct {
 	AvailableQuantity      *int              `json:"AvailableQuantity,omitempty"`
@@ -90,7 +90,7 @@ type ConsumableResource struct {
 	TotalQuantity          *int              `json:"TotalQuantity,omitempty"`
 }
 
-func (ConsumableResource) CloudControlType() string { return "AWS::Batch::ConsumableResource" }
+func (ConsumableResource) Type() string { return "AWS::Batch::ConsumableResource" }
 
 type ConsumableResourceRequirement struct {
 	ConsumableResource *string `json:"ConsumableResource,omitempty"`
@@ -467,7 +467,7 @@ type JobDefinition struct {
 	Type                         *string                       `json:"Type,omitempty"`
 }
 
-func (JobDefinition) CloudControlType() string { return "AWS::Batch::JobDefinition" }
+func (JobDefinition) Type() string { return "AWS::Batch::JobDefinition" }
 
 type ComputeEnvironmentOrder struct {
 	ComputeEnvironment *string `json:"ComputeEnvironment,omitempty"`
@@ -499,7 +499,7 @@ type JobQueue struct {
 	Tags                     map[string]string         `json:"Tags,omitempty"`
 }
 
-func (JobQueue) CloudControlType() string { return "AWS::Batch::JobQueue" }
+func (JobQueue) Type() string { return "AWS::Batch::JobQueue" }
 
 type QuotaShareCapacityLimit struct {
 	CapacityUnit *string `json:"CapacityUnit,omitempty"`
@@ -526,7 +526,7 @@ type QuotaShare struct {
 	Tags                         map[string]string                       `json:"Tags,omitempty"`
 }
 
-func (QuotaShare) CloudControlType() string { return "AWS::Batch::QuotaShare" }
+func (QuotaShare) Type() string { return "AWS::Batch::QuotaShare" }
 
 type ShareAttributes struct {
 	ShareIdentifier *string  `json:"ShareIdentifier,omitempty"`
@@ -551,7 +551,7 @@ type SchedulingPolicy struct {
 	Tags             map[string]string `json:"Tags,omitempty"`
 }
 
-func (SchedulingPolicy) CloudControlType() string { return "AWS::Batch::SchedulingPolicy" }
+func (SchedulingPolicy) Type() string { return "AWS::Batch::SchedulingPolicy" }
 
 type CapacityLimit struct {
 	CapacityUnit *string `json:"CapacityUnit,omitempty"`
@@ -567,7 +567,7 @@ type ServiceEnvironment struct {
 	Tags                   map[string]string `json:"Tags,omitempty"`
 }
 
-func (ServiceEnvironment) CloudControlType() string { return "AWS::Batch::ServiceEnvironment" }
+func (ServiceEnvironment) Type() string { return "AWS::Batch::ServiceEnvironment" }
 
 type LaunchTemplateSpecificationOverrideUserdataType string
 

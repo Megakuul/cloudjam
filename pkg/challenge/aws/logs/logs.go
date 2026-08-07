@@ -14,7 +14,7 @@ type AccountPolicy struct {
 	SelectionCriteria *string                  `json:"SelectionCriteria,omitempty"`
 }
 
-func (AccountPolicy) CloudControlType() string { return "AWS::Logs::AccountPolicy" }
+func (AccountPolicy) Type() string { return "AWS::Logs::AccountPolicy" }
 
 type Tag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -34,7 +34,7 @@ type Delivery struct {
 	Tags                       []Tag    `json:"Tags,omitempty"`
 }
 
-func (Delivery) CloudControlType() string { return "AWS::Logs::Delivery" }
+func (Delivery) Type() string { return "AWS::Logs::Delivery" }
 
 type DestinationPolicy struct {
 	DeliveryDestinationName   *string        `json:"DeliveryDestinationName,omitempty"`
@@ -56,7 +56,7 @@ type DeliveryDestination struct {
 	Tags                      []DeliveryDestinationTag `json:"Tags,omitempty"`
 }
 
-func (DeliveryDestination) CloudControlType() string { return "AWS::Logs::DeliveryDestination" }
+func (DeliveryDestination) Type() string { return "AWS::Logs::DeliveryDestination" }
 
 type DeliverySourceTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -76,7 +76,7 @@ type DeliverySource struct {
 	Tags                        []DeliverySourceTag         `json:"Tags,omitempty"`
 }
 
-func (DeliverySource) CloudControlType() string { return "AWS::Logs::DeliverySource" }
+func (DeliverySource) Type() string { return "AWS::Logs::DeliverySource" }
 
 type DestinationTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -92,7 +92,7 @@ type Destination struct {
 	TargetArn         *string          `json:"TargetArn,omitempty"`
 }
 
-func (Destination) CloudControlType() string { return "AWS::Logs::Destination" }
+func (Destination) Type() string { return "AWS::Logs::Destination" }
 
 type OpenSearchResourceConfig struct {
 	ApplicationARN            *string  `json:"ApplicationARN,omitempty"`
@@ -113,7 +113,7 @@ type Integration struct {
 	ResourceConfig    *IntegrationResourceConfig    `json:"ResourceConfig,omitempty"`
 }
 
-func (Integration) CloudControlType() string { return "AWS::Logs::Integration" }
+func (Integration) Type() string { return "AWS::Logs::Integration" }
 
 type LogAnomalyDetector struct {
 	AccountId             *string                                `json:"AccountId,omitempty"`
@@ -129,7 +129,7 @@ type LogAnomalyDetector struct {
 	LogGroupArnList       []string                               `json:"LogGroupArnList,omitempty"`
 }
 
-func (LogAnomalyDetector) CloudControlType() string { return "AWS::Logs::LogAnomalyDetector" }
+func (LogAnomalyDetector) Type() string { return "AWS::Logs::LogAnomalyDetector" }
 
 type LogGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -150,14 +150,14 @@ type LogGroup struct {
 	Tags                             []LogGroupTag          `json:"Tags,omitempty"`
 }
 
-func (LogGroup) CloudControlType() string { return "AWS::Logs::LogGroup" }
+func (LogGroup) Type() string { return "AWS::Logs::LogGroup" }
 
 type LogStream struct {
 	LogGroupName  *string `json:"LogGroupName,omitempty"`
 	LogStreamName *string `json:"LogStreamName,omitempty"`
 }
 
-func (LogStream) CloudControlType() string { return "AWS::Logs::LogStream" }
+func (LogStream) Type() string { return "AWS::Logs::LogStream" }
 
 type Dimension struct {
 	Key   *string `json:"Key,omitempty"`
@@ -183,7 +183,7 @@ type MetricFilter struct {
 	MetricTransformations     []MetricTransformation `json:"MetricTransformations,omitempty"`
 }
 
-func (MetricFilter) CloudControlType() string { return "AWS::Logs::MetricFilter" }
+func (MetricFilter) Type() string { return "AWS::Logs::MetricFilter" }
 
 type QueryParameter struct {
 	DefaultValue *string `json:"DefaultValue,omitempty"`
@@ -200,14 +200,14 @@ type QueryDefinition struct {
 	QueryString       *string                       `json:"QueryString,omitempty"`
 }
 
-func (QueryDefinition) CloudControlType() string { return "AWS::Logs::QueryDefinition" }
+func (QueryDefinition) Type() string { return "AWS::Logs::QueryDefinition" }
 
 type ResourcePolicy struct {
 	PolicyDocument json.RawMessage `json:"PolicyDocument,omitempty"`
 	PolicyName     *string         `json:"PolicyName,omitempty"`
 }
 
-func (ResourcePolicy) CloudControlType() string { return "AWS::Logs::ResourcePolicy" }
+func (ResourcePolicy) Type() string { return "AWS::Logs::ResourcePolicy" }
 
 type S3Configuration struct {
 	DestinationIdentifier *string `json:"DestinationIdentifier,omitempty"`
@@ -245,7 +245,7 @@ type ScheduledQuery struct {
 	Timezone                 *string                            `json:"Timezone,omitempty"`
 }
 
-func (ScheduledQuery) CloudControlType() string { return "AWS::Logs::ScheduledQuery" }
+func (ScheduledQuery) Type() string { return "AWS::Logs::ScheduledQuery" }
 
 type SubscriptionFilter struct {
 	ApplyOnTransformedLogs *bool                           `json:"ApplyOnTransformedLogs,omitempty"`
@@ -259,7 +259,7 @@ type SubscriptionFilter struct {
 	RoleArn                *string                         `json:"RoleArn,omitempty"`
 }
 
-func (SubscriptionFilter) CloudControlType() string { return "AWS::Logs::SubscriptionFilter" }
+func (SubscriptionFilter) Type() string { return "AWS::Logs::SubscriptionFilter" }
 
 type AddKeyEntry struct {
 	Key               *string `json:"Key,omitempty"`
@@ -449,7 +449,7 @@ type Transformer struct {
 	TransformerConfig  []Processor `json:"TransformerConfig,omitempty"`
 }
 
-func (Transformer) CloudControlType() string { return "AWS::Logs::Transformer" }
+func (Transformer) Type() string { return "AWS::Logs::Transformer" }
 
 type AccountPolicyPolicyType string
 

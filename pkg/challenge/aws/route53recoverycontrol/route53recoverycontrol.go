@@ -22,7 +22,7 @@ type Cluster struct {
 	Tags             []Tag               `json:"Tags,omitempty"`
 }
 
-func (Cluster) CloudControlType() string { return "AWS::Route53RecoveryControl::Cluster" }
+func (Cluster) Type() string { return "AWS::Route53RecoveryControl::Cluster" }
 
 type ControlPanelTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -39,7 +39,7 @@ type ControlPanel struct {
 	Tags                []ControlPanelTag   `json:"Tags,omitempty"`
 }
 
-func (ControlPanel) CloudControlType() string { return "AWS::Route53RecoveryControl::ControlPanel" }
+func (ControlPanel) Type() string { return "AWS::Route53RecoveryControl::ControlPanel" }
 
 type RoutingControl struct {
 	ClusterArn        *string               `json:"ClusterArn,omitempty"`
@@ -49,7 +49,7 @@ type RoutingControl struct {
 	Status            *RoutingControlStatus `json:"Status,omitempty"`
 }
 
-func (RoutingControl) CloudControlType() string { return "AWS::Route53RecoveryControl::RoutingControl" }
+func (RoutingControl) Type() string { return "AWS::Route53RecoveryControl::RoutingControl" }
 
 type AssertionRule struct {
 	AssertedControls []string `json:"AssertedControls,omitempty"`
@@ -84,7 +84,7 @@ type SafetyRule struct {
 	Tags            []SafetyRuleTag   `json:"Tags,omitempty"`
 }
 
-func (SafetyRule) CloudControlType() string { return "AWS::Route53RecoveryControl::SafetyRule" }
+func (SafetyRule) Type() string { return "AWS::Route53RecoveryControl::SafetyRule" }
 
 type ClusterNetworkType string
 

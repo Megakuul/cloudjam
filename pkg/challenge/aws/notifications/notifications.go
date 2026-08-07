@@ -8,7 +8,7 @@ type ChannelAssociation struct {
 	NotificationConfigurationArn *string `json:"NotificationConfigurationArn,omitempty"`
 }
 
-func (ChannelAssociation) CloudControlType() string { return "AWS::Notifications::ChannelAssociation" }
+func (ChannelAssociation) Type() string { return "AWS::Notifications::ChannelAssociation" }
 
 type EventRuleStatusSummary struct {
 	Reason *string          `json:"Reason,omitempty"`
@@ -27,14 +27,14 @@ type EventRule struct {
 	StatusSummaryByRegion        map[string]EventRuleStatusSummary `json:"StatusSummaryByRegion,omitempty"`
 }
 
-func (EventRule) CloudControlType() string { return "AWS::Notifications::EventRule" }
+func (EventRule) Type() string { return "AWS::Notifications::EventRule" }
 
 type ManagedNotificationAccountContactAssociation struct {
 	ContactIdentifier                   *ContactIdentifier `json:"ContactIdentifier,omitempty"`
 	ManagedNotificationConfigurationArn *string            `json:"ManagedNotificationConfigurationArn,omitempty"`
 }
 
-func (ManagedNotificationAccountContactAssociation) CloudControlType() string {
+func (ManagedNotificationAccountContactAssociation) Type() string {
 	return "AWS::Notifications::ManagedNotificationAccountContactAssociation"
 }
 
@@ -43,7 +43,7 @@ type ManagedNotificationAdditionalChannelAssociation struct {
 	ManagedNotificationConfigurationArn *string `json:"ManagedNotificationConfigurationArn,omitempty"`
 }
 
-func (ManagedNotificationAdditionalChannelAssociation) CloudControlType() string {
+func (ManagedNotificationAdditionalChannelAssociation) Type() string {
 	return "AWS::Notifications::ManagedNotificationAdditionalChannelAssociation"
 }
 
@@ -62,7 +62,7 @@ type NotificationConfiguration struct {
 	Tags                []Tag                            `json:"Tags,omitempty"`
 }
 
-func (NotificationConfiguration) CloudControlType() string {
+func (NotificationConfiguration) Type() string {
 	return "AWS::Notifications::NotificationConfiguration"
 }
 
@@ -77,14 +77,14 @@ type NotificationHub struct {
 	Region                       *string                       `json:"Region,omitempty"`
 }
 
-func (NotificationHub) CloudControlType() string { return "AWS::Notifications::NotificationHub" }
+func (NotificationHub) Type() string { return "AWS::Notifications::NotificationHub" }
 
 type OrganizationalUnitAssociation struct {
 	NotificationConfigurationArn *string `json:"NotificationConfigurationArn,omitempty"`
 	OrganizationalUnitId         *string `json:"OrganizationalUnitId,omitempty"`
 }
 
-func (OrganizationalUnitAssociation) CloudControlType() string {
+func (OrganizationalUnitAssociation) Type() string {
 	return "AWS::Notifications::OrganizationalUnitAssociation"
 }
 

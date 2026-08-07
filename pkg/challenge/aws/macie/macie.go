@@ -18,7 +18,7 @@ type AllowList struct {
 	Tags        []Tag          `json:"Tags,omitempty"`
 }
 
-func (AllowList) CloudControlType() string { return "AWS::Macie::AllowList" }
+func (AllowList) Type() string { return "AWS::Macie::AllowList" }
 
 type CustomDataIdentifierTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -37,7 +37,7 @@ type CustomDataIdentifier struct {
 	Tags                 []CustomDataIdentifierTag `json:"Tags,omitempty"`
 }
 
-func (CustomDataIdentifier) CloudControlType() string { return "AWS::Macie::CustomDataIdentifier" }
+func (CustomDataIdentifier) Type() string { return "AWS::Macie::CustomDataIdentifier" }
 
 type CriterionAdditionalProperties struct {
 	Eq  []string `json:"eq,omitempty"`
@@ -68,7 +68,7 @@ type FindingsFilter struct {
 	Tags            []FindingsFilterTag  `json:"Tags,omitempty"`
 }
 
-func (FindingsFilter) CloudControlType() string { return "AWS::Macie::FindingsFilter" }
+func (FindingsFilter) Type() string { return "AWS::Macie::FindingsFilter" }
 
 type Session struct {
 	AutomatedDiscoveryStatus   *SessionAutomatedDiscoveryStatus   `json:"AutomatedDiscoveryStatus,omitempty"`
@@ -78,7 +78,7 @@ type Session struct {
 	Status                     *SessionStatus                     `json:"Status,omitempty"`
 }
 
-func (Session) CloudControlType() string { return "AWS::Macie::Session" }
+func (Session) Type() string { return "AWS::Macie::Session" }
 
 type Status string
 

@@ -16,7 +16,7 @@ type SignalingChannel struct {
 	Type              *SignalingChannelType `json:"Type,omitempty"`
 }
 
-func (SignalingChannel) CloudControlType() string { return "AWS::KinesisVideo::SignalingChannel" }
+func (SignalingChannel) Type() string { return "AWS::KinesisVideo::SignalingChannel" }
 
 type StreamStorageConfiguration struct {
 	DefaultStorageTier *StreamStorageConfigurationDefaultStorageTier `json:"DefaultStorageTier,omitempty"`
@@ -38,7 +38,7 @@ type Stream struct {
 	Tags                       []StreamTag                 `json:"Tags,omitempty"`
 }
 
-func (Stream) CloudControlType() string { return "AWS::KinesisVideo::Stream" }
+func (Stream) Type() string { return "AWS::KinesisVideo::Stream" }
 
 type SignalingChannelType string
 

@@ -33,7 +33,7 @@ type BillingGroup struct {
 	Tags                  []Tag                  `json:"Tags,omitempty"`
 }
 
-func (BillingGroup) CloudControlType() string { return "AWS::BillingConductor::BillingGroup" }
+func (BillingGroup) Type() string { return "AWS::BillingConductor::BillingGroup" }
 
 type BillingPeriodRange struct {
 	ExclusiveEndBillingPeriod   *string `json:"ExclusiveEndBillingPeriod,omitempty"`
@@ -90,7 +90,7 @@ type CustomLineItem struct {
 	Tags                        []CustomLineItemTag                `json:"Tags,omitempty"`
 }
 
-func (CustomLineItem) CloudControlType() string { return "AWS::BillingConductor::CustomLineItem" }
+func (CustomLineItem) Type() string { return "AWS::BillingConductor::CustomLineItem" }
 
 type PricingPlanTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -108,7 +108,7 @@ type PricingPlan struct {
 	Tags             []PricingPlanTag `json:"Tags,omitempty"`
 }
 
-func (PricingPlan) CloudControlType() string { return "AWS::BillingConductor::PricingPlan" }
+func (PricingPlan) Type() string { return "AWS::BillingConductor::PricingPlan" }
 
 type PricingRuleTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -141,7 +141,7 @@ type PricingRule struct {
 	UsageType                  *string                   `json:"UsageType,omitempty"`
 }
 
-func (PricingRule) CloudControlType() string { return "AWS::BillingConductor::PricingRule" }
+func (PricingRule) Type() string { return "AWS::BillingConductor::PricingRule" }
 
 type BillingGroupStatus string
 

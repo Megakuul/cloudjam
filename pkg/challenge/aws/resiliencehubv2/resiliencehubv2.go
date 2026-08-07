@@ -43,7 +43,7 @@ type Policy struct {
 	UpdatedAt              *string              `json:"UpdatedAt,omitempty"`
 }
 
-func (Policy) CloudControlType() string { return "AWS::ResilienceHubV2::Policy" }
+func (Policy) Type() string { return "AWS::ResilienceHubV2::Policy" }
 
 type AssertionDefinition struct {
 	Text *string `json:"Text,omitempty"`
@@ -148,7 +148,7 @@ type Service struct {
 	UpdatedAt             *string                     `json:"UpdatedAt,omitempty"`
 }
 
-func (Service) CloudControlType() string { return "AWS::ResilienceHubV2::Service" }
+func (Service) Type() string { return "AWS::ResilienceHubV2::Service" }
 
 type ServiceFunction struct {
 	CreatedAt         *string                     `json:"CreatedAt,omitempty"`
@@ -162,7 +162,7 @@ type ServiceFunction struct {
 	UpdatedAt         *string                     `json:"UpdatedAt,omitempty"`
 }
 
-func (ServiceFunction) CloudControlType() string { return "AWS::ResilienceHubV2::ServiceFunction" }
+func (ServiceFunction) Type() string { return "AWS::ResilienceHubV2::ServiceFunction" }
 
 type SystemTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -181,7 +181,7 @@ type System struct {
 	UpdatedAt      *string     `json:"UpdatedAt,omitempty"`
 }
 
-func (System) CloudControlType() string { return "AWS::ResilienceHubV2::System" }
+func (System) Type() string { return "AWS::ResilienceHubV2::System" }
 
 type UserJourney struct {
 	CreatedAt        *string `json:"CreatedAt,omitempty"`
@@ -193,7 +193,7 @@ type UserJourney struct {
 	UserJourneyId    *string `json:"UserJourneyId,omitempty"`
 }
 
-func (UserJourney) CloudControlType() string { return "AWS::ResilienceHubV2::UserJourney" }
+func (UserJourney) Type() string { return "AWS::ResilienceHubV2::UserJourney" }
 
 type MultiAzTargetsDisasterRecoveryApproach string
 

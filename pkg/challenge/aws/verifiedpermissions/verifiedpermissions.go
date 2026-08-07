@@ -20,7 +20,7 @@ type IdentitySource struct {
 	PrincipalEntityType *string                `json:"PrincipalEntityType,omitempty"`
 }
 
-func (IdentitySource) CloudControlType() string { return "AWS::VerifiedPermissions::IdentitySource" }
+func (IdentitySource) Type() string { return "AWS::VerifiedPermissions::IdentitySource" }
 
 type Policy struct {
 	Definition    json.RawMessage `json:"Definition,omitempty"`
@@ -30,7 +30,7 @@ type Policy struct {
 	PolicyType    *PolicyType     `json:"PolicyType,omitempty"`
 }
 
-func (Policy) CloudControlType() string { return "AWS::VerifiedPermissions::Policy" }
+func (Policy) Type() string { return "AWS::VerifiedPermissions::Policy" }
 
 type DeletionProtection struct {
 	Mode *DeletionMode `json:"Mode,omitempty"`
@@ -61,16 +61,14 @@ type PolicyStore struct {
 	ValidationSettings *ValidationSettings `json:"ValidationSettings,omitempty"`
 }
 
-func (PolicyStore) CloudControlType() string { return "AWS::VerifiedPermissions::PolicyStore" }
+func (PolicyStore) Type() string { return "AWS::VerifiedPermissions::PolicyStore" }
 
 type PolicyStoreAlias struct {
 	AliasName     *string `json:"AliasName,omitempty"`
 	PolicyStoreId *string `json:"PolicyStoreId,omitempty"`
 }
 
-func (PolicyStoreAlias) CloudControlType() string {
-	return "AWS::VerifiedPermissions::PolicyStoreAlias"
-}
+func (PolicyStoreAlias) Type() string { return "AWS::VerifiedPermissions::PolicyStoreAlias" }
 
 type PolicyTemplate struct {
 	Description      *string `json:"Description,omitempty"`
@@ -80,7 +78,7 @@ type PolicyTemplate struct {
 	Statement        *string `json:"Statement,omitempty"`
 }
 
-func (PolicyTemplate) CloudControlType() string { return "AWS::VerifiedPermissions::PolicyTemplate" }
+func (PolicyTemplate) Type() string { return "AWS::VerifiedPermissions::PolicyTemplate" }
 
 type OpenIdIssuer string
 

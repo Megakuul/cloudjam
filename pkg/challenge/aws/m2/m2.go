@@ -17,7 +17,7 @@ type Application struct {
 	Tags           map[string]string `json:"Tags,omitempty"`
 }
 
-func (Application) CloudControlType() string { return "AWS::M2::Application" }
+func (Application) Type() string { return "AWS::M2::Application" }
 
 type Deployment struct {
 	ApplicationId      *string `json:"ApplicationId,omitempty"`
@@ -27,7 +27,7 @@ type Deployment struct {
 	Status             *string `json:"Status,omitempty"`
 }
 
-func (Deployment) CloudControlType() string { return "AWS::M2::Deployment" }
+func (Deployment) Type() string { return "AWS::M2::Deployment" }
 
 type HighAvailabilityConfig struct {
 	DesiredCapacity *int `json:"DesiredCapacity,omitempty"`
@@ -52,7 +52,7 @@ type Environment struct {
 	Tags                       map[string]string       `json:"Tags,omitempty"`
 }
 
-func (Environment) CloudControlType() string { return "AWS::M2::Environment" }
+func (Environment) Type() string { return "AWS::M2::Environment" }
 
 type EngineType string
 

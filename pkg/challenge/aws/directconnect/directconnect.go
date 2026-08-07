@@ -21,7 +21,7 @@ type Connection struct {
 	Tags            []Tag   `json:"Tags,omitempty"`
 }
 
-func (Connection) CloudControlType() string { return "AWS::DirectConnect::Connection" }
+func (Connection) Type() string { return "AWS::DirectConnect::Connection" }
 
 type DirectConnectGatewayTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -36,9 +36,7 @@ type DirectConnectGateway struct {
 	Tags                     []DirectConnectGatewayTag `json:"Tags,omitempty"`
 }
 
-func (DirectConnectGateway) CloudControlType() string {
-	return "AWS::DirectConnect::DirectConnectGateway"
-}
+func (DirectConnectGateway) Type() string { return "AWS::DirectConnect::DirectConnectGateway" }
 
 type DirectConnectGatewayAssociation struct {
 	AcceptDirectConnectGatewayAssociationProposalRoleArn *string  `json:"AcceptDirectConnectGatewayAssociationProposalRoleArn,omitempty"`
@@ -48,7 +46,7 @@ type DirectConnectGatewayAssociation struct {
 	DirectConnectGatewayId                               *string  `json:"DirectConnectGatewayId,omitempty"`
 }
 
-func (DirectConnectGatewayAssociation) CloudControlType() string {
+func (DirectConnectGatewayAssociation) Type() string {
 	return "AWS::DirectConnect::DirectConnectGatewayAssociation"
 }
 
@@ -70,7 +68,7 @@ type Lag struct {
 	Tags                 []LagTag `json:"Tags,omitempty"`
 }
 
-func (Lag) CloudControlType() string { return "AWS::DirectConnect::Lag" }
+func (Lag) Type() string { return "AWS::DirectConnect::Lag" }
 
 type BgpPeer struct {
 	AddressFamily   *string `json:"AddressFamily,omitempty"`
@@ -93,6 +91,7 @@ type PrivateVirtualInterface struct {
 	DirectConnectGatewayId                 *string                      `json:"DirectConnectGatewayId,omitempty"`
 	EnableSiteLink                         *bool                        `json:"EnableSiteLink,omitempty"`
 	Mtu                                    *int                         `json:"Mtu,omitempty"`
+	RateLimit                              *string                      `json:"RateLimit,omitempty"`
 	Tags                                   []PrivateVirtualInterfaceTag `json:"Tags,omitempty"`
 	VirtualGatewayId                       *string                      `json:"VirtualGatewayId,omitempty"`
 	VirtualInterfaceArn                    *string                      `json:"VirtualInterfaceArn,omitempty"`
@@ -101,9 +100,7 @@ type PrivateVirtualInterface struct {
 	Vlan                                   *int                         `json:"Vlan,omitempty"`
 }
 
-func (PrivateVirtualInterface) CloudControlType() string {
-	return "AWS::DirectConnect::PrivateVirtualInterface"
-}
+func (PrivateVirtualInterface) Type() string { return "AWS::DirectConnect::PrivateVirtualInterface" }
 
 type PublicVirtualInterfaceBgpPeer struct {
 	AddressFamily   *string `json:"AddressFamily,omitempty"`
@@ -123,6 +120,7 @@ type PublicVirtualInterface struct {
 	AllocatePublicVirtualInterfaceRoleArn *string                         `json:"AllocatePublicVirtualInterfaceRoleArn,omitempty"`
 	BgpPeers                              []PublicVirtualInterfaceBgpPeer `json:"BgpPeers,omitempty"`
 	ConnectionId                          *string                         `json:"ConnectionId,omitempty"`
+	RateLimit                             *string                         `json:"RateLimit,omitempty"`
 	RouteFilterPrefixes                   []string                        `json:"RouteFilterPrefixes,omitempty"`
 	Tags                                  []PublicVirtualInterfaceTag     `json:"Tags,omitempty"`
 	VirtualInterfaceArn                   *string                         `json:"VirtualInterfaceArn,omitempty"`
@@ -131,9 +129,7 @@ type PublicVirtualInterface struct {
 	Vlan                                  *int                            `json:"Vlan,omitempty"`
 }
 
-func (PublicVirtualInterface) CloudControlType() string {
-	return "AWS::DirectConnect::PublicVirtualInterface"
-}
+func (PublicVirtualInterface) Type() string { return "AWS::DirectConnect::PublicVirtualInterface" }
 
 type TransitVirtualInterfaceBgpPeer struct {
 	AddressFamily   *string `json:"AddressFamily,omitempty"`
@@ -156,6 +152,7 @@ type TransitVirtualInterface struct {
 	DirectConnectGatewayId                 *string                          `json:"DirectConnectGatewayId,omitempty"`
 	EnableSiteLink                         *bool                            `json:"EnableSiteLink,omitempty"`
 	Mtu                                    *int                             `json:"Mtu,omitempty"`
+	RateLimit                              *string                          `json:"RateLimit,omitempty"`
 	Tags                                   []TransitVirtualInterfaceTag     `json:"Tags,omitempty"`
 	VirtualInterfaceArn                    *string                          `json:"VirtualInterfaceArn,omitempty"`
 	VirtualInterfaceId                     *string                          `json:"VirtualInterfaceId,omitempty"`
@@ -163,6 +160,4 @@ type TransitVirtualInterface struct {
 	Vlan                                   *int                             `json:"Vlan,omitempty"`
 }
 
-func (TransitVirtualInterface) CloudControlType() string {
-	return "AWS::DirectConnect::TransitVirtualInterface"
-}
+func (TransitVirtualInterface) Type() string { return "AWS::DirectConnect::TransitVirtualInterface" }

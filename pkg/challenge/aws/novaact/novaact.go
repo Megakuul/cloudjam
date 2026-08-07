@@ -17,7 +17,7 @@ type WorkflowDefinition struct {
 	Status       *WorkflowDefinitionStatus `json:"Status,omitempty"`
 }
 
-func (WorkflowDefinition) CloudControlType() string { return "AWS::NovaAct::WorkflowDefinition" }
+func (WorkflowDefinition) Type() string { return "AWS::NovaAct::WorkflowDefinition" }
 
 type WorkflowDefinitionStatus string
 

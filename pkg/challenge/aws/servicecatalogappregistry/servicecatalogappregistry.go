@@ -14,7 +14,7 @@ type Application struct {
 	Tags                map[string]string `json:"Tags,omitempty"`
 }
 
-func (Application) CloudControlType() string { return "AWS::ServiceCatalogAppRegistry::Application" }
+func (Application) Type() string { return "AWS::ServiceCatalogAppRegistry::Application" }
 
 type AttributeGroup struct {
 	Arn         *string           `json:"Arn,omitempty"`
@@ -25,9 +25,7 @@ type AttributeGroup struct {
 	Tags        map[string]string `json:"Tags,omitempty"`
 }
 
-func (AttributeGroup) CloudControlType() string {
-	return "AWS::ServiceCatalogAppRegistry::AttributeGroup"
-}
+func (AttributeGroup) Type() string { return "AWS::ServiceCatalogAppRegistry::AttributeGroup" }
 
 type AttributeGroupAssociation struct {
 	Application       *string `json:"Application,omitempty"`
@@ -36,7 +34,7 @@ type AttributeGroupAssociation struct {
 	AttributeGroupArn *string `json:"AttributeGroupArn,omitempty"`
 }
 
-func (AttributeGroupAssociation) CloudControlType() string {
+func (AttributeGroupAssociation) Type() string {
 	return "AWS::ServiceCatalogAppRegistry::AttributeGroupAssociation"
 }
 
@@ -48,7 +46,7 @@ type ResourceAssociation struct {
 	ResourceType   *ResourceAssociationResourceType `json:"ResourceType,omitempty"`
 }
 
-func (ResourceAssociation) CloudControlType() string {
+func (ResourceAssociation) Type() string {
 	return "AWS::ServiceCatalogAppRegistry::ResourceAssociation"
 }
 

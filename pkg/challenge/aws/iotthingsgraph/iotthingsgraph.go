@@ -14,4 +14,4 @@ type FlowTemplate struct {
 	Id                         *string             `json:"Id,omitempty"`
 }
 
-func (FlowTemplate) CloudControlType() string { return "AWS::IoTThingsGraph::FlowTemplate" }
+func (FlowTemplate) Type() string { return "AWS::IoTThingsGraph::FlowTemplate" }

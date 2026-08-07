@@ -28,7 +28,7 @@ type JobTemplate struct {
 	Tags                 map[string]any        `json:"Tags,omitempty"`
 }
 
-func (JobTemplate) CloudControlType() string { return "AWS::MediaConvert::JobTemplate" }
+func (JobTemplate) Type() string { return "AWS::MediaConvert::JobTemplate" }
 
 type Preset struct {
 	Arn          *string        `json:"Arn,omitempty"`
@@ -39,7 +39,7 @@ type Preset struct {
 	Tags         map[string]any `json:"Tags,omitempty"`
 }
 
-func (Preset) CloudControlType() string { return "AWS::MediaConvert::Preset" }
+func (Preset) Type() string { return "AWS::MediaConvert::Preset" }
 
 type Queue struct {
 	Arn                    *string        `json:"Arn,omitempty"`
@@ -53,4 +53,4 @@ type Queue struct {
 	Tags                   map[string]any `json:"Tags,omitempty"`
 }
 
-func (Queue) CloudControlType() string { return "AWS::MediaConvert::Queue" }
+func (Queue) Type() string { return "AWS::MediaConvert::Queue" }

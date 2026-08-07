@@ -35,7 +35,7 @@ type ApplicationInstance struct {
 	Tags                            []Tag                            `json:"Tags,omitempty"`
 }
 
-func (ApplicationInstance) CloudControlType() string { return "AWS::Panorama::ApplicationInstance" }
+func (ApplicationInstance) Type() string { return "AWS::Panorama::ApplicationInstance" }
 
 type StorageLocation struct {
 	BinaryPrefixLocation    *string `json:"BinaryPrefixLocation,omitempty"`
@@ -59,7 +59,7 @@ type Package struct {
 	Tags            []PackageTag     `json:"Tags,omitempty"`
 }
 
-func (Package) CloudControlType() string { return "AWS::Panorama::Package" }
+func (Package) Type() string { return "AWS::Panorama::Package" }
 
 type PackageVersion struct {
 	IsLatestPatch             *bool                 `json:"IsLatestPatch,omitempty"`
@@ -76,7 +76,7 @@ type PackageVersion struct {
 	UpdatedLatestPatchVersion *string               `json:"UpdatedLatestPatchVersion,omitempty"`
 }
 
-func (PackageVersion) CloudControlType() string { return "AWS::Panorama::PackageVersion" }
+func (PackageVersion) Type() string { return "AWS::Panorama::PackageVersion" }
 
 type ApplicationInstanceHealthStatus string
 

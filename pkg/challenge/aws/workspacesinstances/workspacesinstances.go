@@ -26,7 +26,7 @@ type Volume struct {
 	VolumeType        *VolumeVolumeType  `json:"VolumeType,omitempty"`
 }
 
-func (Volume) CloudControlType() string { return "AWS::WorkspacesInstances::Volume" }
+func (Volume) Type() string { return "AWS::WorkspacesInstances::Volume" }
 
 type VolumeAssociation struct {
 	Device              *string                            `json:"Device,omitempty"`
@@ -35,9 +35,7 @@ type VolumeAssociation struct {
 	WorkspaceInstanceId *string                            `json:"WorkspaceInstanceId,omitempty"`
 }
 
-func (VolumeAssociation) CloudControlType() string {
-	return "AWS::WorkspacesInstances::VolumeAssociation"
-}
+func (VolumeAssociation) Type() string { return "AWS::WorkspacesInstances::VolumeAssociation" }
 
 type EC2ManagedInstance struct {
 	InstanceId *string `json:"InstanceId,omitempty"`
@@ -182,9 +180,7 @@ type WorkspaceInstance struct {
 	WorkspaceInstanceId *string                           `json:"WorkspaceInstanceId,omitempty"`
 }
 
-func (WorkspaceInstance) CloudControlType() string {
-	return "AWS::WorkspacesInstances::WorkspaceInstance"
-}
+func (WorkspaceInstance) Type() string { return "AWS::WorkspacesInstances::WorkspaceInstance" }
 
 type TagSpecificationResourceType string
 

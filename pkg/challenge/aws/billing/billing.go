@@ -42,7 +42,7 @@ type BillingView struct {
 	UpdatedAt            *float64                         `json:"UpdatedAt,omitempty"`
 }
 
-func (BillingView) CloudControlType() string { return "AWS::Billing::BillingView" }
+func (BillingView) Type() string { return "AWS::Billing::BillingView" }
 
 type BillingViewType string
 

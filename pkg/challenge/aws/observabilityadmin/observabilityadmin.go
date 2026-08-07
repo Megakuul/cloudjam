@@ -73,7 +73,7 @@ type OrganizationCentralizationRule struct {
 	Tags     []Tag               `json:"Tags,omitempty"`
 }
 
-func (OrganizationCentralizationRule) CloudControlType() string {
+func (OrganizationCentralizationRule) Type() string {
 	return "AWS::ObservabilityAdmin::OrganizationCentralizationRule"
 }
 
@@ -194,7 +194,7 @@ type OrganizationTelemetryRule struct {
 	Tags           []OrganizationTelemetryRuleTag `json:"Tags,omitempty"`
 }
 
-func (OrganizationTelemetryRule) CloudControlType() string {
+func (OrganizationTelemetryRule) Type() string {
 	return "AWS::ObservabilityAdmin::OrganizationTelemetryRule"
 }
 
@@ -222,18 +222,14 @@ type S3TableIntegration struct {
 	Tags       []S3TableIntegrationTag `json:"Tags,omitempty"`
 }
 
-func (S3TableIntegration) CloudControlType() string {
-	return "AWS::ObservabilityAdmin::S3TableIntegration"
-}
+func (S3TableIntegration) Type() string { return "AWS::ObservabilityAdmin::S3TableIntegration" }
 
 type TelemetryEnrichment struct {
 	Scope  *Scope  `json:"Scope,omitempty"`
 	Status *Status `json:"Status,omitempty"`
 }
 
-func (TelemetryEnrichment) CloudControlType() string {
-	return "AWS::ObservabilityAdmin::TelemetryEnrichment"
-}
+func (TelemetryEnrichment) Type() string { return "AWS::ObservabilityAdmin::TelemetryEnrichment" }
 
 type TelemetryPipelineConfiguration struct {
 	Body *string `json:"Body,omitempty"`
@@ -270,9 +266,7 @@ type TelemetryPipelines struct {
 	Tags               []TelemetryPipelinesTag         `json:"Tags,omitempty"`
 }
 
-func (TelemetryPipelines) CloudControlType() string {
-	return "AWS::ObservabilityAdmin::TelemetryPipelines"
-}
+func (TelemetryPipelines) Type() string { return "AWS::ObservabilityAdmin::TelemetryPipelines" }
 
 type TelemetryRuleRegionStatus struct {
 	Region  *string `json:"Region,omitempty"`
@@ -390,9 +384,7 @@ type TelemetryRuleTelemetryRule struct {
 	Tags           []TelemetryRuleTag           `json:"Tags,omitempty"`
 }
 
-func (TelemetryRuleTelemetryRule) CloudControlType() string {
-	return "AWS::ObservabilityAdmin::TelemetryRule"
-}
+func (TelemetryRuleTelemetryRule) Type() string { return "AWS::ObservabilityAdmin::TelemetryRule" }
 
 type LogsEncryptionConfigurationEncryptionConflictResolutionStrategy string
 

@@ -31,9 +31,7 @@ type ConfigurationManager struct {
 	Tags                     map[string]string         `json:"Tags,omitempty"`
 }
 
-func (ConfigurationManager) CloudControlType() string {
-	return "AWS::SSMQuickSetup::ConfigurationManager"
-}
+func (ConfigurationManager) Type() string { return "AWS::SSMQuickSetup::ConfigurationManager" }
 
 type LifecycleAutomation struct {
 	AssociationId        *string             `json:"AssociationId,omitempty"`
@@ -43,9 +41,7 @@ type LifecycleAutomation struct {
 	Tags                 map[string]string   `json:"Tags,omitempty"`
 }
 
-func (LifecycleAutomation) CloudControlType() string {
-	return "AWS::SSMQuickSetup::LifecycleAutomation"
-}
+func (LifecycleAutomation) Type() string { return "AWS::SSMQuickSetup::LifecycleAutomation" }
 
 type Status string
 

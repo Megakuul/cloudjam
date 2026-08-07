@@ -23,7 +23,7 @@ type Activity struct {
 	Tags                    []TagsEntry              `json:"Tags,omitempty"`
 }
 
-func (Activity) CloudControlType() string { return "AWS::StepFunctions::Activity" }
+func (Activity) Type() string { return "AWS::StepFunctions::Activity" }
 
 type S3Location struct {
 	Bucket  *string `json:"Bucket,omitempty"`
@@ -77,7 +77,7 @@ type StateMachine struct {
 	TracingConfiguration    *TracingConfiguration                `json:"TracingConfiguration,omitempty"`
 }
 
-func (StateMachine) CloudControlType() string { return "AWS::StepFunctions::StateMachine" }
+func (StateMachine) Type() string { return "AWS::StepFunctions::StateMachine" }
 
 type DeploymentPreference struct {
 	Alarms                 []string                  `json:"Alarms,omitempty"`
@@ -101,7 +101,7 @@ type StateMachineAlias struct {
 	StateMachineArn      *string                       `json:"StateMachineArn,omitempty"`
 }
 
-func (StateMachineAlias) CloudControlType() string { return "AWS::StepFunctions::StateMachineAlias" }
+func (StateMachineAlias) Type() string { return "AWS::StepFunctions::StateMachineAlias" }
 
 type StateMachineVersion struct {
 	Arn                    *string `json:"Arn,omitempty"`
@@ -110,9 +110,7 @@ type StateMachineVersion struct {
 	StateMachineRevisionId *string `json:"StateMachineRevisionId,omitempty"`
 }
 
-func (StateMachineVersion) CloudControlType() string {
-	return "AWS::StepFunctions::StateMachineVersion"
-}
+func (StateMachineVersion) Type() string { return "AWS::StepFunctions::StateMachineVersion" }
 
 type EncryptionConfigurationType string
 

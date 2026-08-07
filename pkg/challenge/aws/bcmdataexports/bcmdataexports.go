@@ -51,7 +51,7 @@ type Export struct {
 	Tags      []ResourceTag `json:"Tags,omitempty"`
 }
 
-func (Export) CloudControlType() string { return "AWS::BCMDataExports::Export" }
+func (Export) Type() string { return "AWS::BCMDataExports::Export" }
 
 type CompressionOption string
 

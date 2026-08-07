@@ -9,7 +9,7 @@ type Challenge struct {
 	Tags         map[string]string `json:"Tags,omitempty"`
 }
 
-func (Challenge) CloudControlType() string { return "AWS::PCAConnectorSCEP::Challenge" }
+func (Challenge) Type() string { return "AWS::PCAConnectorSCEP::Challenge" }
 
 type OpenIdConfiguration struct {
 	Audience *string `json:"Audience,omitempty"`
@@ -28,7 +28,7 @@ type Connector struct {
 	VpcEndpointId           *string              `json:"VpcEndpointId,omitempty"`
 }
 
-func (Connector) CloudControlType() string { return "AWS::PCAConnectorSCEP::Connector" }
+func (Connector) Type() string { return "AWS::PCAConnectorSCEP::Connector" }
 
 type ConnectorType string
 

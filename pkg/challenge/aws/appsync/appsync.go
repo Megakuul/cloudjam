@@ -66,7 +66,7 @@ type Api struct {
 	Tags         []Tag        `json:"Tags,omitempty"`
 }
 
-func (Api) CloudControlType() string { return "AWS::AppSync::Api" }
+func (Api) Type() string { return "AWS::AppSync::Api" }
 
 type ApiCache struct {
 	ApiCachingBehavior       *string  `json:"ApiCachingBehavior,omitempty"`
@@ -79,7 +79,7 @@ type ApiCache struct {
 	Type                     *string  `json:"Type,omitempty"`
 }
 
-func (ApiCache) CloudControlType() string { return "AWS::AppSync::ApiCache" }
+func (ApiCache) Type() string { return "AWS::AppSync::ApiCache" }
 
 type ApiKey struct {
 	ApiId       *string  `json:"ApiId,omitempty"`
@@ -90,7 +90,7 @@ type ApiKey struct {
 	Expires     *float64 `json:"Expires,omitempty"`
 }
 
-func (ApiKey) CloudControlType() string { return "AWS::AppSync::ApiKey" }
+func (ApiKey) Type() string { return "AWS::AppSync::ApiKey" }
 
 type LambdaConfig struct {
 	InvokeType *InvokeType `json:"InvokeType,omitempty"`
@@ -132,7 +132,7 @@ type ChannelNamespace struct {
 	Tags                []ChannelNamespaceTag      `json:"Tags,omitempty"`
 }
 
-func (ChannelNamespace) CloudControlType() string { return "AWS::AppSync::ChannelNamespace" }
+func (ChannelNamespace) Type() string { return "AWS::AppSync::ChannelNamespace" }
 
 type DeltaSyncConfig struct {
 	BaseTableTTL       *string `json:"BaseTableTTL,omitempty"`
@@ -211,7 +211,7 @@ type DataSource struct {
 	Type                     *string                   `json:"Type,omitempty"`
 }
 
-func (DataSource) CloudControlType() string { return "AWS::AppSync::DataSource" }
+func (DataSource) Type() string { return "AWS::AppSync::DataSource" }
 
 type DomainNameTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -228,7 +228,7 @@ type DomainName struct {
 	Tags              []DomainNameTag `json:"Tags,omitempty"`
 }
 
-func (DomainName) CloudControlType() string { return "AWS::AppSync::DomainName" }
+func (DomainName) Type() string { return "AWS::AppSync::DomainName" }
 
 type DomainNameApiAssociation struct {
 	ApiAssociationIdentifier *string `json:"ApiAssociationIdentifier,omitempty"`
@@ -236,9 +236,7 @@ type DomainNameApiAssociation struct {
 	DomainName               *string `json:"DomainName,omitempty"`
 }
 
-func (DomainNameApiAssociation) CloudControlType() string {
-	return "AWS::AppSync::DomainNameApiAssociation"
-}
+func (DomainNameApiAssociation) Type() string { return "AWS::AppSync::DomainNameApiAssociation" }
 
 type AppSyncRuntime struct {
 	Name           *string `json:"Name,omitempty"`
@@ -274,7 +272,7 @@ type FunctionConfiguration struct {
 	SyncConfig                        *SyncConfig     `json:"SyncConfig,omitempty"`
 }
 
-func (FunctionConfiguration) CloudControlType() string { return "AWS::AppSync::FunctionConfiguration" }
+func (FunctionConfiguration) Type() string { return "AWS::AppSync::FunctionConfiguration" }
 
 type GraphQLApiLambdaAuthorizerConfig struct {
 	AuthorizerResultTtlInSeconds *int    `json:"AuthorizerResultTtlInSeconds,omitempty"`
@@ -354,7 +352,7 @@ type GraphQLApi struct {
 	XrayEnabled                       *bool                              `json:"XrayEnabled,omitempty"`
 }
 
-func (GraphQLApi) CloudControlType() string { return "AWS::AppSync::GraphQLApi" }
+func (GraphQLApi) Type() string { return "AWS::AppSync::GraphQLApi" }
 
 type GraphQLSchema struct {
 	ApiId                *string `json:"ApiId,omitempty"`
@@ -363,7 +361,7 @@ type GraphQLSchema struct {
 	Id                   *string `json:"Id,omitempty"`
 }
 
-func (GraphQLSchema) CloudControlType() string { return "AWS::AppSync::GraphQLSchema" }
+func (GraphQLSchema) Type() string { return "AWS::AppSync::GraphQLSchema" }
 
 type CachingConfig struct {
 	CachingKeys []string `json:"CachingKeys,omitempty"`
@@ -410,7 +408,7 @@ type Resolver struct {
 	TypeName                          *string                 `json:"TypeName,omitempty"`
 }
 
-func (Resolver) CloudControlType() string { return "AWS::AppSync::Resolver" }
+func (Resolver) Type() string { return "AWS::AppSync::Resolver" }
 
 type SourceApiAssociationConfig struct {
 	MergeType *SourceApiAssociationConfigMergeType `json:"MergeType,omitempty"`
@@ -432,7 +430,7 @@ type SourceApiAssociation struct {
 	SourceApiIdentifier              *string                                         `json:"SourceApiIdentifier,omitempty"`
 }
 
-func (SourceApiAssociation) CloudControlType() string { return "AWS::AppSync::SourceApiAssociation" }
+func (SourceApiAssociation) Type() string { return "AWS::AppSync::SourceApiAssociation" }
 
 type AuthenticationType string
 

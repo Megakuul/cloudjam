@@ -46,4 +46,4 @@ type Pipeline struct {
 	PipelineTags     []PipelineTag     `json:"PipelineTags,omitempty"`
 }
 
-func (Pipeline) CloudControlType() string { return "AWS::DataPipeline::Pipeline" }
+func (Pipeline) Type() string { return "AWS::DataPipeline::Pipeline" }

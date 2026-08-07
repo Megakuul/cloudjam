@@ -23,4 +23,4 @@ type InvoiceUnit struct {
 	TaxInheritanceDisabled *bool         `json:"TaxInheritanceDisabled,omitempty"`
 }
 
-func (InvoiceUnit) CloudControlType() string { return "AWS::Invoicing::InvoiceUnit" }
+func (InvoiceUnit) Type() string { return "AWS::Invoicing::InvoiceUnit" }

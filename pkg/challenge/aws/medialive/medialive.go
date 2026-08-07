@@ -1434,7 +1434,7 @@ type Channel struct {
 	Vpc                   *VpcOutputSettings           `json:"Vpc,omitempty"`
 }
 
-func (Channel) CloudControlType() string { return "AWS::MediaLive::Channel" }
+func (Channel) Type() string { return "AWS::MediaLive::Channel" }
 
 type Tags struct {
 	Key   *string `json:"Key,omitempty"`
@@ -1452,9 +1452,7 @@ type ChannelPlacementGroup struct {
 	Tags      []Tags                      `json:"Tags,omitempty"`
 }
 
-func (ChannelPlacementGroup) CloudControlType() string {
-	return "AWS::MediaLive::ChannelPlacementGroup"
-}
+func (ChannelPlacementGroup) Type() string { return "AWS::MediaLive::ChannelPlacementGroup" }
 
 type CloudWatchAlarmTemplate struct {
 	Arn                *string                                    `json:"Arn,omitempty"`
@@ -1478,9 +1476,7 @@ type CloudWatchAlarmTemplate struct {
 	TreatMissingData   *CloudWatchAlarmTemplateTreatMissingData   `json:"TreatMissingData,omitempty"`
 }
 
-func (CloudWatchAlarmTemplate) CloudControlType() string {
-	return "AWS::MediaLive::CloudWatchAlarmTemplate"
-}
+func (CloudWatchAlarmTemplate) Type() string { return "AWS::MediaLive::CloudWatchAlarmTemplate" }
 
 type CloudWatchAlarmTemplateGroup struct {
 	Arn         *string           `json:"Arn,omitempty"`
@@ -1493,7 +1489,7 @@ type CloudWatchAlarmTemplateGroup struct {
 	Tags        map[string]string `json:"Tags,omitempty"`
 }
 
-func (CloudWatchAlarmTemplateGroup) CloudControlType() string {
+func (CloudWatchAlarmTemplateGroup) Type() string {
 	return "AWS::MediaLive::CloudWatchAlarmTemplateGroup"
 }
 
@@ -1524,7 +1520,7 @@ type Cluster struct {
 	Tags            []ClusterTags           `json:"Tags,omitempty"`
 }
 
-func (Cluster) CloudControlType() string { return "AWS::MediaLive::Cluster" }
+func (Cluster) Type() string { return "AWS::MediaLive::Cluster" }
 
 type EventBridgeRuleTemplateTarget struct {
 	Arn *string `json:"Arn,omitempty"`
@@ -1545,9 +1541,7 @@ type EventBridgeRuleTemplate struct {
 	Tags            map[string]string                 `json:"Tags,omitempty"`
 }
 
-func (EventBridgeRuleTemplate) CloudControlType() string {
-	return "AWS::MediaLive::EventBridgeRuleTemplate"
-}
+func (EventBridgeRuleTemplate) Type() string { return "AWS::MediaLive::EventBridgeRuleTemplate" }
 
 type EventBridgeRuleTemplateGroup struct {
 	Arn         *string           `json:"Arn,omitempty"`
@@ -1560,7 +1554,7 @@ type EventBridgeRuleTemplateGroup struct {
 	Tags        map[string]string `json:"Tags,omitempty"`
 }
 
-func (EventBridgeRuleTemplateGroup) CloudControlType() string {
+func (EventBridgeRuleTemplateGroup) Type() string {
 	return "AWS::MediaLive::EventBridgeRuleTemplateGroup"
 }
 
@@ -1683,7 +1677,7 @@ type Input struct {
 	Vpc                            *InputVpcRequest                `json:"Vpc,omitempty"`
 }
 
-func (Input) CloudControlType() string { return "AWS::MediaLive::Input" }
+func (Input) Type() string { return "AWS::MediaLive::Input" }
 
 type InputWhitelistRuleCidr struct {
 	Cidr *string `json:"Cidr,omitempty"`
@@ -1696,7 +1690,7 @@ type InputSecurityGroup struct {
 	WhitelistRules []InputWhitelistRuleCidr `json:"WhitelistRules,omitempty"`
 }
 
-func (InputSecurityGroup) CloudControlType() string { return "AWS::MediaLive::InputSecurityGroup" }
+func (InputSecurityGroup) Type() string { return "AWS::MediaLive::InputSecurityGroup" }
 
 type MultiplexOutputDestination struct {
 	MultiplexMediaConnectOutputDestinationSettings json.RawMessage `json:"MultiplexMediaConnectOutputDestinationSettings,omitempty"`
@@ -1727,7 +1721,7 @@ type Multiplex struct {
 	Tags                  []MultiplexTags              `json:"Tags,omitempty"`
 }
 
-func (Multiplex) CloudControlType() string { return "AWS::MediaLive::Multiplex" }
+func (Multiplex) Type() string { return "AWS::MediaLive::Multiplex" }
 
 type MultiplexProgramServiceDescriptor struct {
 	ProviderName *string `json:"ProviderName,omitempty"`
@@ -1772,7 +1766,7 @@ type Multiplexprogram struct {
 	ProgramName              *string                               `json:"ProgramName,omitempty"`
 }
 
-func (Multiplexprogram) CloudControlType() string { return "AWS::MediaLive::Multiplexprogram" }
+func (Multiplexprogram) Type() string { return "AWS::MediaLive::Multiplexprogram" }
 
 type IpPool struct {
 	Cidr *string `json:"Cidr,omitempty"`
@@ -1799,7 +1793,7 @@ type Network struct {
 	Tags                 []NetworkTags `json:"Tags,omitempty"`
 }
 
-func (Network) CloudControlType() string { return "AWS::MediaLive::Network" }
+func (Network) Type() string { return "AWS::MediaLive::Network" }
 
 type NodeInterfaceMapping struct {
 	LogicalInterfaceName  *string                                   `json:"LogicalInterfaceName,omitempty"`
@@ -1833,7 +1827,7 @@ type Node struct {
 	Tags                   []Tag                  `json:"Tags,omitempty"`
 }
 
-func (Node) CloudControlType() string { return "AWS::MediaLive::Node" }
+func (Node) Type() string { return "AWS::MediaLive::Node" }
 
 type SdiSourceTags struct {
 	Key   *string `json:"Key,omitempty"`
@@ -1851,7 +1845,7 @@ type SdiSource struct {
 	Type   *SdiSourceType  `json:"Type,omitempty"`
 }
 
-func (SdiSource) CloudControlType() string { return "AWS::MediaLive::SdiSource" }
+func (SdiSource) Type() string { return "AWS::MediaLive::SdiSource" }
 
 type MediaResourceNeighbor struct {
 	Arn  *string `json:"Arn,omitempty"`
@@ -1900,7 +1894,7 @@ type SignalMap struct {
 	Tags                                    map[string]string            `json:"Tags,omitempty"`
 }
 
-func (SignalMap) CloudControlType() string { return "AWS::MediaLive::SignalMap" }
+func (SignalMap) Type() string { return "AWS::MediaLive::SignalMap" }
 
 type ChannelPlacementGroupState string
 

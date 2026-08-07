@@ -114,7 +114,7 @@ type Certificate struct {
 	ValidityNotBefore         *Validity       `json:"ValidityNotBefore,omitempty"`
 }
 
-func (Certificate) CloudControlType() string { return "AWS::ACMPCA::Certificate" }
+func (Certificate) Type() string { return "AWS::ACMPCA::Certificate" }
 
 type CertificateAuthorityKeyUsage struct {
 	CRLSign          *bool `json:"CRLSign,omitempty"`
@@ -231,7 +231,7 @@ type CertificateAuthority struct {
 	UsageMode                  *string                      `json:"UsageMode,omitempty"`
 }
 
-func (CertificateAuthority) CloudControlType() string { return "AWS::ACMPCA::CertificateAuthority" }
+func (CertificateAuthority) Type() string { return "AWS::ACMPCA::CertificateAuthority" }
 
 type CertificateAuthorityActivation struct {
 	Certificate              *string `json:"Certificate,omitempty"`
@@ -241,7 +241,7 @@ type CertificateAuthorityActivation struct {
 	Status                   *string `json:"Status,omitempty"`
 }
 
-func (CertificateAuthorityActivation) CloudControlType() string {
+func (CertificateAuthorityActivation) Type() string {
 	return "AWS::ACMPCA::CertificateAuthorityActivation"
 }
 
@@ -252,4 +252,4 @@ type Permission struct {
 	SourceAccount           *string  `json:"SourceAccount,omitempty"`
 }
 
-func (Permission) CloudControlType() string { return "AWS::ACMPCA::Permission" }
+func (Permission) Type() string { return "AWS::ACMPCA::Permission" }

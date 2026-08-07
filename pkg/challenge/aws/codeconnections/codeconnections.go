@@ -18,4 +18,4 @@ type Connection struct {
 	Tags             []Tag   `json:"Tags,omitempty"`
 }
 
-func (Connection) CloudControlType() string { return "AWS::CodeConnections::Connection" }
+func (Connection) Type() string { return "AWS::CodeConnections::Connection" }

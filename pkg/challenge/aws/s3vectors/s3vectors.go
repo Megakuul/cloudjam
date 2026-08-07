@@ -33,7 +33,7 @@ type Index struct {
 	VectorBucketName        *string                  `json:"VectorBucketName,omitempty"`
 }
 
-func (Index) CloudControlType() string { return "AWS::S3Vectors::Index" }
+func (Index) Type() string { return "AWS::S3Vectors::Index" }
 
 type VectorBucketEncryptionConfiguration struct {
 	KmsKeyArn *string                                     `json:"KmsKeyArn,omitempty"`
@@ -53,7 +53,7 @@ type VectorBucket struct {
 	VectorBucketName        *string                              `json:"VectorBucketName,omitempty"`
 }
 
-func (VectorBucket) CloudControlType() string { return "AWS::S3Vectors::VectorBucket" }
+func (VectorBucket) Type() string { return "AWS::S3Vectors::VectorBucket" }
 
 type VectorBucketPolicy struct {
 	Policy           json.RawMessage `json:"Policy,omitempty"`
@@ -61,7 +61,7 @@ type VectorBucketPolicy struct {
 	VectorBucketName *string         `json:"VectorBucketName,omitempty"`
 }
 
-func (VectorBucketPolicy) CloudControlType() string { return "AWS::S3Vectors::VectorBucketPolicy" }
+func (VectorBucketPolicy) Type() string { return "AWS::S3Vectors::VectorBucketPolicy" }
 
 type DataType string
 

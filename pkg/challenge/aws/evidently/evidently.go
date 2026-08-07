@@ -57,7 +57,7 @@ type Experiment struct {
 	Treatments        []TreatmentObject     `json:"Treatments,omitempty"`
 }
 
-func (Experiment) CloudControlType() string { return "AWS::Evidently::Experiment" }
+func (Experiment) Type() string { return "AWS::Evidently::Experiment" }
 
 type EntityOverride struct {
 	EntityId  *string `json:"EntityId,omitempty"`
@@ -89,7 +89,7 @@ type Feature struct {
 	Variations         []VariationObject          `json:"Variations,omitempty"`
 }
 
-func (Feature) CloudControlType() string { return "AWS::Evidently::Feature" }
+func (Feature) Type() string { return "AWS::Evidently::Feature" }
 
 type ExecutionStatusObject struct {
 	DesiredState *string `json:"DesiredState,omitempty"`
@@ -147,7 +147,7 @@ type Launch struct {
 	Tags                  []LaunchTag              `json:"Tags,omitempty"`
 }
 
-func (Launch) CloudControlType() string { return "AWS::Evidently::Launch" }
+func (Launch) Type() string { return "AWS::Evidently::Launch" }
 
 type AppConfigResourceObject struct {
 	ApplicationId *string `json:"ApplicationId,omitempty"`
@@ -178,7 +178,7 @@ type Project struct {
 	Tags              []ProjectTag             `json:"Tags,omitempty"`
 }
 
-func (Project) CloudControlType() string { return "AWS::Evidently::Project" }
+func (Project) Type() string { return "AWS::Evidently::Project" }
 
 type SegmentTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -193,7 +193,7 @@ type Segment struct {
 	Tags        []SegmentTag `json:"Tags,omitempty"`
 }
 
-func (Segment) CloudControlType() string { return "AWS::Evidently::Segment" }
+func (Segment) Type() string { return "AWS::Evidently::Segment" }
 
 type MetricGoalObjectDesiredChange string
 

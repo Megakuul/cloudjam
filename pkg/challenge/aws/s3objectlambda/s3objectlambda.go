@@ -41,11 +41,11 @@ type AccessPoint struct {
 	PublicAccessBlockConfiguration *PublicAccessBlockConfiguration `json:"PublicAccessBlockConfiguration,omitempty"`
 }
 
-func (AccessPoint) CloudControlType() string { return "AWS::S3ObjectLambda::AccessPoint" }
+func (AccessPoint) Type() string { return "AWS::S3ObjectLambda::AccessPoint" }
 
 type AccessPointPolicy struct {
 	ObjectLambdaAccessPoint *string        `json:"ObjectLambdaAccessPoint,omitempty"`
 	PolicyDocument          map[string]any `json:"PolicyDocument,omitempty"`
 }
 
-func (AccessPointPolicy) CloudControlType() string { return "AWS::S3ObjectLambda::AccessPointPolicy" }
+func (AccessPointPolicy) Type() string { return "AWS::S3ObjectLambda::AccessPointPolicy" }

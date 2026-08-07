@@ -198,7 +198,7 @@ type Campaign struct {
 	Type                        *CampaignType              `json:"Type,omitempty"`
 }
 
-func (Campaign) CloudControlType() string { return "AWS::ConnectCampaignsV2::Campaign" }
+func (Campaign) Type() string { return "AWS::ConnectCampaignsV2::Campaign" }
 
 type AgentAction string
 

@@ -17,9 +17,7 @@ type AggregationAuthorization struct {
 	Tags                        []Tag   `json:"Tags,omitempty"`
 }
 
-func (AggregationAuthorization) CloudControlType() string {
-	return "AWS::Config::AggregationAuthorization"
-}
+func (AggregationAuthorization) Type() string { return "AWS::Config::AggregationAuthorization" }
 
 type ConfigRuleCompliance struct {
 	Type *string `json:"Type,omitempty"`
@@ -68,7 +66,7 @@ type ConfigRule struct {
 	Source                    *Source                       `json:"Source,omitempty"`
 }
 
-func (ConfigRule) CloudControlType() string { return "AWS::Config::ConfigRule" }
+func (ConfigRule) Type() string { return "AWS::Config::ConfigRule" }
 
 type AccountAggregationSource struct {
 	AccountIds    []string `json:"AccountIds,omitempty"`
@@ -95,9 +93,7 @@ type ConfigurationAggregator struct {
 	Tags                          []ConfigurationAggregatorTag   `json:"Tags,omitempty"`
 }
 
-func (ConfigurationAggregator) CloudControlType() string {
-	return "AWS::Config::ConfigurationAggregator"
-}
+func (ConfigurationAggregator) Type() string { return "AWS::Config::ConfigurationAggregator" }
 
 type ExclusionByResourceTypes struct {
 	ResourceTypes []string `json:"ResourceTypes,omitempty"`
@@ -134,7 +130,7 @@ type ConfigurationRecorder struct {
 	RoleARN        *string         `json:"RoleARN,omitempty"`
 }
 
-func (ConfigurationRecorder) CloudControlType() string { return "AWS::Config::ConfigurationRecorder" }
+func (ConfigurationRecorder) Type() string { return "AWS::Config::ConfigurationRecorder" }
 
 type ConformancePackInputParameter struct {
 	ParameterName  *string `json:"ParameterName,omitempty"`
@@ -163,7 +159,7 @@ type ConformancePack struct {
 	TemplateSSMDocumentDetails     *ConformancePackTemplateSSMDocumentDetails `json:"TemplateSSMDocumentDetails,omitempty"`
 }
 
-func (ConformancePack) CloudControlType() string { return "AWS::Config::ConformancePack" }
+func (ConformancePack) Type() string { return "AWS::Config::ConformancePack" }
 
 type AzureConnectorConfiguration struct {
 	ClientIdentifier *string `json:"ClientIdentifier,omitempty"`
@@ -187,7 +183,7 @@ type Connector struct {
 	Tags                   []ConnectorTag          `json:"Tags,omitempty"`
 }
 
-func (Connector) CloudControlType() string { return "AWS::Config::Connector" }
+func (Connector) Type() string { return "AWS::Config::Connector" }
 
 type ConfigSnapshotDeliveryProperties struct {
 	DeliveryFrequency *string `json:"DeliveryFrequency,omitempty"`
@@ -203,7 +199,7 @@ type DeliveryChannel struct {
 	SnsTopicARN                      *string                           `json:"SnsTopicARN,omitempty"`
 }
 
-func (DeliveryChannel) CloudControlType() string { return "AWS::Config::DeliveryChannel" }
+func (DeliveryChannel) Type() string { return "AWS::Config::DeliveryChannel" }
 
 type OrganizationCustomPolicyRuleMetadata struct {
 	DebugLogDeliveryAccounts           []string `json:"DebugLogDeliveryAccounts,omitempty"`
@@ -251,7 +247,7 @@ type OrganizationConfigRule struct {
 	OrganizationManagedRuleMetadata      *OrganizationManagedRuleMetadata      `json:"OrganizationManagedRuleMetadata,omitempty"`
 }
 
-func (OrganizationConfigRule) CloudControlType() string { return "AWS::Config::OrganizationConfigRule" }
+func (OrganizationConfigRule) Type() string { return "AWS::Config::OrganizationConfigRule" }
 
 type OrganizationConformancePackConformancePackInputParameter struct {
 	ParameterName  *string `json:"ParameterName,omitempty"`
@@ -275,9 +271,7 @@ type OrganizationConformancePack struct {
 	TemplateS3Uri                   *string                                                    `json:"TemplateS3Uri,omitempty"`
 }
 
-func (OrganizationConformancePack) CloudControlType() string {
-	return "AWS::Config::OrganizationConformancePack"
-}
+func (OrganizationConformancePack) Type() string { return "AWS::Config::OrganizationConformancePack" }
 
 type SsmControls struct {
 	ConcurrentExecutionRatePercentage *int `json:"ConcurrentExecutionRatePercentage,omitempty"`
@@ -301,9 +295,7 @@ type RemediationConfiguration struct {
 	TargetVersion            *string            `json:"TargetVersion,omitempty"`
 }
 
-func (RemediationConfiguration) CloudControlType() string {
-	return "AWS::Config::RemediationConfiguration"
-}
+func (RemediationConfiguration) Type() string { return "AWS::Config::RemediationConfiguration" }
 
 type StoredQueryTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -319,4 +311,4 @@ type StoredQuery struct {
 	Tags             []StoredQueryTag `json:"Tags,omitempty"`
 }
 
-func (StoredQuery) CloudControlType() string { return "AWS::Config::StoredQuery" }
+func (StoredQuery) Type() string { return "AWS::Config::StoredQuery" }

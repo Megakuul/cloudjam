@@ -10,7 +10,7 @@ type Alias struct {
 	TargetKeyId *string `json:"TargetKeyId,omitempty"`
 }
 
-func (Alias) CloudControlType() string { return "AWS::KMS::Alias" }
+func (Alias) Type() string { return "AWS::KMS::Alias" }
 
 type Tag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -34,7 +34,7 @@ type Key struct {
 	Tags                           []Tag           `json:"Tags,omitempty"`
 }
 
-func (Key) CloudControlType() string { return "AWS::KMS::Key" }
+func (Key) Type() string { return "AWS::KMS::Key" }
 
 type ReplicaKeyTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -52,7 +52,7 @@ type ReplicaKey struct {
 	Tags                []ReplicaKeyTag `json:"Tags,omitempty"`
 }
 
-func (ReplicaKey) CloudControlType() string { return "AWS::KMS::ReplicaKey" }
+func (ReplicaKey) Type() string { return "AWS::KMS::ReplicaKey" }
 
 type KeyKeySpec string
 

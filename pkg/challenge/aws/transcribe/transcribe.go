@@ -18,4 +18,4 @@ type VocabularyFilter struct {
 	Words                   []string `json:"Words,omitempty"`
 }
 
-func (VocabularyFilter) CloudControlType() string { return "AWS::Transcribe::VocabularyFilter" }
+func (VocabularyFilter) Type() string { return "AWS::Transcribe::VocabularyFilter" }

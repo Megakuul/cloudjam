@@ -92,7 +92,7 @@ type Cluster struct {
 	Tags               json.RawMessage            `json:"Tags,omitempty"`
 }
 
-func (Cluster) CloudControlType() string { return "AWS::PCS::Cluster" }
+func (Cluster) Type() string { return "AWS::PCS::Cluster" }
 
 type ComputeNodeGroupCustomLaunchTemplate struct {
 	TemplateId *string `json:"TemplateId,omitempty"`
@@ -171,7 +171,7 @@ type ComputeNodeGroup struct {
 	Tags                  json.RawMessage                       `json:"Tags,omitempty"`
 }
 
-func (ComputeNodeGroup) CloudControlType() string { return "AWS::PCS::ComputeNodeGroup" }
+func (ComputeNodeGroup) Type() string { return "AWS::PCS::ComputeNodeGroup" }
 
 type ComputeNodeGroupConfiguration struct {
 	ComputeNodeGroupId *string `json:"ComputeNodeGroupId,omitempty"`
@@ -203,7 +203,7 @@ type Queue struct {
 	Tags                           map[string]string               `json:"Tags,omitempty"`
 }
 
-func (Queue) CloudControlType() string { return "AWS::PCS::Queue" }
+func (Queue) Type() string { return "AWS::PCS::Queue" }
 
 type EndpointType string
 

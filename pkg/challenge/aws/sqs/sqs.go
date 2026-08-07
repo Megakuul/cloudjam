@@ -31,14 +31,14 @@ type Queue struct {
 	VisibilityTimeout             *int            `json:"VisibilityTimeout,omitempty"`
 }
 
-func (Queue) CloudControlType() string { return "AWS::SQS::Queue" }
+func (Queue) Type() string { return "AWS::SQS::Queue" }
 
 type QueueInlinePolicy struct {
 	PolicyDocument map[string]any `json:"PolicyDocument,omitempty"`
 	Queue          *string        `json:"Queue,omitempty"`
 }
 
-func (QueueInlinePolicy) CloudControlType() string { return "AWS::SQS::QueueInlinePolicy" }
+func (QueueInlinePolicy) Type() string { return "AWS::SQS::QueueInlinePolicy" }
 
 type QueuePolicy struct {
 	Id             *string         `json:"Id,omitempty"`
@@ -46,4 +46,4 @@ type QueuePolicy struct {
 	Queues         []string        `json:"Queues,omitempty"`
 }
 
-func (QueuePolicy) CloudControlType() string { return "AWS::SQS::QueuePolicy" }
+func (QueuePolicy) Type() string { return "AWS::SQS::QueuePolicy" }

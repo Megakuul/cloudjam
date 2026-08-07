@@ -76,7 +76,7 @@ type Plan struct {
 	Workflows                    []Workflow                    `json:"Workflows,omitempty"`
 }
 
-func (Plan) CloudControlType() string { return "AWS::ARCRegionSwitch::Plan" }
+func (Plan) Type() string { return "AWS::ARCRegionSwitch::Plan" }
 
 type AlarmType string
 

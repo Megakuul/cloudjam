@@ -11,7 +11,7 @@ type ADMChannel struct {
 	Id            *string `json:"Id,omitempty"`
 }
 
-func (ADMChannel) CloudControlType() string { return "AWS::Pinpoint::ADMChannel" }
+func (ADMChannel) Type() string { return "AWS::Pinpoint::ADMChannel" }
 
 type APNSChannel struct {
 	ApplicationId               *string `json:"ApplicationId,omitempty"`
@@ -26,7 +26,7 @@ type APNSChannel struct {
 	TokenKeyId                  *string `json:"TokenKeyId,omitempty"`
 }
 
-func (APNSChannel) CloudControlType() string { return "AWS::Pinpoint::APNSChannel" }
+func (APNSChannel) Type() string { return "AWS::Pinpoint::APNSChannel" }
 
 type APNSSandboxChannel struct {
 	ApplicationId               *string `json:"ApplicationId,omitempty"`
@@ -41,7 +41,7 @@ type APNSSandboxChannel struct {
 	TokenKeyId                  *string `json:"TokenKeyId,omitempty"`
 }
 
-func (APNSSandboxChannel) CloudControlType() string { return "AWS::Pinpoint::APNSSandboxChannel" }
+func (APNSSandboxChannel) Type() string { return "AWS::Pinpoint::APNSSandboxChannel" }
 
 type APNSVoipChannel struct {
 	ApplicationId               *string `json:"ApplicationId,omitempty"`
@@ -56,7 +56,7 @@ type APNSVoipChannel struct {
 	TokenKeyId                  *string `json:"TokenKeyId,omitempty"`
 }
 
-func (APNSVoipChannel) CloudControlType() string { return "AWS::Pinpoint::APNSVoipChannel" }
+func (APNSVoipChannel) Type() string { return "AWS::Pinpoint::APNSVoipChannel" }
 
 type APNSVoipSandboxChannel struct {
 	ApplicationId               *string `json:"ApplicationId,omitempty"`
@@ -71,9 +71,7 @@ type APNSVoipSandboxChannel struct {
 	TokenKeyId                  *string `json:"TokenKeyId,omitempty"`
 }
 
-func (APNSVoipSandboxChannel) CloudControlType() string {
-	return "AWS::Pinpoint::APNSVoipSandboxChannel"
-}
+func (APNSVoipSandboxChannel) Type() string { return "AWS::Pinpoint::APNSVoipSandboxChannel" }
 
 type App struct {
 	Arn  *string        `json:"Arn,omitempty"`
@@ -82,7 +80,7 @@ type App struct {
 	Tags map[string]any `json:"Tags,omitempty"`
 }
 
-func (App) CloudControlType() string { return "AWS::Pinpoint::App" }
+func (App) Type() string { return "AWS::Pinpoint::App" }
 
 type CampaignHook struct {
 	LambdaFunctionName *string `json:"LambdaFunctionName,omitempty"`
@@ -111,7 +109,7 @@ type ApplicationSettings struct {
 	QuietTime                *QuietTime    `json:"QuietTime,omitempty"`
 }
 
-func (ApplicationSettings) CloudControlType() string { return "AWS::Pinpoint::ApplicationSettings" }
+func (ApplicationSettings) Type() string { return "AWS::Pinpoint::ApplicationSettings" }
 
 type BaiduChannel struct {
 	ApiKey        *string `json:"ApiKey,omitempty"`
@@ -121,7 +119,7 @@ type BaiduChannel struct {
 	SecretKey     *string `json:"SecretKey,omitempty"`
 }
 
-func (BaiduChannel) CloudControlType() string { return "AWS::Pinpoint::BaiduChannel" }
+func (BaiduChannel) Type() string { return "AWS::Pinpoint::BaiduChannel" }
 
 type CustomDeliveryConfiguration struct {
 	DeliveryUri   *string  `json:"DeliveryUri,omitempty"`
@@ -313,7 +311,7 @@ type Campaign struct {
 	TreatmentName               *string                      `json:"TreatmentName,omitempty"`
 }
 
-func (Campaign) CloudControlType() string { return "AWS::Pinpoint::Campaign" }
+func (Campaign) Type() string { return "AWS::Pinpoint::Campaign" }
 
 type EmailChannel struct {
 	ApplicationId               *string `json:"ApplicationId,omitempty"`
@@ -326,7 +324,7 @@ type EmailChannel struct {
 	RoleArn                     *string `json:"RoleArn,omitempty"`
 }
 
-func (EmailChannel) CloudControlType() string { return "AWS::Pinpoint::EmailChannel" }
+func (EmailChannel) Type() string { return "AWS::Pinpoint::EmailChannel" }
 
 type EmailTemplate struct {
 	Arn                  *string        `json:"Arn,omitempty"`
@@ -340,7 +338,7 @@ type EmailTemplate struct {
 	TextPart             *string        `json:"TextPart,omitempty"`
 }
 
-func (EmailTemplate) CloudControlType() string { return "AWS::Pinpoint::EmailTemplate" }
+func (EmailTemplate) Type() string { return "AWS::Pinpoint::EmailTemplate" }
 
 type EventStream struct {
 	ApplicationId        *string `json:"ApplicationId,omitempty"`
@@ -349,7 +347,7 @@ type EventStream struct {
 	RoleArn              *string `json:"RoleArn,omitempty"`
 }
 
-func (EventStream) CloudControlType() string { return "AWS::Pinpoint::EventStream" }
+func (EventStream) Type() string { return "AWS::Pinpoint::EventStream" }
 
 type GCMChannel struct {
 	ApiKey                      *string `json:"ApiKey,omitempty"`
@@ -360,7 +358,7 @@ type GCMChannel struct {
 	ServiceJson                 *string `json:"ServiceJson,omitempty"`
 }
 
-func (GCMChannel) CloudControlType() string { return "AWS::Pinpoint::GCMChannel" }
+func (GCMChannel) Type() string { return "AWS::Pinpoint::GCMChannel" }
 
 type BodyConfig struct {
 	Alignment *Alignment `json:"Alignment,omitempty"`
@@ -414,7 +412,7 @@ type InAppTemplate struct {
 	TemplateName        *string                            `json:"TemplateName,omitempty"`
 }
 
-func (InAppTemplate) CloudControlType() string { return "AWS::Pinpoint::InAppTemplate" }
+func (InAppTemplate) Type() string { return "AWS::Pinpoint::InAppTemplate" }
 
 type AndroidPushNotificationTemplate struct {
 	Action            *string `json:"Action,omitempty"`
@@ -458,7 +456,7 @@ type PushTemplate struct {
 	TemplateName         *string                          `json:"TemplateName,omitempty"`
 }
 
-func (PushTemplate) CloudControlType() string { return "AWS::Pinpoint::PushTemplate" }
+func (PushTemplate) Type() string { return "AWS::Pinpoint::PushTemplate" }
 
 type SMSChannel struct {
 	ApplicationId *string `json:"ApplicationId,omitempty"`
@@ -468,7 +466,7 @@ type SMSChannel struct {
 	ShortCode     *string `json:"ShortCode,omitempty"`
 }
 
-func (SMSChannel) CloudControlType() string { return "AWS::Pinpoint::SMSChannel" }
+func (SMSChannel) Type() string { return "AWS::Pinpoint::SMSChannel" }
 
 type Recency struct {
 	Duration    *string `json:"Duration,omitempty"`
@@ -544,7 +542,7 @@ type Segment struct {
 	Tags          map[string]any     `json:"Tags,omitempty"`
 }
 
-func (Segment) CloudControlType() string { return "AWS::Pinpoint::Segment" }
+func (Segment) Type() string { return "AWS::Pinpoint::Segment" }
 
 type SmsTemplate struct {
 	Arn                  *string        `json:"Arn,omitempty"`
@@ -556,7 +554,7 @@ type SmsTemplate struct {
 	TemplateName         *string        `json:"TemplateName,omitempty"`
 }
 
-func (SmsTemplate) CloudControlType() string { return "AWS::Pinpoint::SmsTemplate" }
+func (SmsTemplate) Type() string { return "AWS::Pinpoint::SmsTemplate" }
 
 type VoiceChannel struct {
 	ApplicationId *string `json:"ApplicationId,omitempty"`
@@ -564,7 +562,7 @@ type VoiceChannel struct {
 	Id            *string `json:"Id,omitempty"`
 }
 
-func (VoiceChannel) CloudControlType() string { return "AWS::Pinpoint::VoiceChannel" }
+func (VoiceChannel) Type() string { return "AWS::Pinpoint::VoiceChannel" }
 
 type Alignment string
 

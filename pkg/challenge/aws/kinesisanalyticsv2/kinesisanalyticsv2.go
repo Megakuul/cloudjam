@@ -224,7 +224,7 @@ type Application struct {
 	Tags                                []Tag                                `json:"Tags,omitempty"`
 }
 
-func (Application) CloudControlType() string { return "AWS::KinesisAnalyticsV2::Application" }
+func (Application) Type() string { return "AWS::KinesisAnalyticsV2::Application" }
 
 type CloudWatchLoggingOption struct {
 	LogStreamARN *string `json:"LogStreamARN,omitempty"`
@@ -236,7 +236,7 @@ type ApplicationCloudWatchLoggingOption struct {
 	Id                      *string                  `json:"Id,omitempty"`
 }
 
-func (ApplicationCloudWatchLoggingOption) CloudControlType() string {
+func (ApplicationCloudWatchLoggingOption) Type() string {
 	return "AWS::KinesisAnalyticsV2::ApplicationCloudWatchLoggingOption"
 }
 
@@ -270,9 +270,7 @@ type ApplicationOutput struct {
 	Output          *Output `json:"Output,omitempty"`
 }
 
-func (ApplicationOutput) CloudControlType() string {
-	return "AWS::KinesisAnalyticsV2::ApplicationOutput"
-}
+func (ApplicationOutput) Type() string { return "AWS::KinesisAnalyticsV2::ApplicationOutput" }
 
 type ApplicationReferenceDataSourceRecordColumn struct {
 	Mapping *string `json:"Mapping,omitempty"`
@@ -322,7 +320,7 @@ type ApplicationReferenceDataSource struct {
 	ReferenceDataSource *ReferenceDataSource `json:"ReferenceDataSource,omitempty"`
 }
 
-func (ApplicationReferenceDataSource) CloudControlType() string {
+func (ApplicationReferenceDataSource) Type() string {
 	return "AWS::KinesisAnalyticsV2::ApplicationReferenceDataSource"
 }
 

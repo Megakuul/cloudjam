@@ -21,7 +21,7 @@ type MicrosoftAD struct {
 	VpcSettings    *VpcSettings `json:"VpcSettings,omitempty"`
 }
 
-func (MicrosoftAD) CloudControlType() string { return "AWS::DirectoryService::MicrosoftAD" }
+func (MicrosoftAD) Type() string { return "AWS::DirectoryService::MicrosoftAD" }
 
 type Tag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -48,4 +48,4 @@ type SimpleAD struct {
 	VpcSettings    *SimpleADVpcSettings `json:"VpcSettings,omitempty"`
 }
 
-func (SimpleAD) CloudControlType() string { return "AWS::DirectoryService::SimpleAD" }
+func (SimpleAD) Type() string { return "AWS::DirectoryService::SimpleAD" }

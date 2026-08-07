@@ -69,7 +69,7 @@ type AppMonitor struct {
 	Tags                       []Tag                       `json:"Tags,omitempty"`
 }
 
-func (AppMonitor) CloudControlType() string { return "AWS::RUM::AppMonitor" }
+func (AppMonitor) Type() string { return "AWS::RUM::AppMonitor" }
 
 type MetricDestinationDestination string
 

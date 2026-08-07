@@ -19,7 +19,7 @@ type Connector struct {
 	Description                 *string                      `json:"Description,omitempty"`
 }
 
-func (Connector) CloudControlType() string { return "AWS::AppFlow::Connector" }
+func (Connector) Type() string { return "AWS::AppFlow::Connector" }
 
 type AmplitudeConnectorProfileCredentials struct {
 	ApiKey    *string `json:"ApiKey,omitempty"`
@@ -313,7 +313,7 @@ type ConnectorProfile struct {
 	KMSArn                 *string                         `json:"KMSArn,omitempty"`
 }
 
-func (ConnectorProfile) CloudControlType() string { return "AWS::AppFlow::ConnectorProfile" }
+func (ConnectorProfile) Type() string { return "AWS::AppFlow::ConnectorProfile" }
 
 type ErrorHandlingConfig struct {
 	BucketName       *string `json:"BucketName,omitempty"`
@@ -650,7 +650,7 @@ type Flow struct {
 	TriggerConfig             *TriggerConfig          `json:"TriggerConfig,omitempty"`
 }
 
-func (Flow) CloudControlType() string { return "AWS::AppFlow::Flow" }
+func (Flow) Type() string { return "AWS::AppFlow::Flow" }
 
 type ConnectorProfileConnectionMode string
 

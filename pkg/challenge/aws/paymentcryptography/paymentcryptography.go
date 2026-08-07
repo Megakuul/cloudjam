@@ -8,7 +8,7 @@ type Alias struct {
 	KeyArn    *string `json:"KeyArn,omitempty"`
 }
 
-func (Alias) CloudControlType() string { return "AWS::PaymentCryptography::Alias" }
+func (Alias) Type() string { return "AWS::PaymentCryptography::Alias" }
 
 type KeyModesOfUse struct {
 	Decrypt        *bool `json:"Decrypt,omitempty"`
@@ -54,7 +54,7 @@ type Key struct {
 	Tags                   []Tag                            `json:"Tags,omitempty"`
 }
 
-func (Key) CloudControlType() string { return "AWS::PaymentCryptography::Key" }
+func (Key) Type() string { return "AWS::PaymentCryptography::Key" }
 
 type DeriveKeyUsage string
 

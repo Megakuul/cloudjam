@@ -23,4 +23,4 @@ type Workspace struct {
 	Tags          []Tag          `json:"Tags,omitempty"`
 }
 
-func (Workspace) CloudControlType() string { return "AWS::AWSExternalAnthropic::Workspace" }
+func (Workspace) Type() string { return "AWS::AWSExternalAnthropic::Workspace" }

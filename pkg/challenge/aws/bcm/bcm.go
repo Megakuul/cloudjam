@@ -137,7 +137,7 @@ type Dashboard struct {
 	Widgets     []Widget       `json:"Widgets,omitempty"`
 }
 
-func (Dashboard) CloudControlType() string { return "AWS::BCM::Dashboard" }
+func (Dashboard) Type() string { return "AWS::BCM::Dashboard" }
 
 type DashboardType string
 

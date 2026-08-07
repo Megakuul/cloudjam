@@ -25,7 +25,7 @@ type EmailContact struct {
 	Tags         []Tag                     `json:"Tags,omitempty"`
 }
 
-func (EmailContact) CloudControlType() string { return "AWS::NotificationsContacts::EmailContact" }
+func (EmailContact) Type() string { return "AWS::NotificationsContacts::EmailContact" }
 
 type EmailContactStatus string
 

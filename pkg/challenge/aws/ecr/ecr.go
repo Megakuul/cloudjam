@@ -26,7 +26,7 @@ type PublicRepository struct {
 	Tags                  []Tag                                  `json:"Tags,omitempty"`
 }
 
-func (PublicRepository) CloudControlType() string { return "AWS::ECR::PublicRepository" }
+func (PublicRepository) Type() string { return "AWS::ECR::PublicRepository" }
 
 type PullThroughCacheRule struct {
 	CredentialArn            *string `json:"CredentialArn,omitempty"`
@@ -37,20 +37,20 @@ type PullThroughCacheRule struct {
 	UpstreamRepositoryPrefix *string `json:"UpstreamRepositoryPrefix,omitempty"`
 }
 
-func (PullThroughCacheRule) CloudControlType() string { return "AWS::ECR::PullThroughCacheRule" }
+func (PullThroughCacheRule) Type() string { return "AWS::ECR::PullThroughCacheRule" }
 
 type PullTimeUpdateExclusion struct {
 	PrincipalArn *string `json:"PrincipalArn,omitempty"`
 }
 
-func (PullTimeUpdateExclusion) CloudControlType() string { return "AWS::ECR::PullTimeUpdateExclusion" }
+func (PullTimeUpdateExclusion) Type() string { return "AWS::ECR::PullTimeUpdateExclusion" }
 
 type RegistryPolicy struct {
 	PolicyText map[string]any `json:"PolicyText,omitempty"`
 	RegistryId *string        `json:"RegistryId,omitempty"`
 }
 
-func (RegistryPolicy) CloudControlType() string { return "AWS::ECR::RegistryPolicy" }
+func (RegistryPolicy) Type() string { return "AWS::ECR::RegistryPolicy" }
 
 type RepositoryFilter struct {
 	Filter     *string     `json:"Filter,omitempty"`
@@ -68,9 +68,7 @@ type RegistryScanningConfiguration struct {
 	ScanType   *ScanType      `json:"ScanType,omitempty"`
 }
 
-func (RegistryScanningConfiguration) CloudControlType() string {
-	return "AWS::ECR::RegistryScanningConfiguration"
-}
+func (RegistryScanningConfiguration) Type() string { return "AWS::ECR::RegistryScanningConfiguration" }
 
 type ReplicationDestination struct {
 	Region     *string `json:"Region,omitempty"`
@@ -96,9 +94,7 @@ type ReplicationConfiguration struct {
 	ReplicationConfiguration *ReplicationConfigurationReplicationConfiguration `json:"ReplicationConfiguration,omitempty"`
 }
 
-func (ReplicationConfiguration) CloudControlType() string {
-	return "AWS::ECR::ReplicationConfiguration"
-}
+func (ReplicationConfiguration) Type() string { return "AWS::ECR::ReplicationConfiguration" }
 
 type EncryptionConfiguration struct {
 	EncryptionType *EncryptionType `json:"EncryptionType,omitempty"`
@@ -138,7 +134,7 @@ type Repository struct {
 	Tags                               []RepositoryTag                     `json:"Tags,omitempty"`
 }
 
-func (Repository) CloudControlType() string { return "AWS::ECR::Repository" }
+func (Repository) Type() string { return "AWS::ECR::Repository" }
 
 type RepositoryCreationTemplateEncryptionConfiguration struct {
 	EncryptionType *RepositoryCreationTemplateEncryptionType `json:"EncryptionType,omitempty"`
@@ -170,9 +166,7 @@ type RepositoryCreationTemplate struct {
 	UpdatedAt                          *string                                                       `json:"UpdatedAt,omitempty"`
 }
 
-func (RepositoryCreationTemplate) CloudControlType() string {
-	return "AWS::ECR::RepositoryCreationTemplate"
-}
+func (RepositoryCreationTemplate) Type() string { return "AWS::ECR::RepositoryCreationTemplate" }
 
 type SigningConfigurationRepositoryFilter struct {
 	Filter     *string                         `json:"Filter,omitempty"`
@@ -189,7 +183,7 @@ type SigningConfiguration struct {
 	Rules      []Rule  `json:"Rules,omitempty"`
 }
 
-func (SigningConfiguration) CloudControlType() string { return "AWS::ECR::SigningConfiguration" }
+func (SigningConfiguration) Type() string { return "AWS::ECR::SigningConfiguration" }
 
 type FilterType string
 

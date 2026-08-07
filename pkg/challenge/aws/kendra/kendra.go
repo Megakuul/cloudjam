@@ -372,7 +372,7 @@ type DataSource struct {
 	Type                                  *Type                                  `json:"Type,omitempty"`
 }
 
-func (DataSource) CloudControlType() string { return "AWS::Kendra::DataSource" }
+func (DataSource) Type() string { return "AWS::Kendra::DataSource" }
 
 type FaqS3Path struct {
 	Bucket *string `json:"Bucket,omitempty"`
@@ -397,7 +397,7 @@ type Faq struct {
 	Tags         []FaqTag    `json:"Tags,omitempty"`
 }
 
-func (Faq) CloudControlType() string { return "AWS::Kendra::Faq" }
+func (Faq) Type() string { return "AWS::Kendra::Faq" }
 
 type CapacityUnitsConfiguration struct {
 	QueryCapacityUnits   *int `json:"QueryCapacityUnits,omitempty"`
@@ -475,7 +475,7 @@ type Index struct {
 	UserTokenConfigurations           []UserTokenConfiguration           `json:"UserTokenConfigurations,omitempty"`
 }
 
-func (Index) CloudControlType() string { return "AWS::Kendra::Index" }
+func (Index) Type() string { return "AWS::Kendra::Index" }
 
 type ConditionOperator string
 

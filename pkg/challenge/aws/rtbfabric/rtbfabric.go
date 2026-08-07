@@ -46,7 +46,7 @@ type InboundExternalLink struct {
 	UpdatedTimestamp *string          `json:"UpdatedTimestamp,omitempty"`
 }
 
-func (InboundExternalLink) CloudControlType() string { return "AWS::RTBFabric::InboundExternalLink" }
+func (InboundExternalLink) Type() string { return "AWS::RTBFabric::InboundExternalLink" }
 
 type LinkResponderErrorMaskingForHttpCode struct {
 	Action                    *LinkResponderErrorMaskingForHttpCodeAction `json:"Action,omitempty"`
@@ -101,7 +101,7 @@ type Link struct {
 	UpdatedTimestamp        *string               `json:"UpdatedTimestamp,omitempty"`
 }
 
-func (Link) CloudControlType() string { return "AWS::RTBFabric::Link" }
+func (Link) Type() string { return "AWS::RTBFabric::Link" }
 
 type QueryStringKeyValuePair struct {
 	Key   *string `json:"Key,omitempty"`
@@ -135,7 +135,7 @@ type LinkRoutingRule struct {
 	UpdatedTimestamp *string              `json:"UpdatedTimestamp,omitempty"`
 }
 
-func (LinkRoutingRule) CloudControlType() string { return "AWS::RTBFabric::LinkRoutingRule" }
+func (LinkRoutingRule) Type() string { return "AWS::RTBFabric::LinkRoutingRule" }
 
 type OutboundExternalLinkResponderErrorMaskingForHttpCode struct {
 	Action                    *OutboundExternalLinkResponderErrorMaskingForHttpCodeAction `json:"Action,omitempty"`
@@ -180,7 +180,7 @@ type OutboundExternalLink struct {
 	UpdatedTimestamp *string                              `json:"UpdatedTimestamp,omitempty"`
 }
 
-func (OutboundExternalLink) CloudControlType() string { return "AWS::RTBFabric::OutboundExternalLink" }
+func (OutboundExternalLink) Type() string { return "AWS::RTBFabric::OutboundExternalLink" }
 
 type RequesterGatewayTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -203,7 +203,7 @@ type RequesterGateway struct {
 	VpcId                  *string                 `json:"VpcId,omitempty"`
 }
 
-func (RequesterGateway) CloudControlType() string { return "AWS::RTBFabric::RequesterGateway" }
+func (RequesterGateway) Type() string { return "AWS::RTBFabric::RequesterGateway" }
 
 type ListenerConfig struct {
 	Protocols []Protocol `json:"Protocols,omitempty"`
@@ -241,7 +241,7 @@ type ResponderGateway struct {
 	VpcId                        *string                       `json:"VpcId,omitempty"`
 }
 
-func (ResponderGateway) CloudControlType() string { return "AWS::RTBFabric::ResponderGateway" }
+func (ResponderGateway) Type() string { return "AWS::RTBFabric::ResponderGateway" }
 
 type ResponderErrorMaskingForHttpCodeAction string
 

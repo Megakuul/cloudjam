@@ -32,7 +32,7 @@ type AccessGrant struct {
 	Tags                              []Tag                              `json:"Tags,omitempty"`
 }
 
-func (AccessGrant) CloudControlType() string { return "AWS::S3::AccessGrant" }
+func (AccessGrant) Type() string { return "AWS::S3::AccessGrant" }
 
 type AccessGrantsInstanceTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -46,7 +46,7 @@ type AccessGrantsInstance struct {
 	Tags                    []AccessGrantsInstanceTag `json:"Tags,omitempty"`
 }
 
-func (AccessGrantsInstance) CloudControlType() string { return "AWS::S3::AccessGrantsInstance" }
+func (AccessGrantsInstance) Type() string { return "AWS::S3::AccessGrantsInstance" }
 
 type AccessGrantsLocationTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -61,7 +61,7 @@ type AccessGrantsLocation struct {
 	Tags                    []AccessGrantsLocationTag `json:"Tags,omitempty"`
 }
 
-func (AccessGrantsLocation) CloudControlType() string { return "AWS::S3::AccessGrantsLocation" }
+func (AccessGrantsLocation) Type() string { return "AWS::S3::AccessGrantsLocation" }
 
 type PublicAccessBlockConfiguration struct {
 	BlockPublicAcls       *bool `json:"BlockPublicAcls,omitempty"`
@@ -92,7 +92,7 @@ type AccessPoint struct {
 	VpcConfiguration               *VpcConfiguration               `json:"VpcConfiguration,omitempty"`
 }
 
-func (AccessPoint) CloudControlType() string { return "AWS::S3::AccessPoint" }
+func (AccessPoint) Type() string { return "AWS::S3::AccessPoint" }
 
 type AccelerateConfiguration struct {
 	AccelerationStatus *AccelerateConfigurationAccelerationStatus `json:"AccelerationStatus,omitempty"`
@@ -515,14 +515,14 @@ type Bucket struct {
 	WebsiteURL                       *string                               `json:"WebsiteURL,omitempty"`
 }
 
-func (Bucket) CloudControlType() string { return "AWS::S3::Bucket" }
+func (Bucket) Type() string { return "AWS::S3::Bucket" }
 
 type BucketPolicy struct {
 	Bucket         *string         `json:"Bucket,omitempty"`
 	PolicyDocument json.RawMessage `json:"PolicyDocument,omitempty"`
 }
 
-func (BucketPolicy) CloudControlType() string { return "AWS::S3::BucketPolicy" }
+func (BucketPolicy) Type() string { return "AWS::S3::BucketPolicy" }
 
 type MultiRegionAccessPointPublicAccessBlockConfiguration struct {
 	BlockPublicAcls       *bool `json:"BlockPublicAcls,omitempty"`
@@ -544,7 +544,7 @@ type MultiRegionAccessPoint struct {
 	Regions                        []Region                                              `json:"Regions,omitempty"`
 }
 
-func (MultiRegionAccessPoint) CloudControlType() string { return "AWS::S3::MultiRegionAccessPoint" }
+func (MultiRegionAccessPoint) Type() string { return "AWS::S3::MultiRegionAccessPoint" }
 
 type MultiRegionAccessPointPolicyPolicyStatus struct {
 	IsPublic *MultiRegionAccessPointPolicyPolicyStatusIsPublic `json:"IsPublic,omitempty"`
@@ -556,9 +556,7 @@ type MultiRegionAccessPointPolicy struct {
 	PolicyStatus *MultiRegionAccessPointPolicyPolicyStatus `json:"PolicyStatus,omitempty"`
 }
 
-func (MultiRegionAccessPointPolicy) CloudControlType() string {
-	return "AWS::S3::MultiRegionAccessPointPolicy"
-}
+func (MultiRegionAccessPointPolicy) Type() string { return "AWS::S3::MultiRegionAccessPointPolicy" }
 
 type ActivityMetrics struct {
 	IsEnabled *bool `json:"IsEnabled,omitempty"`
@@ -684,7 +682,7 @@ type StorageLens struct {
 	Tags                     []StorageLensTag          `json:"Tags,omitempty"`
 }
 
-func (StorageLens) CloudControlType() string { return "AWS::S3::StorageLens" }
+func (StorageLens) Type() string { return "AWS::S3::StorageLens" }
 
 type StorageLensGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -734,7 +732,7 @@ type StorageLensGroup struct {
 	Tags                []StorageLensGroupTag `json:"Tags,omitempty"`
 }
 
-func (StorageLensGroup) CloudControlType() string { return "AWS::S3::StorageLensGroup" }
+func (StorageLensGroup) Type() string { return "AWS::S3::StorageLensGroup" }
 
 type GranteeGranteeType string
 

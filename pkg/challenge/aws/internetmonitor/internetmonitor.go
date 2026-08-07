@@ -51,7 +51,7 @@ type Monitor struct {
 	TrafficPercentageToMonitor      *int                             `json:"TrafficPercentageToMonitor,omitempty"`
 }
 
-func (Monitor) CloudControlType() string { return "AWS::InternetMonitor::Monitor" }
+func (Monitor) Type() string { return "AWS::InternetMonitor::Monitor" }
 
 type LocalHealthEventsConfigStatus string
 

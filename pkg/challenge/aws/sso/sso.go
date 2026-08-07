@@ -32,7 +32,7 @@ type Application struct {
 	Tags                   []Tag                       `json:"Tags,omitempty"`
 }
 
-func (Application) CloudControlType() string { return "AWS::SSO::Application" }
+func (Application) Type() string { return "AWS::SSO::Application" }
 
 type ApplicationAssignment struct {
 	ApplicationArn *string                             `json:"ApplicationArn,omitempty"`
@@ -40,7 +40,7 @@ type ApplicationAssignment struct {
 	PrincipalType  *ApplicationAssignmentPrincipalType `json:"PrincipalType,omitempty"`
 }
 
-func (ApplicationAssignment) CloudControlType() string { return "AWS::SSO::ApplicationAssignment" }
+func (ApplicationAssignment) Type() string { return "AWS::SSO::ApplicationAssignment" }
 
 type Assignment struct {
 	InstanceArn      *string                  `json:"InstanceArn,omitempty"`
@@ -51,7 +51,7 @@ type Assignment struct {
 	TargetType       *AssignmentTargetType    `json:"TargetType,omitempty"`
 }
 
-func (Assignment) CloudControlType() string { return "AWS::SSO::Assignment" }
+func (Assignment) Type() string { return "AWS::SSO::Assignment" }
 
 type InstanceTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -67,7 +67,7 @@ type Instance struct {
 	Tags            []InstanceTag   `json:"Tags,omitempty"`
 }
 
-func (Instance) CloudControlType() string { return "AWS::SSO::Instance" }
+func (Instance) Type() string { return "AWS::SSO::Instance" }
 
 type AccessControlAttributeValue struct {
 	Source []string `json:"Source,omitempty"`
@@ -88,7 +88,7 @@ type InstanceAccessControlAttributeConfiguration struct {
 	InstanceArn                                 *string                                                                                 `json:"InstanceArn,omitempty"`
 }
 
-func (InstanceAccessControlAttributeConfiguration) CloudControlType() string {
+func (InstanceAccessControlAttributeConfiguration) Type() string {
 	return "AWS::SSO::InstanceAccessControlAttributeConfiguration"
 }
 
@@ -121,7 +121,7 @@ type PermissionSet struct {
 	Tags                            []PermissionSetTag               `json:"Tags,omitempty"`
 }
 
-func (PermissionSet) CloudControlType() string { return "AWS::SSO::PermissionSet" }
+func (PermissionSet) Type() string { return "AWS::SSO::PermissionSet" }
 
 type SignInOptionsOrigin string
 

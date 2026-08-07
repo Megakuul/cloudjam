@@ -95,7 +95,7 @@ type Environment struct {
 	VpcId                       *string                                 `json:"VpcId,omitempty"`
 }
 
-func (Environment) CloudControlType() string { return "AWS::EVS::Environment" }
+func (Environment) Type() string { return "AWS::EVS::Environment" }
 
 type CheckResult string
 

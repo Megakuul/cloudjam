@@ -23,7 +23,7 @@ type AccessSource struct {
 	UpdatedAt      *string           `json:"UpdatedAt,omitempty"`
 }
 
-func (AccessSource) CloudControlType() string { return "AWS::Route53GlobalResolver::AccessSource" }
+func (AccessSource) Type() string { return "AWS::Route53GlobalResolver::AccessSource" }
 
 type AccessTokenTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -45,7 +45,7 @@ type AccessToken struct {
 	Value            *AccessToken     `json:"Value,omitempty"`
 }
 
-func (AccessToken) CloudControlType() string { return "AWS::Route53GlobalResolver::AccessToken" }
+func (AccessToken) Type() string { return "AWS::Route53GlobalResolver::AccessToken" }
 
 type DnsViewTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -68,7 +68,7 @@ type DnsView struct {
 	UpdatedAt             *string                    `json:"UpdatedAt,omitempty"`
 }
 
-func (DnsView) CloudControlType() string { return "AWS::Route53GlobalResolver::DnsView" }
+func (DnsView) Type() string { return "AWS::Route53GlobalResolver::DnsView" }
 
 type FirewallDomainListTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -92,9 +92,7 @@ type FirewallDomainList struct {
 	UpdatedAt            *string                             `json:"UpdatedAt,omitempty"`
 }
 
-func (FirewallDomainList) CloudControlType() string {
-	return "AWS::Route53GlobalResolver::FirewallDomainList"
-}
+func (FirewallDomainList) Type() string { return "AWS::Route53GlobalResolver::FirewallDomainList" }
 
 type FirewallRule struct {
 	Action                *FirewallRuleAction           `json:"Action,omitempty"`
@@ -118,7 +116,7 @@ type FirewallRule struct {
 	UpdatedAt             *string                       `json:"UpdatedAt,omitempty"`
 }
 
-func (FirewallRule) CloudControlType() string { return "AWS::Route53GlobalResolver::FirewallRule" }
+func (FirewallRule) Type() string { return "AWS::Route53GlobalResolver::FirewallRule" }
 
 type GlobalResolverTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -143,7 +141,7 @@ type GlobalResolver struct {
 	UpdatedAt           *string                         `json:"UpdatedAt,omitempty"`
 }
 
-func (GlobalResolver) CloudControlType() string { return "AWS::Route53GlobalResolver::GlobalResolver" }
+func (GlobalResolver) Type() string { return "AWS::Route53GlobalResolver::GlobalResolver" }
 
 type HostedZoneAssociation struct {
 	CreatedAt               *string                      `json:"CreatedAt,omitempty"`
@@ -156,7 +154,7 @@ type HostedZoneAssociation struct {
 	UpdatedAt               *string                      `json:"UpdatedAt,omitempty"`
 }
 
-func (HostedZoneAssociation) CloudControlType() string {
+func (HostedZoneAssociation) Type() string {
 	return "AWS::Route53GlobalResolver::HostedZoneAssociation"
 }
 

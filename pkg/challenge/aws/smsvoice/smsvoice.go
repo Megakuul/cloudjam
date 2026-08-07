@@ -41,7 +41,7 @@ type ConfigurationSet struct {
 	Tags                   []Tag              `json:"Tags,omitempty"`
 }
 
-func (ConfigurationSet) CloudControlType() string { return "AWS::SMSVOICE::ConfigurationSet" }
+func (ConfigurationSet) Type() string { return "AWS::SMSVOICE::ConfigurationSet" }
 
 type OptOutListTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -54,7 +54,7 @@ type OptOutList struct {
 	Tags           []OptOutListTag `json:"Tags,omitempty"`
 }
 
-func (OptOutList) CloudControlType() string { return "AWS::SMSVOICE::OptOutList" }
+func (OptOutList) Type() string { return "AWS::SMSVOICE::OptOutList" }
 
 type MandatoryKeyword struct {
 	Message *string `json:"Message,omitempty"`
@@ -98,7 +98,7 @@ type PhoneNumber struct {
 	TwoWay                    *PhoneNumberTwoWay                  `json:"TwoWay,omitempty"`
 }
 
-func (PhoneNumber) CloudControlType() string { return "AWS::SMSVOICE::PhoneNumber" }
+func (PhoneNumber) Type() string { return "AWS::SMSVOICE::PhoneNumber" }
 
 type PoolMandatoryKeyword struct {
 	Message *string `json:"Message,omitempty"`
@@ -140,7 +140,7 @@ type Pool struct {
 	TwoWay                    *PoolTwoWay            `json:"TwoWay,omitempty"`
 }
 
-func (Pool) CloudControlType() string { return "AWS::SMSVOICE::Pool" }
+func (Pool) Type() string { return "AWS::SMSVOICE::Pool" }
 
 type CountryRule struct {
 	CountryCode   *string                   `json:"CountryCode,omitempty"`
@@ -166,7 +166,7 @@ type ProtectConfiguration struct {
 	Tags                      []ProtectConfigurationTag `json:"Tags,omitempty"`
 }
 
-func (ProtectConfiguration) CloudControlType() string { return "AWS::SMSVOICE::ProtectConfiguration" }
+func (ProtectConfiguration) Type() string { return "AWS::SMSVOICE::ProtectConfiguration" }
 
 type RegistrationTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -183,14 +183,14 @@ type Registration struct {
 	Tags                 []RegistrationTag               `json:"Tags,omitempty"`
 }
 
-func (Registration) CloudControlType() string { return "AWS::SMSVOICE::Registration" }
+func (Registration) Type() string { return "AWS::SMSVOICE::Registration" }
 
 type ResourcePolicy struct {
 	PolicyDocument map[string]any `json:"PolicyDocument,omitempty"`
 	ResourceArn    *string        `json:"ResourceArn,omitempty"`
 }
 
-func (ResourcePolicy) CloudControlType() string { return "AWS::SMSVOICE::ResourcePolicy" }
+func (ResourcePolicy) Type() string { return "AWS::SMSVOICE::ResourcePolicy" }
 
 type SenderIdTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -205,7 +205,7 @@ type SenderId struct {
 	Tags                      []SenderIdTag `json:"Tags,omitempty"`
 }
 
-func (SenderId) CloudControlType() string { return "AWS::SMSVOICE::SenderId" }
+func (SenderId) Type() string { return "AWS::SMSVOICE::SenderId" }
 
 type PhoneNumberNumberCapabilitiesItem string
 

@@ -13,7 +13,7 @@ type AccessKey struct {
 	UserName        *string `json:"UserName,omitempty"`
 }
 
-func (AccessKey) CloudControlType() string { return "AWS::IAM::AccessKey" }
+func (AccessKey) Type() string { return "AWS::IAM::AccessKey" }
 
 type Policy struct {
 	PolicyDocument json.RawMessage `json:"PolicyDocument,omitempty"`
@@ -28,7 +28,7 @@ type Group struct {
 	Policies          []Policy `json:"Policies,omitempty"`
 }
 
-func (Group) CloudControlType() string { return "AWS::IAM::Group" }
+func (Group) Type() string { return "AWS::IAM::Group" }
 
 type GroupPolicy struct {
 	GroupName      *string        `json:"GroupName,omitempty"`
@@ -36,7 +36,7 @@ type GroupPolicy struct {
 	PolicyName     *string        `json:"PolicyName,omitempty"`
 }
 
-func (GroupPolicy) CloudControlType() string { return "AWS::IAM::GroupPolicy" }
+func (GroupPolicy) Type() string { return "AWS::IAM::GroupPolicy" }
 
 type InstanceProfile struct {
 	Arn                 *string  `json:"Arn,omitempty"`
@@ -45,7 +45,7 @@ type InstanceProfile struct {
 	Roles               []string `json:"Roles,omitempty"`
 }
 
-func (InstanceProfile) CloudControlType() string { return "AWS::IAM::InstanceProfile" }
+func (InstanceProfile) Type() string { return "AWS::IAM::InstanceProfile" }
 
 type ManagedPolicy struct {
 	AttachmentCount               *int            `json:"AttachmentCount,omitempty"`
@@ -65,7 +65,7 @@ type ManagedPolicy struct {
 	Users                         []string        `json:"Users,omitempty"`
 }
 
-func (ManagedPolicy) CloudControlType() string { return "AWS::IAM::ManagedPolicy" }
+func (ManagedPolicy) Type() string { return "AWS::IAM::ManagedPolicy" }
 
 type Tag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -80,7 +80,7 @@ type OIDCProvider struct {
 	Url            *string  `json:"Url,omitempty"`
 }
 
-func (OIDCProvider) CloudControlType() string { return "AWS::IAM::OIDCProvider" }
+func (OIDCProvider) Type() string { return "AWS::IAM::OIDCProvider" }
 
 type PolicyPolicy struct {
 	Groups         []string        `json:"Groups,omitempty"`
@@ -91,7 +91,7 @@ type PolicyPolicy struct {
 	Users          []string        `json:"Users,omitempty"`
 }
 
-func (PolicyPolicy) CloudControlType() string { return "AWS::IAM::Policy" }
+func (PolicyPolicy) Type() string { return "AWS::IAM::Policy" }
 
 type RolePolicy struct {
 	PolicyDocument json.RawMessage `json:"PolicyDocument,omitempty"`
@@ -117,7 +117,7 @@ type Role struct {
 	Tags                     []RoleTag       `json:"Tags,omitempty"`
 }
 
-func (Role) CloudControlType() string { return "AWS::IAM::Role" }
+func (Role) Type() string { return "AWS::IAM::Role" }
 
 type RolePolicyRolePolicy struct {
 	PolicyDocument map[string]any `json:"PolicyDocument,omitempty"`
@@ -125,7 +125,7 @@ type RolePolicyRolePolicy struct {
 	RoleName       *string        `json:"RoleName,omitempty"`
 }
 
-func (RolePolicyRolePolicy) CloudControlType() string { return "AWS::IAM::RolePolicy" }
+func (RolePolicyRolePolicy) Type() string { return "AWS::IAM::RolePolicy" }
 
 type SAMLPrivateKey struct {
 	KeyId     *string `json:"KeyId,omitempty"`
@@ -149,7 +149,7 @@ type SAMLProvider struct {
 	Tags                    []SAMLProviderTag                    `json:"Tags,omitempty"`
 }
 
-func (SAMLProvider) CloudControlType() string { return "AWS::IAM::SAMLProvider" }
+func (SAMLProvider) Type() string { return "AWS::IAM::SAMLProvider" }
 
 type ServerCertificateTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -166,7 +166,7 @@ type ServerCertificate struct {
 	Tags                  []ServerCertificateTag `json:"Tags,omitempty"`
 }
 
-func (ServerCertificate) CloudControlType() string { return "AWS::IAM::ServerCertificate" }
+func (ServerCertificate) Type() string { return "AWS::IAM::ServerCertificate" }
 
 type ServiceLinkedRole struct {
 	AWSServiceName *string `json:"AWSServiceName,omitempty"`
@@ -175,7 +175,7 @@ type ServiceLinkedRole struct {
 	RoleName       *string `json:"RoleName,omitempty"`
 }
 
-func (ServiceLinkedRole) CloudControlType() string { return "AWS::IAM::ServiceLinkedRole" }
+func (ServiceLinkedRole) Type() string { return "AWS::IAM::ServiceLinkedRole" }
 
 type LoginProfile struct {
 	Password              *string `json:"Password,omitempty"`
@@ -204,7 +204,7 @@ type User struct {
 	UserName            *string       `json:"UserName,omitempty"`
 }
 
-func (User) CloudControlType() string { return "AWS::IAM::User" }
+func (User) Type() string { return "AWS::IAM::User" }
 
 type UserPolicyUserPolicy struct {
 	PolicyDocument map[string]any `json:"PolicyDocument,omitempty"`
@@ -212,7 +212,7 @@ type UserPolicyUserPolicy struct {
 	UserName       *string        `json:"UserName,omitempty"`
 }
 
-func (UserPolicyUserPolicy) CloudControlType() string { return "AWS::IAM::UserPolicy" }
+func (UserPolicyUserPolicy) Type() string { return "AWS::IAM::UserPolicy" }
 
 type UserToGroupAddition struct {
 	GroupName *string  `json:"GroupName,omitempty"`
@@ -220,7 +220,7 @@ type UserToGroupAddition struct {
 	Users     []string `json:"Users,omitempty"`
 }
 
-func (UserToGroupAddition) CloudControlType() string { return "AWS::IAM::UserToGroupAddition" }
+func (UserToGroupAddition) Type() string { return "AWS::IAM::UserToGroupAddition" }
 
 type VirtualMFADeviceTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -235,7 +235,7 @@ type VirtualMFADevice struct {
 	VirtualMfaDeviceName *string               `json:"VirtualMfaDeviceName,omitempty"`
 }
 
-func (VirtualMFADevice) CloudControlType() string { return "AWS::IAM::VirtualMFADevice" }
+func (VirtualMFADevice) Type() string { return "AWS::IAM::VirtualMFADevice" }
 
 type SAMLProviderAssertionEncryptionMode string
 

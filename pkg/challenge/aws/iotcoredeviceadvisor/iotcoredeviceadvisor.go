@@ -29,4 +29,4 @@ type SuiteDefinition struct {
 	Tags                         []Tag                                        `json:"Tags,omitempty"`
 }
 
-func (SuiteDefinition) CloudControlType() string { return "AWS::IoTCoreDeviceAdvisor::SuiteDefinition" }
+func (SuiteDefinition) Type() string { return "AWS::IoTCoreDeviceAdvisor::SuiteDefinition" }

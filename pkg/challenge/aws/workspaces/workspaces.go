@@ -23,7 +23,7 @@ type ConnectionAlias struct {
 	Tags                 []Tag                                `json:"Tags,omitempty"`
 }
 
-func (ConnectionAlias) CloudControlType() string { return "AWS::WorkSpaces::ConnectionAlias" }
+func (ConnectionAlias) Type() string { return "AWS::WorkSpaces::ConnectionAlias" }
 
 type WorkspaceTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -51,7 +51,7 @@ type Workspace struct {
 	WorkspaceProperties         *WorkspaceProperties `json:"WorkspaceProperties,omitempty"`
 }
 
-func (Workspace) CloudControlType() string { return "AWS::WorkSpaces::Workspace" }
+func (Workspace) Type() string { return "AWS::WorkSpaces::Workspace" }
 
 type WorkspaceIpGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -72,7 +72,7 @@ type WorkspaceIpGroup struct {
 	UserRules []IpRuleItem          `json:"UserRules,omitempty"`
 }
 
-func (WorkspaceIpGroup) CloudControlType() string { return "AWS::WorkSpaces::WorkspaceIpGroup" }
+func (WorkspaceIpGroup) Type() string { return "AWS::WorkSpaces::WorkspaceIpGroup" }
 
 type ApplicationSettings struct {
 	SettingsGroup *string                    `json:"SettingsGroup,omitempty"`
@@ -109,7 +109,7 @@ type WorkspacesPool struct {
 	TimeoutSettings     *TimeoutSettings     `json:"TimeoutSettings,omitempty"`
 }
 
-func (WorkspacesPool) CloudControlType() string { return "AWS::WorkSpaces::WorkspacesPool" }
+func (WorkspacesPool) Type() string { return "AWS::WorkSpaces::WorkspacesPool" }
 
 type ConnectionAliasAssociationAssociationStatus string
 

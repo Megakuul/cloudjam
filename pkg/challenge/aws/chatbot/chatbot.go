@@ -34,7 +34,7 @@ type CustomAction struct {
 	Tags            []Tag                    `json:"Tags,omitempty"`
 }
 
-func (CustomAction) CloudControlType() string { return "AWS::Chatbot::CustomAction" }
+func (CustomAction) Type() string { return "AWS::Chatbot::CustomAction" }
 
 type MicrosoftTeamsChannelConfigurationTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -57,7 +57,7 @@ type MicrosoftTeamsChannelConfiguration struct {
 	UserRoleRequired          *bool                                   `json:"UserRoleRequired,omitempty"`
 }
 
-func (MicrosoftTeamsChannelConfiguration) CloudControlType() string {
+func (MicrosoftTeamsChannelConfiguration) Type() string {
 	return "AWS::Chatbot::MicrosoftTeamsChannelConfiguration"
 }
 
@@ -80,9 +80,7 @@ type SlackChannelConfiguration struct {
 	UserRoleRequired          *bool                          `json:"UserRoleRequired,omitempty"`
 }
 
-func (SlackChannelConfiguration) CloudControlType() string {
-	return "AWS::Chatbot::SlackChannelConfiguration"
-}
+func (SlackChannelConfiguration) Type() string { return "AWS::Chatbot::SlackChannelConfiguration" }
 
 type CustomActionAttachmentCriteriaOperator string
 

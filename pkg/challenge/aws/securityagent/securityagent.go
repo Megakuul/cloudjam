@@ -102,7 +102,7 @@ type AgentSpace struct {
 	UpdatedAt           *string              `json:"UpdatedAt,omitempty"`
 }
 
-func (AgentSpace) CloudControlType() string { return "AWS::SecurityAgent::AgentSpace" }
+func (AgentSpace) Type() string { return "AWS::SecurityAgent::AgentSpace" }
 
 type IdCConfiguration struct {
 	IdCApplicationArn *string `json:"IdCApplicationArn,omitempty"`
@@ -124,7 +124,7 @@ type Application struct {
 	Tags             []ApplicationTag  `json:"Tags,omitempty"`
 }
 
-func (Application) CloudControlType() string { return "AWS::SecurityAgent::Application" }
+func (Application) Type() string { return "AWS::SecurityAgent::Application" }
 
 type Authentication struct {
 	ProviderType *AuthenticationProviderType `json:"ProviderType,omitempty"`
@@ -209,7 +209,7 @@ type Pentest struct {
 	VpcConfig               *PentestVpcConfig        `json:"VpcConfig,omitempty"`
 }
 
-func (Pentest) CloudControlType() string { return "AWS::SecurityAgent::Pentest" }
+func (Pentest) Type() string { return "AWS::SecurityAgent::Pentest" }
 
 type SecurityRequirement struct {
 	Description *string `json:"Description,omitempty"`
@@ -234,9 +234,7 @@ type SecurityRequirementPack struct {
 	Tags                 []SecurityRequirementPackTag   `json:"Tags,omitempty"`
 }
 
-func (SecurityRequirementPack) CloudControlType() string {
-	return "AWS::SecurityAgent::SecurityRequirementPack"
-}
+func (SecurityRequirementPack) Type() string { return "AWS::SecurityAgent::SecurityRequirementPack" }
 
 type TargetDomainTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -272,7 +270,7 @@ type TargetDomain struct {
 	VerifiedAt               *string                         `json:"VerifiedAt,omitempty"`
 }
 
-func (TargetDomain) CloudControlType() string { return "AWS::SecurityAgent::TargetDomain" }
+func (TargetDomain) Type() string { return "AWS::SecurityAgent::TargetDomain" }
 
 type AuthenticationProviderType string
 

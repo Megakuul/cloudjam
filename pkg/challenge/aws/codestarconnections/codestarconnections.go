@@ -18,7 +18,7 @@ type Connection struct {
 	Tags             []Tag   `json:"Tags,omitempty"`
 }
 
-func (Connection) CloudControlType() string { return "AWS::CodeStarConnections::Connection" }
+func (Connection) Type() string { return "AWS::CodeStarConnections::Connection" }
 
 type RepositoryLinkTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -36,7 +36,7 @@ type RepositoryLink struct {
 	Tags              []RepositoryLinkTag         `json:"Tags,omitempty"`
 }
 
-func (RepositoryLink) CloudControlType() string { return "AWS::CodeStarConnections::RepositoryLink" }
+func (RepositoryLink) Type() string { return "AWS::CodeStarConnections::RepositoryLink" }
 
 type SyncConfiguration struct {
 	Branch                  *string                                   `json:"Branch,omitempty"`
@@ -52,9 +52,7 @@ type SyncConfiguration struct {
 	TriggerResourceUpdateOn *SyncConfigurationTriggerResourceUpdateOn `json:"TriggerResourceUpdateOn,omitempty"`
 }
 
-func (SyncConfiguration) CloudControlType() string {
-	return "AWS::CodeStarConnections::SyncConfiguration"
-}
+func (SyncConfiguration) Type() string { return "AWS::CodeStarConnections::SyncConfiguration" }
 
 type RepositoryLinkProviderType string
 

@@ -45,9 +45,7 @@ type CisScanConfiguration struct {
 	Targets       *CisTargets       `json:"Targets,omitempty"`
 }
 
-func (CisScanConfiguration) CloudControlType() string {
-	return "AWS::InspectorV2::CisScanConfiguration"
-}
+func (CisScanConfiguration) Type() string { return "AWS::InspectorV2::CisScanConfiguration" }
 
 type CreateGitLabSelfManagedIntegrationDetail struct {
 	AccessToken *string `json:"accessToken,omitempty"`
@@ -86,9 +84,7 @@ type CodeSecurityIntegration struct {
 	UpdateIntegrationDetails *UpdateDetails     `json:"UpdateIntegrationDetails,omitempty"`
 }
 
-func (CodeSecurityIntegration) CloudControlType() string {
-	return "AWS::InspectorV2::CodeSecurityIntegration"
-}
+func (CodeSecurityIntegration) Type() string { return "AWS::InspectorV2::CodeSecurityIntegration" }
 
 type ContinuousIntegrationScanConfiguration struct {
 	SupportedEvents []ContinuousIntegrationScanEvent `json:"supportedEvents,omitempty"`
@@ -118,7 +114,7 @@ type CodeSecurityScanConfiguration struct {
 	Tags          map[string]string                                           `json:"Tags,omitempty"`
 }
 
-func (CodeSecurityScanConfiguration) CloudControlType() string {
+func (CodeSecurityScanConfiguration) Type() string {
 	return "AWS::InspectorV2::CodeSecurityScanConfiguration"
 }
 
@@ -213,7 +209,7 @@ type Filter struct {
 	Tags           map[string]string `json:"Tags,omitempty"`
 }
 
-func (Filter) CloudControlType() string { return "AWS::InspectorV2::Filter" }
+func (Filter) Type() string { return "AWS::InspectorV2::Filter" }
 
 type Day string
 

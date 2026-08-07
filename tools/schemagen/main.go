@@ -335,7 +335,7 @@ func (g *generator) render() []byte {
 		}
 		fmt.Fprintf(out, "}\n\n")
 		if o.typeName != "" {
-			fmt.Fprintf(out, "func (%s) CloudControlType() string { return %q }\n\n", o.name, o.typeName)
+			fmt.Fprintf(out, "func (%s) Type() string { return %q }\n\n", o.name, o.typeName)
 		}
 	}
 	for _, e := range g.enums {

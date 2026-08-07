@@ -30,7 +30,7 @@ type AppBlock struct {
 	Tags                   []json.RawMessage `json:"Tags,omitempty"`
 }
 
-func (AppBlock) CloudControlType() string { return "AWS::AppStream::AppBlock" }
+func (AppBlock) Type() string { return "AWS::AppStream::AppBlock" }
 
 type AccessEndpoint struct {
 	EndpointType *string `json:"EndpointType,omitempty"`
@@ -63,7 +63,7 @@ type AppBlockBuilder struct {
 	VpcConfig                   *VpcConfig       `json:"VpcConfig,omitempty"`
 }
 
-func (AppBlockBuilder) CloudControlType() string { return "AWS::AppStream::AppBlockBuilder" }
+func (AppBlockBuilder) Type() string { return "AWS::AppStream::AppBlockBuilder" }
 
 type ApplicationS3Location struct {
 	S3Bucket *string `json:"S3Bucket,omitempty"`
@@ -87,7 +87,7 @@ type Application struct {
 	WorkingDirectory   *string                `json:"WorkingDirectory,omitempty"`
 }
 
-func (Application) CloudControlType() string { return "AWS::AppStream::Application" }
+func (Application) Type() string { return "AWS::AppStream::Application" }
 
 type ApplicationEntitlementAssociation struct {
 	ApplicationIdentifier *string `json:"ApplicationIdentifier,omitempty"`
@@ -95,7 +95,7 @@ type ApplicationEntitlementAssociation struct {
 	StackName             *string `json:"StackName,omitempty"`
 }
 
-func (ApplicationEntitlementAssociation) CloudControlType() string {
+func (ApplicationEntitlementAssociation) Type() string {
 	return "AWS::AppStream::ApplicationEntitlementAssociation"
 }
 
@@ -104,7 +104,7 @@ type ApplicationFleetAssociation struct {
 	FleetName      *string `json:"FleetName,omitempty"`
 }
 
-func (ApplicationFleetAssociation) CloudControlType() string {
+func (ApplicationFleetAssociation) Type() string {
 	return "AWS::AppStream::ApplicationFleetAssociation"
 }
 
@@ -125,7 +125,7 @@ type DirectoryConfig struct {
 	ServiceAccountCredentials            *ServiceAccountCredentials      `json:"ServiceAccountCredentials,omitempty"`
 }
 
-func (DirectoryConfig) CloudControlType() string { return "AWS::AppStream::DirectoryConfig" }
+func (DirectoryConfig) Type() string { return "AWS::AppStream::DirectoryConfig" }
 
 type Attribute struct {
 	Name  *string `json:"Name,omitempty"`
@@ -142,7 +142,7 @@ type Entitlement struct {
 	StackName        *string     `json:"StackName,omitempty"`
 }
 
-func (Entitlement) CloudControlType() string { return "AWS::AppStream::Entitlement" }
+func (Entitlement) Type() string { return "AWS::AppStream::Entitlement" }
 
 type ComputeCapacity struct {
 	DesiredInstances *int `json:"DesiredInstances,omitempty"`
@@ -201,7 +201,7 @@ type Fleet struct {
 	VpcConfig                      *FleetVpcConfig  `json:"VpcConfig,omitempty"`
 }
 
-func (Fleet) CloudControlType() string { return "AWS::AppStream::Fleet" }
+func (Fleet) Type() string { return "AWS::AppStream::Fleet" }
 
 type ImageBuilderAccessEndpoint struct {
 	EndpointType *string `json:"EndpointType,omitempty"`
@@ -247,7 +247,7 @@ type ImageBuilder struct {
 	VpcConfig                   *ImageBuilderVpcConfig       `json:"VpcConfig,omitempty"`
 }
 
-func (ImageBuilder) CloudControlType() string { return "AWS::AppStream::ImageBuilder" }
+func (ImageBuilder) Type() string { return "AWS::AppStream::ImageBuilder" }
 
 type StackAccessEndpoint struct {
 	EndpointType *string `json:"EndpointType,omitempty"`
@@ -323,7 +323,7 @@ type Stack struct {
 	UserSettings                []UserSetting                `json:"UserSettings,omitempty"`
 }
 
-func (Stack) CloudControlType() string { return "AWS::AppStream::Stack" }
+func (Stack) Type() string { return "AWS::AppStream::Stack" }
 
 type StackFleetAssociation struct {
 	FleetName *string `json:"FleetName,omitempty"`
@@ -331,9 +331,7 @@ type StackFleetAssociation struct {
 	StackName *string `json:"StackName,omitempty"`
 }
 
-func (StackFleetAssociation) CloudControlType() string {
-	return "AWS::AppStream::StackFleetAssociation"
-}
+func (StackFleetAssociation) Type() string { return "AWS::AppStream::StackFleetAssociation" }
 
 type StackUserAssociation struct {
 	AuthenticationType    *string `json:"AuthenticationType,omitempty"`
@@ -342,7 +340,7 @@ type StackUserAssociation struct {
 	UserName              *string `json:"UserName,omitempty"`
 }
 
-func (StackUserAssociation) CloudControlType() string { return "AWS::AppStream::StackUserAssociation" }
+func (StackUserAssociation) Type() string { return "AWS::AppStream::StackUserAssociation" }
 
 type User struct {
 	Arn                *string `json:"Arn,omitempty"`
@@ -353,4 +351,4 @@ type User struct {
 	UserName           *string `json:"UserName,omitempty"`
 }
 
-func (User) CloudControlType() string { return "AWS::AppStream::User" }
+func (User) Type() string { return "AWS::AppStream::User" }

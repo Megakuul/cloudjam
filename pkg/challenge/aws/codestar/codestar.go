@@ -25,4 +25,4 @@ type GitHubRepository struct {
 	RepositoryOwner       *string `json:"RepositoryOwner,omitempty"`
 }
 
-func (GitHubRepository) CloudControlType() string { return "AWS::CodeStar::GitHubRepository" }
+func (GitHubRepository) Type() string { return "AWS::CodeStar::GitHubRepository" }

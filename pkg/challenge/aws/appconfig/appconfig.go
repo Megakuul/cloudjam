@@ -15,7 +15,7 @@ type Application struct {
 	Tags          []Tags  `json:"Tags,omitempty"`
 }
 
-func (Application) CloudControlType() string { return "AWS::AppConfig::Application" }
+func (Application) Type() string { return "AWS::AppConfig::Application" }
 
 type ConfigurationProfileTags struct {
 	Key   *string `json:"Key,omitempty"`
@@ -42,7 +42,7 @@ type ConfigurationProfile struct {
 	Validators              []Validators                                 `json:"Validators,omitempty"`
 }
 
-func (ConfigurationProfile) CloudControlType() string { return "AWS::AppConfig::ConfigurationProfile" }
+func (ConfigurationProfile) Type() string { return "AWS::AppConfig::ConfigurationProfile" }
 
 type DynamicExtensionParameters struct {
 	ExtensionReference *string `json:"ExtensionReference,omitempty"`
@@ -69,7 +69,7 @@ type Deployment struct {
 	Tags                       []Tag                        `json:"Tags,omitempty"`
 }
 
-func (Deployment) CloudControlType() string { return "AWS::AppConfig::Deployment" }
+func (Deployment) Type() string { return "AWS::AppConfig::Deployment" }
 
 type DeploymentStrategyTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -88,7 +88,7 @@ type DeploymentStrategy struct {
 	Tags                        []DeploymentStrategyTag        `json:"Tags,omitempty"`
 }
 
-func (DeploymentStrategy) CloudControlType() string { return "AWS::AppConfig::DeploymentStrategy" }
+func (DeploymentStrategy) Type() string { return "AWS::AppConfig::DeploymentStrategy" }
 
 type Monitor struct {
 	AlarmArn     *string `json:"AlarmArn,omitempty"`
@@ -110,7 +110,50 @@ type Environment struct {
 	Tags                    []EnvironmentTag                    `json:"Tags,omitempty"`
 }
 
-func (Environment) CloudControlType() string { return "AWS::AppConfig::Environment" }
+func (Environment) Type() string { return "AWS::AppConfig::Environment" }
+
+type AttributeValue struct {
+	BooleanValue *bool     `json:"BooleanValue,omitempty"`
+	NumberArray  []float64 `json:"NumberArray,omitempty"`
+	NumberValue  *float64  `json:"NumberValue,omitempty"`
+	StringArray  []string  `json:"StringArray,omitempty"`
+	StringValue  *string   `json:"StringValue,omitempty"`
+}
+
+type Treatment struct {
+	AttributeValues map[string]AttributeValue `json:"AttributeValues,omitempty"`
+	Description     *string                   `json:"Description,omitempty"`
+	Enabled         *bool                     `json:"Enabled,omitempty"`
+	Key             *string                   `json:"Key,omitempty"`
+	Weight          *float64                  `json:"Weight,omitempty"`
+}
+
+type ExperimentDefinitionTag struct {
+	Key   *string `json:"Key,omitempty"`
+	Value *string `json:"Value,omitempty"`
+}
+
+type ExperimentDefinition struct {
+	ApplicationId                  *string                     `json:"ApplicationId,omitempty"`
+	ApplicationIdentifier          *string                     `json:"ApplicationIdentifier,omitempty"`
+	AudienceDescription            *string                     `json:"AudienceDescription,omitempty"`
+	AudienceRule                   *string                     `json:"AudienceRule,omitempty"`
+	ConfigurationProfileIdentifier *string                     `json:"ConfigurationProfileIdentifier,omitempty"`
+	Control                        *Treatment                  `json:"Control,omitempty"`
+	CreatedAt                      *string                     `json:"CreatedAt,omitempty"`
+	EnvironmentIdentifier          *string                     `json:"EnvironmentIdentifier,omitempty"`
+	FlagKey                        *string                     `json:"FlagKey,omitempty"`
+	Hypothesis                     *string                     `json:"Hypothesis,omitempty"`
+	Id                             *string                     `json:"Id,omitempty"`
+	LaunchCriteria                 *string                     `json:"LaunchCriteria,omitempty"`
+	Name                           *string                     `json:"Name,omitempty"`
+	Status                         *ExperimentDefinitionStatus `json:"Status,omitempty"`
+	Tags                           []ExperimentDefinitionTag   `json:"Tags,omitempty"`
+	Treatments                     []Treatment                 `json:"Treatments,omitempty"`
+	UpdatedAt                      *string                     `json:"UpdatedAt,omitempty"`
+}
+
+func (ExperimentDefinition) Type() string { return "AWS::AppConfig::ExperimentDefinition" }
 
 type Action struct {
 	Description *string `json:"Description,omitempty"`
@@ -142,7 +185,7 @@ type Extension struct {
 	VersionNumber       *int                 `json:"VersionNumber,omitempty"`
 }
 
-func (Extension) CloudControlType() string { return "AWS::AppConfig::Extension" }
+func (Extension) Type() string { return "AWS::AppConfig::Extension" }
 
 type ExtensionAssociationTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -161,7 +204,7 @@ type ExtensionAssociation struct {
 	Tags                   []ExtensionAssociationTag `json:"Tags,omitempty"`
 }
 
-func (ExtensionAssociation) CloudControlType() string { return "AWS::AppConfig::ExtensionAssociation" }
+func (ExtensionAssociation) Type() string { return "AWS::AppConfig::ExtensionAssociation" }
 
 type HostedConfigurationVersion struct {
 	ApplicationId          *string `json:"ApplicationId,omitempty"`
@@ -174,9 +217,7 @@ type HostedConfigurationVersion struct {
 	VersionNumber          *string `json:"VersionNumber,omitempty"`
 }
 
-func (HostedConfigurationVersion) CloudControlType() string {
-	return "AWS::AppConfig::HostedConfigurationVersion"
-}
+func (HostedConfigurationVersion) Type() string { return "AWS::AppConfig::HostedConfigurationVersion" }
 
 type ConfigurationProfileDeletionProtectionCheck string
 
@@ -218,4 +259,12 @@ const (
 	EnvironmentDeletionProtectionCheckACCOUNTDEFAULT EnvironmentDeletionProtectionCheck = "ACCOUNT_DEFAULT"
 	EnvironmentDeletionProtectionCheckAPPLY          EnvironmentDeletionProtectionCheck = "APPLY"
 	EnvironmentDeletionProtectionCheckBYPASS         EnvironmentDeletionProtectionCheck = "BYPASS"
+)
+
+type ExperimentDefinitionStatus string
+
+const (
+	ExperimentDefinitionStatusACTIVE   ExperimentDefinitionStatus = "ACTIVE"
+	ExperimentDefinitionStatusIDLE     ExperimentDefinitionStatus = "IDLE"
+	ExperimentDefinitionStatusARCHIVED ExperimentDefinitionStatus = "ARCHIVED"
 )

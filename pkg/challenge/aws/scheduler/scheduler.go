@@ -110,7 +110,7 @@ type Schedule struct {
 	Target                     *Target             `json:"Target,omitempty"`
 }
 
-func (Schedule) CloudControlType() string { return "AWS::Scheduler::Schedule" }
+func (Schedule) Type() string { return "AWS::Scheduler::Schedule" }
 
 type Tag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -126,7 +126,7 @@ type ScheduleGroup struct {
 	Tags                 []Tag               `json:"Tags,omitempty"`
 }
 
-func (ScheduleGroup) CloudControlType() string { return "AWS::Scheduler::ScheduleGroup" }
+func (ScheduleGroup) Type() string { return "AWS::Scheduler::ScheduleGroup" }
 
 type FlexibleTimeWindowMode string
 

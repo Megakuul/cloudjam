@@ -63,7 +63,7 @@ type CacheCluster struct {
 	VpcSecurityGroupIds        []string                          `json:"VpcSecurityGroupIds,omitempty"`
 }
 
-func (CacheCluster) CloudControlType() string { return "AWS::ElastiCache::CacheCluster" }
+func (CacheCluster) Type() string { return "AWS::ElastiCache::CacheCluster" }
 
 type GlobalReplicationGroupMember struct {
 	ReplicationGroupId     *string                           `json:"ReplicationGroupId,omitempty"`
@@ -97,9 +97,7 @@ type GlobalReplicationGroup struct {
 	Status                            *string                        `json:"Status,omitempty"`
 }
 
-func (GlobalReplicationGroup) CloudControlType() string {
-	return "AWS::ElastiCache::GlobalReplicationGroup"
-}
+func (GlobalReplicationGroup) Type() string { return "AWS::ElastiCache::GlobalReplicationGroup" }
 
 type ParameterGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -114,7 +112,7 @@ type ParameterGroup struct {
 	Tags                      []ParameterGroupTag `json:"Tags,omitempty"`
 }
 
-func (ParameterGroup) CloudControlType() string { return "AWS::ElastiCache::ParameterGroup" }
+func (ParameterGroup) Type() string { return "AWS::ElastiCache::ParameterGroup" }
 
 type ReplicationGroupEndpoint struct {
 	Address *string `json:"Address,omitempty"`
@@ -209,7 +207,7 @@ type ReplicationGroup struct {
 	UserGroupIds                []string                                          `json:"UserGroupIds,omitempty"`
 }
 
-func (ReplicationGroup) CloudControlType() string { return "AWS::ElastiCache::ReplicationGroup" }
+func (ReplicationGroup) Type() string { return "AWS::ElastiCache::ReplicationGroup" }
 
 type SecurityGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -222,7 +220,7 @@ type SecurityGroup struct {
 	Tags        []SecurityGroupTag `json:"Tags,omitempty"`
 }
 
-func (SecurityGroup) CloudControlType() string { return "AWS::ElastiCache::SecurityGroup" }
+func (SecurityGroup) Type() string { return "AWS::ElastiCache::SecurityGroup" }
 
 type SecurityGroupIngress struct {
 	CacheSecurityGroupName  *string `json:"CacheSecurityGroupName,omitempty"`
@@ -231,9 +229,7 @@ type SecurityGroupIngress struct {
 	Id                      *string `json:"Id,omitempty"`
 }
 
-func (SecurityGroupIngress) CloudControlType() string {
-	return "AWS::ElastiCache::SecurityGroupIngress"
-}
+func (SecurityGroupIngress) Type() string { return "AWS::ElastiCache::SecurityGroupIngress" }
 
 type DataStorage struct {
 	Maximum *int             `json:"Maximum,omitempty"`
@@ -284,7 +280,7 @@ type ServerlessCache struct {
 	UserGroupId            *string                  `json:"UserGroupId,omitempty"`
 }
 
-func (ServerlessCache) CloudControlType() string { return "AWS::ElastiCache::ServerlessCache" }
+func (ServerlessCache) Type() string { return "AWS::ElastiCache::ServerlessCache" }
 
 type SubnetGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -298,7 +294,7 @@ type SubnetGroup struct {
 	Tags                 []SubnetGroupTag `json:"Tags,omitempty"`
 }
 
-func (SubnetGroup) CloudControlType() string { return "AWS::ElastiCache::SubnetGroup" }
+func (SubnetGroup) Type() string { return "AWS::ElastiCache::SubnetGroup" }
 
 type UserAuthenticationMode struct {
 	Passwords []string                    `json:"Passwords,omitempty"`
@@ -323,7 +319,7 @@ type User struct {
 	UserName           *string                 `json:"UserName,omitempty"`
 }
 
-func (User) CloudControlType() string { return "AWS::ElastiCache::User" }
+func (User) Type() string { return "AWS::ElastiCache::User" }
 
 type UserGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -339,7 +335,7 @@ type UserGroup struct {
 	UserIds     []string         `json:"UserIds,omitempty"`
 }
 
-func (UserGroup) CloudControlType() string { return "AWS::ElastiCache::UserGroup" }
+func (UserGroup) Type() string { return "AWS::ElastiCache::UserGroup" }
 
 type GlobalReplicationGroupMemberRole string
 

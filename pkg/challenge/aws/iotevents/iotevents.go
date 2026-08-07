@@ -140,7 +140,7 @@ type AlarmModel struct {
 	Tags                  []Tag              `json:"Tags,omitempty"`
 }
 
-func (AlarmModel) CloudControlType() string { return "AWS::IoTEvents::AlarmModel" }
+func (AlarmModel) Type() string { return "AWS::IoTEvents::AlarmModel" }
 
 type ClearTimer struct {
 	TimerName *string `json:"TimerName,omitempty"`
@@ -311,7 +311,7 @@ type DetectorModel struct {
 	Tags                     []DetectorModelTag             `json:"Tags,omitempty"`
 }
 
-func (DetectorModel) CloudControlType() string { return "AWS::IoTEvents::DetectorModel" }
+func (DetectorModel) Type() string { return "AWS::IoTEvents::DetectorModel" }
 
 type Attribute struct {
 	JsonPath *string `json:"JsonPath,omitempty"`
@@ -333,7 +333,7 @@ type Input struct {
 	Tags             []InputTag       `json:"Tags,omitempty"`
 }
 
-func (Input) CloudControlType() string { return "AWS::IoTEvents::Input" }
+func (Input) Type() string { return "AWS::IoTEvents::Input" }
 
 type SimpleRuleComparisonOperator string
 

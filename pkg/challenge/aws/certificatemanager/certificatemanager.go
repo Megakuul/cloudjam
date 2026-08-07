@@ -12,7 +12,7 @@ type Account struct {
 	ExpiryEventsConfiguration *ExpiryEventsConfiguration `json:"ExpiryEventsConfiguration,omitempty"`
 }
 
-func (Account) CloudControlType() string { return "AWS::CertificateManager::Account" }
+func (Account) Type() string { return "AWS::CertificateManager::Account" }
 
 type DomainScope struct {
 	ExactDomain *string `json:"ExactDomain,omitempty"`
@@ -42,9 +42,7 @@ type AcmeDomainValidation struct {
 	Tags                 []AcmeDomainValidationTagsItem `json:"Tags,omitempty"`
 }
 
-func (AcmeDomainValidation) CloudControlType() string {
-	return "AWS::CertificateManager::AcmeDomainValidation"
-}
+func (AcmeDomainValidation) Type() string { return "AWS::CertificateManager::AcmeDomainValidation" }
 
 type PublicCertificateAuthority struct {
 	AllowedKeyAlgorithms []string `json:"AllowedKeyAlgorithms,omitempty"`
@@ -74,7 +72,7 @@ type AcmeEndpoint struct {
 	Tags                  []AcmeEndpointTagsItem `json:"Tags,omitempty"`
 }
 
-func (AcmeEndpoint) CloudControlType() string { return "AWS::CertificateManager::AcmeEndpoint" }
+func (AcmeEndpoint) Type() string { return "AWS::CertificateManager::AcmeEndpoint" }
 
 type Expiration struct {
 	Type  *string `json:"Type,omitempty"`
@@ -94,7 +92,7 @@ type AcmeExternalAccountBinding struct {
 	Tags                          []AcmeExternalAccountBindingTagsItem `json:"Tags,omitempty"`
 }
 
-func (AcmeExternalAccountBinding) CloudControlType() string {
+func (AcmeExternalAccountBinding) Type() string {
 	return "AWS::CertificateManager::AcmeExternalAccountBinding"
 }
 
@@ -122,7 +120,7 @@ type Certificate struct {
 	ValidationMethod                         *string                                              `json:"ValidationMethod,omitempty"`
 }
 
-func (Certificate) CloudControlType() string { return "AWS::CertificateManager::Certificate" }
+func (Certificate) Type() string { return "AWS::CertificateManager::Certificate" }
 
 type CertificateCertificateExport string
 

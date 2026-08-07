@@ -56,7 +56,7 @@ type Environment struct {
 	WorkerReplacementStrategy    *WorkerReplacementStrategy `json:"WorkerReplacementStrategy,omitempty"`
 }
 
-func (Environment) CloudControlType() string { return "AWS::MWAA::Environment" }
+func (Environment) Type() string { return "AWS::MWAA::Environment" }
 
 type EndpointManagement string
 

@@ -60,7 +60,7 @@ type Fleet struct {
 	Tags                    []Tag                      `json:"Tags,omitempty"`
 }
 
-func (Fleet) CloudControlType() string { return "AWS::CodeBuild::Fleet" }
+func (Fleet) Type() string { return "AWS::CodeBuild::Fleet" }
 
 type Artifacts struct {
 	ArtifactIdentifier   *string `json:"ArtifactIdentifier,omitempty"`
@@ -245,7 +245,7 @@ type Project struct {
 	VpcConfig               *ProjectVpcConfig           `json:"VpcConfig,omitempty"`
 }
 
-func (Project) CloudControlType() string { return "AWS::CodeBuild::Project" }
+func (Project) Type() string { return "AWS::CodeBuild::Project" }
 
 type S3ReportExportConfig struct {
 	Bucket             *string `json:"Bucket,omitempty"`
@@ -276,7 +276,7 @@ type ReportGroup struct {
 	Type          *string             `json:"Type,omitempty"`
 }
 
-func (ReportGroup) CloudControlType() string { return "AWS::CodeBuild::ReportGroup" }
+func (ReportGroup) Type() string { return "AWS::CodeBuild::ReportGroup" }
 
 type SourceCredential struct {
 	AuthType   *string `json:"AuthType,omitempty"`
@@ -286,7 +286,7 @@ type SourceCredential struct {
 	Username   *string `json:"Username,omitempty"`
 }
 
-func (SourceCredential) CloudControlType() string { return "AWS::CodeBuild::SourceCredential" }
+func (SourceCredential) Type() string { return "AWS::CodeBuild::SourceCredential" }
 
 type ComputeConfigurationMachineType string
 

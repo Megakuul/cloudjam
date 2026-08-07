@@ -10,7 +10,7 @@ type Group struct {
 	IdentityStoreId *string `json:"IdentityStoreId,omitempty"`
 }
 
-func (Group) CloudControlType() string { return "AWS::IdentityStore::Group" }
+func (Group) Type() string { return "AWS::IdentityStore::Group" }
 
 type MemberId struct {
 	UserId *string `json:"UserId,omitempty"`
@@ -23,4 +23,4 @@ type GroupMembership struct {
 	MembershipId    *string   `json:"MembershipId,omitempty"`
 }
 
-func (GroupMembership) CloudControlType() string { return "AWS::IdentityStore::GroupMembership" }
+func (GroupMembership) Type() string { return "AWS::IdentityStore::GroupMembership" }

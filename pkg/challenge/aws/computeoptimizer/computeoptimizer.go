@@ -70,7 +70,7 @@ type AutomationRule struct {
 	Tags                      []Tag                                      `json:"Tags,omitempty"`
 }
 
-func (AutomationRule) CloudControlType() string { return "AWS::ComputeOptimizer::AutomationRule" }
+func (AutomationRule) Type() string { return "AWS::ComputeOptimizer::AutomationRule" }
 
 type IntegerCriteriaConditionComparison string
 

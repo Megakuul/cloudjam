@@ -54,7 +54,7 @@ type Detector struct {
 	Tags                       []TagItem                    `json:"Tags,omitempty"`
 }
 
-func (Detector) CloudControlType() string { return "AWS::GuardDuty::Detector" }
+func (Detector) Type() string { return "AWS::GuardDuty::Detector" }
 
 type Condition struct {
 	Eq                 []string `json:"Eq,omitempty"`
@@ -90,7 +90,7 @@ type Filter struct {
 	Tags            []FilterTagItem  `json:"Tags,omitempty"`
 }
 
-func (Filter) CloudControlType() string { return "AWS::GuardDuty::Filter" }
+func (Filter) Type() string { return "AWS::GuardDuty::Filter" }
 
 type IPSetTagItem struct {
 	Key   *string `json:"Key,omitempty"`
@@ -108,7 +108,7 @@ type IPSet struct {
 	Tags                []IPSetTagItem `json:"Tags,omitempty"`
 }
 
-func (IPSet) CloudControlType() string { return "AWS::GuardDuty::IPSet" }
+func (IPSet) Type() string { return "AWS::GuardDuty::IPSet" }
 
 type CFNTagging struct {
 	Status *string `json:"Status,omitempty"`
@@ -149,9 +149,7 @@ type MalwareProtectionPlan struct {
 	Tags                    []MalwareProtectionPlanTagItem `json:"Tags,omitempty"`
 }
 
-func (MalwareProtectionPlan) CloudControlType() string {
-	return "AWS::GuardDuty::MalwareProtectionPlan"
-}
+func (MalwareProtectionPlan) Type() string { return "AWS::GuardDuty::MalwareProtectionPlan" }
 
 type Master struct {
 	DetectorId   *string `json:"DetectorId,omitempty"`
@@ -159,7 +157,7 @@ type Master struct {
 	MasterId     *string `json:"MasterId,omitempty"`
 }
 
-func (Master) CloudControlType() string { return "AWS::GuardDuty::Master" }
+func (Master) Type() string { return "AWS::GuardDuty::Master" }
 
 type Member struct {
 	DetectorId               *string `json:"DetectorId,omitempty"`
@@ -170,7 +168,7 @@ type Member struct {
 	Status                   *string `json:"Status,omitempty"`
 }
 
-func (Member) CloudControlType() string { return "AWS::GuardDuty::Member" }
+func (Member) Type() string { return "AWS::GuardDuty::Member" }
 
 type CFNDestinationProperties struct {
 	DestinationArn *string `json:"DestinationArn,omitempty"`
@@ -192,9 +190,7 @@ type PublishingDestination struct {
 	Tags                            []PublishingDestinationTagItem `json:"Tags,omitempty"`
 }
 
-func (PublishingDestination) CloudControlType() string {
-	return "AWS::GuardDuty::PublishingDestination"
-}
+func (PublishingDestination) Type() string { return "AWS::GuardDuty::PublishingDestination" }
 
 type ThreatEntitySetTagItem struct {
 	Key   *string `json:"Key,omitempty"`
@@ -216,7 +212,7 @@ type ThreatEntitySet struct {
 	UpdatedAt           *string                  `json:"UpdatedAt,omitempty"`
 }
 
-func (ThreatEntitySet) CloudControlType() string { return "AWS::GuardDuty::ThreatEntitySet" }
+func (ThreatEntitySet) Type() string { return "AWS::GuardDuty::ThreatEntitySet" }
 
 type ThreatIntelSetTagItem struct {
 	Key   *string `json:"Key,omitempty"`
@@ -234,7 +230,7 @@ type ThreatIntelSet struct {
 	Tags                []ThreatIntelSetTagItem `json:"Tags,omitempty"`
 }
 
-func (ThreatIntelSet) CloudControlType() string { return "AWS::GuardDuty::ThreatIntelSet" }
+func (ThreatIntelSet) Type() string { return "AWS::GuardDuty::ThreatIntelSet" }
 
 type TrustedEntitySetTagItem struct {
 	Key   *string `json:"Key,omitempty"`
@@ -256,7 +252,7 @@ type TrustedEntitySet struct {
 	UpdatedAt           *string                   `json:"UpdatedAt,omitempty"`
 }
 
-func (TrustedEntitySet) CloudControlType() string { return "AWS::GuardDuty::TrustedEntitySet" }
+func (TrustedEntitySet) Type() string { return "AWS::GuardDuty::TrustedEntitySet" }
 
 type CFNFeatureConfigurationStatus string
 

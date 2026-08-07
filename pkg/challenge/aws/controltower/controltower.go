@@ -24,7 +24,7 @@ type EnabledBaseline struct {
 	TargetIdentifier          *string     `json:"TargetIdentifier,omitempty"`
 }
 
-func (EnabledBaseline) CloudControlType() string { return "AWS::ControlTower::EnabledBaseline" }
+func (EnabledBaseline) Type() string { return "AWS::ControlTower::EnabledBaseline" }
 
 type EnabledControlParameter struct {
 	Key   *string         `json:"Key,omitempty"`
@@ -43,7 +43,7 @@ type EnabledControl struct {
 	TargetIdentifier  *string                   `json:"TargetIdentifier,omitempty"`
 }
 
-func (EnabledControl) CloudControlType() string { return "AWS::ControlTower::EnabledControl" }
+func (EnabledControl) Type() string { return "AWS::ControlTower::EnabledControl" }
 
 type LandingZoneTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -62,7 +62,7 @@ type LandingZone struct {
 	Version                *string                 `json:"Version,omitempty"`
 }
 
-func (LandingZone) CloudControlType() string { return "AWS::ControlTower::LandingZone" }
+func (LandingZone) Type() string { return "AWS::ControlTower::LandingZone" }
 
 type LandingZoneDriftStatus string
 

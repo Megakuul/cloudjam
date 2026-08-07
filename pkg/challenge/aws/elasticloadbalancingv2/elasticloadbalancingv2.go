@@ -118,7 +118,7 @@ type Listener struct {
 	Tags                 []Tag                 `json:"Tags,omitempty"`
 }
 
-func (Listener) CloudControlType() string { return "AWS::ElasticLoadBalancingV2::Listener" }
+func (Listener) Type() string { return "AWS::ElasticLoadBalancingV2::Listener" }
 
 type ListenerCertificateCertificate struct {
 	CertificateArn *string `json:"CertificateArn,omitempty"`
@@ -130,9 +130,7 @@ type ListenerCertificate struct {
 	ListenerArn  *string                          `json:"ListenerArn,omitempty"`
 }
 
-func (ListenerCertificate) CloudControlType() string {
-	return "AWS::ElasticLoadBalancingV2::ListenerCertificate"
-}
+func (ListenerCertificate) Type() string { return "AWS::ElasticLoadBalancingV2::ListenerCertificate" }
 
 type ListenerRuleAuthenticateCognitoConfig struct {
 	AuthenticationRequestExtraParams map[string]string `json:"AuthenticationRequestExtraParams,omitempty"`
@@ -291,7 +289,7 @@ type ListenerRule struct {
 	Transforms  []Transform          `json:"Transforms,omitempty"`
 }
 
-func (ListenerRule) CloudControlType() string { return "AWS::ElasticLoadBalancingV2::ListenerRule" }
+func (ListenerRule) Type() string { return "AWS::ElasticLoadBalancingV2::ListenerRule" }
 
 type LoadBalancerAttribute struct {
 	Key   *string `json:"Key,omitempty"`
@@ -337,7 +335,7 @@ type LoadBalancer struct {
 	Type                                                 *string                      `json:"Type,omitempty"`
 }
 
-func (LoadBalancer) CloudControlType() string { return "AWS::ElasticLoadBalancingV2::LoadBalancer" }
+func (LoadBalancer) Type() string { return "AWS::ElasticLoadBalancingV2::LoadBalancer" }
 
 type Matcher struct {
 	GrpcCode *string `json:"GrpcCode,omitempty"`
@@ -388,7 +386,7 @@ type TargetGroup struct {
 	VpcId                      *string                `json:"VpcId,omitempty"`
 }
 
-func (TargetGroup) CloudControlType() string { return "AWS::ElasticLoadBalancingV2::TargetGroup" }
+func (TargetGroup) Type() string { return "AWS::ElasticLoadBalancingV2::TargetGroup" }
 
 type TrustStoreTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -406,7 +404,7 @@ type TrustStore struct {
 	TrustStoreArn                       *string         `json:"TrustStoreArn,omitempty"`
 }
 
-func (TrustStore) CloudControlType() string { return "AWS::ElasticLoadBalancingV2::TrustStore" }
+func (TrustStore) Type() string { return "AWS::ElasticLoadBalancingV2::TrustStore" }
 
 type RevocationContent struct {
 	RevocationType  *string `json:"RevocationType,omitempty"`
@@ -429,6 +427,4 @@ type TrustStoreRevocation struct {
 	TrustStoreRevocations []TrustStoreRevocationTrustStoreRevocation `json:"TrustStoreRevocations,omitempty"`
 }
 
-func (TrustStoreRevocation) CloudControlType() string {
-	return "AWS::ElasticLoadBalancingV2::TrustStoreRevocation"
-}
+func (TrustStoreRevocation) Type() string { return "AWS::ElasticLoadBalancingV2::TrustStoreRevocation" }

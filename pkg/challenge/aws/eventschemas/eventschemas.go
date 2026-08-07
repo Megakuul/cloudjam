@@ -18,7 +18,7 @@ type Discoverer struct {
 	Tags          []TagsEntry `json:"Tags,omitempty"`
 }
 
-func (Discoverer) CloudControlType() string { return "AWS::EventSchemas::Discoverer" }
+func (Discoverer) Type() string { return "AWS::EventSchemas::Discoverer" }
 
 type RegistryTagsEntry struct {
 	Key   *string `json:"Key,omitempty"`
@@ -32,7 +32,7 @@ type Registry struct {
 	Tags         []RegistryTagsEntry `json:"Tags,omitempty"`
 }
 
-func (Registry) CloudControlType() string { return "AWS::EventSchemas::Registry" }
+func (Registry) Type() string { return "AWS::EventSchemas::Registry" }
 
 type RegistryPolicy struct {
 	Id           *string        `json:"Id,omitempty"`
@@ -41,7 +41,7 @@ type RegistryPolicy struct {
 	RevisionId   *string        `json:"RevisionId,omitempty"`
 }
 
-func (RegistryPolicy) CloudControlType() string { return "AWS::EventSchemas::RegistryPolicy" }
+func (RegistryPolicy) Type() string { return "AWS::EventSchemas::RegistryPolicy" }
 
 type SchemaTagsEntry struct {
 	Key   *string `json:"Key,omitempty"`
@@ -61,4 +61,4 @@ type Schema struct {
 	VersionCreatedDate *string           `json:"VersionCreatedDate,omitempty"`
 }
 
-func (Schema) CloudControlType() string { return "AWS::EventSchemas::Schema" }
+func (Schema) Type() string { return "AWS::EventSchemas::Schema" }

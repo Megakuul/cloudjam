@@ -22,4 +22,4 @@ type Preferences struct {
 	ConnectionRecordingPreferences *PreferencesConnectionRecordingPreferences `json:"ConnectionRecordingPreferences,omitempty"`
 }
 
-func (Preferences) CloudControlType() string { return "AWS::SSMGuiConnect::Preferences" }
+func (Preferences) Type() string { return "AWS::SSMGuiConnect::Preferences" }

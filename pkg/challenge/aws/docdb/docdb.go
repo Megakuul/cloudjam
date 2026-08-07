@@ -50,7 +50,7 @@ type DBCluster struct {
 	VpcSecurityGroupIds              []string                          `json:"VpcSecurityGroupIds,omitempty"`
 }
 
-func (DBCluster) CloudControlType() string { return "AWS::DocDB::DBCluster" }
+func (DBCluster) Type() string { return "AWS::DocDB::DBCluster" }
 
 type DBClusterParameterGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -66,9 +66,7 @@ type DBClusterParameterGroup struct {
 	Tags        []DBClusterParameterGroupTag `json:"Tags,omitempty"`
 }
 
-func (DBClusterParameterGroup) CloudControlType() string {
-	return "AWS::DocDB::DBClusterParameterGroup"
-}
+func (DBClusterParameterGroup) Type() string { return "AWS::DocDB::DBClusterParameterGroup" }
 
 type DBInstanceTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -91,7 +89,7 @@ type DBInstance struct {
 	Tags                       []DBInstanceTag `json:"Tags,omitempty"`
 }
 
-func (DBInstance) CloudControlType() string { return "AWS::DocDB::DBInstance" }
+func (DBInstance) Type() string { return "AWS::DocDB::DBInstance" }
 
 type DBSubnetGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -106,7 +104,7 @@ type DBSubnetGroup struct {
 	Tags                     []DBSubnetGroupTag `json:"Tags,omitempty"`
 }
 
-func (DBSubnetGroup) CloudControlType() string { return "AWS::DocDB::DBSubnetGroup" }
+func (DBSubnetGroup) Type() string { return "AWS::DocDB::DBSubnetGroup" }
 
 type EventSubscription struct {
 	Enabled          *bool                        `json:"Enabled,omitempty"`
@@ -117,7 +115,7 @@ type EventSubscription struct {
 	SubscriptionName *string                      `json:"SubscriptionName,omitempty"`
 }
 
-func (EventSubscription) CloudControlType() string { return "AWS::DocDB::EventSubscription" }
+func (EventSubscription) Type() string { return "AWS::DocDB::EventSubscription" }
 
 type GlobalClusterTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -136,7 +134,7 @@ type GlobalCluster struct {
 	Tags                      []GlobalClusterTag   `json:"Tags,omitempty"`
 }
 
-func (GlobalCluster) CloudControlType() string { return "AWS::DocDB::GlobalCluster" }
+func (GlobalCluster) Type() string { return "AWS::DocDB::GlobalCluster" }
 
 type EventSubscriptionSourceType string
 

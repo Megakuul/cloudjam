@@ -16,7 +16,7 @@ type Cell struct {
 	Tags                  []Tag    `json:"Tags,omitempty"`
 }
 
-func (Cell) CloudControlType() string { return "AWS::Route53RecoveryReadiness::Cell" }
+func (Cell) Type() string { return "AWS::Route53RecoveryReadiness::Cell" }
 
 type ReadinessCheckTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -30,9 +30,7 @@ type ReadinessCheck struct {
 	Tags               []ReadinessCheckTag `json:"Tags,omitempty"`
 }
 
-func (ReadinessCheck) CloudControlType() string {
-	return "AWS::Route53RecoveryReadiness::ReadinessCheck"
-}
+func (ReadinessCheck) Type() string { return "AWS::Route53RecoveryReadiness::ReadinessCheck" }
 
 type RecoveryGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -46,7 +44,7 @@ type RecoveryGroup struct {
 	Tags              []RecoveryGroupTag `json:"Tags,omitempty"`
 }
 
-func (RecoveryGroup) CloudControlType() string { return "AWS::Route53RecoveryReadiness::RecoveryGroup" }
+func (RecoveryGroup) Type() string { return "AWS::Route53RecoveryReadiness::RecoveryGroup" }
 
 type NLBResource struct {
 	Arn *string `json:"Arn,omitempty"`
@@ -90,4 +88,4 @@ type ResourceSet struct {
 	Tags            []ResourceSetTag `json:"Tags,omitempty"`
 }
 
-func (ResourceSet) CloudControlType() string { return "AWS::Route53RecoveryReadiness::ResourceSet" }
+func (ResourceSet) Type() string { return "AWS::Route53RecoveryReadiness::ResourceSet" }

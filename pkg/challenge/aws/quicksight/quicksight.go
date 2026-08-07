@@ -37,7 +37,7 @@ type ActionConnector struct {
 	VpcConnectionArn     *string              `json:"VpcConnectionArn,omitempty"`
 }
 
-func (ActionConnector) CloudControlType() string { return "AWS::QuickSight::ActionConnector" }
+func (ActionConnector) Type() string { return "AWS::QuickSight::ActionConnector" }
 
 type CustomPromptProfile struct {
 	ModelProfileId  *string `json:"ModelProfileId,omitempty"`
@@ -97,7 +97,7 @@ type Agent struct {
 	WelcomeMessage        *string                `json:"WelcomeMessage,omitempty"`
 }
 
-func (Agent) CloudControlType() string { return "AWS::QuickSight::Agent" }
+func (Agent) Type() string { return "AWS::QuickSight::Agent" }
 
 type FreeFormLayoutScreenCanvasSizeOptions struct {
 	OptimizedViewPortWidth *string `json:"OptimizedViewPortWidth,omitempty"`
@@ -3624,7 +3624,7 @@ type Analysis struct {
 	ValidationStrategy *ValidationStrategy          `json:"ValidationStrategy,omitempty"`
 }
 
-func (Analysis) CloudControlType() string { return "AWS::QuickSight::Analysis" }
+func (Analysis) Type() string { return "AWS::QuickSight::Analysis" }
 
 type Capabilities struct {
 	AccessAppsNativeDataStore                 *CapabilityState `json:"AccessAppsNativeDataStore,omitempty"`
@@ -3868,7 +3868,7 @@ type CustomPermissions struct {
 	Tags                  []CustomPermissionsTag `json:"Tags,omitempty"`
 }
 
-func (CustomPermissions) CloudControlType() string { return "AWS::QuickSight::CustomPermissions" }
+func (CustomPermissions) Type() string { return "AWS::QuickSight::CustomPermissions" }
 
 type AdHocFilteringOption struct {
 	AvailabilityStatus *DashboardDashboardBehavior `json:"AvailabilityStatus,omitempty"`
@@ -7509,7 +7509,7 @@ type Dashboard struct {
 	VersionDescription       *string                       `json:"VersionDescription,omitempty"`
 }
 
-func (Dashboard) CloudControlType() string { return "AWS::QuickSight::Dashboard" }
+func (Dashboard) Type() string { return "AWS::QuickSight::Dashboard" }
 
 type GeoSpatialColumnGroup struct {
 	Columns     []string               `json:"Columns,omitempty"`
@@ -8167,7 +8167,7 @@ type DataSet struct {
 	UseAs                              *DataSetUseAs                       `json:"UseAs,omitempty"`
 }
 
-func (DataSet) CloudControlType() string { return "AWS::QuickSight::DataSet" }
+func (DataSet) Type() string { return "AWS::QuickSight::DataSet" }
 
 type AmazonElasticsearchParameters struct {
 	Domain *string `json:"Domain,omitempty"`
@@ -8407,7 +8407,7 @@ type DataSource struct {
 	VpcConnectionProperties       *VpcConnectionProperties       `json:"VpcConnectionProperties,omitempty"`
 }
 
-func (DataSource) CloudControlType() string { return "AWS::QuickSight::DataSource" }
+func (DataSource) Type() string { return "AWS::QuickSight::DataSource" }
 
 type Permission struct {
 	Actions   []string `json:"Actions,omitempty"`
@@ -8433,7 +8433,7 @@ type Flow struct {
 	StepAliases     []StepAliasMapping `json:"StepAliases,omitempty"`
 }
 
-func (Flow) CloudControlType() string { return "AWS::QuickSight::Flow" }
+func (Flow) Type() string { return "AWS::QuickSight::Flow" }
 
 type FolderResourcePermission struct {
 	Actions   []string `json:"Actions,omitempty"`
@@ -8459,7 +8459,7 @@ type Folder struct {
 	Tags            []FolderTag                `json:"Tags,omitempty"`
 }
 
-func (Folder) CloudControlType() string { return "AWS::QuickSight::Folder" }
+func (Folder) Type() string { return "AWS::QuickSight::Folder" }
 
 type AccessControlConfiguration struct {
 	IsACLEnabled *bool `json:"IsACLEnabled,omitempty"`
@@ -8526,7 +8526,7 @@ type KnowledgeBase struct {
 	UpdatedAt                                    *string                           `json:"UpdatedAt,omitempty"`
 }
 
-func (KnowledgeBase) CloudControlType() string { return "AWS::QuickSight::KnowledgeBase" }
+func (KnowledgeBase) Type() string { return "AWS::QuickSight::KnowledgeBase" }
 
 type IdentityProviderVpcConnectionProperties struct {
 	VpcConnectionArn *string `json:"VpcConnectionArn,omitempty"`
@@ -8554,9 +8554,7 @@ type OAuthClientApplication struct {
 	Tags                                    []OAuthClientApplicationTag                          `json:"Tags,omitempty"`
 }
 
-func (OAuthClientApplication) CloudControlType() string {
-	return "AWS::QuickSight::OAuthClientApplication"
-}
+func (OAuthClientApplication) Type() string { return "AWS::QuickSight::OAuthClientApplication" }
 
 type RefreshScheduleMapScheduleFrequencyRefreshOnDay struct {
 	DayOfMonth *string                                                   `json:"DayOfMonth,omitempty"`
@@ -8584,7 +8582,7 @@ type RefreshSchedule struct {
 	Schedule     *RefreshScheduleMap `json:"Schedule,omitempty"`
 }
 
-func (RefreshSchedule) CloudControlType() string { return "AWS::QuickSight::RefreshSchedule" }
+func (RefreshSchedule) Type() string { return "AWS::QuickSight::RefreshSchedule" }
 
 type SpaceResourcePermission struct {
 	Actions   []string `json:"Actions,omitempty"`
@@ -8615,7 +8613,7 @@ type Space struct {
 	UpdatedAt    *string                   `json:"UpdatedAt,omitempty"`
 }
 
-func (Space) CloudControlType() string { return "AWS::QuickSight::Space" }
+func (Space) Type() string { return "AWS::QuickSight::Space" }
 
 type TemplateFreeFormLayoutScreenCanvasSizeOptions struct {
 	OptimizedViewPortWidth *string `json:"OptimizedViewPortWidth,omitempty"`
@@ -11939,7 +11937,7 @@ type Template struct {
 	VersionDescription *string                      `json:"VersionDescription,omitempty"`
 }
 
-func (Template) CloudControlType() string { return "AWS::QuickSight::Template" }
+func (Template) Type() string { return "AWS::QuickSight::Template" }
 
 type DataColorPalette struct {
 	Colors         []string `json:"Colors,omitempty"`
@@ -12049,7 +12047,7 @@ type Theme struct {
 	VersionDescription *string                   `json:"VersionDescription,omitempty"`
 }
 
-func (Theme) CloudControlType() string { return "AWS::QuickSight::Theme" }
+func (Theme) Type() string { return "AWS::QuickSight::Theme" }
 
 type TopicConfigOptions struct {
 	QBusinessInsightsEnabled *bool `json:"QBusinessInsightsEnabled,omitempty"`
@@ -12275,7 +12273,7 @@ type Topic struct {
 	UserExperienceVersion *TopicUserExperienceVersion `json:"UserExperienceVersion,omitempty"`
 }
 
-func (Topic) CloudControlType() string { return "AWS::QuickSight::Topic" }
+func (Topic) Type() string { return "AWS::QuickSight::Topic" }
 
 type TopicV2CustomInstructions struct {
 	CustomInstructionsString *string `json:"CustomInstructionsString,omitempty"`
@@ -12320,7 +12318,7 @@ type TopicV2 struct {
 	TopicId            *string                     `json:"TopicId,omitempty"`
 }
 
-func (TopicV2) CloudControlType() string { return "AWS::QuickSight::TopicV2" }
+func (TopicV2) Type() string { return "AWS::QuickSight::TopicV2" }
 
 type NetworkInterface struct {
 	AvailabilityZone   *string                 `json:"AvailabilityZone,omitempty"`
@@ -12353,7 +12351,7 @@ type VPCConnection struct {
 	VPCId              *string                          `json:"VPCId,omitempty"`
 }
 
-func (VPCConnection) CloudControlType() string { return "AWS::QuickSight::VPCConnection" }
+func (VPCConnection) Type() string { return "AWS::QuickSight::VPCConnection" }
 
 type ConnectionAuthType string
 

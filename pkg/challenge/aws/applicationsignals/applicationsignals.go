@@ -9,7 +9,7 @@ type Discovery struct {
 	AccountId *string `json:"AccountId,omitempty"`
 }
 
-func (Discovery) CloudControlType() string { return "AWS::ApplicationSignals::Discovery" }
+func (Discovery) Type() string { return "AWS::ApplicationSignals::Discovery" }
 
 type GroupingAttributeDefinition struct {
 	DefaultGroupingValue *string  `json:"DefaultGroupingValue,omitempty"`
@@ -23,9 +23,7 @@ type GroupingConfiguration struct {
 	UpdatedAt                    *string                       `json:"UpdatedAt,omitempty"`
 }
 
-func (GroupingConfiguration) CloudControlType() string {
-	return "AWS::ApplicationSignals::GroupingConfiguration"
-}
+func (GroupingConfiguration) Type() string { return "AWS::ApplicationSignals::GroupingConfiguration" }
 
 type BurnRateConfiguration struct {
 	LookBackWindowMinutes *int `json:"LookBackWindowMinutes,omitempty"`
@@ -181,9 +179,7 @@ type ServiceLevelObjective struct {
 	Tags                   []Tag                                `json:"Tags,omitempty"`
 }
 
-func (ServiceLevelObjective) CloudControlType() string {
-	return "AWS::ApplicationSignals::ServiceLevelObjective"
-}
+func (ServiceLevelObjective) Type() string { return "AWS::ApplicationSignals::ServiceLevelObjective" }
 
 type ServiceLevelObjectiveEvaluationType string
 

@@ -35,9 +35,7 @@ type DataRepositoryAssociation struct {
 	Tags                        []Tag   `json:"Tags,omitempty"`
 }
 
-func (DataRepositoryAssociation) CloudControlType() string {
-	return "AWS::FSx::DataRepositoryAssociation"
-}
+func (DataRepositoryAssociation) Type() string { return "AWS::FSx::DataRepositoryAssociation" }
 
 type DataReadCacheConfiguration struct {
 	SizeGiB    *int    `json:"SizeGiB,omitempty"`
@@ -200,7 +198,7 @@ type FileSystem struct {
 	WindowsConfiguration  *WindowsConfiguration `json:"WindowsConfiguration,omitempty"`
 }
 
-func (FileSystem) CloudControlType() string { return "AWS::FSx::FileSystem" }
+func (FileSystem) Type() string { return "AWS::FSx::FileSystem" }
 
 type OntapUnixFileSystemUser struct {
 	Name *string `json:"Name,omitempty"`
@@ -261,7 +259,7 @@ type S3AccessPointAttachment struct {
 	Type                 *S3AccessPointAttachmentType       `json:"Type,omitempty"`
 }
 
-func (S3AccessPointAttachment) CloudControlType() string { return "AWS::FSx::S3AccessPointAttachment" }
+func (S3AccessPointAttachment) Type() string { return "AWS::FSx::S3AccessPointAttachment" }
 
 type SnapshotTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -276,7 +274,7 @@ type Snapshot struct {
 	VolumeId    *string       `json:"VolumeId,omitempty"`
 }
 
-func (Snapshot) CloudControlType() string { return "AWS::FSx::Snapshot" }
+func (Snapshot) Type() string { return "AWS::FSx::Snapshot" }
 
 type StorageVirtualMachineSelfManagedActiveDirectoryConfiguration struct {
 	DnsIps                              []string `json:"DnsIps,omitempty"`
@@ -310,7 +308,7 @@ type StorageVirtualMachine struct {
 	UUID                         *string                       `json:"UUID,omitempty"`
 }
 
-func (StorageVirtualMachine) CloudControlType() string { return "AWS::FSx::StorageVirtualMachine" }
+func (StorageVirtualMachine) Type() string { return "AWS::FSx::StorageVirtualMachine" }
 
 type AggregateConfiguration struct {
 	Aggregates               []string `json:"Aggregates,omitempty"`
@@ -414,7 +412,7 @@ type Volume struct {
 	VolumeType           *string                     `json:"VolumeType,omitempty"`
 }
 
-func (Volume) CloudControlType() string { return "AWS::FSx::Volume" }
+func (Volume) Type() string { return "AWS::FSx::Volume" }
 
 type EventType string
 

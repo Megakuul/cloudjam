@@ -10,7 +10,7 @@ type Certificate struct {
 	CertificateWallet     *string `json:"CertificateWallet,omitempty"`
 }
 
-func (Certificate) CloudControlType() string { return "AWS::DMS::Certificate" }
+func (Certificate) Type() string { return "AWS::DMS::Certificate" }
 
 type DataMigrationSettings struct {
 	CloudwatchLogsEnabled *bool   `json:"CloudwatchLogsEnabled,omitempty"`
@@ -43,7 +43,7 @@ type DataMigration struct {
 	Tags                       []Tag                           `json:"Tags,omitempty"`
 }
 
-func (DataMigration) CloudControlType() string { return "AWS::DMS::DataMigration" }
+func (DataMigration) Type() string { return "AWS::DMS::DataMigration" }
 
 type DataProviderSettingsDocDbSettings struct {
 	CertificateArn *string              `json:"CertificateArn,omitempty"`
@@ -169,7 +169,7 @@ type DataProvider struct {
 	Tags                     []DataProviderTag     `json:"Tags,omitempty"`
 }
 
-func (DataProvider) CloudControlType() string { return "AWS::DMS::DataProvider" }
+func (DataProvider) Type() string { return "AWS::DMS::DataProvider" }
 
 type DocDbSettings struct {
 	DocsToInvestigate           *int    `json:"DocsToInvestigate,omitempty"`
@@ -496,7 +496,7 @@ type Endpoint struct {
 	Username                   *string                     `json:"Username,omitempty"`
 }
 
-func (Endpoint) CloudControlType() string { return "AWS::DMS::Endpoint" }
+func (Endpoint) Type() string { return "AWS::DMS::Endpoint" }
 
 type EventSubscriptionTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -513,7 +513,7 @@ type EventSubscription struct {
 	Tags             []EventSubscriptionTag `json:"Tags,omitempty"`
 }
 
-func (EventSubscription) CloudControlType() string { return "AWS::DMS::EventSubscription" }
+func (EventSubscription) Type() string { return "AWS::DMS::EventSubscription" }
 
 type InstanceProfileTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -535,7 +535,7 @@ type InstanceProfile struct {
 	VpcSecurityGroups           []string                    `json:"VpcSecurityGroups,omitempty"`
 }
 
-func (InstanceProfile) CloudControlType() string { return "AWS::DMS::InstanceProfile" }
+func (InstanceProfile) Type() string { return "AWS::DMS::InstanceProfile" }
 
 type MigrationProjectSchemaConversionApplicationAttributes struct {
 	S3BucketPath    *string `json:"S3BucketPath,omitempty"`
@@ -571,7 +571,7 @@ type MigrationProject struct {
 	TransformationRules                   *string                                                `json:"TransformationRules,omitempty"`
 }
 
-func (MigrationProject) CloudControlType() string { return "AWS::DMS::MigrationProject" }
+func (MigrationProject) Type() string { return "AWS::DMS::MigrationProject" }
 
 type ComputeConfig struct {
 	AvailabilityZone           *string  `json:"AvailabilityZone,omitempty"`
@@ -604,7 +604,7 @@ type ReplicationConfig struct {
 	TargetEndpointArn           *string                           `json:"TargetEndpointArn,omitempty"`
 }
 
-func (ReplicationConfig) CloudControlType() string { return "AWS::DMS::ReplicationConfig" }
+func (ReplicationConfig) Type() string { return "AWS::DMS::ReplicationConfig" }
 
 type ReplicationInstanceTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -634,7 +634,7 @@ type ReplicationInstance struct {
 	VpcSecurityGroupIds                   []string                 `json:"VpcSecurityGroupIds,omitempty"`
 }
 
-func (ReplicationInstance) CloudControlType() string { return "AWS::DMS::ReplicationInstance" }
+func (ReplicationInstance) Type() string { return "AWS::DMS::ReplicationInstance" }
 
 type ReplicationSubnetGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -649,7 +649,7 @@ type ReplicationSubnetGroup struct {
 	Tags                              []ReplicationSubnetGroupTag `json:"Tags,omitempty"`
 }
 
-func (ReplicationSubnetGroup) CloudControlType() string { return "AWS::DMS::ReplicationSubnetGroup" }
+func (ReplicationSubnetGroup) Type() string { return "AWS::DMS::ReplicationSubnetGroup" }
 
 type ReplicationTaskTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -673,7 +673,7 @@ type ReplicationTask struct {
 	TaskData                  *string              `json:"TaskData,omitempty"`
 }
 
-func (ReplicationTask) CloudControlType() string { return "AWS::DMS::ReplicationTask" }
+func (ReplicationTask) Type() string { return "AWS::DMS::ReplicationTask" }
 
 type DataMigrationDataMigrationType string
 

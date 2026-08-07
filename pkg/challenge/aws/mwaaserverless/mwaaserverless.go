@@ -45,7 +45,7 @@ type Workflow struct {
 	WorkflowVersion         *string                  `json:"WorkflowVersion,omitempty"`
 }
 
-func (Workflow) CloudControlType() string { return "AWS::MWAAServerless::Workflow" }
+func (Workflow) Type() string { return "AWS::MWAAServerless::Workflow" }
 
 type EncryptionConfigurationType string
 

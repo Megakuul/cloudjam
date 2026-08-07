@@ -88,7 +88,7 @@ type Broker struct {
 	WssEndpoints                    []string            `json:"WssEndpoints,omitempty"`
 }
 
-func (Broker) CloudControlType() string { return "AWS::AmazonMQ::Broker" }
+func (Broker) Type() string { return "AWS::AmazonMQ::Broker" }
 
 type ConfigurationTagsEntry struct {
 	Key   *string `json:"Key,omitempty"`
@@ -108,7 +108,7 @@ type Configuration struct {
 	Tags                   []ConfigurationTagsEntry `json:"Tags,omitempty"`
 }
 
-func (Configuration) CloudControlType() string { return "AWS::AmazonMQ::Configuration" }
+func (Configuration) Type() string { return "AWS::AmazonMQ::Configuration" }
 
 type ConfigurationAssociationConfigurationId struct {
 	Id       *string `json:"Id,omitempty"`
@@ -121,6 +121,4 @@ type ConfigurationAssociation struct {
 	Id            *string                                  `json:"Id,omitempty"`
 }
 
-func (ConfigurationAssociation) CloudControlType() string {
-	return "AWS::AmazonMQ::ConfigurationAssociation"
-}
+func (ConfigurationAssociation) Type() string { return "AWS::AmazonMQ::ConfigurationAssociation" }

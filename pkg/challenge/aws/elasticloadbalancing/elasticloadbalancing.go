@@ -92,4 +92,4 @@ type LoadBalancer struct {
 	Tags                      []Tag                       `json:"Tags,omitempty"`
 }
 
-func (LoadBalancer) CloudControlType() string { return "AWS::ElasticLoadBalancing::LoadBalancer" }
+func (LoadBalancer) Type() string { return "AWS::ElasticLoadBalancing::LoadBalancer" }

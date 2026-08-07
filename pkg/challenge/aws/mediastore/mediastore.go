@@ -38,4 +38,4 @@ type Container struct {
 	Tags                 []Tag         `json:"Tags,omitempty"`
 }
 
-func (Container) CloudControlType() string { return "AWS::MediaStore::Container" }
+func (Container) Type() string { return "AWS::MediaStore::Container" }

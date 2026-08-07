@@ -46,7 +46,7 @@ type Site struct {
 	Tags                   []Tag                   `json:"Tags,omitempty"`
 }
 
-func (Site) CloudControlType() string { return "AWS::Outposts::Site" }
+func (Site) Type() string { return "AWS::Outposts::Site" }
 
 type RackPhysicalPropertiesFiberOpticCableType string
 

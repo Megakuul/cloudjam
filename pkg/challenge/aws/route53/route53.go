@@ -15,13 +15,13 @@ type CidrCollection struct {
 	Name      *string    `json:"Name,omitempty"`
 }
 
-func (CidrCollection) CloudControlType() string { return "AWS::Route53::CidrCollection" }
+func (CidrCollection) Type() string { return "AWS::Route53::CidrCollection" }
 
 type DNSSEC struct {
 	HostedZoneId *string `json:"HostedZoneId,omitempty"`
 }
 
-func (DNSSEC) CloudControlType() string { return "AWS::Route53::DNSSEC" }
+func (DNSSEC) Type() string { return "AWS::Route53::DNSSEC" }
 
 type AlarmIdentifier struct {
 	Name   *string `json:"Name,omitempty"`
@@ -59,7 +59,7 @@ type HealthCheck struct {
 	HealthCheckTags   []HealthCheckTag              `json:"HealthCheckTags,omitempty"`
 }
 
-func (HealthCheck) CloudControlType() string { return "AWS::Route53::HealthCheck" }
+func (HealthCheck) Type() string { return "AWS::Route53::HealthCheck" }
 
 type HostedZoneConfig struct {
 	Comment *string `json:"Comment,omitempty"`
@@ -94,7 +94,7 @@ type HostedZone struct {
 	VPCs               []VPC               `json:"VPCs,omitempty"`
 }
 
-func (HostedZone) CloudControlType() string { return "AWS::Route53::HostedZone" }
+func (HostedZone) Type() string { return "AWS::Route53::HostedZone" }
 
 type KeySigningKey struct {
 	HostedZoneId            *string              `json:"HostedZoneId,omitempty"`
@@ -103,7 +103,7 @@ type KeySigningKey struct {
 	Status                  *KeySigningKeyStatus `json:"Status,omitempty"`
 }
 
-func (KeySigningKey) CloudControlType() string { return "AWS::Route53::KeySigningKey" }
+func (KeySigningKey) Type() string { return "AWS::Route53::KeySigningKey" }
 
 type AliasTarget struct {
 	DNSName              *string `json:"DNSName,omitempty"`
@@ -155,7 +155,7 @@ type RecordSet struct {
 	Weight               *int                  `json:"Weight,omitempty"`
 }
 
-func (RecordSet) CloudControlType() string { return "AWS::Route53::RecordSet" }
+func (RecordSet) Type() string { return "AWS::Route53::RecordSet" }
 
 type RecordSetGroupAliasTarget struct {
 	DNSName              *string `json:"DNSName,omitempty"`
@@ -213,7 +213,7 @@ type RecordSetGroup struct {
 	RecordSets     []RecordSetGroupRecordSet `json:"RecordSets,omitempty"`
 }
 
-func (RecordSetGroup) CloudControlType() string { return "AWS::Route53::RecordSetGroup" }
+func (RecordSetGroup) Type() string { return "AWS::Route53::RecordSetGroup" }
 
 type HealthCheckHealthCheckConfigInsufficientDataHealthStatus string
 

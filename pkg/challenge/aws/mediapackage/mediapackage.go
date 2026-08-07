@@ -25,7 +25,7 @@ type Asset struct {
 	Tags             []Tag            `json:"Tags,omitempty"`
 }
 
-func (Asset) CloudControlType() string { return "AWS::MediaPackage::Asset" }
+func (Asset) Type() string { return "AWS::MediaPackage::Asset" }
 
 type LogConfiguration struct {
 	LogGroupName *string `json:"LogGroupName,omitempty"`
@@ -57,7 +57,7 @@ type Channel struct {
 	Tags              []ChannelTag      `json:"Tags,omitempty"`
 }
 
-func (Channel) CloudControlType() string { return "AWS::MediaPackage::Channel" }
+func (Channel) Type() string { return "AWS::MediaPackage::Channel" }
 
 type Authorization struct {
 	CdnIdentifierSecret *string `json:"CdnIdentifierSecret,omitempty"`
@@ -194,7 +194,7 @@ type OriginEndpoint struct {
 	Whitelist              []string                   `json:"Whitelist,omitempty"`
 }
 
-func (OriginEndpoint) CloudControlType() string { return "AWS::MediaPackage::OriginEndpoint" }
+func (OriginEndpoint) Type() string { return "AWS::MediaPackage::OriginEndpoint" }
 
 type PackagingConfigurationEncryptionContractConfiguration struct {
 	PresetSpeke20Audio *PackagingConfigurationEncryptionContractConfigurationPresetSpeke20Audio `json:"PresetSpeke20Audio,omitempty"`
@@ -302,9 +302,7 @@ type PackagingConfiguration struct {
 	Tags             []PackagingConfigurationTag        `json:"Tags,omitempty"`
 }
 
-func (PackagingConfiguration) CloudControlType() string {
-	return "AWS::MediaPackage::PackagingConfiguration"
-}
+func (PackagingConfiguration) Type() string { return "AWS::MediaPackage::PackagingConfiguration" }
 
 type PackagingGroupAuthorization struct {
 	CdnIdentifierSecret *string `json:"CdnIdentifierSecret,omitempty"`
@@ -329,7 +327,7 @@ type PackagingGroup struct {
 	Tags             []PackagingGroupTag             `json:"Tags,omitempty"`
 }
 
-func (PackagingGroup) CloudControlType() string { return "AWS::MediaPackage::PackagingGroup" }
+func (PackagingGroup) Type() string { return "AWS::MediaPackage::PackagingGroup" }
 
 type CmafEncryptionEncryptionMethod string
 

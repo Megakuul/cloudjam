@@ -16,7 +16,7 @@ type ApiDestination struct {
 	Name                         *string                   `json:"Name,omitempty"`
 }
 
-func (ApiDestination) CloudControlType() string { return "AWS::Events::ApiDestination" }
+func (ApiDestination) Type() string { return "AWS::Events::ApiDestination" }
 
 type Archive struct {
 	ArchiveName      *string        `json:"ArchiveName,omitempty"`
@@ -28,7 +28,7 @@ type Archive struct {
 	SourceArn        *string        `json:"SourceArn,omitempty"`
 }
 
-func (Archive) CloudControlType() string { return "AWS::Events::Archive" }
+func (Archive) Type() string { return "AWS::Events::Archive" }
 
 type ApiKeyAuthParameters struct {
 	ApiKeyName  *string `json:"ApiKeyName,omitempty"`
@@ -97,7 +97,7 @@ type Connection struct {
 	SecretArn                        *string                                     `json:"SecretArn,omitempty"`
 }
 
-func (Connection) CloudControlType() string { return "AWS::Events::Connection" }
+func (Connection) Type() string { return "AWS::Events::Connection" }
 
 type EndpointEventBus struct {
 	EventBusArn *string `json:"EventBusArn,omitempty"`
@@ -138,7 +138,7 @@ type Endpoint struct {
 	StateReason       *string            `json:"StateReason,omitempty"`
 }
 
-func (Endpoint) CloudControlType() string { return "AWS::Events::Endpoint" }
+func (Endpoint) Type() string { return "AWS::Events::Endpoint" }
 
 type EventBusDeadLetterConfig struct {
 	Arn *string `json:"Arn,omitempty"`
@@ -166,7 +166,7 @@ type EventBus struct {
 	Tags             []Tag                     `json:"Tags,omitempty"`
 }
 
-func (EventBus) CloudControlType() string { return "AWS::Events::EventBus" }
+func (EventBus) Type() string { return "AWS::Events::EventBus" }
 
 type Condition struct {
 	Key   *string `json:"Key,omitempty"`
@@ -183,7 +183,7 @@ type EventBusPolicy struct {
 	StatementId  *string        `json:"StatementId,omitempty"`
 }
 
-func (EventBusPolicy) CloudControlType() string { return "AWS::Events::EventBusPolicy" }
+func (EventBusPolicy) Type() string { return "AWS::Events::EventBusPolicy" }
 
 type RuleTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -341,7 +341,7 @@ type Rule struct {
 	Targets            []Target        `json:"Targets,omitempty"`
 }
 
-func (Rule) CloudControlType() string { return "AWS::Events::Rule" }
+func (Rule) Type() string { return "AWS::Events::Rule" }
 
 type ApiDestinationHttpMethod string
 

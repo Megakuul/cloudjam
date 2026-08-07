@@ -44,7 +44,7 @@ type Group struct {
 	Tags          []Tag               `json:"Tags,omitempty"`
 }
 
-func (Group) CloudControlType() string { return "AWS::ResourceGroups::Group" }
+func (Group) Type() string { return "AWS::ResourceGroups::Group" }
 
 type TagSyncTask struct {
 	Group     *string            `json:"Group,omitempty"`
@@ -57,7 +57,7 @@ type TagSyncTask struct {
 	TaskArn   *string            `json:"TaskArn,omitempty"`
 }
 
-func (TagSyncTask) CloudControlType() string { return "AWS::ResourceGroups::TagSyncTask" }
+func (TagSyncTask) Type() string { return "AWS::ResourceGroups::TagSyncTask" }
 
 type ResourceQueryType string
 

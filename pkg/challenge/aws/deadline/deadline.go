@@ -20,7 +20,7 @@ type Farm struct {
 	Tags            []Tag    `json:"Tags,omitempty"`
 }
 
-func (Farm) CloudControlType() string { return "AWS::Deadline::Farm" }
+func (Farm) Type() string { return "AWS::Deadline::Farm" }
 
 type FleetAmountCapability struct {
 	Max  *float64 `json:"Max,omitempty"`
@@ -66,7 +66,7 @@ type Fleet struct {
 	WorkerCount       *int               `json:"WorkerCount,omitempty"`
 }
 
-func (Fleet) CloudControlType() string { return "AWS::Deadline::Fleet" }
+func (Fleet) Type() string { return "AWS::Deadline::Fleet" }
 
 type LicenseEndpointTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -85,7 +85,7 @@ type LicenseEndpoint struct {
 	VpcId             *string                `json:"VpcId,omitempty"`
 }
 
-func (LicenseEndpoint) CloudControlType() string { return "AWS::Deadline::LicenseEndpoint" }
+func (LicenseEndpoint) Type() string { return "AWS::Deadline::LicenseEndpoint" }
 
 type Limit struct {
 	AmountRequirementName *string `json:"AmountRequirementName,omitempty"`
@@ -97,7 +97,7 @@ type Limit struct {
 	MaxCount              *int    `json:"MaxCount,omitempty"`
 }
 
-func (Limit) CloudControlType() string { return "AWS::Deadline::Limit" }
+func (Limit) Type() string { return "AWS::Deadline::Limit" }
 
 type MeteredProduct struct {
 	Arn               *string `json:"Arn,omitempty"`
@@ -108,7 +108,7 @@ type MeteredProduct struct {
 	Vendor            *string `json:"Vendor,omitempty"`
 }
 
-func (MeteredProduct) CloudControlType() string { return "AWS::Deadline::MeteredProduct" }
+func (MeteredProduct) Type() string { return "AWS::Deadline::MeteredProduct" }
 
 type MonitorTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -128,7 +128,7 @@ type Monitor struct {
 	Url                          *string      `json:"Url,omitempty"`
 }
 
-func (Monitor) CloudControlType() string { return "AWS::Deadline::Monitor" }
+func (Monitor) Type() string { return "AWS::Deadline::Monitor" }
 
 type JobAttachmentSettings struct {
 	RootPrefix   *string `json:"RootPrefix,omitempty"`
@@ -172,7 +172,7 @@ type Queue struct {
 	Tags                            []QueueTag                `json:"Tags,omitempty"`
 }
 
-func (Queue) CloudControlType() string { return "AWS::Deadline::Queue" }
+func (Queue) Type() string { return "AWS::Deadline::Queue" }
 
 type QueueEnvironment struct {
 	FarmId             *string                  `json:"FarmId,omitempty"`
@@ -184,7 +184,7 @@ type QueueEnvironment struct {
 	TemplateType       *EnvironmentTemplateType `json:"TemplateType,omitempty"`
 }
 
-func (QueueEnvironment) CloudControlType() string { return "AWS::Deadline::QueueEnvironment" }
+func (QueueEnvironment) Type() string { return "AWS::Deadline::QueueEnvironment" }
 
 type QueueFleetAssociation struct {
 	FarmId  *string `json:"FarmId,omitempty"`
@@ -192,7 +192,7 @@ type QueueFleetAssociation struct {
 	QueueId *string `json:"QueueId,omitempty"`
 }
 
-func (QueueFleetAssociation) CloudControlType() string { return "AWS::Deadline::QueueFleetAssociation" }
+func (QueueFleetAssociation) Type() string { return "AWS::Deadline::QueueFleetAssociation" }
 
 type QueueLimitAssociation struct {
 	FarmId  *string `json:"FarmId,omitempty"`
@@ -200,7 +200,7 @@ type QueueLimitAssociation struct {
 	QueueId *string `json:"QueueId,omitempty"`
 }
 
-func (QueueLimitAssociation) CloudControlType() string { return "AWS::Deadline::QueueLimitAssociation" }
+func (QueueLimitAssociation) Type() string { return "AWS::Deadline::QueueLimitAssociation" }
 
 type FileSystemLocation struct {
 	Name *string                 `json:"Name,omitempty"`
@@ -216,7 +216,7 @@ type StorageProfile struct {
 	StorageProfileId    *string                              `json:"StorageProfileId,omitempty"`
 }
 
-func (StorageProfile) CloudControlType() string { return "AWS::Deadline::StorageProfile" }
+func (StorageProfile) Type() string { return "AWS::Deadline::StorageProfile" }
 
 type FleetStatus string
 

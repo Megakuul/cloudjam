@@ -46,7 +46,7 @@ type Application struct {
 	Tags                    []Tag                               `json:"Tags,omitempty"`
 }
 
-func (Application) CloudControlType() string { return "AWS::AppIntegrations::Application" }
+func (Application) Type() string { return "AWS::AppIntegrations::Application" }
 
 type FileConfiguration struct {
 	Filters map[string][]string `json:"Filters,omitempty"`
@@ -77,7 +77,7 @@ type DataIntegration struct {
 	Tags                []DataIntegrationTag           `json:"Tags,omitempty"`
 }
 
-func (DataIntegration) CloudControlType() string { return "AWS::AppIntegrations::DataIntegration" }
+func (DataIntegration) Type() string { return "AWS::AppIntegrations::DataIntegration" }
 
 type EventFilter struct {
 	Source *string `json:"Source,omitempty"`
@@ -97,7 +97,7 @@ type EventIntegration struct {
 	Tags                []EventIntegrationTag `json:"Tags,omitempty"`
 }
 
-func (EventIntegration) CloudControlType() string { return "AWS::AppIntegrations::EventIntegration" }
+func (EventIntegration) Type() string { return "AWS::AppIntegrations::EventIntegration" }
 
 type ContactHandlingScope string
 

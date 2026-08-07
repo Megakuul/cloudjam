@@ -11,7 +11,7 @@ type CustomResource struct {
 	ServiceToken   *string `json:"ServiceToken,omitempty"`
 }
 
-func (CustomResource) CloudControlType() string { return "AWS::CloudFormation::CustomResource" }
+func (CustomResource) Type() string { return "AWS::CloudFormation::CustomResource" }
 
 type TemplateProgress struct {
 	ResourcesFailed     *int `json:"ResourcesFailed,omitempty"`
@@ -36,7 +36,7 @@ type GeneratedTemplate struct {
 	TotalWarnings         *int                     `json:"TotalWarnings,omitempty"`
 }
 
-func (GeneratedTemplate) CloudControlType() string { return "AWS::CloudFormation::GeneratedTemplate" }
+func (GeneratedTemplate) Type() string { return "AWS::CloudFormation::GeneratedTemplate" }
 
 type S3Location struct {
 	Uri       *string `json:"Uri,omitempty"`
@@ -73,7 +73,7 @@ type GuardHook struct {
 	TargetOperations []TargetOperation      `json:"TargetOperations,omitempty"`
 }
 
-func (GuardHook) CloudControlType() string { return "AWS::CloudFormation::GuardHook" }
+func (GuardHook) Type() string { return "AWS::CloudFormation::GuardHook" }
 
 type HookDefaultVersion struct {
 	Arn            *string `json:"Arn,omitempty"`
@@ -82,7 +82,7 @@ type HookDefaultVersion struct {
 	VersionId      *string `json:"VersionId,omitempty"`
 }
 
-func (HookDefaultVersion) CloudControlType() string { return "AWS::CloudFormation::HookDefaultVersion" }
+func (HookDefaultVersion) Type() string { return "AWS::CloudFormation::HookDefaultVersion" }
 
 type HookTypeConfig struct {
 	Configuration      *string                           `json:"Configuration,omitempty"`
@@ -92,7 +92,7 @@ type HookTypeConfig struct {
 	TypeName           *string                           `json:"TypeName,omitempty"`
 }
 
-func (HookTypeConfig) CloudControlType() string { return "AWS::CloudFormation::HookTypeConfig" }
+func (HookTypeConfig) Type() string { return "AWS::CloudFormation::HookTypeConfig" }
 
 type LoggingConfig struct {
 	LogGroupName *string `json:"LogGroupName,omitempty"`
@@ -111,7 +111,7 @@ type HookVersion struct {
 	Visibility           *HookVersionVisibility `json:"Visibility,omitempty"`
 }
 
-func (HookVersion) CloudControlType() string { return "AWS::CloudFormation::HookVersion" }
+func (HookVersion) Type() string { return "AWS::CloudFormation::HookVersion" }
 
 type LambdaHookLoggingConfig struct {
 	LogGroupName *string `json:"LogGroupName,omitempty"`
@@ -148,7 +148,7 @@ type LambdaHook struct {
 	TargetOperations []LambdaHookTargetOperation `json:"TargetOperations,omitempty"`
 }
 
-func (LambdaHook) CloudControlType() string { return "AWS::CloudFormation::LambdaHook" }
+func (LambdaHook) Type() string { return "AWS::CloudFormation::LambdaHook" }
 
 type Macro struct {
 	Description  *string `json:"Description,omitempty"`
@@ -159,7 +159,7 @@ type Macro struct {
 	Name         *string `json:"Name,omitempty"`
 }
 
-func (Macro) CloudControlType() string { return "AWS::CloudFormation::Macro" }
+func (Macro) Type() string { return "AWS::CloudFormation::Macro" }
 
 type ModuleDefaultVersion struct {
 	Arn        *string `json:"Arn,omitempty"`
@@ -167,9 +167,7 @@ type ModuleDefaultVersion struct {
 	VersionId  *string `json:"VersionId,omitempty"`
 }
 
-func (ModuleDefaultVersion) CloudControlType() string {
-	return "AWS::CloudFormation::ModuleDefaultVersion"
-}
+func (ModuleDefaultVersion) Type() string { return "AWS::CloudFormation::ModuleDefaultVersion" }
 
 type ModuleVersion struct {
 	Arn              *string                  `json:"Arn,omitempty"`
@@ -184,7 +182,7 @@ type ModuleVersion struct {
 	Visibility       *ModuleVersionVisibility `json:"Visibility,omitempty"`
 }
 
-func (ModuleVersion) CloudControlType() string { return "AWS::CloudFormation::ModuleVersion" }
+func (ModuleVersion) Type() string { return "AWS::CloudFormation::ModuleVersion" }
 
 type PublicTypeVersion struct {
 	Arn                 *string                `json:"Arn,omitempty"`
@@ -197,7 +195,7 @@ type PublicTypeVersion struct {
 	TypeVersionArn      *string                `json:"TypeVersionArn,omitempty"`
 }
 
-func (PublicTypeVersion) CloudControlType() string { return "AWS::CloudFormation::PublicTypeVersion" }
+func (PublicTypeVersion) Type() string { return "AWS::CloudFormation::PublicTypeVersion" }
 
 type Publisher struct {
 	AcceptTermsAndConditions *bool                      `json:"AcceptTermsAndConditions,omitempty"`
@@ -208,7 +206,7 @@ type Publisher struct {
 	PublisherStatus          *PublisherPublisherStatus  `json:"PublisherStatus,omitempty"`
 }
 
-func (Publisher) CloudControlType() string { return "AWS::CloudFormation::Publisher" }
+func (Publisher) Type() string { return "AWS::CloudFormation::Publisher" }
 
 type ResourceDefaultVersion struct {
 	Arn            *string `json:"Arn,omitempty"`
@@ -217,9 +215,7 @@ type ResourceDefaultVersion struct {
 	VersionId      *string `json:"VersionId,omitempty"`
 }
 
-func (ResourceDefaultVersion) CloudControlType() string {
-	return "AWS::CloudFormation::ResourceDefaultVersion"
-}
+func (ResourceDefaultVersion) Type() string { return "AWS::CloudFormation::ResourceDefaultVersion" }
 
 type ResourceVersionLoggingConfig struct {
 	LogGroupName *string `json:"LogGroupName,omitempty"`
@@ -239,7 +235,7 @@ type ResourceVersion struct {
 	Visibility           *ResourceVersionVisibility       `json:"Visibility,omitempty"`
 }
 
-func (ResourceVersion) CloudControlType() string { return "AWS::CloudFormation::ResourceVersion" }
+func (ResourceVersion) Type() string { return "AWS::CloudFormation::ResourceVersion" }
 
 type Output struct {
 	Description *string `json:"Description,omitempty"`
@@ -279,7 +275,7 @@ type Stack struct {
 	TimeoutInMinutes            *int                    `json:"TimeoutInMinutes,omitempty"`
 }
 
-func (Stack) CloudControlType() string { return "AWS::CloudFormation::Stack" }
+func (Stack) Type() string { return "AWS::CloudFormation::Stack" }
 
 type AutoDeployment struct {
 	DependsOn                    []string `json:"DependsOn,omitempty"`
@@ -343,7 +339,7 @@ type StackSet struct {
 	TemplateURL           *string                   `json:"TemplateURL,omitempty"`
 }
 
-func (StackSet) CloudControlType() string { return "AWS::CloudFormation::StackSet" }
+func (StackSet) Type() string { return "AWS::CloudFormation::StackSet" }
 
 type TypeActivationLoggingConfig struct {
 	LogGroupName *string `json:"LogGroupName,omitempty"`
@@ -364,7 +360,7 @@ type TypeActivation struct {
 	VersionBump      *TypeActivationVersionBump   `json:"VersionBump,omitempty"`
 }
 
-func (TypeActivation) CloudControlType() string { return "AWS::CloudFormation::TypeActivation" }
+func (TypeActivation) Type() string { return "AWS::CloudFormation::TypeActivation" }
 
 type WaitCondition struct {
 	Count   *int           `json:"Count,omitempty"`
@@ -374,15 +370,13 @@ type WaitCondition struct {
 	Timeout *string        `json:"Timeout,omitempty"`
 }
 
-func (WaitCondition) CloudControlType() string { return "AWS::CloudFormation::WaitCondition" }
+func (WaitCondition) Type() string { return "AWS::CloudFormation::WaitCondition" }
 
 type WaitConditionHandle struct {
 	Id *string `json:"Id,omitempty"`
 }
 
-func (WaitConditionHandle) CloudControlType() string {
-	return "AWS::CloudFormation::WaitConditionHandle"
-}
+func (WaitConditionHandle) Type() string { return "AWS::CloudFormation::WaitConditionHandle" }
 
 type GeneratedTemplateStatus string
 

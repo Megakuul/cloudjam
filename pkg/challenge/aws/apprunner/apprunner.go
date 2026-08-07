@@ -19,9 +19,7 @@ type AutoScalingConfiguration struct {
 	Tags                             []Tag   `json:"Tags,omitempty"`
 }
 
-func (AutoScalingConfiguration) CloudControlType() string {
-	return "AWS::AppRunner::AutoScalingConfiguration"
-}
+func (AutoScalingConfiguration) Type() string { return "AWS::AppRunner::AutoScalingConfiguration" }
 
 type ObservabilityConfigurationTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -41,9 +39,7 @@ type ObservabilityConfiguration struct {
 	TraceConfiguration                 *TraceConfiguration             `json:"TraceConfiguration,omitempty"`
 }
 
-func (ObservabilityConfiguration) CloudControlType() string {
-	return "AWS::AppRunner::ObservabilityConfiguration"
-}
+func (ObservabilityConfiguration) Type() string { return "AWS::AppRunner::ObservabilityConfiguration" }
 
 type EncryptionConfiguration struct {
 	KmsKey *string `json:"KmsKey,omitempty"`
@@ -161,7 +157,7 @@ type Service struct {
 	Tags                        []ServiceTag                       `json:"Tags,omitempty"`
 }
 
-func (Service) CloudControlType() string { return "AWS::AppRunner::Service" }
+func (Service) Type() string { return "AWS::AppRunner::Service" }
 
 type VpcConnectorTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -177,7 +173,7 @@ type VpcConnector struct {
 	VpcConnectorRevision *int              `json:"VpcConnectorRevision,omitempty"`
 }
 
-func (VpcConnector) CloudControlType() string { return "AWS::AppRunner::VpcConnector" }
+func (VpcConnector) Type() string { return "AWS::AppRunner::VpcConnector" }
 
 type IngressVpcConfiguration struct {
 	VpcEndpointId *string `json:"VpcEndpointId,omitempty"`
@@ -199,7 +195,7 @@ type VpcIngressConnection struct {
 	VpcIngressConnectionName *string                     `json:"VpcIngressConnectionName,omitempty"`
 }
 
-func (VpcIngressConnection) CloudControlType() string { return "AWS::AppRunner::VpcIngressConnection" }
+func (VpcIngressConnection) Type() string { return "AWS::AppRunner::VpcIngressConnection" }
 
 type TraceConfigurationVendor string
 

@@ -14,7 +14,7 @@ type Application struct {
 	Tags            []Tag   `json:"Tags,omitempty"`
 }
 
-func (Application) CloudControlType() string { return "AWS::CodeDeploy::Application" }
+func (Application) Type() string { return "AWS::CodeDeploy::Application" }
 
 type MinimumHealthyHosts struct {
 	Type  *string `json:"Type,omitempty"`
@@ -56,7 +56,7 @@ type DeploymentConfig struct {
 	ZonalConfig          *ZonalConfig          `json:"ZonalConfig,omitempty"`
 }
 
-func (DeploymentConfig) CloudControlType() string { return "AWS::CodeDeploy::DeploymentConfig" }
+func (DeploymentConfig) Type() string { return "AWS::CodeDeploy::DeploymentConfig" }
 
 type Alarm struct {
 	Name *string `json:"Name,omitempty"`
@@ -214,4 +214,4 @@ type DeploymentGroup struct {
 	TriggerConfigurations            []TriggerConfig                   `json:"TriggerConfigurations,omitempty"`
 }
 
-func (DeploymentGroup) CloudControlType() string { return "AWS::CodeDeploy::DeploymentGroup" }
+func (DeploymentGroup) Type() string { return "AWS::CodeDeploy::DeploymentGroup" }

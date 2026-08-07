@@ -115,7 +115,7 @@ type Canary struct {
 	VisualReferences                      []VisualReference                 `json:"VisualReferences,omitempty"`
 }
 
-func (Canary) CloudControlType() string { return "AWS::Synthetics::Canary" }
+func (Canary) Type() string { return "AWS::Synthetics::Canary" }
 
 type GroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -129,7 +129,7 @@ type Group struct {
 	Tags         []GroupTag `json:"Tags,omitempty"`
 }
 
-func (Group) CloudControlType() string { return "AWS::Synthetics::Group" }
+func (Group) Type() string { return "AWS::Synthetics::Group" }
 
 type BrowserType string
 

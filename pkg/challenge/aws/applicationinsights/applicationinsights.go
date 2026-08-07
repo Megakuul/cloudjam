@@ -137,7 +137,7 @@ type Application struct {
 	Tags                        []Tag                        `json:"Tags,omitempty"`
 }
 
-func (Application) CloudControlType() string { return "AWS::ApplicationInsights::Application" }
+func (Application) Type() string { return "AWS::ApplicationInsights::Application" }
 
 type ComponentMonitoringSettingComponentConfigurationMode string
 

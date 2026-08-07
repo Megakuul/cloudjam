@@ -10,7 +10,7 @@ type Account struct {
 	Id                *string `json:"Id,omitempty"`
 }
 
-func (Account) CloudControlType() string { return "AWS::ApiGateway::Account" }
+func (Account) Type() string { return "AWS::ApiGateway::Account" }
 
 type StageKey struct {
 	RestApiId *string `json:"RestApiId,omitempty"`
@@ -34,7 +34,7 @@ type ApiKey struct {
 	Value              *string    `json:"Value,omitempty"`
 }
 
-func (ApiKey) CloudControlType() string { return "AWS::ApiGateway::ApiKey" }
+func (ApiKey) Type() string { return "AWS::ApiGateway::ApiKey" }
 
 type Authorizer struct {
 	AuthType                     *string  `json:"AuthType,omitempty"`
@@ -50,7 +50,7 @@ type Authorizer struct {
 	Type                         *string  `json:"Type,omitempty"`
 }
 
-func (Authorizer) CloudControlType() string { return "AWS::ApiGateway::Authorizer" }
+func (Authorizer) Type() string { return "AWS::ApiGateway::Authorizer" }
 
 type BasePathMapping struct {
 	BasePath   *string `json:"BasePath,omitempty"`
@@ -59,7 +59,7 @@ type BasePathMapping struct {
 	Stage      *string `json:"Stage,omitempty"`
 }
 
-func (BasePathMapping) CloudControlType() string { return "AWS::ApiGateway::BasePathMapping" }
+func (BasePathMapping) Type() string { return "AWS::ApiGateway::BasePathMapping" }
 
 type BasePathMappingV2 struct {
 	BasePath           *string `json:"BasePath,omitempty"`
@@ -69,7 +69,7 @@ type BasePathMappingV2 struct {
 	Stage              *string `json:"Stage,omitempty"`
 }
 
-func (BasePathMappingV2) CloudControlType() string { return "AWS::ApiGateway::BasePathMappingV2" }
+func (BasePathMappingV2) Type() string { return "AWS::ApiGateway::BasePathMappingV2" }
 
 type ClientCertificateTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -82,7 +82,7 @@ type ClientCertificate struct {
 	Tags                []ClientCertificateTag `json:"Tags,omitempty"`
 }
 
-func (ClientCertificate) CloudControlType() string { return "AWS::ApiGateway::ClientCertificate" }
+func (ClientCertificate) Type() string { return "AWS::ApiGateway::ClientCertificate" }
 
 type DeploymentCanarySettings struct {
 	PercentTraffic         *float64          `json:"PercentTraffic,omitempty"`
@@ -150,7 +150,7 @@ type Deployment struct {
 	StageName                *string                   `json:"StageName,omitempty"`
 }
 
-func (Deployment) CloudControlType() string { return "AWS::ApiGateway::Deployment" }
+func (Deployment) Type() string { return "AWS::ApiGateway::Deployment" }
 
 type Location struct {
 	Method     *string       `json:"Method,omitempty"`
@@ -167,7 +167,7 @@ type DocumentationPart struct {
 	RestApiId           *string   `json:"RestApiId,omitempty"`
 }
 
-func (DocumentationPart) CloudControlType() string { return "AWS::ApiGateway::DocumentationPart" }
+func (DocumentationPart) Type() string { return "AWS::ApiGateway::DocumentationPart" }
 
 type DocumentationVersion struct {
 	Description          *string `json:"Description,omitempty"`
@@ -175,7 +175,7 @@ type DocumentationVersion struct {
 	RestApiId            *string `json:"RestApiId,omitempty"`
 }
 
-func (DocumentationVersion) CloudControlType() string { return "AWS::ApiGateway::DocumentationVersion" }
+func (DocumentationVersion) Type() string { return "AWS::ApiGateway::DocumentationVersion" }
 
 type EndpointConfiguration struct {
 	IpAddressType *string  `json:"IpAddressType,omitempty"`
@@ -210,7 +210,7 @@ type DomainName struct {
 	Tags                                []DomainNameTag          `json:"Tags,omitempty"`
 }
 
-func (DomainName) CloudControlType() string { return "AWS::ApiGateway::DomainName" }
+func (DomainName) Type() string { return "AWS::ApiGateway::DomainName" }
 
 type DomainNameAccessAssociationTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -225,7 +225,7 @@ type DomainNameAccessAssociation struct {
 	Tags                           []DomainNameAccessAssociationTag                        `json:"Tags,omitempty"`
 }
 
-func (DomainNameAccessAssociation) CloudControlType() string {
+func (DomainNameAccessAssociation) Type() string {
 	return "AWS::ApiGateway::DomainNameAccessAssociation"
 }
 
@@ -252,7 +252,7 @@ type DomainNameV2 struct {
 	Tags                  []DomainNameV2Tag                  `json:"Tags,omitempty"`
 }
 
-func (DomainNameV2) CloudControlType() string { return "AWS::ApiGateway::DomainNameV2" }
+func (DomainNameV2) Type() string { return "AWS::ApiGateway::DomainNameV2" }
 
 type GatewayResponse struct {
 	Id                 *string           `json:"Id,omitempty"`
@@ -263,7 +263,7 @@ type GatewayResponse struct {
 	StatusCode         *string           `json:"StatusCode,omitempty"`
 }
 
-func (GatewayResponse) CloudControlType() string { return "AWS::ApiGateway::GatewayResponse" }
+func (GatewayResponse) Type() string { return "AWS::ApiGateway::GatewayResponse" }
 
 type IntegrationResponse struct {
 	ContentHandling    *IntegrationResponseContentHandling `json:"ContentHandling,omitempty"`
@@ -314,7 +314,7 @@ type Method struct {
 	RestApiId           *string                    `json:"RestApiId,omitempty"`
 }
 
-func (Method) CloudControlType() string { return "AWS::ApiGateway::Method" }
+func (Method) Type() string { return "AWS::ApiGateway::Method" }
 
 type Model struct {
 	ContentType *string         `json:"ContentType,omitempty"`
@@ -324,7 +324,7 @@ type Model struct {
 	Schema      json.RawMessage `json:"Schema,omitempty"`
 }
 
-func (Model) CloudControlType() string { return "AWS::ApiGateway::Model" }
+func (Model) Type() string { return "AWS::ApiGateway::Model" }
 
 type RequestValidator struct {
 	Name                      *string `json:"Name,omitempty"`
@@ -334,7 +334,7 @@ type RequestValidator struct {
 	ValidateRequestParameters *bool   `json:"ValidateRequestParameters,omitempty"`
 }
 
-func (RequestValidator) CloudControlType() string { return "AWS::ApiGateway::RequestValidator" }
+func (RequestValidator) Type() string { return "AWS::ApiGateway::RequestValidator" }
 
 type Resource struct {
 	ParentId   *string `json:"ParentId,omitempty"`
@@ -343,7 +343,7 @@ type Resource struct {
 	RestApiId  *string `json:"RestApiId,omitempty"`
 }
 
-func (Resource) CloudControlType() string { return "AWS::ApiGateway::Resource" }
+func (Resource) Type() string { return "AWS::ApiGateway::Resource" }
 
 type S3Location struct {
 	Bucket  *string `json:"Bucket,omitempty"`
@@ -385,7 +385,7 @@ type RestApi struct {
 	Tags                      []RestApiTag                  `json:"Tags,omitempty"`
 }
 
-func (RestApi) CloudControlType() string { return "AWS::ApiGateway::RestApi" }
+func (RestApi) Type() string { return "AWS::ApiGateway::RestApi" }
 
 type StageAccessLogSetting struct {
 	DestinationArn *string `json:"DestinationArn,omitempty"`
@@ -434,7 +434,7 @@ type Stage struct {
 	Variables            map[string]string      `json:"Variables,omitempty"`
 }
 
-func (Stage) CloudControlType() string { return "AWS::ApiGateway::Stage" }
+func (Stage) Type() string { return "AWS::ApiGateway::Stage" }
 
 type ThrottleSettings struct {
 	BurstLimit *int     `json:"BurstLimit,omitempty"`
@@ -468,7 +468,7 @@ type UsagePlan struct {
 	UsagePlanName *string           `json:"UsagePlanName,omitempty"`
 }
 
-func (UsagePlan) CloudControlType() string { return "AWS::ApiGateway::UsagePlan" }
+func (UsagePlan) Type() string { return "AWS::ApiGateway::UsagePlan" }
 
 type UsagePlanKey struct {
 	Id          *string              `json:"Id,omitempty"`
@@ -477,7 +477,7 @@ type UsagePlanKey struct {
 	UsagePlanId *string              `json:"UsagePlanId,omitempty"`
 }
 
-func (UsagePlanKey) CloudControlType() string { return "AWS::ApiGateway::UsagePlanKey" }
+func (UsagePlanKey) Type() string { return "AWS::ApiGateway::UsagePlanKey" }
 
 type VpcLinkTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -492,7 +492,7 @@ type VpcLink struct {
 	VpcLinkId   *string      `json:"VpcLinkId,omitempty"`
 }
 
-func (VpcLink) CloudControlType() string { return "AWS::ApiGateway::VpcLink" }
+func (VpcLink) Type() string { return "AWS::ApiGateway::VpcLink" }
 
 type LocationType string
 

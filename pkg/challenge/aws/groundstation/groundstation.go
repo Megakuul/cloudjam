@@ -112,7 +112,7 @@ type Config struct {
 	Type       *string     `json:"Type,omitempty"`
 }
 
-func (Config) CloudControlType() string { return "AWS::GroundStation::Config" }
+func (Config) Type() string { return "AWS::GroundStation::Config" }
 
 type SocketAddress struct {
 	Name *string `json:"Name,omitempty"`
@@ -179,9 +179,7 @@ type DataflowEndpointGroup struct {
 	Tags                           []DataflowEndpointGroupTag `json:"Tags,omitempty"`
 }
 
-func (DataflowEndpointGroup) CloudControlType() string {
-	return "AWS::GroundStation::DataflowEndpointGroup"
-}
+func (DataflowEndpointGroup) Type() string { return "AWS::GroundStation::DataflowEndpointGroup" }
 
 type DataflowEndpointGroupV2IntegerRange struct {
 	Maximum *int `json:"Maximum,omitempty"`
@@ -275,9 +273,7 @@ type DataflowEndpointGroupV2 struct {
 	Tags                           []DataflowEndpointGroupV2Tag             `json:"Tags,omitempty"`
 }
 
-func (DataflowEndpointGroupV2) CloudControlType() string {
-	return "AWS::GroundStation::DataflowEndpointGroupV2"
-}
+func (DataflowEndpointGroupV2) Type() string { return "AWS::GroundStation::DataflowEndpointGroupV2" }
 
 type DataflowEdge struct {
 	Destination *string `json:"Destination,omitempty"`
@@ -311,7 +307,7 @@ type MissionProfile struct {
 	TrackingConfigArn                   *string             `json:"TrackingConfigArn,omitempty"`
 }
 
-func (MissionProfile) CloudControlType() string { return "AWS::GroundStation::MissionProfile" }
+func (MissionProfile) Type() string { return "AWS::GroundStation::MissionProfile" }
 
 type BandwidthUnits string
 

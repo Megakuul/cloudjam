@@ -30,7 +30,7 @@ type Application struct {
 	VpcLinkId             *string               `json:"VpcLinkId,omitempty"`
 }
 
-func (Application) CloudControlType() string { return "AWS::RefactorSpaces::Application" }
+func (Application) Type() string { return "AWS::RefactorSpaces::Application" }
 
 type EnvironmentTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -47,7 +47,7 @@ type Environment struct {
 	TransitGatewayId      *string            `json:"TransitGatewayId,omitempty"`
 }
 
-func (Environment) CloudControlType() string { return "AWS::RefactorSpaces::Environment" }
+func (Environment) Type() string { return "AWS::RefactorSpaces::Environment" }
 
 type DefaultRouteInput struct {
 	ActivationState *RouteActivationState `json:"ActivationState,omitempty"`
@@ -79,7 +79,7 @@ type Route struct {
 	UriPathRoute          *UriPathRouteInput `json:"UriPathRoute,omitempty"`
 }
 
-func (Route) CloudControlType() string { return "AWS::RefactorSpaces::Route" }
+func (Route) Type() string { return "AWS::RefactorSpaces::Route" }
 
 type LambdaEndpointInput struct {
 	Arn *string `json:"Arn,omitempty"`
@@ -109,7 +109,7 @@ type Service struct {
 	VpcId                 *string              `json:"VpcId,omitempty"`
 }
 
-func (Service) CloudControlType() string { return "AWS::RefactorSpaces::Service" }
+func (Service) Type() string { return "AWS::RefactorSpaces::Service" }
 
 type ApiGatewayEndpointType string
 

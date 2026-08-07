@@ -76,7 +76,7 @@ type ConfigurationSet struct {
 	VdmOptions         *VdmOptions         `json:"VdmOptions,omitempty"`
 }
 
-func (ConfigurationSet) CloudControlType() string { return "AWS::SES::ConfigurationSet" }
+func (ConfigurationSet) Type() string { return "AWS::SES::ConfigurationSet" }
 
 type DimensionConfiguration struct {
 	DefaultDimensionValue *string `json:"DefaultDimensionValue,omitempty"`
@@ -117,7 +117,7 @@ type ConfigurationSetEventDestination struct {
 	Id                   *string           `json:"Id,omitempty"`
 }
 
-func (ConfigurationSetEventDestination) CloudControlType() string {
+func (ConfigurationSetEventDestination) Type() string {
 	return "AWS::SES::ConfigurationSetEventDestination"
 }
 
@@ -140,7 +140,7 @@ type ContactList struct {
 	Topics          []Topic          `json:"Topics,omitempty"`
 }
 
-func (ContactList) CloudControlType() string { return "AWS::SES::ContactList" }
+func (ContactList) Type() string { return "AWS::SES::ContactList" }
 
 type CustomVerificationEmailTemplateTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -157,7 +157,7 @@ type CustomVerificationEmailTemplate struct {
 	TemplateSubject       *string                              `json:"TemplateSubject,omitempty"`
 }
 
-func (CustomVerificationEmailTemplate) CloudControlType() string {
+func (CustomVerificationEmailTemplate) Type() string {
 	return "AWS::SES::CustomVerificationEmailTemplate"
 }
 
@@ -172,7 +172,7 @@ type DedicatedIpPool struct {
 	Tags        []DedicatedIpPoolTag `json:"Tags,omitempty"`
 }
 
-func (DedicatedIpPool) CloudControlType() string { return "AWS::SES::DedicatedIpPool" }
+func (DedicatedIpPool) Type() string { return "AWS::SES::DedicatedIpPool" }
 
 type ConfigurationSetAttributes struct {
 	ConfigurationSetName *string `json:"ConfigurationSetName,omitempty"`
@@ -218,7 +218,7 @@ type EmailIdentity struct {
 	Tags                       []EmailIdentityTag          `json:"Tags,omitempty"`
 }
 
-func (EmailIdentity) CloudControlType() string { return "AWS::SES::EmailIdentity" }
+func (EmailIdentity) Type() string { return "AWS::SES::EmailIdentity" }
 
 type MailManagerAddonInstanceTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -233,9 +233,7 @@ type MailManagerAddonInstance struct {
 	Tags                []MailManagerAddonInstanceTag `json:"Tags,omitempty"`
 }
 
-func (MailManagerAddonInstance) CloudControlType() string {
-	return "AWS::SES::MailManagerAddonInstance"
-}
+func (MailManagerAddonInstance) Type() string { return "AWS::SES::MailManagerAddonInstance" }
 
 type MailManagerAddonSubscriptionTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -249,9 +247,7 @@ type MailManagerAddonSubscription struct {
 	Tags                 []MailManagerAddonSubscriptionTag `json:"Tags,omitempty"`
 }
 
-func (MailManagerAddonSubscription) CloudControlType() string {
-	return "AWS::SES::MailManagerAddonSubscription"
-}
+func (MailManagerAddonSubscription) Type() string { return "AWS::SES::MailManagerAddonSubscription" }
 
 type MailManagerAddressListTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -265,7 +261,7 @@ type MailManagerAddressList struct {
 	Tags            []MailManagerAddressListTag `json:"Tags,omitempty"`
 }
 
-func (MailManagerAddressList) CloudControlType() string { return "AWS::SES::MailManagerAddressList" }
+func (MailManagerAddressList) Type() string { return "AWS::SES::MailManagerAddressList" }
 
 type MailManagerArchiveTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -282,7 +278,7 @@ type MailManagerArchive struct {
 	Tags         []MailManagerArchiveTag `json:"Tags,omitempty"`
 }
 
-func (MailManagerArchive) CloudControlType() string { return "AWS::SES::MailManagerArchive" }
+func (MailManagerArchive) Type() string { return "AWS::SES::MailManagerArchive" }
 
 type MailManagerIngressPointTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -305,7 +301,7 @@ type MailManagerIngressPoint struct {
 	Type                      *IngressPointType            `json:"Type,omitempty"`
 }
 
-func (MailManagerIngressPoint) CloudControlType() string { return "AWS::SES::MailManagerIngressPoint" }
+func (MailManagerIngressPoint) Type() string { return "AWS::SES::MailManagerIngressPoint" }
 
 type MailManagerRelayTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -322,7 +318,7 @@ type MailManagerRelay struct {
 	Tags           []MailManagerRelayTag `json:"Tags,omitempty"`
 }
 
-func (MailManagerRelay) CloudControlType() string { return "AWS::SES::MailManagerRelay" }
+func (MailManagerRelay) Type() string { return "AWS::SES::MailManagerRelay" }
 
 type Rule struct {
 	Actions    []json.RawMessage `json:"Actions,omitempty"`
@@ -344,7 +340,7 @@ type MailManagerRuleSet struct {
 	Tags        []MailManagerRuleSetTag `json:"Tags,omitempty"`
 }
 
-func (MailManagerRuleSet) CloudControlType() string { return "AWS::SES::MailManagerRuleSet" }
+func (MailManagerRuleSet) Type() string { return "AWS::SES::MailManagerRuleSet" }
 
 type PolicyStatement struct {
 	Action     *AcceptAction     `json:"Action,omitempty"`
@@ -366,9 +362,7 @@ type MailManagerTrafficPolicy struct {
 	TrafficPolicyName   *string                       `json:"TrafficPolicyName,omitempty"`
 }
 
-func (MailManagerTrafficPolicy) CloudControlType() string {
-	return "AWS::SES::MailManagerTrafficPolicy"
-}
+func (MailManagerTrafficPolicy) Type() string { return "AWS::SES::MailManagerTrafficPolicy" }
 
 type RouteDetailsItem struct {
 	Region *string `json:"Region,omitempty"`
@@ -389,7 +383,7 @@ type MultiRegionEndpoint struct {
 	Tags         []MultiRegionEndpointTag `json:"Tags,omitempty"`
 }
 
-func (MultiRegionEndpoint) CloudControlType() string { return "AWS::SES::MultiRegionEndpoint" }
+func (MultiRegionEndpoint) Type() string { return "AWS::SES::MultiRegionEndpoint" }
 
 type IpFilter struct {
 	Cidr   *string `json:"Cidr,omitempty"`
@@ -406,7 +400,7 @@ type ReceiptFilter struct {
 	Id     *string `json:"Id,omitempty"`
 }
 
-func (ReceiptFilter) CloudControlType() string { return "AWS::SES::ReceiptFilter" }
+func (ReceiptFilter) Type() string { return "AWS::SES::ReceiptFilter" }
 
 type AddHeaderAction struct {
 	HeaderName  *string `json:"HeaderName,omitempty"`
@@ -482,14 +476,14 @@ type ReceiptRule struct {
 	RuleSetName *string          `json:"RuleSetName,omitempty"`
 }
 
-func (ReceiptRule) CloudControlType() string { return "AWS::SES::ReceiptRule" }
+func (ReceiptRule) Type() string { return "AWS::SES::ReceiptRule" }
 
 type ReceiptRuleSet struct {
 	Id          *string `json:"Id,omitempty"`
 	RuleSetName *string `json:"RuleSetName,omitempty"`
 }
 
-func (ReceiptRuleSet) CloudControlType() string { return "AWS::SES::ReceiptRuleSet" }
+func (ReceiptRuleSet) Type() string { return "AWS::SES::ReceiptRuleSet" }
 
 type TemplateTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -509,7 +503,7 @@ type Template struct {
 	Template *TemplateTemplate `json:"Template,omitempty"`
 }
 
-func (Template) CloudControlType() string { return "AWS::SES::Template" }
+func (Template) Type() string { return "AWS::SES::Template" }
 
 type ResourceAssociation struct {
 	ResourceArn *string `json:"ResourceArn,omitempty"`
@@ -527,7 +521,7 @@ type Tenant struct {
 	TenantName           *string               `json:"TenantName,omitempty"`
 }
 
-func (Tenant) CloudControlType() string { return "AWS::SES::Tenant" }
+func (Tenant) Type() string { return "AWS::SES::Tenant" }
 
 type DashboardAttributes struct {
 	EngagementMetrics *string `json:"EngagementMetrics,omitempty"`
@@ -543,7 +537,7 @@ type VdmAttributes struct {
 	VdmAttributesResourceId *string              `json:"VdmAttributesResourceId,omitempty"`
 }
 
-func (VdmAttributes) CloudControlType() string { return "AWS::SES::VdmAttributes" }
+func (VdmAttributes) Type() string { return "AWS::SES::VdmAttributes" }
 
 type ArchiveState string
 

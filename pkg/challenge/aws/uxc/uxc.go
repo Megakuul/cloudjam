@@ -10,7 +10,7 @@ type AccountCustomization struct {
 	VisibleServices []string                          `json:"VisibleServices,omitempty"`
 }
 
-func (AccountCustomization) CloudControlType() string { return "AWS::UXC::AccountCustomization" }
+func (AccountCustomization) Type() string { return "AWS::UXC::AccountCustomization" }
 
 type AccountCustomizationAccountColor string
 

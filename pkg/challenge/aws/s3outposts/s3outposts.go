@@ -17,7 +17,7 @@ type AccessPoint struct {
 	VpcConfiguration *VpcConfiguration `json:"VpcConfiguration,omitempty"`
 }
 
-func (AccessPoint) CloudControlType() string { return "AWS::S3Outposts::AccessPoint" }
+func (AccessPoint) Type() string { return "AWS::S3Outposts::AccessPoint" }
 
 type AbortIncompleteMultipartUpload struct {
 	DaysAfterInitiation *int `json:"DaysAfterInitiation,omitempty"`
@@ -60,14 +60,14 @@ type Bucket struct {
 	Tags                   []Tag                   `json:"Tags,omitempty"`
 }
 
-func (Bucket) CloudControlType() string { return "AWS::S3Outposts::Bucket" }
+func (Bucket) Type() string { return "AWS::S3Outposts::Bucket" }
 
 type BucketPolicy struct {
 	Bucket         *string        `json:"Bucket,omitempty"`
 	PolicyDocument map[string]any `json:"PolicyDocument,omitempty"`
 }
 
-func (BucketPolicy) CloudControlType() string { return "AWS::S3Outposts::BucketPolicy" }
+func (BucketPolicy) Type() string { return "AWS::S3Outposts::BucketPolicy" }
 
 type FailedReason struct {
 	ErrorCode *string `json:"ErrorCode,omitempty"`
@@ -93,7 +93,7 @@ type Endpoint struct {
 	SubnetId              *string             `json:"SubnetId,omitempty"`
 }
 
-func (Endpoint) CloudControlType() string { return "AWS::S3Outposts::Endpoint" }
+func (Endpoint) Type() string { return "AWS::S3Outposts::Endpoint" }
 
 type RuleStatus string
 

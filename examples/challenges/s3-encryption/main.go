@@ -19,44 +19,27 @@ import (
 const bucket = "cloudjam-encrypt-me"
 
 func main() {
-	c := &challenge.Challenge{
-		Title: "Lock Down the Bucket",
-		Description: "A teammate spun up an S3 bucket with no encryption and no " +
-			"public-access guardrails. Secure it.",
-		Clues: map[string]string{
-			"encryption": "Default encryption lives under BucketEncryption.",
-			"public":     "Block public access with a PublicAccessBlockConfiguration.",
-		},
-		Resources: []challenge.Resource{
-			&s3.Bucket{
-				BucketName: new(bucket),
-				Tags:       []s3.BucketTag{{Key: new("cloudjam"), Value: new("s3-encryption")}},
-			},
-		},
-		Checks: []challenge.Check{
-			{
-				Name:   "Enabled default encryption on the bucket",
-				Points: 50,
-				Every:  15 * time.Second,
-				Done:   encrypted,
-			},
-			{
-				Name:   "Blocked public access to the bucket",
-				Points: 60,
-				Every:  15 * time.Second,
-				Done:   locked,
-			},
-			{
-				// Repeats: keeping the account tidy pays every round.
-				Name:   "Kept the bucket tagged",
-				Points: 5,
-				Every:  time.Minute,
-				Repeat: true,
-				Done:   tagged,
-			},
-		},
-	}
-	challenge.Start(c)
+	challenge.New("Lock Down the Bucket", 10*time.Second).
+		AddDescription("A teammate spun up an S3 bucket with no encryption and no public-access guardrails. Secure it.").
+		AddClue("encryption", "Default encryption lives under BucketEncryption.").
+		AddClue("public", "Block public access with a PublicAccessBlockConfiguration.").
+		AddCheck("Enabled default encryption on the bucket", challenge.Check{
+			Points:  50,
+			Every:   15 * time.Second,
+			Trigger: encrypted,
+		}).
+		AddCheck("Blocked public access to the bucket", challenge.Check{
+			Points:  60,
+			Every:   15 * time.Second,
+			Trigger: locked,
+		}).
+		AddCheck("Kept the bucket tagged", challenge.Check{
+			Points:  5,
+			Every:   time.Minute,
+			Repeat:  true,
+			Trigger: tagged,
+		}).
+		Start()
 }
 
 func encrypted() (bool, error) {

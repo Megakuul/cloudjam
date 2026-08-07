@@ -17,7 +17,7 @@ type Ledger struct {
 	Tags               []Tag   `json:"Tags,omitempty"`
 }
 
-func (Ledger) CloudControlType() string { return "AWS::QLDB::Ledger" }
+func (Ledger) Type() string { return "AWS::QLDB::Ledger" }
 
 type KinesisConfiguration struct {
 	AggregationEnabled *bool   `json:"AggregationEnabled,omitempty"`
@@ -41,4 +41,4 @@ type Stream struct {
 	Tags                 []StreamTag           `json:"Tags,omitempty"`
 }
 
-func (Stream) CloudControlType() string { return "AWS::QLDB::Stream" }
+func (Stream) Type() string { return "AWS::QLDB::Stream" }

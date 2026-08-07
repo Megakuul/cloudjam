@@ -19,7 +19,7 @@ type CRL struct {
 	TrustAnchorArn *string `json:"TrustAnchorArn,omitempty"`
 }
 
-func (CRL) CloudControlType() string { return "AWS::RolesAnywhere::CRL" }
+func (CRL) Type() string { return "AWS::RolesAnywhere::CRL" }
 
 type MappingRule struct {
 	Specifier *string `json:"Specifier,omitempty"`
@@ -50,7 +50,7 @@ type Profile struct {
 	Tags                      []ProfileTag       `json:"Tags,omitempty"`
 }
 
-func (Profile) CloudControlType() string { return "AWS::RolesAnywhere::Profile" }
+func (Profile) Type() string { return "AWS::RolesAnywhere::Profile" }
 
 type NotificationSetting struct {
 	Channel   *NotificationChannel `json:"Channel,omitempty"`
@@ -79,7 +79,7 @@ type TrustAnchor struct {
 	TrustAnchorId        *string               `json:"TrustAnchorId,omitempty"`
 }
 
-func (TrustAnchor) CloudControlType() string { return "AWS::RolesAnywhere::TrustAnchor" }
+func (TrustAnchor) Type() string { return "AWS::RolesAnywhere::TrustAnchor" }
 
 type CertificateField string
 

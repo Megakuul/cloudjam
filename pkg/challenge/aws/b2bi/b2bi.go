@@ -27,7 +27,7 @@ type Capability struct {
 	Type                  *CapabilityType `json:"Type,omitempty"`
 }
 
-func (Capability) CloudControlType() string { return "AWS::B2BI::Capability" }
+func (Capability) Type() string { return "AWS::B2BI::Capability" }
 
 type X12AcknowledgmentOptions struct {
 	FunctionalAcknowledgment *X12FunctionalAcknowledgment `json:"FunctionalAcknowledgment,omitempty"`
@@ -67,7 +67,7 @@ type Partnership struct {
 	TradingPartnerId  *string            `json:"TradingPartnerId,omitempty"`
 }
 
-func (Partnership) CloudControlType() string { return "AWS::B2BI::Partnership" }
+func (Partnership) Type() string { return "AWS::B2BI::Partnership" }
 
 type ProfileTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -88,7 +88,7 @@ type Profile struct {
 	Tags         []ProfileTag `json:"Tags,omitempty"`
 }
 
-func (Profile) CloudControlType() string { return "AWS::B2BI::Profile" }
+func (Profile) Type() string { return "AWS::B2BI::Profile" }
 
 type X12SplitOptions struct {
 	SplitBy *X12SplitBy `json:"SplitBy,omitempty"`
@@ -157,7 +157,7 @@ type Transformer struct {
 	TransformerId    *string            `json:"TransformerId,omitempty"`
 }
 
-func (Transformer) CloudControlType() string { return "AWS::B2BI::Transformer" }
+func (Transformer) Type() string { return "AWS::B2BI::Transformer" }
 
 type CapabilityType string
 

@@ -21,9 +21,7 @@ type EnvironmentAccountConnection struct {
 	Tags                 []Tag   `json:"Tags,omitempty"`
 }
 
-func (EnvironmentAccountConnection) CloudControlType() string {
-	return "AWS::Proton::EnvironmentAccountConnection"
-}
+func (EnvironmentAccountConnection) Type() string { return "AWS::Proton::EnvironmentAccountConnection" }
 
 type EnvironmentTemplateTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -40,7 +38,7 @@ type EnvironmentTemplate struct {
 	Tags          []EnvironmentTemplateTag `json:"Tags,omitempty"`
 }
 
-func (EnvironmentTemplate) CloudControlType() string { return "AWS::Proton::EnvironmentTemplate" }
+func (EnvironmentTemplate) Type() string { return "AWS::Proton::EnvironmentTemplate" }
 
 type ServiceTemplateTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -57,7 +55,7 @@ type ServiceTemplate struct {
 	Tags                 []ServiceTemplateTag         `json:"Tags,omitempty"`
 }
 
-func (ServiceTemplate) CloudControlType() string { return "AWS::Proton::ServiceTemplate" }
+func (ServiceTemplate) Type() string { return "AWS::Proton::ServiceTemplate" }
 
 type Status string
 

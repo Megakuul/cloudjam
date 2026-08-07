@@ -73,7 +73,7 @@ type Workspace struct {
 	VpcConfiguration         *VpcConfiguration             `json:"VpcConfiguration,omitempty"`
 }
 
-func (Workspace) CloudControlType() string { return "AWS::Grafana::Workspace" }
+func (Workspace) Type() string { return "AWS::Grafana::Workspace" }
 
 type AccountAccessType string
 

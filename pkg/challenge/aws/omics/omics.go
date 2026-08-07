@@ -31,7 +31,7 @@ type AnnotationStore struct {
 	UpdateTime     *string           `json:"UpdateTime,omitempty"`
 }
 
-func (AnnotationStore) CloudControlType() string { return "AWS::Omics::AnnotationStore" }
+func (AnnotationStore) Type() string { return "AWS::Omics::AnnotationStore" }
 
 type VpcConfig struct {
 	SecurityGroupIds []string `json:"SecurityGroupIds,omitempty"`
@@ -53,7 +53,7 @@ type Configuration struct {
 	Uuid              *string              `json:"Uuid,omitempty"`
 }
 
-func (Configuration) CloudControlType() string { return "AWS::Omics::Configuration" }
+func (Configuration) Type() string { return "AWS::Omics::Configuration" }
 
 type ReferenceStoreSseConfig struct {
 	KeyArn *string                       `json:"KeyArn,omitempty"`
@@ -70,7 +70,7 @@ type ReferenceStore struct {
 	Tags             map[string]string        `json:"Tags,omitempty"`
 }
 
-func (ReferenceStore) CloudControlType() string { return "AWS::Omics::ReferenceStore" }
+func (ReferenceStore) Type() string { return "AWS::Omics::ReferenceStore" }
 
 type RunGroup struct {
 	Arn          *string           `json:"Arn,omitempty"`
@@ -84,7 +84,7 @@ type RunGroup struct {
 	Tags         map[string]string `json:"Tags,omitempty"`
 }
 
-func (RunGroup) CloudControlType() string { return "AWS::Omics::RunGroup" }
+func (RunGroup) Type() string { return "AWS::Omics::RunGroup" }
 
 type SequenceStoreSseConfig struct {
 	KeyArn *string                      `json:"KeyArn,omitempty"`
@@ -111,7 +111,7 @@ type SequenceStore struct {
 	UpdateTime             *string                 `json:"UpdateTime,omitempty"`
 }
 
-func (SequenceStore) CloudControlType() string { return "AWS::Omics::SequenceStore" }
+func (SequenceStore) Type() string { return "AWS::Omics::SequenceStore" }
 
 type VariantStoreReferenceItem struct {
 	ReferenceArn *string `json:"ReferenceArn,omitempty"`
@@ -137,7 +137,7 @@ type VariantStore struct {
 	UpdateTime     *string                    `json:"UpdateTime,omitempty"`
 }
 
-func (VariantStore) CloudControlType() string { return "AWS::Omics::VariantStore" }
+func (VariantStore) Type() string { return "AWS::Omics::VariantStore" }
 
 type ImageMapping struct {
 	DestinationImage *string `json:"DestinationImage,omitempty"`
@@ -200,7 +200,7 @@ type Workflow struct {
 	ReadmeUri               *string                      `json:"readmeUri,omitempty"`
 }
 
-func (Workflow) CloudControlType() string { return "AWS::Omics::Workflow" }
+func (Workflow) Type() string { return "AWS::Omics::Workflow" }
 
 type WorkflowVersionImageMapping struct {
 	DestinationImage *string `json:"DestinationImage,omitempty"`
@@ -263,7 +263,7 @@ type WorkflowVersion struct {
 	ReadmeUri               *string                                     `json:"readmeUri,omitempty"`
 }
 
-func (WorkflowVersion) CloudControlType() string { return "AWS::Omics::WorkflowVersion" }
+func (WorkflowVersion) Type() string { return "AWS::Omics::WorkflowVersion" }
 
 type EncryptionType string
 

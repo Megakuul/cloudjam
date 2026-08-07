@@ -42,7 +42,7 @@ type AccessPolicy struct {
 	AccessPolicyResource   *AccessPolicyResource `json:"AccessPolicyResource,omitempty"`
 }
 
-func (AccessPolicy) CloudControlType() string { return "AWS::IoTSiteWise::AccessPolicy" }
+func (AccessPolicy) Type() string { return "AWS::IoTSiteWise::AccessPolicy" }
 
 type AssetHierarchy struct {
 	ChildAssetId *string `json:"ChildAssetId,omitempty"`
@@ -77,7 +77,7 @@ type Asset struct {
 	Tags             []Tag            `json:"Tags,omitempty"`
 }
 
-func (Asset) CloudControlType() string { return "AWS::IoTSiteWise::Asset" }
+func (Asset) Type() string { return "AWS::IoTSiteWise::Asset" }
 
 type Attribute struct {
 	DefaultValue *string `json:"DefaultValue,omitempty"`
@@ -190,7 +190,7 @@ type AssetModel struct {
 	Tags                                     []AssetModelTag                           `json:"Tags,omitempty"`
 }
 
-func (AssetModel) CloudControlType() string { return "AWS::IoTSiteWise::AssetModel" }
+func (AssetModel) Type() string { return "AWS::IoTSiteWise::AssetModel" }
 
 type AnomalyDetectionComputationModelConfiguration struct {
 	InputProperties *string `json:"InputProperties,omitempty"`
@@ -232,7 +232,7 @@ type ComputationModel struct {
 	Tags                          []ComputationModelTag                       `json:"Tags,omitempty"`
 }
 
-func (ComputationModel) CloudControlType() string { return "AWS::IoTSiteWise::ComputationModel" }
+func (ComputationModel) Type() string { return "AWS::IoTSiteWise::ComputationModel" }
 
 type DashboardTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -249,7 +249,7 @@ type Dashboard struct {
 	Tags                 []DashboardTag `json:"Tags,omitempty"`
 }
 
-func (Dashboard) CloudControlType() string { return "AWS::IoTSiteWise::Dashboard" }
+func (Dashboard) Type() string { return "AWS::IoTSiteWise::Dashboard" }
 
 type KendraSourceDetail struct {
 	KnowledgeBaseArn *string `json:"KnowledgeBaseArn,omitempty"`
@@ -280,7 +280,7 @@ type Dataset struct {
 	Tags               []DatasetTag   `json:"Tags,omitempty"`
 }
 
-func (Dataset) CloudControlType() string { return "AWS::IoTSiteWise::Dataset" }
+func (Dataset) Type() string { return "AWS::IoTSiteWise::Dataset" }
 
 type GatewayCapabilitySummary struct {
 	CapabilityConfiguration *string `json:"CapabilityConfiguration,omitempty"`
@@ -315,7 +315,7 @@ type Gateway struct {
 	Tags                       []GatewayTag               `json:"Tags,omitempty"`
 }
 
-func (Gateway) CloudControlType() string { return "AWS::IoTSiteWise::Gateway" }
+func (Gateway) Type() string { return "AWS::IoTSiteWise::Gateway" }
 
 type PortalPortalAlarms struct {
 	AlarmRoleArn          *string `json:"AlarmRoleArn,omitempty"`
@@ -348,7 +348,7 @@ type PortalPortal struct {
 	Tags                    []PortalTag                `json:"Tags,omitempty"`
 }
 
-func (PortalPortal) CloudControlType() string { return "AWS::IoTSiteWise::Portal" }
+func (PortalPortal) Type() string { return "AWS::IoTSiteWise::Portal" }
 
 type ProjectTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -365,7 +365,7 @@ type ProjectProject struct {
 	Tags               []ProjectTag `json:"Tags,omitempty"`
 }
 
-func (ProjectProject) CloudControlType() string { return "AWS::IoTSiteWise::Project" }
+func (ProjectProject) Type() string { return "AWS::IoTSiteWise::Project" }
 
 type AssetPropertyNotificationState string
 

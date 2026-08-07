@@ -22,7 +22,7 @@ type ByteMatchSet struct {
 	Name            *string          `json:"Name,omitempty"`
 }
 
-func (ByteMatchSet) CloudControlType() string { return "AWS::WAF::ByteMatchSet" }
+func (ByteMatchSet) Type() string { return "AWS::WAF::ByteMatchSet" }
 
 type IPSetDescriptor struct {
 	Type  *string `json:"Type,omitempty"`
@@ -35,7 +35,7 @@ type IPSet struct {
 	Name             *string           `json:"Name,omitempty"`
 }
 
-func (IPSet) CloudControlType() string { return "AWS::WAF::IPSet" }
+func (IPSet) Type() string { return "AWS::WAF::IPSet" }
 
 type Predicate struct {
 	DataId  *string `json:"DataId,omitempty"`
@@ -50,7 +50,7 @@ type Rule struct {
 	Predicates []Predicate `json:"Predicates,omitempty"`
 }
 
-func (Rule) CloudControlType() string { return "AWS::WAF::Rule" }
+func (Rule) Type() string { return "AWS::WAF::Rule" }
 
 type SizeConstraintSetFieldToMatch struct {
 	Data *string `json:"Data,omitempty"`
@@ -70,7 +70,7 @@ type SizeConstraintSet struct {
 	SizeConstraints []SizeConstraint `json:"SizeConstraints,omitempty"`
 }
 
-func (SizeConstraintSet) CloudControlType() string { return "AWS::WAF::SizeConstraintSet" }
+func (SizeConstraintSet) Type() string { return "AWS::WAF::SizeConstraintSet" }
 
 type SqlInjectionMatchSetFieldToMatch struct {
 	Data *string `json:"Data,omitempty"`
@@ -88,7 +88,7 @@ type SqlInjectionMatchSet struct {
 	SqlInjectionMatchTuples []SqlInjectionMatchTuple `json:"SqlInjectionMatchTuples,omitempty"`
 }
 
-func (SqlInjectionMatchSet) CloudControlType() string { return "AWS::WAF::SqlInjectionMatchSet" }
+func (SqlInjectionMatchSet) Type() string { return "AWS::WAF::SqlInjectionMatchSet" }
 
 type WafAction struct {
 	Type *string `json:"Type,omitempty"`
@@ -108,7 +108,7 @@ type WebACL struct {
 	Rules         []ActivatedRule `json:"Rules,omitempty"`
 }
 
-func (WebACL) CloudControlType() string { return "AWS::WAF::WebACL" }
+func (WebACL) Type() string { return "AWS::WAF::WebACL" }
 
 type XssMatchSetFieldToMatch struct {
 	Data *string `json:"Data,omitempty"`
@@ -126,4 +126,4 @@ type XssMatchSet struct {
 	XssMatchTuples []XssMatchTuple `json:"XssMatchTuples,omitempty"`
 }
 
-func (XssMatchSet) CloudControlType() string { return "AWS::WAF::XssMatchSet" }
+func (XssMatchSet) Type() string { return "AWS::WAF::XssMatchSet" }

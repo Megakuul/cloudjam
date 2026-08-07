@@ -17,4 +17,4 @@ type Simulation struct {
 	SnapshotS3Location *S3Location `json:"SnapshotS3Location,omitempty"`
 }
 
-func (Simulation) CloudControlType() string { return "AWS::SimSpaceWeaver::Simulation" }
+func (Simulation) Type() string { return "AWS::SimSpaceWeaver::Simulation" }

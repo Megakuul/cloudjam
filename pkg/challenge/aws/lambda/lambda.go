@@ -26,7 +26,7 @@ type Alias struct {
 	RoutingConfig                *AliasRoutingConfiguration           `json:"RoutingConfig,omitempty"`
 }
 
-func (Alias) CloudControlType() string { return "AWS::Lambda::Alias" }
+func (Alias) Type() string { return "AWS::Lambda::Alias" }
 
 type TargetTrackingScalingPolicy struct {
 	PredefinedMetricType *CapacityProviderPredefinedMetricType `json:"PredefinedMetricType,omitempty"`
@@ -87,7 +87,7 @@ type CapacityProvider struct {
 	VpcConfig                     *CapacityProviderVpcConfig         `json:"VpcConfig,omitempty"`
 }
 
-func (CapacityProvider) CloudControlType() string { return "AWS::Lambda::CapacityProvider" }
+func (CapacityProvider) Type() string { return "AWS::Lambda::CapacityProvider" }
 
 type AllowedPublishers struct {
 	SigningProfileVersionArns []string `json:"SigningProfileVersionArns,omitempty"`
@@ -111,7 +111,7 @@ type CodeSigningConfig struct {
 	Tags                 []CodeSigningConfigTag `json:"Tags,omitempty"`
 }
 
-func (CodeSigningConfig) CloudControlType() string { return "AWS::Lambda::CodeSigningConfig" }
+func (CodeSigningConfig) Type() string { return "AWS::Lambda::CodeSigningConfig" }
 
 type OnFailure struct {
 	Destination *string `json:"Destination,omitempty"`
@@ -134,7 +134,7 @@ type EventInvokeConfig struct {
 	Qualifier                *string            `json:"Qualifier,omitempty"`
 }
 
-func (EventInvokeConfig) CloudControlType() string { return "AWS::Lambda::EventInvokeConfig" }
+func (EventInvokeConfig) Type() string { return "AWS::Lambda::EventInvokeConfig" }
 
 type SchemaRegistryAccessConfig struct {
 	Type *SchemaRegistryAccessConfigType `json:"Type,omitempty"`
@@ -253,7 +253,7 @@ type EventSourceMapping struct {
 	TumblingWindowInSeconds             *int                                          `json:"TumblingWindowInSeconds,omitempty"`
 }
 
-func (EventSourceMapping) CloudControlType() string { return "AWS::Lambda::EventSourceMapping" }
+func (EventSourceMapping) Type() string { return "AWS::Lambda::EventSourceMapping" }
 
 type LambdaManagedInstancesCapacityProviderConfig struct {
 	CapacityProviderArn                   *string  `json:"CapacityProviderArn,omitempty"`
@@ -385,7 +385,7 @@ type Function struct {
 	VpcConfig                    *VpcConfig                  `json:"VpcConfig,omitempty"`
 }
 
-func (Function) CloudControlType() string { return "AWS::Lambda::Function" }
+func (Function) Type() string { return "AWS::Lambda::Function" }
 
 type Content struct {
 	S3Bucket            *string                     `json:"S3Bucket,omitempty"`
@@ -404,7 +404,7 @@ type LayerVersion struct {
 	LicenseInfo             *string  `json:"LicenseInfo,omitempty"`
 }
 
-func (LayerVersion) CloudControlType() string { return "AWS::Lambda::LayerVersion" }
+func (LayerVersion) Type() string { return "AWS::Lambda::LayerVersion" }
 
 type LayerVersionPermission struct {
 	Action          *string `json:"Action,omitempty"`
@@ -414,7 +414,7 @@ type LayerVersionPermission struct {
 	Principal       *string `json:"Principal,omitempty"`
 }
 
-func (LayerVersionPermission) CloudControlType() string { return "AWS::Lambda::LayerVersionPermission" }
+func (LayerVersionPermission) Type() string { return "AWS::Lambda::LayerVersionPermission" }
 
 type CodeArtifact struct {
 	Uri *string `json:"Uri,omitempty"`
@@ -495,7 +495,7 @@ type MicrovmImage struct {
 	UpdatedAt                *string                                    `json:"UpdatedAt,omitempty"`
 }
 
-func (MicrovmImage) CloudControlType() string { return "AWS::Lambda::MicrovmImage" }
+func (MicrovmImage) Type() string { return "AWS::Lambda::MicrovmImage" }
 
 type VpcEgressConfiguration struct {
 	AssociatedComputeResourceTypes []VpcEgressConfigurationAssociatedComputeResourceTypesItem `json:"AssociatedComputeResourceTypes,omitempty"`
@@ -522,7 +522,7 @@ type NetworkConnector struct {
 	Tags          []NetworkConnectorTag `json:"Tags,omitempty"`
 }
 
-func (NetworkConnector) CloudControlType() string { return "AWS::Lambda::NetworkConnector" }
+func (NetworkConnector) Type() string { return "AWS::Lambda::NetworkConnector" }
 
 type Permission struct {
 	Action                *string                        `json:"Action,omitempty"`
@@ -537,7 +537,7 @@ type Permission struct {
 	SourceArn             *string                        `json:"SourceArn,omitempty"`
 }
 
-func (Permission) CloudControlType() string { return "AWS::Lambda::Permission" }
+func (Permission) Type() string { return "AWS::Lambda::Permission" }
 
 type Cors struct {
 	AllowCredentials *bool              `json:"AllowCredentials,omitempty"`
@@ -558,7 +558,7 @@ type Url struct {
 	TargetFunctionArn *string        `json:"TargetFunctionArn,omitempty"`
 }
 
-func (Url) CloudControlType() string { return "AWS::Lambda::Url" }
+func (Url) Type() string { return "AWS::Lambda::Url" }
 
 type VersionFunctionScalingConfig struct {
 	MaxExecutionEnvironments *int `json:"MaxExecutionEnvironments,omitempty"`
@@ -585,7 +585,7 @@ type Version struct {
 	Version                      *string                                     `json:"Version,omitempty"`
 }
 
-func (Version) CloudControlType() string { return "AWS::Lambda::Version" }
+func (Version) Type() string { return "AWS::Lambda::Version" }
 
 type CapacityProviderScalingMode string
 

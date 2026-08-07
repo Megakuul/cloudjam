@@ -26,7 +26,7 @@ type Graph struct {
 	VectorSearchConfiguration *VectorSearchConfiguration `json:"VectorSearchConfiguration,omitempty"`
 }
 
-func (Graph) CloudControlType() string { return "AWS::NeptuneGraph::Graph" }
+func (Graph) Type() string { return "AWS::NeptuneGraph::Graph" }
 
 type GraphSnapshotTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -44,7 +44,7 @@ type GraphSnapshot struct {
 	Tags               []GraphSnapshotTag   `json:"Tags,omitempty"`
 }
 
-func (GraphSnapshot) CloudControlType() string { return "AWS::NeptuneGraph::GraphSnapshot" }
+func (GraphSnapshot) Type() string { return "AWS::NeptuneGraph::GraphSnapshot" }
 
 type PrivateGraphEndpoint struct {
 	GraphIdentifier                *string  `json:"GraphIdentifier,omitempty"`
@@ -55,9 +55,7 @@ type PrivateGraphEndpoint struct {
 	VpcId                          *string  `json:"VpcId,omitempty"`
 }
 
-func (PrivateGraphEndpoint) CloudControlType() string {
-	return "AWS::NeptuneGraph::PrivateGraphEndpoint"
-}
+func (PrivateGraphEndpoint) Type() string { return "AWS::NeptuneGraph::PrivateGraphEndpoint" }
 
 type GraphSnapshotStatus string
 

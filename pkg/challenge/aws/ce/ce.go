@@ -21,7 +21,7 @@ type AnomalyMonitor struct {
 	ResourceTags          []ResourceTag                   `json:"ResourceTags,omitempty"`
 }
 
-func (AnomalyMonitor) CloudControlType() string { return "AWS::CE::AnomalyMonitor" }
+func (AnomalyMonitor) Type() string { return "AWS::CE::AnomalyMonitor" }
 
 type AnomalySubscriptionResourceTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -46,7 +46,7 @@ type AnomalySubscription struct {
 	ThresholdExpression *string                          `json:"ThresholdExpression,omitempty"`
 }
 
-func (AnomalySubscription) CloudControlType() string { return "AWS::CE::AnomalySubscription" }
+func (AnomalySubscription) Type() string { return "AWS::CE::AnomalySubscription" }
 
 type CostCategoryResourceTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -64,7 +64,7 @@ type CostCategory struct {
 	Tags             []CostCategoryResourceTag `json:"Tags,omitempty"`
 }
 
-func (CostCategory) CloudControlType() string { return "AWS::CE::CostCategory" }
+func (CostCategory) Type() string { return "AWS::CE::CostCategory" }
 
 type AnomalyMonitorMonitorDimension string
 

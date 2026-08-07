@@ -22,7 +22,7 @@ type CaseRule struct {
 	Tags             []Tag           `json:"Tags,omitempty"`
 }
 
-func (CaseRule) CloudControlType() string { return "AWS::Cases::CaseRule" }
+func (CaseRule) Type() string { return "AWS::Cases::CaseRule" }
 
 type DomainTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -38,7 +38,7 @@ type Domain struct {
 	Tags         []DomainTag   `json:"Tags,omitempty"`
 }
 
-func (Domain) CloudControlType() string { return "AWS::Cases::Domain" }
+func (Domain) Type() string { return "AWS::Cases::Domain" }
 
 type TextAttributes struct {
 	IsMultiline *bool `json:"IsMultiline,omitempty"`
@@ -67,7 +67,7 @@ type Field struct {
 	Type             *FieldType       `json:"Type,omitempty"`
 }
 
-func (Field) CloudControlType() string { return "AWS::Cases::Field" }
+func (Field) Type() string { return "AWS::Cases::Field" }
 
 type LayoutTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -85,7 +85,7 @@ type Layout struct {
 	Tags             []LayoutTag     `json:"Tags,omitempty"`
 }
 
-func (Layout) CloudControlType() string { return "AWS::Cases::Layout" }
+func (Layout) Type() string { return "AWS::Cases::Layout" }
 
 type LayoutConfiguration struct {
 	DefaultLayout *string `json:"DefaultLayout,omitempty"`
@@ -120,7 +120,7 @@ type Template struct {
 	TemplateId          *string              `json:"TemplateId,omitempty"`
 }
 
-func (Template) CloudControlType() string { return "AWS::Cases::Template" }
+func (Template) Type() string { return "AWS::Cases::Template" }
 
 type DomainStatus string
 

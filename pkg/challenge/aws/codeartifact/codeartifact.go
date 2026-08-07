@@ -18,7 +18,7 @@ type Domain struct {
 	Tags                      []Tag          `json:"Tags,omitempty"`
 }
 
-func (Domain) CloudControlType() string { return "AWS::CodeArtifact::Domain" }
+func (Domain) Type() string { return "AWS::CodeArtifact::Domain" }
 
 type RestrictionType struct {
 	Repositories    []string                        `json:"Repositories,omitempty"`
@@ -51,7 +51,7 @@ type PackageGroup struct {
 	Tags                []PackageGroupTag    `json:"Tags,omitempty"`
 }
 
-func (PackageGroup) CloudControlType() string { return "AWS::CodeArtifact::PackageGroup" }
+func (PackageGroup) Type() string { return "AWS::CodeArtifact::PackageGroup" }
 
 type RepositoryTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -71,7 +71,7 @@ type Repository struct {
 	Upstreams                 []string        `json:"Upstreams,omitempty"`
 }
 
-func (Repository) CloudControlType() string { return "AWS::CodeArtifact::Repository" }
+func (Repository) Type() string { return "AWS::CodeArtifact::Repository" }
 
 type RestrictionTypeRestrictionMode string
 

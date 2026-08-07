@@ -19,9 +19,7 @@ type CapacityManagerDataExport struct {
 	Tags                        []Tag                                  `json:"Tags,omitempty"`
 }
 
-func (CapacityManagerDataExport) CloudControlType() string {
-	return "AWS::EC2::CapacityManagerDataExport"
-}
+func (CapacityManagerDataExport) Type() string { return "AWS::EC2::CapacityManagerDataExport" }
 
 type CapacityAllocation struct {
 	AllocationType *string `json:"AllocationType,omitempty"`
@@ -74,7 +72,7 @@ type CapacityReservation struct {
 	UnusedReservationBillingOwnerId *string                            `json:"UnusedReservationBillingOwnerId,omitempty"`
 }
 
-func (CapacityReservation) CloudControlType() string { return "AWS::EC2::CapacityReservation" }
+func (CapacityReservation) Type() string { return "AWS::EC2::CapacityReservation" }
 
 type InstanceTypeSpecification struct {
 	AvailabilityZone   *string  `json:"AvailabilityZone,omitempty"`
@@ -109,9 +107,7 @@ type CapacityReservationFleet struct {
 	TotalTargetCapacity        *int                                           `json:"TotalTargetCapacity,omitempty"`
 }
 
-func (CapacityReservationFleet) CloudControlType() string {
-	return "AWS::EC2::CapacityReservationFleet"
-}
+func (CapacityReservationFleet) Type() string { return "AWS::EC2::CapacityReservationFleet" }
 
 type CarrierGatewayTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -126,7 +122,7 @@ type CarrierGateway struct {
 	VpcId            *string             `json:"VpcId,omitempty"`
 }
 
-func (CarrierGateway) CloudControlType() string { return "AWS::EC2::CarrierGateway" }
+func (CarrierGateway) Type() string { return "AWS::EC2::CarrierGateway" }
 
 type ClientVpnAuthorizationRule struct {
 	AccessGroupId       *string `json:"AccessGroupId,omitempty"`
@@ -137,9 +133,7 @@ type ClientVpnAuthorizationRule struct {
 	TargetNetworkCidr   *string `json:"TargetNetworkCidr,omitempty"`
 }
 
-func (ClientVpnAuthorizationRule) CloudControlType() string {
-	return "AWS::EC2::ClientVpnAuthorizationRule"
-}
+func (ClientVpnAuthorizationRule) Type() string { return "AWS::EC2::ClientVpnAuthorizationRule" }
 
 type DirectoryServiceAuthenticationRequest struct {
 	DirectoryId *string `json:"DirectoryId,omitempty"`
@@ -222,7 +216,7 @@ type ClientVpnEndpoint struct {
 	VpnPort                       *int                                `json:"VpnPort,omitempty"`
 }
 
-func (ClientVpnEndpoint) CloudControlType() string { return "AWS::EC2::ClientVpnEndpoint" }
+func (ClientVpnEndpoint) Type() string { return "AWS::EC2::ClientVpnEndpoint" }
 
 type ClientVpnRoute struct {
 	ClientVpnEndpointId  *string `json:"ClientVpnEndpointId,omitempty"`
@@ -232,7 +226,7 @@ type ClientVpnRoute struct {
 	TargetVpcSubnetId    *string `json:"TargetVpcSubnetId,omitempty"`
 }
 
-func (ClientVpnRoute) CloudControlType() string { return "AWS::EC2::ClientVpnRoute" }
+func (ClientVpnRoute) Type() string { return "AWS::EC2::ClientVpnRoute" }
 
 type ClientVpnTargetNetworkAssociation struct {
 	AvailabilityZone    *string `json:"AvailabilityZone,omitempty"`
@@ -242,7 +236,7 @@ type ClientVpnTargetNetworkAssociation struct {
 	SubnetId            *string `json:"SubnetId,omitempty"`
 }
 
-func (ClientVpnTargetNetworkAssociation) CloudControlType() string {
+func (ClientVpnTargetNetworkAssociation) Type() string {
 	return "AWS::EC2::ClientVpnTargetNetworkAssociation"
 }
 
@@ -262,7 +256,7 @@ type CustomerGateway struct {
 	Type              *string              `json:"Type,omitempty"`
 }
 
-func (CustomerGateway) CloudControlType() string { return "AWS::EC2::CustomerGateway" }
+func (CustomerGateway) Type() string { return "AWS::EC2::CustomerGateway" }
 
 type DHCPOptionsTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -280,7 +274,7 @@ type DHCPOptions struct {
 	Tags                          []DHCPOptionsTag `json:"Tags,omitempty"`
 }
 
-func (DHCPOptions) CloudControlType() string { return "AWS::EC2::DHCPOptions" }
+func (DHCPOptions) Type() string { return "AWS::EC2::DHCPOptions" }
 
 type FleetLaunchTemplateSpecificationRequest struct {
 	LaunchTemplateId                    *string `json:"LaunchTemplateId,omitempty"`
@@ -534,7 +528,7 @@ type EC2Fleet struct {
 	ValidUntil                       *string                                  `json:"ValidUntil,omitempty"`
 }
 
-func (EC2Fleet) CloudControlType() string { return "AWS::EC2::EC2Fleet" }
+func (EC2Fleet) Type() string { return "AWS::EC2::EC2Fleet" }
 
 type EIPTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -554,7 +548,7 @@ type EIP struct {
 	TransferAddress    *string  `json:"TransferAddress,omitempty"`
 }
 
-func (EIP) CloudControlType() string { return "AWS::EC2::EIP" }
+func (EIP) Type() string { return "AWS::EC2::EIP" }
 
 type EIPAssociation struct {
 	AllocationId       *string `json:"AllocationId,omitempty"`
@@ -565,7 +559,7 @@ type EIPAssociation struct {
 	PrivateIpAddress   *string `json:"PrivateIpAddress,omitempty"`
 }
 
-func (EIPAssociation) CloudControlType() string { return "AWS::EC2::EIPAssociation" }
+func (EIPAssociation) Type() string { return "AWS::EC2::EIPAssociation" }
 
 type EgressOnlyInternetGatewayTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -578,9 +572,7 @@ type EgressOnlyInternetGateway struct {
 	VpcId *string                        `json:"VpcId,omitempty"`
 }
 
-func (EgressOnlyInternetGateway) CloudControlType() string {
-	return "AWS::EC2::EgressOnlyInternetGateway"
-}
+func (EgressOnlyInternetGateway) Type() string { return "AWS::EC2::EgressOnlyInternetGateway" }
 
 type EnclaveCertificateIamRoleAssociation struct {
 	CertificateArn          *string `json:"CertificateArn,omitempty"`
@@ -590,7 +582,7 @@ type EnclaveCertificateIamRoleAssociation struct {
 	RoleArn                 *string `json:"RoleArn,omitempty"`
 }
 
-func (EnclaveCertificateIamRoleAssociation) CloudControlType() string {
+func (EnclaveCertificateIamRoleAssociation) Type() string {
 	return "AWS::EC2::EnclaveCertificateIamRoleAssociation"
 }
 
@@ -627,7 +619,7 @@ type FlowLog struct {
 	TrafficType              *FlowLogTrafficType        `json:"TrafficType,omitempty"`
 }
 
-func (FlowLog) CloudControlType() string { return "AWS::EC2::FlowLog" }
+func (FlowLog) Type() string { return "AWS::EC2::FlowLog" }
 
 type GatewayRouteTableAssociation struct {
 	AssociationId *string `json:"AssociationId,omitempty"`
@@ -635,9 +627,7 @@ type GatewayRouteTableAssociation struct {
 	RouteTableId  *string `json:"RouteTableId,omitempty"`
 }
 
-func (GatewayRouteTableAssociation) CloudControlType() string {
-	return "AWS::EC2::GatewayRouteTableAssociation"
-}
+func (GatewayRouteTableAssociation) Type() string { return "AWS::EC2::GatewayRouteTableAssociation" }
 
 type HostTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -657,7 +647,7 @@ type Host struct {
 	Tags             []HostTag            `json:"Tags,omitempty"`
 }
 
-func (Host) CloudControlType() string { return "AWS::EC2::Host" }
+func (Host) Type() string { return "AWS::EC2::Host" }
 
 type IpamOrganizationalUnitExclusion struct {
 	OrganizationsEntityPath *string `json:"OrganizationsEntityPath,omitempty"`
@@ -690,7 +680,7 @@ type IPAM struct {
 	Tier                                                 *IPAMTier                         `json:"Tier,omitempty"`
 }
 
-func (IPAM) CloudControlType() string { return "AWS::EC2::IPAM" }
+func (IPAM) Type() string { return "AWS::EC2::IPAM" }
 
 type IPAMAllocation struct {
 	Cidr                 *string `json:"Cidr,omitempty"`
@@ -700,7 +690,7 @@ type IPAMAllocation struct {
 	NetmaskLength        *int    `json:"NetmaskLength,omitempty"`
 }
 
-func (IPAMAllocation) CloudControlType() string { return "AWS::EC2::IPAMAllocation" }
+func (IPAMAllocation) Type() string { return "AWS::EC2::IPAMAllocation" }
 
 type IPAMPoolTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -745,7 +735,7 @@ type IPAMPool struct {
 	Tags                           []IPAMPoolTag           `json:"Tags,omitempty"`
 }
 
-func (IPAMPool) CloudControlType() string { return "AWS::EC2::IPAMPool" }
+func (IPAMPool) Type() string { return "AWS::EC2::IPAMPool" }
 
 type IPAMPoolCidr struct {
 	Cidr           *string `json:"Cidr,omitempty"`
@@ -755,7 +745,7 @@ type IPAMPoolCidr struct {
 	State          *string `json:"State,omitempty"`
 }
 
-func (IPAMPoolCidr) CloudControlType() string { return "AWS::EC2::IPAMPoolCidr" }
+func (IPAMPoolCidr) Type() string { return "AWS::EC2::IPAMPoolCidr" }
 
 type IPAMPrefixListResolverTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -791,7 +781,7 @@ type IPAMPrefixListResolver struct {
 	Tags                      []IPAMPrefixListResolverTag  `json:"Tags,omitempty"`
 }
 
-func (IPAMPrefixListResolver) CloudControlType() string { return "AWS::EC2::IPAMPrefixListResolver" }
+func (IPAMPrefixListResolver) Type() string { return "AWS::EC2::IPAMPrefixListResolver" }
 
 type IPAMPrefixListResolverTargetTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -809,9 +799,7 @@ type IPAMPrefixListResolverTarget struct {
 	TrackLatestVersion              *bool                             `json:"TrackLatestVersion,omitempty"`
 }
 
-func (IPAMPrefixListResolverTarget) CloudControlType() string {
-	return "AWS::EC2::IPAMPrefixListResolverTarget"
-}
+func (IPAMPrefixListResolverTarget) Type() string { return "AWS::EC2::IPAMPrefixListResolverTarget" }
 
 type IPAMResourceDiscoveryIpamOperatingRegion struct {
 	RegionName *string `json:"RegionName,omitempty"`
@@ -839,7 +827,7 @@ type IPAMResourceDiscovery struct {
 	Tags                         []IPAMResourceDiscoveryTag                         `json:"Tags,omitempty"`
 }
 
-func (IPAMResourceDiscovery) CloudControlType() string { return "AWS::EC2::IPAMResourceDiscovery" }
+func (IPAMResourceDiscovery) Type() string { return "AWS::EC2::IPAMResourceDiscovery" }
 
 type IPAMResourceDiscoveryAssociationTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -860,7 +848,7 @@ type IPAMResourceDiscoveryAssociation struct {
 	Tags                                []IPAMResourceDiscoveryAssociationTag `json:"Tags,omitempty"`
 }
 
-func (IPAMResourceDiscoveryAssociation) CloudControlType() string {
+func (IPAMResourceDiscoveryAssociation) Type() string {
 	return "AWS::EC2::IPAMResourceDiscoveryAssociation"
 }
 
@@ -887,7 +875,7 @@ type IPAMScope struct {
 	Tags                           []IPAMScopeTag                           `json:"Tags,omitempty"`
 }
 
-func (IPAMScope) CloudControlType() string { return "AWS::EC2::IPAMScope" }
+func (IPAMScope) Type() string { return "AWS::EC2::IPAMScope" }
 
 type Ebs struct {
 	DeleteOnTermination *bool   `json:"DeleteOnTermination,omitempty"`
@@ -1067,7 +1055,7 @@ type Instance struct {
 	VpcId                             *string                       `json:"VpcId,omitempty"`
 }
 
-func (Instance) CloudControlType() string { return "AWS::EC2::Instance" }
+func (Instance) Type() string { return "AWS::EC2::Instance" }
 
 type InstanceConnectEndpointDnsNames struct {
 	DnsName     *string `json:"DnsName,omitempty"`
@@ -1103,7 +1091,7 @@ type InstanceConnectEndpoint struct {
 	VpcId                      *string                                `json:"VpcId,omitempty"`
 }
 
-func (InstanceConnectEndpoint) CloudControlType() string { return "AWS::EC2::InstanceConnectEndpoint" }
+func (InstanceConnectEndpoint) Type() string { return "AWS::EC2::InstanceConnectEndpoint" }
 
 type InternetGatewayTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -1115,7 +1103,7 @@ type InternetGateway struct {
 	Tags              []InternetGatewayTag `json:"Tags,omitempty"`
 }
 
-func (InternetGateway) CloudControlType() string { return "AWS::EC2::InternetGateway" }
+func (InternetGateway) Type() string { return "AWS::EC2::InternetGateway" }
 
 type IpPoolRouteTableAssociation struct {
 	AssociationId  *string `json:"AssociationId,omitempty"`
@@ -1123,9 +1111,7 @@ type IpPoolRouteTableAssociation struct {
 	RouteTableId   *string `json:"RouteTableId,omitempty"`
 }
 
-func (IpPoolRouteTableAssociation) CloudControlType() string {
-	return "AWS::EC2::IpPoolRouteTableAssociation"
-}
+func (IpPoolRouteTableAssociation) Type() string { return "AWS::EC2::IpPoolRouteTableAssociation" }
 
 type KeyPairTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -1142,7 +1128,7 @@ type KeyPair struct {
 	Tags              []KeyPairTag      `json:"Tags,omitempty"`
 }
 
-func (KeyPair) CloudControlType() string { return "AWS::EC2::KeyPair" }
+func (KeyPair) Type() string { return "AWS::EC2::KeyPair" }
 
 type LaunchTemplateEbs struct {
 	DeleteOnTermination      *bool   `json:"DeleteOnTermination,omitempty"`
@@ -1454,7 +1440,7 @@ type LaunchTemplate struct {
 	VersionDescription   *string                                        `json:"VersionDescription,omitempty"`
 }
 
-func (LaunchTemplate) CloudControlType() string { return "AWS::EC2::LaunchTemplate" }
+func (LaunchTemplate) Type() string { return "AWS::EC2::LaunchTemplate" }
 
 type LocalGatewayRoute struct {
 	DestinationCidrBlock                *string `json:"DestinationCidrBlock,omitempty"`
@@ -1465,7 +1451,7 @@ type LocalGatewayRoute struct {
 	Type                                *string `json:"Type,omitempty"`
 }
 
-func (LocalGatewayRoute) CloudControlType() string { return "AWS::EC2::LocalGatewayRoute" }
+func (LocalGatewayRoute) Type() string { return "AWS::EC2::LocalGatewayRoute" }
 
 type LocalGatewayRouteTableTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -1483,7 +1469,7 @@ type LocalGatewayRouteTable struct {
 	Tags                      []LocalGatewayRouteTableTag `json:"Tags,omitempty"`
 }
 
-func (LocalGatewayRouteTable) CloudControlType() string { return "AWS::EC2::LocalGatewayRouteTable" }
+func (LocalGatewayRouteTable) Type() string { return "AWS::EC2::LocalGatewayRouteTable" }
 
 type LocalGatewayRouteTableVPCAssociationTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -1499,7 +1485,7 @@ type LocalGatewayRouteTableVPCAssociation struct {
 	VpcId                                  *string                                   `json:"VpcId,omitempty"`
 }
 
-func (LocalGatewayRouteTableVPCAssociation) CloudControlType() string {
+func (LocalGatewayRouteTableVPCAssociation) Type() string {
 	return "AWS::EC2::LocalGatewayRouteTableVPCAssociation"
 }
 
@@ -1519,7 +1505,7 @@ type LocalGatewayRouteTableVirtualInterfaceGroupAssociation struct {
 	Tags                                                     []LocalGatewayRouteTableVirtualInterfaceGroupAssociationTag `json:"Tags,omitempty"`
 }
 
-func (LocalGatewayRouteTableVirtualInterfaceGroupAssociation) CloudControlType() string {
+func (LocalGatewayRouteTableVirtualInterfaceGroupAssociation) Type() string {
 	return "AWS::EC2::LocalGatewayRouteTableVirtualInterfaceGroupAssociation"
 }
 
@@ -1544,9 +1530,7 @@ type LocalGatewayVirtualInterface struct {
 	Vlan                                *int                              `json:"Vlan,omitempty"`
 }
 
-func (LocalGatewayVirtualInterface) CloudControlType() string {
-	return "AWS::EC2::LocalGatewayVirtualInterface"
-}
+func (LocalGatewayVirtualInterface) Type() string { return "AWS::EC2::LocalGatewayVirtualInterface" }
 
 type LocalGatewayVirtualInterfaceGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -1565,7 +1549,7 @@ type LocalGatewayVirtualInterfaceGroup struct {
 	Tags                                 []LocalGatewayVirtualInterfaceGroupTag `json:"Tags,omitempty"`
 }
 
-func (LocalGatewayVirtualInterfaceGroup) CloudControlType() string {
+func (LocalGatewayVirtualInterfaceGroup) Type() string {
 	return "AWS::EC2::LocalGatewayVirtualInterfaceGroup"
 }
 
@@ -1600,7 +1584,7 @@ type NatGateway struct {
 	VpcId                          *string                   `json:"VpcId,omitempty"`
 }
 
-func (NatGateway) CloudControlType() string { return "AWS::EC2::NatGateway" }
+func (NatGateway) Type() string { return "AWS::EC2::NatGateway" }
 
 type NetworkAclTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -1613,7 +1597,7 @@ type NetworkAcl struct {
 	VpcId *string         `json:"VpcId,omitempty"`
 }
 
-func (NetworkAcl) CloudControlType() string { return "AWS::EC2::NetworkAcl" }
+func (NetworkAcl) Type() string { return "AWS::EC2::NetworkAcl" }
 
 type Icmp struct {
 	Code *int `json:"Code,omitempty"`
@@ -1638,7 +1622,7 @@ type NetworkAclEntry struct {
 	RuleNumber    *int       `json:"RuleNumber,omitempty"`
 }
 
-func (NetworkAclEntry) CloudControlType() string { return "AWS::EC2::NetworkAclEntry" }
+func (NetworkAclEntry) Type() string { return "AWS::EC2::NetworkAclEntry" }
 
 type PacketHeaderStatementRequest struct {
 	DestinationAddresses   []string   `json:"DestinationAddresses,omitempty"`
@@ -1685,9 +1669,7 @@ type NetworkInsightsAccessScope struct {
 	UpdatedDate                   *string                         `json:"UpdatedDate,omitempty"`
 }
 
-func (NetworkInsightsAccessScope) CloudControlType() string {
-	return "AWS::EC2::NetworkInsightsAccessScope"
-}
+func (NetworkInsightsAccessScope) Type() string { return "AWS::EC2::NetworkInsightsAccessScope" }
 
 type NetworkInsightsAccessScopeAnalysisTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -1707,7 +1689,7 @@ type NetworkInsightsAccessScopeAnalysis struct {
 	Tags                                  []NetworkInsightsAccessScopeAnalysisTag          `json:"Tags,omitempty"`
 }
 
-func (NetworkInsightsAccessScopeAnalysis) CloudControlType() string {
+func (NetworkInsightsAccessScopeAnalysis) Type() string {
 	return "AWS::EC2::NetworkInsightsAccessScopeAnalysis"
 }
 
@@ -1893,7 +1875,7 @@ type NetworkInsightsAnalysis struct {
 	Tags                       []NetworkInsightsAnalysisTag   `json:"Tags,omitempty"`
 }
 
-func (NetworkInsightsAnalysis) CloudControlType() string { return "AWS::EC2::NetworkInsightsAnalysis" }
+func (NetworkInsightsAnalysis) Type() string { return "AWS::EC2::NetworkInsightsAnalysis" }
 
 type FilterPortRange struct {
 	FromPort *int `json:"FromPort,omitempty"`
@@ -1929,7 +1911,7 @@ type NetworkInsightsPath struct {
 	Tags                   []NetworkInsightsPathTag     `json:"Tags,omitempty"`
 }
 
-func (NetworkInsightsPath) CloudControlType() string { return "AWS::EC2::NetworkInsightsPath" }
+func (NetworkInsightsPath) Type() string { return "AWS::EC2::NetworkInsightsPath" }
 
 type NetworkInterfaceConnectionTrackingSpecification struct {
 	TcpEstablishedTimeout *int `json:"TcpEstablishedTimeout,omitempty"`
@@ -1993,9 +1975,7 @@ type NetworkInterfaceNetworkInterface struct {
 	VpcId                                *string                                                               `json:"VpcId,omitempty"`
 }
 
-func (NetworkInterfaceNetworkInterface) CloudControlType() string {
-	return "AWS::EC2::NetworkInterface"
-}
+func (NetworkInterfaceNetworkInterface) Type() string { return "AWS::EC2::NetworkInterface" }
 
 type NetworkInterfaceAttachmentEnaSrdSpecificationEnaSrdUdpSpecification struct {
 	EnaSrdUdpEnabled *bool `json:"EnaSrdUdpEnabled,omitempty"`
@@ -2016,9 +1996,7 @@ type NetworkInterfaceAttachment struct {
 	NetworkInterfaceId  *string                                        `json:"NetworkInterfaceId,omitempty"`
 }
 
-func (NetworkInterfaceAttachment) CloudControlType() string {
-	return "AWS::EC2::NetworkInterfaceAttachment"
-}
+func (NetworkInterfaceAttachment) Type() string { return "AWS::EC2::NetworkInterfaceAttachment" }
 
 type NetworkInterfacePermission struct {
 	AwsAccountId       *string `json:"AwsAccountId,omitempty"`
@@ -2027,9 +2005,7 @@ type NetworkInterfacePermission struct {
 	Permission         *string `json:"Permission,omitempty"`
 }
 
-func (NetworkInterfacePermission) CloudControlType() string {
-	return "AWS::EC2::NetworkInterfacePermission"
-}
+func (NetworkInterfacePermission) Type() string { return "AWS::EC2::NetworkInterfacePermission" }
 
 type NetworkPerformanceMetricSubscription struct {
 	Destination *string `json:"Destination,omitempty"`
@@ -2038,7 +2014,7 @@ type NetworkPerformanceMetricSubscription struct {
 	Statistic   *string `json:"Statistic,omitempty"`
 }
 
-func (NetworkPerformanceMetricSubscription) CloudControlType() string {
+func (NetworkPerformanceMetricSubscription) Type() string {
 	return "AWS::EC2::NetworkPerformanceMetricSubscription"
 }
 
@@ -2057,7 +2033,7 @@ type PlacementGroup struct {
 	Tags           []PlacementGroupTag `json:"Tags,omitempty"`
 }
 
-func (PlacementGroup) CloudControlType() string { return "AWS::EC2::PlacementGroup" }
+func (PlacementGroup) Type() string { return "AWS::EC2::PlacementGroup" }
 
 type Entry struct {
 	Cidr        *string `json:"Cidr,omitempty"`
@@ -2081,7 +2057,7 @@ type PrefixList struct {
 	Version        *int                     `json:"Version,omitempty"`
 }
 
-func (PrefixList) CloudControlType() string { return "AWS::EC2::PrefixList" }
+func (PrefixList) Type() string { return "AWS::EC2::PrefixList" }
 
 type Route struct {
 	CarrierGatewayId            *string `json:"CarrierGatewayId,omitempty"`
@@ -2103,7 +2079,7 @@ type Route struct {
 	VpcPeeringConnectionId      *string `json:"VpcPeeringConnectionId,omitempty"`
 }
 
-func (Route) CloudControlType() string { return "AWS::EC2::Route" }
+func (Route) Type() string { return "AWS::EC2::Route" }
 
 type RouteServerTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -2120,14 +2096,14 @@ type RouteServer struct {
 	Tags                    []RouteServerTag          `json:"Tags,omitempty"`
 }
 
-func (RouteServer) CloudControlType() string { return "AWS::EC2::RouteServer" }
+func (RouteServer) Type() string { return "AWS::EC2::RouteServer" }
 
 type RouteServerAssociation struct {
 	RouteServerId *string `json:"RouteServerId,omitempty"`
 	VpcId         *string `json:"VpcId,omitempty"`
 }
 
-func (RouteServerAssociation) CloudControlType() string { return "AWS::EC2::RouteServerAssociation" }
+func (RouteServerAssociation) Type() string { return "AWS::EC2::RouteServerAssociation" }
 
 type RouteServerEndpointTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -2145,7 +2121,7 @@ type RouteServerEndpoint struct {
 	VpcId         *string                  `json:"VpcId,omitempty"`
 }
 
-func (RouteServerEndpoint) CloudControlType() string { return "AWS::EC2::RouteServerEndpoint" }
+func (RouteServerEndpoint) Type() string { return "AWS::EC2::RouteServerEndpoint" }
 
 type BgpOptions struct {
 	PeerAsn               *int                             `json:"PeerAsn,omitempty"`
@@ -2171,14 +2147,14 @@ type RouteServerPeer struct {
 	VpcId                 *string              `json:"VpcId,omitempty"`
 }
 
-func (RouteServerPeer) CloudControlType() string { return "AWS::EC2::RouteServerPeer" }
+func (RouteServerPeer) Type() string { return "AWS::EC2::RouteServerPeer" }
 
 type RouteServerPropagation struct {
 	RouteServerId *string `json:"RouteServerId,omitempty"`
 	RouteTableId  *string `json:"RouteTableId,omitempty"`
 }
 
-func (RouteServerPropagation) CloudControlType() string { return "AWS::EC2::RouteServerPropagation" }
+func (RouteServerPropagation) Type() string { return "AWS::EC2::RouteServerPropagation" }
 
 type RouteTableTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -2191,7 +2167,7 @@ type RouteTable struct {
 	VpcId        *string         `json:"VpcId,omitempty"`
 }
 
-func (RouteTable) CloudControlType() string { return "AWS::EC2::RouteTable" }
+func (RouteTable) Type() string { return "AWS::EC2::RouteTable" }
 
 type Egress struct {
 	CidrIp                     *string `json:"CidrIp,omitempty"`
@@ -2233,7 +2209,7 @@ type SecurityGroup struct {
 	VpcId                *string            `json:"VpcId,omitempty"`
 }
 
-func (SecurityGroup) CloudControlType() string { return "AWS::EC2::SecurityGroup" }
+func (SecurityGroup) Type() string { return "AWS::EC2::SecurityGroup" }
 
 type SecurityGroupEgress struct {
 	CidrIp                     *string `json:"CidrIp,omitempty"`
@@ -2248,7 +2224,7 @@ type SecurityGroupEgress struct {
 	ToPort                     *int    `json:"ToPort,omitempty"`
 }
 
-func (SecurityGroupEgress) CloudControlType() string { return "AWS::EC2::SecurityGroupEgress" }
+func (SecurityGroupEgress) Type() string { return "AWS::EC2::SecurityGroupEgress" }
 
 type SecurityGroupIngress struct {
 	CidrIp                     *string `json:"CidrIp,omitempty"`
@@ -2266,7 +2242,7 @@ type SecurityGroupIngress struct {
 	ToPort                     *int    `json:"ToPort,omitempty"`
 }
 
-func (SecurityGroupIngress) CloudControlType() string { return "AWS::EC2::SecurityGroupIngress" }
+func (SecurityGroupIngress) Type() string { return "AWS::EC2::SecurityGroupIngress" }
 
 type SecurityGroupVpcAssociation struct {
 	GroupId     *string                           `json:"GroupId,omitempty"`
@@ -2276,18 +2252,14 @@ type SecurityGroupVpcAssociation struct {
 	VpcOwnerId  *string                           `json:"VpcOwnerId,omitempty"`
 }
 
-func (SecurityGroupVpcAssociation) CloudControlType() string {
-	return "AWS::EC2::SecurityGroupVpcAssociation"
-}
+func (SecurityGroupVpcAssociation) Type() string { return "AWS::EC2::SecurityGroupVpcAssociation" }
 
 type SnapshotBlockPublicAccess struct {
 	AccountId *string                         `json:"AccountId,omitempty"`
 	State     *SnapshotBlockPublicAccessState `json:"State,omitempty"`
 }
 
-func (SnapshotBlockPublicAccess) CloudControlType() string {
-	return "AWS::EC2::SnapshotBlockPublicAccess"
-}
+func (SnapshotBlockPublicAccess) Type() string { return "AWS::EC2::SnapshotBlockPublicAccess" }
 
 type SpotFleetEbsBlockDevice struct {
 	DeleteOnTermination *bool                              `json:"DeleteOnTermination,omitempty"`
@@ -2548,7 +2520,7 @@ type SpotFleet struct {
 	Tags                       []SpotFleetTag              `json:"Tags,omitempty"`
 }
 
-func (SpotFleet) CloudControlType() string { return "AWS::EC2::SpotFleet" }
+func (SpotFleet) Type() string { return "AWS::EC2::SpotFleet" }
 
 type SqlHaStandbyDetectedInstance struct {
 	HaStatus              *HaStatus              `json:"HaStatus,omitempty"`
@@ -2558,9 +2530,7 @@ type SqlHaStandbyDetectedInstance struct {
 	SqlServerLicenseUsage *SqlServerLicenseUsage `json:"SqlServerLicenseUsage,omitempty"`
 }
 
-func (SqlHaStandbyDetectedInstance) CloudControlType() string {
-	return "AWS::EC2::SqlHaStandbyDetectedInstance"
-}
+func (SqlHaStandbyDetectedInstance) Type() string { return "AWS::EC2::SqlHaStandbyDetectedInstance" }
 
 type SubnetBlockPublicAccessStates struct {
 	InternetGatewayBlockMode *string `json:"InternetGatewayBlockMode,omitempty"`
@@ -2601,7 +2571,7 @@ type Subnet struct {
 	VpcId                         *string                              `json:"VpcId,omitempty"`
 }
 
-func (Subnet) CloudControlType() string { return "AWS::EC2::Subnet" }
+func (Subnet) Type() string { return "AWS::EC2::Subnet" }
 
 type SubnetCidrBlock struct {
 	Id                   *string `json:"Id,omitempty"`
@@ -2613,7 +2583,7 @@ type SubnetCidrBlock struct {
 	SubnetId             *string `json:"SubnetId,omitempty"`
 }
 
-func (SubnetCidrBlock) CloudControlType() string { return "AWS::EC2::SubnetCidrBlock" }
+func (SubnetCidrBlock) Type() string { return "AWS::EC2::SubnetCidrBlock" }
 
 type SubnetNetworkAclAssociation struct {
 	AssociationId *string `json:"AssociationId,omitempty"`
@@ -2621,9 +2591,7 @@ type SubnetNetworkAclAssociation struct {
 	SubnetId      *string `json:"SubnetId,omitempty"`
 }
 
-func (SubnetNetworkAclAssociation) CloudControlType() string {
-	return "AWS::EC2::SubnetNetworkAclAssociation"
-}
+func (SubnetNetworkAclAssociation) Type() string { return "AWS::EC2::SubnetNetworkAclAssociation" }
 
 type SubnetRouteTableAssociation struct {
 	Id           *string `json:"Id,omitempty"`
@@ -2631,9 +2599,7 @@ type SubnetRouteTableAssociation struct {
 	SubnetId     *string `json:"SubnetId,omitempty"`
 }
 
-func (SubnetRouteTableAssociation) CloudControlType() string {
-	return "AWS::EC2::SubnetRouteTableAssociation"
-}
+func (SubnetRouteTableAssociation) Type() string { return "AWS::EC2::SubnetRouteTableAssociation" }
 
 type TrafficMirrorFilterTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -2647,7 +2613,7 @@ type TrafficMirrorFilter struct {
 	Tags            []TrafficMirrorFilterTag      `json:"Tags,omitempty"`
 }
 
-func (TrafficMirrorFilter) CloudControlType() string { return "AWS::EC2::TrafficMirrorFilter" }
+func (TrafficMirrorFilter) Type() string { return "AWS::EC2::TrafficMirrorFilter" }
 
 type TrafficMirrorPortRange struct {
 	FromPort *int `json:"FromPort,omitempty"`
@@ -2674,7 +2640,7 @@ type TrafficMirrorFilterRule struct {
 	TrafficMirrorFilterRuleId *string                      `json:"TrafficMirrorFilterRuleId,omitempty"`
 }
 
-func (TrafficMirrorFilterRule) CloudControlType() string { return "AWS::EC2::TrafficMirrorFilterRule" }
+func (TrafficMirrorFilterRule) Type() string { return "AWS::EC2::TrafficMirrorFilterRule" }
 
 type TrafficMirrorSessionTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -2694,7 +2660,7 @@ type TrafficMirrorSession struct {
 	VirtualNetworkId      *int                      `json:"VirtualNetworkId,omitempty"`
 }
 
-func (TrafficMirrorSession) CloudControlType() string { return "AWS::EC2::TrafficMirrorSession" }
+func (TrafficMirrorSession) Type() string { return "AWS::EC2::TrafficMirrorSession" }
 
 type TrafficMirrorTargetTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -2710,7 +2676,7 @@ type TrafficMirrorTarget struct {
 	Tags                          []TrafficMirrorTargetTag `json:"Tags,omitempty"`
 }
 
-func (TrafficMirrorTarget) CloudControlType() string { return "AWS::EC2::TrafficMirrorTarget" }
+func (TrafficMirrorTarget) Type() string { return "AWS::EC2::TrafficMirrorTarget" }
 
 type TransitGatewayTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -2737,7 +2703,7 @@ type TransitGateway struct {
 	VpnEcmpSupport                  *string                          `json:"VpnEcmpSupport,omitempty"`
 }
 
-func (TransitGateway) CloudControlType() string { return "AWS::EC2::TransitGateway" }
+func (TransitGateway) Type() string { return "AWS::EC2::TransitGateway" }
 
 type TransitGatewayAttachmentOptions struct {
 	ApplianceModeSupport            *string `json:"ApplianceModeSupport,omitempty"`
@@ -2760,9 +2726,7 @@ type TransitGatewayAttachment struct {
 	VpcId            *string                          `json:"VpcId,omitempty"`
 }
 
-func (TransitGatewayAttachment) CloudControlType() string {
-	return "AWS::EC2::TransitGatewayAttachment"
-}
+func (TransitGatewayAttachment) Type() string { return "AWS::EC2::TransitGatewayAttachment" }
 
 type TransitGatewayConnectOptions struct {
 	Protocol *string `json:"Protocol,omitempty"`
@@ -2783,7 +2747,7 @@ type TransitGatewayConnect struct {
 	TransportTransitGatewayAttachmentId *string                       `json:"TransportTransitGatewayAttachmentId,omitempty"`
 }
 
-func (TransitGatewayConnect) CloudControlType() string { return "AWS::EC2::TransitGatewayConnect" }
+func (TransitGatewayConnect) Type() string { return "AWS::EC2::TransitGatewayConnect" }
 
 type TransitGatewayAttachmentBgpConfiguration struct {
 	BgpStatus             *string  `json:"BgpStatus,omitempty"`
@@ -2815,9 +2779,7 @@ type TransitGatewayConnectPeer struct {
 	TransitGatewayConnectPeerId *string                                 `json:"TransitGatewayConnectPeerId,omitempty"`
 }
 
-func (TransitGatewayConnectPeer) CloudControlType() string {
-	return "AWS::EC2::TransitGatewayConnectPeer"
-}
+func (TransitGatewayConnectPeer) Type() string { return "AWS::EC2::TransitGatewayConnectPeer" }
 
 type TransitGatewayMeteringPolicyTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -2833,9 +2795,7 @@ type TransitGatewayMeteringPolicy struct {
 	UpdateEffectiveAt              *string                           `json:"UpdateEffectiveAt,omitempty"`
 }
 
-func (TransitGatewayMeteringPolicy) CloudControlType() string {
-	return "AWS::EC2::TransitGatewayMeteringPolicy"
-}
+func (TransitGatewayMeteringPolicy) Type() string { return "AWS::EC2::TransitGatewayMeteringPolicy" }
 
 type TransitGatewayMeteringPolicyEntry struct {
 	DestinationCidrBlock                    *string                               `json:"DestinationCidrBlock,omitempty"`
@@ -2854,7 +2814,7 @@ type TransitGatewayMeteringPolicyEntry struct {
 	UpdateEffectiveAt                       *string                               `json:"UpdateEffectiveAt,omitempty"`
 }
 
-func (TransitGatewayMeteringPolicyEntry) CloudControlType() string {
+func (TransitGatewayMeteringPolicyEntry) Type() string {
 	return "AWS::EC2::TransitGatewayMeteringPolicyEntry"
 }
 
@@ -2879,9 +2839,7 @@ type TransitGatewayMulticastDomain struct {
 	TransitGatewayMulticastDomainId  *string                               `json:"TransitGatewayMulticastDomainId,omitempty"`
 }
 
-func (TransitGatewayMulticastDomain) CloudControlType() string {
-	return "AWS::EC2::TransitGatewayMulticastDomain"
-}
+func (TransitGatewayMulticastDomain) Type() string { return "AWS::EC2::TransitGatewayMulticastDomain" }
 
 type TransitGatewayMulticastDomainAssociation struct {
 	ResourceId                      *string `json:"ResourceId,omitempty"`
@@ -2892,7 +2850,7 @@ type TransitGatewayMulticastDomainAssociation struct {
 	TransitGatewayMulticastDomainId *string `json:"TransitGatewayMulticastDomainId,omitempty"`
 }
 
-func (TransitGatewayMulticastDomainAssociation) CloudControlType() string {
+func (TransitGatewayMulticastDomainAssociation) Type() string {
 	return "AWS::EC2::TransitGatewayMulticastDomainAssociation"
 }
 
@@ -2909,7 +2867,7 @@ type TransitGatewayMulticastGroupMember struct {
 	TransitGatewayMulticastDomainId *string `json:"TransitGatewayMulticastDomainId,omitempty"`
 }
 
-func (TransitGatewayMulticastGroupMember) CloudControlType() string {
+func (TransitGatewayMulticastGroupMember) Type() string {
 	return "AWS::EC2::TransitGatewayMulticastGroupMember"
 }
 
@@ -2926,7 +2884,7 @@ type TransitGatewayMulticastGroupSource struct {
 	TransitGatewayMulticastDomainId *string `json:"TransitGatewayMulticastDomainId,omitempty"`
 }
 
-func (TransitGatewayMulticastGroupSource) CloudControlType() string {
+func (TransitGatewayMulticastGroupSource) Type() string {
 	return "AWS::EC2::TransitGatewayMulticastGroupSource"
 }
 
@@ -2952,7 +2910,7 @@ type TransitGatewayPeeringAttachment struct {
 	TransitGatewayId           *string                              `json:"TransitGatewayId,omitempty"`
 }
 
-func (TransitGatewayPeeringAttachment) CloudControlType() string {
+func (TransitGatewayPeeringAttachment) Type() string {
 	return "AWS::EC2::TransitGatewayPeeringAttachment"
 }
 
@@ -2969,9 +2927,7 @@ type TransitGatewayPolicyTable struct {
 	TransitGatewayPolicyTableId *string                        `json:"TransitGatewayPolicyTableId,omitempty"`
 }
 
-func (TransitGatewayPolicyTable) CloudControlType() string {
-	return "AWS::EC2::TransitGatewayPolicyTable"
-}
+func (TransitGatewayPolicyTable) Type() string { return "AWS::EC2::TransitGatewayPolicyTable" }
 
 type TransitGatewayPolicyTableAssociation struct {
 	State                       *string `json:"State,omitempty"`
@@ -2979,7 +2935,7 @@ type TransitGatewayPolicyTableAssociation struct {
 	TransitGatewayPolicyTableId *string `json:"TransitGatewayPolicyTableId,omitempty"`
 }
 
-func (TransitGatewayPolicyTableAssociation) CloudControlType() string {
+func (TransitGatewayPolicyTableAssociation) Type() string {
 	return "AWS::EC2::TransitGatewayPolicyTableAssociation"
 }
 
@@ -2999,7 +2955,7 @@ type TransitGatewayPolicyTableEntry struct {
 	TransitGatewayPolicyTableId *string                   `json:"TransitGatewayPolicyTableId,omitempty"`
 }
 
-func (TransitGatewayPolicyTableEntry) CloudControlType() string {
+func (TransitGatewayPolicyTableEntry) Type() string {
 	return "AWS::EC2::TransitGatewayPolicyTableEntry"
 }
 
@@ -3010,7 +2966,7 @@ type TransitGatewayRoute struct {
 	TransitGatewayRouteTableId *string `json:"TransitGatewayRouteTableId,omitempty"`
 }
 
-func (TransitGatewayRoute) CloudControlType() string { return "AWS::EC2::TransitGatewayRoute" }
+func (TransitGatewayRoute) Type() string { return "AWS::EC2::TransitGatewayRoute" }
 
 type TransitGatewayRouteTableTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -3023,16 +2979,14 @@ type TransitGatewayRouteTable struct {
 	TransitGatewayRouteTableId *string                       `json:"TransitGatewayRouteTableId,omitempty"`
 }
 
-func (TransitGatewayRouteTable) CloudControlType() string {
-	return "AWS::EC2::TransitGatewayRouteTable"
-}
+func (TransitGatewayRouteTable) Type() string { return "AWS::EC2::TransitGatewayRouteTable" }
 
 type TransitGatewayRouteTableAssociation struct {
 	TransitGatewayAttachmentId *string `json:"TransitGatewayAttachmentId,omitempty"`
 	TransitGatewayRouteTableId *string `json:"TransitGatewayRouteTableId,omitempty"`
 }
 
-func (TransitGatewayRouteTableAssociation) CloudControlType() string {
+func (TransitGatewayRouteTableAssociation) Type() string {
 	return "AWS::EC2::TransitGatewayRouteTableAssociation"
 }
 
@@ -3041,7 +2995,7 @@ type TransitGatewayRouteTablePropagation struct {
 	TransitGatewayRouteTableId *string `json:"TransitGatewayRouteTableId,omitempty"`
 }
 
-func (TransitGatewayRouteTablePropagation) CloudControlType() string {
+func (TransitGatewayRouteTablePropagation) Type() string {
 	return "AWS::EC2::TransitGatewayRouteTablePropagation"
 }
 
@@ -3068,9 +3022,7 @@ type TransitGatewayVpcAttachment struct {
 	VpcId            *string                             `json:"VpcId,omitempty"`
 }
 
-func (TransitGatewayVpcAttachment) CloudControlType() string {
-	return "AWS::EC2::TransitGatewayVpcAttachment"
-}
+func (TransitGatewayVpcAttachment) Type() string { return "AWS::EC2::TransitGatewayVpcAttachment" }
 
 type VPCTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -3126,7 +3078,7 @@ type VPC struct {
 	VpcId                 *string               `json:"VpcId,omitempty"`
 }
 
-func (VPC) CloudControlType() string { return "AWS::EC2::VPC" }
+func (VPC) Type() string { return "AWS::EC2::VPC" }
 
 type VPCBlockPublicAccessExclusionTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -3141,9 +3093,7 @@ type VPCBlockPublicAccessExclusion struct {
 	VpcId                        *string                                                    `json:"VpcId,omitempty"`
 }
 
-func (VPCBlockPublicAccessExclusion) CloudControlType() string {
-	return "AWS::EC2::VPCBlockPublicAccessExclusion"
-}
+func (VPCBlockPublicAccessExclusion) Type() string { return "AWS::EC2::VPCBlockPublicAccessExclusion" }
 
 type VPCBlockPublicAccessOptions struct {
 	AccountId                *string                                              `json:"AccountId,omitempty"`
@@ -3151,9 +3101,7 @@ type VPCBlockPublicAccessOptions struct {
 	InternetGatewayBlockMode *VPCBlockPublicAccessOptionsInternetGatewayBlockMode `json:"InternetGatewayBlockMode,omitempty"`
 }
 
-func (VPCBlockPublicAccessOptions) CloudControlType() string {
-	return "AWS::EC2::VPCBlockPublicAccessOptions"
-}
+func (VPCBlockPublicAccessOptions) Type() string { return "AWS::EC2::VPCBlockPublicAccessOptions" }
 
 type VPCCidrBlock struct {
 	AmazonProvidedIpv6CidrBlock     *bool   `json:"AmazonProvidedIpv6CidrBlock,omitempty"`
@@ -3171,16 +3119,14 @@ type VPCCidrBlock struct {
 	VpcId                           *string `json:"VpcId,omitempty"`
 }
 
-func (VPCCidrBlock) CloudControlType() string { return "AWS::EC2::VPCCidrBlock" }
+func (VPCCidrBlock) Type() string { return "AWS::EC2::VPCCidrBlock" }
 
 type VPCDHCPOptionsAssociation struct {
 	DhcpOptionsId *string `json:"DhcpOptionsId,omitempty"`
 	VpcId         *string `json:"VpcId,omitempty"`
 }
 
-func (VPCDHCPOptionsAssociation) CloudControlType() string {
-	return "AWS::EC2::VPCDHCPOptionsAssociation"
-}
+func (VPCDHCPOptionsAssociation) Type() string { return "AWS::EC2::VPCDHCPOptionsAssociation" }
 
 type VPCEncryptionControlVpcEncryptionControlExclusion struct {
 	State        *string `json:"State,omitempty"`
@@ -3221,7 +3167,7 @@ type VPCEncryptionControl struct {
 	VpcPeeringExclusionInput                *VPCEncryptionControlVpcPeeringExclusionInput                `json:"VpcPeeringExclusionInput,omitempty"`
 }
 
-func (VPCEncryptionControl) CloudControlType() string { return "AWS::EC2::VPCEncryptionControl" }
+func (VPCEncryptionControl) Type() string { return "AWS::EC2::VPCEncryptionControl" }
 
 type DnsOptionsSpecification struct {
 	DnsRecordIpType                          *DnsOptionsSpecificationDnsRecordIpType                          `json:"DnsRecordIpType,omitempty"`
@@ -3256,7 +3202,7 @@ type VPCEndpoint struct {
 	VpcId                    *string                     `json:"VpcId,omitempty"`
 }
 
-func (VPCEndpoint) CloudControlType() string { return "AWS::EC2::VPCEndpoint" }
+func (VPCEndpoint) Type() string { return "AWS::EC2::VPCEndpoint" }
 
 type VPCEndpointConnectionNotification struct {
 	ConnectionEvents                    []string `json:"ConnectionEvents,omitempty"`
@@ -3266,7 +3212,7 @@ type VPCEndpointConnectionNotification struct {
 	VPCEndpointId                       *string  `json:"VPCEndpointId,omitempty"`
 }
 
-func (VPCEndpointConnectionNotification) CloudControlType() string {
+func (VPCEndpointConnectionNotification) Type() string {
 	return "AWS::EC2::VPCEndpointConnectionNotification"
 }
 
@@ -3287,16 +3233,14 @@ type VPCEndpointService struct {
 	Tags                       []VPCEndpointServiceTag `json:"Tags,omitempty"`
 }
 
-func (VPCEndpointService) CloudControlType() string { return "AWS::EC2::VPCEndpointService" }
+func (VPCEndpointService) Type() string { return "AWS::EC2::VPCEndpointService" }
 
 type VPCEndpointServicePermissions struct {
 	AllowedPrincipals []string `json:"AllowedPrincipals,omitempty"`
 	ServiceId         *string  `json:"ServiceId,omitempty"`
 }
 
-func (VPCEndpointServicePermissions) CloudControlType() string {
-	return "AWS::EC2::VPCEndpointServicePermissions"
-}
+func (VPCEndpointServicePermissions) Type() string { return "AWS::EC2::VPCEndpointServicePermissions" }
 
 type VPCGatewayAttachment struct {
 	AttachmentType    *string `json:"AttachmentType,omitempty"`
@@ -3305,7 +3249,7 @@ type VPCGatewayAttachment struct {
 	VpnGatewayId      *string `json:"VpnGatewayId,omitempty"`
 }
 
-func (VPCGatewayAttachment) CloudControlType() string { return "AWS::EC2::VPCGatewayAttachment" }
+func (VPCGatewayAttachment) Type() string { return "AWS::EC2::VPCGatewayAttachment" }
 
 type VPCPeeringConnectionTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -3323,7 +3267,7 @@ type VPCPeeringConnection struct {
 	VpcId            *string                   `json:"VpcId,omitempty"`
 }
 
-func (VPCPeeringConnection) CloudControlType() string { return "AWS::EC2::VPCPeeringConnection" }
+func (VPCPeeringConnection) Type() string { return "AWS::EC2::VPCPeeringConnection" }
 
 type VPNConcentratorTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -3338,7 +3282,7 @@ type VPNConcentrator struct {
 	VpnConcentratorId          *string              `json:"VpnConcentratorId,omitempty"`
 }
 
-func (VPNConcentrator) CloudControlType() string { return "AWS::EC2::VPNConcentrator" }
+func (VPNConcentrator) Type() string { return "AWS::EC2::VPNConcentrator" }
 
 type VPNConnectionTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -3431,14 +3375,14 @@ type VPNConnection struct {
 	VpnTunnelOptionsSpecifications      []VpnTunnelOptionsSpecification   `json:"VpnTunnelOptionsSpecifications,omitempty"`
 }
 
-func (VPNConnection) CloudControlType() string { return "AWS::EC2::VPNConnection" }
+func (VPNConnection) Type() string { return "AWS::EC2::VPNConnection" }
 
 type VPNConnectionRoute struct {
 	DestinationCidrBlock *string `json:"DestinationCidrBlock,omitempty"`
 	VpnConnectionId      *string `json:"VpnConnectionId,omitempty"`
 }
 
-func (VPNConnectionRoute) CloudControlType() string { return "AWS::EC2::VPNConnectionRoute" }
+func (VPNConnectionRoute) Type() string { return "AWS::EC2::VPNConnectionRoute" }
 
 type VPNGatewayTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -3452,7 +3396,7 @@ type VPNGateway struct {
 	VPNGatewayId  *string         `json:"VPNGatewayId,omitempty"`
 }
 
-func (VPNGateway) CloudControlType() string { return "AWS::EC2::VPNGateway" }
+func (VPNGateway) Type() string { return "AWS::EC2::VPNGateway" }
 
 type VPNGatewayRoutePropagation struct {
 	Id            *string  `json:"Id,omitempty"`
@@ -3460,9 +3404,7 @@ type VPNGatewayRoutePropagation struct {
 	VpnGatewayId  *string  `json:"VpnGatewayId,omitempty"`
 }
 
-func (VPNGatewayRoutePropagation) CloudControlType() string {
-	return "AWS::EC2::VPNGatewayRoutePropagation"
-}
+func (VPNGatewayRoutePropagation) Type() string { return "AWS::EC2::VPNGatewayRoutePropagation" }
 
 type VerifiedAccessEndpointPortRange struct {
 	FromPort *int `json:"FromPort,omitempty"`
@@ -3537,7 +3479,7 @@ type VerifiedAccessEndpoint struct {
 	VerifiedAccessInstanceId *string                     `json:"VerifiedAccessInstanceId,omitempty"`
 }
 
-func (VerifiedAccessEndpoint) CloudControlType() string { return "AWS::EC2::VerifiedAccessEndpoint" }
+func (VerifiedAccessEndpoint) Type() string { return "AWS::EC2::VerifiedAccessEndpoint" }
 
 type VerifiedAccessGroupSseSpecification struct {
 	CustomerManagedKeyEnabled *bool   `json:"CustomerManagedKeyEnabled,omitempty"`
@@ -3563,7 +3505,7 @@ type VerifiedAccessGroup struct {
 	VerifiedAccessInstanceId *string                              `json:"VerifiedAccessInstanceId,omitempty"`
 }
 
-func (VerifiedAccessGroup) CloudControlType() string { return "AWS::EC2::VerifiedAccessGroup" }
+func (VerifiedAccessGroup) Type() string { return "AWS::EC2::VerifiedAccessGroup" }
 
 type VerifiedAccessLogsCloudWatchLogs struct {
 	Enabled  *bool   `json:"Enabled,omitempty"`
@@ -3617,7 +3559,7 @@ type VerifiedAccessInstance struct {
 	VerifiedAccessTrustProviders            []VerifiedAccessTrustProvider `json:"VerifiedAccessTrustProviders,omitempty"`
 }
 
-func (VerifiedAccessInstance) CloudControlType() string { return "AWS::EC2::VerifiedAccessInstance" }
+func (VerifiedAccessInstance) Type() string { return "AWS::EC2::VerifiedAccessInstance" }
 
 type DeviceOptions struct {
 	PublicSigningKeyUrl *string `json:"PublicSigningKeyUrl,omitempty"`
@@ -3671,7 +3613,7 @@ type VerifiedAccessTrustProviderVerifiedAccessTrustProvider struct {
 	VerifiedAccessTrustProviderId *string                                                                 `json:"VerifiedAccessTrustProviderId,omitempty"`
 }
 
-func (VerifiedAccessTrustProviderVerifiedAccessTrustProvider) CloudControlType() string {
+func (VerifiedAccessTrustProviderVerifiedAccessTrustProvider) Type() string {
 	return "AWS::EC2::VerifiedAccessTrustProvider"
 }
 
@@ -3699,7 +3641,7 @@ type VolumeVolume struct {
 	VolumeType               *string     `json:"VolumeType,omitempty"`
 }
 
-func (VolumeVolume) CloudControlType() string { return "AWS::EC2::Volume" }
+func (VolumeVolume) Type() string { return "AWS::EC2::Volume" }
 
 type VolumeAttachment struct {
 	Device       *string `json:"Device,omitempty"`
@@ -3708,7 +3650,7 @@ type VolumeAttachment struct {
 	VolumeId     *string `json:"VolumeId,omitempty"`
 }
 
-func (VolumeAttachment) CloudControlType() string { return "AWS::EC2::VolumeAttachment" }
+func (VolumeAttachment) Type() string { return "AWS::EC2::VolumeAttachment" }
 
 type CapacityManagerDataExportOutputFormat string
 

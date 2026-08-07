@@ -8,4 +8,4 @@ type Project struct {
 	ProjectName *string `json:"ProjectName,omitempty"`
 }
 
-func (Project) CloudControlType() string { return "AWS::LookoutVision::Project" }
+func (Project) Type() string { return "AWS::LookoutVision::Project" }

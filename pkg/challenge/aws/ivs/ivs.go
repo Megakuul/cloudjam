@@ -30,7 +30,7 @@ type Channel struct {
 	Type                         *ChannelType                  `json:"Type,omitempty"`
 }
 
-func (Channel) CloudControlType() string { return "AWS::IVS::Channel" }
+func (Channel) Type() string { return "AWS::IVS::Channel" }
 
 type EncoderConfigurationTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -51,7 +51,7 @@ type EncoderConfiguration struct {
 	Video *EncoderConfigurationVideo `json:"Video,omitempty"`
 }
 
-func (EncoderConfiguration) CloudControlType() string { return "AWS::IVS::EncoderConfiguration" }
+func (EncoderConfiguration) Type() string { return "AWS::IVS::EncoderConfiguration" }
 
 type IngestConfigurationTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -71,7 +71,7 @@ type IngestConfiguration struct {
 	UserId         *string                            `json:"UserId,omitempty"`
 }
 
-func (IngestConfiguration) CloudControlType() string { return "AWS::IVS::IngestConfiguration" }
+func (IngestConfiguration) Type() string { return "AWS::IVS::IngestConfiguration" }
 
 type PlaybackKeyPairTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -86,7 +86,7 @@ type PlaybackKeyPair struct {
 	Tags              []PlaybackKeyPairTag `json:"Tags,omitempty"`
 }
 
-func (PlaybackKeyPair) CloudControlType() string { return "AWS::IVS::PlaybackKeyPair" }
+func (PlaybackKeyPair) Type() string { return "AWS::IVS::PlaybackKeyPair" }
 
 type PlaybackRestrictionPolicyTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -102,9 +102,7 @@ type PlaybackRestrictionPolicy struct {
 	Tags                          []PlaybackRestrictionPolicyTag `json:"Tags,omitempty"`
 }
 
-func (PlaybackRestrictionPolicy) CloudControlType() string {
-	return "AWS::IVS::PlaybackRestrictionPolicy"
-}
+func (PlaybackRestrictionPolicy) Type() string { return "AWS::IVS::PlaybackRestrictionPolicy" }
 
 type PublicKeyTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -119,7 +117,7 @@ type PublicKey struct {
 	Tags              []PublicKeyTag `json:"Tags,omitempty"`
 }
 
-func (PublicKey) CloudControlType() string { return "AWS::IVS::PublicKey" }
+func (PublicKey) Type() string { return "AWS::IVS::PublicKey" }
 
 type S3DestinationConfiguration struct {
 	BucketName *string `json:"BucketName,omitempty"`
@@ -157,7 +155,7 @@ type RecordingConfiguration struct {
 	ThumbnailConfiguration          *ThumbnailConfiguration      `json:"ThumbnailConfiguration,omitempty"`
 }
 
-func (RecordingConfiguration) CloudControlType() string { return "AWS::IVS::RecordingConfiguration" }
+func (RecordingConfiguration) Type() string { return "AWS::IVS::RecordingConfiguration" }
 
 type ParticipantRecordingHlsConfiguration struct {
 	TargetSegmentDurationSeconds *int `json:"TargetSegmentDurationSeconds,omitempty"`
@@ -198,7 +196,7 @@ type Stage struct {
 	Tags                                  []StageTag                             `json:"Tags,omitempty"`
 }
 
-func (Stage) CloudControlType() string { return "AWS::IVS::Stage" }
+func (Stage) Type() string { return "AWS::IVS::Stage" }
 
 type S3StorageConfiguration struct {
 	BucketName *string `json:"BucketName,omitempty"`
@@ -216,7 +214,7 @@ type StorageConfiguration struct {
 	Tags []StorageConfigurationTag `json:"Tags,omitempty"`
 }
 
-func (StorageConfiguration) CloudControlType() string { return "AWS::IVS::StorageConfiguration" }
+func (StorageConfiguration) Type() string { return "AWS::IVS::StorageConfiguration" }
 
 type StreamKeyTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -230,7 +228,7 @@ type StreamKey struct {
 	Value      *string        `json:"Value,omitempty"`
 }
 
-func (StreamKey) CloudControlType() string { return "AWS::IVS::StreamKey" }
+func (StreamKey) Type() string { return "AWS::IVS::StreamKey" }
 
 type ChannelContainerFormat string
 

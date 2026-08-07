@@ -37,7 +37,7 @@ type Rule struct {
 	Tags                []Tag             `json:"Tags,omitempty"`
 }
 
-func (Rule) CloudControlType() string { return "AWS::Rbin::Rule" }
+func (Rule) Type() string { return "AWS::Rbin::Rule" }
 
 type UnlockDelayUnlockDelayUnit string
 

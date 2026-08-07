@@ -21,4 +21,4 @@ type ExecutionPlan struct {
 	Tags          []Tag                       `json:"Tags,omitempty"`
 }
 
-func (ExecutionPlan) CloudControlType() string { return "AWS::KendraRanking::ExecutionPlan" }
+func (ExecutionPlan) Type() string { return "AWS::KendraRanking::ExecutionPlan" }

@@ -46,7 +46,7 @@ type Environment struct {
 	Tags                      []Tag                      `json:"Tags,omitempty"`
 }
 
-func (Environment) CloudControlType() string { return "AWS::FinSpace::Environment" }
+func (Environment) Type() string { return "AWS::FinSpace::Environment" }
 
 type EnvironmentFederationMode string
 

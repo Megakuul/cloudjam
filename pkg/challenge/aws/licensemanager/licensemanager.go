@@ -20,7 +20,7 @@ type Grant struct {
 	Version           *string  `json:"Version,omitempty"`
 }
 
-func (Grant) CloudControlType() string { return "AWS::LicenseManager::Grant" }
+func (Grant) Type() string { return "AWS::LicenseManager::Grant" }
 
 type BorrowConfiguration struct {
 	AllowEarlyCheckIn      *bool `json:"AllowEarlyCheckIn,omitempty"`
@@ -83,7 +83,7 @@ type License struct {
 	Version                  *string                   `json:"Version,omitempty"`
 }
 
-func (License) CloudControlType() string { return "AWS::LicenseManager::License" }
+func (License) Type() string { return "AWS::LicenseManager::License" }
 
 type MatchingRuleStatement struct {
 	Constraint   *string  `json:"Constraint,omitempty"`
@@ -140,6 +140,4 @@ type LicenseAssetRuleSet struct {
 	Tags                   []LicenseAssetRuleSetTag `json:"Tags,omitempty"`
 }
 
-func (LicenseAssetRuleSet) CloudControlType() string {
-	return "AWS::LicenseManager::LicenseAssetRuleSet"
-}
+func (LicenseAssetRuleSet) Type() string { return "AWS::LicenseManager::LicenseAssetRuleSet" }

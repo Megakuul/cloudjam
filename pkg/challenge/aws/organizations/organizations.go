@@ -25,7 +25,7 @@ type Account struct {
 	Tags            []Tag                `json:"Tags,omitempty"`
 }
 
-func (Account) CloudControlType() string { return "AWS::Organizations::Account" }
+func (Account) Type() string { return "AWS::Organizations::Account" }
 
 type Organization struct {
 	Arn                    *string                 `json:"Arn,omitempty"`
@@ -37,7 +37,7 @@ type Organization struct {
 	RootId                 *string                 `json:"RootId,omitempty"`
 }
 
-func (Organization) CloudControlType() string { return "AWS::Organizations::Organization" }
+func (Organization) Type() string { return "AWS::Organizations::Organization" }
 
 type OrganizationalUnitTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -53,7 +53,7 @@ type OrganizationalUnit struct {
 	Tags     []OrganizationalUnitTag `json:"Tags,omitempty"`
 }
 
-func (OrganizationalUnit) CloudControlType() string { return "AWS::Organizations::OrganizationalUnit" }
+func (OrganizationalUnit) Type() string { return "AWS::Organizations::OrganizationalUnit" }
 
 type PolicyTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -72,7 +72,7 @@ type Policy struct {
 	Type        *PolicyType     `json:"Type,omitempty"`
 }
 
-func (Policy) CloudControlType() string { return "AWS::Organizations::Policy" }
+func (Policy) Type() string { return "AWS::Organizations::Policy" }
 
 type ResourcePolicyTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -86,7 +86,7 @@ type ResourcePolicy struct {
 	Tags    []ResourcePolicyTag `json:"Tags,omitempty"`
 }
 
-func (ResourcePolicy) CloudControlType() string { return "AWS::Organizations::ResourcePolicy" }
+func (ResourcePolicy) Type() string { return "AWS::Organizations::ResourcePolicy" }
 
 type AccountJoinedMethod string
 

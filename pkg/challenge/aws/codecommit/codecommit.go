@@ -41,4 +41,4 @@ type Repository struct {
 	Triggers              []RepositoryTrigger `json:"Triggers,omitempty"`
 }
 
-func (Repository) CloudControlType() string { return "AWS::CodeCommit::Repository" }
+func (Repository) Type() string { return "AWS::CodeCommit::Repository" }

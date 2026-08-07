@@ -24,9 +24,7 @@ type FirewallDomainList struct {
 	Tags             []Tag                     `json:"Tags,omitempty"`
 }
 
-func (FirewallDomainList) CloudControlType() string {
-	return "AWS::Route53Resolver::FirewallDomainList"
-}
+func (FirewallDomainList) Type() string { return "AWS::Route53Resolver::FirewallDomainList" }
 
 type FirewallAdvancedContentCategoryConfig struct {
 	Category *string `json:"Category,omitempty"`
@@ -84,7 +82,7 @@ type FirewallRuleGroup struct {
 	Tags             []FirewallRuleGroupTag        `json:"Tags,omitempty"`
 }
 
-func (FirewallRuleGroup) CloudControlType() string { return "AWS::Route53Resolver::FirewallRuleGroup" }
+func (FirewallRuleGroup) Type() string { return "AWS::Route53Resolver::FirewallRuleGroup" }
 
 type FirewallRuleGroupAssociationTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -108,7 +106,7 @@ type FirewallRuleGroupAssociation struct {
 	VpcId               *string                                         `json:"VpcId,omitempty"`
 }
 
-func (FirewallRuleGroupAssociation) CloudControlType() string {
+func (FirewallRuleGroupAssociation) Type() string {
 	return "AWS::Route53Resolver::FirewallRuleGroupAssociation"
 }
 
@@ -132,7 +130,7 @@ type OutpostResolver struct {
 	Tags                  []OutpostResolverTag   `json:"Tags,omitempty"`
 }
 
-func (OutpostResolver) CloudControlType() string { return "AWS::Route53Resolver::OutpostResolver" }
+func (OutpostResolver) Type() string { return "AWS::Route53Resolver::OutpostResolver" }
 
 type ResolverConfig struct {
 	AutodefinedReverse     *ResolverConfigAutodefinedReverse     `json:"AutodefinedReverse,omitempty"`
@@ -142,7 +140,7 @@ type ResolverConfig struct {
 	ResourceId             *string                               `json:"ResourceId,omitempty"`
 }
 
-func (ResolverConfig) CloudControlType() string { return "AWS::Route53Resolver::ResolverConfig" }
+func (ResolverConfig) Type() string { return "AWS::Route53Resolver::ResolverConfig" }
 
 type ResolverDNSSECConfig struct {
 	Id               *string                               `json:"Id,omitempty"`
@@ -151,9 +149,7 @@ type ResolverDNSSECConfig struct {
 	ValidationStatus *ResolverDNSSECConfigValidationStatus `json:"ValidationStatus,omitempty"`
 }
 
-func (ResolverDNSSECConfig) CloudControlType() string {
-	return "AWS::Route53Resolver::ResolverDNSSECConfig"
-}
+func (ResolverDNSSECConfig) Type() string { return "AWS::Route53Resolver::ResolverDNSSECConfig" }
 
 type IpAddressRequest struct {
 	Ip       *string `json:"Ip,omitempty"`
@@ -186,7 +182,7 @@ type ResolverEndpoint struct {
 	TargetNameServerMetricsEnabled *bool                                 `json:"TargetNameServerMetricsEnabled,omitempty"`
 }
 
-func (ResolverEndpoint) CloudControlType() string { return "AWS::Route53Resolver::ResolverEndpoint" }
+func (ResolverEndpoint) Type() string { return "AWS::Route53Resolver::ResolverEndpoint" }
 
 type ResolverQueryLoggingConfigTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -207,7 +203,7 @@ type ResolverQueryLoggingConfig struct {
 	Tags             []ResolverQueryLoggingConfigTag        `json:"Tags,omitempty"`
 }
 
-func (ResolverQueryLoggingConfig) CloudControlType() string {
+func (ResolverQueryLoggingConfig) Type() string {
 	return "AWS::Route53Resolver::ResolverQueryLoggingConfig"
 }
 
@@ -221,7 +217,7 @@ type ResolverQueryLoggingConfigAssociation struct {
 	Status                   *ResolverQueryLoggingConfigAssociationStatus `json:"Status,omitempty"`
 }
 
-func (ResolverQueryLoggingConfigAssociation) CloudControlType() string {
+func (ResolverQueryLoggingConfigAssociation) Type() string {
 	return "AWS::Route53Resolver::ResolverQueryLoggingConfigAssociation"
 }
 
@@ -250,7 +246,7 @@ type ResolverRule struct {
 	TargetIps          []TargetAddress       `json:"TargetIps,omitempty"`
 }
 
-func (ResolverRule) CloudControlType() string { return "AWS::Route53Resolver::ResolverRule" }
+func (ResolverRule) Type() string { return "AWS::Route53Resolver::ResolverRule" }
 
 type ResolverRuleAssociation struct {
 	Name                      *string `json:"Name,omitempty"`
@@ -259,9 +255,7 @@ type ResolverRuleAssociation struct {
 	VPCId                     *string `json:"VPCId,omitempty"`
 }
 
-func (ResolverRuleAssociation) CloudControlType() string {
-	return "AWS::Route53Resolver::ResolverRuleAssociation"
-}
+func (ResolverRuleAssociation) Type() string { return "AWS::Route53Resolver::ResolverRuleAssociation" }
 
 type FirewallDomainListStatus string
 

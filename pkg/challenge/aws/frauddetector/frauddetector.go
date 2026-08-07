@@ -98,7 +98,7 @@ type Detector struct {
 	Tags                  []Tag                          `json:"Tags,omitempty"`
 }
 
-func (Detector) CloudControlType() string { return "AWS::FraudDetector::Detector" }
+func (Detector) Type() string { return "AWS::FraudDetector::Detector" }
 
 type EntityTypeTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -114,7 +114,7 @@ type EntityTypeEntityType struct {
 	Tags            []EntityTypeTag `json:"Tags,omitempty"`
 }
 
-func (EntityTypeEntityType) CloudControlType() string { return "AWS::FraudDetector::EntityType" }
+func (EntityTypeEntityType) Type() string { return "AWS::FraudDetector::EntityType" }
 
 type EventTypeTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -167,7 +167,7 @@ type EventTypeEventType struct {
 	Tags            []EventTypeTag           `json:"Tags,omitempty"`
 }
 
-func (EventTypeEventType) CloudControlType() string { return "AWS::FraudDetector::EventType" }
+func (EventTypeEventType) Type() string { return "AWS::FraudDetector::EventType" }
 
 type LabelTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -183,7 +183,7 @@ type LabelLabel struct {
 	Tags            []LabelTag `json:"Tags,omitempty"`
 }
 
-func (LabelLabel) CloudControlType() string { return "AWS::FraudDetector::Label" }
+func (LabelLabel) Type() string { return "AWS::FraudDetector::Label" }
 
 type ListTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -201,7 +201,7 @@ type List struct {
 	VariableType    *string   `json:"VariableType,omitempty"`
 }
 
-func (List) CloudControlType() string { return "AWS::FraudDetector::List" }
+func (List) Type() string { return "AWS::FraudDetector::List" }
 
 type OutcomeTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -217,7 +217,7 @@ type OutcomeOutcome struct {
 	Tags            []OutcomeTag `json:"Tags,omitempty"`
 }
 
-func (OutcomeOutcome) CloudControlType() string { return "AWS::FraudDetector::Outcome" }
+func (OutcomeOutcome) Type() string { return "AWS::FraudDetector::Outcome" }
 
 type VariableTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -237,7 +237,7 @@ type Variable struct {
 	VariableType    *VariableVariableType `json:"VariableType,omitempty"`
 }
 
-func (Variable) CloudControlType() string { return "AWS::FraudDetector::Variable" }
+func (Variable) Type() string { return "AWS::FraudDetector::Variable" }
 
 type DetectorDetectorVersionStatus string
 

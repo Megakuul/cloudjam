@@ -46,14 +46,14 @@ type AnomalyDetector struct {
 	Workspace                   *string                       `json:"Workspace,omitempty"`
 }
 
-func (AnomalyDetector) CloudControlType() string { return "AWS::APS::AnomalyDetector" }
+func (AnomalyDetector) Type() string { return "AWS::APS::AnomalyDetector" }
 
 type ResourcePolicy struct {
 	PolicyDocument *string `json:"PolicyDocument,omitempty"`
 	WorkspaceArn   *string `json:"WorkspaceArn,omitempty"`
 }
 
-func (ResourcePolicy) CloudControlType() string { return "AWS::APS::ResourcePolicy" }
+func (ResourcePolicy) Type() string { return "AWS::APS::ResourcePolicy" }
 
 type RuleGroupsNamespaceTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -68,7 +68,7 @@ type RuleGroupsNamespace struct {
 	Workspace *string                  `json:"Workspace,omitempty"`
 }
 
-func (RuleGroupsNamespace) CloudControlType() string { return "AWS::APS::RuleGroupsNamespace" }
+func (RuleGroupsNamespace) Type() string { return "AWS::APS::RuleGroupsNamespace" }
 
 type DestinationAmpConfiguration struct {
 	WorkspaceArn *string `json:"WorkspaceArn,omitempty"`
@@ -148,7 +148,7 @@ type Scraper struct {
 	Tags                        []ScraperTag                 `json:"Tags,omitempty"`
 }
 
-func (Scraper) CloudControlType() string { return "AWS::APS::Scraper" }
+func (Scraper) Type() string { return "AWS::APS::Scraper" }
 
 type LoggingConfiguration struct {
 	LogGroupArn *string `json:"LogGroupArn,omitempty"`
@@ -210,7 +210,7 @@ type Workspace struct {
 	WorkspaceId               *string                    `json:"WorkspaceId,omitempty"`
 }
 
-func (Workspace) CloudControlType() string { return "AWS::APS::Workspace" }
+func (Workspace) Type() string { return "AWS::APS::Workspace" }
 
 type ScraperComponentType string
 

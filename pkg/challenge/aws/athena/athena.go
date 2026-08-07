@@ -28,7 +28,7 @@ type CapacityReservation struct {
 	TargetDpus                      *int                             `json:"TargetDpus,omitempty"`
 }
 
-func (CapacityReservation) CloudControlType() string { return "AWS::Athena::CapacityReservation" }
+func (CapacityReservation) Type() string { return "AWS::Athena::CapacityReservation" }
 
 type DataCatalogTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -46,7 +46,7 @@ type DataCatalog struct {
 	Type           *DataCatalogType   `json:"Type,omitempty"`
 }
 
-func (DataCatalog) CloudControlType() string { return "AWS::Athena::DataCatalog" }
+func (DataCatalog) Type() string { return "AWS::Athena::DataCatalog" }
 
 type NamedQuery struct {
 	Database     *string `json:"Database,omitempty"`
@@ -57,7 +57,7 @@ type NamedQuery struct {
 	WorkGroup    *string `json:"WorkGroup,omitempty"`
 }
 
-func (NamedQuery) CloudControlType() string { return "AWS::Athena::NamedQuery" }
+func (NamedQuery) Type() string { return "AWS::Athena::NamedQuery" }
 
 type PreparedStatement struct {
 	Description    *string `json:"Description,omitempty"`
@@ -66,7 +66,7 @@ type PreparedStatement struct {
 	WorkGroup      *string `json:"WorkGroup,omitempty"`
 }
 
-func (PreparedStatement) CloudControlType() string { return "AWS::Athena::PreparedStatement" }
+func (PreparedStatement) Type() string { return "AWS::Athena::PreparedStatement" }
 
 type WorkGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -199,7 +199,7 @@ type WorkGroup struct {
 	WorkGroupConfigurationUpdates *WorkGroupConfigurationUpdates `json:"WorkGroupConfigurationUpdates,omitempty"`
 }
 
-func (WorkGroup) CloudControlType() string { return "AWS::Athena::WorkGroup" }
+func (WorkGroup) Type() string { return "AWS::Athena::WorkGroup" }
 
 type CapacityReservationStatus string
 

@@ -18,9 +18,7 @@ type RepositoryAssociation struct {
 	Type           *RepositoryAssociationType `json:"Type,omitempty"`
 }
 
-func (RepositoryAssociation) CloudControlType() string {
-	return "AWS::CodeGuruReviewer::RepositoryAssociation"
-}
+func (RepositoryAssociation) Type() string { return "AWS::CodeGuruReviewer::RepositoryAssociation" }
 
 type RepositoryAssociationType string
 

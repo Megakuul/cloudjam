@@ -26,7 +26,7 @@ type ProfilingGroup struct {
 	Tags                                      []Tag                           `json:"Tags,omitempty"`
 }
 
-func (ProfilingGroup) CloudControlType() string { return "AWS::CodeGuruProfiler::ProfilingGroup" }
+func (ProfilingGroup) Type() string { return "AWS::CodeGuruProfiler::ProfilingGroup" }
 
 type ProfilingGroupComputePlatform string
 

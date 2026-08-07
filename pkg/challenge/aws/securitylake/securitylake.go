@@ -10,7 +10,7 @@ type AwsLogSource struct {
 	SourceVersion *string  `json:"SourceVersion,omitempty"`
 }
 
-func (AwsLogSource) CloudControlType() string { return "AWS::SecurityLake::AwsLogSource" }
+func (AwsLogSource) Type() string { return "AWS::SecurityLake::AwsLogSource" }
 
 type EncryptionConfiguration struct {
 	KmsKeyId *string `json:"KmsKeyId,omitempty"`
@@ -50,7 +50,7 @@ type DataLake struct {
 	Tags                     []Tag                     `json:"Tags,omitempty"`
 }
 
-func (DataLake) CloudControlType() string { return "AWS::SecurityLake::DataLake" }
+func (DataLake) Type() string { return "AWS::SecurityLake::DataLake" }
 
 type SubscriberAwsLogSource struct {
 	SourceName    *string `json:"SourceName,omitempty"`
@@ -92,7 +92,7 @@ type Subscriber struct {
 	Tags                  []SubscriberTag               `json:"Tags,omitempty"`
 }
 
-func (Subscriber) CloudControlType() string { return "AWS::SecurityLake::Subscriber" }
+func (Subscriber) Type() string { return "AWS::SecurityLake::Subscriber" }
 
 type HttpsNotificationConfiguration struct {
 	AuthorizationApiKeyName  *string                                   `json:"AuthorizationApiKeyName,omitempty"`
@@ -113,9 +113,7 @@ type SubscriberNotification struct {
 	SubscriberEndpoint        *string                    `json:"SubscriberEndpoint,omitempty"`
 }
 
-func (SubscriberNotification) CloudControlType() string {
-	return "AWS::SecurityLake::SubscriberNotification"
-}
+func (SubscriberNotification) Type() string { return "AWS::SecurityLake::SubscriberNotification" }
 
 type AccessTypesItem string
 

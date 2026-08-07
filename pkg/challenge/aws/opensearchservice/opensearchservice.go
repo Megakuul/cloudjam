@@ -38,7 +38,7 @@ type Application struct {
 	Tags                     []Tag                                `json:"Tags,omitempty"`
 }
 
-func (Application) CloudControlType() string { return "AWS::OpenSearchService::Application" }
+func (Application) Type() string { return "AWS::OpenSearchService::Application" }
 
 type S3VectorsEngine struct {
 	Enabled *bool `json:"Enabled,omitempty"`
@@ -268,7 +268,7 @@ type Domain struct {
 	VPCOptions                    *VPCOptions                    `json:"VPCOptions,omitempty"`
 }
 
-func (Domain) CloudControlType() string { return "AWS::OpenSearchService::Domain" }
+func (Domain) Type() string { return "AWS::OpenSearchService::Domain" }
 
 type AppConfigType string
 

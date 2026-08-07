@@ -8,7 +8,7 @@ type AccountAlias struct {
 	AccountAliasResourceId *string `json:"AccountAliasResourceId,omitempty"`
 }
 
-func (AccountAlias) CloudControlType() string { return "AWS::SupportApp::AccountAlias" }
+func (AccountAlias) Type() string { return "AWS::SupportApp::AccountAlias" }
 
 type SlackChannelConfiguration struct {
 	ChannelId                       *string                                        `json:"ChannelId,omitempty"`
@@ -21,16 +21,14 @@ type SlackChannelConfiguration struct {
 	TeamId                          *string                                        `json:"TeamId,omitempty"`
 }
 
-func (SlackChannelConfiguration) CloudControlType() string {
-	return "AWS::SupportApp::SlackChannelConfiguration"
-}
+func (SlackChannelConfiguration) Type() string { return "AWS::SupportApp::SlackChannelConfiguration" }
 
 type SlackWorkspaceConfiguration struct {
 	TeamId    *string `json:"TeamId,omitempty"`
 	VersionId *string `json:"VersionId,omitempty"`
 }
 
-func (SlackWorkspaceConfiguration) CloudControlType() string {
+func (SlackWorkspaceConfiguration) Type() string {
 	return "AWS::SupportApp::SlackWorkspaceConfiguration"
 }
 

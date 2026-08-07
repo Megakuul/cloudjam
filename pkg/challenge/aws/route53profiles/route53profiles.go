@@ -17,7 +17,7 @@ type Profile struct {
 	Tags        []Tag               `json:"Tags,omitempty"`
 }
 
-func (Profile) CloudControlType() string { return "AWS::Route53Profiles::Profile" }
+func (Profile) Type() string { return "AWS::Route53Profiles::Profile" }
 
 type ProfileAssociationTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -33,9 +33,7 @@ type ProfileAssociation struct {
 	Tags       []ProfileAssociationTag `json:"Tags,omitempty"`
 }
 
-func (ProfileAssociation) CloudControlType() string {
-	return "AWS::Route53Profiles::ProfileAssociation"
-}
+func (ProfileAssociation) Type() string { return "AWS::Route53Profiles::ProfileAssociation" }
 
 type ProfileResourceAssociation struct {
 	Id                 *string `json:"Id,omitempty"`
@@ -46,7 +44,7 @@ type ProfileResourceAssociation struct {
 	ResourceType       *string `json:"ResourceType,omitempty"`
 }
 
-func (ProfileResourceAssociation) CloudControlType() string {
+func (ProfileResourceAssociation) Type() string {
 	return "AWS::Route53Profiles::ProfileResourceAssociation"
 }
 

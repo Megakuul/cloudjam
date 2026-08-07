@@ -16,7 +16,7 @@ type HttpNamespace struct {
 	Tags        []Tag   `json:"Tags,omitempty"`
 }
 
-func (HttpNamespace) CloudControlType() string { return "AWS::ServiceDiscovery::HttpNamespace" }
+func (HttpNamespace) Type() string { return "AWS::ServiceDiscovery::HttpNamespace" }
 
 type Instance struct {
 	InstanceAttributes map[string]any `json:"InstanceAttributes,omitempty"`
@@ -24,7 +24,7 @@ type Instance struct {
 	ServiceId          *string        `json:"ServiceId,omitempty"`
 }
 
-func (Instance) CloudControlType() string { return "AWS::ServiceDiscovery::Instance" }
+func (Instance) Type() string { return "AWS::ServiceDiscovery::Instance" }
 
 type SOA struct {
 	TTL *float64 `json:"TTL,omitempty"`
@@ -54,9 +54,7 @@ type PrivateDnsNamespace struct {
 	Vpc          *string                  `json:"Vpc,omitempty"`
 }
 
-func (PrivateDnsNamespace) CloudControlType() string {
-	return "AWS::ServiceDiscovery::PrivateDnsNamespace"
-}
+func (PrivateDnsNamespace) Type() string { return "AWS::ServiceDiscovery::PrivateDnsNamespace" }
 
 type PublicDnsNamespaceSOA struct {
 	TTL *float64 `json:"TTL,omitempty"`
@@ -85,9 +83,7 @@ type PublicDnsNamespace struct {
 	Tags         []PublicDnsNamespaceTag       `json:"Tags,omitempty"`
 }
 
-func (PublicDnsNamespace) CloudControlType() string {
-	return "AWS::ServiceDiscovery::PublicDnsNamespace"
-}
+func (PublicDnsNamespace) Type() string { return "AWS::ServiceDiscovery::PublicDnsNamespace" }
 
 type DnsRecord struct {
 	TTL  *float64 `json:"TTL,omitempty"`
@@ -129,4 +125,4 @@ type Service struct {
 	Type                    *string                  `json:"Type,omitempty"`
 }
 
-func (Service) CloudControlType() string { return "AWS::ServiceDiscovery::Service" }
+func (Service) Type() string { return "AWS::ServiceDiscovery::Service" }

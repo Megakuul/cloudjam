@@ -8,4 +8,4 @@ type Domain struct {
 	Id          *string `json:"Id,omitempty"`
 }
 
-func (Domain) CloudControlType() string { return "AWS::SDB::Domain" }
+func (Domain) Type() string { return "AWS::SDB::Domain" }

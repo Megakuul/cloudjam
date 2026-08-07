@@ -30,7 +30,7 @@ type Monitor struct {
 	Tags            []Tag                   `json:"Tags,omitempty"`
 }
 
-func (Monitor) CloudControlType() string { return "AWS::NetworkFlowMonitor::Monitor" }
+func (Monitor) Type() string { return "AWS::NetworkFlowMonitor::Monitor" }
 
 type MonitorLocalResourceType string
 

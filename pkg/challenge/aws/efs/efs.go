@@ -35,7 +35,7 @@ type AccessPoint struct {
 	RootDirectory   *RootDirectory   `json:"RootDirectory,omitempty"`
 }
 
-func (AccessPoint) CloudControlType() string { return "AWS::EFS::AccessPoint" }
+func (AccessPoint) Type() string { return "AWS::EFS::AccessPoint" }
 
 type BackupPolicy struct {
 	Status *BackupPolicyStatus `json:"Status,omitempty"`
@@ -88,7 +88,7 @@ type FileSystem struct {
 	ThroughputMode                 *string                   `json:"ThroughputMode,omitempty"`
 }
 
-func (FileSystem) CloudControlType() string { return "AWS::EFS::FileSystem" }
+func (FileSystem) Type() string { return "AWS::EFS::FileSystem" }
 
 type MountTarget struct {
 	FileSystemId   *string                   `json:"FileSystemId,omitempty"`
@@ -100,7 +100,7 @@ type MountTarget struct {
 	SubnetId       *string                   `json:"SubnetId,omitempty"`
 }
 
-func (MountTarget) CloudControlType() string { return "AWS::EFS::MountTarget" }
+func (MountTarget) Type() string { return "AWS::EFS::MountTarget" }
 
 type BackupPolicyStatus string
 

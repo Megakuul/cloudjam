@@ -19,9 +19,7 @@ type AccessLogSubscription struct {
 	Tags                  []Tag                                       `json:"Tags,omitempty"`
 }
 
-func (AccessLogSubscription) CloudControlType() string {
-	return "AWS::VpcLattice::AccessLogSubscription"
-}
+func (AccessLogSubscription) Type() string { return "AWS::VpcLattice::AccessLogSubscription" }
 
 type AuthPolicy struct {
 	Policy             map[string]any   `json:"Policy,omitempty"`
@@ -29,7 +27,7 @@ type AuthPolicy struct {
 	State              *AuthPolicyState `json:"State,omitempty"`
 }
 
-func (AuthPolicy) CloudControlType() string { return "AWS::VpcLattice::AuthPolicy" }
+func (AuthPolicy) Type() string { return "AWS::VpcLattice::AuthPolicy" }
 
 type DomainVerificationTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -50,7 +48,7 @@ type DomainVerification struct {
 	TxtMethodConfig *DomainVerificationTxtMethodConfig `json:"TxtMethodConfig,omitempty"`
 }
 
-func (DomainVerification) CloudControlType() string { return "AWS::VpcLattice::DomainVerification" }
+func (DomainVerification) Type() string { return "AWS::VpcLattice::DomainVerification" }
 
 type FixedResponse struct {
 	StatusCode *int `json:"StatusCode,omitempty"`
@@ -88,7 +86,7 @@ type Listener struct {
 	Tags              []ListenerTag     `json:"Tags,omitempty"`
 }
 
-func (Listener) CloudControlType() string { return "AWS::VpcLattice::Listener" }
+func (Listener) Type() string { return "AWS::VpcLattice::Listener" }
 
 type ResourceConfigurationTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -113,9 +111,7 @@ type ResourceConfiguration struct {
 	Tags                                     []ResourceConfigurationTag                          `json:"Tags,omitempty"`
 }
 
-func (ResourceConfiguration) CloudControlType() string {
-	return "AWS::VpcLattice::ResourceConfiguration"
-}
+func (ResourceConfiguration) Type() string { return "AWS::VpcLattice::ResourceConfiguration" }
 
 type ResourceGatewayTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -135,14 +131,14 @@ type ResourceGateway struct {
 	VpcIdentifier               *string                                     `json:"VpcIdentifier,omitempty"`
 }
 
-func (ResourceGateway) CloudControlType() string { return "AWS::VpcLattice::ResourceGateway" }
+func (ResourceGateway) Type() string { return "AWS::VpcLattice::ResourceGateway" }
 
 type ResourcePolicy struct {
 	Policy      map[string]any `json:"Policy,omitempty"`
 	ResourceArn *string        `json:"ResourceArn,omitempty"`
 }
 
-func (ResourcePolicy) CloudControlType() string { return "AWS::VpcLattice::ResourcePolicy" }
+func (ResourcePolicy) Type() string { return "AWS::VpcLattice::ResourcePolicy" }
 
 type RuleFixedResponse struct {
 	StatusCode *int `json:"StatusCode,omitempty"`
@@ -211,7 +207,7 @@ type Rule struct {
 	Tags               []RuleTag `json:"Tags,omitempty"`
 }
 
-func (Rule) CloudControlType() string { return "AWS::VpcLattice::Rule" }
+func (Rule) Type() string { return "AWS::VpcLattice::Rule" }
 
 type DnsEntry struct {
 	DomainName   *string `json:"DomainName,omitempty"`
@@ -238,7 +234,7 @@ type Service struct {
 	Tags               []ServiceTag     `json:"Tags,omitempty"`
 }
 
-func (Service) CloudControlType() string { return "AWS::VpcLattice::Service" }
+func (Service) Type() string { return "AWS::VpcLattice::Service" }
 
 type SharingConfig struct {
 	Enabled *bool `json:"enabled,omitempty"`
@@ -260,7 +256,7 @@ type ServiceNetwork struct {
 	Tags          []ServiceNetworkTag     `json:"Tags,omitempty"`
 }
 
-func (ServiceNetwork) CloudControlType() string { return "AWS::VpcLattice::ServiceNetwork" }
+func (ServiceNetwork) Type() string { return "AWS::VpcLattice::ServiceNetwork" }
 
 type ServiceNetworkResourceAssociationTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -276,7 +272,7 @@ type ServiceNetworkResourceAssociation struct {
 	Tags                    []ServiceNetworkResourceAssociationTag `json:"Tags,omitempty"`
 }
 
-func (ServiceNetworkResourceAssociation) CloudControlType() string {
+func (ServiceNetworkResourceAssociation) Type() string {
 	return "AWS::VpcLattice::ServiceNetworkResourceAssociation"
 }
 
@@ -307,7 +303,7 @@ type ServiceNetworkServiceAssociation struct {
 	Tags                     []ServiceNetworkServiceAssociationTag     `json:"Tags,omitempty"`
 }
 
-func (ServiceNetworkServiceAssociation) CloudControlType() string {
+func (ServiceNetworkServiceAssociation) Type() string {
 	return "AWS::VpcLattice::ServiceNetworkServiceAssociation"
 }
 
@@ -338,7 +334,7 @@ type ServiceNetworkVpcAssociation struct {
 	VpcIdentifier            *string                             `json:"VpcIdentifier,omitempty"`
 }
 
-func (ServiceNetworkVpcAssociation) CloudControlType() string {
+func (ServiceNetworkVpcAssociation) Type() string {
 	return "AWS::VpcLattice::ServiceNetworkVpcAssociation"
 }
 
@@ -392,7 +388,7 @@ type TargetGroup struct {
 	Type          *TargetGroupType   `json:"Type,omitempty"`
 }
 
-func (TargetGroup) CloudControlType() string { return "AWS::VpcLattice::TargetGroup" }
+func (TargetGroup) Type() string { return "AWS::VpcLattice::TargetGroup" }
 
 type AccessLogSubscriptionServiceNetworkLogType string
 

@@ -32,7 +32,7 @@ type ApiKeyCredentialProvider struct {
 	Tags                  []Tag                                       `json:"Tags,omitempty"`
 }
 
-func (ApiKeyCredentialProvider) CloudControlType() string {
+func (ApiKeyCredentialProvider) Type() string {
 	return "AWS::BedrockAgentCore::ApiKeyCredentialProvider"
 }
 
@@ -91,7 +91,7 @@ type BrowserCustom struct {
 	Tags                 map[string]string            `json:"Tags,omitempty"`
 }
 
-func (BrowserCustom) CloudControlType() string { return "AWS::BedrockAgentCore::BrowserCustom" }
+func (BrowserCustom) Type() string { return "AWS::BedrockAgentCore::BrowserCustom" }
 
 type BrowserProfile struct {
 	CreatedAt                 *string               `json:"CreatedAt,omitempty"`
@@ -107,7 +107,7 @@ type BrowserProfile struct {
 	Tags                      map[string]string     `json:"Tags,omitempty"`
 }
 
-func (BrowserProfile) CloudControlType() string { return "AWS::BedrockAgentCore::BrowserProfile" }
+func (BrowserProfile) Type() string { return "AWS::BedrockAgentCore::BrowserProfile" }
 
 type CodeInterpreterCustomCertificateLocation struct {
 	SecretArn *string `json:"SecretArn,omitempty"`
@@ -142,9 +142,7 @@ type CodeInterpreterCustom struct {
 	Tags                 map[string]string                    `json:"Tags,omitempty"`
 }
 
-func (CodeInterpreterCustom) CloudControlType() string {
-	return "AWS::BedrockAgentCore::CodeInterpreterCustom"
-}
+func (CodeInterpreterCustom) Type() string { return "AWS::BedrockAgentCore::CodeInterpreterCustom" }
 
 type ComponentConfiguration struct {
 	Configuration map[string]any `json:"Configuration,omitempty"`
@@ -184,9 +182,7 @@ type ConfigurationBundle struct {
 	VersionId       *string                           `json:"VersionId,omitempty"`
 }
 
-func (ConfigurationBundle) CloudControlType() string {
-	return "AWS::BedrockAgentCore::ConfigurationBundle"
-}
+func (ConfigurationBundle) Type() string { return "AWS::BedrockAgentCore::ConfigurationBundle" }
 
 type InlineExamplesSource struct {
 	Examples []map[string]any `json:"Examples,omitempty"`
@@ -221,7 +217,7 @@ type Dataset struct {
 	UpdatedAt    *string            `json:"UpdatedAt,omitempty"`
 }
 
-func (Dataset) CloudControlType() string { return "AWS::BedrockAgentCore::Dataset" }
+func (Dataset) Type() string { return "AWS::BedrockAgentCore::Dataset" }
 
 type LambdaEvaluatorConfig struct {
 	LambdaArn              *string `json:"LambdaArn,omitempty"`
@@ -294,10 +290,15 @@ type Evaluator struct {
 	UpdatedAt       *string          `json:"UpdatedAt,omitempty"`
 }
 
-func (Evaluator) CloudControlType() string { return "AWS::BedrockAgentCore::Evaluator" }
+func (Evaluator) Type() string { return "AWS::BedrockAgentCore::Evaluator" }
+
+type InterceptorPayloadFilter struct {
+	Exclude []json.RawMessage `json:"Exclude,omitempty"`
+}
 
 type InterceptorInputConfiguration struct {
-	PassRequestHeaders *bool `json:"PassRequestHeaders,omitempty"`
+	PassRequestHeaders *bool                     `json:"PassRequestHeaders,omitempty"`
+	PayloadFilter      *InterceptorPayloadFilter `json:"PayloadFilter,omitempty"`
 }
 
 type GatewayInterceptorConfiguration struct {
@@ -338,7 +339,7 @@ type Gateway struct {
 	WorkloadIdentityDetails   *WorkloadIdentityDetails          `json:"WorkloadIdentityDetails,omitempty"`
 }
 
-func (Gateway) CloudControlType() string { return "AWS::BedrockAgentCore::Gateway" }
+func (Gateway) Type() string { return "AWS::BedrockAgentCore::Gateway" }
 
 type GatewayRule struct {
 	Actions           []json.RawMessage  `json:"Actions,omitempty"`
@@ -353,7 +354,7 @@ type GatewayRule struct {
 	UpdatedAt         *string            `json:"UpdatedAt,omitempty"`
 }
 
-func (GatewayRule) CloudControlType() string { return "AWS::BedrockAgentCore::GatewayRule" }
+func (GatewayRule) Type() string { return "AWS::BedrockAgentCore::GatewayRule" }
 
 type CredentialProviderConfiguration struct {
 	CredentialProvider     json.RawMessage         `json:"CredentialProvider,omitempty"`
@@ -392,7 +393,7 @@ type GatewayTarget struct {
 	UpdatedAt                        *string                           `json:"UpdatedAt,omitempty"`
 }
 
-func (GatewayTarget) CloudControlType() string { return "AWS::BedrockAgentCore::GatewayTarget" }
+func (GatewayTarget) Type() string { return "AWS::BedrockAgentCore::GatewayTarget" }
 
 type ClaimMatchValueType struct {
 	MatchValueString     *string  `json:"MatchValueString,omitempty"`
@@ -706,7 +707,7 @@ type Harness struct {
 	Version                 *string                         `json:"Version,omitempty"`
 }
 
-func (Harness) CloudControlType() string { return "AWS::BedrockAgentCore::Harness" }
+func (Harness) Type() string { return "AWS::BedrockAgentCore::Harness" }
 
 type HarnessEndpointTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -727,7 +728,7 @@ type HarnessEndpoint struct {
 	UpdatedAt     *string                `json:"UpdatedAt,omitempty"`
 }
 
-func (HarnessEndpoint) CloudControlType() string { return "AWS::BedrockAgentCore::HarnessEndpoint" }
+func (HarnessEndpoint) Type() string { return "AWS::BedrockAgentCore::HarnessEndpoint" }
 
 type IndexedKey struct {
 	Key  *string            `json:"Key,omitempty"`
@@ -991,7 +992,7 @@ type Memory struct {
 	UpdatedAt               *string                  `json:"UpdatedAt,omitempty"`
 }
 
-func (Memory) CloudControlType() string { return "AWS::BedrockAgentCore::Memory" }
+func (Memory) Type() string { return "AWS::BedrockAgentCore::Memory" }
 
 type ClientSecretArn struct {
 	SecretArn *string `json:"SecretArn,omitempty"`
@@ -1178,7 +1179,7 @@ type OAuth2CredentialProvider struct {
 	Tags                       []OAuth2CredentialProviderTag                     `json:"Tags,omitempty"`
 }
 
-func (OAuth2CredentialProvider) CloudControlType() string {
+func (OAuth2CredentialProvider) Type() string {
 	return "AWS::BedrockAgentCore::OAuth2CredentialProvider"
 }
 
@@ -1261,9 +1262,7 @@ type OnlineEvaluationConfig struct {
 	UpdatedAt                  *string                       `json:"UpdatedAt,omitempty"`
 }
 
-func (OnlineEvaluationConfig) CloudControlType() string {
-	return "AWS::BedrockAgentCore::OnlineEvaluationConfig"
-}
+func (OnlineEvaluationConfig) Type() string { return "AWS::BedrockAgentCore::OnlineEvaluationConfig" }
 
 type PaymentCredentialProviderConfiguration struct {
 	CredentialProviderArn *string `json:"CredentialProviderArn,omitempty"`
@@ -1287,7 +1286,7 @@ type PaymentConnector struct {
 	PaymentManagerId                 *string                            `json:"PaymentManagerId,omitempty"`
 }
 
-func (PaymentConnector) CloudControlType() string { return "AWS::BedrockAgentCore::PaymentConnector" }
+func (PaymentConnector) Type() string { return "AWS::BedrockAgentCore::PaymentConnector" }
 
 type PaymentCredentialProviderSecretReference struct {
 	JsonKey  *string `json:"JsonKey,omitempty"`
@@ -1366,7 +1365,7 @@ type PaymentCredentialProvider struct {
 	Tags                        []PaymentCredentialProviderTag       `json:"Tags,omitempty"`
 }
 
-func (PaymentCredentialProvider) CloudControlType() string {
+func (PaymentCredentialProvider) Type() string {
 	return "AWS::BedrockAgentCore::PaymentCredentialProvider"
 }
 
@@ -1422,7 +1421,7 @@ type PaymentManager struct {
 	WorkloadIdentityDetails *PaymentManagerWorkloadIdentityDetails `json:"WorkloadIdentityDetails,omitempty"`
 }
 
-func (PaymentManager) CloudControlType() string { return "AWS::BedrockAgentCore::PaymentManager" }
+func (PaymentManager) Type() string { return "AWS::BedrockAgentCore::PaymentManager" }
 
 type CedarPolicy struct {
 	Statement *string `json:"Statement,omitempty"`
@@ -1452,7 +1451,7 @@ type Policy struct {
 	ValidationMode  *PolicyValidationMode `json:"ValidationMode,omitempty"`
 }
 
-func (Policy) CloudControlType() string { return "AWS::BedrockAgentCore::Policy" }
+func (Policy) Type() string { return "AWS::BedrockAgentCore::Policy" }
 
 type PolicyEngineTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -1472,14 +1471,14 @@ type PolicyEngine struct {
 	UpdatedAt        *string             `json:"UpdatedAt,omitempty"`
 }
 
-func (PolicyEngine) CloudControlType() string { return "AWS::BedrockAgentCore::PolicyEngine" }
+func (PolicyEngine) Type() string { return "AWS::BedrockAgentCore::PolicyEngine" }
 
 type ResourcePolicy struct {
 	Policy      *string `json:"Policy,omitempty"`
 	ResourceArn *string `json:"ResourceArn,omitempty"`
 }
 
-func (ResourcePolicy) CloudControlType() string { return "AWS::BedrockAgentCore::ResourcePolicy" }
+func (ResourcePolicy) Type() string { return "AWS::BedrockAgentCore::ResourcePolicy" }
 
 type RuntimeS3Location struct {
 	Bucket    *string `json:"Bucket,omitempty"`
@@ -1617,7 +1616,7 @@ type Runtime struct {
 	WorkloadIdentityDetails    *RuntimeWorkloadIdentityDetails  `json:"WorkloadIdentityDetails,omitempty"`
 }
 
-func (Runtime) CloudControlType() string { return "AWS::BedrockAgentCore::Runtime" }
+func (Runtime) Type() string { return "AWS::BedrockAgentCore::Runtime" }
 
 type RuntimeEndpoint struct {
 	AgentRuntimeArn         *string                     `json:"AgentRuntimeArn,omitempty"`
@@ -1636,7 +1635,7 @@ type RuntimeEndpoint struct {
 	TargetVersion           *string                     `json:"TargetVersion,omitempty"`
 }
 
-func (RuntimeEndpoint) CloudControlType() string { return "AWS::BedrockAgentCore::RuntimeEndpoint" }
+func (RuntimeEndpoint) Type() string { return "AWS::BedrockAgentCore::RuntimeEndpoint" }
 
 type WorkloadIdentityTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -1652,7 +1651,7 @@ type WorkloadIdentity struct {
 	WorkloadIdentityArn             *string               `json:"WorkloadIdentityArn,omitempty"`
 }
 
-func (WorkloadIdentity) CloudControlType() string { return "AWS::BedrockAgentCore::WorkloadIdentity" }
+func (WorkloadIdentity) Type() string { return "AWS::BedrockAgentCore::WorkloadIdentity" }
 
 type ApiKeyCredentialProviderApiKeySecretSource string
 
@@ -1814,9 +1813,8 @@ const (
 type TargetProtocolType string
 
 const (
-	TargetProtocolTypeMCP       TargetProtocolType = "MCP"
-	TargetProtocolTypeHTTP      TargetProtocolType = "HTTP"
-	TargetProtocolTypeINFERENCE TargetProtocolType = "INFERENCE"
+	TargetProtocolTypeMCP  TargetProtocolType = "MCP"
+	TargetProtocolTypeHTTP TargetProtocolType = "HTTP"
 )
 
 type TargetStatus string

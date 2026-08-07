@@ -32,7 +32,7 @@ type Channel struct {
 	Tags            []Tag            `json:"Tags,omitempty"`
 }
 
-func (Channel) CloudControlType() string { return "AWS::IoTAnalytics::Channel" }
+func (Channel) Type() string { return "AWS::IoTAnalytics::Channel" }
 
 type ResourceConfiguration struct {
 	ComputeType    *ResourceConfigurationComputeType `json:"ComputeType,omitempty"`
@@ -162,7 +162,7 @@ type Dataset struct {
 	VersioningConfiguration *VersioningConfiguration     `json:"VersioningConfiguration,omitempty"`
 }
 
-func (Dataset) CloudControlType() string { return "AWS::IoTAnalytics::Dataset" }
+func (Dataset) Type() string { return "AWS::IoTAnalytics::Dataset" }
 
 type Partition struct {
 	AttributeName *string `json:"AttributeName,omitempty"`
@@ -241,7 +241,7 @@ type Datastore struct {
 	Tags                    []DatastoreTag            `json:"Tags,omitempty"`
 }
 
-func (Datastore) CloudControlType() string { return "AWS::IoTAnalytics::Datastore" }
+func (Datastore) Type() string { return "AWS::IoTAnalytics::Datastore" }
 
 type AddAttributes struct {
 	Attributes map[string]string `json:"Attributes,omitempty"`
@@ -333,7 +333,7 @@ type Pipeline struct {
 	Tags               []PipelineTag `json:"Tags,omitempty"`
 }
 
-func (Pipeline) CloudControlType() string { return "AWS::IoTAnalytics::Pipeline" }
+func (Pipeline) Type() string { return "AWS::IoTAnalytics::Pipeline" }
 
 type ResourceConfigurationComputeType string
 

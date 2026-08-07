@@ -13,7 +13,7 @@ type AggregatorV2 struct {
 	Tags              map[string]string              `json:"Tags,omitempty"`
 }
 
-func (AggregatorV2) CloudControlType() string { return "AWS::SecurityHub::AggregatorV2" }
+func (AggregatorV2) Type() string { return "AWS::SecurityHub::AggregatorV2" }
 
 type NoteUpdate struct {
 	Text      *string         `json:"Text,omitempty"`
@@ -133,7 +133,7 @@ type AutomationRule struct {
 	UpdatedAt   *string                        `json:"UpdatedAt,omitempty"`
 }
 
-func (AutomationRule) CloudControlType() string { return "AWS::SecurityHub::AutomationRule" }
+func (AutomationRule) Type() string { return "AWS::SecurityHub::AutomationRule" }
 
 type ExternalIntegrationConfiguration struct {
 	ConnectorArn *string `json:"ConnectorArn,omitempty"`
@@ -240,7 +240,7 @@ type AutomationRuleV2 struct {
 	UpdatedAt   *string                     `json:"UpdatedAt,omitempty"`
 }
 
-func (AutomationRuleV2) CloudControlType() string { return "AWS::SecurityHub::AutomationRuleV2" }
+func (AutomationRuleV2) Type() string { return "AWS::SecurityHub::AutomationRuleV2" }
 
 type ParameterValue struct {
 	Boolean     *bool    `json:"Boolean,omitempty"`
@@ -291,7 +291,7 @@ type ConfigurationPolicy struct {
 	UpdatedAt           *string           `json:"UpdatedAt,omitempty"`
 }
 
-func (ConfigurationPolicy) CloudControlType() string { return "AWS::SecurityHub::ConfigurationPolicy" }
+func (ConfigurationPolicy) Type() string { return "AWS::SecurityHub::ConfigurationPolicy" }
 
 type HealthIssue struct {
 	Code    *string `json:"Code,omitempty"`
@@ -330,7 +330,7 @@ type Connector struct {
 	Tags             map[string]string `json:"Tags,omitempty"`
 }
 
-func (Connector) CloudControlType() string { return "AWS::SecurityHub::Connector" }
+func (Connector) Type() string { return "AWS::SecurityHub::Connector" }
 
 type ConnectorV2HealthIssue struct {
 	Code    *string `json:"Code,omitempty"`
@@ -355,7 +355,7 @@ type ConnectorV2 struct {
 	Tags                   map[string]string        `json:"Tags,omitempty"`
 }
 
-func (ConnectorV2) CloudControlType() string { return "AWS::SecurityHub::ConnectorV2" }
+func (ConnectorV2) Type() string { return "AWS::SecurityHub::ConnectorV2" }
 
 type DelegatedAdmin struct {
 	AdminAccountId           *string               `json:"AdminAccountId,omitempty"`
@@ -363,7 +363,7 @@ type DelegatedAdmin struct {
 	Status                   *DelegatedAdminStatus `json:"Status,omitempty"`
 }
 
-func (DelegatedAdmin) CloudControlType() string { return "AWS::SecurityHub::DelegatedAdmin" }
+func (DelegatedAdmin) Type() string { return "AWS::SecurityHub::DelegatedAdmin" }
 
 type FindingAggregator struct {
 	FindingAggregationRegion *string                             `json:"FindingAggregationRegion,omitempty"`
@@ -372,7 +372,7 @@ type FindingAggregator struct {
 	Regions                  []string                            `json:"Regions,omitempty"`
 }
 
-func (FindingAggregator) CloudControlType() string { return "AWS::SecurityHub::FindingAggregator" }
+func (FindingAggregator) Type() string { return "AWS::SecurityHub::FindingAggregator" }
 
 type Hub struct {
 	ARN                     *string           `json:"ARN,omitempty"`
@@ -383,7 +383,7 @@ type Hub struct {
 	Tags                    map[string]string `json:"Tags,omitempty"`
 }
 
-func (Hub) CloudControlType() string { return "AWS::SecurityHub::Hub" }
+func (Hub) Type() string { return "AWS::SecurityHub::Hub" }
 
 type HubV2 struct {
 	HubV2Arn     *string           `json:"HubV2Arn,omitempty"`
@@ -391,7 +391,7 @@ type HubV2 struct {
 	Tags         map[string]string `json:"Tags,omitempty"`
 }
 
-func (HubV2) CloudControlType() string { return "AWS::SecurityHub::HubV2" }
+func (HubV2) Type() string { return "AWS::SecurityHub::HubV2" }
 
 type InsightStringFilter struct {
 	Comparison *InsightStringFilterComparison `json:"Comparison,omitempty"`
@@ -547,7 +547,7 @@ type Insight struct {
 	Name             *string                    `json:"Name,omitempty"`
 }
 
-func (Insight) CloudControlType() string { return "AWS::SecurityHub::Insight" }
+func (Insight) Type() string { return "AWS::SecurityHub::Insight" }
 
 type OrganizationConfiguration struct {
 	AutoEnable                          *bool                                         `json:"AutoEnable,omitempty"`
@@ -559,9 +559,7 @@ type OrganizationConfiguration struct {
 	StatusMessage                       *string                                       `json:"StatusMessage,omitempty"`
 }
 
-func (OrganizationConfiguration) CloudControlType() string {
-	return "AWS::SecurityHub::OrganizationConfiguration"
-}
+func (OrganizationConfiguration) Type() string { return "AWS::SecurityHub::OrganizationConfiguration" }
 
 type PolicyAssociation struct {
 	AssociationIdentifier    *string                             `json:"AssociationIdentifier,omitempty"`
@@ -574,14 +572,14 @@ type PolicyAssociation struct {
 	UpdatedAt                *string                             `json:"UpdatedAt,omitempty"`
 }
 
-func (PolicyAssociation) CloudControlType() string { return "AWS::SecurityHub::PolicyAssociation" }
+func (PolicyAssociation) Type() string { return "AWS::SecurityHub::PolicyAssociation" }
 
 type ProductSubscription struct {
 	ProductArn             *string `json:"ProductArn,omitempty"`
 	ProductSubscriptionArn *string `json:"ProductSubscriptionArn,omitempty"`
 }
 
-func (ProductSubscription) CloudControlType() string { return "AWS::SecurityHub::ProductSubscription" }
+func (ProductSubscription) Type() string { return "AWS::SecurityHub::ProductSubscription" }
 
 type SecurityControlParameterValue struct {
 	Boolean     *bool    `json:"Boolean,omitempty"`
@@ -606,7 +604,7 @@ type SecurityControl struct {
 	SecurityControlId  *string                                          `json:"SecurityControlId,omitempty"`
 }
 
-func (SecurityControl) CloudControlType() string { return "AWS::SecurityHub::SecurityControl" }
+func (SecurityControl) Type() string { return "AWS::SecurityHub::SecurityControl" }
 
 type StandardsControl struct {
 	Reason              *string `json:"Reason,omitempty"`
@@ -619,7 +617,7 @@ type Standard struct {
 	StandardsSubscriptionArn  *string            `json:"StandardsSubscriptionArn,omitempty"`
 }
 
-func (Standard) CloudControlType() string { return "AWS::SecurityHub::Standard" }
+func (Standard) Type() string { return "AWS::SecurityHub::Standard" }
 
 type AggregatorV2RegionLinkingMode string
 

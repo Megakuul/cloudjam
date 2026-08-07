@@ -8,7 +8,7 @@ type NotificationChannel struct {
 	SnsTopicArn *string `json:"SnsTopicArn,omitempty"`
 }
 
-func (NotificationChannel) CloudControlType() string { return "AWS::FMS::NotificationChannel" }
+func (NotificationChannel) Type() string { return "AWS::FMS::NotificationChannel" }
 
 type IEMap struct {
 	ACCOUNT []string `json:"ACCOUNT,omitempty"`
@@ -96,7 +96,7 @@ type Policy struct {
 	Tags                       []PolicyTag                       `json:"Tags,omitempty"`
 }
 
-func (Policy) CloudControlType() string { return "AWS::FMS::Policy" }
+func (Policy) Type() string { return "AWS::FMS::Policy" }
 
 type Tag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -112,7 +112,7 @@ type ResourceSet struct {
 	Tags             []Tag    `json:"Tags,omitempty"`
 }
 
-func (ResourceSet) CloudControlType() string { return "AWS::FMS::ResourceSet" }
+func (ResourceSet) Type() string { return "AWS::FMS::ResourceSet" }
 
 type PolicyResourceTagLogicalOperator string
 

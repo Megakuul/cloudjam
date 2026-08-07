@@ -277,7 +277,7 @@ type Cluster struct {
 	VisibleToAllUsers       *bool                   `json:"VisibleToAllUsers,omitempty"`
 }
 
-func (Cluster) CloudControlType() string { return "AWS::EMR::Cluster" }
+func (Cluster) Type() string { return "AWS::EMR::Cluster" }
 
 type InstanceFleetConfigConfiguration struct {
 	Classification          *string                            `json:"Classification,omitempty"`
@@ -364,9 +364,7 @@ type InstanceFleetConfigInstanceFleetConfig struct {
 	TargetSpotCapacity     *int                                                        `json:"TargetSpotCapacity,omitempty"`
 }
 
-func (InstanceFleetConfigInstanceFleetConfig) CloudControlType() string {
-	return "AWS::EMR::InstanceFleetConfig"
-}
+func (InstanceFleetConfigInstanceFleetConfig) Type() string { return "AWS::EMR::InstanceFleetConfig" }
 
 type InstanceGroupConfigScalingConstraints struct {
 	MaxCapacity *int `json:"MaxCapacity,omitempty"`
@@ -455,16 +453,14 @@ type InstanceGroupConfigInstanceGroupConfig struct {
 	Name              *string                               `json:"Name,omitempty"`
 }
 
-func (InstanceGroupConfigInstanceGroupConfig) CloudControlType() string {
-	return "AWS::EMR::InstanceGroupConfig"
-}
+func (InstanceGroupConfigInstanceGroupConfig) Type() string { return "AWS::EMR::InstanceGroupConfig" }
 
 type SecurityConfiguration struct {
 	Name                  *string         `json:"Name,omitempty"`
 	SecurityConfiguration json.RawMessage `json:"SecurityConfiguration,omitempty"`
 }
 
-func (SecurityConfiguration) CloudControlType() string { return "AWS::EMR::SecurityConfiguration" }
+func (SecurityConfiguration) Type() string { return "AWS::EMR::SecurityConfiguration" }
 
 type StepKeyValue struct {
 	Key   *string `json:"Key,omitempty"`
@@ -488,7 +484,7 @@ type Step struct {
 	Name             *string                  `json:"Name,omitempty"`
 }
 
-func (Step) CloudControlType() string { return "AWS::EMR::Step" }
+func (Step) Type() string { return "AWS::EMR::Step" }
 
 type StudioTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -518,7 +514,7 @@ type Studio struct {
 	WorkspaceSecurityGroupId          *string                  `json:"WorkspaceSecurityGroupId,omitempty"`
 }
 
-func (Studio) CloudControlType() string { return "AWS::EMR::Studio" }
+func (Studio) Type() string { return "AWS::EMR::Studio" }
 
 type StudioSessionMapping struct {
 	IdentityName     *string                           `json:"IdentityName,omitempty"`
@@ -527,7 +523,7 @@ type StudioSessionMapping struct {
 	StudioId         *string                           `json:"StudioId,omitempty"`
 }
 
-func (StudioSessionMapping) CloudControlType() string { return "AWS::EMR::StudioSessionMapping" }
+func (StudioSessionMapping) Type() string { return "AWS::EMR::StudioSessionMapping" }
 
 type WALWorkspaceTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -539,7 +535,7 @@ type WALWorkspace struct {
 	WALWorkspaceName *string           `json:"WALWorkspaceName,omitempty"`
 }
 
-func (WALWorkspace) CloudControlType() string { return "AWS::EMR::WALWorkspace" }
+func (WALWorkspace) Type() string { return "AWS::EMR::WALWorkspace" }
 
 type StudioAuthMode string
 

@@ -228,7 +228,7 @@ type AutoScalingGroup struct {
 	VPCZoneIdentifier                []string                          `json:"VPCZoneIdentifier,omitempty"`
 }
 
-func (AutoScalingGroup) CloudControlType() string { return "AWS::AutoScaling::AutoScalingGroup" }
+func (AutoScalingGroup) Type() string { return "AWS::AutoScaling::AutoScalingGroup" }
 
 type BlockDevice struct {
 	DeleteOnTermination *bool   `json:"DeleteOnTermination,omitempty"`
@@ -275,7 +275,7 @@ type LaunchConfiguration struct {
 	UserData                     *string              `json:"UserData,omitempty"`
 }
 
-func (LaunchConfiguration) CloudControlType() string { return "AWS::AutoScaling::LaunchConfiguration" }
+func (LaunchConfiguration) Type() string { return "AWS::AutoScaling::LaunchConfiguration" }
 
 type LifecycleHook struct {
 	AutoScalingGroupName  *string `json:"AutoScalingGroupName,omitempty"`
@@ -288,7 +288,7 @@ type LifecycleHook struct {
 	RoleARN               *string `json:"RoleARN,omitempty"`
 }
 
-func (LifecycleHook) CloudControlType() string { return "AWS::AutoScaling::LifecycleHook" }
+func (LifecycleHook) Type() string { return "AWS::AutoScaling::LifecycleHook" }
 
 type MetricDimension struct {
 	Name  *string `json:"Name,omitempty"`
@@ -420,7 +420,7 @@ type ScalingPolicy struct {
 	TargetTrackingConfiguration    *TargetTrackingConfiguration    `json:"TargetTrackingConfiguration,omitempty"`
 }
 
-func (ScalingPolicy) CloudControlType() string { return "AWS::AutoScaling::ScalingPolicy" }
+func (ScalingPolicy) Type() string { return "AWS::AutoScaling::ScalingPolicy" }
 
 type ScheduledAction struct {
 	AutoScalingGroupName *string `json:"AutoScalingGroupName,omitempty"`
@@ -434,7 +434,7 @@ type ScheduledAction struct {
 	TimeZone             *string `json:"TimeZone,omitempty"`
 }
 
-func (ScheduledAction) CloudControlType() string { return "AWS::AutoScaling::ScheduledAction" }
+func (ScheduledAction) Type() string { return "AWS::AutoScaling::ScheduledAction" }
 
 type InstanceReusePolicy struct {
 	ReuseOnScaleIn *bool `json:"ReuseOnScaleIn,omitempty"`
@@ -448,7 +448,7 @@ type WarmPool struct {
 	PoolState                *string              `json:"PoolState,omitempty"`
 }
 
-func (WarmPool) CloudControlType() string { return "AWS::AutoScaling::WarmPool" }
+func (WarmPool) Type() string { return "AWS::AutoScaling::WarmPool" }
 
 type AvailabilityZoneDistributionCapacityDistributionStrategy string
 

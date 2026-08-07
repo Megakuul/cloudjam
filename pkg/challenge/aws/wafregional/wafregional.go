@@ -22,7 +22,7 @@ type ByteMatchSet struct {
 	Name            *string          `json:"Name,omitempty"`
 }
 
-func (ByteMatchSet) CloudControlType() string { return "AWS::WAFRegional::ByteMatchSet" }
+func (ByteMatchSet) Type() string { return "AWS::WAFRegional::ByteMatchSet" }
 
 type GeoMatchConstraint struct {
 	Type  *string `json:"Type,omitempty"`
@@ -35,7 +35,7 @@ type GeoMatchSet struct {
 	Name                *string              `json:"Name,omitempty"`
 }
 
-func (GeoMatchSet) CloudControlType() string { return "AWS::WAFRegional::GeoMatchSet" }
+func (GeoMatchSet) Type() string { return "AWS::WAFRegional::GeoMatchSet" }
 
 type IPSetDescriptor struct {
 	Type  *string `json:"Type,omitempty"`
@@ -48,7 +48,7 @@ type IPSet struct {
 	Name             *string           `json:"Name,omitempty"`
 }
 
-func (IPSet) CloudControlType() string { return "AWS::WAFRegional::IPSet" }
+func (IPSet) Type() string { return "AWS::WAFRegional::IPSet" }
 
 type Predicate struct {
 	DataId  *string `json:"DataId,omitempty"`
@@ -65,7 +65,7 @@ type RateBasedRule struct {
 	RateLimit       *int        `json:"RateLimit,omitempty"`
 }
 
-func (RateBasedRule) CloudControlType() string { return "AWS::WAFRegional::RateBasedRule" }
+func (RateBasedRule) Type() string { return "AWS::WAFRegional::RateBasedRule" }
 
 type RegexPatternSet struct {
 	Id                  *string  `json:"Id,omitempty"`
@@ -73,7 +73,7 @@ type RegexPatternSet struct {
 	RegexPatternStrings []string `json:"RegexPatternStrings,omitempty"`
 }
 
-func (RegexPatternSet) CloudControlType() string { return "AWS::WAFRegional::RegexPatternSet" }
+func (RegexPatternSet) Type() string { return "AWS::WAFRegional::RegexPatternSet" }
 
 type RulePredicate struct {
 	DataId  *string `json:"DataId,omitempty"`
@@ -88,7 +88,7 @@ type Rule struct {
 	Predicates []RulePredicate `json:"Predicates,omitempty"`
 }
 
-func (Rule) CloudControlType() string { return "AWS::WAFRegional::Rule" }
+func (Rule) Type() string { return "AWS::WAFRegional::Rule" }
 
 type SizeConstraintSetFieldToMatch struct {
 	Data *string `json:"Data,omitempty"`
@@ -108,7 +108,7 @@ type SizeConstraintSet struct {
 	SizeConstraints []SizeConstraint `json:"SizeConstraints,omitempty"`
 }
 
-func (SizeConstraintSet) CloudControlType() string { return "AWS::WAFRegional::SizeConstraintSet" }
+func (SizeConstraintSet) Type() string { return "AWS::WAFRegional::SizeConstraintSet" }
 
 type SqlInjectionMatchSetFieldToMatch struct {
 	Data *string `json:"Data,omitempty"`
@@ -126,9 +126,7 @@ type SqlInjectionMatchSet struct {
 	SqlInjectionMatchTuples []SqlInjectionMatchTuple `json:"SqlInjectionMatchTuples,omitempty"`
 }
 
-func (SqlInjectionMatchSet) CloudControlType() string {
-	return "AWS::WAFRegional::SqlInjectionMatchSet"
-}
+func (SqlInjectionMatchSet) Type() string { return "AWS::WAFRegional::SqlInjectionMatchSet" }
 
 type Action struct {
 	Type *string `json:"Type,omitempty"`
@@ -148,7 +146,7 @@ type WebACL struct {
 	Rules         []WebACLRule `json:"Rules,omitempty"`
 }
 
-func (WebACL) CloudControlType() string { return "AWS::WAFRegional::WebACL" }
+func (WebACL) Type() string { return "AWS::WAFRegional::WebACL" }
 
 type WebACLAssociation struct {
 	Id          *string `json:"Id,omitempty"`
@@ -156,7 +154,7 @@ type WebACLAssociation struct {
 	WebACLId    *string `json:"WebACLId,omitempty"`
 }
 
-func (WebACLAssociation) CloudControlType() string { return "AWS::WAFRegional::WebACLAssociation" }
+func (WebACLAssociation) Type() string { return "AWS::WAFRegional::WebACLAssociation" }
 
 type XssMatchSetFieldToMatch struct {
 	Data *string `json:"Data,omitempty"`
@@ -174,4 +172,4 @@ type XssMatchSet struct {
 	XssMatchTuples []XssMatchTuple `json:"XssMatchTuples,omitempty"`
 }
 
-func (XssMatchSet) CloudControlType() string { return "AWS::WAFRegional::XssMatchSet" }
+func (XssMatchSet) Type() string { return "AWS::WAFRegional::XssMatchSet" }

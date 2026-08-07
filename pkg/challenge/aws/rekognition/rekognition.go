@@ -14,7 +14,7 @@ type Collection struct {
 	Tags         []Tag   `json:"Tags,omitempty"`
 }
 
-func (Collection) CloudControlType() string { return "AWS::Rekognition::Collection" }
+func (Collection) Type() string { return "AWS::Rekognition::Collection" }
 
 type ProjectTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -27,7 +27,7 @@ type Project struct {
 	Tags        []ProjectTag `json:"Tags,omitempty"`
 }
 
-func (Project) CloudControlType() string { return "AWS::Rekognition::Project" }
+func (Project) Type() string { return "AWS::Rekognition::Project" }
 
 type BoundingBox struct {
 	Height *float64 `json:"Height,omitempty"`
@@ -96,4 +96,4 @@ type StreamProcessor struct {
 	Tags                         []StreamProcessorTag   `json:"Tags,omitempty"`
 }
 
-func (StreamProcessor) CloudControlType() string { return "AWS::Rekognition::StreamProcessor" }
+func (StreamProcessor) Type() string { return "AWS::Rekognition::StreamProcessor" }

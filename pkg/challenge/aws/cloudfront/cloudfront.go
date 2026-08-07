@@ -48,7 +48,7 @@ type AnycastIpList struct {
 	Tags                  *Tags                       `json:"Tags,omitempty"`
 }
 
-func (AnycastIpList) CloudControlType() string { return "AWS::CloudFront::AnycastIpList" }
+func (AnycastIpList) Type() string { return "AWS::CloudFront::AnycastIpList" }
 
 type CookiesConfig struct {
 	CookieBehavior *string  `json:"CookieBehavior,omitempty"`
@@ -88,7 +88,7 @@ type CachePolicy struct {
 	LastModifiedTime  *string            `json:"LastModifiedTime,omitempty"`
 }
 
-func (CachePolicy) CloudControlType() string { return "AWS::CloudFront::CachePolicy" }
+func (CachePolicy) Type() string { return "AWS::CloudFront::CachePolicy" }
 
 type CloudFrontOriginAccessIdentityConfig struct {
 	Comment *string `json:"Comment,omitempty"`
@@ -100,7 +100,7 @@ type CloudFrontOriginAccessIdentity struct {
 	S3CanonicalUserId                    *string                               `json:"S3CanonicalUserId,omitempty"`
 }
 
-func (CloudFrontOriginAccessIdentity) CloudControlType() string {
+func (CloudFrontOriginAccessIdentity) Type() string {
 	return "AWS::CloudFront::CloudFrontOriginAccessIdentity"
 }
 
@@ -134,7 +134,7 @@ type ConnectionFunction struct {
 	Tags                     []ConnectionFunctionTag   `json:"Tags,omitempty"`
 }
 
-func (ConnectionFunction) CloudControlType() string { return "AWS::CloudFront::ConnectionFunction" }
+func (ConnectionFunction) Type() string { return "AWS::CloudFront::ConnectionFunction" }
 
 type ConnectionGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -157,7 +157,7 @@ type ConnectionGroup struct {
 	Tags             []ConnectionGroupTag `json:"Tags,omitempty"`
 }
 
-func (ConnectionGroup) CloudControlType() string { return "AWS::CloudFront::ConnectionGroup" }
+func (ConnectionGroup) Type() string { return "AWS::CloudFront::ConnectionGroup" }
 
 type ContinuousDeploymentPolicyConfigSingleHeaderPolicyConfig struct {
 	Header *string `json:"Header,omitempty"`
@@ -205,9 +205,7 @@ type ContinuousDeploymentPolicy struct {
 	LastModifiedTime                 *string                           `json:"LastModifiedTime,omitempty"`
 }
 
-func (ContinuousDeploymentPolicy) CloudControlType() string {
-	return "AWS::CloudFront::ContinuousDeploymentPolicy"
-}
+func (ContinuousDeploymentPolicy) Type() string { return "AWS::CloudFront::ContinuousDeploymentPolicy" }
 
 type Cookies struct {
 	Forward          *string  `json:"Forward,omitempty"`
@@ -488,7 +486,7 @@ type Distribution struct {
 	Tags               []DistributionTag   `json:"Tags,omitempty"`
 }
 
-func (Distribution) CloudControlType() string { return "AWS::CloudFront::Distribution" }
+func (Distribution) Type() string { return "AWS::CloudFront::Distribution" }
 
 type Certificate struct {
 	Arn *string `json:"Arn,omitempty"`
@@ -550,7 +548,7 @@ type DistributionTenant struct {
 	Tags                      []DistributionTenantTag    `json:"Tags,omitempty"`
 }
 
-func (DistributionTenant) CloudControlType() string { return "AWS::CloudFront::DistributionTenant" }
+func (DistributionTenant) Type() string { return "AWS::CloudFront::DistributionTenant" }
 
 type FunctionKeyValueStoreAssociation struct {
 	KeyValueStoreARN *string `json:"KeyValueStoreARN,omitempty"`
@@ -582,7 +580,7 @@ type Function struct {
 	Tags             []FunctionTag     `json:"Tags,omitempty"`
 }
 
-func (Function) CloudControlType() string { return "AWS::CloudFront::Function" }
+func (Function) Type() string { return "AWS::CloudFront::Function" }
 
 type KeyGroupConfig struct {
 	Comment *string  `json:"Comment,omitempty"`
@@ -596,7 +594,7 @@ type KeyGroup struct {
 	LastModifiedTime *string         `json:"LastModifiedTime,omitempty"`
 }
 
-func (KeyGroup) CloudControlType() string { return "AWS::CloudFront::KeyGroup" }
+func (KeyGroup) Type() string { return "AWS::CloudFront::KeyGroup" }
 
 type ImportSource struct {
 	SourceArn  *string `json:"SourceArn,omitempty"`
@@ -618,7 +616,7 @@ type KeyValueStore struct {
 	Tags         []KeyValueStoreTag `json:"Tags,omitempty"`
 }
 
-func (KeyValueStore) CloudControlType() string { return "AWS::CloudFront::KeyValueStore" }
+func (KeyValueStore) Type() string { return "AWS::CloudFront::KeyValueStore" }
 
 type RealtimeMetricsSubscriptionConfig struct {
 	RealtimeMetricsSubscriptionStatus *RealtimeMetricsSubscriptionConfigRealtimeMetricsSubscriptionStatus `json:"RealtimeMetricsSubscriptionStatus,omitempty"`
@@ -633,9 +631,7 @@ type MonitoringSubscription struct {
 	MonitoringSubscription *MonitoringSubscriptionMonitoringSubscription `json:"MonitoringSubscription,omitempty"`
 }
 
-func (MonitoringSubscription) CloudControlType() string {
-	return "AWS::CloudFront::MonitoringSubscription"
-}
+func (MonitoringSubscription) Type() string { return "AWS::CloudFront::MonitoringSubscription" }
 
 type OriginAccessControlConfig struct {
 	Description                   *string `json:"Description,omitempty"`
@@ -650,7 +646,7 @@ type OriginAccessControl struct {
 	OriginAccessControlConfig *OriginAccessControlConfig `json:"OriginAccessControlConfig,omitempty"`
 }
 
-func (OriginAccessControl) CloudControlType() string { return "AWS::CloudFront::OriginAccessControl" }
+func (OriginAccessControl) Type() string { return "AWS::CloudFront::OriginAccessControl" }
 
 type OriginRequestPolicyCookiesConfig struct {
 	CookieBehavior *string  `json:"CookieBehavior,omitempty"`
@@ -681,7 +677,7 @@ type OriginRequestPolicy struct {
 	OriginRequestPolicyConfig *OriginRequestPolicyConfig `json:"OriginRequestPolicyConfig,omitempty"`
 }
 
-func (OriginRequestPolicy) CloudControlType() string { return "AWS::CloudFront::OriginRequestPolicy" }
+func (OriginRequestPolicy) Type() string { return "AWS::CloudFront::OriginRequestPolicy" }
 
 type PublicKeyConfig struct {
 	CallerReference *string `json:"CallerReference,omitempty"`
@@ -696,7 +692,7 @@ type PublicKey struct {
 	PublicKeyConfig *PublicKeyConfig `json:"PublicKeyConfig,omitempty"`
 }
 
-func (PublicKey) CloudControlType() string { return "AWS::CloudFront::PublicKey" }
+func (PublicKey) Type() string { return "AWS::CloudFront::PublicKey" }
 
 type KinesisStreamConfig struct {
 	RoleArn   *string `json:"RoleArn,omitempty"`
@@ -716,7 +712,7 @@ type RealtimeLogConfig struct {
 	SamplingRate *float64   `json:"SamplingRate,omitempty"`
 }
 
-func (RealtimeLogConfig) CloudControlType() string { return "AWS::CloudFront::RealtimeLogConfig" }
+func (RealtimeLogConfig) Type() string { return "AWS::CloudFront::RealtimeLogConfig" }
 
 type AccessControlAllowHeaders struct {
 	Items []string `json:"Items,omitempty"`
@@ -825,9 +821,7 @@ type ResponseHeadersPolicy struct {
 	ResponseHeadersPolicyConfig *ResponseHeadersPolicyConfig `json:"ResponseHeadersPolicyConfig,omitempty"`
 }
 
-func (ResponseHeadersPolicy) CloudControlType() string {
-	return "AWS::CloudFront::ResponseHeadersPolicy"
-}
+func (ResponseHeadersPolicy) Type() string { return "AWS::CloudFront::ResponseHeadersPolicy" }
 
 type StreamingDistributionLogging struct {
 	Bucket  *string `json:"Bucket,omitempty"`
@@ -867,9 +861,7 @@ type StreamingDistribution struct {
 	Tags                        []StreamingDistributionTag   `json:"Tags,omitempty"`
 }
 
-func (StreamingDistribution) CloudControlType() string {
-	return "AWS::CloudFront::StreamingDistribution"
-}
+func (StreamingDistribution) Type() string { return "AWS::CloudFront::StreamingDistribution" }
 
 type CaCertificatesBundleS3Location struct {
 	Bucket  *string `json:"Bucket,omitempty"`
@@ -900,7 +892,7 @@ type TrustStore struct {
 	UseClientCertificateOCSPEndpoint *bool                       `json:"UseClientCertificateOCSPEndpoint,omitempty"`
 }
 
-func (TrustStore) CloudControlType() string { return "AWS::CloudFront::TrustStore" }
+func (TrustStore) Type() string { return "AWS::CloudFront::TrustStore" }
 
 type VpcOriginTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -928,7 +920,7 @@ type VpcOrigin struct {
 	VpcOriginEndpointConfig *VpcOriginEndpointConfig `json:"VpcOriginEndpointConfig,omitempty"`
 }
 
-func (VpcOrigin) CloudControlType() string { return "AWS::CloudFront::VpcOrigin" }
+func (VpcOrigin) Type() string { return "AWS::CloudFront::VpcOrigin" }
 
 type IpAddressType string
 

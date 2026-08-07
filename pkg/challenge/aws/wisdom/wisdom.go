@@ -18,7 +18,7 @@ type AIAgent struct {
 	Type                *AIAgentType      `json:"Type,omitempty"`
 }
 
-func (AIAgent) CloudControlType() string { return "AWS::Wisdom::AIAgent" }
+func (AIAgent) Type() string { return "AWS::Wisdom::AIAgent" }
 
 type AIAgentVersion struct {
 	AIAgentArn          *string  `json:"AIAgentArn,omitempty"`
@@ -30,7 +30,7 @@ type AIAgentVersion struct {
 	VersionNumber       *float64 `json:"VersionNumber,omitempty"`
 }
 
-func (AIAgentVersion) CloudControlType() string { return "AWS::Wisdom::AIAgentVersion" }
+func (AIAgentVersion) Type() string { return "AWS::Wisdom::AIAgentVersion" }
 
 type GuardrailContentFilterConfig struct {
 	InputStrength  *GuardrailFilterStrength    `json:"InputStrength,omitempty"`
@@ -110,7 +110,7 @@ type AIGuardrail struct {
 	WordPolicyConfig                 *AIGuardrailWordPolicyConfig                 `json:"WordPolicyConfig,omitempty"`
 }
 
-func (AIGuardrail) CloudControlType() string { return "AWS::Wisdom::AIGuardrail" }
+func (AIGuardrail) Type() string { return "AWS::Wisdom::AIGuardrail" }
 
 type AIGuardrailVersion struct {
 	AIGuardrailArn       *string  `json:"AIGuardrailArn,omitempty"`
@@ -122,7 +122,7 @@ type AIGuardrailVersion struct {
 	VersionNumber        *float64 `json:"VersionNumber,omitempty"`
 }
 
-func (AIGuardrailVersion) CloudControlType() string { return "AWS::Wisdom::AIGuardrailVersion" }
+func (AIGuardrailVersion) Type() string { return "AWS::Wisdom::AIGuardrailVersion" }
 
 type AIPrompt struct {
 	AIPromptArn           *string               `json:"AIPromptArn,omitempty"`
@@ -140,7 +140,7 @@ type AIPrompt struct {
 	Type                  *AIPromptType         `json:"Type,omitempty"`
 }
 
-func (AIPrompt) CloudControlType() string { return "AWS::Wisdom::AIPrompt" }
+func (AIPrompt) Type() string { return "AWS::Wisdom::AIPrompt" }
 
 type AIPromptVersion struct {
 	AIPromptArn         *string  `json:"AIPromptArn,omitempty"`
@@ -152,7 +152,7 @@ type AIPromptVersion struct {
 	VersionNumber       *float64 `json:"VersionNumber,omitempty"`
 }
 
-func (AIPromptVersion) CloudControlType() string { return "AWS::Wisdom::AIPromptVersion" }
+func (AIPromptVersion) Type() string { return "AWS::Wisdom::AIPromptVersion" }
 
 type ServerSideEncryptionConfiguration struct {
 	KmsKeyId *string `json:"KmsKeyId,omitempty"`
@@ -173,7 +173,7 @@ type Assistant struct {
 	Type                              *AssistantType                     `json:"Type,omitempty"`
 }
 
-func (Assistant) CloudControlType() string { return "AWS::Wisdom::Assistant" }
+func (Assistant) Type() string { return "AWS::Wisdom::Assistant" }
 
 type AssistantAssociationTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -190,7 +190,7 @@ type AssistantAssociation struct {
 	Tags                    []AssistantAssociationTag `json:"Tags,omitempty"`
 }
 
-func (AssistantAssociation) CloudControlType() string { return "AWS::Wisdom::AssistantAssociation" }
+func (AssistantAssociation) Type() string { return "AWS::Wisdom::AssistantAssociation" }
 
 type RenderingConfiguration struct {
 	TemplateUri *string `json:"TemplateUri,omitempty"`
@@ -264,7 +264,7 @@ type KnowledgeBase struct {
 	VectorIngestionConfiguration      *VectorIngestionConfiguration                   `json:"VectorIngestionConfiguration,omitempty"`
 }
 
-func (KnowledgeBase) CloudControlType() string { return "AWS::Wisdom::KnowledgeBase" }
+func (KnowledgeBase) Type() string { return "AWS::Wisdom::KnowledgeBase" }
 
 type MessageTemplateBodyContentProvider struct {
 	Content *string `json:"Content,omitempty"`
@@ -414,7 +414,7 @@ type MessageTemplate struct {
 	Tags                         []MessageTemplateTag        `json:"Tags,omitempty"`
 }
 
-func (MessageTemplate) CloudControlType() string { return "AWS::Wisdom::MessageTemplate" }
+func (MessageTemplate) Type() string { return "AWS::Wisdom::MessageTemplate" }
 
 type MessageTemplateVersion struct {
 	MessageTemplateArn           *string  `json:"MessageTemplateArn,omitempty"`
@@ -423,7 +423,7 @@ type MessageTemplateVersion struct {
 	MessageTemplateVersionNumber *float64 `json:"MessageTemplateVersionNumber,omitempty"`
 }
 
-func (MessageTemplateVersion) CloudControlType() string { return "AWS::Wisdom::MessageTemplateVersion" }
+func (MessageTemplateVersion) Type() string { return "AWS::Wisdom::MessageTemplateVersion" }
 
 type QuickResponseContentProvider struct {
 	Content *string `json:"Content,omitempty"`
@@ -462,7 +462,7 @@ type QuickResponse struct {
 	Tags                  []QuickResponseTag                  `json:"Tags,omitempty"`
 }
 
-func (QuickResponse) CloudControlType() string { return "AWS::Wisdom::QuickResponse" }
+func (QuickResponse) Type() string { return "AWS::Wisdom::QuickResponse" }
 
 type AIAgentType string
 

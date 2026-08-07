@@ -19,7 +19,7 @@ type Alarm struct {
 	TreatMissingData      *string  `json:"TreatMissingData,omitempty"`
 }
 
-func (Alarm) CloudControlType() string { return "AWS::Lightsail::Alarm" }
+func (Alarm) Type() string { return "AWS::Lightsail::Alarm" }
 
 type AccessRules struct {
 	AllowPublicOverrides *bool   `json:"AllowPublicOverrides,omitempty"`
@@ -44,7 +44,7 @@ type Bucket struct {
 	Url                      *string      `json:"Url,omitempty"`
 }
 
-func (Bucket) CloudControlType() string { return "AWS::Lightsail::Bucket" }
+func (Bucket) Type() string { return "AWS::Lightsail::Bucket" }
 
 type CertificateTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -60,7 +60,7 @@ type Certificate struct {
 	Tags                    []CertificateTag `json:"Tags,omitempty"`
 }
 
-func (Certificate) CloudControlType() string { return "AWS::Lightsail::Certificate" }
+func (Certificate) Type() string { return "AWS::Lightsail::Certificate" }
 
 type EnvironmentVariable struct {
 	Value    *string `json:"Value,omitempty"`
@@ -133,7 +133,7 @@ type Container struct {
 	Url                        *string                     `json:"Url,omitempty"`
 }
 
-func (Container) CloudControlType() string { return "AWS::Lightsail::Container" }
+func (Container) Type() string { return "AWS::Lightsail::Container" }
 
 type RelationalDatabaseParameter struct {
 	AllowedValues  *string `json:"AllowedValues,omitempty"`
@@ -170,7 +170,7 @@ type Database struct {
 	Tags                          []DatabaseTag                 `json:"Tags,omitempty"`
 }
 
-func (Database) CloudControlType() string { return "AWS::Lightsail::Database" }
+func (Database) Type() string { return "AWS::Lightsail::Database" }
 
 type DatabaseSnapshotLocation struct {
 	AvailabilityZone *string `json:"AvailabilityZone,omitempty"`
@@ -202,7 +202,7 @@ type DatabaseSnapshot struct {
 	Tags                              []DatabaseSnapshotTag         `json:"Tags,omitempty"`
 }
 
-func (DatabaseSnapshot) CloudControlType() string { return "AWS::Lightsail::DatabaseSnapshot" }
+func (DatabaseSnapshot) Type() string { return "AWS::Lightsail::DatabaseSnapshot" }
 
 type AutoSnapshotAddOn struct {
 	SnapshotTimeOfDay *string `json:"SnapshotTimeOfDay,omitempty"`
@@ -242,7 +242,7 @@ type Disk struct {
 	Tags             []DiskTag `json:"Tags,omitempty"`
 }
 
-func (Disk) CloudControlType() string { return "AWS::Lightsail::Disk" }
+func (Disk) Type() string { return "AWS::Lightsail::Disk" }
 
 type DiskSnapshotLocation struct {
 	AvailabilityZone *string `json:"AvailabilityZone,omitempty"`
@@ -270,7 +270,7 @@ type DiskSnapshot struct {
 	Tags               []DiskSnapshotTag         `json:"Tags,omitempty"`
 }
 
-func (DiskSnapshot) CloudControlType() string { return "AWS::Lightsail::DiskSnapshot" }
+func (DiskSnapshot) Type() string { return "AWS::Lightsail::DiskSnapshot" }
 
 type CookieObject struct {
 	CookiesAllowList []string `json:"CookiesAllowList,omitempty"`
@@ -334,7 +334,7 @@ type Distribution struct {
 	Tags                  []DistributionTag      `json:"Tags,omitempty"`
 }
 
-func (Distribution) CloudControlType() string { return "AWS::Lightsail::Distribution" }
+func (Distribution) Type() string { return "AWS::Lightsail::Distribution" }
 
 type DomainEntry struct {
 	Id      *string          `json:"Id,omitempty"`
@@ -365,7 +365,7 @@ type Domain struct {
 	Tags          []DomainTag         `json:"Tags,omitempty"`
 }
 
-func (Domain) CloudControlType() string { return "AWS::Lightsail::Domain" }
+func (Domain) Type() string { return "AWS::Lightsail::Domain" }
 
 type InstanceAutoSnapshotAddOn struct {
 	SnapshotTimeOfDay *string `json:"SnapshotTimeOfDay,omitempty"`
@@ -454,7 +454,7 @@ type Instance struct {
 	UserName         *string           `json:"UserName,omitempty"`
 }
 
-func (Instance) CloudControlType() string { return "AWS::Lightsail::Instance" }
+func (Instance) Type() string { return "AWS::Lightsail::Instance" }
 
 type InstanceSnapshotLocation struct {
 	AvailabilityZone *string `json:"AvailabilityZone,omitempty"`
@@ -481,7 +481,7 @@ type InstanceSnapshot struct {
 	Tags                 []InstanceSnapshotTag     `json:"Tags,omitempty"`
 }
 
-func (InstanceSnapshot) CloudControlType() string { return "AWS::Lightsail::InstanceSnapshot" }
+func (InstanceSnapshot) Type() string { return "AWS::Lightsail::InstanceSnapshot" }
 
 type LoadBalancerTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -501,7 +501,7 @@ type LoadBalancer struct {
 	TlsPolicyName                            *string           `json:"TlsPolicyName,omitempty"`
 }
 
-func (LoadBalancer) CloudControlType() string { return "AWS::Lightsail::LoadBalancer" }
+func (LoadBalancer) Type() string { return "AWS::Lightsail::LoadBalancer" }
 
 type LoadBalancerTlsCertificate struct {
 	CertificateAlternativeNames   []string `json:"CertificateAlternativeNames,omitempty"`
@@ -514,9 +514,7 @@ type LoadBalancerTlsCertificate struct {
 	Status                        *string  `json:"Status,omitempty"`
 }
 
-func (LoadBalancerTlsCertificate) CloudControlType() string {
-	return "AWS::Lightsail::LoadBalancerTlsCertificate"
-}
+func (LoadBalancerTlsCertificate) Type() string { return "AWS::Lightsail::LoadBalancerTlsCertificate" }
 
 type StaticIp struct {
 	AttachedTo   *string `json:"AttachedTo,omitempty"`
@@ -526,7 +524,7 @@ type StaticIp struct {
 	StaticIpName *string `json:"StaticIpName,omitempty"`
 }
 
-func (StaticIp) CloudControlType() string { return "AWS::Lightsail::StaticIp" }
+func (StaticIp) Type() string { return "AWS::Lightsail::StaticIp" }
 
 type DatabaseSnapshotResourceType string
 

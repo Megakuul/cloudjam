@@ -47,9 +47,7 @@ type InferenceScheduler struct {
 	Tags                     []Tag                                      `json:"Tags,omitempty"`
 }
 
-func (InferenceScheduler) CloudControlType() string {
-	return "AWS::LookoutEquipment::InferenceScheduler"
-}
+func (InferenceScheduler) Type() string { return "AWS::LookoutEquipment::InferenceScheduler" }
 
 type InferenceSchedulerDataUploadFrequency string
 

@@ -149,7 +149,7 @@ type GatewayRoute struct {
 	VirtualGatewayName *string           `json:"VirtualGatewayName,omitempty"`
 }
 
-func (GatewayRoute) CloudControlType() string { return "AWS::AppMesh::GatewayRoute" }
+func (GatewayRoute) Type() string { return "AWS::AppMesh::GatewayRoute" }
 
 type EgressFilter struct {
 	Type *string `json:"Type,omitempty"`
@@ -180,7 +180,7 @@ type Mesh struct {
 	Uid           *string   `json:"Uid,omitempty"`
 }
 
-func (Mesh) CloudControlType() string { return "AWS::AppMesh::Mesh" }
+func (Mesh) Type() string { return "AWS::AppMesh::Mesh" }
 
 type WeightedTarget struct {
 	Port        *int    `json:"Port,omitempty"`
@@ -348,7 +348,7 @@ type Route struct {
 	VirtualRouterName *string    `json:"VirtualRouterName,omitempty"`
 }
 
-func (Route) CloudControlType() string { return "AWS::AppMesh::Route" }
+func (Route) Type() string { return "AWS::AppMesh::Route" }
 
 type VirtualGatewayListenerTlsFileCertificate struct {
 	CertificateChain *string `json:"CertificateChain,omitempty"`
@@ -523,7 +523,7 @@ type VirtualGateway struct {
 	VirtualGatewayName *string             `json:"VirtualGatewayName,omitempty"`
 }
 
-func (VirtualGateway) CloudControlType() string { return "AWS::AppMesh::VirtualGateway" }
+func (VirtualGateway) Type() string { return "AWS::AppMesh::VirtualGateway" }
 
 type ListenerTlsFileCertificate struct {
 	CertificateChain *string `json:"CertificateChain,omitempty"`
@@ -772,7 +772,7 @@ type VirtualNode struct {
 	VirtualNodeName *string          `json:"VirtualNodeName,omitempty"`
 }
 
-func (VirtualNode) CloudControlType() string { return "AWS::AppMesh::VirtualNode" }
+func (VirtualNode) Type() string { return "AWS::AppMesh::VirtualNode" }
 
 type VirtualRouterPortMapping struct {
 	Port     *int    `json:"Port,omitempty"`
@@ -804,7 +804,7 @@ type VirtualRouter struct {
 	VirtualRouterName *string            `json:"VirtualRouterName,omitempty"`
 }
 
-func (VirtualRouter) CloudControlType() string { return "AWS::AppMesh::VirtualRouter" }
+func (VirtualRouter) Type() string { return "AWS::AppMesh::VirtualRouter" }
 
 type VirtualNodeServiceProvider struct {
 	VirtualNodeName *string `json:"VirtualNodeName,omitempty"`
@@ -840,4 +840,4 @@ type VirtualService struct {
 	VirtualServiceName *string             `json:"VirtualServiceName,omitempty"`
 }
 
-func (VirtualService) CloudControlType() string { return "AWS::AppMesh::VirtualService" }
+func (VirtualService) Type() string { return "AWS::AppMesh::VirtualService" }

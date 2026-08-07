@@ -91,7 +91,7 @@ type ComponentType struct {
 	WorkspaceId             *string                           `json:"WorkspaceId,omitempty"`
 }
 
-func (ComponentType) CloudControlType() string { return "AWS::IoTTwinMaker::ComponentType" }
+func (ComponentType) Type() string { return "AWS::IoTTwinMaker::ComponentType" }
 
 type EntityDataValueRelationshipValue struct {
 	TargetComponentName *string `json:"TargetComponentName,omitempty"`
@@ -187,7 +187,7 @@ type Entity struct {
 	WorkspaceId         *string                       `json:"WorkspaceId,omitempty"`
 }
 
-func (Entity) CloudControlType() string { return "AWS::IoTTwinMaker::Entity" }
+func (Entity) Type() string { return "AWS::IoTTwinMaker::Entity" }
 
 type Scene struct {
 	Arn                    *string           `json:"Arn,omitempty"`
@@ -203,7 +203,7 @@ type Scene struct {
 	WorkspaceId            *string           `json:"WorkspaceId,omitempty"`
 }
 
-func (Scene) CloudControlType() string { return "AWS::IoTTwinMaker::Scene" }
+func (Scene) Type() string { return "AWS::IoTTwinMaker::Scene" }
 
 type SyncJob struct {
 	Arn              *string           `json:"Arn,omitempty"`
@@ -216,7 +216,7 @@ type SyncJob struct {
 	WorkspaceId      *string           `json:"WorkspaceId,omitempty"`
 }
 
-func (SyncJob) CloudControlType() string { return "AWS::IoTTwinMaker::SyncJob" }
+func (SyncJob) Type() string { return "AWS::IoTTwinMaker::SyncJob" }
 
 type Workspace struct {
 	Arn              *string           `json:"Arn,omitempty"`
@@ -229,7 +229,7 @@ type Workspace struct {
 	WorkspaceId      *string           `json:"WorkspaceId,omitempty"`
 }
 
-func (Workspace) CloudControlType() string { return "AWS::IoTTwinMaker::Workspace" }
+func (Workspace) Type() string { return "AWS::IoTTwinMaker::Workspace" }
 
 type FunctionScope string
 

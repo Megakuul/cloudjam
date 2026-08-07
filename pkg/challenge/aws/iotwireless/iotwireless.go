@@ -18,7 +18,7 @@ type Destination struct {
 	Tags           []Tag                      `json:"Tags,omitempty"`
 }
 
-func (Destination) CloudControlType() string { return "AWS::IoTWireless::Destination" }
+func (Destination) Type() string { return "AWS::IoTWireless::Destination" }
 
 type LoRaWANDeviceProfile struct {
 	ClassBTimeout          *int    `json:"ClassBTimeout,omitempty"`
@@ -55,7 +55,7 @@ type DeviceProfile struct {
 	Tags    []DeviceProfileTag    `json:"Tags,omitempty"`
 }
 
-func (DeviceProfile) CloudControlType() string { return "AWS::IoTWireless::DeviceProfile" }
+func (DeviceProfile) Type() string { return "AWS::IoTWireless::DeviceProfile" }
 
 type LoRaWAN struct {
 	RfRegion  *string `json:"RfRegion,omitempty"`
@@ -83,7 +83,7 @@ type FuotaTask struct {
 	Tags                       []FuotaTaskTag `json:"Tags,omitempty"`
 }
 
-func (FuotaTask) CloudControlType() string { return "AWS::IoTWireless::FuotaTask" }
+func (FuotaTask) Type() string { return "AWS::IoTWireless::FuotaTask" }
 
 type MulticastGroupLoRaWAN struct {
 	DlClass                  *string `json:"DlClass,omitempty"`
@@ -109,7 +109,7 @@ type MulticastGroup struct {
 	Tags                       []MulticastGroupTag    `json:"Tags,omitempty"`
 }
 
-func (MulticastGroup) CloudControlType() string { return "AWS::IoTWireless::MulticastGroup" }
+func (MulticastGroup) Type() string { return "AWS::IoTWireless::MulticastGroup" }
 
 type NetworkAnalyzerConfigurationTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -131,7 +131,7 @@ type NetworkAnalyzerConfiguration struct {
 	WirelessGateways []string                                  `json:"WirelessGateways,omitempty"`
 }
 
-func (NetworkAnalyzerConfiguration) CloudControlType() string {
+func (NetworkAnalyzerConfiguration) Type() string {
 	return "AWS::IoTWireless::NetworkAnalyzerConfiguration"
 }
 
@@ -166,7 +166,7 @@ type PartnerAccount struct {
 	Tags             []PartnerAccountTag                 `json:"Tags,omitempty"`
 }
 
-func (PartnerAccount) CloudControlType() string { return "AWS::IoTWireless::PartnerAccount" }
+func (PartnerAccount) Type() string { return "AWS::IoTWireless::PartnerAccount" }
 
 type LoRaWANServiceProfile struct {
 	AddGwMetadata          *bool   `json:"AddGwMetadata,omitempty"`
@@ -203,7 +203,7 @@ type ServiceProfile struct {
 	Tags    []ServiceProfileTag    `json:"Tags,omitempty"`
 }
 
-func (ServiceProfile) CloudControlType() string { return "AWS::IoTWireless::ServiceProfile" }
+func (ServiceProfile) Type() string { return "AWS::IoTWireless::ServiceProfile" }
 
 type LoRaWANGatewayVersion struct {
 	Model          *string `json:"Model,omitempty"`
@@ -245,7 +245,7 @@ type TaskDefinition struct {
 	Update                        *UpdateWirelessGatewayTaskCreate  `json:"Update,omitempty"`
 }
 
-func (TaskDefinition) CloudControlType() string { return "AWS::IoTWireless::TaskDefinition" }
+func (TaskDefinition) Type() string { return "AWS::IoTWireless::TaskDefinition" }
 
 type SessionKeysAbpV10x struct {
 	AppSKey *string `json:"AppSKey,omitempty"`
@@ -321,7 +321,7 @@ type WirelessDevice struct {
 	Type                 *WirelessDeviceType        `json:"Type,omitempty"`
 }
 
-func (WirelessDevice) CloudControlType() string { return "AWS::IoTWireless::WirelessDevice" }
+func (WirelessDevice) Type() string { return "AWS::IoTWireless::WirelessDevice" }
 
 type WirelessDeviceImportTaskSidewalk struct {
 	DeviceCreationFile      *string  `json:"DeviceCreationFile,omitempty"`
@@ -350,9 +350,7 @@ type WirelessDeviceImportTask struct {
 	Tags                            []WirelessDeviceImportTaskTag     `json:"Tags,omitempty"`
 }
 
-func (WirelessDeviceImportTask) CloudControlType() string {
-	return "AWS::IoTWireless::WirelessDeviceImportTask"
-}
+func (WirelessDeviceImportTask) Type() string { return "AWS::IoTWireless::WirelessDeviceImportTask" }
 
 type LoRaWANGateway struct {
 	GatewayEui *string `json:"GatewayEui,omitempty"`
@@ -376,7 +374,7 @@ type WirelessGateway struct {
 	ThingName            *string              `json:"ThingName,omitempty"`
 }
 
-func (WirelessGateway) CloudControlType() string { return "AWS::IoTWireless::WirelessGateway" }
+func (WirelessGateway) Type() string { return "AWS::IoTWireless::WirelessGateway" }
 
 type DestinationExpressionType string
 

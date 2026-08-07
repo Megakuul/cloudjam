@@ -22,7 +22,7 @@ type Blueprint struct {
 	Tags              []Tag            `json:"Tags,omitempty"`
 }
 
-func (Blueprint) CloudControlType() string { return "AWS::Glue::Blueprint" }
+func (Blueprint) Type() string { return "AWS::Glue::Blueprint" }
 
 type DataLakeAccessProperties struct {
 	AllowFullTableExternalDataAccess *DataLakeAccessPropertiesAllowFullTableExternalDataAccess `json:"AllowFullTableExternalDataAccess,omitempty"`
@@ -81,7 +81,7 @@ type Catalog struct {
 	UpdateTime                                   *int                                                 `json:"UpdateTime,omitempty"`
 }
 
-func (Catalog) CloudControlType() string { return "AWS::Glue::Catalog" }
+func (Catalog) Type() string { return "AWS::Glue::Catalog" }
 
 type CsvClassifier struct {
 	AllowSingleColumn        *bool    `json:"AllowSingleColumn,omitempty"`
@@ -121,7 +121,7 @@ type Classifier struct {
 	XMLClassifier  *XMLClassifier  `json:"XMLClassifier,omitempty"`
 }
 
-func (Classifier) CloudControlType() string { return "AWS::Glue::Classifier" }
+func (Classifier) Type() string { return "AWS::Glue::Classifier" }
 
 type BasicAuthenticationCredentials struct {
 	Password *string `json:"Password,omitempty"`
@@ -190,7 +190,7 @@ type Connection struct {
 	Id              *string          `json:"Id,omitempty"`
 }
 
-func (Connection) CloudControlType() string { return "AWS::Glue::Connection" }
+func (Connection) Type() string { return "AWS::Glue::Connection" }
 
 type LakeFormationConfiguration struct {
 	AccountId                   *string `json:"AccountId,omitempty"`
@@ -294,17 +294,16 @@ type Crawler struct {
 	Targets                      *Targets                    `json:"Targets,omitempty"`
 }
 
-func (Crawler) CloudControlType() string { return "AWS::Glue::Crawler" }
+func (Crawler) Type() string { return "AWS::Glue::Crawler" }
 
 type CustomEntityType struct {
 	ContextWords []string       `json:"ContextWords,omitempty"`
-	Id           *string        `json:"Id,omitempty"`
 	Name         *string        `json:"Name,omitempty"`
 	RegexString  *string        `json:"RegexString,omitempty"`
 	Tags         map[string]any `json:"Tags,omitempty"`
 }
 
-func (CustomEntityType) CloudControlType() string { return "AWS::Glue::CustomEntityType" }
+func (CustomEntityType) Type() string { return "AWS::Glue::CustomEntityType" }
 
 type ConnectionPasswordEncryption struct {
 	KmsKeyId                          *string `json:"KmsKeyId,omitempty"`
@@ -327,9 +326,7 @@ type DataCatalogEncryptionSettings struct {
 	DataCatalogEncryptionSettings *DataCatalogEncryptionSettingsDataCatalogEncryptionSettings `json:"DataCatalogEncryptionSettings,omitempty"`
 }
 
-func (DataCatalogEncryptionSettings) CloudControlType() string {
-	return "AWS::Glue::DataCatalogEncryptionSettings"
-}
+func (DataCatalogEncryptionSettings) Type() string { return "AWS::Glue::DataCatalogEncryptionSettings" }
 
 type DataQualityTargetTable struct {
 	DatabaseName *string `json:"DatabaseName,omitempty"`
@@ -346,7 +343,7 @@ type DataQualityRuleset struct {
 	TargetTable *DataQualityTargetTable `json:"TargetTable,omitempty"`
 }
 
-func (DataQualityRuleset) CloudControlType() string { return "AWS::Glue::DataQualityRuleset" }
+func (DataQualityRuleset) Type() string { return "AWS::Glue::DataQualityRuleset" }
 
 type DatabaseDataLakePrincipal struct {
 	DataLakePrincipalIdentifier *string `json:"DataLakePrincipalIdentifier,omitempty"`
@@ -384,7 +381,7 @@ type Database struct {
 	DatabaseName  *string        `json:"DatabaseName,omitempty"`
 }
 
-func (Database) CloudControlType() string { return "AWS::Glue::Database" }
+func (Database) Type() string { return "AWS::Glue::Database" }
 
 type DevEndpoint struct {
 	Arguments             map[string]any `json:"Arguments,omitempty"`
@@ -405,7 +402,7 @@ type DevEndpoint struct {
 	WorkerType            *string        `json:"WorkerType,omitempty"`
 }
 
-func (DevEndpoint) CloudControlType() string { return "AWS::Glue::DevEndpoint" }
+func (DevEndpoint) Type() string { return "AWS::Glue::DevEndpoint" }
 
 type IdentityCenterConfiguration struct {
 	AccountId                     *string  `json:"AccountId,omitempty"`
@@ -415,9 +412,7 @@ type IdentityCenterConfiguration struct {
 	UserBackgroundSessionsEnabled *bool    `json:"UserBackgroundSessionsEnabled,omitempty"`
 }
 
-func (IdentityCenterConfiguration) CloudControlType() string {
-	return "AWS::Glue::IdentityCenterConfiguration"
-}
+func (IdentityCenterConfiguration) Type() string { return "AWS::Glue::IdentityCenterConfiguration" }
 
 type IntegrationConfig struct {
 	ContinuousSync   *bool             `json:"ContinuousSync,omitempty"`
@@ -445,7 +440,7 @@ type Integration struct {
 	TargetArn                   *string            `json:"TargetArn,omitempty"`
 }
 
-func (Integration) CloudControlType() string { return "AWS::Glue::Integration" }
+func (Integration) Type() string { return "AWS::Glue::Integration" }
 
 type IntegrationResourcePropertySourceProcessingProperties struct {
 	RoleArn *string `json:"RoleArn,omitempty"`
@@ -471,9 +466,7 @@ type IntegrationResourceProperty struct {
 	TargetProcessingProperties *IntegrationResourcePropertyTargetProcessingProperties `json:"TargetProcessingProperties,omitempty"`
 }
 
-func (IntegrationResourceProperty) CloudControlType() string {
-	return "AWS::Glue::IntegrationResourceProperty"
-}
+func (IntegrationResourceProperty) Type() string { return "AWS::Glue::IntegrationResourceProperty" }
 
 type JobCommand struct {
 	Name           *string `json:"Name,omitempty"`
@@ -520,7 +513,7 @@ type Job struct {
 	WorkerType              *JobWorkerType        `json:"WorkerType,omitempty"`
 }
 
-func (Job) CloudControlType() string { return "AWS::Glue::Job" }
+func (Job) Type() string { return "AWS::Glue::Job" }
 
 type GlueTables struct {
 	CatalogId      *string `json:"CatalogId,omitempty"`
@@ -572,7 +565,7 @@ type MLTransform struct {
 	WorkerType          *string              `json:"WorkerType,omitempty"`
 }
 
-func (MLTransform) CloudControlType() string { return "AWS::Glue::MLTransform" }
+func (MLTransform) Type() string { return "AWS::Glue::MLTransform" }
 
 type Column struct {
 	Comment *string `json:"Comment,omitempty"`
@@ -639,7 +632,7 @@ type Partition struct {
 	TableName      *string         `json:"TableName,omitempty"`
 }
 
-func (Partition) CloudControlType() string { return "AWS::Glue::Partition" }
+func (Partition) Type() string { return "AWS::Glue::Partition" }
 
 type RegistryTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -653,7 +646,7 @@ type Registry struct {
 	Tags        []RegistryTag `json:"Tags,omitempty"`
 }
 
-func (Registry) CloudControlType() string { return "AWS::Glue::Registry" }
+func (Registry) Type() string { return "AWS::Glue::Registry" }
 
 type SchemaVersion struct {
 	IsLatest      *bool `json:"IsLatest,omitempty"`
@@ -683,7 +676,7 @@ type Schema struct {
 	Tags                   []SchemaTag          `json:"Tags,omitempty"`
 }
 
-func (Schema) CloudControlType() string { return "AWS::Glue::Schema" }
+func (Schema) Type() string { return "AWS::Glue::Schema" }
 
 type SchemaVersionSchema struct {
 	RegistryName *string `json:"RegistryName,omitempty"`
@@ -697,7 +690,7 @@ type SchemaVersionSchemaVersion struct {
 	VersionId        *string              `json:"VersionId,omitempty"`
 }
 
-func (SchemaVersionSchemaVersion) CloudControlType() string { return "AWS::Glue::SchemaVersion" }
+func (SchemaVersionSchemaVersion) Type() string { return "AWS::Glue::SchemaVersion" }
 
 type SchemaVersionMetadata struct {
 	Key             *string `json:"Key,omitempty"`
@@ -705,7 +698,7 @@ type SchemaVersionMetadata struct {
 	Value           *string `json:"Value,omitempty"`
 }
 
-func (SchemaVersionMetadata) CloudControlType() string { return "AWS::Glue::SchemaVersionMetadata" }
+func (SchemaVersionMetadata) Type() string { return "AWS::Glue::SchemaVersionMetadata" }
 
 type CloudWatchEncryption struct {
 	CloudWatchEncryptionMode *string `json:"CloudWatchEncryptionMode,omitempty"`
@@ -734,7 +727,7 @@ type SecurityConfiguration struct {
 	Name                    *string                  `json:"Name,omitempty"`
 }
 
-func (SecurityConfiguration) CloudControlType() string { return "AWS::Glue::SecurityConfiguration" }
+func (SecurityConfiguration) Type() string { return "AWS::Glue::SecurityConfiguration" }
 
 type IcebergPartitionField struct {
 	FieldId   *int    `json:"FieldId,omitempty"`
@@ -890,7 +883,7 @@ type Table struct {
 	TableInput           *TableInput           `json:"TableInput,omitempty"`
 }
 
-func (Table) CloudControlType() string { return "AWS::Glue::Table" }
+func (Table) Type() string { return "AWS::Glue::Table" }
 
 type IcebergCompactionConfiguration struct {
 	DeleteFileThreshold *int    `json:"DeleteFileThreshold,omitempty"`
@@ -943,7 +936,7 @@ type TableOptimizer struct {
 	Type                        *string                      `json:"Type,omitempty"`
 }
 
-func (TableOptimizer) CloudControlType() string { return "AWS::Glue::TableOptimizer" }
+func (TableOptimizer) Type() string { return "AWS::Glue::TableOptimizer" }
 
 type TriggerNotificationProperty struct {
 	NotifyDelayAfter *int `json:"NotifyDelayAfter,omitempty"`
@@ -989,7 +982,7 @@ type Trigger struct {
 	WorkflowName           *string                 `json:"WorkflowName,omitempty"`
 }
 
-func (Trigger) CloudControlType() string { return "AWS::Glue::Trigger" }
+func (Trigger) Type() string { return "AWS::Glue::Trigger" }
 
 type ProfileConfiguration struct {
 	JobConfiguration     json.RawMessage `json:"JobConfiguration,omitempty"`
@@ -1009,7 +1002,7 @@ type UsageProfile struct {
 	Tags          []UsageProfileTag     `json:"Tags,omitempty"`
 }
 
-func (UsageProfile) CloudControlType() string { return "AWS::Glue::UsageProfile" }
+func (UsageProfile) Type() string { return "AWS::Glue::UsageProfile" }
 
 type ResourceUri struct {
 	ResourceType *ResourceUriResourceType `json:"ResourceType,omitempty"`
@@ -1027,7 +1020,7 @@ type UserDefinedFunction struct {
 	ResourceUris []ResourceUri                    `json:"ResourceUris,omitempty"`
 }
 
-func (UserDefinedFunction) CloudControlType() string { return "AWS::Glue::UserDefinedFunction" }
+func (UserDefinedFunction) Type() string { return "AWS::Glue::UserDefinedFunction" }
 
 type Workflow struct {
 	DefaultRunProperties map[string]any `json:"DefaultRunProperties,omitempty"`
@@ -1037,7 +1030,7 @@ type Workflow struct {
 	Tags                 map[string]any `json:"Tags,omitempty"`
 }
 
-func (Workflow) CloudControlType() string { return "AWS::Glue::Workflow" }
+func (Workflow) Type() string { return "AWS::Glue::Workflow" }
 
 type BlueprintStatus string
 

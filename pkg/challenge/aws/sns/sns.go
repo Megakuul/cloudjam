@@ -20,7 +20,7 @@ type Subscription struct {
 	TopicArn            *string         `json:"TopicArn,omitempty"`
 }
 
-func (Subscription) CloudControlType() string { return "AWS::SNS::Subscription" }
+func (Subscription) Type() string { return "AWS::SNS::Subscription" }
 
 type LoggingConfig struct {
 	FailureFeedbackRoleArn    *string                `json:"FailureFeedbackRoleArn,omitempty"`
@@ -56,14 +56,14 @@ type Topic struct {
 	TracingConfig             *string             `json:"TracingConfig,omitempty"`
 }
 
-func (Topic) CloudControlType() string { return "AWS::SNS::Topic" }
+func (Topic) Type() string { return "AWS::SNS::Topic" }
 
 type TopicInlinePolicy struct {
 	PolicyDocument map[string]any `json:"PolicyDocument,omitempty"`
 	TopicArn       *string        `json:"TopicArn,omitempty"`
 }
 
-func (TopicInlinePolicy) CloudControlType() string { return "AWS::SNS::TopicInlinePolicy" }
+func (TopicInlinePolicy) Type() string { return "AWS::SNS::TopicInlinePolicy" }
 
 type TopicPolicy struct {
 	Id             *string         `json:"Id,omitempty"`
@@ -71,7 +71,7 @@ type TopicPolicy struct {
 	Topics         []string        `json:"Topics,omitempty"`
 }
 
-func (TopicPolicy) CloudControlType() string { return "AWS::SNS::TopicPolicy" }
+func (TopicPolicy) Type() string { return "AWS::SNS::TopicPolicy" }
 
 type LoggingConfigProtocol string
 

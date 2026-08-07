@@ -107,7 +107,7 @@ type Budget struct {
 	ResourceTags                 []ResourceTag                 `json:"ResourceTags,omitempty"`
 }
 
-func (Budget) CloudControlType() string { return "AWS::Budgets::Budget" }
+func (Budget) Type() string { return "AWS::Budgets::Budget" }
 
 type ActionThreshold struct {
 	Type  *ActionThresholdType `json:"Type,omitempty"`
@@ -161,7 +161,7 @@ type BudgetsAction struct {
 	Subscribers      []BudgetsActionSubscriber      `json:"Subscribers,omitempty"`
 }
 
-func (BudgetsAction) CloudControlType() string { return "AWS::Budgets::BudgetsAction" }
+func (BudgetsAction) Type() string { return "AWS::Budgets::BudgetsAction" }
 
 type ActionThresholdType string
 

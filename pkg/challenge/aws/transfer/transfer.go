@@ -34,7 +34,7 @@ type Agreement struct {
 	Tags                  []Tag                           `json:"Tags,omitempty"`
 }
 
-func (Agreement) CloudControlType() string { return "AWS::Transfer::Agreement" }
+func (Agreement) Type() string { return "AWS::Transfer::Agreement" }
 
 type CertificateTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -59,7 +59,7 @@ type Certificate struct {
 	Usage            *CertificateUsage  `json:"Usage,omitempty"`
 }
 
-func (Certificate) CloudControlType() string { return "AWS::Transfer::Certificate" }
+func (Certificate) Type() string { return "AWS::Transfer::Certificate" }
 
 type ConnectorAsyncMdnConfig struct {
 	ServerIds []string `json:"ServerIds,omitempty"`
@@ -118,7 +118,7 @@ type Connector struct {
 	Url                             *string                `json:"Url,omitempty"`
 }
 
-func (Connector) CloudControlType() string { return "AWS::Transfer::Connector" }
+func (Connector) Type() string { return "AWS::Transfer::Connector" }
 
 type ProfileTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -134,7 +134,7 @@ type Profile struct {
 	Tags           []ProfileTag        `json:"Tags,omitempty"`
 }
 
-func (Profile) CloudControlType() string { return "AWS::Transfer::Profile" }
+func (Profile) Type() string { return "AWS::Transfer::Profile" }
 
 type EndpointDetails struct {
 	AddressAllocationIds []string `json:"AddressAllocationIds,omitempty"`
@@ -202,7 +202,7 @@ type Server struct {
 	WorkflowDetails                    *WorkflowDetails         `json:"WorkflowDetails,omitempty"`
 }
 
-func (Server) CloudControlType() string { return "AWS::Transfer::Server" }
+func (Server) Type() string { return "AWS::Transfer::Server" }
 
 type HomeDirectoryMapEntry struct {
 	Entry  *string  `json:"Entry,omitempty"`
@@ -235,7 +235,7 @@ type User struct {
 	UserName              *string                 `json:"UserName,omitempty"`
 }
 
-func (User) CloudControlType() string { return "AWS::Transfer::User" }
+func (User) Type() string { return "AWS::Transfer::User" }
 
 type Vpc struct {
 	IpAddressType    *VpcIpAddressType `json:"IpAddressType,omitempty"`
@@ -278,7 +278,7 @@ type WebApp struct {
 	WebAppUnits             json.RawMessage                `json:"WebAppUnits,omitempty"`
 }
 
-func (WebApp) CloudControlType() string { return "AWS::Transfer::WebApp" }
+func (WebApp) Type() string { return "AWS::Transfer::WebApp" }
 
 type S3InputFileLocation struct {
 	Bucket *string `json:"Bucket,omitempty"`
@@ -360,7 +360,7 @@ type Workflow struct {
 	WorkflowId       *string        `json:"WorkflowId,omitempty"`
 }
 
-func (Workflow) CloudControlType() string { return "AWS::Transfer::Workflow" }
+func (Workflow) Type() string { return "AWS::Transfer::Workflow" }
 
 type AgreementEnforceMessageSigning string
 

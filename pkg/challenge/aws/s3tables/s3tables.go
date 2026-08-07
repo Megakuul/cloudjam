@@ -10,7 +10,7 @@ type Namespace struct {
 	TableBucketARN *string    `json:"TableBucketARN,omitempty"`
 }
 
-func (Namespace) CloudControlType() string { return "AWS::S3Tables::Namespace" }
+func (Namespace) Type() string { return "AWS::S3Tables::Namespace" }
 
 type Compaction struct {
 	Status           *CompactionStatus `json:"Status,omitempty"`
@@ -106,7 +106,7 @@ type Table struct {
 	WithoutMetadata           *WithoutMetadata           `json:"WithoutMetadata,omitempty"`
 }
 
-func (Table) CloudControlType() string { return "AWS::S3Tables::Table" }
+func (Table) Type() string { return "AWS::S3Tables::Table" }
 
 type EncryptionConfiguration struct {
 	KMSKeyArn    *string                              `json:"KMSKeyArn,omitempty"`
@@ -156,14 +156,14 @@ type TableBucket struct {
 	UnreferencedFileRemoval   *UnreferencedFileRemoval              `json:"UnreferencedFileRemoval,omitempty"`
 }
 
-func (TableBucket) CloudControlType() string { return "AWS::S3Tables::TableBucket" }
+func (TableBucket) Type() string { return "AWS::S3Tables::TableBucket" }
 
 type TableBucketPolicy struct {
 	ResourcePolicy json.RawMessage `json:"ResourcePolicy,omitempty"`
 	TableBucketARN *string         `json:"TableBucketARN,omitempty"`
 }
 
-func (TableBucketPolicy) CloudControlType() string { return "AWS::S3Tables::TableBucketPolicy" }
+func (TableBucketPolicy) Type() string { return "AWS::S3Tables::TableBucketPolicy" }
 
 type TablePolicy struct {
 	Namespace      *Namespace      `json:"Namespace,omitempty"`
@@ -173,7 +173,7 @@ type TablePolicy struct {
 	TableName      *string         `json:"TableName,omitempty"`
 }
 
-func (TablePolicy) CloudControlType() string { return "AWS::S3Tables::TablePolicy" }
+func (TablePolicy) Type() string { return "AWS::S3Tables::TablePolicy" }
 
 type CompactionStatus string
 

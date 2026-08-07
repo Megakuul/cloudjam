@@ -84,7 +84,7 @@ type Alarm struct {
 	Unit                             *string             `json:"Unit,omitempty"`
 }
 
-func (Alarm) CloudControlType() string { return "AWS::CloudWatch::Alarm" }
+func (Alarm) Type() string { return "AWS::CloudWatch::Alarm" }
 
 type AlarmMuteRuleMuteTargets struct {
 	AlarmNames []string `json:"AlarmNames,omitempty"`
@@ -119,7 +119,7 @@ type AlarmMuteRule struct {
 	Tags                 []AlarmMuteRuleTag        `json:"Tags,omitempty"`
 }
 
-func (AlarmMuteRule) CloudControlType() string { return "AWS::CloudWatch::AlarmMuteRule" }
+func (AlarmMuteRule) Type() string { return "AWS::CloudWatch::AlarmMuteRule" }
 
 type Range struct {
 	EndTime   *string `json:"EndTime,omitempty"`
@@ -187,7 +187,7 @@ type AnomalyDetector struct {
 	Stat                        *string                      `json:"Stat,omitempty"`
 }
 
-func (AnomalyDetector) CloudControlType() string { return "AWS::CloudWatch::AnomalyDetector" }
+func (AnomalyDetector) Type() string { return "AWS::CloudWatch::AnomalyDetector" }
 
 type CompositeAlarmTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -209,7 +209,7 @@ type CompositeAlarm struct {
 	Tags                             []CompositeAlarmTag `json:"Tags,omitempty"`
 }
 
-func (CompositeAlarm) CloudControlType() string { return "AWS::CloudWatch::CompositeAlarm" }
+func (CompositeAlarm) Type() string { return "AWS::CloudWatch::CompositeAlarm" }
 
 type DashboardTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -222,7 +222,7 @@ type Dashboard struct {
 	Tags          []DashboardTag `json:"Tags,omitempty"`
 }
 
-func (Dashboard) CloudControlType() string { return "AWS::CloudWatch::Dashboard" }
+func (Dashboard) Type() string { return "AWS::CloudWatch::Dashboard" }
 
 type InsightRuleTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -238,7 +238,7 @@ type InsightRule struct {
 	Tags                   []InsightRuleTag      `json:"Tags,omitempty"`
 }
 
-func (InsightRule) CloudControlType() string { return "AWS::CloudWatch::InsightRule" }
+func (InsightRule) Type() string { return "AWS::CloudWatch::InsightRule" }
 
 type ScheduleConfiguration struct {
 	EndTimeOffset      *int    `json:"EndTimeOffset,omitempty"`
@@ -279,7 +279,7 @@ type LogAlarm struct {
 	TreatMissingData            *string                      `json:"TreatMissingData,omitempty"`
 }
 
-func (LogAlarm) CloudControlType() string { return "AWS::CloudWatch::LogAlarm" }
+func (LogAlarm) Type() string { return "AWS::CloudWatch::LogAlarm" }
 
 type MetricStreamFilter struct {
 	MetricNames []string `json:"MetricNames,omitempty"`
@@ -317,14 +317,14 @@ type MetricStream struct {
 	Tags                         []MetricStreamTag                     `json:"Tags,omitempty"`
 }
 
-func (MetricStream) CloudControlType() string { return "AWS::CloudWatch::MetricStream" }
+func (MetricStream) Type() string { return "AWS::CloudWatch::MetricStream" }
 
 type OTelEnrichment struct {
 	AccountId *string `json:"AccountId,omitempty"`
 	Status    *Status `json:"Status,omitempty"`
 }
 
-func (OTelEnrichment) CloudControlType() string { return "AWS::CloudWatch::OTelEnrichment" }
+func (OTelEnrichment) Type() string { return "AWS::CloudWatch::OTelEnrichment" }
 
 type AlarmMuteRuleStatus string
 

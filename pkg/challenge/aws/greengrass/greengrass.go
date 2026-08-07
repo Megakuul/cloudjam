@@ -22,7 +22,7 @@ type ConnectorDefinition struct {
 	Tags             map[string]any              `json:"Tags,omitempty"`
 }
 
-func (ConnectorDefinition) CloudControlType() string { return "AWS::Greengrass::ConnectorDefinition" }
+func (ConnectorDefinition) Type() string { return "AWS::Greengrass::ConnectorDefinition" }
 
 type ConnectorDefinitionVersionConnector struct {
 	ConnectorArn *string        `json:"ConnectorArn,omitempty"`
@@ -36,7 +36,7 @@ type ConnectorDefinitionVersionConnectorDefinitionVersion struct {
 	Id                    *string                               `json:"Id,omitempty"`
 }
 
-func (ConnectorDefinitionVersionConnectorDefinitionVersion) CloudControlType() string {
+func (ConnectorDefinitionVersionConnectorDefinitionVersion) Type() string {
 	return "AWS::Greengrass::ConnectorDefinitionVersion"
 }
 
@@ -60,7 +60,7 @@ type CoreDefinition struct {
 	Tags             map[string]any         `json:"Tags,omitempty"`
 }
 
-func (CoreDefinition) CloudControlType() string { return "AWS::Greengrass::CoreDefinition" }
+func (CoreDefinition) Type() string { return "AWS::Greengrass::CoreDefinition" }
 
 type CoreDefinitionVersionCore struct {
 	CertificateArn *string `json:"CertificateArn,omitempty"`
@@ -75,7 +75,7 @@ type CoreDefinitionVersionCoreDefinitionVersion struct {
 	Id               *string                     `json:"Id,omitempty"`
 }
 
-func (CoreDefinitionVersionCoreDefinitionVersion) CloudControlType() string {
+func (CoreDefinitionVersionCoreDefinitionVersion) Type() string {
 	return "AWS::Greengrass::CoreDefinitionVersion"
 }
 
@@ -99,7 +99,7 @@ type DeviceDefinition struct {
 	Tags             map[string]any           `json:"Tags,omitempty"`
 }
 
-func (DeviceDefinition) CloudControlType() string { return "AWS::Greengrass::DeviceDefinition" }
+func (DeviceDefinition) Type() string { return "AWS::Greengrass::DeviceDefinition" }
 
 type DeviceDefinitionVersionDevice struct {
 	CertificateArn *string `json:"CertificateArn,omitempty"`
@@ -114,7 +114,7 @@ type DeviceDefinitionVersionDeviceDefinitionVersion struct {
 	Id                 *string                         `json:"Id,omitempty"`
 }
 
-func (DeviceDefinitionVersionDeviceDefinitionVersion) CloudControlType() string {
+func (DeviceDefinitionVersionDeviceDefinitionVersion) Type() string {
 	return "AWS::Greengrass::DeviceDefinitionVersion"
 }
 
@@ -174,7 +174,7 @@ type FunctionDefinition struct {
 	Tags             map[string]any             `json:"Tags,omitempty"`
 }
 
-func (FunctionDefinition) CloudControlType() string { return "AWS::Greengrass::FunctionDefinition" }
+func (FunctionDefinition) Type() string { return "AWS::Greengrass::FunctionDefinition" }
 
 type FunctionDefinitionVersionRunAs struct {
 	Gid *int `json:"Gid,omitempty"`
@@ -225,7 +225,7 @@ type FunctionDefinitionVersionFunctionDefinitionVersion struct {
 	Id                   *string                                 `json:"Id,omitempty"`
 }
 
-func (FunctionDefinitionVersionFunctionDefinitionVersion) CloudControlType() string {
+func (FunctionDefinitionVersionFunctionDefinitionVersion) Type() string {
 	return "AWS::Greengrass::FunctionDefinitionVersion"
 }
 
@@ -250,7 +250,7 @@ type Group struct {
 	Tags             map[string]any `json:"Tags,omitempty"`
 }
 
-func (Group) CloudControlType() string { return "AWS::Greengrass::Group" }
+func (Group) Type() string { return "AWS::Greengrass::Group" }
 
 type GroupVersionGroupVersion struct {
 	ConnectorDefinitionVersionArn    *string `json:"ConnectorDefinitionVersionArn,omitempty"`
@@ -264,7 +264,7 @@ type GroupVersionGroupVersion struct {
 	SubscriptionDefinitionVersionArn *string `json:"SubscriptionDefinitionVersionArn,omitempty"`
 }
 
-func (GroupVersionGroupVersion) CloudControlType() string { return "AWS::Greengrass::GroupVersion" }
+func (GroupVersionGroupVersion) Type() string { return "AWS::Greengrass::GroupVersion" }
 
 type Logger struct {
 	Component *string `json:"Component,omitempty"`
@@ -287,7 +287,7 @@ type LoggerDefinition struct {
 	Tags             map[string]any           `json:"Tags,omitempty"`
 }
 
-func (LoggerDefinition) CloudControlType() string { return "AWS::Greengrass::LoggerDefinition" }
+func (LoggerDefinition) Type() string { return "AWS::Greengrass::LoggerDefinition" }
 
 type LoggerDefinitionVersionLogger struct {
 	Component *string `json:"Component,omitempty"`
@@ -303,7 +303,7 @@ type LoggerDefinitionVersionLoggerDefinitionVersion struct {
 	Loggers            []LoggerDefinitionVersionLogger `json:"Loggers,omitempty"`
 }
 
-func (LoggerDefinitionVersionLoggerDefinitionVersion) CloudControlType() string {
+func (LoggerDefinitionVersionLoggerDefinitionVersion) Type() string {
 	return "AWS::Greengrass::LoggerDefinitionVersion"
 }
 
@@ -372,7 +372,7 @@ type ResourceDefinition struct {
 	Tags             map[string]any             `json:"Tags,omitempty"`
 }
 
-func (ResourceDefinition) CloudControlType() string { return "AWS::Greengrass::ResourceDefinition" }
+func (ResourceDefinition) Type() string { return "AWS::Greengrass::ResourceDefinition" }
 
 type ResourceDefinitionVersionGroupOwnerSetting struct {
 	AutoAddGroupOwner *bool   `json:"AutoAddGroupOwner,omitempty"`
@@ -432,7 +432,7 @@ type ResourceDefinitionVersionResourceDefinitionVersion struct {
 	Resources            []ResourceDefinitionVersionResourceInstance `json:"Resources,omitempty"`
 }
 
-func (ResourceDefinitionVersionResourceDefinitionVersion) CloudControlType() string {
+func (ResourceDefinitionVersionResourceDefinitionVersion) Type() string {
 	return "AWS::Greengrass::ResourceDefinitionVersion"
 }
 
@@ -456,9 +456,7 @@ type SubscriptionDefinition struct {
 	Tags             map[string]any                 `json:"Tags,omitempty"`
 }
 
-func (SubscriptionDefinition) CloudControlType() string {
-	return "AWS::Greengrass::SubscriptionDefinition"
-}
+func (SubscriptionDefinition) Type() string { return "AWS::Greengrass::SubscriptionDefinition" }
 
 type SubscriptionDefinitionVersionSubscription struct {
 	Id      *string `json:"Id,omitempty"`
@@ -473,6 +471,6 @@ type SubscriptionDefinitionVersionSubscriptionDefinitionVersion struct {
 	Subscriptions            []SubscriptionDefinitionVersionSubscription `json:"Subscriptions,omitempty"`
 }
 
-func (SubscriptionDefinitionVersionSubscriptionDefinitionVersion) CloudControlType() string {
+func (SubscriptionDefinitionVersionSubscriptionDefinitionVersion) Type() string {
 	return "AWS::Greengrass::SubscriptionDefinitionVersion"
 }

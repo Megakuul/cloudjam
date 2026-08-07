@@ -26,7 +26,7 @@ type BrowserSettings struct {
 	WebContentFilteringPolicy   *WebContentFilteringPolicy `json:"WebContentFilteringPolicy,omitempty"`
 }
 
-func (BrowserSettings) CloudControlType() string { return "AWS::WorkSpacesWeb::BrowserSettings" }
+func (BrowserSettings) Type() string { return "AWS::WorkSpacesWeb::BrowserSettings" }
 
 type CustomPattern struct {
 	KeywordRegex       *string `json:"KeywordRegex,omitempty"`
@@ -73,9 +73,7 @@ type DataProtectionSettings struct {
 	Tags                         []DataProtectionSettingsTag   `json:"Tags,omitempty"`
 }
 
-func (DataProtectionSettings) CloudControlType() string {
-	return "AWS::WorkSpacesWeb::DataProtectionSettings"
-}
+func (DataProtectionSettings) Type() string { return "AWS::WorkSpacesWeb::DataProtectionSettings" }
 
 type IdentityProviderTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -91,7 +89,7 @@ type IdentityProvider struct {
 	Tags                    []IdentityProviderTag `json:"Tags,omitempty"`
 }
 
-func (IdentityProvider) CloudControlType() string { return "AWS::WorkSpacesWeb::IdentityProvider" }
+func (IdentityProvider) Type() string { return "AWS::WorkSpacesWeb::IdentityProvider" }
 
 type IpRule struct {
 	Description *string `json:"Description,omitempty"`
@@ -115,7 +113,7 @@ type IpAccessSettings struct {
 	Tags                        []IpAccessSettingsTag `json:"Tags,omitempty"`
 }
 
-func (IpAccessSettings) CloudControlType() string { return "AWS::WorkSpacesWeb::IpAccessSettings" }
+func (IpAccessSettings) Type() string { return "AWS::WorkSpacesWeb::IpAccessSettings" }
 
 type NetworkSettingsTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -131,7 +129,7 @@ type NetworkSettings struct {
 	VpcId                *string              `json:"VpcId,omitempty"`
 }
 
-func (NetworkSettings) CloudControlType() string { return "AWS::WorkSpacesWeb::NetworkSettings" }
+func (NetworkSettings) Type() string { return "AWS::WorkSpacesWeb::NetworkSettings" }
 
 type PortalTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -165,7 +163,7 @@ type Portal struct {
 	UserSettingsArn              *string             `json:"UserSettingsArn,omitempty"`
 }
 
-func (Portal) CloudControlType() string { return "AWS::WorkSpacesWeb::Portal" }
+func (Portal) Type() string { return "AWS::WorkSpacesWeb::Portal" }
 
 type S3LogConfiguration struct {
 	Bucket          *string          `json:"Bucket,omitempty"`
@@ -196,7 +194,7 @@ type SessionLogger struct {
 	Tags                        []SessionLoggerTag `json:"Tags,omitempty"`
 }
 
-func (SessionLogger) CloudControlType() string { return "AWS::WorkSpacesWeb::SessionLogger" }
+func (SessionLogger) Type() string { return "AWS::WorkSpacesWeb::SessionLogger" }
 
 type TrustStoreTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -210,7 +208,7 @@ type TrustStore struct {
 	TrustStoreArn        *string         `json:"TrustStoreArn,omitempty"`
 }
 
-func (TrustStore) CloudControlType() string { return "AWS::WorkSpacesWeb::TrustStore" }
+func (TrustStore) Type() string { return "AWS::WorkSpacesWeb::TrustStore" }
 
 type UserAccessLoggingSettingsTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -224,7 +222,7 @@ type UserAccessLoggingSettings struct {
 	UserAccessLoggingSettingsArn *string                        `json:"UserAccessLoggingSettingsArn,omitempty"`
 }
 
-func (UserAccessLoggingSettings) CloudControlType() string {
+func (UserAccessLoggingSettings) Type() string {
 	return "AWS::WorkSpacesWeb::UserAccessLoggingSettings"
 }
 
@@ -300,7 +298,7 @@ type UserSettings struct {
 	WebAuthnAllowed                    *EnabledType                        `json:"WebAuthnAllowed,omitempty"`
 }
 
-func (UserSettings) CloudControlType() string { return "AWS::WorkSpacesWeb::UserSettings" }
+func (UserSettings) Type() string { return "AWS::WorkSpacesWeb::UserSettings" }
 
 type Category string
 

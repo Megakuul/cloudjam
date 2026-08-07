@@ -41,7 +41,7 @@ type Connection struct {
 	Type               *string                  `json:"Type,omitempty"`
 }
 
-func (Connection) CloudControlType() string { return "AWS::Interconnect::Connection" }
+func (Connection) Type() string { return "AWS::Interconnect::Connection" }
 
 type ConnectionState string
 

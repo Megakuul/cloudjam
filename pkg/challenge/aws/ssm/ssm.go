@@ -48,7 +48,48 @@ type Association struct {
 	WaitForSuccessTimeoutSeconds  *int                               `json:"WaitForSuccessTimeoutSeconds,omitempty"`
 }
 
-func (Association) CloudControlType() string { return "AWS::SSM::Association" }
+func (Association) Type() string { return "AWS::SSM::Association" }
+
+type AzureSubscription struct {
+	DisplayName *string `json:"DisplayName,omitempty"`
+	Id          *string `json:"Id,omitempty"`
+}
+
+type ConfigurationTargets struct {
+	Subscriptions []AzureSubscription `json:"Subscriptions,omitempty"`
+}
+
+type AzureConfiguration struct {
+	ApplicationDisplayName *string               `json:"ApplicationDisplayName,omitempty"`
+	ApplicationId          *string               `json:"ApplicationId,omitempty"`
+	Targets                *ConfigurationTargets `json:"Targets,omitempty"`
+	TenantDisplayName      *string               `json:"TenantDisplayName,omitempty"`
+	TenantId               *string               `json:"TenantId,omitempty"`
+}
+
+type CloudConnectorConfiguration struct {
+	AzureConfiguration *AzureConfiguration `json:"AzureConfiguration,omitempty"`
+}
+
+type CloudConnectorTag struct {
+	Key   *string `json:"Key,omitempty"`
+	Value *string `json:"Value,omitempty"`
+}
+
+type CloudConnector struct {
+	CloudConnectorArn  *string                      `json:"CloudConnectorArn,omitempty"`
+	CloudConnectorId   *string                      `json:"CloudConnectorId,omitempty"`
+	ConfigConnectorArn *string                      `json:"ConfigConnectorArn,omitempty"`
+	Configuration      *CloudConnectorConfiguration `json:"Configuration,omitempty"`
+	CreatedAt          *string                      `json:"CreatedAt,omitempty"`
+	Description        *string                      `json:"Description,omitempty"`
+	DisplayName        *string                      `json:"DisplayName,omitempty"`
+	RoleArn            *string                      `json:"RoleArn,omitempty"`
+	Tags               []CloudConnectorTag          `json:"Tags,omitempty"`
+	UpdatedAt          *string                      `json:"UpdatedAt,omitempty"`
+}
+
+func (CloudConnector) Type() string { return "AWS::SSM::CloudConnector" }
 
 type AttachmentsSource struct {
 	Key    *AttachmentsSourceKey `json:"Key,omitempty"`
@@ -79,7 +120,7 @@ type Document struct {
 	VersionName    *string                 `json:"VersionName,omitempty"`
 }
 
-func (Document) CloudControlType() string { return "AWS::SSM::Document" }
+func (Document) Type() string { return "AWS::SSM::Document" }
 
 type MaintenanceWindowTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -101,7 +142,7 @@ type MaintenanceWindow struct {
 	WindowId                 *string                `json:"WindowId,omitempty"`
 }
 
-func (MaintenanceWindow) CloudControlType() string { return "AWS::SSM::MaintenanceWindow" }
+func (MaintenanceWindow) Type() string { return "AWS::SSM::MaintenanceWindow" }
 
 type Targets struct {
 	Key    *string  `json:"Key,omitempty"`
@@ -118,7 +159,7 @@ type MaintenanceWindowTarget struct {
 	WindowTargetId   *string   `json:"WindowTargetId,omitempty"`
 }
 
-func (MaintenanceWindowTarget) CloudControlType() string { return "AWS::SSM::MaintenanceWindowTarget" }
+func (MaintenanceWindowTarget) Type() string { return "AWS::SSM::MaintenanceWindowTarget" }
 
 type LoggingInfo struct {
 	Region   *string `json:"Region,omitempty"`
@@ -197,7 +238,7 @@ type MaintenanceWindowTask struct {
 	WindowTaskId             *string                       `json:"WindowTaskId,omitempty"`
 }
 
-func (MaintenanceWindowTask) CloudControlType() string { return "AWS::SSM::MaintenanceWindowTask" }
+func (MaintenanceWindowTask) Type() string { return "AWS::SSM::MaintenanceWindowTask" }
 
 type OpsItemTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -223,7 +264,7 @@ type OpsItem struct {
 	Version          *string      `json:"Version,omitempty"`
 }
 
-func (OpsItem) CloudControlType() string { return "AWS::SSM::OpsItem" }
+func (OpsItem) Type() string { return "AWS::SSM::OpsItem" }
 
 type Parameter struct {
 	AllowedPattern *string            `json:"AllowedPattern,omitempty"`
@@ -238,7 +279,7 @@ type Parameter struct {
 	Value          *string            `json:"Value,omitempty"`
 }
 
-func (Parameter) CloudControlType() string { return "AWS::SSM::Parameter" }
+func (Parameter) Type() string { return "AWS::SSM::Parameter" }
 
 type PatchFilter struct {
 	Key    *PatchFilterKey `json:"Key,omitempty"`
@@ -291,7 +332,7 @@ type PatchBaseline struct {
 	Tags                                     []PatchBaselineTag                                     `json:"Tags,omitempty"`
 }
 
-func (PatchBaseline) CloudControlType() string { return "AWS::SSM::PatchBaseline" }
+func (PatchBaseline) Type() string { return "AWS::SSM::PatchBaseline" }
 
 type S3Destination struct {
 	BucketName   *string `json:"BucketName,omitempty"`
@@ -325,7 +366,7 @@ type ResourceDataSync struct {
 	SyncType      *string        `json:"SyncType,omitempty"`
 }
 
-func (ResourceDataSync) CloudControlType() string { return "AWS::SSM::ResourceDataSync" }
+func (ResourceDataSync) Type() string { return "AWS::SSM::ResourceDataSync" }
 
 type ResourcePolicy struct {
 	Policy      json.RawMessage `json:"Policy,omitempty"`
@@ -334,7 +375,7 @@ type ResourcePolicy struct {
 	ResourceArn *string         `json:"ResourceArn,omitempty"`
 }
 
-func (ResourcePolicy) CloudControlType() string { return "AWS::SSM::ResourcePolicy" }
+func (ResourcePolicy) Type() string { return "AWS::SSM::ResourcePolicy" }
 
 type ServiceSetting struct {
 	Arn              *string `json:"Arn,omitempty"`
@@ -345,7 +386,7 @@ type ServiceSetting struct {
 	Status           *string `json:"Status,omitempty"`
 }
 
-func (ServiceSetting) CloudControlType() string { return "AWS::SSM::ServiceSetting" }
+func (ServiceSetting) Type() string { return "AWS::SSM::ServiceSetting" }
 
 type AssociationComplianceSeverity string
 

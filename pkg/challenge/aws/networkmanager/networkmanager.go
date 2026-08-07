@@ -47,7 +47,7 @@ type ConnectAttachment struct {
 	UpdatedAt                          *string                             `json:"UpdatedAt,omitempty"`
 }
 
-func (ConnectAttachment) CloudControlType() string { return "AWS::NetworkManager::ConnectAttachment" }
+func (ConnectAttachment) Type() string { return "AWS::NetworkManager::ConnectAttachment" }
 
 type BgpOptions struct {
 	PeerAsn *float64 `json:"PeerAsn,omitempty"`
@@ -90,7 +90,7 @@ type ConnectPeer struct {
 	Tags                   []ConnectPeerTag          `json:"Tags,omitempty"`
 }
 
-func (ConnectPeer) CloudControlType() string { return "AWS::NetworkManager::ConnectPeer" }
+func (ConnectPeer) Type() string { return "AWS::NetworkManager::ConnectPeer" }
 
 type CoreNetworkEdge struct {
 	Asn              *float64 `json:"Asn,omitempty"`
@@ -135,7 +135,7 @@ type CoreNetwork struct {
 	Tags                  []CoreNetworkTag                  `json:"Tags,omitempty"`
 }
 
-func (CoreNetwork) CloudControlType() string { return "AWS::NetworkManager::CoreNetwork" }
+func (CoreNetwork) Type() string { return "AWS::NetworkManager::CoreNetwork" }
 
 type CoreNetworkPrefixListAssociation struct {
 	CoreNetworkId   *string `json:"CoreNetworkId,omitempty"`
@@ -143,7 +143,7 @@ type CoreNetworkPrefixListAssociation struct {
 	PrefixListArn   *string `json:"PrefixListArn,omitempty"`
 }
 
-func (CoreNetworkPrefixListAssociation) CloudControlType() string {
+func (CoreNetworkPrefixListAssociation) Type() string {
 	return "AWS::NetworkManager::CoreNetworkPrefixListAssociation"
 }
 
@@ -154,7 +154,7 @@ type CustomerGatewayAssociation struct {
 	LinkId             *string `json:"LinkId,omitempty"`
 }
 
-func (CustomerGatewayAssociation) CloudControlType() string {
+func (CustomerGatewayAssociation) Type() string {
 	return "AWS::NetworkManager::CustomerGatewayAssociation"
 }
 
@@ -191,7 +191,7 @@ type Device struct {
 	Vendor          *string      `json:"Vendor,omitempty"`
 }
 
-func (Device) CloudControlType() string { return "AWS::NetworkManager::Device" }
+func (Device) Type() string { return "AWS::NetworkManager::Device" }
 
 type DirectConnectGatewayAttachmentTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -232,7 +232,7 @@ type DirectConnectGatewayAttachment struct {
 	UpdatedAt                          *string                                                           `json:"UpdatedAt,omitempty"`
 }
 
-func (DirectConnectGatewayAttachment) CloudControlType() string {
+func (DirectConnectGatewayAttachment) Type() string {
 	return "AWS::NetworkManager::DirectConnectGatewayAttachment"
 }
 
@@ -250,7 +250,7 @@ type GlobalNetwork struct {
 	Tags        []GlobalNetworkTag `json:"Tags,omitempty"`
 }
 
-func (GlobalNetwork) CloudControlType() string { return "AWS::NetworkManager::GlobalNetwork" }
+func (GlobalNetwork) Type() string { return "AWS::NetworkManager::GlobalNetwork" }
 
 type Bandwidth struct {
 	DownloadSpeed *int `json:"DownloadSpeed,omitempty"`
@@ -276,7 +276,7 @@ type Link struct {
 	Type            *string    `json:"Type,omitempty"`
 }
 
-func (Link) CloudControlType() string { return "AWS::NetworkManager::Link" }
+func (Link) Type() string { return "AWS::NetworkManager::Link" }
 
 type LinkAssociation struct {
 	DeviceId        *string `json:"DeviceId,omitempty"`
@@ -284,7 +284,7 @@ type LinkAssociation struct {
 	LinkId          *string `json:"LinkId,omitempty"`
 }
 
-func (LinkAssociation) CloudControlType() string { return "AWS::NetworkManager::LinkAssociation" }
+func (LinkAssociation) Type() string { return "AWS::NetworkManager::LinkAssociation" }
 
 type SiteLocation struct {
 	Address   *string `json:"Address,omitempty"`
@@ -308,7 +308,7 @@ type Site struct {
 	Tags            []SiteTag     `json:"Tags,omitempty"`
 }
 
-func (Site) CloudControlType() string { return "AWS::NetworkManager::Site" }
+func (Site) Type() string { return "AWS::NetworkManager::Site" }
 
 type SiteToSiteVpnAttachmentTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -349,9 +349,7 @@ type SiteToSiteVpnAttachment struct {
 	VpnConnectionArn                   *string                                                    `json:"VpnConnectionArn,omitempty"`
 }
 
-func (SiteToSiteVpnAttachment) CloudControlType() string {
-	return "AWS::NetworkManager::SiteToSiteVpnAttachment"
-}
+func (SiteToSiteVpnAttachment) Type() string { return "AWS::NetworkManager::SiteToSiteVpnAttachment" }
 
 type TransitGatewayPeeringTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -374,16 +372,14 @@ type TransitGatewayPeering struct {
 	TransitGatewayPeeringAttachmentId *string                    `json:"TransitGatewayPeeringAttachmentId,omitempty"`
 }
 
-func (TransitGatewayPeering) CloudControlType() string {
-	return "AWS::NetworkManager::TransitGatewayPeering"
-}
+func (TransitGatewayPeering) Type() string { return "AWS::NetworkManager::TransitGatewayPeering" }
 
 type TransitGatewayRegistration struct {
 	GlobalNetworkId   *string `json:"GlobalNetworkId,omitempty"`
 	TransitGatewayArn *string `json:"TransitGatewayArn,omitempty"`
 }
 
-func (TransitGatewayRegistration) CloudControlType() string {
+func (TransitGatewayRegistration) Type() string {
 	return "AWS::NetworkManager::TransitGatewayRegistration"
 }
 
@@ -427,7 +423,7 @@ type TransitGatewayRouteTableAttachment struct {
 	UpdatedAt                          *string                                                               `json:"UpdatedAt,omitempty"`
 }
 
-func (TransitGatewayRouteTableAttachment) CloudControlType() string {
+func (TransitGatewayRouteTableAttachment) Type() string {
 	return "AWS::NetworkManager::TransitGatewayRouteTableAttachment"
 }
 
@@ -479,4 +475,4 @@ type VpcAttachment struct {
 	VpcArn                             *string                                          `json:"VpcArn,omitempty"`
 }
 
-func (VpcAttachment) CloudControlType() string { return "AWS::NetworkManager::VpcAttachment" }
+func (VpcAttachment) Type() string { return "AWS::NetworkManager::VpcAttachment" }

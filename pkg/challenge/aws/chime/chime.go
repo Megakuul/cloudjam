@@ -17,7 +17,7 @@ type AppInstance struct {
 	Tags                 []Tag    `json:"Tags,omitempty"`
 }
 
-func (AppInstance) CloudControlType() string { return "AWS::Chime::AppInstance" }
+func (AppInstance) Type() string { return "AWS::Chime::AppInstance" }
 
 type InvokedBy struct {
 	StandardMessages *InvokedByStandardMessages `json:"StandardMessages,omitempty"`
@@ -52,7 +52,7 @@ type AppInstanceBot struct {
 	Tags                 []AppInstanceBotTag `json:"Tags,omitempty"`
 }
 
-func (AppInstanceBot) CloudControlType() string { return "AWS::Chime::AppInstanceBot" }
+func (AppInstanceBot) Type() string { return "AWS::Chime::AppInstanceBot" }
 
 type ExpirationSettings struct {
 	ExpirationCriterion *ExpirationSettingsExpirationCriterion `json:"ExpirationCriterion,omitempty"`
@@ -74,7 +74,7 @@ type AppInstanceUser struct {
 	Tags               []AppInstanceUserTag `json:"Tags,omitempty"`
 }
 
-func (AppInstanceUser) CloudControlType() string { return "AWS::Chime::AppInstanceUser" }
+func (AppInstanceUser) Type() string { return "AWS::Chime::AppInstanceUser" }
 
 type InvokedByStandardMessages string
 

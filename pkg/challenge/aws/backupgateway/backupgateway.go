@@ -19,4 +19,4 @@ type Hypervisor struct {
 	Username      *string `json:"Username,omitempty"`
 }
 
-func (Hypervisor) CloudControlType() string { return "AWS::BackupGateway::Hypervisor" }
+func (Hypervisor) Type() string { return "AWS::BackupGateway::Hypervisor" }

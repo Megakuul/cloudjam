@@ -24,7 +24,7 @@ type Accelerator struct {
 	Tags             []Tag                     `json:"Tags,omitempty"`
 }
 
-func (Accelerator) CloudControlType() string { return "AWS::GlobalAccelerator::Accelerator" }
+func (Accelerator) Type() string { return "AWS::GlobalAccelerator::Accelerator" }
 
 type Resource struct {
 	Cidr       *string `json:"Cidr,omitempty"`
@@ -45,9 +45,7 @@ type CrossAccountAttachment struct {
 	Tags          []CrossAccountAttachmentTag `json:"Tags,omitempty"`
 }
 
-func (CrossAccountAttachment) CloudControlType() string {
-	return "AWS::GlobalAccelerator::CrossAccountAttachment"
-}
+func (CrossAccountAttachment) Type() string { return "AWS::GlobalAccelerator::CrossAccountAttachment" }
 
 type EndpointConfiguration struct {
 	AttachmentArn               *string `json:"AttachmentArn,omitempty"`
@@ -75,7 +73,7 @@ type EndpointGroup struct {
 	TrafficDialPercentage      *float64                          `json:"TrafficDialPercentage,omitempty"`
 }
 
-func (EndpointGroup) CloudControlType() string { return "AWS::GlobalAccelerator::EndpointGroup" }
+func (EndpointGroup) Type() string { return "AWS::GlobalAccelerator::EndpointGroup" }
 
 type PortRange struct {
 	FromPort *int `json:"FromPort,omitempty"`
@@ -90,7 +88,7 @@ type Listener struct {
 	Protocol       *ListenerProtocol       `json:"Protocol,omitempty"`
 }
 
-func (Listener) CloudControlType() string { return "AWS::GlobalAccelerator::Listener" }
+func (Listener) Type() string { return "AWS::GlobalAccelerator::Listener" }
 
 type AcceleratorIpAddressType string
 

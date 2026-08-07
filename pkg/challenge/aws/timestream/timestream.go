@@ -15,7 +15,7 @@ type Database struct {
 	Tags         []Tag   `json:"Tags,omitempty"`
 }
 
-func (Database) CloudControlType() string { return "AWS::Timestream::Database" }
+func (Database) Type() string { return "AWS::Timestream::Database" }
 
 type InfluxDBClusterLogDeliveryConfigurationS3Configuration struct {
 	BucketName *string `json:"BucketName,omitempty"`
@@ -59,7 +59,7 @@ type InfluxDBCluster struct {
 	VpcSubnetIds                  []string                                 `json:"VpcSubnetIds,omitempty"`
 }
 
-func (InfluxDBCluster) CloudControlType() string { return "AWS::Timestream::InfluxDBCluster" }
+func (InfluxDBCluster) Type() string { return "AWS::Timestream::InfluxDBCluster" }
 
 type InfluxDBInstanceLogDeliveryConfigurationS3Configuration struct {
 	BucketName *string `json:"BucketName,omitempty"`
@@ -109,7 +109,7 @@ type InfluxDBInstance struct {
 	VpcSubnetIds                  []string                                  `json:"VpcSubnetIds,omitempty"`
 }
 
-func (InfluxDBInstance) CloudControlType() string { return "AWS::Timestream::InfluxDBInstance" }
+func (InfluxDBInstance) Type() string { return "AWS::Timestream::InfluxDBInstance" }
 
 type S3Configuration struct {
 	BucketName       *string           `json:"BucketName,omitempty"`
@@ -198,7 +198,7 @@ type ScheduledQuery struct {
 	TargetConfiguration              *TargetConfiguration       `json:"TargetConfiguration,omitempty"`
 }
 
-func (ScheduledQuery) CloudControlType() string { return "AWS::Timestream::ScheduledQuery" }
+func (ScheduledQuery) Type() string { return "AWS::Timestream::ScheduledQuery" }
 
 type TableMagneticStoreWritePropertiesMagneticStoreRejectedDataLocationS3Configuration struct {
 	BucketName       *string `json:"BucketName,omitempty"`
@@ -247,7 +247,7 @@ type Table struct {
 	Tags                         []TableTag                         `json:"Tags,omitempty"`
 }
 
-func (Table) CloudControlType() string { return "AWS::Timestream::Table" }
+func (Table) Type() string { return "AWS::Timestream::Table" }
 
 type InfluxDBClusterDbInstanceType string
 

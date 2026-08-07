@@ -73,7 +73,7 @@ type App struct {
 	Tags                     []Tag                     `json:"Tags,omitempty"`
 }
 
-func (App) CloudControlType() string { return "AWS::Amplify::App" }
+func (App) Type() string { return "AWS::Amplify::App" }
 
 type Backend struct {
 	StackArn *string `json:"StackArn,omitempty"`
@@ -115,7 +115,7 @@ type Branch struct {
 	Tags                       []BranchTag                 `json:"Tags,omitempty"`
 }
 
-func (Branch) CloudControlType() string { return "AWS::Amplify::Branch" }
+func (Branch) Type() string { return "AWS::Amplify::Branch" }
 
 type Certificate struct {
 	CertificateArn                   *string                     `json:"CertificateArn,omitempty"`
@@ -149,7 +149,7 @@ type Domain struct {
 	UpdateStatus                  *string              `json:"UpdateStatus,omitempty"`
 }
 
-func (Domain) CloudControlType() string { return "AWS::Amplify::Domain" }
+func (Domain) Type() string { return "AWS::Amplify::Domain" }
 
 type AutoBranchCreationConfigStage string
 

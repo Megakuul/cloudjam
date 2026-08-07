@@ -77,7 +77,7 @@ type Bridge struct {
 	Sources              []BridgeSource        `json:"Sources,omitempty"`
 }
 
-func (Bridge) CloudControlType() string { return "AWS::MediaConnect::Bridge" }
+func (Bridge) Type() string { return "AWS::MediaConnect::Bridge" }
 
 type BridgeOutputBridgeNetworkOutput struct {
 	IpAddress   *string                                  `json:"IpAddress,omitempty"`
@@ -93,7 +93,7 @@ type BridgeOutputBridgeOutput struct {
 	NetworkOutput *BridgeOutputBridgeNetworkOutput `json:"NetworkOutput,omitempty"`
 }
 
-func (BridgeOutputBridgeOutput) CloudControlType() string { return "AWS::MediaConnect::BridgeOutput" }
+func (BridgeOutputBridgeOutput) Type() string { return "AWS::MediaConnect::BridgeOutput" }
 
 type BridgeSourceVpcInterfaceAttachment struct {
 	VpcInterfaceName *string `json:"VpcInterfaceName,omitempty"`
@@ -123,7 +123,7 @@ type BridgeSourceBridgeSource struct {
 	NetworkSource *BridgeSourceBridgeNetworkSource `json:"NetworkSource,omitempty"`
 }
 
-func (BridgeSourceBridgeSource) CloudControlType() string { return "AWS::MediaConnect::BridgeSource" }
+func (BridgeSourceBridgeSource) Type() string { return "AWS::MediaConnect::BridgeSource" }
 
 type EncodingConfig struct {
 	EncodingProfile *EncodingProfile `json:"EncodingProfile,omitempty"`
@@ -324,7 +324,7 @@ type Flow struct {
 	VpcInterfaces          []VpcInterface          `json:"VpcInterfaces,omitempty"`
 }
 
-func (Flow) CloudControlType() string { return "AWS::MediaConnect::Flow" }
+func (Flow) Type() string { return "AWS::MediaConnect::Flow" }
 
 type FlowEntitlementEncryption struct {
 	Algorithm                    *FlowEntitlementEncryptionAlgorithm `json:"Algorithm,omitempty"`
@@ -355,7 +355,7 @@ type FlowEntitlement struct {
 	Tags                             []FlowEntitlementTag              `json:"Tags,omitempty"`
 }
 
-func (FlowEntitlement) CloudControlType() string { return "AWS::MediaConnect::FlowEntitlement" }
+func (FlowEntitlement) Type() string { return "AWS::MediaConnect::FlowEntitlement" }
 
 type FlowOutputEncryption struct {
 	Algorithm *FlowOutputEncryptionAlgorithm `json:"Algorithm,omitempty"`
@@ -426,7 +426,7 @@ type FlowOutput struct {
 	VpcInterfaceAttachment             *FlowOutputVpcInterfaceAttachment  `json:"VpcInterfaceAttachment,omitempty"`
 }
 
-func (FlowOutput) CloudControlType() string { return "AWS::MediaConnect::FlowOutput" }
+func (FlowOutput) Type() string { return "AWS::MediaConnect::FlowOutput" }
 
 type FlowSourceEncryption struct {
 	Algorithm                    *FlowSourceEncryptionAlgorithm `json:"Algorithm,omitempty"`
@@ -479,7 +479,7 @@ type FlowSource struct {
 	WhitelistCidr         *string                        `json:"WhitelistCidr,omitempty"`
 }
 
-func (FlowSource) CloudControlType() string { return "AWS::MediaConnect::FlowSource" }
+func (FlowSource) Type() string { return "AWS::MediaConnect::FlowSource" }
 
 type FlowVpcInterfaceTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -496,7 +496,7 @@ type FlowVpcInterface struct {
 	Tags                []FlowVpcInterfaceTag `json:"Tags,omitempty"`
 }
 
-func (FlowVpcInterface) CloudControlType() string { return "AWS::MediaConnect::FlowVpcInterface" }
+func (FlowVpcInterface) Type() string { return "AWS::MediaConnect::FlowVpcInterface" }
 
 type GatewayNetwork struct {
 	CidrBlock *string `json:"CidrBlock,omitempty"`
@@ -511,7 +511,7 @@ type Gateway struct {
 	Networks         []GatewayNetwork     `json:"Networks,omitempty"`
 }
 
-func (Gateway) CloudControlType() string { return "AWS::MediaConnect::Gateway" }
+func (Gateway) Type() string { return "AWS::MediaConnect::Gateway" }
 
 type RouterInputTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -547,7 +547,7 @@ type RouterInput struct {
 	UpdatedAt                           *string                           `json:"UpdatedAt,omitempty"`
 }
 
-func (RouterInput) CloudControlType() string { return "AWS::MediaConnect::RouterInput" }
+func (RouterInput) Type() string { return "AWS::MediaConnect::RouterInput" }
 
 type RouterNetworkInterfaceTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -569,9 +569,7 @@ type RouterNetworkInterface struct {
 	UpdatedAt             *string                      `json:"UpdatedAt,omitempty"`
 }
 
-func (RouterNetworkInterface) CloudControlType() string {
-	return "AWS::MediaConnect::RouterNetworkInterface"
-}
+func (RouterNetworkInterface) Type() string { return "AWS::MediaConnect::RouterNetworkInterface" }
 
 type RouterOutputTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -599,7 +597,7 @@ type RouterOutput struct {
 	UpdatedAt                *string                      `json:"UpdatedAt,omitempty"`
 }
 
-func (RouterOutput) CloudControlType() string { return "AWS::MediaConnect::RouterOutput" }
+func (RouterOutput) Type() string { return "AWS::MediaConnect::RouterOutput" }
 
 type BridgeStateEnum string
 

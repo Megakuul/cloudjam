@@ -75,7 +75,7 @@ type ComponentVersion struct {
 	Tags             map[string]string           `json:"Tags,omitempty"`
 }
 
-func (ComponentVersion) CloudControlType() string { return "AWS::GreengrassV2::ComponentVersion" }
+func (ComponentVersion) Type() string { return "AWS::GreengrassV2::ComponentVersion" }
 
 type ComponentConfigurationUpdate struct {
 	Merge *string  `json:"Merge,omitempty"`
@@ -157,7 +157,7 @@ type Deployment struct {
 	TargetArn           *string                                     `json:"TargetArn,omitempty"`
 }
 
-func (Deployment) CloudControlType() string { return "AWS::GreengrassV2::Deployment" }
+func (Deployment) Type() string { return "AWS::GreengrassV2::Deployment" }
 
 type ComponentDependencyRequirementDependencyType string
 

@@ -46,7 +46,7 @@ type ApprovalTeam struct {
 	VersionId         *string           `json:"VersionId,omitempty"`
 }
 
-func (ApprovalTeam) CloudControlType() string { return "AWS::MPA::ApprovalTeam" }
+func (ApprovalTeam) Type() string { return "AWS::MPA::ApprovalTeam" }
 
 type IamIdentityCenter struct {
 	ApprovalPortalUrl *string `json:"ApprovalPortalUrl,omitempty"`
@@ -74,4 +74,4 @@ type IdentitySource struct {
 	Tags                     []IdentitySourceTag       `json:"Tags,omitempty"`
 }
 
-func (IdentitySource) CloudControlType() string { return "AWS::MPA::IdentitySource" }
+func (IdentitySource) Type() string { return "AWS::MPA::IdentitySource" }

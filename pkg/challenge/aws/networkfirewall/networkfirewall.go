@@ -37,7 +37,7 @@ type Firewall struct {
 	VpcId                            *string                   `json:"VpcId,omitempty"`
 }
 
-func (Firewall) CloudControlType() string { return "AWS::NetworkFirewall::Firewall" }
+func (Firewall) Type() string { return "AWS::NetworkFirewall::Firewall" }
 
 type IPSet struct {
 	Definition []string `json:"Definition,omitempty"`
@@ -117,7 +117,7 @@ type FirewallPolicy struct {
 	Tags               []FirewallPolicyTag           `json:"Tags,omitempty"`
 }
 
-func (FirewallPolicy) CloudControlType() string { return "AWS::NetworkFirewall::FirewallPolicy" }
+func (FirewallPolicy) Type() string { return "AWS::NetworkFirewall::FirewallPolicy" }
 
 type LogDestinationConfig struct {
 	LogDestination     map[string]string                       `json:"LogDestination,omitempty"`
@@ -136,9 +136,7 @@ type LoggingConfiguration struct {
 	LoggingConfiguration      *LoggingConfigurationLoggingConfiguration `json:"LoggingConfiguration,omitempty"`
 }
 
-func (LoggingConfiguration) CloudControlType() string {
-	return "AWS::NetworkFirewall::LoggingConfiguration"
-}
+func (LoggingConfiguration) Type() string { return "AWS::NetworkFirewall::LoggingConfiguration" }
 
 type IPSetReference struct {
 	ReferenceArn *string `json:"ReferenceArn,omitempty"`
@@ -281,7 +279,7 @@ type RuleGroup struct {
 	Type                 *RuleGroupType                 `json:"Type,omitempty"`
 }
 
-func (RuleGroup) CloudControlType() string { return "AWS::NetworkFirewall::RuleGroup" }
+func (RuleGroup) Type() string { return "AWS::NetworkFirewall::RuleGroup" }
 
 type ServerCertificateConfigurationCheckCertificateRevocationStatus struct {
 	RevokedStatusAction *RevokedStatusAction `json:"RevokedStatusAction,omitempty"`
@@ -334,7 +332,7 @@ type TLSInspectionConfiguration struct {
 	Tags                           []TLSInspectionConfigurationTag                       `json:"Tags,omitempty"`
 }
 
-func (TLSInspectionConfiguration) CloudControlType() string {
+func (TLSInspectionConfiguration) Type() string {
 	return "AWS::NetworkFirewall::TLSInspectionConfiguration"
 }
 
@@ -359,9 +357,7 @@ type VpcEndpointAssociation struct {
 	VpcId                     *string                              `json:"VpcId,omitempty"`
 }
 
-func (VpcEndpointAssociation) CloudControlType() string {
-	return "AWS::NetworkFirewall::VpcEndpointAssociation"
-}
+func (VpcEndpointAssociation) Type() string { return "AWS::NetworkFirewall::VpcEndpointAssociation" }
 
 type EnabledAnalysisType string
 

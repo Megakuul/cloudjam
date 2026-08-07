@@ -65,7 +65,7 @@ type Pipeline struct {
 	VpcOptions                *VpcOptions              `json:"VpcOptions,omitempty"`
 }
 
-func (Pipeline) CloudControlType() string { return "AWS::OSIS::Pipeline" }
+func (Pipeline) Type() string { return "AWS::OSIS::Pipeline" }
 
 type VpcOptionsVpcEndpointManagement string
 

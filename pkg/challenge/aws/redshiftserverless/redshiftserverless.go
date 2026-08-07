@@ -50,7 +50,7 @@ type Namespace struct {
 	Tags                         []Tag                       `json:"Tags,omitempty"`
 }
 
-func (Namespace) CloudControlType() string { return "AWS::RedshiftServerless::Namespace" }
+func (Namespace) Type() string { return "AWS::RedshiftServerless::Namespace" }
 
 type SnapshotSnapshot struct {
 	AdminUsername      *string         `json:"AdminUsername,omitempty"`
@@ -79,7 +79,7 @@ type Snapshot struct {
 	Tags            []SnapshotTag     `json:"Tags,omitempty"`
 }
 
-func (Snapshot) CloudControlType() string { return "AWS::RedshiftServerless::Snapshot" }
+func (Snapshot) Type() string { return "AWS::RedshiftServerless::Snapshot" }
 
 type ConfigParameter struct {
 	ParameterKey   *string `json:"ParameterKey,omitempty"`
@@ -155,7 +155,7 @@ type Workgroup struct {
 	WorkgroupName          *string             `json:"WorkgroupName,omitempty"`
 }
 
-func (Workgroup) CloudControlType() string { return "AWS::RedshiftServerless::Workgroup" }
+func (Workgroup) Type() string { return "AWS::RedshiftServerless::Workgroup" }
 
 type LogExport string
 

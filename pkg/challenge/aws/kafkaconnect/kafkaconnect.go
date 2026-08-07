@@ -115,7 +115,7 @@ type Connector struct {
 	WorkerConfiguration              *WorkerConfiguration              `json:"WorkerConfiguration,omitempty"`
 }
 
-func (Connector) CloudControlType() string { return "AWS::KafkaConnect::Connector" }
+func (Connector) Type() string { return "AWS::KafkaConnect::Connector" }
 
 type CustomPluginFileDescription struct {
 	FileMd5  *string `json:"FileMd5,omitempty"`
@@ -148,7 +148,7 @@ type CustomPluginCustomPlugin struct {
 	Tags            []CustomPluginTag                    `json:"Tags,omitempty"`
 }
 
-func (CustomPluginCustomPlugin) CloudControlType() string { return "AWS::KafkaConnect::CustomPlugin" }
+func (CustomPluginCustomPlugin) Type() string { return "AWS::KafkaConnect::CustomPlugin" }
 
 type WorkerConfigurationTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -164,7 +164,7 @@ type WorkerConfigurationWorkerConfiguration struct {
 	WorkerConfigurationArn *string                  `json:"WorkerConfigurationArn,omitempty"`
 }
 
-func (WorkerConfigurationWorkerConfiguration) CloudControlType() string {
+func (WorkerConfigurationWorkerConfiguration) Type() string {
 	return "AWS::KafkaConnect::WorkerConfiguration"
 }
 

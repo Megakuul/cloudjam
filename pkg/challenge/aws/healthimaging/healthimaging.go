@@ -14,7 +14,7 @@ type Datastore struct {
 	UpdatedAt       *string           `json:"UpdatedAt,omitempty"`
 }
 
-func (Datastore) CloudControlType() string { return "AWS::HealthImaging::Datastore" }
+func (Datastore) Type() string { return "AWS::HealthImaging::Datastore" }
 
 type DatastoreStatus string
 

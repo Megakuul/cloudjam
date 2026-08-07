@@ -39,9 +39,7 @@ type DataTransformationProfile struct {
 	TargetFormat       *DataTransformationProfileTargetFormat `json:"TargetFormat,omitempty"`
 }
 
-func (DataTransformationProfile) CloudControlType() string {
-	return "AWS::HealthLake::DataTransformationProfile"
-}
+func (DataTransformationProfile) Type() string { return "AWS::HealthLake::DataTransformationProfile" }
 
 type CreatedAt struct {
 	Nanos   *int    `json:"Nanos,omitempty"`
@@ -87,7 +85,7 @@ type FHIRDatastore struct {
 	Tags                          []FHIRDatastoreTag             `json:"Tags,omitempty"`
 }
 
-func (FHIRDatastore) CloudControlType() string { return "AWS::HealthLake::FHIRDatastore" }
+func (FHIRDatastore) Type() string { return "AWS::HealthLake::FHIRDatastore" }
 
 type DataTransformationProfileSourceFormat string
 

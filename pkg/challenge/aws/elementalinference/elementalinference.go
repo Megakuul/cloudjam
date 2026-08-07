@@ -14,7 +14,7 @@ type Dictionary struct {
 	Tags     map[string]string   `json:"Tags,omitempty"`
 }
 
-func (Dictionary) CloudControlType() string { return "AWS::ElementalInference::Dictionary" }
+func (Dictionary) Type() string { return "AWS::ElementalInference::Dictionary" }
 
 type GetOutput struct {
 	Description  *string         `json:"Description,omitempty"`
@@ -32,7 +32,7 @@ type Feed struct {
 	Tags          map[string]string `json:"Tags,omitempty"`
 }
 
-func (Feed) CloudControlType() string { return "AWS::ElementalInference::Feed" }
+func (Feed) Type() string { return "AWS::ElementalInference::Feed" }
 
 type DictionaryLanguage string
 

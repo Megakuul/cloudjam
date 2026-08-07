@@ -16,7 +16,7 @@ type ACL struct {
 	UserNames []string `json:"UserNames,omitempty"`
 }
 
-func (ACL) CloudControlType() string { return "AWS::MemoryDB::ACL" }
+func (ACL) Type() string { return "AWS::MemoryDB::ACL" }
 
 type Endpoint struct {
 	Address *string `json:"Address,omitempty"`
@@ -63,7 +63,7 @@ type Cluster struct {
 	Tags                    []ClusterTag               `json:"Tags,omitempty"`
 }
 
-func (Cluster) CloudControlType() string { return "AWS::MemoryDB::Cluster" }
+func (Cluster) Type() string { return "AWS::MemoryDB::Cluster" }
 
 type MultiRegionClusterTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -86,7 +86,7 @@ type MultiRegionCluster struct {
 	UpdateStrategy                *MultiRegionClusterUpdateStrategy `json:"UpdateStrategy,omitempty"`
 }
 
-func (MultiRegionCluster) CloudControlType() string { return "AWS::MemoryDB::MultiRegionCluster" }
+func (MultiRegionCluster) Type() string { return "AWS::MemoryDB::MultiRegionCluster" }
 
 type ParameterGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -102,7 +102,7 @@ type ParameterGroup struct {
 	Tags               []ParameterGroupTag `json:"Tags,omitempty"`
 }
 
-func (ParameterGroup) CloudControlType() string { return "AWS::MemoryDB::ParameterGroup" }
+func (ParameterGroup) Type() string { return "AWS::MemoryDB::ParameterGroup" }
 
 type SubnetGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -118,7 +118,7 @@ type SubnetGroup struct {
 	Tags                  []SubnetGroupTag `json:"Tags,omitempty"`
 }
 
-func (SubnetGroup) CloudControlType() string { return "AWS::MemoryDB::SubnetGroup" }
+func (SubnetGroup) Type() string { return "AWS::MemoryDB::SubnetGroup" }
 
 type UserAuthenticationMode struct {
 	Passwords []string                    `json:"Passwords,omitempty"`
@@ -139,7 +139,7 @@ type User struct {
 	UserName           *string                 `json:"UserName,omitempty"`
 }
 
-func (User) CloudControlType() string { return "AWS::MemoryDB::User" }
+func (User) Type() string { return "AWS::MemoryDB::User" }
 
 type DataTieringStatus string
 

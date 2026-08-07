@@ -71,9 +71,7 @@ type CloudAutonomousVmCluster struct {
 	TotalContainerDatabases                      *int                                  `json:"TotalContainerDatabases,omitempty"`
 }
 
-func (CloudAutonomousVmCluster) CloudControlType() string {
-	return "AWS::ODB::CloudAutonomousVmCluster"
-}
+func (CloudAutonomousVmCluster) Type() string { return "AWS::ODB::CloudAutonomousVmCluster" }
 
 type CustomerContact struct {
 	Email *string `json:"Email,omitempty"`
@@ -131,9 +129,7 @@ type CloudExadataInfrastructure struct {
 	TotalStorageSizeInGBs         *int                                         `json:"TotalStorageSizeInGBs,omitempty"`
 }
 
-func (CloudExadataInfrastructure) CloudControlType() string {
-	return "AWS::ODB::CloudExadataInfrastructure"
-}
+func (CloudExadataInfrastructure) Type() string { return "AWS::ODB::CloudExadataInfrastructure" }
 
 type DataCollectionOptions struct {
 	IsDiagnosticsEventsEnabled *bool `json:"IsDiagnosticsEventsEnabled,omitempty"`
@@ -211,7 +207,7 @@ type CloudVmCluster struct {
 	VipIds                       []string                    `json:"VipIds,omitempty"`
 }
 
-func (CloudVmCluster) CloudControlType() string { return "AWS::ODB::CloudVmCluster" }
+func (CloudVmCluster) Type() string { return "AWS::ODB::CloudVmCluster" }
 
 type CrossRegionS3RestoreSourcesAccess struct {
 	Ipv4Addresses []string               `json:"Ipv4Addresses,omitempty"`
@@ -300,7 +296,7 @@ type OdbNetwork struct {
 	ZeroEtlAccess               *OdbNetworkZeroEtlAccess `json:"ZeroEtlAccess,omitempty"`
 }
 
-func (OdbNetwork) CloudControlType() string { return "AWS::ODB::OdbNetwork" }
+func (OdbNetwork) Type() string { return "AWS::ODB::OdbNetwork" }
 
 type OdbPeeringConnectionTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -321,7 +317,7 @@ type OdbPeeringConnection struct {
 	Tags                       []OdbPeeringConnectionTag `json:"Tags,omitempty"`
 }
 
-func (OdbPeeringConnection) CloudControlType() string { return "AWS::ODB::OdbPeeringConnection" }
+func (OdbPeeringConnection) Type() string { return "AWS::ODB::OdbPeeringConnection" }
 
 type CloudAutonomousVmClusterComputeModel string
 

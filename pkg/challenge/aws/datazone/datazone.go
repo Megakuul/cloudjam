@@ -37,7 +37,7 @@ type Connection struct {
 	Type                             *string                   `json:"Type,omitempty"`
 }
 
-func (Connection) CloudControlType() string { return "AWS::DataZone::Connection" }
+func (Connection) Type() string { return "AWS::DataZone::Connection" }
 
 type FormInput struct {
 	Content        *string `json:"Content,omitempty"`
@@ -82,7 +82,7 @@ type DataSource struct {
 	UpdatedAt             *string                      `json:"UpdatedAt,omitempty"`
 }
 
-func (DataSource) CloudControlType() string { return "AWS::DataZone::DataSource" }
+func (DataSource) Type() string { return "AWS::DataZone::DataSource" }
 
 type SingleSignOn struct {
 	IdcInstanceArn *string         `json:"IdcInstanceArn,omitempty"`
@@ -114,7 +114,7 @@ type Domain struct {
 	Tags                []Tag                `json:"Tags,omitempty"`
 }
 
-func (Domain) CloudControlType() string { return "AWS::DataZone::Domain" }
+func (Domain) Type() string { return "AWS::DataZone::Domain" }
 
 type DomainUnit struct {
 	CreatedAt                  *string `json:"CreatedAt,omitempty"`
@@ -129,7 +129,7 @@ type DomainUnit struct {
 	ParentDomainUnitIdentifier *string `json:"ParentDomainUnitIdentifier,omitempty"`
 }
 
-func (DomainUnit) CloudControlType() string { return "AWS::DataZone::DomainUnit" }
+func (DomainUnit) Type() string { return "AWS::DataZone::DomainUnit" }
 
 type EnvironmentParameter struct {
 	Name  *string `json:"Name,omitempty"`
@@ -164,7 +164,7 @@ type Environment struct {
 	UserParameters                 []EnvironmentParameter `json:"UserParameters,omitempty"`
 }
 
-func (Environment) CloudControlType() string { return "AWS::DataZone::Environment" }
+func (Environment) Type() string { return "AWS::DataZone::Environment" }
 
 type AwsConsoleLinkParameters struct {
 	Uri *string `json:"Uri,omitempty"`
@@ -182,7 +182,7 @@ type EnvironmentActions struct {
 	Parameters            *AwsConsoleLinkParameters `json:"Parameters,omitempty"`
 }
 
-func (EnvironmentActions) CloudControlType() string { return "AWS::DataZone::EnvironmentActions" }
+func (EnvironmentActions) Type() string { return "AWS::DataZone::EnvironmentActions" }
 
 type RegionalParameter struct {
 	Parameters map[string]string `json:"Parameters,omitempty"`
@@ -205,7 +205,7 @@ type EnvironmentBlueprintConfiguration struct {
 	UpdatedAt                         *string             `json:"UpdatedAt,omitempty"`
 }
 
-func (EnvironmentBlueprintConfiguration) CloudControlType() string {
+func (EnvironmentBlueprintConfiguration) Type() string {
 	return "AWS::DataZone::EnvironmentBlueprintConfiguration"
 }
 
@@ -232,7 +232,7 @@ type EnvironmentProfile struct {
 	UserParameters                 []EnvironmentProfileEnvironmentParameter `json:"UserParameters,omitempty"`
 }
 
-func (EnvironmentProfile) CloudControlType() string { return "AWS::DataZone::EnvironmentProfile" }
+func (EnvironmentProfile) Type() string { return "AWS::DataZone::EnvironmentProfile" }
 
 type Model struct {
 	Smithy *string `json:"Smithy,omitempty"`
@@ -253,7 +253,7 @@ type FormType struct {
 	Status                  *FormTypeStatus `json:"Status,omitempty"`
 }
 
-func (FormType) CloudControlType() string { return "AWS::DataZone::FormType" }
+func (FormType) Type() string { return "AWS::DataZone::FormType" }
 
 type GroupProfile struct {
 	DomainId         *string             `json:"DomainId,omitempty"`
@@ -267,7 +267,7 @@ type GroupProfile struct {
 	Status           *GroupProfileStatus `json:"Status,omitempty"`
 }
 
-func (GroupProfile) CloudControlType() string { return "AWS::DataZone::GroupProfile" }
+func (GroupProfile) Type() string { return "AWS::DataZone::GroupProfile" }
 
 type Owner struct {
 	DomainIdentifier *string          `json:"DomainIdentifier,omitempty"`
@@ -278,7 +278,7 @@ type Owner struct {
 	OwnerType        *OwnerOwnerType  `json:"OwnerType,omitempty"`
 }
 
-func (Owner) CloudControlType() string { return "AWS::DataZone::Owner" }
+func (Owner) Type() string { return "AWS::DataZone::Owner" }
 
 type PolicyGrant struct {
 	CreatedAt        *string            `json:"CreatedAt,omitempty"`
@@ -292,7 +292,7 @@ type PolicyGrant struct {
 	Principal        json.RawMessage    `json:"Principal,omitempty"`
 }
 
-func (PolicyGrant) CloudControlType() string { return "AWS::DataZone::PolicyGrant" }
+func (PolicyGrant) Type() string { return "AWS::DataZone::PolicyGrant" }
 
 type Member struct {
 	GroupIdentifier *string `json:"GroupIdentifier,omitempty"`
@@ -341,7 +341,7 @@ type Project struct {
 	UserParameters        []EnvironmentConfigurationUserParameter `json:"UserParameters,omitempty"`
 }
 
-func (Project) CloudControlType() string { return "AWS::DataZone::Project" }
+func (Project) Type() string { return "AWS::DataZone::Project" }
 
 type ProjectMembership struct {
 	Designation          *ProjectMembershipUserDesignation `json:"Designation,omitempty"`
@@ -352,7 +352,7 @@ type ProjectMembership struct {
 	ProjectIdentifier    *string                           `json:"ProjectIdentifier,omitempty"`
 }
 
-func (ProjectMembership) CloudControlType() string { return "AWS::DataZone::ProjectMembership" }
+func (ProjectMembership) Type() string { return "AWS::DataZone::ProjectMembership" }
 
 type AwsAccount struct {
 	AwsAccountId *string `json:"AwsAccountId,omitempty"`
@@ -412,7 +412,7 @@ type ProjectProfile struct {
 	UseDefaultConfigurations       *bool                      `json:"UseDefaultConfigurations,omitempty"`
 }
 
-func (ProjectProfile) CloudControlType() string { return "AWS::DataZone::ProjectProfile" }
+func (ProjectProfile) Type() string { return "AWS::DataZone::ProjectProfile" }
 
 type SubscriptionTargetForm struct {
 	Content  *string `json:"Content,omitempty"`
@@ -439,7 +439,7 @@ type SubscriptionTarget struct {
 	UpdatedBy                *string                  `json:"UpdatedBy,omitempty"`
 }
 
-func (SubscriptionTarget) CloudControlType() string { return "AWS::DataZone::SubscriptionTarget" }
+func (SubscriptionTarget) Type() string { return "AWS::DataZone::SubscriptionTarget" }
 
 type UserProfile struct {
 	Details          json.RawMessage    `json:"Details,omitempty"`
@@ -453,7 +453,7 @@ type UserProfile struct {
 	UserType         *UserType          `json:"UserType,omitempty"`
 }
 
-func (UserProfile) CloudControlType() string { return "AWS::DataZone::UserProfile" }
+func (UserProfile) Type() string { return "AWS::DataZone::UserProfile" }
 
 type ConnectionScope string
 

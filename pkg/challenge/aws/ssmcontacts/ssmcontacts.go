@@ -38,7 +38,7 @@ type Contact struct {
 	Type        *ContactType `json:"Type,omitempty"`
 }
 
-func (Contact) CloudControlType() string { return "AWS::SSMContacts::Contact" }
+func (Contact) Type() string { return "AWS::SSMContacts::Contact" }
 
 type ContactChannel struct {
 	Arn             *string                    `json:"Arn,omitempty"`
@@ -49,7 +49,7 @@ type ContactChannel struct {
 	DeferActivation *bool                      `json:"DeferActivation,omitempty"`
 }
 
-func (ContactChannel) CloudControlType() string { return "AWS::SSMContacts::ContactChannel" }
+func (ContactChannel) Type() string { return "AWS::SSMContacts::ContactChannel" }
 
 type PlanChannelTargetInfo struct {
 	ChannelId              *string `json:"ChannelId,omitempty"`
@@ -78,7 +78,7 @@ type Plan struct {
 	Stages      []PlanStage `json:"Stages,omitempty"`
 }
 
-func (Plan) CloudControlType() string { return "AWS::SSMContacts::Plan" }
+func (Plan) Type() string { return "AWS::SSMContacts::Plan" }
 
 type MonthlySetting struct {
 	DayOfMonth  *int    `json:"DayOfMonth,omitempty"`
@@ -124,7 +124,7 @@ type Rotation struct {
 	TimeZoneId *string             `json:"TimeZoneId,omitempty"`
 }
 
-func (Rotation) CloudControlType() string { return "AWS::SSMContacts::Rotation" }
+func (Rotation) Type() string { return "AWS::SSMContacts::Rotation" }
 
 type ContactType string
 

@@ -10,7 +10,7 @@ type AccessPolicy struct {
 	Type        *AccessPolicyType `json:"Type,omitempty"`
 }
 
-func (AccessPolicy) CloudControlType() string { return "AWS::OpenSearchServerless::AccessPolicy" }
+func (AccessPolicy) Type() string { return "AWS::OpenSearchServerless::AccessPolicy" }
 
 type EncryptionConfig struct {
 	AWSOwnedKey *bool   `json:"AWSOwnedKey,omitempty"`
@@ -49,7 +49,7 @@ type Collection struct {
 	VectorOptions       *VectorOptions      `json:"VectorOptions,omitempty"`
 }
 
-func (Collection) CloudControlType() string { return "AWS::OpenSearchServerless::Collection" }
+func (Collection) Type() string { return "AWS::OpenSearchServerless::Collection" }
 
 type CapacityLimits struct {
 	MaxIndexingCapacityInOcu *float64 `json:"MaxIndexingCapacityInOcu,omitempty"`
@@ -74,7 +74,7 @@ type CollectionGroup struct {
 	Tags            []CollectionGroupTag            `json:"Tags,omitempty"`
 }
 
-func (CollectionGroup) CloudControlType() string { return "AWS::OpenSearchServerless::CollectionGroup" }
+func (CollectionGroup) Type() string { return "AWS::OpenSearchServerless::CollectionGroup" }
 
 type CollectionIndex struct {
 	Id          *string `json:"Id,omitempty"`
@@ -82,7 +82,7 @@ type CollectionIndex struct {
 	IndexSchema *string `json:"IndexSchema,omitempty"`
 }
 
-func (CollectionIndex) CloudControlType() string { return "AWS::OpenSearchServerless::CollectionIndex" }
+func (CollectionIndex) Type() string { return "AWS::OpenSearchServerless::CollectionIndex" }
 
 type PropertyMappingMethodParameters struct {
 	EfConstruction *int `json:"EfConstruction,omitempty"`
@@ -143,7 +143,7 @@ type Index struct {
 	Uuid               *string        `json:"Uuid,omitempty"`
 }
 
-func (Index) CloudControlType() string { return "AWS::OpenSearchServerless::Index" }
+func (Index) Type() string { return "AWS::OpenSearchServerless::Index" }
 
 type LifecyclePolicy struct {
 	Description *string              `json:"Description,omitempty"`
@@ -152,7 +152,7 @@ type LifecyclePolicy struct {
 	Type        *LifecyclePolicyType `json:"Type,omitempty"`
 }
 
-func (LifecyclePolicy) CloudControlType() string { return "AWS::OpenSearchServerless::LifecyclePolicy" }
+func (LifecyclePolicy) Type() string { return "AWS::OpenSearchServerless::LifecyclePolicy" }
 
 type IamFederationConfigOptions struct {
 	GroupAttribute *string `json:"GroupAttribute,omitempty"`
@@ -186,7 +186,7 @@ type SecurityConfig struct {
 	Type                     *SecurityConfigType             `json:"Type,omitempty"`
 }
 
-func (SecurityConfig) CloudControlType() string { return "AWS::OpenSearchServerless::SecurityConfig" }
+func (SecurityConfig) Type() string { return "AWS::OpenSearchServerless::SecurityConfig" }
 
 type SecurityPolicy struct {
 	Description *string             `json:"Description,omitempty"`
@@ -195,7 +195,7 @@ type SecurityPolicy struct {
 	Type        *SecurityPolicyType `json:"Type,omitempty"`
 }
 
-func (SecurityPolicy) CloudControlType() string { return "AWS::OpenSearchServerless::SecurityPolicy" }
+func (SecurityPolicy) Type() string { return "AWS::OpenSearchServerless::SecurityPolicy" }
 
 type VpcEndpoint struct {
 	Id               *string  `json:"Id,omitempty"`
@@ -205,7 +205,7 @@ type VpcEndpoint struct {
 	VpcId            *string  `json:"VpcId,omitempty"`
 }
 
-func (VpcEndpoint) CloudControlType() string { return "AWS::OpenSearchServerless::VpcEndpoint" }
+func (VpcEndpoint) Type() string { return "AWS::OpenSearchServerless::VpcEndpoint" }
 
 type AccessPolicyType string
 

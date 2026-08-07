@@ -36,4 +36,4 @@ type Cluster struct {
 	VpcEndpointServiceName    *string                       `json:"VpcEndpointServiceName,omitempty"`
 }
 
-func (Cluster) CloudControlType() string { return "AWS::DSQL::Cluster" }
+func (Cluster) Type() string { return "AWS::DSQL::Cluster" }

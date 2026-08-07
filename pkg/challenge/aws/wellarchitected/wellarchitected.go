@@ -19,7 +19,7 @@ type Lens struct {
 	Tags        []LensTagsItem `json:"Tags,omitempty"`
 }
 
-func (Lens) CloudControlType() string { return "AWS::WellArchitected::Lens" }
+func (Lens) Type() string { return "AWS::WellArchitected::Lens" }
 
 type ProfileQuestionUpdate struct {
 	QuestionId        *string  `json:"QuestionId,omitempty"`
@@ -43,7 +43,7 @@ type Profile struct {
 	UpdatedAt          *string                 `json:"UpdatedAt,omitempty"`
 }
 
-func (Profile) CloudControlType() string { return "AWS::WellArchitected::Profile" }
+func (Profile) Type() string { return "AWS::WellArchitected::Profile" }
 
 type ReviewTemplateTagsItem struct {
 	Key   *string `json:"Key,omitempty"`
@@ -62,7 +62,7 @@ type ReviewTemplate struct {
 	UpdatedAt    *string                     `json:"UpdatedAt,omitempty"`
 }
 
-func (ReviewTemplate) CloudControlType() string { return "AWS::WellArchitected::ReviewTemplate" }
+func (ReviewTemplate) Type() string { return "AWS::WellArchitected::ReviewTemplate" }
 
 type ReviewTemplateUpdateStatus string
 

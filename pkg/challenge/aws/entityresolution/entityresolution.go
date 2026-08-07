@@ -66,7 +66,7 @@ type IdMappingWorkflow struct {
 	WorkflowName                  *string                         `json:"WorkflowName,omitempty"`
 }
 
-func (IdMappingWorkflow) CloudControlType() string { return "AWS::EntityResolution::IdMappingWorkflow" }
+func (IdMappingWorkflow) Type() string { return "AWS::EntityResolution::IdMappingWorkflow" }
 
 type NamespaceProviderProperties struct {
 	ProviderConfiguration map[string]string `json:"ProviderConfiguration,omitempty"`
@@ -114,7 +114,7 @@ type IdNamespace struct {
 	UpdatedAt                   *string                                  `json:"UpdatedAt,omitempty"`
 }
 
-func (IdNamespace) CloudControlType() string { return "AWS::EntityResolution::IdNamespace" }
+func (IdNamespace) Type() string { return "AWS::EntityResolution::IdNamespace" }
 
 type IncrementalRunConfig struct {
 	IncrementalRunType *IncrementalRunConfigIncrementalRunType `json:"IncrementalRunType,omitempty"`
@@ -206,7 +206,7 @@ type MatchingWorkflow struct {
 	WorkflowName         *string               `json:"WorkflowName,omitempty"`
 }
 
-func (MatchingWorkflow) CloudControlType() string { return "AWS::EntityResolution::MatchingWorkflow" }
+func (MatchingWorkflow) Type() string { return "AWS::EntityResolution::MatchingWorkflow" }
 
 type PolicyStatement struct {
 	Action      []string         `json:"Action,omitempty"`
@@ -217,7 +217,7 @@ type PolicyStatement struct {
 	StatementId *string          `json:"StatementId,omitempty"`
 }
 
-func (PolicyStatement) CloudControlType() string { return "AWS::EntityResolution::PolicyStatement" }
+func (PolicyStatement) Type() string { return "AWS::EntityResolution::PolicyStatement" }
 
 type SchemaInputAttribute struct {
 	FieldName *string              `json:"FieldName,omitempty"`
@@ -244,7 +244,7 @@ type SchemaMapping struct {
 	UpdatedAt         *string                `json:"UpdatedAt,omitempty"`
 }
 
-func (SchemaMapping) CloudControlType() string { return "AWS::EntityResolution::SchemaMapping" }
+func (SchemaMapping) Type() string { return "AWS::EntityResolution::SchemaMapping" }
 
 type IdMappingIncrementalRunConfigIncrementalRunType string
 

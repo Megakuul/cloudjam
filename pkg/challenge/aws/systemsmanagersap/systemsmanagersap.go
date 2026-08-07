@@ -33,7 +33,7 @@ type Application struct {
 	Tags              []Tag                       `json:"Tags,omitempty"`
 }
 
-func (Application) CloudControlType() string { return "AWS::SystemsManagerSAP::Application" }
+func (Application) Type() string { return "AWS::SystemsManagerSAP::Application" }
 
 type ApplicationApplicationType string
 

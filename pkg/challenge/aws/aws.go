@@ -13,7 +13,7 @@ import (
 )
 
 type Resource interface {
-	CloudControlType() string
+	Type() string
 }
 
 // Create provisions a resource and returns its primary identifier (blocks until created).
@@ -23,14 +23,14 @@ func Create[T Resource](resource T) (string, error) {
 		return "", err
 	}
 	out, err := api.CreateResource(api.CreateResourceInput{
-		Type:    resource.CloudControlType(),
+		Type:    resource.Type(),
 		Desired: string(desired),
 	})
 	if err != nil {
-		return "", fmt.Errorf("create %s: %w", resource.CloudControlType(), err)
+		return "", fmt.Errorf("create %s: %w", resource.Type(), err)
 	}
 	if out.Identifier == "" {
-		return "", fmt.Errorf("create %s: no identifier returned", resource.CloudControlType())
+		return "", fmt.Errorf("create %s: no identifier returned", resource.Type())
 	}
 	return out.Identifier, nil
 }
@@ -39,21 +39,21 @@ func Create[T Resource](resource T) (string, error) {
 func Read[T Resource](identifier string) (T, error) {
 	resource := empty[T]()
 	out, err := api.ReadResource(api.ReadResourceInput{
-		Type:       resource.CloudControlType(),
+		Type:       resource.Type(),
 		Identifier: identifier,
 	})
 	if err != nil {
-		return resource, fmt.Errorf("read %s %q: %w", resource.CloudControlType(), identifier, err)
+		return resource, fmt.Errorf("read %s %q: %w", resource.Type(), identifier, err)
 	}
 	if out.State == "" {
-		return resource, fmt.Errorf("read %s %q: no state returned", resource.CloudControlType(), identifier)
+		return resource, fmt.Errorf("read %s %q: no state returned", resource.Type(), identifier)
 	}
 	return resource, json.Unmarshal([]byte(out.State), resource)
 }
 
 // List returns every resource of a type.
 func List[T Resource]() (map[string]T, error) {
-	typeName := empty[T]().CloudControlType()
+	typeName := empty[T]().Type()
 	out, err := api.ListResource(api.ListResourceInput{Type: typeName})
 	if err != nil {
 		return nil, fmt.Errorf("list %s: %w", typeName, err)
@@ -71,7 +71,7 @@ func List[T Resource]() (map[string]T, error) {
 
 // Update updates the fields you set on the target (blocks until successful).
 func Update[T Resource](identifier string, changes T) error {
-	typeName := changes.CloudControlType()
+	typeName := changes.Type()
 	operations := patch(reflect.ValueOf(changes))
 	if len(operations) == 0 {
 		return fmt.Errorf("patch %s %q: no fields set", typeName, identifier)
@@ -92,7 +92,7 @@ func Update[T Resource](identifier string, changes T) error {
 
 // Delete removes a resource (non blocking).
 func Delete[T Resource](identifier string) error {
-	typeName := empty[T]().CloudControlType()
+	typeName := empty[T]().Type()
 	if _, err := api.DeleteResource(api.DeleteResourceInput{
 		Type:       typeName,
 		Identifier: identifier,
@@ -133,7 +133,7 @@ func patch(value reflect.Value) []operation {
 }
 
 // empty builds the zero resource of a pointer type, so the generic calls can
-// reach CloudControlType without being handed an instance.
+// reach Type without being handed an instance.
 func empty[T Resource]() T {
 	return reflect.New(reflect.TypeFor[T]().Elem()).Interface().(T)
 }

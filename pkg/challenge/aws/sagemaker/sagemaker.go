@@ -37,7 +37,7 @@ type Action struct {
 	Tags               []Tag               `json:"Tags,omitempty"`
 }
 
-func (Action) CloudControlType() string { return "AWS::SageMaker::Action" }
+func (Action) Type() string { return "AWS::SageMaker::Action" }
 
 type ModelInput struct {
 	DataInputConfig *string `json:"DataInputConfig,omitempty"`
@@ -139,7 +139,7 @@ type Algorithm struct {
 	TrainingSpecification  *TrainingSpecification  `json:"TrainingSpecification,omitempty"`
 }
 
-func (Algorithm) CloudControlType() string { return "AWS::SageMaker::Algorithm" }
+func (Algorithm) Type() string { return "AWS::SageMaker::Algorithm" }
 
 type ResourceSpec struct {
 	InstanceType             *ResourceSpecInstanceType `json:"InstanceType,omitempty"`
@@ -165,7 +165,7 @@ type App struct {
 	UserProfileName           *string       `json:"UserProfileName,omitempty"`
 }
 
-func (App) CloudControlType() string { return "AWS::SageMaker::App" }
+func (App) Type() string { return "AWS::SageMaker::App" }
 
 type CustomImageContainerEnvironmentVariable struct {
 	Key   *string `json:"Key,omitempty"`
@@ -216,7 +216,7 @@ type AppImageConfig struct {
 	Tags                     []AppImageConfigTag       `json:"Tags,omitempty"`
 }
 
-func (AppImageConfig) CloudControlType() string { return "AWS::SageMaker::AppImageConfig" }
+func (AppImageConfig) Type() string { return "AWS::SageMaker::AppImageConfig" }
 
 type ArtifactMetadataProperties struct {
 	CommitId    *string `json:"CommitId,omitempty"`
@@ -252,7 +252,7 @@ type Artifact struct {
 	Tags               []ArtifactTag               `json:"Tags,omitempty"`
 }
 
-func (Artifact) CloudControlType() string { return "AWS::SageMaker::Artifact" }
+func (Artifact) Type() string { return "AWS::SageMaker::Artifact" }
 
 type ClusterAutoScalingConfig struct {
 	AutoScalerType *ClusterAutoScalingConfigAutoScalerType `json:"AutoScalerType,omitempty"`
@@ -418,7 +418,7 @@ type Cluster struct {
 	VpcConfig                      *VpcConfig                       `json:"VpcConfig,omitempty"`
 }
 
-func (Cluster) CloudControlType() string { return "AWS::SageMaker::Cluster" }
+func (Cluster) Type() string { return "AWS::SageMaker::Cluster" }
 
 type GitConfig struct {
 	Branch        *string `json:"Branch,omitempty"`
@@ -438,7 +438,7 @@ type CodeRepository struct {
 	Tags               []CodeRepositoryTag `json:"Tags,omitempty"`
 }
 
-func (CodeRepository) CloudControlType() string { return "AWS::SageMaker::CodeRepository" }
+func (CodeRepository) Type() string { return "AWS::SageMaker::CodeRepository" }
 
 type ContextSource struct {
 	SourceId   *string `json:"SourceId,omitempty"`
@@ -463,7 +463,7 @@ type Context struct {
 	Tags             []ContextTagsItem `json:"Tags,omitempty"`
 }
 
-func (Context) CloudControlType() string { return "AWS::SageMaker::Context" }
+func (Context) Type() string { return "AWS::SageMaker::Context" }
 
 type DataQualityAppSpecification struct {
 	ContainerArguments              []string          `json:"ContainerArguments,omitempty"`
@@ -586,9 +586,7 @@ type DataQualityJobDefinition struct {
 	Tags                        []DataQualityJobDefinitionTag `json:"Tags,omitempty"`
 }
 
-func (DataQualityJobDefinition) CloudControlType() string {
-	return "AWS::SageMaker::DataQualityJobDefinition"
-}
+func (DataQualityJobDefinition) Type() string { return "AWS::SageMaker::DataQualityJobDefinition" }
 
 type DeviceDevice struct {
 	Description  *string `json:"Description,omitempty"`
@@ -607,7 +605,7 @@ type Device struct {
 	Tags            []DeviceTag   `json:"Tags,omitempty"`
 }
 
-func (Device) CloudControlType() string { return "AWS::SageMaker::Device" }
+func (Device) Type() string { return "AWS::SageMaker::Device" }
 
 type EdgeOutputConfig struct {
 	KmsKeyId         *string `json:"KmsKeyId,omitempty"`
@@ -627,7 +625,7 @@ type DeviceFleet struct {
 	Tags            []DeviceFleetTag  `json:"Tags,omitempty"`
 }
 
-func (DeviceFleet) CloudControlType() string { return "AWS::SageMaker::DeviceFleet" }
+func (DeviceFleet) Type() string { return "AWS::SageMaker::DeviceFleet" }
 
 type EFSFileSystemConfig struct {
 	FileSystemId   *string `json:"FileSystemId,omitempty"`
@@ -838,7 +836,7 @@ type Domain struct {
 	VpcId                                    *string                           `json:"VpcId,omitempty"`
 }
 
-func (Domain) CloudControlType() string { return "AWS::SageMaker::Domain" }
+func (Domain) Type() string { return "AWS::SageMaker::Domain" }
 
 type Alarm struct {
 	AlarmName *string `json:"AlarmName,omitempty"`
@@ -899,7 +897,7 @@ type Endpoint struct {
 	Tags                             []EndpointTag             `json:"Tags,omitempty"`
 }
 
-func (Endpoint) CloudControlType() string { return "AWS::SageMaker::Endpoint" }
+func (Endpoint) Type() string { return "AWS::SageMaker::Endpoint" }
 
 type AsyncInferenceClientConfig struct {
 	MaxConcurrentInvocationsPerInstance *int `json:"MaxConcurrentInvocationsPerInstance,omitempty"`
@@ -1055,7 +1053,7 @@ type EndpointConfig struct {
 	VpcConfig                *EndpointConfigVpcConfig `json:"VpcConfig,omitempty"`
 }
 
-func (EndpointConfig) CloudControlType() string { return "AWS::SageMaker::EndpointConfig" }
+func (EndpointConfig) Type() string { return "AWS::SageMaker::EndpointConfig" }
 
 type ExperimentTagsItem struct {
 	Key   *string `json:"Key,omitempty"`
@@ -1072,7 +1070,7 @@ type Experiment struct {
 	Tags             []ExperimentTagsItem `json:"Tags,omitempty"`
 }
 
-func (Experiment) CloudControlType() string { return "AWS::SageMaker::Experiment" }
+func (Experiment) Type() string { return "AWS::SageMaker::Experiment" }
 
 type ExperimentTrialComponentMetadataProperties struct {
 	CommitId    *string `json:"CommitId,omitempty"`
@@ -1105,9 +1103,7 @@ type ExperimentTrialComponent struct {
 	TrialComponentName *string                                     `json:"TrialComponentName,omitempty"`
 }
 
-func (ExperimentTrialComponent) CloudControlType() string {
-	return "AWS::SageMaker::ExperimentTrialComponent"
-}
+func (ExperimentTrialComponent) Type() string { return "AWS::SageMaker::ExperimentTrialComponent" }
 
 type FeatureDefinition struct {
 	FeatureName *string                       `json:"FeatureName,omitempty"`
@@ -1174,7 +1170,7 @@ type FeatureGroup struct {
 	ThroughputConfig            *ThroughputConfig               `json:"ThroughputConfig,omitempty"`
 }
 
-func (FeatureGroup) CloudControlType() string { return "AWS::SageMaker::FeatureGroup" }
+func (FeatureGroup) Type() string { return "AWS::SageMaker::FeatureGroup" }
 
 type HubS3StorageConfig struct {
 	S3OutputPath *string `json:"S3OutputPath,omitempty"`
@@ -1198,7 +1194,7 @@ type Hub struct {
 	Tags              []HubTag            `json:"Tags,omitempty"`
 }
 
-func (Hub) CloudControlType() string { return "AWS::SageMaker::Hub" }
+func (Hub) Type() string { return "AWS::SageMaker::Hub" }
 
 type ImageTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -1214,7 +1210,7 @@ type Image struct {
 	Tags             []ImageTag `json:"Tags,omitempty"`
 }
 
-func (Image) CloudControlType() string { return "AWS::SageMaker::Image" }
+func (Image) Type() string { return "AWS::SageMaker::Image" }
 
 type ImageVersion struct {
 	Alias           *string         `json:"Alias,omitempty"`
@@ -1234,7 +1230,7 @@ type ImageVersion struct {
 	Version         *int            `json:"Version,omitempty"`
 }
 
-func (ImageVersion) CloudControlType() string { return "AWS::SageMaker::ImageVersion" }
+func (ImageVersion) Type() string { return "AWS::SageMaker::ImageVersion" }
 
 type InferenceComponentAlarm struct {
 	AlarmName *string `json:"AlarmName,omitempty"`
@@ -1321,7 +1317,7 @@ type InferenceComponent struct {
 	VariantName              *string                             `json:"VariantName,omitempty"`
 }
 
-func (InferenceComponent) CloudControlType() string { return "AWS::SageMaker::InferenceComponent" }
+func (InferenceComponent) Type() string { return "AWS::SageMaker::InferenceComponent" }
 
 type InferenceExperimentCaptureContentTypeHeader struct {
 	CsvContentTypes  []string `json:"CsvContentTypes,omitempty"`
@@ -1397,7 +1393,7 @@ type InferenceExperiment struct {
 	Type              *InferenceExperimentType         `json:"Type,omitempty"`
 }
 
-func (InferenceExperiment) CloudControlType() string { return "AWS::SageMaker::InferenceExperiment" }
+func (InferenceExperiment) Type() string { return "AWS::SageMaker::InferenceExperiment" }
 
 type MlflowAppTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -1419,7 +1415,7 @@ type MlflowApp struct {
 	WeeklyMaintenanceWindowStart *string                         `json:"WeeklyMaintenanceWindowStart,omitempty"`
 }
 
-func (MlflowApp) CloudControlType() string { return "AWS::SageMaker::MlflowApp" }
+func (MlflowApp) Type() string { return "AWS::SageMaker::MlflowApp" }
 
 type MlflowTrackingServerTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -1438,7 +1434,7 @@ type MlflowTrackingServer struct {
 	WeeklyMaintenanceWindowStart *string                                 `json:"WeeklyMaintenanceWindowStart,omitempty"`
 }
 
-func (MlflowTrackingServer) CloudControlType() string { return "AWS::SageMaker::MlflowTrackingServer" }
+func (MlflowTrackingServer) Type() string { return "AWS::SageMaker::MlflowTrackingServer" }
 
 type RepositoryAuthConfig struct {
 	RepositoryCredentialsProviderArn *string `json:"RepositoryCredentialsProviderArn,omitempty"`
@@ -1512,7 +1508,7 @@ type Model struct {
 	VpcConfig                *ModelVpcConfig           `json:"VpcConfig,omitempty"`
 }
 
-func (Model) CloudControlType() string { return "AWS::SageMaker::Model" }
+func (Model) Type() string { return "AWS::SageMaker::Model" }
 
 type ModelBiasJobDefinitionClusterConfig struct {
 	InstanceCount  *int    `json:"InstanceCount,omitempty"`
@@ -1642,9 +1638,7 @@ type ModelBiasJobDefinition struct {
 	Tags                      []ModelBiasJobDefinitionTag                   `json:"Tags,omitempty"`
 }
 
-func (ModelBiasJobDefinition) CloudControlType() string {
-	return "AWS::SageMaker::ModelBiasJobDefinition"
-}
+func (ModelBiasJobDefinition) Type() string { return "AWS::SageMaker::ModelBiasJobDefinition" }
 
 type AdditionalInformation struct {
 	CaveatsAndRecommendations *string           `json:"CaveatsAndRecommendations,omitempty"`
@@ -1814,7 +1808,7 @@ type ModelCard struct {
 	Tags                      []ModelCardTag                      `json:"Tags,omitempty"`
 }
 
-func (ModelCard) CloudControlType() string { return "AWS::SageMaker::ModelCard" }
+func (ModelCard) Type() string { return "AWS::SageMaker::ModelCard" }
 
 type ModelExplainabilityJobDefinitionClusterConfig struct {
 	InstanceCount  *int    `json:"InstanceCount,omitempty"`
@@ -1933,7 +1927,7 @@ type ModelExplainabilityJobDefinition struct {
 	Tags                                []ModelExplainabilityJobDefinitionTag                   `json:"Tags,omitempty"`
 }
 
-func (ModelExplainabilityJobDefinition) CloudControlType() string {
+func (ModelExplainabilityJobDefinition) Type() string {
 	return "AWS::SageMaker::ModelExplainabilityJobDefinition"
 }
 
@@ -2176,7 +2170,7 @@ type ModelPackage struct {
 	ValidationSpecification                *ValidationSpecification                     `json:"ValidationSpecification,omitempty"`
 }
 
-func (ModelPackage) CloudControlType() string { return "AWS::SageMaker::ModelPackage" }
+func (ModelPackage) Type() string { return "AWS::SageMaker::ModelPackage" }
 
 type ModelPackageGroupTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -2193,7 +2187,7 @@ type ModelPackageGroup struct {
 	Tags                         []ModelPackageGroupTag                    `json:"Tags,omitempty"`
 }
 
-func (ModelPackageGroup) CloudControlType() string { return "AWS::SageMaker::ModelPackageGroup" }
+func (ModelPackageGroup) Type() string { return "AWS::SageMaker::ModelPackageGroup" }
 
 type ModelQualityJobDefinitionClusterConfig struct {
 	InstanceCount  *int    `json:"InstanceCount,omitempty"`
@@ -2325,9 +2319,7 @@ type ModelQualityJobDefinition struct {
 	Tags                         []ModelQualityJobDefinitionTag                   `json:"Tags,omitempty"`
 }
 
-func (ModelQualityJobDefinition) CloudControlType() string {
-	return "AWS::SageMaker::ModelQualityJobDefinition"
-}
+func (ModelQualityJobDefinition) Type() string { return "AWS::SageMaker::ModelQualityJobDefinition" }
 
 type MonitoringExecutionSummary struct {
 	CreationTime              *string                                              `json:"CreationTime,omitempty"`
@@ -2481,7 +2473,7 @@ type MonitoringSchedule struct {
 	Tags                           []MonitoringScheduleTag                     `json:"Tags,omitempty"`
 }
 
-func (MonitoringSchedule) CloudControlType() string { return "AWS::SageMaker::MonitoringSchedule" }
+func (MonitoringSchedule) Type() string { return "AWS::SageMaker::MonitoringSchedule" }
 
 type InstanceMetadataServiceConfiguration struct {
 	MinimumInstanceMetadataServiceVersion *string `json:"MinimumInstanceMetadataServiceVersion,omitempty"`
@@ -2512,7 +2504,7 @@ type NotebookInstance struct {
 	VolumeSizeInGB                       *int                                  `json:"VolumeSizeInGB,omitempty"`
 }
 
-func (NotebookInstance) CloudControlType() string { return "AWS::SageMaker::NotebookInstance" }
+func (NotebookInstance) Type() string { return "AWS::SageMaker::NotebookInstance" }
 
 type NotebookInstanceLifecycleHook struct {
 	Content *string `json:"Content,omitempty"`
@@ -2525,7 +2517,7 @@ type NotebookInstanceLifecycleConfig struct {
 	OnStart                             []NotebookInstanceLifecycleHook `json:"OnStart,omitempty"`
 }
 
-func (NotebookInstanceLifecycleConfig) CloudControlType() string {
+func (NotebookInstanceLifecycleConfig) Type() string {
 	return "AWS::SageMaker::NotebookInstanceLifecycleConfig"
 }
 
@@ -2562,7 +2554,7 @@ type PartnerApp struct {
 	Type                          *PartnerAppType              `json:"Type,omitempty"`
 }
 
-func (PartnerApp) CloudControlType() string { return "AWS::SageMaker::PartnerApp" }
+func (PartnerApp) Type() string { return "AWS::SageMaker::PartnerApp" }
 
 type PipelineParallelismConfiguration struct {
 	MaxParallelExecutionSteps *int `json:"MaxParallelExecutionSteps,omitempty"`
@@ -2583,7 +2575,7 @@ type Pipeline struct {
 	Tags                     []PipelineTag                     `json:"Tags,omitempty"`
 }
 
-func (Pipeline) CloudControlType() string { return "AWS::SageMaker::Pipeline" }
+func (Pipeline) Type() string { return "AWS::SageMaker::Pipeline" }
 
 type AppSpecification struct {
 	ContainerArguments  []string `json:"ContainerArguments,omitempty"`
@@ -2723,7 +2715,7 @@ type ProcessingJob struct {
 	TrainingJobArn         *string                           `json:"TrainingJobArn,omitempty"`
 }
 
-func (ProcessingJob) CloudControlType() string { return "AWS::SageMaker::ProcessingJob" }
+func (ProcessingJob) Type() string { return "AWS::SageMaker::ProcessingJob" }
 
 type ProjectServiceCatalogProvisionedProductDetails struct {
 	ProvisionedProductId            *string `json:"ProvisionedProductId,omitempty"`
@@ -2776,7 +2768,7 @@ type Project struct {
 	TemplateProviderDetails                 []TemplateProviderDetail                        `json:"TemplateProviderDetails,omitempty"`
 }
 
-func (Project) CloudControlType() string { return "AWS::SageMaker::Project" }
+func (Project) Type() string { return "AWS::SageMaker::Project" }
 
 type OwnershipSettings struct {
 	OwnerUserProfileName *string `json:"OwnerUserProfileName,omitempty"`
@@ -2888,7 +2880,7 @@ type Space struct {
 	Url                  *string               `json:"Url,omitempty"`
 }
 
-func (Space) CloudControlType() string { return "AWS::SageMaker::Space" }
+func (Space) Type() string { return "AWS::SageMaker::Space" }
 
 type StudioLifecycleConfigTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -2903,9 +2895,7 @@ type StudioLifecycleConfig struct {
 	Tags                         []StudioLifecycleConfigTag                         `json:"Tags,omitempty"`
 }
 
-func (StudioLifecycleConfig) CloudControlType() string {
-	return "AWS::SageMaker::StudioLifecycleConfig"
-}
+func (StudioLifecycleConfig) Type() string { return "AWS::SageMaker::StudioLifecycleConfig" }
 
 type TrialComponentArtifact struct {
 	MediaType *string `json:"MediaType,omitempty"`
@@ -2949,7 +2939,7 @@ type TrialComponent struct {
 	TrialComponentName *string                                 `json:"TrialComponentName,omitempty"`
 }
 
-func (TrialComponent) CloudControlType() string { return "AWS::SageMaker::TrialComponent" }
+func (TrialComponent) Type() string { return "AWS::SageMaker::TrialComponent" }
 
 type UserProfileTag struct {
 	Key   *string `json:"Key,omitempty"`
@@ -3105,7 +3095,7 @@ type UserProfile struct {
 	UserSettings               *UserProfileUserSettings `json:"UserSettings,omitempty"`
 }
 
-func (UserProfile) CloudControlType() string { return "AWS::SageMaker::UserProfile" }
+func (UserProfile) Type() string { return "AWS::SageMaker::UserProfile" }
 
 type CognitoMemberDefinition struct {
 	CognitoClientId  *string `json:"CognitoClientId,omitempty"`
@@ -3141,7 +3131,7 @@ type Workteam struct {
 	WorkteamName              *string                    `json:"WorkteamName,omitempty"`
 }
 
-func (Workteam) CloudControlType() string { return "AWS::SageMaker::Workteam" }
+func (Workteam) Type() string { return "AWS::SageMaker::Workteam" }
 
 type ActionStatus string
 

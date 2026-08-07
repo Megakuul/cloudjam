@@ -20,7 +20,7 @@ type Keyspace struct {
 	Tags                        []Tag                     `json:"Tags,omitempty"`
 }
 
-func (Keyspace) CloudControlType() string { return "AWS::Cassandra::Keyspace" }
+func (Keyspace) Type() string { return "AWS::Cassandra::Keyspace" }
 
 type TargetTrackingScalingPolicyConfiguration struct {
 	DisableScaleIn   *bool `json:"DisableScaleIn,omitempty"`
@@ -110,7 +110,7 @@ type Table struct {
 	WarmThroughput              *WarmThroughput           `json:"WarmThroughput,omitempty"`
 }
 
-func (Table) CloudControlType() string { return "AWS::Cassandra::Table" }
+func (Table) Type() string { return "AWS::Cassandra::Table" }
 
 type Field struct {
 	FieldName *string `json:"FieldName,omitempty"`
@@ -128,7 +128,7 @@ type Type struct {
 	TypeName              *string  `json:"TypeName,omitempty"`
 }
 
-func (Type) CloudControlType() string { return "AWS::Cassandra::Type" }
+func (Type) Type() string { return "AWS::Cassandra::Type" }
 
 type ReplicationSpecificationReplicationStrategy string
 

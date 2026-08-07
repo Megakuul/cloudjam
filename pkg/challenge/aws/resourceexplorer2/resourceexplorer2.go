@@ -8,9 +8,7 @@ type DefaultViewAssociation struct {
 	ViewArn                *string `json:"ViewArn,omitempty"`
 }
 
-func (DefaultViewAssociation) CloudControlType() string {
-	return "AWS::ResourceExplorer2::DefaultViewAssociation"
-}
+func (DefaultViewAssociation) Type() string { return "AWS::ResourceExplorer2::DefaultViewAssociation" }
 
 type Index struct {
 	Arn        *string           `json:"Arn,omitempty"`
@@ -19,7 +17,7 @@ type Index struct {
 	Type       *IndexType        `json:"Type,omitempty"`
 }
 
-func (Index) CloudControlType() string { return "AWS::ResourceExplorer2::Index" }
+func (Index) Type() string { return "AWS::ResourceExplorer2::Index" }
 
 type SearchFilter struct {
 	FilterString *string `json:"FilterString,omitempty"`
@@ -38,7 +36,7 @@ type View struct {
 	ViewName           *string            `json:"ViewName,omitempty"`
 }
 
-func (View) CloudControlType() string { return "AWS::ResourceExplorer2::View" }
+func (View) Type() string { return "AWS::ResourceExplorer2::View" }
 
 type IndexState string
 
