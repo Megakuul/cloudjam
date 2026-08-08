@@ -42,6 +42,21 @@ type Provider interface {
 	Cost(ctx context.Context, id string, window time.Duration) ([]Cost, error)
 }
 
+// AccessController provides an API to modify an accounts challenge credential permissions / guardrails.
+// All operations work with provider specific policy documents that limit the users access to the account resources.
+type AccessController interface {
+	// CreatePermission creates the initial access rights for the challenge user credential access.
+	CreatePermission(ctx context.Context, policy string) error
+	// UpdatePermission replaces the permission policy for the user credential access.
+	UpdatePermission(ctx context.Context, policy string) error
+	// CreateGuardrail creates a boundary for the user credential access.
+	// Unlike the permission the guardrail is designed to avoid ANY kind of privilege escalation
+	// (on the permission it may be part of the challenge to escalate from it).
+	CreateGuardrail(ctx context.Context, policy string) error
+	// UpdateGuardrail replaces the boundary for the user credential access.
+	UpdateGuardrail(ctx context.Context, policy string) error
+}
+
 // AssetController provides a CRUD abstraction over the providers asset storage (e.g. for AWS it is s3).
 // The idea of assets is to provide them locally in the provider account for the challenge (e.g. a go binary that does something on lambda).
 type AssetController interface {

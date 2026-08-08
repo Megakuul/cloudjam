@@ -14,6 +14,7 @@ import (
 
 type localProvider struct {
 	score     float64
+	access    provider.AccessController
 	assets    provider.AssetController
 	resources provider.ResourceController
 }
@@ -85,6 +86,30 @@ func (p *localProvider) updateAsset(ctx context.Context, in *api.UpdateAssetInpu
 	return &api.UpdateAssetOutput{
 		NewURL: url,
 	}, nil
+}
+
+func (p *localProvider) createPermission(ctx context.Context, in *api.CreatePermissionInput) (*api.CreatePermissionOutput, error) {
+	slog.Info("creating permission")
+	err := p.access.CreatePermission(ctx, in.Permission)
+	return &api.CreatePermissionOutput{}, err
+}
+
+func (p *localProvider) updatePermission(ctx context.Context, in *api.UpdatePermissionInput) (*api.UpdatePermissionOutput, error) {
+	slog.Info("updating permission")
+	err := p.access.UpdatePermission(ctx, in.Permission)
+	return &api.UpdatePermissionOutput{}, err
+}
+
+func (p *localProvider) createGuardrail(ctx context.Context, in *api.CreateGuardrailInput) (*api.CreateGuardrailOutput, error) {
+	slog.Info("creating guardrail")
+	err := p.access.CreateGuardrail(ctx, in.Guardrail)
+	return &api.CreateGuardrailOutput{}, err
+}
+
+func (p *localProvider) updateGuardrail(ctx context.Context, in *api.UpdateGuardrailInput) (*api.UpdateGuardrailOutput, error) {
+	slog.Info("creating guardrail")
+	err := p.access.UpdateGuardrail(ctx, in.Guardrail)
+	return &api.UpdateGuardrailOutput{}, err
 }
 
 func (p *localProvider) createResource(ctx context.Context, in *api.CreateResourceInput) (*api.CreateResourceOutput, error) {

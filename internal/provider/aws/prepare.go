@@ -47,26 +47,14 @@ func (p *Provider) Prepare(ctx context.Context, id string) error {
 		}
 	}
 
-	sandboxPolicy, err := json.Marshal(policyDocument{
-		Version: "2012-10-17",
-		Statement: []policyStatement{
-			{
-				Effect: "Allow",
-				Principal: map[string]string{
-					"AWS": fmt.Sprintf("arn:aws:iam::%s:root", id),
-				},
-				Action: []string{"sts:AssumeRole"},
-			},
-		},
-	})
-
-	_, err = iamClient.PutRolePolicy(ctx, &iam.PutRolePolicyInput{
-		RoleName:       &p.sandboxRole,
-		PolicyName:     new("cloudjam"),
-		PolicyDocument: new(string(sandboxPolicy)),
+	_, err = iamClient.DeleteRolePolicy(ctx, &iam.DeleteRolePolicyInput{
+		RoleName:   &p.sandboxRole,
+		PolicyName: new(sandboxInlinePolicy),
 	})
 	if err != nil {
-		return fmt.Errorf("failed to attach role policy to sandbox role: %w", err)
+		if _, ok := errors.AsType[*iamtypes.NoSuchEntityException](err); !ok {
+			return fmt.Errorf("failed to remove old role policy from sandbox role: %w", err)
+		}
 	}
 
 	p.assetBucket = fmt.Sprintf("asset-bucket-%s", uuid.NewString())

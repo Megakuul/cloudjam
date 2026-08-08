@@ -63,6 +63,34 @@ func UpdateAsset(in UpdateAssetInput) (UpdateAssetOutput, error) {
 	return callInOut[UpdateAssetInput, UpdateAssetOutput](hostUpdateAsset, in)
 }
 
+//go:wasmimport extism:host/user create_permission
+func hostCreatePermission(uint64) uint64
+
+func CreatePermission(in CreatePermissionInput) (CreatePermissionOutput, error) {
+	return callInOut[CreatePermissionInput, CreatePermissionOutput](hostCreatePermission, in)
+}
+
+//go:wasmimport extism:host/user update_permission
+func hostUpdatePermission(uint64) uint64
+
+func UpdatePermission(in UpdatePermissionInput) (UpdatePermissionOutput, error) {
+	return callInOut[UpdatePermissionInput, UpdatePermissionOutput](hostUpdatePermission, in)
+}
+
+//go:wasmimport extism:host/user create_guardrail
+func hostCreateGuardrail(uint64) uint64
+
+func CreateGuardrail(in CreateGuardrailInput) (CreateGuardrailOutput, error) {
+	return callInOut[CreateGuardrailInput, CreateGuardrailOutput](hostCreateGuardrail, in)
+}
+
+//go:wasmimport extism:host/user update_guardrail
+func hostUpdateGuardrail(uint64) uint64
+
+func UpdateGuardrail(in UpdateGuardrailInput) (UpdateGuardrailOutput, error) {
+	return callInOut[UpdateGuardrailInput, UpdateGuardrailOutput](hostUpdateGuardrail, in)
+}
+
 //go:wasmimport extism:host/user create_resource
 func hostCreateResource(uint64) uint64
 

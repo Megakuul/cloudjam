@@ -18,6 +18,8 @@ import (
 	"codeberg.org/megakuul/cloudjam/internal/provider"
 )
 
+const sandboxInlinePolicy = "cloudjam"
+
 // maxVolumeSize defines the hardcoded maximum storage size (ebs).
 const maxVolumeSize = 50 // 50 gb
 

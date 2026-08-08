@@ -81,6 +81,38 @@ type UpdateAssetOutput struct {
 	NewURL string `json:"new_url,omitempty"`
 }
 
+const CreatePermissionName = "create_permission"
+
+type CreatePermissionInput struct {
+	Permission string `json:"permission,omitempty"`
+}
+
+type CreatePermissionOutput struct{}
+
+const UpdatePermissionName = "update_permission"
+
+type UpdatePermissionInput struct {
+	Permission string `json:"permission,omitempty"`
+}
+
+type UpdatePermissionOutput struct{}
+
+const CreateGuardrailName = "create_guardrail"
+
+type CreateGuardrailInput struct {
+	Guardrail string `json:"guardrail,omitempty"`
+}
+
+type CreateGuardrailOutput struct{}
+
+const UpdateGuardrailName = "update_guardrail"
+
+type UpdateGuardrailInput struct {
+	Guardrail string `json:"guardrail,omitempty"`
+}
+
+type UpdateGuardrailOutput struct{}
+
 const CreateResourceName = "create_resource"
 
 type CreateResourceInput struct {

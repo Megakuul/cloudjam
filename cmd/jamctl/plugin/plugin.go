@@ -18,7 +18,7 @@ import (
 
 // Run compiles the plugin from the source package, installs the plugin api as host functions and calls _start.
 // It uses the provided resource controller to implement the host functions.
-func Run(ctx context.Context, source string, assets provider.AssetController, resources provider.ResourceController) error {
+func Run(ctx context.Context, source string, access provider.AccessController, assets provider.AssetController, resources provider.ResourceController) error {
 	slog.Info("compiling plugin", "source", source)
 
 	file, err := os.CreateTemp("", "jamctl-*.wasm")
@@ -34,7 +34,7 @@ func Run(ctx context.Context, source string, assets provider.AssetController, re
 		return fmt.Errorf("compile %s: %w\n%s", source, err, strings.TrimSpace(string(out)))
 	}
 
-	provider := &localProvider{resources: resources, assets: assets}
+	provider := &localProvider{access: access, assets: assets, resources: resources}
 
 	report := func(err error) {
 		slog.Error(err.Error())
@@ -57,6 +57,10 @@ func Run(ctx context.Context, source string, assets provider.AssetController, re
 			challenge.RegisterInOutHost(api.UpdateScoreName, provider.updateScore, report),
 			challenge.RegisterOutHost(api.CreateAssetName, provider.createAsset, report),
 			challenge.RegisterInOutHost(api.UpdateAssetName, provider.updateAsset, report),
+			challenge.RegisterInOutHost(api.CreatePermissionName, provider.createPermission, report),
+			challenge.RegisterInOutHost(api.UpdatePermissionName, provider.updatePermission, report),
+			challenge.RegisterInOutHost(api.CreateGuardrailName, provider.createGuardrail, report),
+			challenge.RegisterInOutHost(api.UpdateGuardrailName, provider.updateGuardrail, report),
 			challenge.RegisterInOutHost(api.CreateResourceName, provider.createResource, report),
 			challenge.RegisterInOutHost(api.ReadResourceName, provider.readResource, report),
 			challenge.RegisterInOutHost(api.UpdateResourceName, provider.updateResource, report),

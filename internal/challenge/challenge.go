@@ -21,6 +21,7 @@ type Challenge struct {
 	oltp   *dynamitedb.Bucket
 	olap   *lake.Bucket
 
+	access    provider.AccessController
 	assets    provider.AssetController
 	resources provider.ResourceController
 
@@ -81,6 +82,10 @@ func (c *Challenge) Start(ctx context.Context) error {
 		RegisterInOutHost(api.UpdateScoreName, c.UpdateScore, report),
 		RegisterOutHost(api.CreateAssetName, c.CreateAsset, report),
 		RegisterInOutHost(api.UpdateAssetName, c.UpdateAsset, report),
+		RegisterInOutHost(api.CreatePermissionName, c.CreatePermission, report),
+		RegisterInOutHost(api.UpdatePermissionName, c.UpdatePermission, report),
+		RegisterInOutHost(api.CreateGuardrailName, c.CreateGuardrail, report),
+		RegisterInOutHost(api.UpdateGuardrailName, c.UpdateGuardrail, report),
 		RegisterInOutHost(api.CreateResourceName, c.CreateResource, report),
 		RegisterInOutHost(api.ReadResourceName, c.ReadResource, report),
 		RegisterInOutHost(api.UpdateResourceName, c.UpdateResource, report),
@@ -182,6 +187,26 @@ func (c *Challenge) UpdateAsset(ctx context.Context, input *api.UpdateAssetInput
 	return &api.UpdateAssetOutput{
 		NewURL: url,
 	}, nil
+}
+
+func (c *Challenge) CreatePermission(ctx context.Context, input *api.CreatePermissionInput) (*api.CreatePermissionOutput, error) {
+	err := c.access.CreatePermission(ctx, input.Permission)
+	return &api.CreatePermissionOutput{}, err
+}
+
+func (c *Challenge) UpdatePermission(ctx context.Context, input *api.UpdatePermissionInput) (*api.UpdatePermissionOutput, error) {
+	err := c.access.UpdatePermission(ctx, input.Permission)
+	return &api.UpdatePermissionOutput{}, err
+}
+
+func (c *Challenge) CreateGuardrail(ctx context.Context, input *api.CreateGuardrailInput) (*api.CreateGuardrailOutput, error) {
+	err := c.access.CreateGuardrail(ctx, input.Guardrail)
+	return &api.CreateGuardrailOutput{}, err
+}
+
+func (c *Challenge) UpdateGuardrail(ctx context.Context, input *api.UpdateGuardrailInput) (*api.UpdateGuardrailOutput, error) {
+	err := c.access.UpdateGuardrail(ctx, input.Guardrail)
+	return &api.UpdateGuardrailOutput{}, err
 }
 
 func (c *Challenge) CreateResource(ctx context.Context, input *api.CreateResourceInput) (*api.CreateResourceOutput, error) {
