@@ -3,12 +3,14 @@ package oltp
 import "github.com/megakuul/dynamitedb"
 
 type Provider struct {
-	ProviderID      dynamitedb.KeyField          `pk:"provider_id"`
-	Type            dynamitedb.DataField[int]    `json:"type,omitempty"`
-	Name            dynamitedb.DataField[string] `json:"name,omitempty"`
-	Description     dynamitedb.DataField[string] `json:"description,omitempty"`
-	Credentials     dynamitedb.DataField[string] `json:"credentials"` // credentials for provider root entity that can create accounts
-	DesiredAccounts dynamitedb.DataField[int]    `json:"desired_accounts"`
+	ProviderID      dynamitedb.KeyField            `pk:"provider_id"`
+	Type            dynamitedb.DataField[int]      `json:"type,omitempty"`
+	Name            dynamitedb.DataField[string]   `json:"name,omitempty"`
+	Description     dynamitedb.DataField[string]   `json:"description,omitempty"`
+	Email           dynamitedb.DataField[string]   `json:"email,omitempty"`
+	Regions         dynamitedb.DataField[[]string] `json:"regions,omitempty"`
+	Credentials     dynamitedb.DataField[string]   `json:"credentials"` // credentials for provider root entity that can create accounts
+	DesiredAccounts dynamitedb.DataField[int]      `json:"desired_accounts"`
 
 	Scope dynamitedb.DataField[string] `json:"scope,omitempty"`
 }
@@ -25,13 +27,14 @@ type Account struct {
 	Scope dynamitedb.DataField[string] `json:"scope,omitempty"`
 }
 
-type ChallengeDefinition struct {
-	ProviderID  dynamitedb.KeyField          `pk:"provider_id"`
-	ChallengeID dynamitedb.KeyField          `sk:"challenge_id"`
-	Name        dynamitedb.DataField[string] `json:"name,omitempty"`
-	Description dynamitedb.DataField[string] `json:"description,omitempty"`
-	Version     dynamitedb.DataField[string] `json:"version,omitempty"`
-	WASM        dynamitedb.DataField[string] `json:"wasm,omitempty"`
+type Definition struct {
+	ProviderID   dynamitedb.KeyField          `pk:"provider_id"`
+	DefinitionID dynamitedb.KeyField          `sk:"definition_id"`
+	Name         dynamitedb.DataField[string] `json:"name,omitempty"`
+	Description  dynamitedb.DataField[string] `json:"description,omitempty"`
+	Version      dynamitedb.DataField[string] `json:"version,omitempty"`
+	WASM         dynamitedb.DataField[string] `json:"wasm,omitempty"`
+	Checksum     dynamitedb.DataField[string] `json:"checksum,omitempty"`
 
 	Scope dynamitedb.DataField[string] `json:"scope,omitempty"`
 }

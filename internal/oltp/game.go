@@ -25,6 +25,7 @@ type ScoreEvent struct {
 type Player struct {
 	GameID      dynamitedb.KeyField                `pk:"game_id"`
 	PlayerID    dynamitedb.KeyField                `sk:"player_id"`
+	TeamID      dynamitedb.DataField[string]       `json:"team_id,omitempty"`
 	Username    dynamitedb.DataField[string]       `json:"username,omitempty"`
 	PubID       dynamitedb.DataField[string]       `json:"pub_id,omitempty"`
 	Score       dynamitedb.DataField[float64]      `json:"score,omitempty"`
@@ -36,6 +37,7 @@ type Player struct {
 type Challenge struct {
 	GameID         dynamitedb.KeyField          `pk:"game_id"`
 	ChallengeID    dynamitedb.KeyField          `sk:"challenge_id"`
+	TeamID         dynamitedb.DataField[string] `json:"team_id,omitempty"`
 	DefinitionID   dynamitedb.DataField[string] `json:"definition_id,omitempty"`
 	DefinitionName dynamitedb.DataField[string] `json:"definition_name,omitempty"`
 

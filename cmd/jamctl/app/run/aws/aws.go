@@ -116,10 +116,11 @@ func (r *Options) Run(ctx context.Context, args []string) error {
 		if err != nil {
 			return fmt.Errorf("failed to create sandbox role: %w", err)
 		}
+		println(*sandboxRole.Role.Arn)
 		credentials, err := stsClient.AssumeRole(ctx, &sts.AssumeRoleInput{
 			RoleArn:         sandboxRole.Role.Arn,
 			RoleSessionName: new("jamctl"),
-			DurationSeconds: new(int32(14400)), // 4 hours
+			DurationSeconds: new(int32(3600)), // 1 hour
 		})
 		if err != nil {
 			return fmt.Errorf("failed to create sandbox credentials: %w", err)
@@ -129,7 +130,7 @@ func (r *Options) Run(ctx context.Context, args []string) error {
 			providerEndpoint, *credentials.Credentials.AccessKeyId, *credentials.Credentials.SecretAccessKey, *credentials.Credentials.SessionToken,
 		))
 		return plugin.Run(ctx, args[0],
-			aws.NewAccessController(iamClient, *identity.Account, *sandboxRole.Role.Arn, "cloudjam-boundary"),
+			aws.NewAccessController(iamClient, *identity.Account, *sandboxRole.Role.RoleName, "cloudjam-boundary"),
 			aws.NewAssetController(s3Client, assetBucket),
 			aws.NewResourceController(cloudcontrol.NewFromConfig(config)),
 		)

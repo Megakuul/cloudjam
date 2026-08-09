@@ -1,0 +1,87 @@
+syntax = "proto3";
+
+package v1.game.challenge;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+import "v1/game/challenge.proto";
+
+option go_package = "codeberg.org/megakuul/cloudjam/pkg/api/v1/game/challenge";
+
+message GetRequest {
+  string game_id = 1 [(buf.validate.field).string = {uuid: true}];
+  string id = 2 [(buf.validate.field).string = {uuid: true}];
+}
+
+message GetResponse {
+  Challenge account = 1;
+}
+
+message ListRequest {
+  string game_id = 1 [(buf.validate.field).string = {uuid: true}];
+  int32 limit = 2 [(buf.validate.field).int32 = {
+    gt: 0
+    lte: 100
+  }];
+}
+
+message ListResponse {
+  repeated Challenge accounts = 1;
+}
+
+message CreateRequest {
+  Challenge init = 1;
+}
+
+message CreateResponse {}
+
+message UpdateRequest {
+  Challenge mod = 1;
+}
+
+message UpdateResponse {}
+
+message DeleteRequest {
+  string id = 1 [(buf.validate.field).string = {uuid: true}];
+}
+
+message DeleteResponse {}
+
+message StartRequest {
+  string game_id = 1 [(buf.validate.field).string = {uuid: true}];
+  string id = 2 [(buf.validate.field).string = {uuid: true}];
+}
+
+message StartResponse {}
+
+message CredentialsRequest {
+  string game_id = 1 [(buf.validate.field).string = {uuid: true}];
+  string id = 2 [(buf.validate.field).string = {uuid: true}];
+}
+
+message CredentialsResponse {
+  string credentials = 1;
+}
+
+message UncoverClueRequest {
+  string game_id = 1 [(buf.validate.field).string = {uuid: true}];
+  string id = 2 [(buf.validate.field).string = {uuid: true}];
+  string clue = 3 [
+    (buf.validate.field).string.min_len = 1,
+    (buf.validate.field).string.max_len = 100
+  ];
+}
+
+message UncoverClueResponse {}
+
+service ChallengeService {
+  rpc Get(GetRequest) returns (GetResponse);
+  rpc List(ListRequest) returns (ListResponse);
+  rpc Create(CreateRequest) returns (CreateResponse);
+  rpc Update(UpdateRequest) returns (UpdateResponse);
+  rpc Delete(DeleteRequest) returns (DeleteResponse);
+
+  rpc Start(StartRequest) returns (StartResponse);
+  rpc Credentials(CredentialsRequest) returns (CredentialsResponse);
+  rpc UncoverClue(UncoverClueRequest) returns (UncoverClueResponse);
+}

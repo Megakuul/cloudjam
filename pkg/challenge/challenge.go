@@ -57,7 +57,9 @@ type Scenario struct {
 	init             atomic.Bool
 
 	checksLock sync.RWMutex
-	checks     map[string]Check
+	// by pointer: evaluateChecks writes last and retired back onto the check it
+	// just ran, and a map of values would hand it a copy to throw away.
+	checks map[string]*Check
 
 	eventsLock   sync.RWMutex // also used for activeEvents
 	events       map[string]Event
@@ -73,7 +75,7 @@ func New(title string, interval time.Duration, boostrap func(s *Scenario) error)
 		init:         atomic.Bool{},
 		initAssets:   map[string]string{},
 		initClues:    map[string]string{},
-		checks:       map[string]Check{},
+		checks:       map[string]*Check{},
 		events:       map[string]Event{},
 		activeEvents: map[string]context.CancelFunc{},
 	}
@@ -172,7 +174,7 @@ func (c *Scenario) SetGuardrail(doc fmt.Stringer) *Scenario {
 func (c *Scenario) AddCheck(name string, check Check) *Scenario {
 	c.checksLock.Lock()
 	defer c.checksLock.Unlock()
-	c.checks[name] = check
+	c.checks[name] = &check
 	return c
 }
 

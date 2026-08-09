@@ -14,7 +14,7 @@ import (
 // startFakeCloud runs the container and waits for it to answer its health endpoint. It returns the container id.
 func startFakeCloud(ctx context.Context, image string, port int) (string, error) {
 	args := []string{
-		"run", "--detach", "--rm",
+		"run", "--detach", "--rm", "-e", "FAKECLOUD_IAM=strict",
 		"--publish", fmt.Sprintf("127.0.0.1:%d:4566", port), image,
 	}
 

@@ -1,43 +1,42 @@
 syntax = "proto3";
 
-package v1.cloud.account;
+package v1.game.team;
 
 import "buf/validate/validate.proto";
 import "google/protobuf/timestamp.proto";
-import "v1/cloud/account.proto";
+import "v1/game/team.proto";
 
-option go_package = "codeberg.org/megakuul/cloudjam/pkg/api/v1/cloud/account";
+option go_package = "codeberg.org/megakuul/cloudjam/pkg/api/v1/game/team";
 
 message GetRequest {
-  string provider_id = 1 [(buf.validate.field).string = {uuid: true}];
+  string game_id = 1 [(buf.validate.field).string = {uuid: true}];
   string id = 2 [(buf.validate.field).string = {uuid: true}];
 }
 
 message GetResponse {
-  Account account = 1;
+  Team account = 1;
 }
 
 message ListRequest {
-  string provider_id = 1 [(buf.validate.field).string = {uuid: true}];
+  string game_id = 1 [(buf.validate.field).string = {uuid: true}];
   int32 limit = 2 [(buf.validate.field).int32 = {
     gt: 0
     lte: 100
   }];
-  string start_after = 3;
 }
 
 message ListResponse {
-  repeated Account accounts = 1;
+  repeated Team accounts = 1;
 }
 
 message CreateRequest {
-  Account init = 1;
+  Team init = 1;
 }
 
 message CreateResponse {}
 
 message UpdateRequest {
-  Account mod = 1;
+  Team mod = 1;
 }
 
 message UpdateResponse {}
@@ -48,7 +47,7 @@ message DeleteRequest {
 
 message DeleteResponse {}
 
-service AccountService {
+service TeamService {
   rpc Get(GetRequest) returns (GetResponse);
   rpc List(ListRequest) returns (ListResponse);
   rpc Create(CreateRequest) returns (CreateResponse);

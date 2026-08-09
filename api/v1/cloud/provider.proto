@@ -12,7 +12,7 @@ enum ProviderType {
 
 message Provider {
   string scope = 1;
-  string id = 2;
+  string id = 2 [(buf.validate.field).string = {uuid: true}];
   ProviderType type = 3;
   string name = 4 [
     (buf.validate.field).string.min_len = 4,

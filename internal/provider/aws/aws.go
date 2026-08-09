@@ -2,6 +2,7 @@ package aws
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log/slog"
@@ -17,6 +18,14 @@ import (
 
 	"codeberg.org/megakuul/cloudjam/internal/provider"
 )
+
+// Credentials provides the serializable format in which this provider accepts credentials.
+type Credentials struct {
+	Endpoint  *string `json:"endpoint"`
+	Region    string  `json:"region"`
+	AccessKey string  `json:"access_key"`
+	SecretKey string  `json:"secret_key"`
+}
 
 const sandboxInlinePolicy = "cloudjam"
 
@@ -66,7 +75,16 @@ var _ provider.Provider = (*Provider)(nil)
 type ProviderOption func(*Provider)
 
 // New creates the repository and resolves the organization management account.
-func New(ctx context.Context, config awssdk.Config, opts ...ProviderOption) (*Provider, error) {
+func New(ctx context.Context, rawCreds string, opts ...ProviderOption) (*Provider, error) {
+	creds := &Credentials{}
+	if err := json.Unmarshal([]byte(rawCreds), creds); err != nil {
+		return nil, fmt.Errorf("invalid provider credentials: %w", err)
+	}
+	config := awssdk.Config{
+		Region:       creds.Region,
+		Credentials:  credentials.NewStaticCredentialsProvider(creds.AccessKey, creds.SecretKey, ""),
+		BaseEndpoint: creds.Endpoint,
+	}
 	provider := &Provider{
 		logger:         slog.Default(),
 		regions:        []string{"us-east-1", "eu-central-1"},
