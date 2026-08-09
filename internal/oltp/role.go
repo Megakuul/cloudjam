@@ -9,10 +9,10 @@ const (
 
 type Role struct {
 	RoleID      dynamitedb.KeyField                     `pk:"role_id"`
-	Name        dynamitedb.DataField[string]            `json:"name,omitempty"`
-	Description dynamitedb.DataField[string]            `json:"description,omitempty"`
-	Builtin     dynamitedb.DataField[bool]              `json:"builtin,omitempty"`
-	Permissions dynamitedb.DataField[map[string]string] `json:"permissions,omitempty"`
+	Name        dynamitedb.DataField[string]            `cbor:"name,omitempty"`
+	Description dynamitedb.DataField[string]            `cbor:"description,omitempty"`
+	Builtin     dynamitedb.DataField[bool]              `cbor:"builtin,omitempty"`
+	Permissions dynamitedb.DataField[map[string]string] `cbor:"permissions,omitempty"`
 
-	Scope dynamitedb.DataField[string] `json:"scope,omitempty"`
+	Scope dynamitedb.DataField[string] `cbor:"scope,omitempty"`
 }

@@ -3,8 +3,10 @@ package challenge
 import (
 	"bytes"
 	"context"
+	"crypto/rand"
 	"fmt"
 	"log/slog"
+	"os"
 	"time"
 
 	"codeberg.org/megakuul/cloudjam/internal/oltp"
@@ -12,8 +14,10 @@ import (
 	"codeberg.org/megakuul/cloudjam/pkg/challenge/api"
 	extism "github.com/extism/go-sdk"
 	"github.com/google/uuid"
+	"github.com/klauspost/compress/zstd"
 	"github.com/megakuul/dynamitedb"
 	"github.com/megakuul/lake"
+	"github.com/tetratelabs/wazero"
 )
 
 type Challenge struct {
@@ -31,13 +35,20 @@ type Challenge struct {
 
 	gameID      string
 	challengeID string
-	playerID    string
-	playerName  string
+	teamID      string
+	teamName    string
 	playerPubID string
 	scope       string
 }
 
 func (c *Challenge) Start(ctx context.Context) error {
+	definitionBinary, err := dynamitedb.Get(ctx, c.oltp, &oltp.DefinitionBinary{
+		ProviderID:   dynamitedb.Key(c.providerID),
+		DefinitionID: dynamitedb.Key(c.definitionID),
+	})
+	if err != nil {
+		return err
+	}
 	if err := dynamitedb.Create(ctx, c.oltp, &oltp.Challenge{
 		GameID:         dynamitedb.Key(c.gameID),
 		ChallengeID:    dynamitedb.Key(c.challengeID),
@@ -47,12 +58,11 @@ func (c *Challenge) Start(ctx context.Context) error {
 	}); err != nil {
 		return err
 	}
-	if err := dynamitedb.Create(ctx, c.oltp, &oltp.Player{
-		GameID:   dynamitedb.Key(c.gameID),
-		PlayerID: dynamitedb.Key(c.playerID),
-		Username: dynamitedb.Set(c.playerName),
-		PubID:    dynamitedb.Set(c.playerPubID),
-		// PlayerScore: dynamitedb.Set(0.0),
+	if err := dynamitedb.Create(ctx, c.oltp, &oltp.Team{
+		GameID: dynamitedb.Key(c.gameID),
+		TeamID: dynamitedb.Key(c.teamID),
+		Name:   dynamitedb.Set(c.teamName),
+		// Players: ,
 		Scope: dynamitedb.Set(c.scope),
 	}); err != nil {
 		return err
@@ -67,33 +77,66 @@ func (c *Challenge) Start(ctx context.Context) error {
 			c.logger.Warn(dErr.Error())
 		}
 	}
-	manifests := extism.Manifest{
-		Wasm: []extism.Wasm{
-			extism.WasmData{},
-		},
+
+	wasmData := extism.WasmData{}
+	switch definitionBinary.Compression.Value() {
+	case oltp.CompressionZstd:
+		wasmData.Data, err = zstd.DecodeTo(nil, definitionBinary.WASM.Value())
+		if err != nil {
+			return fmt.Errorf("failed to zstd decode plugin: %w", err)
+		}
+	default:
+		return fmt.Errorf("unknown compression algorithm in challenge definition (%d)", definitionBinary.Compression.Value())
 	}
-	config := extism.PluginConfig{}
-	plugin, err := extism.NewCompiledPlugin(ctx, manifests, config, []extism.HostFunction{
-		RegisterInOutHost(api.ReportName, c.Report, report),
-		RegisterInOutHost(api.LogName, c.Log, report),
-		RegisterInOutHost(api.CreateMetaName, c.CreateMeta, report),
-		RegisterInOutHost(api.UpdateMetaName, c.UpdateMeta, report),
-		RegisterInOutHost(api.ReadScoreName, c.ReadScore, report),
-		RegisterInOutHost(api.UpdateScoreName, c.UpdateScore, report),
-		RegisterOutHost(api.CreateAssetName, c.CreateAsset, report),
-		RegisterInOutHost(api.UpdateAssetName, c.UpdateAsset, report),
-		RegisterInOutHost(api.CreatePermissionName, c.CreatePermission, report),
-		RegisterInOutHost(api.UpdatePermissionName, c.UpdatePermission, report),
-		RegisterInOutHost(api.CreateGuardrailName, c.CreateGuardrail, report),
-		RegisterInOutHost(api.UpdateGuardrailName, c.UpdateGuardrail, report),
-		RegisterInOutHost(api.CreateResourceName, c.CreateResource, report),
-		RegisterInOutHost(api.ReadResourceName, c.ReadResource, report),
-		RegisterInOutHost(api.UpdateResourceName, c.UpdateResource, report),
-		RegisterInOutHost(api.DeleteResourceName, c.DeleteResource, report),
-		RegisterInOutHost(api.ListResourceName, c.ListResource, report),
-	})
+	plugin, err := extism.NewCompiledPlugin(ctx,
+		extism.Manifest{Wasm: []extism.Wasm{wasmData}},
+		extism.PluginConfig{
+			EnableWasi: true,
+			// Without this a cancelled context cannot interrupt the guest, and a
+			// challenge loop would keep running after ctrl-c.
+			RuntimeConfig: wazero.NewRuntimeConfig().WithCloseOnContextDone(true),
+		},
+		[]extism.HostFunction{
+			RegisterInOutHost(api.ReportName, c.Report, report),
+			RegisterInOutHost(api.LogName, c.Log, report),
+			RegisterInOutHost(api.CreateMetaName, c.CreateMeta, report),
+			RegisterInOutHost(api.UpdateMetaName, c.UpdateMeta, report),
+			RegisterInOutHost(api.ReadScoreName, c.ReadScore, report),
+			RegisterInOutHost(api.UpdateScoreName, c.UpdateScore, report),
+			RegisterOutHost(api.CreateAssetName, c.CreateAsset, report),
+			RegisterInOutHost(api.UpdateAssetName, c.UpdateAsset, report),
+			RegisterInOutHost(api.CreatePermissionName, c.CreatePermission, report),
+			RegisterInOutHost(api.UpdatePermissionName, c.UpdatePermission, report),
+			RegisterInOutHost(api.CreateGuardrailName, c.CreateGuardrail, report),
+			RegisterInOutHost(api.UpdateGuardrailName, c.UpdateGuardrail, report),
+			RegisterInOutHost(api.CreateResourceName, c.CreateResource, report),
+			RegisterInOutHost(api.ReadResourceName, c.ReadResource, report),
+			RegisterInOutHost(api.UpdateResourceName, c.UpdateResource, report),
+			RegisterInOutHost(api.DeleteResourceName, c.DeleteResource, report),
+			RegisterInOutHost(api.ListResourceName, c.ListResource, report),
+		})
 	if err != nil {
 		return nil
+	}
+	instance, err := plugin.Instance(ctx, extism.PluginInstanceConfig{
+		// The defaults are a frozen clock and a sleep that returns immediately,
+		// which would collapse every challenge interval into one hot spin.
+		ModuleConfig: wazero.NewModuleConfig().
+			WithSysWalltime().
+			WithSysNanotime().
+			WithSysNanosleep().
+			WithRandSource(rand.Reader).
+			WithStdout(os.Stdout).
+			WithStderr(os.Stderr),
+	})
+	if err != nil {
+		return fmt.Errorf("instantiate plugin: %w", err)
+	}
+	defer instance.Close(context.WithoutCancel(ctx))
+
+	_, _, err = instance.CallWithContext(ctx, "_start", nil)
+	if err != nil && ctx.Err() == nil {
+		return err
 	}
 	defer plugin.Close(ctx)
 
@@ -138,23 +181,30 @@ func (c *Challenge) UpdateMeta(ctx context.Context, input *api.UpdateMetaInput) 
 }
 
 func (c *Challenge) ReadScore(ctx context.Context, input *api.ReadScoreInput) (*api.ReadScoreOutput, error) {
-	player, err := dynamitedb.Get(ctx, c.oltp, &oltp.Player{
-		GameID:   dynamitedb.Key(c.gameID),
-		PlayerID: dynamitedb.Key(c.playerID),
+	team, err := dynamitedb.Get(ctx, c.oltp, &oltp.Team{
+		GameID: dynamitedb.Key(c.gameID),
+		TeamID: dynamitedb.Key(c.teamID),
 	})
 	if err != nil {
 		return nil, err
 	}
 	return &api.ReadScoreOutput{
-		Score: player.Score.Value(),
+		Score: team.Score.Value(),
 	}, nil
 }
 
 func (c *Challenge) UpdateScore(ctx context.Context, input *api.UpdateScoreInput) (*api.UpdateScoreOutput, error) {
-	err := dynamitedb.Update(ctx, c.oltp, &oltp.Player{
-		GameID:   dynamitedb.Key(c.gameID),
-		PlayerID: dynamitedb.Key(c.playerID),
-		Score:    dynamitedb.Increment(input.Increment),
+	err := dynamitedb.Update(ctx, c.oltp, &oltp.Team{
+		GameID: dynamitedb.Key(c.gameID),
+		TeamID: dynamitedb.Key(c.teamID),
+		Score:  dynamitedb.Increment(input.Increment),
+	})
+	if err != nil {
+		return nil, err
+	}
+	err = dynamitedb.Update(ctx, c.oltp, &oltp.Challenge{
+		GameID:      dynamitedb.Key(c.gameID),
+		ChallengeID: dynamitedb.Key(c.challengeID),
 		ScoreEvents: dynamitedb.Append(oltp.ScoreEvent{
 			Timestamp: time.Now(),
 			Text:      input.Reason,

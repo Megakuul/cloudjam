@@ -5,6 +5,7 @@ import (
 	"os"
 	"time"
 
+	"codeberg.org/megakuul/cloudjam/cmd/jamctl/app/build"
 	"codeberg.org/megakuul/cloudjam/cmd/jamctl/app/run"
 	"codeberg.org/megakuul/cloudjam/cmd/jamctl/flags"
 	"github.com/lmittmann/tint"
@@ -17,7 +18,7 @@ func NewCmd() *cobra.Command {
 		Use:           "jamctl",
 		Short:         "CloudJam CLI for designing challenges",
 		SilenceUsage:  true,
-		SilenceErrors: true,
+		SilenceErrors: false,
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
 			level := slog.LevelInfo
 			if options.globalFlags.Verbose {
@@ -33,6 +34,7 @@ func NewCmd() *cobra.Command {
 
 	cmd.AddCommand(
 		run.NewCmd(run.NewOptions(options.globalFlags)),
+		build.NewCmd(build.NewOptions(options.globalFlags)),
 	)
 
 	return cmd

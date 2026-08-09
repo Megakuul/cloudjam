@@ -7,30 +7,30 @@ import (
 )
 
 type User struct {
-	UserID       dynamitedb.KeyField             `pk:"user_id" json:"-"`
-	PubID        dynamitedb.DataField[string]    `json:"pub_id,omitempty"`
-	Username     dynamitedb.DataField[string]    `json:"username,omitempty"`
-	Description  dynamitedb.DataField[string]    `json:"description,omitempty"`
-	Organization dynamitedb.DataField[string]    `json:"organization,omitempty"`
-	Email        dynamitedb.DataField[string]    `json:"email,omitempty"`
-	CreatedAt    dynamitedb.DataField[time.Time] `json:"created_at,omitempty"`
-	Score        dynamitedb.DataField[float64]   `json:"score,omitempty"`
-	MaxScore     dynamitedb.DataField[float64]   `json:"max_score,omitempty"`
-	Streak       dynamitedb.DataField[int]       `json:"streak,omitempty"`
-	MaxStreak    dynamitedb.DataField[int]       `json:"max_streak,omitempty"`
-	Privileged   dynamitedb.DataField[bool]      `json:"privileged,omitempty"`
-	Role         dynamitedb.DataField[string]    `json:"role,omitempty"`
+	UserID       dynamitedb.KeyField             `pk:"user_id" cbor:"-"`
+	PubID        dynamitedb.DataField[string]    `cbor:"pub_id,omitempty"`
+	Username     dynamitedb.DataField[string]    `cbor:"username,omitempty"`
+	Description  dynamitedb.DataField[string]    `cbor:"description,omitempty"`
+	Organization dynamitedb.DataField[string]    `cbor:"organization,omitempty"`
+	Email        dynamitedb.DataField[string]    `cbor:"email,omitempty"`
+	CreatedAt    dynamitedb.DataField[time.Time] `cbor:"created_at,omitempty"`
+	Score        dynamitedb.DataField[float64]   `cbor:"score,omitempty"`
+	MaxScore     dynamitedb.DataField[float64]   `cbor:"max_score,omitempty"`
+	Streak       dynamitedb.DataField[int]       `cbor:"streak,omitempty"`
+	MaxStreak    dynamitedb.DataField[int]       `cbor:"max_streak,omitempty"`
+	Privileged   dynamitedb.DataField[bool]      `cbor:"privileged,omitempty"`
+	Role         dynamitedb.DataField[string]    `cbor:"role,omitempty"`
 
-	Scope dynamitedb.DataField[string] `json:"scope,omitempty"`
+	Scope dynamitedb.DataField[string] `cbor:"scope,omitempty"`
 }
 
 type Creds struct {
-	Email          dynamitedb.KeyField             `pk:"email" json:"-"`
-	Active         dynamitedb.DataField[bool]      `json:"active,omitempty"`
-	UserId         dynamitedb.DataField[string]    `json:"user_id,omitempty"`
-	Password       dynamitedb.DataField[string]    `json:"password,omitempty"`
-	Code           dynamitedb.DataField[string]    `json:"code,omitempty"`
-	CodeExpiration dynamitedb.DataField[time.Time] `json:"code_expiration,omitempty"`
+	Email          dynamitedb.KeyField             `pk:"email" cbor:"-"`
+	Active         dynamitedb.DataField[bool]      `cbor:"active,omitempty"`
+	UserId         dynamitedb.DataField[string]    `cbor:"user_id,omitempty"`
+	Password       dynamitedb.DataField[string]    `cbor:"password,omitempty"`
+	Code           dynamitedb.DataField[string]    `cbor:"code,omitempty"`
+	CodeExpiration dynamitedb.DataField[time.Time] `cbor:"code_expiration,omitempty"`
 
-	Scope dynamitedb.DataField[string] `json:"scope,omitempty"`
+	Scope dynamitedb.DataField[string] `cbor:"scope,omitempty"`
 }
