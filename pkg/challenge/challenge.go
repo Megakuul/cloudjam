@@ -44,7 +44,7 @@ type Check struct {
 type Scenario struct {
 	interval time.Duration // round check speed, defaults to 10s
 
-	bootstrap func() error
+	bootstrap func(s *Scenario) error
 
 	// init params exist to collect all metadata in the initial builder
 	// and then perform one single CreateMeta() call, after init is true, updates are incrementally.
@@ -52,6 +52,8 @@ type Scenario struct {
 	initDescriptions []string
 	initAssets       map[string]string
 	initClues        map[string]string
+	initPermission   string
+	initGuardrail    string
 	init             atomic.Bool
 
 	checksLock sync.RWMutex
@@ -63,7 +65,7 @@ type Scenario struct {
 }
 
 // New creates the scenario for your plugin.
-func New(title string, interval time.Duration, boostrap func() error) *Scenario {
+func New(title string, interval time.Duration, boostrap func(s *Scenario) error) *Scenario {
 	return &Scenario{
 		bootstrap:    boostrap,
 		initTitle:    title,
@@ -137,6 +139,35 @@ func (c *Scenario) AddClue(hint, secret string) *Scenario {
 	return c
 }
 
+// SetPermission configures the users initial permissions for this challenge.
+// May be escalated by user as process of the challenge (for absolute restriction use SetGuardrail).
+func (c *Scenario) SetPermission(doc fmt.Stringer) *Scenario {
+	if !c.init.Load() {
+		c.initPermission = doc.String()
+	} else {
+		if _, err := api.UpdatePermission(api.UpdatePermissionInput{
+			Permission: doc.String(),
+		}); err != nil {
+			c.report(err)
+		}
+	}
+	return c
+}
+
+// SetGuardrail configures the users definite permissions guardrail for this challenge.
+func (c *Scenario) SetGuardrail(doc fmt.Stringer) *Scenario {
+	if !c.init.Load() {
+		c.initGuardrail = doc.String()
+	} else {
+		if _, err := api.UpdateGuardrail(api.UpdateGuardrailInput{
+			Guardrail: doc.String(),
+		}); err != nil {
+			c.report(err)
+		}
+	}
+	return c
+}
+
 // AddCheck adds a check to the next cycle.
 func (c *Scenario) AddCheck(name string, check Check) *Scenario {
 	c.checksLock.Lock()
@@ -188,7 +219,21 @@ func (c *Scenario) Start() {
 		c.report(err)
 	}
 
-	if err := c.bootstrap(); err != nil {
+	if c.initPermission == "" || c.initGuardrail == "" {
+		panic("no permission specified for this scenario!")
+	}
+	if _, err := api.CreatePermission(api.CreatePermissionInput{
+		Permission: c.initPermission,
+	}); err != nil {
+		c.report(err)
+	}
+	if _, err := api.CreateGuardrail(api.CreateGuardrailInput{
+		Guardrail: c.initGuardrail,
+	}); err != nil {
+		c.report(err)
+	}
+
+	if err := c.bootstrap(c); err != nil {
 		c.report(err)
 	}
 

@@ -23,9 +23,11 @@ import (
 )
 
 var (
-	source   = flag.String("url", "https://schema.cloudformation.us-east-1.amazonaws.com/CloudformationSchema.zip", "schema bundle")
-	output   = flag.String("out", ".", "output directory")
-	services = flag.String("services", "", "comma separated services to generate (default: all)")
+	source       = flag.String("url", "https://schema.cloudformation.us-east-1.amazonaws.com/CloudformationSchema.zip", "schema bundle")
+	output       = flag.String("out", ".", "output directory")
+	services     = flag.String("services", "", "comma separated services to generate (default: all)")
+	referenceURL = flag.String("reference", "https://servicereference.us-east-1.amazonaws.com/", "aws service reference index (iam actions and condition keys)")
+	noIAM        = flag.Bool("no-iam", false, "skip the iam actions and condition keys")
 )
 
 // schema is the part of a resource provider schema we generate from.
@@ -77,6 +79,7 @@ func main() {
 		byService[service] = append(byService[service], s)
 	}
 
+	reserved := map[string]map[string]bool{}
 	for service, resources := range byService {
 		sort.Slice(resources, func(i, j int) bool { return resources[i].TypeName < resources[j].TypeName })
 
@@ -96,8 +99,13 @@ func main() {
 		if err := os.WriteFile(filepath.Join(directory, service+".go"), code, 0o644); err != nil {
 			log.Fatal(err)
 		}
+		reserved[service] = g.taken
 	}
-	fmt.Printf("generated %d services\n", len(byService))
+	iam := 0
+	if !*noIAM {
+		iam = generateIAM(*referenceURL, *output, wanted, reserved)
+	}
+	fmt.Printf("generated %d services from cloud control, %d with iam actions\n", len(byService), iam)
 }
 
 func download(url string) []schema {
@@ -335,7 +343,7 @@ func (g *generator) render() []byte {
 		}
 		fmt.Fprintf(out, "}\n\n")
 		if o.typeName != "" {
-			fmt.Fprintf(out, "func (%s) Type() string { return %q }\n\n", o.name, o.typeName)
+			fmt.Fprintf(out, "func (%s) CloudJamType() string { return %q }\n\n", o.name, o.typeName)
 		}
 	}
 	for _, e := range g.enums {

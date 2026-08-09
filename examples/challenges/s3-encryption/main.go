@@ -13,7 +13,9 @@ import (
 
 	"codeberg.org/megakuul/cloudjam/pkg/challenge"
 	"codeberg.org/megakuul/cloudjam/pkg/challenge/aws"
-	"codeberg.org/megakuul/cloudjam/pkg/challenge/aws/s3"
+	"codeberg.org/megakuul/cloudjam/pkg/challenge/aws/policy"
+	"codeberg.org/megakuul/cloudjam/pkg/challenge/aws/services/s3"
+	"github.com/google/uuid"
 )
 
 const bucket = "cloudjam-encrypt-me"
@@ -23,6 +25,18 @@ func main() {
 		AddDescription("A teammate spun up an S3 bucket with no encryption and no public-access guardrails. Secure it.").
 		AddClue("encryption", "Default encryption lives under BucketEncryption.").
 		AddClue("public", "Block public access with a PublicAccessBlockConfiguration.").
+		SetPermission(policy.Document{
+			Version: policy.Version20121017,
+			Statement: []policy.Statement{
+				{Effect: policy.Deny, Action: policy.ActionAll, Resource: policy.ARNAll}, // default lock down and configure on bootstrap.
+			},
+		}).
+		SetGuardrail(policy.Document{
+			Version: policy.Version20121017,
+			Statement: []policy.Statement{
+				{Effect: policy.Allow, Action: policy.ActionAll, Resource: policy.ARNAll}, // no iam related permission so guardrail is not needed.
+			},
+		}).
 		AddCheck("Enabled default encryption on the bucket", challenge.Check{
 			Points:  50,
 			Every:   15 * time.Second,
@@ -55,13 +69,42 @@ func encrypted() (bool, error) {
 	return false, nil
 }
 
-func bootstrap() error {
-	_, err := aws.Create(s3.Bucket{
-		BucketName: new(bucket),
+func bootstrap(s *challenge.Scenario) error {
+	bucketRef, err := aws.Create(s3.Bucket{
+		BucketName: new(fmt.Sprintf("%s-%s", bucket, uuid.NewString())),
+		PublicAccessBlockConfiguration: &s3.BucketPublicAccessBlockConfiguration{
+			BlockPublicAcls:       new(false),
+			BlockPublicPolicy:     new(false),
+			IgnorePublicAcls:      new(false),
+			RestrictPublicBuckets: new(false),
+		},
 	})
 	if err != nil {
 		return err
 	}
+	bucket, err := aws.Read[s3.Bucket](bucketRef)
+	if err != nil {
+		return err
+	}
+
+	s.SetPermission(policy.Document{
+		Version: policy.Version20121017,
+		Statement: []policy.Statement{
+			{
+				Sid:    "S3 Access",
+				Effect: policy.Allow,
+				Action: policy.ActionsFrom(
+					s3.ActionsRead,
+					s3.ActionsList,
+					[]string{
+						s3.ActionPutBucketPublicAccessBlock,
+						s3.ActionPutEncryptionConfiguration,
+					},
+				),
+				Resource: policy.ARNsFrom(*bucket.Arn, fmt.Sprintf("%s/*", *bucket.Arn)),
+			},
+		},
+	})
 	return nil
 }
 
