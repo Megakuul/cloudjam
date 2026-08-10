@@ -2,230 +2,227 @@
 // @generated from file v1/cloud/provider/provider.proto (package v1.cloud.provider, syntax proto3)
 /* eslint-disable */
 
-import type { Message } from '@bufbuild/protobuf';
-import type { GenFile, GenMessage, GenService } from '@bufbuild/protobuf/codegenv2';
-import { fileDesc, messageDesc, serviceDesc } from '@bufbuild/protobuf/codegenv2';
-import { file_google_protobuf_timestamp } from '@bufbuild/protobuf/wkt';
-import { file_buf_validate_validate } from '../../../buf/validate/validate_pb';
-import type { Provider } from '../provider_pb';
-import { file_v1_cloud_provider } from '../provider_pb';
+import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
+import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
+import { file_buf_validate_validate } from "../../../buf/validate/validate_pb";
+import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
+import type { Provider } from "../provider_pb";
+import { file_v1_cloud_provider } from "../provider_pb";
+import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file v1/cloud/provider/provider.proto.
  */
-export const file_v1_cloud_provider_provider: GenFile =
-	/*@__PURE__*/
-	fileDesc(
-		'CiB2MS9jbG91ZC9wcm92aWRlci9wcm92aWRlci5wcm90bxIRdjEuY2xvdWQucHJvdmlkZXIiIgoKR2V0UmVxdWVzdBIUCgJpZBgBIAEoCUIIukgFcgOwAQEiMwoLR2V0UmVzcG9uc2USJAoIcHJvdmlkZXIYASABKAsyEi52MS5jbG91ZC5Qcm92aWRlciI8CgtMaXN0UmVxdWVzdBIYCgVsaW1pdBgBIAEoBUIJukgGGgQYZCAAEhMKC3N0YXJ0X2FmdGVyGAIgASgJIjUKDExpc3RSZXNwb25zZRIlCglwcm92aWRlcnMYASADKAsyEi52MS5jbG91ZC5Qcm92aWRlciIxCg1DcmVhdGVSZXF1ZXN0EiAKBGluaXQYASABKAsyEi52MS5jbG91ZC5Qcm92aWRlciIQCg5DcmVhdGVSZXNwb25zZSIwCg1VcGRhdGVSZXF1ZXN0Eh8KA21vZBgBIAEoCzISLnYxLmNsb3VkLlByb3ZpZGVyIhAKDlVwZGF0ZVJlc3BvbnNlIiUKDURlbGV0ZVJlcXVlc3QSFAoCaWQYASABKAlCCLpIBXIDsAEBIhAKDkRlbGV0ZVJlc3BvbnNlMo0DCg9Qcm92aWRlclNlcnZpY2USRAoDR2V0Eh0udjEuY2xvdWQucHJvdmlkZXIuR2V0UmVxdWVzdBoeLnYxLmNsb3VkLnByb3ZpZGVyLkdldFJlc3BvbnNlEkcKBExpc3QSHi52MS5jbG91ZC5wcm92aWRlci5MaXN0UmVxdWVzdBofLnYxLmNsb3VkLnByb3ZpZGVyLkxpc3RSZXNwb25zZRJNCgZDcmVhdGUSIC52MS5jbG91ZC5wcm92aWRlci5DcmVhdGVSZXF1ZXN0GiEudjEuY2xvdWQucHJvdmlkZXIuQ3JlYXRlUmVzcG9uc2USTQoGVXBkYXRlEiAudjEuY2xvdWQucHJvdmlkZXIuVXBkYXRlUmVxdWVzdBohLnYxLmNsb3VkLnByb3ZpZGVyLlVwZGF0ZVJlc3BvbnNlEk0KBkRlbGV0ZRIgLnYxLmNsb3VkLnByb3ZpZGVyLkRlbGV0ZVJlcXVlc3QaIS52MS5jbG91ZC5wcm92aWRlci5EZWxldGVSZXNwb25zZUI6Wjhjb2RlYmVyZy5vcmcvbWVnYWt1dWwvY2xvdWRqYW0vcGtnL2FwaS92MS9jbG91ZC9wcm92aWRlcmIGcHJvdG8z',
-		[file_buf_validate_validate, file_google_protobuf_timestamp, file_v1_cloud_provider]
-	);
+export const file_v1_cloud_provider_provider: GenFile = /*@__PURE__*/
+  fileDesc("CiB2MS9jbG91ZC9wcm92aWRlci9wcm92aWRlci5wcm90bxIRdjEuY2xvdWQucHJvdmlkZXIiIgoKR2V0UmVxdWVzdBIUCgJpZBgBIAEoCUIIukgFcgOwAQEiMwoLR2V0UmVzcG9uc2USJAoIcHJvdmlkZXIYASABKAsyEi52MS5jbG91ZC5Qcm92aWRlciI8CgtMaXN0UmVxdWVzdBIYCgVsaW1pdBgBIAEoBUIJukgGGgQYZCAAEhMKC3N0YXJ0X2FmdGVyGAIgASgJIjUKDExpc3RSZXNwb25zZRIlCglwcm92aWRlcnMYASADKAsyEi52MS5jbG91ZC5Qcm92aWRlciIxCg1DcmVhdGVSZXF1ZXN0EiAKBGluaXQYASABKAsyEi52MS5jbG91ZC5Qcm92aWRlciIQCg5DcmVhdGVSZXNwb25zZSIwCg1VcGRhdGVSZXF1ZXN0Eh8KA21vZBgBIAEoCzISLnYxLmNsb3VkLlByb3ZpZGVyIhAKDlVwZGF0ZVJlc3BvbnNlIiUKDURlbGV0ZVJlcXVlc3QSFAoCaWQYASABKAlCCLpIBXIDsAEBIhAKDkRlbGV0ZVJlc3BvbnNlMo0DCg9Qcm92aWRlclNlcnZpY2USRAoDR2V0Eh0udjEuY2xvdWQucHJvdmlkZXIuR2V0UmVxdWVzdBoeLnYxLmNsb3VkLnByb3ZpZGVyLkdldFJlc3BvbnNlEkcKBExpc3QSHi52MS5jbG91ZC5wcm92aWRlci5MaXN0UmVxdWVzdBofLnYxLmNsb3VkLnByb3ZpZGVyLkxpc3RSZXNwb25zZRJNCgZDcmVhdGUSIC52MS5jbG91ZC5wcm92aWRlci5DcmVhdGVSZXF1ZXN0GiEudjEuY2xvdWQucHJvdmlkZXIuQ3JlYXRlUmVzcG9uc2USTQoGVXBkYXRlEiAudjEuY2xvdWQucHJvdmlkZXIuVXBkYXRlUmVxdWVzdBohLnYxLmNsb3VkLnByb3ZpZGVyLlVwZGF0ZVJlc3BvbnNlEk0KBkRlbGV0ZRIgLnYxLmNsb3VkLnByb3ZpZGVyLkRlbGV0ZVJlcXVlc3QaIS52MS5jbG91ZC5wcm92aWRlci5EZWxldGVSZXNwb25zZUI6Wjhjb2RlYmVyZy5vcmcvbWVnYWt1dWwvY2xvdWRqYW0vcGtnL2FwaS92MS9jbG91ZC9wcm92aWRlcmIGcHJvdG8z", [file_buf_validate_validate, file_google_protobuf_timestamp, file_v1_cloud_provider]);
 
 /**
  * @generated from message v1.cloud.provider.GetRequest
  */
-export type GetRequest = Message<'v1.cloud.provider.GetRequest'> & {
-	/**
-	 * @generated from field: string id = 1;
-	 */
-	id: string;
+export type GetRequest = Message<"v1.cloud.provider.GetRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
 };
 
 /**
  * Describes the message v1.cloud.provider.GetRequest.
  * Use `create(GetRequestSchema)` to create a new message.
  */
-export const GetRequestSchema: GenMessage<GetRequest> = /*@__PURE__*/ messageDesc(file_v1_cloud_provider_provider, 0);
+export const GetRequestSchema: GenMessage<GetRequest> = /*@__PURE__*/
+  messageDesc(file_v1_cloud_provider_provider, 0);
 
 /**
  * @generated from message v1.cloud.provider.GetResponse
  */
-export type GetResponse = Message<'v1.cloud.provider.GetResponse'> & {
-	/**
-	 * @generated from field: v1.cloud.Provider provider = 1;
-	 */
-	provider?: Provider;
+export type GetResponse = Message<"v1.cloud.provider.GetResponse"> & {
+  /**
+   * @generated from field: v1.cloud.Provider provider = 1;
+   */
+  provider?: Provider;
 };
 
 /**
  * Describes the message v1.cloud.provider.GetResponse.
  * Use `create(GetResponseSchema)` to create a new message.
  */
-export const GetResponseSchema: GenMessage<GetResponse> = /*@__PURE__*/ messageDesc(file_v1_cloud_provider_provider, 1);
+export const GetResponseSchema: GenMessage<GetResponse> = /*@__PURE__*/
+  messageDesc(file_v1_cloud_provider_provider, 1);
 
 /**
  * @generated from message v1.cloud.provider.ListRequest
  */
-export type ListRequest = Message<'v1.cloud.provider.ListRequest'> & {
-	/**
-	 * @generated from field: int32 limit = 1;
-	 */
-	limit: number;
+export type ListRequest = Message<"v1.cloud.provider.ListRequest"> & {
+  /**
+   * @generated from field: int32 limit = 1;
+   */
+  limit: number;
 
-	/**
-	 * @generated from field: string start_after = 2;
-	 */
-	startAfter: string;
+  /**
+   * @generated from field: string start_after = 2;
+   */
+  startAfter: string;
 };
 
 /**
  * Describes the message v1.cloud.provider.ListRequest.
  * Use `create(ListRequestSchema)` to create a new message.
  */
-export const ListRequestSchema: GenMessage<ListRequest> = /*@__PURE__*/ messageDesc(file_v1_cloud_provider_provider, 2);
+export const ListRequestSchema: GenMessage<ListRequest> = /*@__PURE__*/
+  messageDesc(file_v1_cloud_provider_provider, 2);
 
 /**
  * @generated from message v1.cloud.provider.ListResponse
  */
-export type ListResponse = Message<'v1.cloud.provider.ListResponse'> & {
-	/**
-	 * @generated from field: repeated v1.cloud.Provider providers = 1;
-	 */
-	providers: Provider[];
+export type ListResponse = Message<"v1.cloud.provider.ListResponse"> & {
+  /**
+   * @generated from field: repeated v1.cloud.Provider providers = 1;
+   */
+  providers: Provider[];
 };
 
 /**
  * Describes the message v1.cloud.provider.ListResponse.
  * Use `create(ListResponseSchema)` to create a new message.
  */
-export const ListResponseSchema: GenMessage<ListResponse> =
-	/*@__PURE__*/
-	messageDesc(file_v1_cloud_provider_provider, 3);
+export const ListResponseSchema: GenMessage<ListResponse> = /*@__PURE__*/
+  messageDesc(file_v1_cloud_provider_provider, 3);
 
 /**
  * @generated from message v1.cloud.provider.CreateRequest
  */
-export type CreateRequest = Message<'v1.cloud.provider.CreateRequest'> & {
-	/**
-	 * @generated from field: v1.cloud.Provider init = 1;
-	 */
-	init?: Provider;
+export type CreateRequest = Message<"v1.cloud.provider.CreateRequest"> & {
+  /**
+   * @generated from field: v1.cloud.Provider init = 1;
+   */
+  init?: Provider;
 };
 
 /**
  * Describes the message v1.cloud.provider.CreateRequest.
  * Use `create(CreateRequestSchema)` to create a new message.
  */
-export const CreateRequestSchema: GenMessage<CreateRequest> =
-	/*@__PURE__*/
-	messageDesc(file_v1_cloud_provider_provider, 4);
+export const CreateRequestSchema: GenMessage<CreateRequest> = /*@__PURE__*/
+  messageDesc(file_v1_cloud_provider_provider, 4);
 
 /**
  * @generated from message v1.cloud.provider.CreateResponse
  */
-export type CreateResponse = Message<'v1.cloud.provider.CreateResponse'> & {};
+export type CreateResponse = Message<"v1.cloud.provider.CreateResponse"> & {
+};
 
 /**
  * Describes the message v1.cloud.provider.CreateResponse.
  * Use `create(CreateResponseSchema)` to create a new message.
  */
-export const CreateResponseSchema: GenMessage<CreateResponse> =
-	/*@__PURE__*/
-	messageDesc(file_v1_cloud_provider_provider, 5);
+export const CreateResponseSchema: GenMessage<CreateResponse> = /*@__PURE__*/
+  messageDesc(file_v1_cloud_provider_provider, 5);
 
 /**
  * @generated from message v1.cloud.provider.UpdateRequest
  */
-export type UpdateRequest = Message<'v1.cloud.provider.UpdateRequest'> & {
-	/**
-	 * @generated from field: v1.cloud.Provider mod = 1;
-	 */
-	mod?: Provider;
+export type UpdateRequest = Message<"v1.cloud.provider.UpdateRequest"> & {
+  /**
+   * @generated from field: v1.cloud.Provider mod = 1;
+   */
+  mod?: Provider;
 };
 
 /**
  * Describes the message v1.cloud.provider.UpdateRequest.
  * Use `create(UpdateRequestSchema)` to create a new message.
  */
-export const UpdateRequestSchema: GenMessage<UpdateRequest> =
-	/*@__PURE__*/
-	messageDesc(file_v1_cloud_provider_provider, 6);
+export const UpdateRequestSchema: GenMessage<UpdateRequest> = /*@__PURE__*/
+  messageDesc(file_v1_cloud_provider_provider, 6);
 
 /**
  * @generated from message v1.cloud.provider.UpdateResponse
  */
-export type UpdateResponse = Message<'v1.cloud.provider.UpdateResponse'> & {};
+export type UpdateResponse = Message<"v1.cloud.provider.UpdateResponse"> & {
+};
 
 /**
  * Describes the message v1.cloud.provider.UpdateResponse.
  * Use `create(UpdateResponseSchema)` to create a new message.
  */
-export const UpdateResponseSchema: GenMessage<UpdateResponse> =
-	/*@__PURE__*/
-	messageDesc(file_v1_cloud_provider_provider, 7);
+export const UpdateResponseSchema: GenMessage<UpdateResponse> = /*@__PURE__*/
+  messageDesc(file_v1_cloud_provider_provider, 7);
 
 /**
  * @generated from message v1.cloud.provider.DeleteRequest
  */
-export type DeleteRequest = Message<'v1.cloud.provider.DeleteRequest'> & {
-	/**
-	 * @generated from field: string id = 1;
-	 */
-	id: string;
+export type DeleteRequest = Message<"v1.cloud.provider.DeleteRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
 };
 
 /**
  * Describes the message v1.cloud.provider.DeleteRequest.
  * Use `create(DeleteRequestSchema)` to create a new message.
  */
-export const DeleteRequestSchema: GenMessage<DeleteRequest> =
-	/*@__PURE__*/
-	messageDesc(file_v1_cloud_provider_provider, 8);
+export const DeleteRequestSchema: GenMessage<DeleteRequest> = /*@__PURE__*/
+  messageDesc(file_v1_cloud_provider_provider, 8);
 
 /**
  * @generated from message v1.cloud.provider.DeleteResponse
  */
-export type DeleteResponse = Message<'v1.cloud.provider.DeleteResponse'> & {};
+export type DeleteResponse = Message<"v1.cloud.provider.DeleteResponse"> & {
+};
 
 /**
  * Describes the message v1.cloud.provider.DeleteResponse.
  * Use `create(DeleteResponseSchema)` to create a new message.
  */
-export const DeleteResponseSchema: GenMessage<DeleteResponse> =
-	/*@__PURE__*/
-	messageDesc(file_v1_cloud_provider_provider, 9);
+export const DeleteResponseSchema: GenMessage<DeleteResponse> = /*@__PURE__*/
+  messageDesc(file_v1_cloud_provider_provider, 9);
 
 /**
  * @generated from service v1.cloud.provider.ProviderService
  */
 export const ProviderService: GenService<{
-	/**
-	 * @generated from rpc v1.cloud.provider.ProviderService.Get
-	 */
-	get: {
-		methodKind: 'unary';
-		input: typeof GetRequestSchema;
-		output: typeof GetResponseSchema;
-	};
-	/**
-	 * @generated from rpc v1.cloud.provider.ProviderService.List
-	 */
-	list: {
-		methodKind: 'unary';
-		input: typeof ListRequestSchema;
-		output: typeof ListResponseSchema;
-	};
-	/**
-	 * @generated from rpc v1.cloud.provider.ProviderService.Create
-	 */
-	create: {
-		methodKind: 'unary';
-		input: typeof CreateRequestSchema;
-		output: typeof CreateResponseSchema;
-	};
-	/**
-	 * @generated from rpc v1.cloud.provider.ProviderService.Update
-	 */
-	update: {
-		methodKind: 'unary';
-		input: typeof UpdateRequestSchema;
-		output: typeof UpdateResponseSchema;
-	};
-	/**
-	 * @generated from rpc v1.cloud.provider.ProviderService.Delete
-	 */
-	delete: {
-		methodKind: 'unary';
-		input: typeof DeleteRequestSchema;
-		output: typeof DeleteResponseSchema;
-	};
-}> = /*@__PURE__*/ serviceDesc(file_v1_cloud_provider_provider, 0);
+  /**
+   * @generated from rpc v1.cloud.provider.ProviderService.Get
+   */
+  get: {
+    methodKind: "unary";
+    input: typeof GetRequestSchema;
+    output: typeof GetResponseSchema;
+  },
+  /**
+   * @generated from rpc v1.cloud.provider.ProviderService.List
+   */
+  list: {
+    methodKind: "unary";
+    input: typeof ListRequestSchema;
+    output: typeof ListResponseSchema;
+  },
+  /**
+   * @generated from rpc v1.cloud.provider.ProviderService.Create
+   */
+  create: {
+    methodKind: "unary";
+    input: typeof CreateRequestSchema;
+    output: typeof CreateResponseSchema;
+  },
+  /**
+   * @generated from rpc v1.cloud.provider.ProviderService.Update
+   */
+  update: {
+    methodKind: "unary";
+    input: typeof UpdateRequestSchema;
+    output: typeof UpdateResponseSchema;
+  },
+  /**
+   * @generated from rpc v1.cloud.provider.ProviderService.Delete
+   */
+  delete: {
+    methodKind: "unary";
+    input: typeof DeleteRequestSchema;
+    output: typeof DeleteResponseSchema;
+  },
+}> = /*@__PURE__*/
+  serviceDesc(file_v1_cloud_provider_provider, 0);
+

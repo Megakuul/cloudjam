@@ -1,11 +1,11 @@
 syntax = "proto3";
 
-package v1.game;
+package v1.play;
 
 import "buf/validate/validate.proto";
 import "google/protobuf/timestamp.proto";
 
-option go_package = "codeberg.org/megakuul/cloudjam/pkg/api/v1/game";
+option go_package = "codeberg.org/megakuul/cloudjam/pkg/api/v1/play";
 
 message Game {
   string scope = 1;

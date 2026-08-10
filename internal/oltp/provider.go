@@ -1,6 +1,9 @@
 package oltp
 
-import "github.com/megakuul/dynamitedb"
+import (
+	"codeberg.org/megakuul/cloudjam/pkg/api/v1/cloud"
+	"github.com/megakuul/dynamitedb"
+)
 
 type Provider struct {
 	ProviderID      dynamitedb.KeyField            `pk:"provider_id"`
@@ -16,13 +19,12 @@ type Provider struct {
 }
 
 type Account struct {
-	ProviderID   dynamitedb.KeyField          `pk:"provider_id"`
-	AccountID    dynamitedb.KeyField          `sk:"account_id"`
-	Name         dynamitedb.DataField[string] `cbor:"name,omitempty"`
-	Description  dynamitedb.DataField[string] `cbor:"description,omitempty"`
-	Credentials  dynamitedb.DataField[string] `cbor:"credentials"`
-	State        dynamitedb.DataField[int]    `cbor:"state"`
-	DesiredState dynamitedb.DataField[int]    `cbor:"desired_state"`
+	ProviderID  dynamitedb.KeyField                      `pk:"provider_id"`
+	AccountID   dynamitedb.KeyField                      `sk:"account_id"`
+	Name        dynamitedb.DataField[string]             `cbor:"name,omitempty"`
+	Description dynamitedb.DataField[string]             `cbor:"description,omitempty"`
+	Credentials dynamitedb.DataField[string]             `cbor:"credentials"`
+	State       dynamitedb.DataField[cloud.AccountState] `cbor:"state"`
 
 	Scope dynamitedb.DataField[string] `cbor:"scope,omitempty"`
 }
@@ -33,21 +35,15 @@ type Definition struct {
 	Name         dynamitedb.DataField[string] `cbor:"name,omitempty"`
 	Description  dynamitedb.DataField[string] `cbor:"description,omitempty"`
 	Version      dynamitedb.DataField[string] `cbor:"version,omitempty"`
-	Checksum     dynamitedb.DataField[string] `cbor:"checksum,omitempty"`
+	Hash         dynamitedb.DataField[string] `cbor:"hash,omitempty"`
 
 	Scope dynamitedb.DataField[string] `cbor:"scope,omitempty"`
 }
 
-type CompressionMode int
-
-const (
-	CompressionZstd = iota
-)
-
 // separated from definition to avoid loading the WASM binary on every definition lookup.
 type DefinitionBinary struct {
-	ProviderID   dynamitedb.KeyField                   `pk:"provider_id"`
-	DefinitionID dynamitedb.KeyField                   `sk:"definition_binary_id"`
-	Compression  dynamitedb.DataField[CompressionMode] `cbor:"compression,omitempty"`
-	WASM         dynamitedb.DataField[[]byte]          `cbor:"wasm,omitempty"`
+	ProviderID   dynamitedb.KeyField                         `pk:"provider_id"`
+	DefinitionID dynamitedb.KeyField                         `sk:"definition_binary_id"`
+	Compression  dynamitedb.DataField[cloud.CompressionMode] `cbor:"compression,omitempty"`
+	WASM         dynamitedb.DataField[[]byte]                `cbor:"wasm,omitempty"`
 }

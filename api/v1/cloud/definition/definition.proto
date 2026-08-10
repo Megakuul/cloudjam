@@ -31,14 +31,16 @@ message ListResponse {
 
 message CreateRequest {
   Definition init = 1;
-  string wasm = 2;
+  CompressionMode compression = 2;
+  bytes binary = 3 [(buf.validate.field).bytes.max_len = 50000000]; // 50 MB
 }
 
 message CreateResponse {}
 
 message UpdateRequest {
   Definition mod = 1;
-  string wasm = 2;
+  CompressionMode compression = 2;
+  bytes binary = 3 [(buf.validate.field).bytes.max_len = 50000000]; // 50 MB
 }
 
 message UpdateResponse {}

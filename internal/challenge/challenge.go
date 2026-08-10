@@ -14,7 +14,6 @@ import (
 	"codeberg.org/megakuul/cloudjam/pkg/challenge/api"
 	extism "github.com/extism/go-sdk"
 	"github.com/google/uuid"
-	"github.com/klauspost/compress/zstd"
 	"github.com/megakuul/dynamitedb"
 	"github.com/megakuul/lake"
 	"github.com/tetratelabs/wazero"
@@ -29,44 +28,46 @@ type Challenge struct {
 	assets    provider.AssetController
 	resources provider.ResourceController
 
-	providerID     string
-	definitionID   string
-	definitionName string
-
 	gameID      string
 	challengeID string
 	teamID      string
-	teamName    string
-	playerPubID string
-	scope       string
 }
 
-func (c *Challenge) Start(ctx context.Context) error {
-	definitionBinary, err := dynamitedb.Get(ctx, c.oltp, &oltp.DefinitionBinary{
-		ProviderID:   dynamitedb.Key(c.providerID),
-		DefinitionID: dynamitedb.Key(c.definitionID),
-	})
-	if err != nil {
-		return err
+type ChallengeOption func(*Challenge)
+
+func New(
+	gameID, challengeID, teamID string,
+	oltp *dynamitedb.Bucket,
+	olap *lake.Bucket,
+	access provider.AccessController,
+	assets provider.AssetController,
+	resource provider.ResourceController,
+	opts ...ChallengeOption,
+) *Challenge {
+	challenge := &Challenge{
+		logger:      slog.Default(),
+		oltp:        oltp,
+		olap:        olap,
+		access:      access,
+		assets:      assets,
+		resources:   resource,
+		gameID:      gameID,
+		challengeID: challengeID,
 	}
-	if err := dynamitedb.Create(ctx, c.oltp, &oltp.Challenge{
-		GameID:         dynamitedb.Key(c.gameID),
-		ChallengeID:    dynamitedb.Key(c.challengeID),
-		DefinitionID:   dynamitedb.Set(c.definitionID),
-		DefinitionName: dynamitedb.Set(c.definitionName),
-		Scope:          dynamitedb.Set(c.scope),
-	}); err != nil {
-		return err
+
+	for _, opt := range opts {
+		opt(challenge)
 	}
-	if err := dynamitedb.Create(ctx, c.oltp, &oltp.Team{
-		GameID: dynamitedb.Key(c.gameID),
-		TeamID: dynamitedb.Key(c.teamID),
-		Name:   dynamitedb.Set(c.teamName),
-		// Players: ,
-		Scope: dynamitedb.Set(c.scope),
-	}); err != nil {
-		return err
+	return challenge
+}
+
+func WithLogger(logger *slog.Logger) ChallengeOption {
+	return func(c *Challenge) {
+		c.logger = logger
 	}
+}
+
+func (c *Challenge) Start(ctx context.Context, pluginData extism.Wasm) error {
 	report := func(err error) {
 		c.logger.Error(err.Error())
 		if dErr := dynamitedb.Update(ctx, c.oltp, &oltp.Challenge{
@@ -78,18 +79,8 @@ func (c *Challenge) Start(ctx context.Context) error {
 		}
 	}
 
-	wasmData := extism.WasmData{}
-	switch definitionBinary.Compression.Value() {
-	case oltp.CompressionZstd:
-		wasmData.Data, err = zstd.DecodeTo(nil, definitionBinary.WASM.Value())
-		if err != nil {
-			return fmt.Errorf("failed to zstd decode plugin: %w", err)
-		}
-	default:
-		return fmt.Errorf("unknown compression algorithm in challenge definition (%d)", definitionBinary.Compression.Value())
-	}
 	plugin, err := extism.NewCompiledPlugin(ctx,
-		extism.Manifest{Wasm: []extism.Wasm{wasmData}},
+		extism.Manifest{Wasm: []extism.Wasm{pluginData}},
 		extism.PluginConfig{
 			EnableWasi: true,
 			// Without this a cancelled context cannot interrupt the guest, and a
@@ -118,9 +109,9 @@ func (c *Challenge) Start(ctx context.Context) error {
 	if err != nil {
 		return nil
 	}
+	defer plugin.Close(ctx)
+
 	instance, err := plugin.Instance(ctx, extism.PluginInstanceConfig{
-		// The defaults are a frozen clock and a sleep that returns immediately,
-		// which would collapse every challenge interval into one hot spin.
 		ModuleConfig: wazero.NewModuleConfig().
 			WithSysWalltime().
 			WithSysNanotime().
@@ -132,14 +123,12 @@ func (c *Challenge) Start(ctx context.Context) error {
 	if err != nil {
 		return fmt.Errorf("instantiate plugin: %w", err)
 	}
-	defer instance.Close(context.WithoutCancel(ctx))
+	defer instance.Close(ctx)
 
 	_, _, err = instance.CallWithContext(ctx, "_start", nil)
 	if err != nil && ctx.Err() == nil {
-		return err
+		return fmt.Errorf("start plugin: %w", err)
 	}
-	defer plugin.Close(ctx)
-
 	return nil
 }
 

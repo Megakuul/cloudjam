@@ -161,10 +161,10 @@ var File_v1_cloud_provider_proto protoreflect.FileDescriptor
 
 const file_v1_cloud_provider_proto_rawDesc = "" +
 	"\n" +
-	"\x17v1/cloud/provider.proto\x12\bv1.cloud\x1a\x1bbuf/validate/validate.proto\"\x81\x02\n" +
+	"\x17v1/cloud/provider.proto\x12\bv1.cloud\x1a\x1bbuf/validate/validate.proto\"\x8b\x02\n" +
 	"\bProvider\x12\x14\n" +
-	"\x05scope\x18\x01 \x01(\tR\x05scope\x12\x0e\n" +
-	"\x02id\x18\x02 \x01(\tR\x02id\x12*\n" +
+	"\x05scope\x18\x01 \x01(\tR\x05scope\x12\x18\n" +
+	"\x02id\x18\x02 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\x12*\n" +
 	"\x04type\x18\x03 \x01(\x0e2\x16.v1.cloud.ProviderTypeR\x04type\x12\x1d\n" +
 	"\x04name\x18\x04 \x01(\tB\t\xbaH\x06r\x04\x10\x04\x18\x14R\x04name\x12+\n" +
 	"\vdescription\x18\x05 \x01(\tB\t\xbaH\x06r\x04\x10\x00\x182R\vdescription\x12,\n" +

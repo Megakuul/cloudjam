@@ -2,13 +2,13 @@
 // versions:
 // 	protoc-gen-go v1.36.8
 // 	protoc        (unknown)
-// source: v1/cloud/account/account.proto
+// source: v1/play/team/team.proto
 
-package account
+package team
 
 import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
-	cloud "codeberg.org/megakuul/cloudjam/pkg/api/v1/cloud"
+	play "codeberg.org/megakuul/cloudjam/pkg/api/v1/play"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "google.golang.org/protobuf/types/known/timestamppb"
@@ -26,7 +26,7 @@ const (
 
 type GetRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ProviderId    string                 `protobuf:"bytes,1,opt,name=provider_id,json=providerId,proto3" json:"provider_id,omitempty"`
+	GameId        string                 `protobuf:"bytes,1,opt,name=game_id,json=gameId,proto3" json:"game_id,omitempty"`
 	Id            string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -34,7 +34,7 @@ type GetRequest struct {
 
 func (x *GetRequest) Reset() {
 	*x = GetRequest{}
-	mi := &file_v1_cloud_account_account_proto_msgTypes[0]
+	mi := &file_v1_play_team_team_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -46,7 +46,7 @@ func (x *GetRequest) String() string {
 func (*GetRequest) ProtoMessage() {}
 
 func (x *GetRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_cloud_account_account_proto_msgTypes[0]
+	mi := &file_v1_play_team_team_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -59,12 +59,12 @@ func (x *GetRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetRequest.ProtoReflect.Descriptor instead.
 func (*GetRequest) Descriptor() ([]byte, []int) {
-	return file_v1_cloud_account_account_proto_rawDescGZIP(), []int{0}
+	return file_v1_play_team_team_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GetRequest) GetProviderId() string {
+func (x *GetRequest) GetGameId() string {
 	if x != nil {
-		return x.ProviderId
+		return x.GameId
 	}
 	return ""
 }
@@ -78,14 +78,14 @@ func (x *GetRequest) GetId() string {
 
 type GetResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Account       *cloud.Account         `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
+	Account       *play.Team             `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *GetResponse) Reset() {
 	*x = GetResponse{}
-	mi := &file_v1_cloud_account_account_proto_msgTypes[1]
+	mi := &file_v1_play_team_team_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -97,7 +97,7 @@ func (x *GetResponse) String() string {
 func (*GetResponse) ProtoMessage() {}
 
 func (x *GetResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_cloud_account_account_proto_msgTypes[1]
+	mi := &file_v1_play_team_team_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -110,10 +110,10 @@ func (x *GetResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetResponse.ProtoReflect.Descriptor instead.
 func (*GetResponse) Descriptor() ([]byte, []int) {
-	return file_v1_cloud_account_account_proto_rawDescGZIP(), []int{1}
+	return file_v1_play_team_team_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *GetResponse) GetAccount() *cloud.Account {
+func (x *GetResponse) GetAccount() *play.Team {
 	if x != nil {
 		return x.Account
 	}
@@ -122,16 +122,15 @@ func (x *GetResponse) GetAccount() *cloud.Account {
 
 type ListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	ProviderId    string                 `protobuf:"bytes,1,opt,name=provider_id,json=providerId,proto3" json:"provider_id,omitempty"`
+	GameId        string                 `protobuf:"bytes,1,opt,name=game_id,json=gameId,proto3" json:"game_id,omitempty"`
 	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	StartAfter    string                 `protobuf:"bytes,3,opt,name=start_after,json=startAfter,proto3" json:"start_after,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ListRequest) Reset() {
 	*x = ListRequest{}
-	mi := &file_v1_cloud_account_account_proto_msgTypes[2]
+	mi := &file_v1_play_team_team_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -143,7 +142,7 @@ func (x *ListRequest) String() string {
 func (*ListRequest) ProtoMessage() {}
 
 func (x *ListRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_cloud_account_account_proto_msgTypes[2]
+	mi := &file_v1_play_team_team_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -156,12 +155,12 @@ func (x *ListRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListRequest.ProtoReflect.Descriptor instead.
 func (*ListRequest) Descriptor() ([]byte, []int) {
-	return file_v1_cloud_account_account_proto_rawDescGZIP(), []int{2}
+	return file_v1_play_team_team_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *ListRequest) GetProviderId() string {
+func (x *ListRequest) GetGameId() string {
 	if x != nil {
-		return x.ProviderId
+		return x.GameId
 	}
 	return ""
 }
@@ -173,23 +172,16 @@ func (x *ListRequest) GetLimit() int32 {
 	return 0
 }
 
-func (x *ListRequest) GetStartAfter() string {
-	if x != nil {
-		return x.StartAfter
-	}
-	return ""
-}
-
 type ListResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Accounts      []*cloud.Account       `protobuf:"bytes,1,rep,name=accounts,proto3" json:"accounts,omitempty"`
+	Accounts      []*play.Team           `protobuf:"bytes,1,rep,name=accounts,proto3" json:"accounts,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ListResponse) Reset() {
 	*x = ListResponse{}
-	mi := &file_v1_cloud_account_account_proto_msgTypes[3]
+	mi := &file_v1_play_team_team_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -201,7 +193,7 @@ func (x *ListResponse) String() string {
 func (*ListResponse) ProtoMessage() {}
 
 func (x *ListResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_cloud_account_account_proto_msgTypes[3]
+	mi := &file_v1_play_team_team_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -214,10 +206,10 @@ func (x *ListResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListResponse.ProtoReflect.Descriptor instead.
 func (*ListResponse) Descriptor() ([]byte, []int) {
-	return file_v1_cloud_account_account_proto_rawDescGZIP(), []int{3}
+	return file_v1_play_team_team_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *ListResponse) GetAccounts() []*cloud.Account {
+func (x *ListResponse) GetAccounts() []*play.Team {
 	if x != nil {
 		return x.Accounts
 	}
@@ -226,14 +218,14 @@ func (x *ListResponse) GetAccounts() []*cloud.Account {
 
 type CreateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Init          *cloud.Account         `protobuf:"bytes,1,opt,name=init,proto3" json:"init,omitempty"`
+	Init          *play.Team             `protobuf:"bytes,1,opt,name=init,proto3" json:"init,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *CreateRequest) Reset() {
 	*x = CreateRequest{}
-	mi := &file_v1_cloud_account_account_proto_msgTypes[4]
+	mi := &file_v1_play_team_team_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -245,7 +237,7 @@ func (x *CreateRequest) String() string {
 func (*CreateRequest) ProtoMessage() {}
 
 func (x *CreateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_cloud_account_account_proto_msgTypes[4]
+	mi := &file_v1_play_team_team_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -258,10 +250,10 @@ func (x *CreateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateRequest.ProtoReflect.Descriptor instead.
 func (*CreateRequest) Descriptor() ([]byte, []int) {
-	return file_v1_cloud_account_account_proto_rawDescGZIP(), []int{4}
+	return file_v1_play_team_team_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *CreateRequest) GetInit() *cloud.Account {
+func (x *CreateRequest) GetInit() *play.Team {
 	if x != nil {
 		return x.Init
 	}
@@ -276,7 +268,7 @@ type CreateResponse struct {
 
 func (x *CreateResponse) Reset() {
 	*x = CreateResponse{}
-	mi := &file_v1_cloud_account_account_proto_msgTypes[5]
+	mi := &file_v1_play_team_team_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -288,7 +280,7 @@ func (x *CreateResponse) String() string {
 func (*CreateResponse) ProtoMessage() {}
 
 func (x *CreateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_cloud_account_account_proto_msgTypes[5]
+	mi := &file_v1_play_team_team_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -301,19 +293,19 @@ func (x *CreateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateResponse.ProtoReflect.Descriptor instead.
 func (*CreateResponse) Descriptor() ([]byte, []int) {
-	return file_v1_cloud_account_account_proto_rawDescGZIP(), []int{5}
+	return file_v1_play_team_team_proto_rawDescGZIP(), []int{5}
 }
 
 type UpdateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Mod           *cloud.Account         `protobuf:"bytes,1,opt,name=mod,proto3" json:"mod,omitempty"`
+	Mod           *play.Team             `protobuf:"bytes,1,opt,name=mod,proto3" json:"mod,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *UpdateRequest) Reset() {
 	*x = UpdateRequest{}
-	mi := &file_v1_cloud_account_account_proto_msgTypes[6]
+	mi := &file_v1_play_team_team_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -325,7 +317,7 @@ func (x *UpdateRequest) String() string {
 func (*UpdateRequest) ProtoMessage() {}
 
 func (x *UpdateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_cloud_account_account_proto_msgTypes[6]
+	mi := &file_v1_play_team_team_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -338,10 +330,10 @@ func (x *UpdateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateRequest.ProtoReflect.Descriptor instead.
 func (*UpdateRequest) Descriptor() ([]byte, []int) {
-	return file_v1_cloud_account_account_proto_rawDescGZIP(), []int{6}
+	return file_v1_play_team_team_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *UpdateRequest) GetMod() *cloud.Account {
+func (x *UpdateRequest) GetMod() *play.Team {
 	if x != nil {
 		return x.Mod
 	}
@@ -356,7 +348,7 @@ type UpdateResponse struct {
 
 func (x *UpdateResponse) Reset() {
 	*x = UpdateResponse{}
-	mi := &file_v1_cloud_account_account_proto_msgTypes[7]
+	mi := &file_v1_play_team_team_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -368,7 +360,7 @@ func (x *UpdateResponse) String() string {
 func (*UpdateResponse) ProtoMessage() {}
 
 func (x *UpdateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_cloud_account_account_proto_msgTypes[7]
+	mi := &file_v1_play_team_team_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -381,7 +373,7 @@ func (x *UpdateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateResponse.ProtoReflect.Descriptor instead.
 func (*UpdateResponse) Descriptor() ([]byte, []int) {
-	return file_v1_cloud_account_account_proto_rawDescGZIP(), []int{7}
+	return file_v1_play_team_team_proto_rawDescGZIP(), []int{7}
 }
 
 type DeleteRequest struct {
@@ -393,7 +385,7 @@ type DeleteRequest struct {
 
 func (x *DeleteRequest) Reset() {
 	*x = DeleteRequest{}
-	mi := &file_v1_cloud_account_account_proto_msgTypes[8]
+	mi := &file_v1_play_team_team_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -405,7 +397,7 @@ func (x *DeleteRequest) String() string {
 func (*DeleteRequest) ProtoMessage() {}
 
 func (x *DeleteRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_cloud_account_account_proto_msgTypes[8]
+	mi := &file_v1_play_team_team_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -418,7 +410,7 @@ func (x *DeleteRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteRequest.ProtoReflect.Descriptor instead.
 func (*DeleteRequest) Descriptor() ([]byte, []int) {
-	return file_v1_cloud_account_account_proto_rawDescGZIP(), []int{8}
+	return file_v1_play_team_team_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *DeleteRequest) GetId() string {
@@ -436,7 +428,7 @@ type DeleteResponse struct {
 
 func (x *DeleteResponse) Reset() {
 	*x = DeleteResponse{}
-	mi := &file_v1_cloud_account_account_proto_msgTypes[9]
+	mi := &file_v1_play_team_team_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -448,7 +440,7 @@ func (x *DeleteResponse) String() string {
 func (*DeleteResponse) ProtoMessage() {}
 
 func (x *DeleteResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_v1_cloud_account_account_proto_msgTypes[9]
+	mi := &file_v1_play_team_team_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -461,86 +453,82 @@ func (x *DeleteResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteResponse.ProtoReflect.Descriptor instead.
 func (*DeleteResponse) Descriptor() ([]byte, []int) {
-	return file_v1_cloud_account_account_proto_rawDescGZIP(), []int{9}
+	return file_v1_play_team_team_proto_rawDescGZIP(), []int{9}
 }
 
-var File_v1_cloud_account_account_proto protoreflect.FileDescriptor
+var File_v1_play_team_team_proto protoreflect.FileDescriptor
 
-const file_v1_cloud_account_account_proto_rawDesc = "" +
+const file_v1_play_team_team_proto_rawDesc = "" +
 	"\n" +
-	"\x1ev1/cloud/account/account.proto\x12\x10v1.cloud.account\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x16v1/cloud/account.proto\"Q\n" +
+	"\x17v1/play/team/team.proto\x12\fv1.play.team\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x12v1/play/team.proto\"I\n" +
 	"\n" +
-	"GetRequest\x12)\n" +
-	"\vprovider_id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\n" +
-	"providerId\x12\x18\n" +
-	"\x02id\x18\x02 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\":\n" +
-	"\vGetResponse\x12+\n" +
-	"\aaccount\x18\x01 \x01(\v2\x11.v1.cloud.AccountR\aaccount\"z\n" +
-	"\vListRequest\x12)\n" +
-	"\vprovider_id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\n" +
-	"providerId\x12\x1f\n" +
-	"\x05limit\x18\x02 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d \x00R\x05limit\x12\x1f\n" +
-	"\vstart_after\x18\x03 \x01(\tR\n" +
-	"startAfter\"=\n" +
-	"\fListResponse\x12-\n" +
-	"\baccounts\x18\x01 \x03(\v2\x11.v1.cloud.AccountR\baccounts\"6\n" +
-	"\rCreateRequest\x12%\n" +
-	"\x04init\x18\x01 \x01(\v2\x11.v1.cloud.AccountR\x04init\"\x10\n" +
-	"\x0eCreateResponse\"4\n" +
-	"\rUpdateRequest\x12#\n" +
-	"\x03mod\x18\x01 \x01(\v2\x11.v1.cloud.AccountR\x03mod\"\x10\n" +
+	"GetRequest\x12!\n" +
+	"\agame_id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x06gameId\x12\x18\n" +
+	"\x02id\x18\x02 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\"6\n" +
+	"\vGetResponse\x12'\n" +
+	"\aaccount\x18\x01 \x01(\v2\r.v1.play.TeamR\aaccount\"Q\n" +
+	"\vListRequest\x12!\n" +
+	"\agame_id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x06gameId\x12\x1f\n" +
+	"\x05limit\x18\x02 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d \x00R\x05limit\"9\n" +
+	"\fListResponse\x12)\n" +
+	"\baccounts\x18\x01 \x03(\v2\r.v1.play.TeamR\baccounts\"2\n" +
+	"\rCreateRequest\x12!\n" +
+	"\x04init\x18\x01 \x01(\v2\r.v1.play.TeamR\x04init\"\x10\n" +
+	"\x0eCreateResponse\"0\n" +
+	"\rUpdateRequest\x12\x1f\n" +
+	"\x03mod\x18\x01 \x01(\v2\r.v1.play.TeamR\x03mod\"\x10\n" +
 	"\x0eUpdateResponse\")\n" +
 	"\rDeleteRequest\x12\x18\n" +
 	"\x02id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\"\x10\n" +
-	"\x0eDeleteResponse2\x82\x03\n" +
-	"\x0eAccountService\x12B\n" +
-	"\x03Get\x12\x1c.v1.cloud.account.GetRequest\x1a\x1d.v1.cloud.account.GetResponse\x12E\n" +
-	"\x04List\x12\x1d.v1.cloud.account.ListRequest\x1a\x1e.v1.cloud.account.ListResponse\x12K\n" +
-	"\x06Create\x12\x1f.v1.cloud.account.CreateRequest\x1a .v1.cloud.account.CreateResponse\x12K\n" +
-	"\x06Update\x12\x1f.v1.cloud.account.UpdateRequest\x1a .v1.cloud.account.UpdateResponse\x12K\n" +
-	"\x06Delete\x12\x1f.v1.cloud.account.DeleteRequest\x1a .v1.cloud.account.DeleteResponseB9Z7codeberg.org/megakuul/cloudjam/pkg/api/v1/cloud/accountb\x06proto3"
+	"\x0eDeleteResponse2\xd7\x02\n" +
+	"\vTeamService\x12:\n" +
+	"\x03Get\x12\x18.v1.play.team.GetRequest\x1a\x19.v1.play.team.GetResponse\x12=\n" +
+	"\x04List\x12\x19.v1.play.team.ListRequest\x1a\x1a.v1.play.team.ListResponse\x12C\n" +
+	"\x06Create\x12\x1b.v1.play.team.CreateRequest\x1a\x1c.v1.play.team.CreateResponse\x12C\n" +
+	"\x06Update\x12\x1b.v1.play.team.UpdateRequest\x1a\x1c.v1.play.team.UpdateResponse\x12C\n" +
+	"\x06Delete\x12\x1b.v1.play.team.DeleteRequest\x1a\x1c.v1.play.team.DeleteResponseB5Z3codeberg.org/megakuul/cloudjam/pkg/api/v1/play/teamb\x06proto3"
 
 var (
-	file_v1_cloud_account_account_proto_rawDescOnce sync.Once
-	file_v1_cloud_account_account_proto_rawDescData []byte
+	file_v1_play_team_team_proto_rawDescOnce sync.Once
+	file_v1_play_team_team_proto_rawDescData []byte
 )
 
-func file_v1_cloud_account_account_proto_rawDescGZIP() []byte {
-	file_v1_cloud_account_account_proto_rawDescOnce.Do(func() {
-		file_v1_cloud_account_account_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_v1_cloud_account_account_proto_rawDesc), len(file_v1_cloud_account_account_proto_rawDesc)))
+func file_v1_play_team_team_proto_rawDescGZIP() []byte {
+	file_v1_play_team_team_proto_rawDescOnce.Do(func() {
+		file_v1_play_team_team_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_v1_play_team_team_proto_rawDesc), len(file_v1_play_team_team_proto_rawDesc)))
 	})
-	return file_v1_cloud_account_account_proto_rawDescData
+	return file_v1_play_team_team_proto_rawDescData
 }
 
-var file_v1_cloud_account_account_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
-var file_v1_cloud_account_account_proto_goTypes = []any{
-	(*GetRequest)(nil),     // 0: v1.cloud.account.GetRequest
-	(*GetResponse)(nil),    // 1: v1.cloud.account.GetResponse
-	(*ListRequest)(nil),    // 2: v1.cloud.account.ListRequest
-	(*ListResponse)(nil),   // 3: v1.cloud.account.ListResponse
-	(*CreateRequest)(nil),  // 4: v1.cloud.account.CreateRequest
-	(*CreateResponse)(nil), // 5: v1.cloud.account.CreateResponse
-	(*UpdateRequest)(nil),  // 6: v1.cloud.account.UpdateRequest
-	(*UpdateResponse)(nil), // 7: v1.cloud.account.UpdateResponse
-	(*DeleteRequest)(nil),  // 8: v1.cloud.account.DeleteRequest
-	(*DeleteResponse)(nil), // 9: v1.cloud.account.DeleteResponse
-	(*cloud.Account)(nil),  // 10: v1.cloud.Account
+var file_v1_play_team_team_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
+var file_v1_play_team_team_proto_goTypes = []any{
+	(*GetRequest)(nil),     // 0: v1.play.team.GetRequest
+	(*GetResponse)(nil),    // 1: v1.play.team.GetResponse
+	(*ListRequest)(nil),    // 2: v1.play.team.ListRequest
+	(*ListResponse)(nil),   // 3: v1.play.team.ListResponse
+	(*CreateRequest)(nil),  // 4: v1.play.team.CreateRequest
+	(*CreateResponse)(nil), // 5: v1.play.team.CreateResponse
+	(*UpdateRequest)(nil),  // 6: v1.play.team.UpdateRequest
+	(*UpdateResponse)(nil), // 7: v1.play.team.UpdateResponse
+	(*DeleteRequest)(nil),  // 8: v1.play.team.DeleteRequest
+	(*DeleteResponse)(nil), // 9: v1.play.team.DeleteResponse
+	(*play.Team)(nil),      // 10: v1.play.Team
 }
-var file_v1_cloud_account_account_proto_depIdxs = []int32{
-	10, // 0: v1.cloud.account.GetResponse.account:type_name -> v1.cloud.Account
-	10, // 1: v1.cloud.account.ListResponse.accounts:type_name -> v1.cloud.Account
-	10, // 2: v1.cloud.account.CreateRequest.init:type_name -> v1.cloud.Account
-	10, // 3: v1.cloud.account.UpdateRequest.mod:type_name -> v1.cloud.Account
-	0,  // 4: v1.cloud.account.AccountService.Get:input_type -> v1.cloud.account.GetRequest
-	2,  // 5: v1.cloud.account.AccountService.List:input_type -> v1.cloud.account.ListRequest
-	4,  // 6: v1.cloud.account.AccountService.Create:input_type -> v1.cloud.account.CreateRequest
-	6,  // 7: v1.cloud.account.AccountService.Update:input_type -> v1.cloud.account.UpdateRequest
-	8,  // 8: v1.cloud.account.AccountService.Delete:input_type -> v1.cloud.account.DeleteRequest
-	1,  // 9: v1.cloud.account.AccountService.Get:output_type -> v1.cloud.account.GetResponse
-	3,  // 10: v1.cloud.account.AccountService.List:output_type -> v1.cloud.account.ListResponse
-	5,  // 11: v1.cloud.account.AccountService.Create:output_type -> v1.cloud.account.CreateResponse
-	7,  // 12: v1.cloud.account.AccountService.Update:output_type -> v1.cloud.account.UpdateResponse
-	9,  // 13: v1.cloud.account.AccountService.Delete:output_type -> v1.cloud.account.DeleteResponse
+var file_v1_play_team_team_proto_depIdxs = []int32{
+	10, // 0: v1.play.team.GetResponse.account:type_name -> v1.play.Team
+	10, // 1: v1.play.team.ListResponse.accounts:type_name -> v1.play.Team
+	10, // 2: v1.play.team.CreateRequest.init:type_name -> v1.play.Team
+	10, // 3: v1.play.team.UpdateRequest.mod:type_name -> v1.play.Team
+	0,  // 4: v1.play.team.TeamService.Get:input_type -> v1.play.team.GetRequest
+	2,  // 5: v1.play.team.TeamService.List:input_type -> v1.play.team.ListRequest
+	4,  // 6: v1.play.team.TeamService.Create:input_type -> v1.play.team.CreateRequest
+	6,  // 7: v1.play.team.TeamService.Update:input_type -> v1.play.team.UpdateRequest
+	8,  // 8: v1.play.team.TeamService.Delete:input_type -> v1.play.team.DeleteRequest
+	1,  // 9: v1.play.team.TeamService.Get:output_type -> v1.play.team.GetResponse
+	3,  // 10: v1.play.team.TeamService.List:output_type -> v1.play.team.ListResponse
+	5,  // 11: v1.play.team.TeamService.Create:output_type -> v1.play.team.CreateResponse
+	7,  // 12: v1.play.team.TeamService.Update:output_type -> v1.play.team.UpdateResponse
+	9,  // 13: v1.play.team.TeamService.Delete:output_type -> v1.play.team.DeleteResponse
 	9,  // [9:14] is the sub-list for method output_type
 	4,  // [4:9] is the sub-list for method input_type
 	4,  // [4:4] is the sub-list for extension type_name
@@ -548,26 +536,26 @@ var file_v1_cloud_account_account_proto_depIdxs = []int32{
 	0,  // [0:4] is the sub-list for field type_name
 }
 
-func init() { file_v1_cloud_account_account_proto_init() }
-func file_v1_cloud_account_account_proto_init() {
-	if File_v1_cloud_account_account_proto != nil {
+func init() { file_v1_play_team_team_proto_init() }
+func file_v1_play_team_team_proto_init() {
+	if File_v1_play_team_team_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_v1_cloud_account_account_proto_rawDesc), len(file_v1_cloud_account_account_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_v1_play_team_team_proto_rawDesc), len(file_v1_play_team_team_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
-		GoTypes:           file_v1_cloud_account_account_proto_goTypes,
-		DependencyIndexes: file_v1_cloud_account_account_proto_depIdxs,
-		MessageInfos:      file_v1_cloud_account_account_proto_msgTypes,
+		GoTypes:           file_v1_play_team_team_proto_goTypes,
+		DependencyIndexes: file_v1_play_team_team_proto_depIdxs,
+		MessageInfos:      file_v1_play_team_team_proto_msgTypes,
 	}.Build()
-	File_v1_cloud_account_account_proto = out.File
-	file_v1_cloud_account_account_proto_goTypes = nil
-	file_v1_cloud_account_account_proto_depIdxs = nil
+	File_v1_play_team_team_proto = out.File
+	file_v1_play_team_team_proto_goTypes = nil
+	file_v1_play_team_team_proto_depIdxs = nil
 }

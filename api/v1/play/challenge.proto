@@ -1,16 +1,23 @@
 syntax = "proto3";
 
-package v1.game;
+package v1.play;
 
 import "buf/validate/validate.proto";
+import "google/protobuf/duration.proto";
 import "google/protobuf/timestamp.proto";
 
-option go_package = "codeberg.org/megakuul/cloudjam/pkg/api/v1/game";
+option go_package = "codeberg.org/megakuul/cloudjam/pkg/api/v1/play";
+
+enum ChallengeState {
+  Ready = 0;
+  Running = 1;
+  Finished = 2;
+}
 
 message ScoreEvent {
   google.protobuf.Timestamp timestamp = 1;
   string text = 2;
-  double change 3;
+  double change = 3;
 }
 
 message Challenge {
@@ -21,9 +28,12 @@ message Challenge {
   string definition_id = 5 [(buf.validate.field).string = {uuid: true}];
   string definition_name = 6;
 
-  string title = 7;
-  string description = 8;
-  map<string, string> assets = 9;
-  repeated string errors = 10;
-  repeated ScoreEvent score_events = 11;
+  ChallengeState state = 7;
+  string title = 8;
+  string description = 9;
+  map<string, string> assets = 10;
+  repeated string errors = 11;
+  repeated ScoreEvent score_events = 12;
+  google.protobuf.Duration duration = 13;
+  google.protobuf.Timestamp ends = 14;
 }

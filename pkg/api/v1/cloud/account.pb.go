@@ -80,13 +80,13 @@ func (AccountState) EnumDescriptor() ([]byte, []int) {
 type Account struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Scope         string                 `protobuf:"bytes,1,opt,name=scope,proto3" json:"scope,omitempty"`
-	Provider      string                 `protobuf:"bytes,2,opt,name=provider,proto3" json:"provider,omitempty"`
+	ProviderId    string                 `protobuf:"bytes,2,opt,name=provider_id,json=providerId,proto3" json:"provider_id,omitempty"`
 	Id            string                 `protobuf:"bytes,3,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
 	Description   string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
 	Credentials   string                 `protobuf:"bytes,6,opt,name=credentials,proto3" json:"credentials,omitempty"`
 	State         AccountState           `protobuf:"varint,7,opt,name=state,proto3,enum=v1.cloud.AccountState" json:"state,omitempty"`
-	DesiredState  AccountState           `protobuf:"varint,8,opt,name=desired_state,json=desiredState,proto3,enum=v1.cloud.AccountState" json:"desired_state,omitempty"`
+	Error         string                 `protobuf:"bytes,8,opt,name=error,proto3" json:"error,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -128,9 +128,9 @@ func (x *Account) GetScope() string {
 	return ""
 }
 
-func (x *Account) GetProvider() string {
+func (x *Account) GetProviderId() string {
 	if x != nil {
-		return x.Provider
+		return x.ProviderId
 	}
 	return ""
 }
@@ -170,28 +170,29 @@ func (x *Account) GetState() AccountState {
 	return AccountState_Provisioning
 }
 
-func (x *Account) GetDesiredState() AccountState {
+func (x *Account) GetError() string {
 	if x != nil {
-		return x.DesiredState
+		return x.Error
 	}
-	return AccountState_Provisioning
+	return ""
 }
 
 var File_v1_cloud_account_proto protoreflect.FileDescriptor
 
 const file_v1_cloud_account_proto_rawDesc = "" +
 	"\n" +
-	"\x16v1/cloud/account.proto\x12\bv1.cloud\x1a\x1bbuf/validate/validate.proto\"\xb0\x02\n" +
+	"\x16v1/cloud/account.proto\x12\bv1.cloud\x1a\x1bbuf/validate/validate.proto\"\x98\x02\n" +
 	"\aAccount\x12\x14\n" +
-	"\x05scope\x18\x01 \x01(\tR\x05scope\x12\x1a\n" +
-	"\bprovider\x18\x02 \x01(\tR\bprovider\x12\x0e\n" +
+	"\x05scope\x18\x01 \x01(\tR\x05scope\x12)\n" +
+	"\vprovider_id\x18\x02 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\n" +
+	"providerId\x12\x0e\n" +
 	"\x02id\x18\x03 \x01(\tR\x02id\x12\x1d\n" +
 	"\x04name\x18\x04 \x01(\tB\t\xbaH\x06r\x04\x10\x04\x18\x14R\x04name\x12+\n" +
 	"\vdescription\x18\x05 \x01(\tB\t\xbaH\x06r\x04\x10\x00\x182R\vdescription\x12,\n" +
 	"\vcredentials\x18\x06 \x01(\tB\n" +
 	"\xbaH\ar\x05\x10\x00\x18\xe8\aR\vcredentials\x12,\n" +
-	"\x05state\x18\a \x01(\x0e2\x16.v1.cloud.AccountStateR\x05state\x12;\n" +
-	"\rdesired_state\x18\b \x01(\x0e2\x16.v1.cloud.AccountStateR\fdesiredState*W\n" +
+	"\x05state\x18\a \x01(\x0e2\x16.v1.cloud.AccountStateR\x05state\x12\x14\n" +
+	"\x05error\x18\b \x01(\tR\x05error*W\n" +
 	"\fAccountState\x12\x10\n" +
 	"\fProvisioning\x10\x00\x12\n" +
 	"\n" +
@@ -220,12 +221,11 @@ var file_v1_cloud_account_proto_goTypes = []any{
 }
 var file_v1_cloud_account_proto_depIdxs = []int32{
 	0, // 0: v1.cloud.Account.state:type_name -> v1.cloud.AccountState
-	0, // 1: v1.cloud.Account.desired_state:type_name -> v1.cloud.AccountState
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	1, // [1:1] is the sub-list for method output_type
+	1, // [1:1] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_v1_cloud_account_proto_init() }

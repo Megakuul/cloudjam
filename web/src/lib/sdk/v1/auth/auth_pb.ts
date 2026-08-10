@@ -2,128 +2,131 @@
 // @generated from file v1/auth/auth.proto (package v1.auth, syntax proto3)
 /* eslint-disable */
 
-import type { Message } from '@bufbuild/protobuf';
-import type { GenFile, GenMessage, GenService } from '@bufbuild/protobuf/codegenv2';
-import { fileDesc, messageDesc, serviceDesc } from '@bufbuild/protobuf/codegenv2';
-import { file_buf_validate_validate } from '../../buf/validate/validate_pb';
+import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
+import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
+import { file_buf_validate_validate } from "../../buf/validate/validate_pb";
+import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file v1/auth/auth.proto.
  */
-export const file_v1_auth_auth: GenFile =
-	/*@__PURE__*/
-	fileDesc(
-		'ChJ2MS9hdXRoL2F1dGgucHJvdG8SB3YxLmF1dGgiWQoMTG9naW5SZXF1ZXN0EhkKBWVtYWlsGAEgASgJQgq6SAfIAQFyAmABEhgKCHBhc3N3b3JkGAIgASgJQga6SAPIAQESFAoMYXV0b19yZWZyZXNoGAMgASgIIh4KDUxvZ2luUmVzcG9uc2USDQoFdG9rZW4YASABKAki9gEKD1JlZ2lzdGVyUmVxdWVzdBIZCgVlbWFpbBgBIAEoCUIKukgHyAEBcgJgARIUCgRjb2RlGAIgASgJQga6SAPIAQESGwoIdXNlcm5hbWUYAyABKAlCCbpIBnIEEAMYFBIbCghwYXNzd29yZBgEIAEoCUIJukgGcgQQChhkEiMKEGNvbmZpcm1fcGFzc3dvcmQYBSABKAlCCbpIBnIEEAoYZDpTukhQGk4KDnBhc3N3b3JkX21hdGNoEhRwYXNzd29yZHMgbXVzdCBtYXRjaBomdGhpcy5wYXNzd29yZCA9PSB0aGlzLmNvbmZpcm1fcGFzc3dvcmQiEgoQUmVnaXN0ZXJSZXNwb25zZTKKAQoLQXV0aFNlcnZpY2USOAoFTG9naW4SFS52MS5hdXRoLkxvZ2luUmVxdWVzdBoWLnYxLmF1dGguTG9naW5SZXNwb25zZSIAEkEKCFJlZ2lzdGVyEhgudjEuYXV0aC5SZWdpc3RlclJlcXVlc3QaGS52MS5hdXRoLlJlZ2lzdGVyUmVzcG9uc2UiAEIwWi5jb2RlYmVyZy5vcmcvbWVnYWt1dWwvY2xvdWRqYW0vcGtnL2FwaS92MS9hdXRoYgZwcm90bzM',
-		[file_buf_validate_validate]
-	);
+export const file_v1_auth_auth: GenFile = /*@__PURE__*/
+  fileDesc("ChJ2MS9hdXRoL2F1dGgucHJvdG8SB3YxLmF1dGgiWQoMTG9naW5SZXF1ZXN0EhkKBWVtYWlsGAEgASgJQgq6SAfIAQFyAmABEhgKCHBhc3N3b3JkGAIgASgJQga6SAPIAQESFAoMYXV0b19yZWZyZXNoGAMgASgIIh4KDUxvZ2luUmVzcG9uc2USDQoFdG9rZW4YASABKAki9gEKD1JlZ2lzdGVyUmVxdWVzdBIZCgVlbWFpbBgBIAEoCUIKukgHyAEBcgJgARIUCgRjb2RlGAIgASgJQga6SAPIAQESGwoIdXNlcm5hbWUYAyABKAlCCbpIBnIEEAMYFBIbCghwYXNzd29yZBgEIAEoCUIJukgGcgQQChhkEiMKEGNvbmZpcm1fcGFzc3dvcmQYBSABKAlCCbpIBnIEEAoYZDpTukhQGk4KDnBhc3N3b3JkX21hdGNoEhRwYXNzd29yZHMgbXVzdCBtYXRjaBomdGhpcy5wYXNzd29yZCA9PSB0aGlzLmNvbmZpcm1fcGFzc3dvcmQiEgoQUmVnaXN0ZXJSZXNwb25zZTKKAQoLQXV0aFNlcnZpY2USOAoFTG9naW4SFS52MS5hdXRoLkxvZ2luUmVxdWVzdBoWLnYxLmF1dGguTG9naW5SZXNwb25zZSIAEkEKCFJlZ2lzdGVyEhgudjEuYXV0aC5SZWdpc3RlclJlcXVlc3QaGS52MS5hdXRoLlJlZ2lzdGVyUmVzcG9uc2UiAEIwWi5jb2RlYmVyZy5vcmcvbWVnYWt1dWwvY2xvdWRqYW0vcGtnL2FwaS92MS9hdXRoYgZwcm90bzM", [file_buf_validate_validate]);
 
 /**
  * @generated from message v1.auth.LoginRequest
  */
-export type LoginRequest = Message<'v1.auth.LoginRequest'> & {
-	/**
-	 * @generated from field: string email = 1;
-	 */
-	email: string;
+export type LoginRequest = Message<"v1.auth.LoginRequest"> & {
+  /**
+   * @generated from field: string email = 1;
+   */
+  email: string;
 
-	/**
-	 * @generated from field: string password = 2;
-	 */
-	password: string;
+  /**
+   * @generated from field: string password = 2;
+   */
+  password: string;
 
-	/**
-	 * @generated from field: bool auto_refresh = 3;
-	 */
-	autoRefresh: boolean;
+  /**
+   * @generated from field: bool auto_refresh = 3;
+   */
+  autoRefresh: boolean;
 };
 
 /**
  * Describes the message v1.auth.LoginRequest.
  * Use `create(LoginRequestSchema)` to create a new message.
  */
-export const LoginRequestSchema: GenMessage<LoginRequest> = /*@__PURE__*/ messageDesc(file_v1_auth_auth, 0);
+export const LoginRequestSchema: GenMessage<LoginRequest> = /*@__PURE__*/
+  messageDesc(file_v1_auth_auth, 0);
 
 /**
  * @generated from message v1.auth.LoginResponse
  */
-export type LoginResponse = Message<'v1.auth.LoginResponse'> & {
-	/**
-	 * @generated from field: string token = 1;
-	 */
-	token: string;
+export type LoginResponse = Message<"v1.auth.LoginResponse"> & {
+  /**
+   * @generated from field: string token = 1;
+   */
+  token: string;
 };
 
 /**
  * Describes the message v1.auth.LoginResponse.
  * Use `create(LoginResponseSchema)` to create a new message.
  */
-export const LoginResponseSchema: GenMessage<LoginResponse> = /*@__PURE__*/ messageDesc(file_v1_auth_auth, 1);
+export const LoginResponseSchema: GenMessage<LoginResponse> = /*@__PURE__*/
+  messageDesc(file_v1_auth_auth, 1);
 
 /**
  * @generated from message v1.auth.RegisterRequest
  */
-export type RegisterRequest = Message<'v1.auth.RegisterRequest'> & {
-	/**
-	 * @generated from field: string email = 1;
-	 */
-	email: string;
+export type RegisterRequest = Message<"v1.auth.RegisterRequest"> & {
+  /**
+   * @generated from field: string email = 1;
+   */
+  email: string;
 
-	/**
-	 * @generated from field: string code = 2;
-	 */
-	code: string;
+  /**
+   * @generated from field: string code = 2;
+   */
+  code: string;
 
-	/**
-	 * @generated from field: string username = 3;
-	 */
-	username: string;
+  /**
+   * @generated from field: string username = 3;
+   */
+  username: string;
 
-	/**
-	 * @generated from field: string password = 4;
-	 */
-	password: string;
+  /**
+   * @generated from field: string password = 4;
+   */
+  password: string;
 
-	/**
-	 * @generated from field: string confirm_password = 5;
-	 */
-	confirmPassword: string;
+  /**
+   * @generated from field: string confirm_password = 5;
+   */
+  confirmPassword: string;
 };
 
 /**
  * Describes the message v1.auth.RegisterRequest.
  * Use `create(RegisterRequestSchema)` to create a new message.
  */
-export const RegisterRequestSchema: GenMessage<RegisterRequest> = /*@__PURE__*/ messageDesc(file_v1_auth_auth, 2);
+export const RegisterRequestSchema: GenMessage<RegisterRequest> = /*@__PURE__*/
+  messageDesc(file_v1_auth_auth, 2);
 
 /**
  * @generated from message v1.auth.RegisterResponse
  */
-export type RegisterResponse = Message<'v1.auth.RegisterResponse'> & {};
+export type RegisterResponse = Message<"v1.auth.RegisterResponse"> & {
+};
 
 /**
  * Describes the message v1.auth.RegisterResponse.
  * Use `create(RegisterResponseSchema)` to create a new message.
  */
-export const RegisterResponseSchema: GenMessage<RegisterResponse> = /*@__PURE__*/ messageDesc(file_v1_auth_auth, 3);
+export const RegisterResponseSchema: GenMessage<RegisterResponse> = /*@__PURE__*/
+  messageDesc(file_v1_auth_auth, 3);
 
 /**
  * @generated from service v1.auth.AuthService
  */
 export const AuthService: GenService<{
-	/**
-	 * @generated from rpc v1.auth.AuthService.Login
-	 */
-	login: {
-		methodKind: 'unary';
-		input: typeof LoginRequestSchema;
-		output: typeof LoginResponseSchema;
-	};
-	/**
-	 * @generated from rpc v1.auth.AuthService.Register
-	 */
-	register: {
-		methodKind: 'unary';
-		input: typeof RegisterRequestSchema;
-		output: typeof RegisterResponseSchema;
-	};
-}> = /*@__PURE__*/ serviceDesc(file_v1_auth_auth, 0);
+  /**
+   * @generated from rpc v1.auth.AuthService.Login
+   */
+  login: {
+    methodKind: "unary";
+    input: typeof LoginRequestSchema;
+    output: typeof LoginResponseSchema;
+  },
+  /**
+   * @generated from rpc v1.auth.AuthService.Register
+   */
+  register: {
+    methodKind: "unary";
+    input: typeof RegisterRequestSchema;
+    output: typeof RegisterResponseSchema;
+  },
+}> = /*@__PURE__*/
+  serviceDesc(file_v1_auth_auth, 0);
+

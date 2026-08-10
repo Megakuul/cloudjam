@@ -1,12 +1,12 @@
 syntax = "proto3";
 
-package v1.game.challenge;
+package v1.play.challenge;
 
 import "buf/validate/validate.proto";
 import "google/protobuf/timestamp.proto";
-import "v1/game/challenge.proto";
+import "v1/play/challenge.proto";
 
-option go_package = "codeberg.org/megakuul/cloudjam/pkg/api/v1/game/challenge";
+option go_package = "codeberg.org/megakuul/cloudjam/pkg/api/v1/play/challenge";
 
 message GetRequest {
   string game_id = 1 [(buf.validate.field).string = {uuid: true}];

@@ -37,15 +37,21 @@ const (
 	AccountServiceGetProcedure = "/v1.cloud.account.AccountService/Get"
 	// AccountServiceListProcedure is the fully-qualified name of the AccountService's List RPC.
 	AccountServiceListProcedure = "/v1.cloud.account.AccountService/List"
+	// AccountServiceCreateProcedure is the fully-qualified name of the AccountService's Create RPC.
+	AccountServiceCreateProcedure = "/v1.cloud.account.AccountService/Create"
 	// AccountServiceUpdateProcedure is the fully-qualified name of the AccountService's Update RPC.
 	AccountServiceUpdateProcedure = "/v1.cloud.account.AccountService/Update"
+	// AccountServiceDeleteProcedure is the fully-qualified name of the AccountService's Delete RPC.
+	AccountServiceDeleteProcedure = "/v1.cloud.account.AccountService/Delete"
 )
 
 // AccountServiceClient is a client for the v1.cloud.account.AccountService service.
 type AccountServiceClient interface {
 	Get(context.Context, *connect.Request[account.GetRequest]) (*connect.Response[account.GetResponse], error)
 	List(context.Context, *connect.Request[account.ListRequest]) (*connect.Response[account.ListResponse], error)
+	Create(context.Context, *connect.Request[account.CreateRequest]) (*connect.Response[account.CreateResponse], error)
 	Update(context.Context, *connect.Request[account.UpdateRequest]) (*connect.Response[account.UpdateResponse], error)
+	Delete(context.Context, *connect.Request[account.DeleteRequest]) (*connect.Response[account.DeleteResponse], error)
 }
 
 // NewAccountServiceClient constructs a client for the v1.cloud.account.AccountService service. By
@@ -71,10 +77,22 @@ func NewAccountServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 			connect.WithSchema(accountServiceMethods.ByName("List")),
 			connect.WithClientOptions(opts...),
 		),
+		create: connect.NewClient[account.CreateRequest, account.CreateResponse](
+			httpClient,
+			baseURL+AccountServiceCreateProcedure,
+			connect.WithSchema(accountServiceMethods.ByName("Create")),
+			connect.WithClientOptions(opts...),
+		),
 		update: connect.NewClient[account.UpdateRequest, account.UpdateResponse](
 			httpClient,
 			baseURL+AccountServiceUpdateProcedure,
 			connect.WithSchema(accountServiceMethods.ByName("Update")),
+			connect.WithClientOptions(opts...),
+		),
+		delete: connect.NewClient[account.DeleteRequest, account.DeleteResponse](
+			httpClient,
+			baseURL+AccountServiceDeleteProcedure,
+			connect.WithSchema(accountServiceMethods.ByName("Delete")),
 			connect.WithClientOptions(opts...),
 		),
 	}
@@ -84,7 +102,9 @@ func NewAccountServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 type accountServiceClient struct {
 	get    *connect.Client[account.GetRequest, account.GetResponse]
 	list   *connect.Client[account.ListRequest, account.ListResponse]
+	create *connect.Client[account.CreateRequest, account.CreateResponse]
 	update *connect.Client[account.UpdateRequest, account.UpdateResponse]
+	delete *connect.Client[account.DeleteRequest, account.DeleteResponse]
 }
 
 // Get calls v1.cloud.account.AccountService.Get.
@@ -97,16 +117,28 @@ func (c *accountServiceClient) List(ctx context.Context, req *connect.Request[ac
 	return c.list.CallUnary(ctx, req)
 }
 
+// Create calls v1.cloud.account.AccountService.Create.
+func (c *accountServiceClient) Create(ctx context.Context, req *connect.Request[account.CreateRequest]) (*connect.Response[account.CreateResponse], error) {
+	return c.create.CallUnary(ctx, req)
+}
+
 // Update calls v1.cloud.account.AccountService.Update.
 func (c *accountServiceClient) Update(ctx context.Context, req *connect.Request[account.UpdateRequest]) (*connect.Response[account.UpdateResponse], error) {
 	return c.update.CallUnary(ctx, req)
+}
+
+// Delete calls v1.cloud.account.AccountService.Delete.
+func (c *accountServiceClient) Delete(ctx context.Context, req *connect.Request[account.DeleteRequest]) (*connect.Response[account.DeleteResponse], error) {
+	return c.delete.CallUnary(ctx, req)
 }
 
 // AccountServiceHandler is an implementation of the v1.cloud.account.AccountService service.
 type AccountServiceHandler interface {
 	Get(context.Context, *connect.Request[account.GetRequest]) (*connect.Response[account.GetResponse], error)
 	List(context.Context, *connect.Request[account.ListRequest]) (*connect.Response[account.ListResponse], error)
+	Create(context.Context, *connect.Request[account.CreateRequest]) (*connect.Response[account.CreateResponse], error)
 	Update(context.Context, *connect.Request[account.UpdateRequest]) (*connect.Response[account.UpdateResponse], error)
+	Delete(context.Context, *connect.Request[account.DeleteRequest]) (*connect.Response[account.DeleteResponse], error)
 }
 
 // NewAccountServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -128,10 +160,22 @@ func NewAccountServiceHandler(svc AccountServiceHandler, opts ...connect.Handler
 		connect.WithSchema(accountServiceMethods.ByName("List")),
 		connect.WithHandlerOptions(opts...),
 	)
+	accountServiceCreateHandler := connect.NewUnaryHandler(
+		AccountServiceCreateProcedure,
+		svc.Create,
+		connect.WithSchema(accountServiceMethods.ByName("Create")),
+		connect.WithHandlerOptions(opts...),
+	)
 	accountServiceUpdateHandler := connect.NewUnaryHandler(
 		AccountServiceUpdateProcedure,
 		svc.Update,
 		connect.WithSchema(accountServiceMethods.ByName("Update")),
+		connect.WithHandlerOptions(opts...),
+	)
+	accountServiceDeleteHandler := connect.NewUnaryHandler(
+		AccountServiceDeleteProcedure,
+		svc.Delete,
+		connect.WithSchema(accountServiceMethods.ByName("Delete")),
 		connect.WithHandlerOptions(opts...),
 	)
 	return "/v1.cloud.account.AccountService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -140,8 +184,12 @@ func NewAccountServiceHandler(svc AccountServiceHandler, opts ...connect.Handler
 			accountServiceGetHandler.ServeHTTP(w, r)
 		case AccountServiceListProcedure:
 			accountServiceListHandler.ServeHTTP(w, r)
+		case AccountServiceCreateProcedure:
+			accountServiceCreateHandler.ServeHTTP(w, r)
 		case AccountServiceUpdateProcedure:
 			accountServiceUpdateHandler.ServeHTTP(w, r)
+		case AccountServiceDeleteProcedure:
+			accountServiceDeleteHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -159,6 +207,14 @@ func (UnimplementedAccountServiceHandler) List(context.Context, *connect.Request
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.cloud.account.AccountService.List is not implemented"))
 }
 
+func (UnimplementedAccountServiceHandler) Create(context.Context, *connect.Request[account.CreateRequest]) (*connect.Response[account.CreateResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.cloud.account.AccountService.Create is not implemented"))
+}
+
 func (UnimplementedAccountServiceHandler) Update(context.Context, *connect.Request[account.UpdateRequest]) (*connect.Response[account.UpdateResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.cloud.account.AccountService.Update is not implemented"))
+}
+
+func (UnimplementedAccountServiceHandler) Delete(context.Context, *connect.Request[account.DeleteRequest]) (*connect.Response[account.DeleteResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.cloud.account.AccountService.Delete is not implemented"))
 }

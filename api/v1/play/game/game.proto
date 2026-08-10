@@ -1,12 +1,12 @@
 syntax = "proto3";
 
-package v1.game.game;
+package v1.play.game;
 
 import "buf/validate/validate.proto";
 import "google/protobuf/timestamp.proto";
-import "v1/game/game.proto";
+import "v1/play/game.proto";
 
-option go_package = "codeberg.org/megakuul/cloudjam/pkg/api/v1/game/game";
+option go_package = "codeberg.org/megakuul/cloudjam/pkg/api/v1/play/game";
 
 message GetRequest {
   string id = 1 [(buf.validate.field).string = {uuid: true}];

@@ -6,6 +6,10 @@ import "buf/validate/validate.proto";
 
 option go_package = "codeberg.org/megakuul/cloudjam/pkg/api/v1/cloud";
 
+enum CompressionMode {
+  Zstd = 0;
+}
+
 message Definition {
   string scope = 1;
   string provider_id = 2 [(buf.validate.field).string = {uuid: true}];
@@ -20,4 +24,5 @@ message Definition {
   ];
   string version = 6;
   string checksum = 7;
+  CompressionMode compression = 8;
 }

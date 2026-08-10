@@ -2,216 +2,227 @@
 // @generated from file v1/admin/role/role.proto (package v1.admin.role, syntax proto3)
 /* eslint-disable */
 
-import type { Message } from '@bufbuild/protobuf';
-import type { GenFile, GenMessage, GenService } from '@bufbuild/protobuf/codegenv2';
-import { fileDesc, messageDesc, serviceDesc } from '@bufbuild/protobuf/codegenv2';
-import { file_google_protobuf_timestamp } from '@bufbuild/protobuf/wkt';
-import { file_buf_validate_validate } from '../../../buf/validate/validate_pb';
-import type { Role } from '../role_pb';
-import { file_v1_admin_role } from '../role_pb';
+import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
+import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
+import { file_buf_validate_validate } from "../../../buf/validate/validate_pb";
+import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
+import type { Role } from "../role_pb";
+import { file_v1_admin_role } from "../role_pb";
+import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file v1/admin/role/role.proto.
  */
-export const file_v1_admin_role_role: GenFile =
-	/*@__PURE__*/
-	fileDesc(
-		'Chh2MS9hZG1pbi9yb2xlL3JvbGUucHJvdG8SDXYxLmFkbWluLnJvbGUiIgoKR2V0UmVxdWVzdBIUCgJpZBgBIAEoCUIIukgFcgOwAQEiKwoLR2V0UmVzcG9uc2USHAoEcm9sZRgBIAEoCzIOLnYxLmFkbWluLlJvbGUiPAoLTGlzdFJlcXVlc3QSGAoFbGltaXQYASABKAVCCbpIBhoEGGQgABITCgtzdGFydF9hZnRlchgCIAEoCSItCgxMaXN0UmVzcG9uc2USHQoFcm9sZXMYASADKAsyDi52MS5hZG1pbi5Sb2xlIi0KDUNyZWF0ZVJlcXVlc3QSHAoEaW5pdBgBIAEoCzIOLnYxLmFkbWluLlJvbGUiEAoOQ3JlYXRlUmVzcG9uc2UiLAoNVXBkYXRlUmVxdWVzdBIbCgNtb2QYASABKAsyDi52MS5hZG1pbi5Sb2xlIhAKDlVwZGF0ZVJlc3BvbnNlIiUKDURlbGV0ZVJlcXVlc3QSFAoCaWQYASABKAlCCLpIBXIDsAEBIhAKDkRlbGV0ZVJlc3BvbnNlMuECCgtSb2xlU2VydmljZRI8CgNHZXQSGS52MS5hZG1pbi5yb2xlLkdldFJlcXVlc3QaGi52MS5hZG1pbi5yb2xlLkdldFJlc3BvbnNlEj8KBExpc3QSGi52MS5hZG1pbi5yb2xlLkxpc3RSZXF1ZXN0GhsudjEuYWRtaW4ucm9sZS5MaXN0UmVzcG9uc2USRQoGQ3JlYXRlEhwudjEuYWRtaW4ucm9sZS5DcmVhdGVSZXF1ZXN0Gh0udjEuYWRtaW4ucm9sZS5DcmVhdGVSZXNwb25zZRJFCgZVcGRhdGUSHC52MS5hZG1pbi5yb2xlLlVwZGF0ZVJlcXVlc3QaHS52MS5hZG1pbi5yb2xlLlVwZGF0ZVJlc3BvbnNlEkUKBkRlbGV0ZRIcLnYxLmFkbWluLnJvbGUuRGVsZXRlUmVxdWVzdBodLnYxLmFkbWluLnJvbGUuRGVsZXRlUmVzcG9uc2VCNlo0Y29kZWJlcmcub3JnL21lZ2FrdXVsL2Nsb3VkamFtL3BrZy9hcGkvdjEvYWRtaW4vcm9sZWIGcHJvdG8z',
-		[file_buf_validate_validate, file_google_protobuf_timestamp, file_v1_admin_role]
-	);
+export const file_v1_admin_role_role: GenFile = /*@__PURE__*/
+  fileDesc("Chh2MS9hZG1pbi9yb2xlL3JvbGUucHJvdG8SDXYxLmFkbWluLnJvbGUiIgoKR2V0UmVxdWVzdBIUCgJpZBgBIAEoCUIIukgFcgOwAQEiKwoLR2V0UmVzcG9uc2USHAoEcm9sZRgBIAEoCzIOLnYxLmFkbWluLlJvbGUiPAoLTGlzdFJlcXVlc3QSGAoFbGltaXQYASABKAVCCbpIBhoEGGQgABITCgtzdGFydF9hZnRlchgCIAEoCSItCgxMaXN0UmVzcG9uc2USHQoFcm9sZXMYASADKAsyDi52MS5hZG1pbi5Sb2xlIi0KDUNyZWF0ZVJlcXVlc3QSHAoEaW5pdBgBIAEoCzIOLnYxLmFkbWluLlJvbGUiEAoOQ3JlYXRlUmVzcG9uc2UiLAoNVXBkYXRlUmVxdWVzdBIbCgNtb2QYASABKAsyDi52MS5hZG1pbi5Sb2xlIhAKDlVwZGF0ZVJlc3BvbnNlIiUKDURlbGV0ZVJlcXVlc3QSFAoCaWQYASABKAlCCLpIBXIDsAEBIhAKDkRlbGV0ZVJlc3BvbnNlMuECCgtSb2xlU2VydmljZRI8CgNHZXQSGS52MS5hZG1pbi5yb2xlLkdldFJlcXVlc3QaGi52MS5hZG1pbi5yb2xlLkdldFJlc3BvbnNlEj8KBExpc3QSGi52MS5hZG1pbi5yb2xlLkxpc3RSZXF1ZXN0GhsudjEuYWRtaW4ucm9sZS5MaXN0UmVzcG9uc2USRQoGQ3JlYXRlEhwudjEuYWRtaW4ucm9sZS5DcmVhdGVSZXF1ZXN0Gh0udjEuYWRtaW4ucm9sZS5DcmVhdGVSZXNwb25zZRJFCgZVcGRhdGUSHC52MS5hZG1pbi5yb2xlLlVwZGF0ZVJlcXVlc3QaHS52MS5hZG1pbi5yb2xlLlVwZGF0ZVJlc3BvbnNlEkUKBkRlbGV0ZRIcLnYxLmFkbWluLnJvbGUuRGVsZXRlUmVxdWVzdBodLnYxLmFkbWluLnJvbGUuRGVsZXRlUmVzcG9uc2VCNlo0Y29kZWJlcmcub3JnL21lZ2FrdXVsL2Nsb3VkamFtL3BrZy9hcGkvdjEvYWRtaW4vcm9sZWIGcHJvdG8z", [file_buf_validate_validate, file_google_protobuf_timestamp, file_v1_admin_role]);
 
 /**
  * @generated from message v1.admin.role.GetRequest
  */
-export type GetRequest = Message<'v1.admin.role.GetRequest'> & {
-	/**
-	 * @generated from field: string id = 1;
-	 */
-	id: string;
+export type GetRequest = Message<"v1.admin.role.GetRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
 };
 
 /**
  * Describes the message v1.admin.role.GetRequest.
  * Use `create(GetRequestSchema)` to create a new message.
  */
-export const GetRequestSchema: GenMessage<GetRequest> = /*@__PURE__*/ messageDesc(file_v1_admin_role_role, 0);
+export const GetRequestSchema: GenMessage<GetRequest> = /*@__PURE__*/
+  messageDesc(file_v1_admin_role_role, 0);
 
 /**
  * @generated from message v1.admin.role.GetResponse
  */
-export type GetResponse = Message<'v1.admin.role.GetResponse'> & {
-	/**
-	 * @generated from field: v1.admin.Role role = 1;
-	 */
-	role?: Role;
+export type GetResponse = Message<"v1.admin.role.GetResponse"> & {
+  /**
+   * @generated from field: v1.admin.Role role = 1;
+   */
+  role?: Role;
 };
 
 /**
  * Describes the message v1.admin.role.GetResponse.
  * Use `create(GetResponseSchema)` to create a new message.
  */
-export const GetResponseSchema: GenMessage<GetResponse> = /*@__PURE__*/ messageDesc(file_v1_admin_role_role, 1);
+export const GetResponseSchema: GenMessage<GetResponse> = /*@__PURE__*/
+  messageDesc(file_v1_admin_role_role, 1);
 
 /**
  * @generated from message v1.admin.role.ListRequest
  */
-export type ListRequest = Message<'v1.admin.role.ListRequest'> & {
-	/**
-	 * @generated from field: int32 limit = 1;
-	 */
-	limit: number;
+export type ListRequest = Message<"v1.admin.role.ListRequest"> & {
+  /**
+   * @generated from field: int32 limit = 1;
+   */
+  limit: number;
 
-	/**
-	 * @generated from field: string start_after = 2;
-	 */
-	startAfter: string;
+  /**
+   * @generated from field: string start_after = 2;
+   */
+  startAfter: string;
 };
 
 /**
  * Describes the message v1.admin.role.ListRequest.
  * Use `create(ListRequestSchema)` to create a new message.
  */
-export const ListRequestSchema: GenMessage<ListRequest> = /*@__PURE__*/ messageDesc(file_v1_admin_role_role, 2);
+export const ListRequestSchema: GenMessage<ListRequest> = /*@__PURE__*/
+  messageDesc(file_v1_admin_role_role, 2);
 
 /**
  * @generated from message v1.admin.role.ListResponse
  */
-export type ListResponse = Message<'v1.admin.role.ListResponse'> & {
-	/**
-	 * @generated from field: repeated v1.admin.Role roles = 1;
-	 */
-	roles: Role[];
+export type ListResponse = Message<"v1.admin.role.ListResponse"> & {
+  /**
+   * @generated from field: repeated v1.admin.Role roles = 1;
+   */
+  roles: Role[];
 };
 
 /**
  * Describes the message v1.admin.role.ListResponse.
  * Use `create(ListResponseSchema)` to create a new message.
  */
-export const ListResponseSchema: GenMessage<ListResponse> = /*@__PURE__*/ messageDesc(file_v1_admin_role_role, 3);
+export const ListResponseSchema: GenMessage<ListResponse> = /*@__PURE__*/
+  messageDesc(file_v1_admin_role_role, 3);
 
 /**
  * @generated from message v1.admin.role.CreateRequest
  */
-export type CreateRequest = Message<'v1.admin.role.CreateRequest'> & {
-	/**
-	 * @generated from field: v1.admin.Role init = 1;
-	 */
-	init?: Role;
+export type CreateRequest = Message<"v1.admin.role.CreateRequest"> & {
+  /**
+   * @generated from field: v1.admin.Role init = 1;
+   */
+  init?: Role;
 };
 
 /**
  * Describes the message v1.admin.role.CreateRequest.
  * Use `create(CreateRequestSchema)` to create a new message.
  */
-export const CreateRequestSchema: GenMessage<CreateRequest> = /*@__PURE__*/ messageDesc(file_v1_admin_role_role, 4);
+export const CreateRequestSchema: GenMessage<CreateRequest> = /*@__PURE__*/
+  messageDesc(file_v1_admin_role_role, 4);
 
 /**
  * @generated from message v1.admin.role.CreateResponse
  */
-export type CreateResponse = Message<'v1.admin.role.CreateResponse'> & {};
+export type CreateResponse = Message<"v1.admin.role.CreateResponse"> & {
+};
 
 /**
  * Describes the message v1.admin.role.CreateResponse.
  * Use `create(CreateResponseSchema)` to create a new message.
  */
-export const CreateResponseSchema: GenMessage<CreateResponse> = /*@__PURE__*/ messageDesc(file_v1_admin_role_role, 5);
+export const CreateResponseSchema: GenMessage<CreateResponse> = /*@__PURE__*/
+  messageDesc(file_v1_admin_role_role, 5);
 
 /**
  * @generated from message v1.admin.role.UpdateRequest
  */
-export type UpdateRequest = Message<'v1.admin.role.UpdateRequest'> & {
-	/**
-	 * @generated from field: v1.admin.Role mod = 1;
-	 */
-	mod?: Role;
+export type UpdateRequest = Message<"v1.admin.role.UpdateRequest"> & {
+  /**
+   * @generated from field: v1.admin.Role mod = 1;
+   */
+  mod?: Role;
 };
 
 /**
  * Describes the message v1.admin.role.UpdateRequest.
  * Use `create(UpdateRequestSchema)` to create a new message.
  */
-export const UpdateRequestSchema: GenMessage<UpdateRequest> = /*@__PURE__*/ messageDesc(file_v1_admin_role_role, 6);
+export const UpdateRequestSchema: GenMessage<UpdateRequest> = /*@__PURE__*/
+  messageDesc(file_v1_admin_role_role, 6);
 
 /**
  * @generated from message v1.admin.role.UpdateResponse
  */
-export type UpdateResponse = Message<'v1.admin.role.UpdateResponse'> & {};
+export type UpdateResponse = Message<"v1.admin.role.UpdateResponse"> & {
+};
 
 /**
  * Describes the message v1.admin.role.UpdateResponse.
  * Use `create(UpdateResponseSchema)` to create a new message.
  */
-export const UpdateResponseSchema: GenMessage<UpdateResponse> = /*@__PURE__*/ messageDesc(file_v1_admin_role_role, 7);
+export const UpdateResponseSchema: GenMessage<UpdateResponse> = /*@__PURE__*/
+  messageDesc(file_v1_admin_role_role, 7);
 
 /**
  * @generated from message v1.admin.role.DeleteRequest
  */
-export type DeleteRequest = Message<'v1.admin.role.DeleteRequest'> & {
-	/**
-	 * @generated from field: string id = 1;
-	 */
-	id: string;
+export type DeleteRequest = Message<"v1.admin.role.DeleteRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
 };
 
 /**
  * Describes the message v1.admin.role.DeleteRequest.
  * Use `create(DeleteRequestSchema)` to create a new message.
  */
-export const DeleteRequestSchema: GenMessage<DeleteRequest> = /*@__PURE__*/ messageDesc(file_v1_admin_role_role, 8);
+export const DeleteRequestSchema: GenMessage<DeleteRequest> = /*@__PURE__*/
+  messageDesc(file_v1_admin_role_role, 8);
 
 /**
  * @generated from message v1.admin.role.DeleteResponse
  */
-export type DeleteResponse = Message<'v1.admin.role.DeleteResponse'> & {};
+export type DeleteResponse = Message<"v1.admin.role.DeleteResponse"> & {
+};
 
 /**
  * Describes the message v1.admin.role.DeleteResponse.
  * Use `create(DeleteResponseSchema)` to create a new message.
  */
-export const DeleteResponseSchema: GenMessage<DeleteResponse> = /*@__PURE__*/ messageDesc(file_v1_admin_role_role, 9);
+export const DeleteResponseSchema: GenMessage<DeleteResponse> = /*@__PURE__*/
+  messageDesc(file_v1_admin_role_role, 9);
 
 /**
  * @generated from service v1.admin.role.RoleService
  */
 export const RoleService: GenService<{
-	/**
-	 * @generated from rpc v1.admin.role.RoleService.Get
-	 */
-	get: {
-		methodKind: 'unary';
-		input: typeof GetRequestSchema;
-		output: typeof GetResponseSchema;
-	};
-	/**
-	 * @generated from rpc v1.admin.role.RoleService.List
-	 */
-	list: {
-		methodKind: 'unary';
-		input: typeof ListRequestSchema;
-		output: typeof ListResponseSchema;
-	};
-	/**
-	 * @generated from rpc v1.admin.role.RoleService.Create
-	 */
-	create: {
-		methodKind: 'unary';
-		input: typeof CreateRequestSchema;
-		output: typeof CreateResponseSchema;
-	};
-	/**
-	 * @generated from rpc v1.admin.role.RoleService.Update
-	 */
-	update: {
-		methodKind: 'unary';
-		input: typeof UpdateRequestSchema;
-		output: typeof UpdateResponseSchema;
-	};
-	/**
-	 * @generated from rpc v1.admin.role.RoleService.Delete
-	 */
-	delete: {
-		methodKind: 'unary';
-		input: typeof DeleteRequestSchema;
-		output: typeof DeleteResponseSchema;
-	};
-}> = /*@__PURE__*/ serviceDesc(file_v1_admin_role_role, 0);
+  /**
+   * @generated from rpc v1.admin.role.RoleService.Get
+   */
+  get: {
+    methodKind: "unary";
+    input: typeof GetRequestSchema;
+    output: typeof GetResponseSchema;
+  },
+  /**
+   * @generated from rpc v1.admin.role.RoleService.List
+   */
+  list: {
+    methodKind: "unary";
+    input: typeof ListRequestSchema;
+    output: typeof ListResponseSchema;
+  },
+  /**
+   * @generated from rpc v1.admin.role.RoleService.Create
+   */
+  create: {
+    methodKind: "unary";
+    input: typeof CreateRequestSchema;
+    output: typeof CreateResponseSchema;
+  },
+  /**
+   * @generated from rpc v1.admin.role.RoleService.Update
+   */
+  update: {
+    methodKind: "unary";
+    input: typeof UpdateRequestSchema;
+    output: typeof UpdateResponseSchema;
+  },
+  /**
+   * @generated from rpc v1.admin.role.RoleService.Delete
+   */
+  delete: {
+    methodKind: "unary";
+    input: typeof DeleteRequestSchema;
+    output: typeof DeleteResponseSchema;
+  },
+}> = /*@__PURE__*/
+  serviceDesc(file_v1_admin_role_role, 0);
+
