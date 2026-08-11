@@ -148,6 +148,7 @@ type Challenge struct {
 	Errors         []string               `protobuf:"bytes,11,rep,name=errors,proto3" json:"errors,omitempty"`
 	ScoreEvents    []*ScoreEvent          `protobuf:"bytes,12,rep,name=score_events,json=scoreEvents,proto3" json:"score_events,omitempty"`
 	Duration       *durationpb.Duration   `protobuf:"bytes,13,opt,name=duration,proto3" json:"duration,omitempty"`
+	Ends           *timestamppb.Timestamp `protobuf:"bytes,14,opt,name=ends,proto3" json:"ends,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -273,6 +274,13 @@ func (x *Challenge) GetDuration() *durationpb.Duration {
 	return nil
 }
 
+func (x *Challenge) GetEnds() *timestamppb.Timestamp {
+	if x != nil {
+		return x.Ends
+	}
+	return nil
+}
+
 var File_v1_play_challenge_proto protoreflect.FileDescriptor
 
 const file_v1_play_challenge_proto_rawDesc = "" +
@@ -282,7 +290,7 @@ const file_v1_play_challenge_proto_rawDesc = "" +
 	"ScoreEvent\x128\n" +
 	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12\x12\n" +
 	"\x04text\x18\x02 \x01(\tR\x04text\x12\x16\n" +
-	"\x06change\x18\x03 \x01(\x01R\x06change\"\xba\x04\n" +
+	"\x06change\x18\x03 \x01(\x01R\x06change\"\xea\x04\n" +
 	"\tChallenge\x12\x14\n" +
 	"\x05scope\x18\x01 \x01(\tR\x05scope\x12!\n" +
 	"\agame_id\x18\x02 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x06gameId\x12\x18\n" +
@@ -297,7 +305,8 @@ const file_v1_play_challenge_proto_rawDesc = "" +
 	" \x03(\v2\x1e.v1.play.Challenge.AssetsEntryR\x06assets\x12\x16\n" +
 	"\x06errors\x18\v \x03(\tR\x06errors\x126\n" +
 	"\fscore_events\x18\f \x03(\v2\x13.v1.play.ScoreEventR\vscoreEvents\x125\n" +
-	"\bduration\x18\r \x01(\v2\x19.google.protobuf.DurationR\bduration\x1a9\n" +
+	"\bduration\x18\r \x01(\v2\x19.google.protobuf.DurationR\bduration\x12.\n" +
+	"\x04ends\x18\x0e \x01(\v2\x1a.google.protobuf.TimestampR\x04ends\x1a9\n" +
 	"\vAssetsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01*6\n" +
@@ -334,11 +343,12 @@ var file_v1_play_challenge_proto_depIdxs = []int32{
 	3, // 2: v1.play.Challenge.assets:type_name -> v1.play.Challenge.AssetsEntry
 	1, // 3: v1.play.Challenge.score_events:type_name -> v1.play.ScoreEvent
 	5, // 4: v1.play.Challenge.duration:type_name -> google.protobuf.Duration
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	4, // 5: v1.play.Challenge.ends:type_name -> google.protobuf.Timestamp
+	6, // [6:6] is the sub-list for method output_type
+	6, // [6:6] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_v1_play_challenge_proto_init() }

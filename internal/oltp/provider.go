@@ -1,6 +1,8 @@
 package oltp
 
 import (
+	"time"
+
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/cloud"
 	"github.com/megakuul/dynamitedb"
 )
@@ -19,12 +21,14 @@ type Provider struct {
 }
 
 type Account struct {
-	ProviderID  dynamitedb.KeyField                      `pk:"provider_id"`
-	AccountID   dynamitedb.KeyField                      `sk:"account_id"`
+	ProviderID  dynamitedb.KeyField                      `pk:"provider_id" cbor:"-"`
+	AccountID   dynamitedb.KeyField                      `sk:"account_id" cbor:"-"`
+	ETag        dynamitedb.ETagField                     `etag:"true" cbor:"-"`
 	Name        dynamitedb.DataField[string]             `cbor:"name,omitempty"`
 	Description dynamitedb.DataField[string]             `cbor:"description,omitempty"`
-	Credentials dynamitedb.DataField[string]             `cbor:"credentials"`
-	State       dynamitedb.DataField[cloud.AccountState] `cbor:"state"`
+	Credentials dynamitedb.DataField[string]             `cbor:"credentials,omitempty"`
+	State       dynamitedb.DataField[cloud.AccountState] `cbor:"state,omitempty"`
+	BoundUntil  dynamitedb.DataField[time.Time]          `cbor:"bound_until,omitempty"`
 
 	Scope dynamitedb.DataField[string] `cbor:"scope,omitempty"`
 }

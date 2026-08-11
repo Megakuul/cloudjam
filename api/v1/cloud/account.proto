@@ -8,10 +8,11 @@ option go_package = "codeberg.org/megakuul/cloudjam/pkg/api/v1/cloud";
 
 enum AccountState {
   Provisioning = 0;
-  Active = 1;
-  Evicting = 2;
-  Corrupted = 3;
-  Deleting = 4;
+  Ready = 1;
+  Running = 2;
+  Evicting = 3;
+  Corrupted = 4;
+  Deleting = 5;
 }
 
 message Account {

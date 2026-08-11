@@ -26,27 +26,30 @@ type AccountState int32
 
 const (
 	AccountState_Provisioning AccountState = 0
-	AccountState_Active       AccountState = 1
-	AccountState_Evicting     AccountState = 2
-	AccountState_Corrupted    AccountState = 3
-	AccountState_Deleting     AccountState = 4
+	AccountState_Ready        AccountState = 1
+	AccountState_Running      AccountState = 2
+	AccountState_Evicting     AccountState = 3
+	AccountState_Corrupted    AccountState = 4
+	AccountState_Deleting     AccountState = 5
 )
 
 // Enum value maps for AccountState.
 var (
 	AccountState_name = map[int32]string{
 		0: "Provisioning",
-		1: "Active",
-		2: "Evicting",
-		3: "Corrupted",
-		4: "Deleting",
+		1: "Ready",
+		2: "Running",
+		3: "Evicting",
+		4: "Corrupted",
+		5: "Deleting",
 	}
 	AccountState_value = map[string]int32{
 		"Provisioning": 0,
-		"Active":       1,
-		"Evicting":     2,
-		"Corrupted":    3,
-		"Deleting":     4,
+		"Ready":        1,
+		"Running":      2,
+		"Evicting":     3,
+		"Corrupted":    4,
+		"Deleting":     5,
 	}
 )
 
@@ -192,14 +195,14 @@ const file_v1_cloud_account_proto_rawDesc = "" +
 	"\vcredentials\x18\x06 \x01(\tB\n" +
 	"\xbaH\ar\x05\x10\x00\x18\xe8\aR\vcredentials\x12,\n" +
 	"\x05state\x18\a \x01(\x0e2\x16.v1.cloud.AccountStateR\x05state\x12\x14\n" +
-	"\x05error\x18\b \x01(\tR\x05error*W\n" +
+	"\x05error\x18\b \x01(\tR\x05error*c\n" +
 	"\fAccountState\x12\x10\n" +
-	"\fProvisioning\x10\x00\x12\n" +
-	"\n" +
-	"\x06Active\x10\x01\x12\f\n" +
-	"\bEvicting\x10\x02\x12\r\n" +
-	"\tCorrupted\x10\x03\x12\f\n" +
-	"\bDeleting\x10\x04B1Z/codeberg.org/megakuul/cloudjam/pkg/api/v1/cloudb\x06proto3"
+	"\fProvisioning\x10\x00\x12\t\n" +
+	"\x05Ready\x10\x01\x12\v\n" +
+	"\aRunning\x10\x02\x12\f\n" +
+	"\bEvicting\x10\x03\x12\r\n" +
+	"\tCorrupted\x10\x04\x12\f\n" +
+	"\bDeleting\x10\x05B1Z/codeberg.org/megakuul/cloudjam/pkg/api/v1/cloudb\x06proto3"
 
 var (
 	file_v1_cloud_account_proto_rawDescOnce sync.Once

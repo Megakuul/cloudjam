@@ -11,7 +11,6 @@ import (
 	"time"
 
 	extism "github.com/extism/go-sdk"
-	"github.com/megakuul/dynamitedb"
 	"github.com/tetratelabs/wazero"
 )
 
@@ -20,7 +19,6 @@ import (
 // This cache uses teh challenge hash as key and ensures everyone on this server instance uses the same compiled instruction pages.
 type Cache struct {
 	logger *slog.Logger
-	oltp   *dynamitedb.Bucket
 
 	challengesLock sync.Mutex
 	challenges     map[string]*extism.CompiledPlugin
@@ -29,9 +27,8 @@ type Cache struct {
 	uncacheTimeout time.Duration
 }
 
-func NewCache(oltp *dynamitedb.Bucket, uncacheTimeout time.Duration) *Cache {
+func NewCache(uncacheTimeout time.Duration) *Cache {
 	return &Cache{
-		oltp:           oltp,
 		challenges:     map[string]*extism.CompiledPlugin{},
 		lastUsage:      map[string]time.Time{},
 		uncacheTimeout: uncacheTimeout,

@@ -3,10 +3,8 @@ package challenge
 import (
 	"bytes"
 	"context"
-	"crypto/rand"
 	"fmt"
 	"log/slog"
-	"os"
 	"time"
 
 	"codeberg.org/megakuul/cloudjam/internal/oltp"
@@ -16,7 +14,6 @@ import (
 	"github.com/google/uuid"
 	"github.com/megakuul/dynamitedb"
 	"github.com/megakuul/lake"
-	"github.com/tetratelabs/wazero"
 )
 
 type Challenge struct {
@@ -67,7 +64,8 @@ func WithLogger(logger *slog.Logger) ChallengeOption {
 	}
 }
 
-func (c *Challenge) Start(ctx context.Context, pluginData extism.Wasm) error {
+// registerHost generates extism host functions that can be registered in a WASM host to implement the CloudJam plugin API.
+func (c *Challenge) registerHost(ctx context.Context) []extism.HostFunction {
 	report := func(err error) {
 		c.logger.Error(err.Error())
 		if dErr := dynamitedb.Update(ctx, c.oltp, &oltp.Challenge{
@@ -78,58 +76,25 @@ func (c *Challenge) Start(ctx context.Context, pluginData extism.Wasm) error {
 			c.logger.Warn(dErr.Error())
 		}
 	}
-
-	plugin, err := extism.NewCompiledPlugin(ctx,
-		extism.Manifest{Wasm: []extism.Wasm{pluginData}},
-		extism.PluginConfig{
-			EnableWasi: true,
-			// Without this a cancelled context cannot interrupt the guest, and a
-			// challenge loop would keep running after ctrl-c.
-			RuntimeConfig: wazero.NewRuntimeConfig().WithCloseOnContextDone(true),
-		},
-		[]extism.HostFunction{
-			RegisterInOutHost(api.ReportName, c.Report, report),
-			RegisterInOutHost(api.LogName, c.Log, report),
-			RegisterInOutHost(api.CreateMetaName, c.CreateMeta, report),
-			RegisterInOutHost(api.UpdateMetaName, c.UpdateMeta, report),
-			RegisterInOutHost(api.ReadScoreName, c.ReadScore, report),
-			RegisterInOutHost(api.UpdateScoreName, c.UpdateScore, report),
-			RegisterOutHost(api.CreateAssetName, c.CreateAsset, report),
-			RegisterInOutHost(api.UpdateAssetName, c.UpdateAsset, report),
-			RegisterInOutHost(api.CreatePermissionName, c.CreatePermission, report),
-			RegisterInOutHost(api.UpdatePermissionName, c.UpdatePermission, report),
-			RegisterInOutHost(api.CreateGuardrailName, c.CreateGuardrail, report),
-			RegisterInOutHost(api.UpdateGuardrailName, c.UpdateGuardrail, report),
-			RegisterInOutHost(api.CreateResourceName, c.CreateResource, report),
-			RegisterInOutHost(api.ReadResourceName, c.ReadResource, report),
-			RegisterInOutHost(api.UpdateResourceName, c.UpdateResource, report),
-			RegisterInOutHost(api.DeleteResourceName, c.DeleteResource, report),
-			RegisterInOutHost(api.ListResourceName, c.ListResource, report),
-		})
-	if err != nil {
-		return nil
+	return []extism.HostFunction{
+		RegisterInOutHost(api.ReportName, c.Report, report),
+		RegisterInOutHost(api.LogName, c.Log, report),
+		RegisterInOutHost(api.CreateMetaName, c.CreateMeta, report),
+		RegisterInOutHost(api.UpdateMetaName, c.UpdateMeta, report),
+		RegisterInOutHost(api.ReadScoreName, c.ReadScore, report),
+		RegisterInOutHost(api.UpdateScoreName, c.UpdateScore, report),
+		RegisterOutHost(api.CreateAssetName, c.CreateAsset, report),
+		RegisterInOutHost(api.UpdateAssetName, c.UpdateAsset, report),
+		RegisterInOutHost(api.CreatePermissionName, c.CreatePermission, report),
+		RegisterInOutHost(api.UpdatePermissionName, c.UpdatePermission, report),
+		RegisterInOutHost(api.CreateGuardrailName, c.CreateGuardrail, report),
+		RegisterInOutHost(api.UpdateGuardrailName, c.UpdateGuardrail, report),
+		RegisterInOutHost(api.CreateResourceName, c.CreateResource, report),
+		RegisterInOutHost(api.ReadResourceName, c.ReadResource, report),
+		RegisterInOutHost(api.UpdateResourceName, c.UpdateResource, report),
+		RegisterInOutHost(api.DeleteResourceName, c.DeleteResource, report),
+		RegisterInOutHost(api.ListResourceName, c.ListResource, report),
 	}
-	defer plugin.Close(ctx)
-
-	instance, err := plugin.Instance(ctx, extism.PluginInstanceConfig{
-		ModuleConfig: wazero.NewModuleConfig().
-			WithSysWalltime().
-			WithSysNanotime().
-			WithSysNanosleep().
-			WithRandSource(rand.Reader).
-			WithStdout(os.Stdout).
-			WithStderr(os.Stderr),
-	})
-	if err != nil {
-		return fmt.Errorf("instantiate plugin: %w", err)
-	}
-	defer instance.Close(ctx)
-
-	_, _, err = instance.CallWithContext(ctx, "_start", nil)
-	if err != nil && ctx.Err() == nil {
-		return fmt.Errorf("start plugin: %w", err)
-	}
-	return nil
 }
 
 func (c *Challenge) Report(ctx context.Context, input *api.ReportInput) (*api.ReportOutput, error) {

@@ -28,7 +28,9 @@ type Provider interface {
 	Prepare(ctx context.Context, id string) error
 	// Nuke erases all contents of an account. This may also raze guardrails / configs, therefore Prepare() must be called before reusing.
 	Nuke(ctx context.Context, id string) error
-	// Assets creates a asset controller that can be used to modify resources on the account.
+	// Access creates a access controller that can be used to modify challenge account access.
+	Access(ctx context.Context, id string, lifetime time.Duration) (AccessController, error)
+	// Assets creates a asset controller that can be used to manage challenge assets.
 	Assets(ctx context.Context, id string, lifetime time.Duration) (AssetController, error)
 	// Resources creates a resource controller that can be used to modify resources on the account.
 	Resources(ctx context.Context, id string, lifetime time.Duration) (ResourceController, error)

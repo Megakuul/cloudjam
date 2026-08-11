@@ -11,7 +11,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/cloud/account.proto.
  */
 export const file_v1_cloud_account: GenFile = /*@__PURE__*/
-  fileDesc("ChZ2MS9jbG91ZC9hY2NvdW50LnByb3RvEgh2MS5jbG91ZCLTAQoHQWNjb3VudBINCgVzY29wZRgBIAEoCRIdCgtwcm92aWRlcl9pZBgCIAEoCUIIukgFcgOwAQESCgoCaWQYAyABKAkSFwoEbmFtZRgEIAEoCUIJukgGcgQQBBgUEh4KC2Rlc2NyaXB0aW9uGAUgASgJQgm6SAZyBBAAGDISHwoLY3JlZGVudGlhbHMYBiABKAlCCrpIB3IFEAAY6AcSJQoFc3RhdGUYByABKA4yFi52MS5jbG91ZC5BY2NvdW50U3RhdGUSDQoFZXJyb3IYCCABKAkqVwoMQWNjb3VudFN0YXRlEhAKDFByb3Zpc2lvbmluZxAAEgoKBkFjdGl2ZRABEgwKCEV2aWN0aW5nEAISDQoJQ29ycnVwdGVkEAMSDAoIRGVsZXRpbmcQBEIxWi9jb2RlYmVyZy5vcmcvbWVnYWt1dWwvY2xvdWRqYW0vcGtnL2FwaS92MS9jbG91ZGIGcHJvdG8z", [file_buf_validate_validate]);
+  fileDesc("ChZ2MS9jbG91ZC9hY2NvdW50LnByb3RvEgh2MS5jbG91ZCLTAQoHQWNjb3VudBINCgVzY29wZRgBIAEoCRIdCgtwcm92aWRlcl9pZBgCIAEoCUIIukgFcgOwAQESCgoCaWQYAyABKAkSFwoEbmFtZRgEIAEoCUIJukgGcgQQBBgUEh4KC2Rlc2NyaXB0aW9uGAUgASgJQgm6SAZyBBAAGDISHwoLY3JlZGVudGlhbHMYBiABKAlCCrpIB3IFEAAY6AcSJQoFc3RhdGUYByABKA4yFi52MS5jbG91ZC5BY2NvdW50U3RhdGUSDQoFZXJyb3IYCCABKAkqYwoMQWNjb3VudFN0YXRlEhAKDFByb3Zpc2lvbmluZxAAEgkKBVJlYWR5EAESCwoHUnVubmluZxACEgwKCEV2aWN0aW5nEAMSDQoJQ29ycnVwdGVkEAQSDAoIRGVsZXRpbmcQBUIxWi9jb2RlYmVyZy5vcmcvbWVnYWt1dWwvY2xvdWRqYW0vcGtnL2FwaS92MS9jbG91ZGIGcHJvdG8z", [file_buf_validate_validate]);
 
 /**
  * @generated from message v1.cloud.Account
@@ -75,24 +75,29 @@ export enum AccountState {
   Provisioning = 0,
 
   /**
-   * @generated from enum value: Active = 1;
+   * @generated from enum value: Ready = 1;
    */
-  Active = 1,
+  Ready = 1,
 
   /**
-   * @generated from enum value: Evicting = 2;
+   * @generated from enum value: Running = 2;
    */
-  Evicting = 2,
+  Running = 2,
 
   /**
-   * @generated from enum value: Corrupted = 3;
+   * @generated from enum value: Evicting = 3;
    */
-  Corrupted = 3,
+  Evicting = 3,
 
   /**
-   * @generated from enum value: Deleting = 4;
+   * @generated from enum value: Corrupted = 4;
    */
-  Deleting = 4,
+  Corrupted = 4,
+
+  /**
+   * @generated from enum value: Deleting = 5;
+   */
+  Deleting = 5,
 }
 
 /**
