@@ -5,13 +5,15 @@
 import type { GenEnum, GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
 import { enumDesc, fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
 import { file_buf_validate_validate } from "../../buf/validate/validate_pb";
+import type { Timestamp } from "@bufbuild/protobuf/wkt";
+import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file v1/cloud/account.proto.
  */
 export const file_v1_cloud_account: GenFile = /*@__PURE__*/
-  fileDesc("ChZ2MS9jbG91ZC9hY2NvdW50LnByb3RvEgh2MS5jbG91ZCLTAQoHQWNjb3VudBINCgVzY29wZRgBIAEoCRIdCgtwcm92aWRlcl9pZBgCIAEoCUIIukgFcgOwAQESCgoCaWQYAyABKAkSFwoEbmFtZRgEIAEoCUIJukgGcgQQBBgUEh4KC2Rlc2NyaXB0aW9uGAUgASgJQgm6SAZyBBAAGDISHwoLY3JlZGVudGlhbHMYBiABKAlCCrpIB3IFEAAY6AcSJQoFc3RhdGUYByABKA4yFi52MS5jbG91ZC5BY2NvdW50U3RhdGUSDQoFZXJyb3IYCCABKAkqYwoMQWNjb3VudFN0YXRlEhAKDFByb3Zpc2lvbmluZxAAEgkKBVJlYWR5EAESCwoHUnVubmluZxACEgwKCEV2aWN0aW5nEAMSDQoJQ29ycnVwdGVkEAQSDAoIRGVsZXRpbmcQBUIxWi9jb2RlYmVyZy5vcmcvbWVnYWt1dWwvY2xvdWRqYW0vcGtnL2FwaS92MS9jbG91ZGIGcHJvdG8z", [file_buf_validate_validate]);
+  fileDesc("ChZ2MS9jbG91ZC9hY2NvdW50LnByb3RvEgh2MS5jbG91ZCL2AQoHQWNjb3VudBINCgVzY29wZRgBIAEoCRIdCgtwcm92aWRlcl9pZBgCIAEoCUIIukgFcgOwAQESCgoCaWQYAyABKAkSEQoJdGFyZ2V0X2lkGAQgASgJEhcKBG5hbWUYBSABKAlCCbpIBnIEEAQYFBIeCgtkZXNjcmlwdGlvbhgGIAEoCUIJukgGcgQQABgyEiUKBXN0YXRlGAcgASgOMhYudjEuY2xvdWQuQWNjb3VudFN0YXRlEi8KC2JvdW5kX3VudGlsGAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBINCgVlcnJvchgJIAEoCSqBAQoMQWNjb3VudFN0YXRlEg4KCk5vdENyZWF0ZWQQABIQCgxQcm92aXNpb25pbmcQARIJCgVSZWFkeRACEgsKB1J1bm5pbmcQAxIMCghFdmljdGluZxAEEg0KCUNvcnJ1cHRlZBAFEgwKCERpc2FibGVkEAYSDAoIRGVsZXRpbmcQB0IxWi9jb2RlYmVyZy5vcmcvbWVnYWt1dWwvY2xvdWRqYW0vcGtnL2FwaS92MS9jbG91ZGIGcHJvdG8z", [file_buf_validate_validate, file_google_protobuf_timestamp]);
 
 /**
  * @generated from message v1.cloud.Account
@@ -33,19 +35,19 @@ export type Account = Message<"v1.cloud.Account"> & {
   id: string;
 
   /**
-   * @generated from field: string name = 4;
+   * @generated from field: string target_id = 4;
+   */
+  targetId: string;
+
+  /**
+   * @generated from field: string name = 5;
    */
   name: string;
 
   /**
-   * @generated from field: string description = 5;
+   * @generated from field: string description = 6;
    */
   description: string;
-
-  /**
-   * @generated from field: string credentials = 6;
-   */
-  credentials: string;
 
   /**
    * @generated from field: v1.cloud.AccountState state = 7;
@@ -53,7 +55,12 @@ export type Account = Message<"v1.cloud.Account"> & {
   state: AccountState;
 
   /**
-   * @generated from field: string error = 8;
+   * @generated from field: google.protobuf.Timestamp bound_until = 8;
+   */
+  boundUntil?: Timestamp;
+
+  /**
+   * @generated from field: string error = 9;
    */
   error: string;
 };
@@ -70,34 +77,44 @@ export const AccountSchema: GenMessage<Account> = /*@__PURE__*/
  */
 export enum AccountState {
   /**
-   * @generated from enum value: Provisioning = 0;
+   * @generated from enum value: NotCreated = 0;
    */
-  Provisioning = 0,
+  NotCreated = 0,
 
   /**
-   * @generated from enum value: Ready = 1;
+   * @generated from enum value: Provisioning = 1;
    */
-  Ready = 1,
+  Provisioning = 1,
 
   /**
-   * @generated from enum value: Running = 2;
+   * @generated from enum value: Ready = 2;
    */
-  Running = 2,
+  Ready = 2,
 
   /**
-   * @generated from enum value: Evicting = 3;
+   * @generated from enum value: Running = 3;
    */
-  Evicting = 3,
+  Running = 3,
 
   /**
-   * @generated from enum value: Corrupted = 4;
+   * @generated from enum value: Evicting = 4;
    */
-  Corrupted = 4,
+  Evicting = 4,
 
   /**
-   * @generated from enum value: Deleting = 5;
+   * @generated from enum value: Corrupted = 5;
    */
-  Deleting = 5,
+  Corrupted = 5,
+
+  /**
+   * @generated from enum value: Disabled = 6;
+   */
+  Disabled = 6,
+
+  /**
+   * @generated from enum value: Deleting = 7;
+   */
+  Deleting = 7,
 }
 
 /**

@@ -42,8 +42,17 @@ message UpdateRequest {
 
 message UpdateResponse {}
 
+message FixRequest {
+  string provider_id = 1 [(buf.validate.field).string = {uuid: true}];
+  string id = 2 [(buf.validate.field).string = {uuid: true}];
+}
+
+message FixResponse {}
+
 message DeleteRequest {
-  string id = 1 [(buf.validate.field).string = {uuid: true}];
+  string provider_id = 1 [(buf.validate.field).string = {uuid: true}];
+  string id = 2 [(buf.validate.field).string = {uuid: true}];
+  bool force = 3;
 }
 
 message DeleteResponse {}
@@ -53,5 +62,6 @@ service AccountService {
   rpc List(ListRequest) returns (ListResponse);
   rpc Create(CreateRequest) returns (CreateResponse);
   rpc Update(UpdateRequest) returns (UpdateResponse);
+  rpc Fix(FixRequest) returns (FixResponse);
   rpc Delete(DeleteRequest) returns (DeleteResponse);
 }

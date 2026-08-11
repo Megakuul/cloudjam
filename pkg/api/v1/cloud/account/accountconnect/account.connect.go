@@ -41,6 +41,10 @@ const (
 	AccountServiceCreateProcedure = "/v1.cloud.account.AccountService/Create"
 	// AccountServiceUpdateProcedure is the fully-qualified name of the AccountService's Update RPC.
 	AccountServiceUpdateProcedure = "/v1.cloud.account.AccountService/Update"
+	// AccountServiceFixProcedure is the fully-qualified name of the AccountService's Fix RPC.
+	AccountServiceFixProcedure = "/v1.cloud.account.AccountService/Fix"
+	// AccountServiceEvictProcedure is the fully-qualified name of the AccountService's Evict RPC.
+	AccountServiceEvictProcedure = "/v1.cloud.account.AccountService/Evict"
 	// AccountServiceDeleteProcedure is the fully-qualified name of the AccountService's Delete RPC.
 	AccountServiceDeleteProcedure = "/v1.cloud.account.AccountService/Delete"
 )
@@ -51,6 +55,8 @@ type AccountServiceClient interface {
 	List(context.Context, *connect.Request[account.ListRequest]) (*connect.Response[account.ListResponse], error)
 	Create(context.Context, *connect.Request[account.CreateRequest]) (*connect.Response[account.CreateResponse], error)
 	Update(context.Context, *connect.Request[account.UpdateRequest]) (*connect.Response[account.UpdateResponse], error)
+	Fix(context.Context, *connect.Request[account.FixRequest]) (*connect.Response[account.FixResponse], error)
+	Evict(context.Context, *connect.Request[account.EvictRequest]) (*connect.Response[account.EvictResponse], error)
 	Delete(context.Context, *connect.Request[account.DeleteRequest]) (*connect.Response[account.DeleteResponse], error)
 }
 
@@ -89,6 +95,18 @@ func NewAccountServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 			connect.WithSchema(accountServiceMethods.ByName("Update")),
 			connect.WithClientOptions(opts...),
 		),
+		fix: connect.NewClient[account.FixRequest, account.FixResponse](
+			httpClient,
+			baseURL+AccountServiceFixProcedure,
+			connect.WithSchema(accountServiceMethods.ByName("Fix")),
+			connect.WithClientOptions(opts...),
+		),
+		evict: connect.NewClient[account.EvictRequest, account.EvictResponse](
+			httpClient,
+			baseURL+AccountServiceEvictProcedure,
+			connect.WithSchema(accountServiceMethods.ByName("Evict")),
+			connect.WithClientOptions(opts...),
+		),
 		delete: connect.NewClient[account.DeleteRequest, account.DeleteResponse](
 			httpClient,
 			baseURL+AccountServiceDeleteProcedure,
@@ -104,6 +122,8 @@ type accountServiceClient struct {
 	list   *connect.Client[account.ListRequest, account.ListResponse]
 	create *connect.Client[account.CreateRequest, account.CreateResponse]
 	update *connect.Client[account.UpdateRequest, account.UpdateResponse]
+	fix    *connect.Client[account.FixRequest, account.FixResponse]
+	evict  *connect.Client[account.EvictRequest, account.EvictResponse]
 	delete *connect.Client[account.DeleteRequest, account.DeleteResponse]
 }
 
@@ -127,6 +147,16 @@ func (c *accountServiceClient) Update(ctx context.Context, req *connect.Request[
 	return c.update.CallUnary(ctx, req)
 }
 
+// Fix calls v1.cloud.account.AccountService.Fix.
+func (c *accountServiceClient) Fix(ctx context.Context, req *connect.Request[account.FixRequest]) (*connect.Response[account.FixResponse], error) {
+	return c.fix.CallUnary(ctx, req)
+}
+
+// Evict calls v1.cloud.account.AccountService.Evict.
+func (c *accountServiceClient) Evict(ctx context.Context, req *connect.Request[account.EvictRequest]) (*connect.Response[account.EvictResponse], error) {
+	return c.evict.CallUnary(ctx, req)
+}
+
 // Delete calls v1.cloud.account.AccountService.Delete.
 func (c *accountServiceClient) Delete(ctx context.Context, req *connect.Request[account.DeleteRequest]) (*connect.Response[account.DeleteResponse], error) {
 	return c.delete.CallUnary(ctx, req)
@@ -138,6 +168,8 @@ type AccountServiceHandler interface {
 	List(context.Context, *connect.Request[account.ListRequest]) (*connect.Response[account.ListResponse], error)
 	Create(context.Context, *connect.Request[account.CreateRequest]) (*connect.Response[account.CreateResponse], error)
 	Update(context.Context, *connect.Request[account.UpdateRequest]) (*connect.Response[account.UpdateResponse], error)
+	Fix(context.Context, *connect.Request[account.FixRequest]) (*connect.Response[account.FixResponse], error)
+	Evict(context.Context, *connect.Request[account.EvictRequest]) (*connect.Response[account.EvictResponse], error)
 	Delete(context.Context, *connect.Request[account.DeleteRequest]) (*connect.Response[account.DeleteResponse], error)
 }
 
@@ -172,6 +204,18 @@ func NewAccountServiceHandler(svc AccountServiceHandler, opts ...connect.Handler
 		connect.WithSchema(accountServiceMethods.ByName("Update")),
 		connect.WithHandlerOptions(opts...),
 	)
+	accountServiceFixHandler := connect.NewUnaryHandler(
+		AccountServiceFixProcedure,
+		svc.Fix,
+		connect.WithSchema(accountServiceMethods.ByName("Fix")),
+		connect.WithHandlerOptions(opts...),
+	)
+	accountServiceEvictHandler := connect.NewUnaryHandler(
+		AccountServiceEvictProcedure,
+		svc.Evict,
+		connect.WithSchema(accountServiceMethods.ByName("Evict")),
+		connect.WithHandlerOptions(opts...),
+	)
 	accountServiceDeleteHandler := connect.NewUnaryHandler(
 		AccountServiceDeleteProcedure,
 		svc.Delete,
@@ -188,6 +232,10 @@ func NewAccountServiceHandler(svc AccountServiceHandler, opts ...connect.Handler
 			accountServiceCreateHandler.ServeHTTP(w, r)
 		case AccountServiceUpdateProcedure:
 			accountServiceUpdateHandler.ServeHTTP(w, r)
+		case AccountServiceFixProcedure:
+			accountServiceFixHandler.ServeHTTP(w, r)
+		case AccountServiceEvictProcedure:
+			accountServiceEvictHandler.ServeHTTP(w, r)
 		case AccountServiceDeleteProcedure:
 			accountServiceDeleteHandler.ServeHTTP(w, r)
 		default:
@@ -213,6 +261,14 @@ func (UnimplementedAccountServiceHandler) Create(context.Context, *connect.Reque
 
 func (UnimplementedAccountServiceHandler) Update(context.Context, *connect.Request[account.UpdateRequest]) (*connect.Response[account.UpdateResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.cloud.account.AccountService.Update is not implemented"))
+}
+
+func (UnimplementedAccountServiceHandler) Fix(context.Context, *connect.Request[account.FixRequest]) (*connect.Response[account.FixResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.cloud.account.AccountService.Fix is not implemented"))
+}
+
+func (UnimplementedAccountServiceHandler) Evict(context.Context, *connect.Request[account.EvictRequest]) (*connect.Response[account.EvictResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.cloud.account.AccountService.Evict is not implemented"))
 }
 
 func (UnimplementedAccountServiceHandler) Delete(context.Context, *connect.Request[account.DeleteRequest]) (*connect.Response[account.DeleteResponse], error) {

@@ -2,10 +2,10 @@
 // @generated from file v1/play/challenge.proto (package v1.play, syntax proto3)
 /* eslint-disable */
 
-import type { GenEnum, GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
-import { enumDesc, fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
+import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
+import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
 import { file_buf_validate_validate } from "../../buf/validate/validate_pb";
-import type { Duration, Timestamp } from "@bufbuild/protobuf/wkt";
+import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_duration, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import type { Message } from "@bufbuild/protobuf";
 
@@ -13,7 +13,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/play/challenge.proto.
  */
 export const file_v1_play_challenge: GenFile = /*@__PURE__*/
-  fileDesc("Chd2MS9wbGF5L2NoYWxsZW5nZS5wcm90bxIHdjEucGxheSJZCgpTY29yZUV2ZW50Ei0KCXRpbWVzdGFtcBgBIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASDAoEdGV4dBgCIAEoCRIOCgZjaGFuZ2UYAyABKAEi3QMKCUNoYWxsZW5nZRINCgVzY29wZRgBIAEoCRIZCgdnYW1lX2lkGAIgASgJQgi6SAVyA7ABARIUCgJpZBgDIAEoCUIIukgFcgOwAQESGQoHdGVhbV9pZBgEIAEoCUIIukgFcgOwAQESHwoNZGVmaW5pdGlvbl9pZBgFIAEoCUIIukgFcgOwAQESFwoPZGVmaW5pdGlvbl9uYW1lGAYgASgJEiYKBXN0YXRlGAcgASgOMhcudjEucGxheS5DaGFsbGVuZ2VTdGF0ZRINCgV0aXRsZRgIIAEoCRITCgtkZXNjcmlwdGlvbhgJIAEoCRIuCgZhc3NldHMYCiADKAsyHi52MS5wbGF5LkNoYWxsZW5nZS5Bc3NldHNFbnRyeRIOCgZlcnJvcnMYCyADKAkSKQoMc2NvcmVfZXZlbnRzGAwgAygLMhMudjEucGxheS5TY29yZUV2ZW50EisKCGR1cmF0aW9uGA0gASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uEigKBGVuZHMYDiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wGi0KC0Fzc2V0c0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAEqNgoOQ2hhbGxlbmdlU3RhdGUSCQoFUmVhZHkQABILCgdSdW5uaW5nEAESDAoIRmluaXNoZWQQAkIwWi5jb2RlYmVyZy5vcmcvbWVnYWt1dWwvY2xvdWRqYW0vcGtnL2FwaS92MS9wbGF5YgZwcm90bzM", [file_buf_validate_validate, file_google_protobuf_duration, file_google_protobuf_timestamp]);
+  fileDesc("Chd2MS9wbGF5L2NoYWxsZW5nZS5wcm90bxIHdjEucGxheSJZCgpTY29yZUV2ZW50Ei0KCXRpbWVzdGFtcBgBIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASDAoEdGV4dBgCIAEoCRIOCgZjaGFuZ2UYAyABKAEitAMKCUNoYWxsZW5nZRINCgVzY29wZRgBIAEoCRIZCgdnYW1lX2lkGAIgASgJQgi6SAVyA7ABARIUCgJpZBgDIAEoCUIIukgFcgOwAQESGQoHdGVhbV9pZBgEIAEoCUIIukgFcgOwAQESHwoNZGVmaW5pdGlvbl9pZBgFIAEoCUIIukgFcgOwAQESFwoPZGVmaW5pdGlvbl9uYW1lGAYgASgJEg0KBXRpdGxlGAcgASgJEhMKC2Rlc2NyaXB0aW9uGAggASgJEi4KBmFzc2V0cxgJIAMoCzIeLnYxLnBsYXkuQ2hhbGxlbmdlLkFzc2V0c0VudHJ5Eg4KBmVycm9ycxgKIAMoCRIpCgxzY29yZV9ldmVudHMYCyADKAsyEy52MS5wbGF5LlNjb3JlRXZlbnQSKgoGc3RhcnRzGAwgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIoCgRlbmRzGA0gASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBotCgtBc3NldHNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBQjBaLmNvZGViZXJnLm9yZy9tZWdha3V1bC9jbG91ZGphbS9wa2cvYXBpL3YxL3BsYXliBnByb3RvMw", [file_buf_validate_validate, file_google_protobuf_duration, file_google_protobuf_timestamp]);
 
 /**
  * @generated from message v1.play.ScoreEvent
@@ -77,42 +77,37 @@ export type Challenge = Message<"v1.play.Challenge"> & {
   definitionName: string;
 
   /**
-   * @generated from field: v1.play.ChallengeState state = 7;
-   */
-  state: ChallengeState;
-
-  /**
-   * @generated from field: string title = 8;
+   * @generated from field: string title = 7;
    */
   title: string;
 
   /**
-   * @generated from field: string description = 9;
+   * @generated from field: string description = 8;
    */
   description: string;
 
   /**
-   * @generated from field: map<string, string> assets = 10;
+   * @generated from field: map<string, string> assets = 9;
    */
   assets: { [key: string]: string };
 
   /**
-   * @generated from field: repeated string errors = 11;
+   * @generated from field: repeated string errors = 10;
    */
   errors: string[];
 
   /**
-   * @generated from field: repeated v1.play.ScoreEvent score_events = 12;
+   * @generated from field: repeated v1.play.ScoreEvent score_events = 11;
    */
   scoreEvents: ScoreEvent[];
 
   /**
-   * @generated from field: google.protobuf.Duration duration = 13;
+   * @generated from field: google.protobuf.Timestamp starts = 12;
    */
-  duration?: Duration;
+  starts?: Timestamp;
 
   /**
-   * @generated from field: google.protobuf.Timestamp ends = 14;
+   * @generated from field: google.protobuf.Timestamp ends = 13;
    */
   ends?: Timestamp;
 };
@@ -123,30 +118,4 @@ export type Challenge = Message<"v1.play.Challenge"> & {
  */
 export const ChallengeSchema: GenMessage<Challenge> = /*@__PURE__*/
   messageDesc(file_v1_play_challenge, 1);
-
-/**
- * @generated from enum v1.play.ChallengeState
- */
-export enum ChallengeState {
-  /**
-   * @generated from enum value: Ready = 0;
-   */
-  Ready = 0,
-
-  /**
-   * @generated from enum value: Running = 1;
-   */
-  Running = 1,
-
-  /**
-   * @generated from enum value: Finished = 2;
-   */
-  Finished = 2,
-}
-
-/**
- * Describes the enum v1.play.ChallengeState.
- */
-export const ChallengeStateSchema: GenEnum<ChallengeState> = /*@__PURE__*/
-  enumDesc(file_v1_play_challenge, 0);
 

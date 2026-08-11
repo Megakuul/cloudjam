@@ -42,6 +42,9 @@ type Provider interface {
 	Check(ctx context.Context, id string) ([]Leak, error)
 	// Cost returns aggregated cost data for the specified account in the specified time window (data might be delayed).
 	Cost(ctx context.Context, id string, window time.Duration) ([]Cost, error)
+
+	// Delete removes the account from the provider and cleans up resources in the process.
+	Delete(ctx context.Context, id string) error
 }
 
 // AccessController provides an API to modify an accounts challenge credential permissions / guardrails.

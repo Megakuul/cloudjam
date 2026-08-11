@@ -10,7 +10,7 @@ import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	durationpb "google.golang.org/protobuf/types/known/durationpb"
+	_ "google.golang.org/protobuf/types/known/durationpb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
@@ -23,55 +23,6 @@ const (
 	// Verify that runtime/protoimpl is sufficiently up-to-date.
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
-
-type ChallengeState int32
-
-const (
-	ChallengeState_Ready    ChallengeState = 0
-	ChallengeState_Running  ChallengeState = 1
-	ChallengeState_Finished ChallengeState = 2
-)
-
-// Enum value maps for ChallengeState.
-var (
-	ChallengeState_name = map[int32]string{
-		0: "Ready",
-		1: "Running",
-		2: "Finished",
-	}
-	ChallengeState_value = map[string]int32{
-		"Ready":    0,
-		"Running":  1,
-		"Finished": 2,
-	}
-)
-
-func (x ChallengeState) Enum() *ChallengeState {
-	p := new(ChallengeState)
-	*p = x
-	return p
-}
-
-func (x ChallengeState) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (ChallengeState) Descriptor() protoreflect.EnumDescriptor {
-	return file_v1_play_challenge_proto_enumTypes[0].Descriptor()
-}
-
-func (ChallengeState) Type() protoreflect.EnumType {
-	return &file_v1_play_challenge_proto_enumTypes[0]
-}
-
-func (x ChallengeState) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use ChallengeState.Descriptor instead.
-func (ChallengeState) EnumDescriptor() ([]byte, []int) {
-	return file_v1_play_challenge_proto_rawDescGZIP(), []int{0}
-}
 
 type ScoreEvent struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -141,14 +92,13 @@ type Challenge struct {
 	TeamId         string                 `protobuf:"bytes,4,opt,name=team_id,json=teamId,proto3" json:"team_id,omitempty"`
 	DefinitionId   string                 `protobuf:"bytes,5,opt,name=definition_id,json=definitionId,proto3" json:"definition_id,omitempty"`
 	DefinitionName string                 `protobuf:"bytes,6,opt,name=definition_name,json=definitionName,proto3" json:"definition_name,omitempty"`
-	State          ChallengeState         `protobuf:"varint,7,opt,name=state,proto3,enum=v1.play.ChallengeState" json:"state,omitempty"`
-	Title          string                 `protobuf:"bytes,8,opt,name=title,proto3" json:"title,omitempty"`
-	Description    string                 `protobuf:"bytes,9,opt,name=description,proto3" json:"description,omitempty"`
-	Assets         map[string]string      `protobuf:"bytes,10,rep,name=assets,proto3" json:"assets,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	Errors         []string               `protobuf:"bytes,11,rep,name=errors,proto3" json:"errors,omitempty"`
-	ScoreEvents    []*ScoreEvent          `protobuf:"bytes,12,rep,name=score_events,json=scoreEvents,proto3" json:"score_events,omitempty"`
-	Duration       *durationpb.Duration   `protobuf:"bytes,13,opt,name=duration,proto3" json:"duration,omitempty"`
-	Ends           *timestamppb.Timestamp `protobuf:"bytes,14,opt,name=ends,proto3" json:"ends,omitempty"`
+	Title          string                 `protobuf:"bytes,7,opt,name=title,proto3" json:"title,omitempty"`
+	Description    string                 `protobuf:"bytes,8,opt,name=description,proto3" json:"description,omitempty"`
+	Assets         map[string]string      `protobuf:"bytes,9,rep,name=assets,proto3" json:"assets,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Errors         []string               `protobuf:"bytes,10,rep,name=errors,proto3" json:"errors,omitempty"`
+	ScoreEvents    []*ScoreEvent          `protobuf:"bytes,11,rep,name=score_events,json=scoreEvents,proto3" json:"score_events,omitempty"`
+	Starts         *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=starts,proto3" json:"starts,omitempty"`
+	Ends           *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=ends,proto3" json:"ends,omitempty"`
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -225,13 +175,6 @@ func (x *Challenge) GetDefinitionName() string {
 	return ""
 }
 
-func (x *Challenge) GetState() ChallengeState {
-	if x != nil {
-		return x.State
-	}
-	return ChallengeState_Ready
-}
-
 func (x *Challenge) GetTitle() string {
 	if x != nil {
 		return x.Title
@@ -267,9 +210,9 @@ func (x *Challenge) GetScoreEvents() []*ScoreEvent {
 	return nil
 }
 
-func (x *Challenge) GetDuration() *durationpb.Duration {
+func (x *Challenge) GetStarts() *timestamppb.Timestamp {
 	if x != nil {
-		return x.Duration
+		return x.Starts
 	}
 	return nil
 }
@@ -290,30 +233,25 @@ const file_v1_play_challenge_proto_rawDesc = "" +
 	"ScoreEvent\x128\n" +
 	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12\x12\n" +
 	"\x04text\x18\x02 \x01(\tR\x04text\x12\x16\n" +
-	"\x06change\x18\x03 \x01(\x01R\x06change\"\xea\x04\n" +
+	"\x06change\x18\x03 \x01(\x01R\x06change\"\xb8\x04\n" +
 	"\tChallenge\x12\x14\n" +
 	"\x05scope\x18\x01 \x01(\tR\x05scope\x12!\n" +
 	"\agame_id\x18\x02 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x06gameId\x12\x18\n" +
 	"\x02id\x18\x03 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\x12!\n" +
 	"\ateam_id\x18\x04 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x06teamId\x12-\n" +
 	"\rdefinition_id\x18\x05 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\fdefinitionId\x12'\n" +
-	"\x0fdefinition_name\x18\x06 \x01(\tR\x0edefinitionName\x12-\n" +
-	"\x05state\x18\a \x01(\x0e2\x17.v1.play.ChallengeStateR\x05state\x12\x14\n" +
-	"\x05title\x18\b \x01(\tR\x05title\x12 \n" +
-	"\vdescription\x18\t \x01(\tR\vdescription\x126\n" +
-	"\x06assets\x18\n" +
-	" \x03(\v2\x1e.v1.play.Challenge.AssetsEntryR\x06assets\x12\x16\n" +
-	"\x06errors\x18\v \x03(\tR\x06errors\x126\n" +
-	"\fscore_events\x18\f \x03(\v2\x13.v1.play.ScoreEventR\vscoreEvents\x125\n" +
-	"\bduration\x18\r \x01(\v2\x19.google.protobuf.DurationR\bduration\x12.\n" +
-	"\x04ends\x18\x0e \x01(\v2\x1a.google.protobuf.TimestampR\x04ends\x1a9\n" +
+	"\x0fdefinition_name\x18\x06 \x01(\tR\x0edefinitionName\x12\x14\n" +
+	"\x05title\x18\a \x01(\tR\x05title\x12 \n" +
+	"\vdescription\x18\b \x01(\tR\vdescription\x126\n" +
+	"\x06assets\x18\t \x03(\v2\x1e.v1.play.Challenge.AssetsEntryR\x06assets\x12\x16\n" +
+	"\x06errors\x18\n" +
+	" \x03(\tR\x06errors\x126\n" +
+	"\fscore_events\x18\v \x03(\v2\x13.v1.play.ScoreEventR\vscoreEvents\x122\n" +
+	"\x06starts\x18\f \x01(\v2\x1a.google.protobuf.TimestampR\x06starts\x12.\n" +
+	"\x04ends\x18\r \x01(\v2\x1a.google.protobuf.TimestampR\x04ends\x1a9\n" +
 	"\vAssetsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01*6\n" +
-	"\x0eChallengeState\x12\t\n" +
-	"\x05Ready\x10\x00\x12\v\n" +
-	"\aRunning\x10\x01\x12\f\n" +
-	"\bFinished\x10\x02B0Z.codeberg.org/megakuul/cloudjam/pkg/api/v1/playb\x06proto3"
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B0Z.codeberg.org/megakuul/cloudjam/pkg/api/v1/playb\x06proto3"
 
 var (
 	file_v1_play_challenge_proto_rawDescOnce sync.Once
@@ -327,28 +265,24 @@ func file_v1_play_challenge_proto_rawDescGZIP() []byte {
 	return file_v1_play_challenge_proto_rawDescData
 }
 
-var file_v1_play_challenge_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_v1_play_challenge_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_v1_play_challenge_proto_goTypes = []any{
-	(ChallengeState)(0),           // 0: v1.play.ChallengeState
-	(*ScoreEvent)(nil),            // 1: v1.play.ScoreEvent
-	(*Challenge)(nil),             // 2: v1.play.Challenge
-	nil,                           // 3: v1.play.Challenge.AssetsEntry
-	(*timestamppb.Timestamp)(nil), // 4: google.protobuf.Timestamp
-	(*durationpb.Duration)(nil),   // 5: google.protobuf.Duration
+	(*ScoreEvent)(nil),            // 0: v1.play.ScoreEvent
+	(*Challenge)(nil),             // 1: v1.play.Challenge
+	nil,                           // 2: v1.play.Challenge.AssetsEntry
+	(*timestamppb.Timestamp)(nil), // 3: google.protobuf.Timestamp
 }
 var file_v1_play_challenge_proto_depIdxs = []int32{
-	4, // 0: v1.play.ScoreEvent.timestamp:type_name -> google.protobuf.Timestamp
-	0, // 1: v1.play.Challenge.state:type_name -> v1.play.ChallengeState
-	3, // 2: v1.play.Challenge.assets:type_name -> v1.play.Challenge.AssetsEntry
-	1, // 3: v1.play.Challenge.score_events:type_name -> v1.play.ScoreEvent
-	5, // 4: v1.play.Challenge.duration:type_name -> google.protobuf.Duration
-	4, // 5: v1.play.Challenge.ends:type_name -> google.protobuf.Timestamp
-	6, // [6:6] is the sub-list for method output_type
-	6, // [6:6] is the sub-list for method input_type
-	6, // [6:6] is the sub-list for extension type_name
-	6, // [6:6] is the sub-list for extension extendee
-	0, // [0:6] is the sub-list for field type_name
+	3, // 0: v1.play.ScoreEvent.timestamp:type_name -> google.protobuf.Timestamp
+	2, // 1: v1.play.Challenge.assets:type_name -> v1.play.Challenge.AssetsEntry
+	0, // 2: v1.play.Challenge.score_events:type_name -> v1.play.ScoreEvent
+	3, // 3: v1.play.Challenge.starts:type_name -> google.protobuf.Timestamp
+	3, // 4: v1.play.Challenge.ends:type_name -> google.protobuf.Timestamp
+	5, // [5:5] is the sub-list for method output_type
+	5, // [5:5] is the sub-list for method input_type
+	5, // [5:5] is the sub-list for extension type_name
+	5, // [5:5] is the sub-list for extension extendee
+	0, // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_v1_play_challenge_proto_init() }
@@ -361,14 +295,13 @@ func file_v1_play_challenge_proto_init() {
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_v1_play_challenge_proto_rawDesc), len(file_v1_play_challenge_proto_rawDesc)),
-			NumEnums:      1,
+			NumEnums:      0,
 			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
 		GoTypes:           file_v1_play_challenge_proto_goTypes,
 		DependencyIndexes: file_v1_play_challenge_proto_depIdxs,
-		EnumInfos:         file_v1_play_challenge_proto_enumTypes,
 		MessageInfos:      file_v1_play_challenge_proto_msgTypes,
 	}.Build()
 	File_v1_play_challenge_proto = out.File

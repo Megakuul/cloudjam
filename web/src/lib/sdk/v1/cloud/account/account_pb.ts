@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/cloud/account/account.proto.
  */
 export const file_v1_cloud_account_account: GenFile = /*@__PURE__*/
-  fileDesc("Ch52MS9jbG91ZC9hY2NvdW50L2FjY291bnQucHJvdG8SEHYxLmNsb3VkLmFjY291bnQiQQoKR2V0UmVxdWVzdBIdCgtwcm92aWRlcl9pZBgBIAEoCUIIukgFcgOwAQESFAoCaWQYAiABKAlCCLpIBXIDsAEBIjEKC0dldFJlc3BvbnNlEiIKB2FjY291bnQYASABKAsyES52MS5jbG91ZC5BY2NvdW50IlsKC0xpc3RSZXF1ZXN0Eh0KC3Byb3ZpZGVyX2lkGAEgASgJQgi6SAVyA7ABARIYCgVsaW1pdBgCIAEoBUIJukgGGgQYZCAAEhMKC3N0YXJ0X2FmdGVyGAMgASgJIjMKDExpc3RSZXNwb25zZRIjCghhY2NvdW50cxgBIAMoCzIRLnYxLmNsb3VkLkFjY291bnQiMAoNQ3JlYXRlUmVxdWVzdBIfCgRpbml0GAEgASgLMhEudjEuY2xvdWQuQWNjb3VudCIQCg5DcmVhdGVSZXNwb25zZSIvCg1VcGRhdGVSZXF1ZXN0Eh4KA21vZBgBIAEoCzIRLnYxLmNsb3VkLkFjY291bnQiEAoOVXBkYXRlUmVzcG9uc2UiJQoNRGVsZXRlUmVxdWVzdBIUCgJpZBgBIAEoCUIIukgFcgOwAQEiEAoORGVsZXRlUmVzcG9uc2UyggMKDkFjY291bnRTZXJ2aWNlEkIKA0dldBIcLnYxLmNsb3VkLmFjY291bnQuR2V0UmVxdWVzdBodLnYxLmNsb3VkLmFjY291bnQuR2V0UmVzcG9uc2USRQoETGlzdBIdLnYxLmNsb3VkLmFjY291bnQuTGlzdFJlcXVlc3QaHi52MS5jbG91ZC5hY2NvdW50Lkxpc3RSZXNwb25zZRJLCgZDcmVhdGUSHy52MS5jbG91ZC5hY2NvdW50LkNyZWF0ZVJlcXVlc3QaIC52MS5jbG91ZC5hY2NvdW50LkNyZWF0ZVJlc3BvbnNlEksKBlVwZGF0ZRIfLnYxLmNsb3VkLmFjY291bnQuVXBkYXRlUmVxdWVzdBogLnYxLmNsb3VkLmFjY291bnQuVXBkYXRlUmVzcG9uc2USSwoGRGVsZXRlEh8udjEuY2xvdWQuYWNjb3VudC5EZWxldGVSZXF1ZXN0GiAudjEuY2xvdWQuYWNjb3VudC5EZWxldGVSZXNwb25zZUI5Wjdjb2RlYmVyZy5vcmcvbWVnYWt1dWwvY2xvdWRqYW0vcGtnL2FwaS92MS9jbG91ZC9hY2NvdW50YgZwcm90bzM", [file_buf_validate_validate, file_google_protobuf_timestamp, file_v1_cloud_account]);
+  fileDesc("Ch52MS9jbG91ZC9hY2NvdW50L2FjY291bnQucHJvdG8SEHYxLmNsb3VkLmFjY291bnQiQQoKR2V0UmVxdWVzdBIdCgtwcm92aWRlcl9pZBgBIAEoCUIIukgFcgOwAQESFAoCaWQYAiABKAlCCLpIBXIDsAEBIjEKC0dldFJlc3BvbnNlEiIKB2FjY291bnQYASABKAsyES52MS5jbG91ZC5BY2NvdW50IlsKC0xpc3RSZXF1ZXN0Eh0KC3Byb3ZpZGVyX2lkGAEgASgJQgi6SAVyA7ABARIYCgVsaW1pdBgCIAEoBUIJukgGGgQYZCAAEhMKC3N0YXJ0X2FmdGVyGAMgASgJIjMKDExpc3RSZXNwb25zZRIjCghhY2NvdW50cxgBIAMoCzIRLnYxLmNsb3VkLkFjY291bnQiMAoNQ3JlYXRlUmVxdWVzdBIfCgRpbml0GAEgASgLMhEudjEuY2xvdWQuQWNjb3VudCIQCg5DcmVhdGVSZXNwb25zZSIvCg1VcGRhdGVSZXF1ZXN0Eh4KA21vZBgBIAEoCzIRLnYxLmNsb3VkLkFjY291bnQiEAoOVXBkYXRlUmVzcG9uc2UiQQoKRml4UmVxdWVzdBIdCgtwcm92aWRlcl9pZBgBIAEoCUIIukgFcgOwAQESFAoCaWQYAiABKAlCCLpIBXIDsAEBIg0KC0ZpeFJlc3BvbnNlIkMKDEV2aWN0UmVxdWVzdBIdCgtwcm92aWRlcl9pZBgBIAEoCUIIukgFcgOwAQESFAoCaWQYAiABKAlCCLpIBXIDsAEBIg8KDUV2aWN0UmVzcG9uc2UiUwoNRGVsZXRlUmVxdWVzdBIdCgtwcm92aWRlcl9pZBgBIAEoCUIIukgFcgOwAQESFAoCaWQYAiABKAlCCLpIBXIDsAEBEg0KBWZvcmNlGAMgASgIIhAKDkRlbGV0ZVJlc3BvbnNlMpAECg5BY2NvdW50U2VydmljZRJCCgNHZXQSHC52MS5jbG91ZC5hY2NvdW50LkdldFJlcXVlc3QaHS52MS5jbG91ZC5hY2NvdW50LkdldFJlc3BvbnNlEkUKBExpc3QSHS52MS5jbG91ZC5hY2NvdW50Lkxpc3RSZXF1ZXN0Gh4udjEuY2xvdWQuYWNjb3VudC5MaXN0UmVzcG9uc2USSwoGQ3JlYXRlEh8udjEuY2xvdWQuYWNjb3VudC5DcmVhdGVSZXF1ZXN0GiAudjEuY2xvdWQuYWNjb3VudC5DcmVhdGVSZXNwb25zZRJLCgZVcGRhdGUSHy52MS5jbG91ZC5hY2NvdW50LlVwZGF0ZVJlcXVlc3QaIC52MS5jbG91ZC5hY2NvdW50LlVwZGF0ZVJlc3BvbnNlEkIKA0ZpeBIcLnYxLmNsb3VkLmFjY291bnQuRml4UmVxdWVzdBodLnYxLmNsb3VkLmFjY291bnQuRml4UmVzcG9uc2USSAoFRXZpY3QSHi52MS5jbG91ZC5hY2NvdW50LkV2aWN0UmVxdWVzdBofLnYxLmNsb3VkLmFjY291bnQuRXZpY3RSZXNwb25zZRJLCgZEZWxldGUSHy52MS5jbG91ZC5hY2NvdW50LkRlbGV0ZVJlcXVlc3QaIC52MS5jbG91ZC5hY2NvdW50LkRlbGV0ZVJlc3BvbnNlQjlaN2NvZGViZXJnLm9yZy9tZWdha3V1bC9jbG91ZGphbS9wa2cvYXBpL3YxL2Nsb3VkL2FjY291bnRiBnByb3RvMw", [file_buf_validate_validate, file_google_protobuf_timestamp, file_v1_cloud_account]);
 
 /**
  * @generated from message v1.cloud.account.GetRequest
@@ -160,13 +160,93 @@ export const UpdateResponseSchema: GenMessage<UpdateResponse> = /*@__PURE__*/
   messageDesc(file_v1_cloud_account_account, 7);
 
 /**
+ * @generated from message v1.cloud.account.FixRequest
+ */
+export type FixRequest = Message<"v1.cloud.account.FixRequest"> & {
+  /**
+   * @generated from field: string provider_id = 1;
+   */
+  providerId: string;
+
+  /**
+   * @generated from field: string id = 2;
+   */
+  id: string;
+};
+
+/**
+ * Describes the message v1.cloud.account.FixRequest.
+ * Use `create(FixRequestSchema)` to create a new message.
+ */
+export const FixRequestSchema: GenMessage<FixRequest> = /*@__PURE__*/
+  messageDesc(file_v1_cloud_account_account, 8);
+
+/**
+ * @generated from message v1.cloud.account.FixResponse
+ */
+export type FixResponse = Message<"v1.cloud.account.FixResponse"> & {
+};
+
+/**
+ * Describes the message v1.cloud.account.FixResponse.
+ * Use `create(FixResponseSchema)` to create a new message.
+ */
+export const FixResponseSchema: GenMessage<FixResponse> = /*@__PURE__*/
+  messageDesc(file_v1_cloud_account_account, 9);
+
+/**
+ * @generated from message v1.cloud.account.EvictRequest
+ */
+export type EvictRequest = Message<"v1.cloud.account.EvictRequest"> & {
+  /**
+   * @generated from field: string provider_id = 1;
+   */
+  providerId: string;
+
+  /**
+   * @generated from field: string id = 2;
+   */
+  id: string;
+};
+
+/**
+ * Describes the message v1.cloud.account.EvictRequest.
+ * Use `create(EvictRequestSchema)` to create a new message.
+ */
+export const EvictRequestSchema: GenMessage<EvictRequest> = /*@__PURE__*/
+  messageDesc(file_v1_cloud_account_account, 10);
+
+/**
+ * @generated from message v1.cloud.account.EvictResponse
+ */
+export type EvictResponse = Message<"v1.cloud.account.EvictResponse"> & {
+};
+
+/**
+ * Describes the message v1.cloud.account.EvictResponse.
+ * Use `create(EvictResponseSchema)` to create a new message.
+ */
+export const EvictResponseSchema: GenMessage<EvictResponse> = /*@__PURE__*/
+  messageDesc(file_v1_cloud_account_account, 11);
+
+/**
  * @generated from message v1.cloud.account.DeleteRequest
  */
 export type DeleteRequest = Message<"v1.cloud.account.DeleteRequest"> & {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: string provider_id = 1;
+   */
+  providerId: string;
+
+  /**
+   * @generated from field: string id = 2;
    */
   id: string;
+
+  /**
+   * @generated from field: bool force = 3;
+   */
+  force: boolean;
 };
 
 /**
@@ -174,7 +254,7 @@ export type DeleteRequest = Message<"v1.cloud.account.DeleteRequest"> & {
  * Use `create(DeleteRequestSchema)` to create a new message.
  */
 export const DeleteRequestSchema: GenMessage<DeleteRequest> = /*@__PURE__*/
-  messageDesc(file_v1_cloud_account_account, 8);
+  messageDesc(file_v1_cloud_account_account, 12);
 
 /**
  * @generated from message v1.cloud.account.DeleteResponse
@@ -187,7 +267,7 @@ export type DeleteResponse = Message<"v1.cloud.account.DeleteResponse"> & {
  * Use `create(DeleteResponseSchema)` to create a new message.
  */
 export const DeleteResponseSchema: GenMessage<DeleteResponse> = /*@__PURE__*/
-  messageDesc(file_v1_cloud_account_account, 9);
+  messageDesc(file_v1_cloud_account_account, 13);
 
 /**
  * @generated from service v1.cloud.account.AccountService
@@ -224,6 +304,22 @@ export const AccountService: GenService<{
     methodKind: "unary";
     input: typeof UpdateRequestSchema;
     output: typeof UpdateResponseSchema;
+  },
+  /**
+   * @generated from rpc v1.cloud.account.AccountService.Fix
+   */
+  fix: {
+    methodKind: "unary";
+    input: typeof FixRequestSchema;
+    output: typeof FixResponseSchema;
+  },
+  /**
+   * @generated from rpc v1.cloud.account.AccountService.Evict
+   */
+  evict: {
+    methodKind: "unary";
+    input: typeof EvictRequestSchema;
+    output: typeof EvictResponseSchema;
   },
   /**
    * @generated from rpc v1.cloud.account.AccountService.Delete

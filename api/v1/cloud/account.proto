@@ -3,34 +3,36 @@ syntax = "proto3";
 package v1.cloud;
 
 import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
 
 option go_package = "codeberg.org/megakuul/cloudjam/pkg/api/v1/cloud";
 
 enum AccountState {
-  Provisioning = 0;
-  Ready = 1;
-  Running = 2;
-  Evicting = 3;
-  Corrupted = 4;
-  Deleting = 5;
+  NotCreated = 0;
+  Provisioning = 1;
+  Ready = 2;
+  Running = 3;
+  Evicting = 4;
+  Corrupted = 5;
+  Disabled = 6;
+  Deleting = 7;
 }
 
 message Account {
   string scope = 1;
   string provider_id = 2 [(buf.validate.field).string = {uuid: true}];
   string id = 3;
-  string name = 4 [
+
+  string target_id = 4;
+  string name = 5 [
     (buf.validate.field).string.min_len = 4,
     (buf.validate.field).string.max_len = 20
   ];
-  string description = 5 [
+  string description = 6 [
     (buf.validate.field).string.min_len = 0,
     (buf.validate.field).string.max_len = 50
   ];
-  string credentials = 6 [
-    (buf.validate.field).string.min_len = 0,
-    (buf.validate.field).string.max_len = 1000
-  ];
   AccountState state = 7;
-  string error = 8;
+  google.protobuf.Timestamp bound_until = 8;
+  string error = 9;
 }

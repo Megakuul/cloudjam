@@ -3,7 +3,6 @@ package oltp
 import (
 	"time"
 
-	"codeberg.org/megakuul/cloudjam/pkg/api/v1/play"
 	"github.com/megakuul/dynamitedb"
 )
 
@@ -46,15 +45,14 @@ type Challenge struct {
 	DefinitionProviderID dynamitedb.DataField[string] `cbor:"definition_provider_id,omitempty"`
 	DefinitionID         dynamitedb.DataField[string] `cbor:"definition_id,omitempty"`
 
-	State       dynamitedb.DataField[play.ChallengeState] `cbor:"state,omitempty"`
-	Title       dynamitedb.DataField[string]              `cbor:"title,omitempty"`
-	Description dynamitedb.DataField[[]string]            `cbor:"description,omitempty"`
-	Clues       dynamitedb.DataField[map[string]string]   `cbor:"clues,omitempty"`
-	Assets      dynamitedb.DataField[map[string]string]   `cbor:"assets,omitempty"`
-	Errors      dynamitedb.DataField[[]string]            `cbor:"errors,omitempty"`
-	ScoreEvents dynamitedb.DataField[[]ScoreEvent]        `cbor:"score_events,omitempty"`
-	Duration    dynamitedb.DataField[time.Duration]       `cbor:"duration,omitempty"`
-	Ends        dynamitedb.DataField[time.Time]           `cbor:"ends,omitempty"`
+	Title       dynamitedb.DataField[string]            `cbor:"title,omitempty"`
+	Description dynamitedb.DataField[[]string]          `cbor:"description,omitempty"`
+	Clues       dynamitedb.DataField[map[string]string] `cbor:"clues,omitempty"`
+	Assets      dynamitedb.DataField[map[string]string] `cbor:"assets,omitempty"`
+	Errors      dynamitedb.DataField[[]string]          `cbor:"errors,omitempty"`
+	ScoreEvents dynamitedb.DataField[[]ScoreEvent]      `cbor:"score_events,omitempty"`
+	Starts      dynamitedb.DataField[time.Duration]     `cbor:"starts,omitempty"`
+	Ends        dynamitedb.DataField[time.Time]         `cbor:"ends,omitempty"`
 
 	Scope dynamitedb.DataField[string] `cbor:"scope,omitempty"`
 }
