@@ -58,10 +58,19 @@ message DeleteRequest {
 message DeleteResponse {}
 
 service AccountService {
+  // Get returns the accounts current state.
   rpc Get(GetRequest) returns (GetResponse);
+  // List returns a list of account states.
   rpc List(ListRequest) returns (ListResponse);
+  // Create creates a new cloudjam account and triggers the asynchron provisioning process on the provider.
   rpc Create(CreateRequest) returns (CreateResponse);
+  // Update updates teh cloudjam account metadata.
   rpc Update(UpdateRequest) returns (UpdateResponse);
+  // Fix sets the account state forcefully to READY. This is very dangerous use with caution only if you actually fixed the account corruption.
+  // Unfortunately this is required because *some* retarded providers (*AWS*) use account quotas
+  // so we cannot just delete and create new accounts but must manually fix them when issues occur.
   rpc Fix(FixRequest) returns (FixResponse);
+  // Delete triggers the asynchron deletion process on the provider.
+  // If called with *force* it will immediately remove cloudjam metadata (account will leak then!!!).
   rpc Delete(DeleteRequest) returns (DeleteResponse);
 }

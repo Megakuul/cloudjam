@@ -159,7 +159,7 @@ func (s *Server) Update(ctx context.Context, req *connect.Request[account.Update
 	return &connect.Response[account.UpdateResponse]{Msg: &account.UpdateResponse{}}, nil
 }
 
-func (s *Server) Evict(ctx context.Context, req *connect.Request[account.EvictRequest]) (*connect.Response[account.EvictResponse], error) {
+func (s *Server) Fix(ctx context.Context, req *connect.Request[account.FixRequest]) (*connect.Response[account.FixResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
 
 	targetAccount, err := dynamitedb.Get(ctx, s.oltp, &oltp.Account{
@@ -184,28 +184,6 @@ func (s *Server) Evict(ctx context.Context, req *connect.Request[account.EvictRe
 		l.Error(fmt.Sprintf("failed to hard fix account: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to hard fix account"))
 	}
-	return &connect.Response[account.EvictResponse]{Msg: &account.EvictResponse{}}, nil
-}
-
-func (s *Server) Fix(ctx context.Context, req *connect.Request[account.FixRequest]) (*connect.Response[account.FixResponse], error) {
-	l := s.logger.With("proc", req.Spec().Procedure)
-
-	targetAccount, err := dynamitedb.Get(ctx, s.oltp, &oltp.Account{
-		ProviderID: dynamitedb.Key(req.Msg.ProviderId),
-		AccountID:  dynamitedb.Key(req.Msg.Id),
-		Scope:      dynamitedb.In(auth.Scopes(ctx)...),
-	})
-	if err != nil {
-		if errors.Is(err, dynamitedb.ErrNotFound) {
-			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("account does not exist"))
-		}
-		l.Error(fmt.Sprintf("failed to fetch account: %v", err))
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch account"))
-	}
-	if time.Now().Before(targetAccount.BoundUntil.Value()) {
-		return nil, connect.NewError(connect.CodeFailedPrecondition, fmt.Errorf("account is currently used by a challenge"))
-	}
-	s.scheduler.EvictAccount(targetAccount.ProviderID.Value(), targetAccount.AccountID.Value())
 	return &connect.Response[account.FixResponse]{Msg: &account.FixResponse{}}, nil
 }
 
