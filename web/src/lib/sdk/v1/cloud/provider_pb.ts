@@ -11,7 +11,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/cloud/provider.proto.
  */
 export const file_v1_cloud_provider: GenFile = /*@__PURE__*/
-  fileDesc("Chd2MS9jbG91ZC9wcm92aWRlci5wcm90bxIIdjEuY2xvdWQiyQEKCFByb3ZpZGVyEg0KBXNjb3BlGAEgASgJEhQKAmlkGAIgASgJQgi6SAVyA7ABARIkCgR0eXBlGAMgASgOMhYudjEuY2xvdWQuUHJvdmlkZXJUeXBlEhcKBG5hbWUYBCABKAlCCbpIBnIEEAQYFBIeCgtkZXNjcmlwdGlvbhgFIAEoCUIJukgGcgQQABgyEh8KC2NyZWRlbnRpYWxzGAYgASgJQgq6SAdyBRAAGOgHEhgKEGRlc2lyZWRfYWNjb3VudHMYByABKAMqFwoMUHJvdmlkZXJUeXBlEgcKA0FXUxAAQjFaL2NvZGViZXJnLm9yZy9tZWdha3V1bC9jbG91ZGphbS9wa2cvYXBpL3YxL2Nsb3VkYgZwcm90bzM", [file_buf_validate_validate]);
+  fileDesc("Chd2MS9jbG91ZC9wcm92aWRlci5wcm90bxIIdjEuY2xvdWQi2AEKCFByb3ZpZGVyEg0KBXNjb3BlGAEgASgJEhQKAmlkGAIgASgJQgi6SAVyA7ABARIkCgR0eXBlGAMgASgOMhYudjEuY2xvdWQuUHJvdmlkZXJUeXBlEhcKBG5hbWUYBCABKAlCCbpIBnIEEAQYFBIeCgtkZXNjcmlwdGlvbhgFIAEoCUIJukgGcgQQABgyEhYKBWVtYWlsGAYgASgJQge6SARyAmABEg8KB3JlZ2lvbnMYByADKAkSHwoLY3JlZGVudGlhbHMYCCABKAlCCrpIB3IFEAAY6AcqFwoMUHJvdmlkZXJUeXBlEgcKA0FXUxAAQjFaL2NvZGViZXJnLm9yZy9tZWdha3V1bC9jbG91ZGphbS9wa2cvYXBpL3YxL2Nsb3VkYgZwcm90bzM", [file_buf_validate_validate]);
 
 /**
  * @generated from message v1.cloud.Provider
@@ -43,14 +43,19 @@ export type Provider = Message<"v1.cloud.Provider"> & {
   description: string;
 
   /**
-   * @generated from field: string credentials = 6;
+   * @generated from field: string email = 6;
    */
-  credentials: string;
+  email: string;
 
   /**
-   * @generated from field: int64 desired_accounts = 7;
+   * @generated from field: repeated string regions = 7;
    */
-  desiredAccounts: bigint;
+  regions: string[];
+
+  /**
+   * @generated from field: string credentials = 8;
+   */
+  credentials: string;
 };
 
 /**

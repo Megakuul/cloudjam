@@ -23,6 +23,5 @@ message Definition {
     (buf.validate.field).string.max_len = 50
   ];
   string version = 6;
-  string checksum = 7;
-  CompressionMode compression = 8;
+  string hash = 7;
 }

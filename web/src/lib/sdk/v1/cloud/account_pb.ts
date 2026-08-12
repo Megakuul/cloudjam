@@ -13,7 +13,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/cloud/account.proto.
  */
 export const file_v1_cloud_account: GenFile = /*@__PURE__*/
-  fileDesc("ChZ2MS9jbG91ZC9hY2NvdW50LnByb3RvEgh2MS5jbG91ZCL2AQoHQWNjb3VudBINCgVzY29wZRgBIAEoCRIdCgtwcm92aWRlcl9pZBgCIAEoCUIIukgFcgOwAQESCgoCaWQYAyABKAkSEQoJdGFyZ2V0X2lkGAQgASgJEhcKBG5hbWUYBSABKAlCCbpIBnIEEAQYFBIeCgtkZXNjcmlwdGlvbhgGIAEoCUIJukgGcgQQABgyEiUKBXN0YXRlGAcgASgOMhYudjEuY2xvdWQuQWNjb3VudFN0YXRlEi8KC2JvdW5kX3VudGlsGAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBINCgVlcnJvchgJIAEoCSqBAQoMQWNjb3VudFN0YXRlEg4KCk5vdENyZWF0ZWQQABIQCgxQcm92aXNpb25pbmcQARIJCgVSZWFkeRACEgsKB1J1bm5pbmcQAxIMCghFdmljdGluZxAEEg0KCUNvcnJ1cHRlZBAFEgwKCERpc2FibGVkEAYSDAoIRGVsZXRpbmcQB0IxWi9jb2RlYmVyZy5vcmcvbWVnYWt1dWwvY2xvdWRqYW0vcGtnL2FwaS92MS9jbG91ZGIGcHJvdG8z", [file_buf_validate_validate, file_google_protobuf_timestamp]);
+  fileDesc("ChZ2MS9jbG91ZC9hY2NvdW50LnByb3RvEgh2MS5jbG91ZCL2AQoHQWNjb3VudBINCgVzY29wZRgBIAEoCRIdCgtwcm92aWRlcl9pZBgCIAEoCUIIukgFcgOwAQESCgoCaWQYAyABKAkSEQoJdGFyZ2V0X2lkGAQgASgJEhcKBG5hbWUYBSABKAlCCbpIBnIEEAQYFBIeCgtkZXNjcmlwdGlvbhgGIAEoCUIJukgGcgQQABgyEiUKBXN0YXRlGAcgASgOMhYudjEuY2xvdWQuQWNjb3VudFN0YXRlEi8KC2JvdW5kX3VudGlsGAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBINCgVlcnJvchgJIAEoCSqCAQoMQWNjb3VudFN0YXRlEg4KCk5vdENyZWF0ZWQQABIQCgxQcm92aXNpb25pbmcQARINCglQcmVwYXJpbmcQAhIJCgVSZWFkeRADEgsKB1J1bm5pbmcQBBIMCghFdmljdGluZxAFEg0KCUNvcnJ1cHRlZBAGEgwKCERlbGV0aW5nEAdCMVovY29kZWJlcmcub3JnL21lZ2FrdXVsL2Nsb3VkamFtL3BrZy9hcGkvdjEvY2xvdWRiBnByb3RvMw", [file_buf_validate_validate, file_google_protobuf_timestamp]);
 
 /**
  * @generated from message v1.cloud.Account
@@ -77,41 +77,64 @@ export const AccountSchema: GenMessage<Account> = /*@__PURE__*/
  */
 export enum AccountState {
   /**
+   * NotCreated means the account metadata is there but the provisioning process did not start.
+   * In this state it is forbidden to perform ANY action on the provider.
+   *
    * @generated from enum value: NotCreated = 0;
    */
   NotCreated = 0,
 
   /**
+   * Provisioning means the account is currently being created by an asynchron provider action.
+   * In this state it is forbidden to perform ANY action on the provider.
+   *
    * @generated from enum value: Provisioning = 1;
    */
   Provisioning = 1,
 
   /**
-   * @generated from enum value: Ready = 2;
+   * Preparing means the account is currently being prepared (installing security guardrails, configuring metadata, etc.).
+   * In this state it is forbidden to perform ANY action on the provider.
+   *
+   * @generated from enum value: Preparing = 2;
    */
-  Ready = 2,
+  Preparing = 2,
 
   /**
-   * @generated from enum value: Running = 3;
+   * Ready means the account is currently ready in the pool and can be used for a challenge.
+   *
+   * @generated from enum value: Ready = 3;
    */
-  Running = 3,
+  Ready = 3,
 
   /**
-   * @generated from enum value: Evicting = 4;
+   * Running means the account is currently running (bzw. bound to a challenge).
+   * In this state it is forbidden to perform ANY action on the provider as long as the providers bound_until property is not expired.
+   *
+   * @generated from enum value: Running = 4;
    */
-  Evicting = 4,
+  Running = 4,
 
   /**
-   * @generated from enum value: Corrupted = 5;
+   * Evicting means the account is currently cleaned by an asynchron provider action.
+   * In this state it is forbidden to perform ANY action on the provider.
+   *
+   * @generated from enum value: Evicting = 5;
    */
-  Corrupted = 5,
+  Evicting = 5,
 
   /**
-   * @generated from enum value: Disabled = 6;
+   * Corrupted means an asynchron provider action on the account failed. Manual intervention is required!
+   * In this state it is forbidden to perform ANY action on the provider.
+   *
+   * @generated from enum value: Corrupted = 6;
    */
-  Disabled = 6,
+  Corrupted = 6,
 
   /**
+   * Deleting means the providers async deletion mechanism is working.
+   * In this state it is forbidden to perform ANY action on the provider.
+   *
    * @generated from enum value: Deleting = 7;
    */
   Deleting = 7,

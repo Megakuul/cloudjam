@@ -23,6 +23,7 @@ message ListRequest {
     gt: 0
     lte: 100
   }];
+  string start_after = 3;
 }
 
 message ListResponse {
@@ -46,7 +47,8 @@ message UpdateRequest {
 message UpdateResponse {}
 
 message DeleteRequest {
-  string id = 1 [(buf.validate.field).string = {uuid: true}];
+  string provider_id = 1 [(buf.validate.field).string = {uuid: true}];
+  string id = 2 [(buf.validate.field).string = {uuid: true}];
 }
 
 message DeleteResponse {}

@@ -239,6 +239,8 @@ export const DeleteResponseSchema: GenMessage<DeleteResponse> = /*@__PURE__*/
  */
 export const AccountService: GenService<{
   /**
+   * Get returns the accounts current state.
+   *
    * @generated from rpc v1.cloud.account.AccountService.Get
    */
   get: {
@@ -247,6 +249,8 @@ export const AccountService: GenService<{
     output: typeof GetResponseSchema;
   },
   /**
+   * List returns a list of account states.
+   *
    * @generated from rpc v1.cloud.account.AccountService.List
    */
   list: {
@@ -255,6 +259,8 @@ export const AccountService: GenService<{
     output: typeof ListResponseSchema;
   },
   /**
+   * Create creates a new cloudjam account and triggers the asynchron provisioning process on the provider.
+   *
    * @generated from rpc v1.cloud.account.AccountService.Create
    */
   create: {
@@ -263,6 +269,8 @@ export const AccountService: GenService<{
     output: typeof CreateResponseSchema;
   },
   /**
+   * Update updates teh cloudjam account metadata.
+   *
    * @generated from rpc v1.cloud.account.AccountService.Update
    */
   update: {
@@ -271,6 +279,10 @@ export const AccountService: GenService<{
     output: typeof UpdateResponseSchema;
   },
   /**
+   * Fix sets the account state forcefully to READY. This is very dangerous use with caution only if you actually fixed the account corruption.
+   * Unfortunately this is required because *some* retarded providers (*AWS*) use account quotas
+   * so we cannot just delete and create new accounts but must manually fix them when issues occur.
+   *
    * @generated from rpc v1.cloud.account.AccountService.Fix
    */
   fix: {
@@ -279,6 +291,9 @@ export const AccountService: GenService<{
     output: typeof FixResponseSchema;
   },
   /**
+   * Delete triggers the asynchron deletion process on the provider.
+   * If called with *force* it will immediately remove cloudjam metadata (account will leak then!!!).
+   *
    * @generated from rpc v1.cloud.account.AccountService.Delete
    */
   delete: {

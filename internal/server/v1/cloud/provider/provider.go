@@ -9,7 +9,8 @@ import (
 
 	"codeberg.org/megakuul/cloudjam/internal/auth"
 	"codeberg.org/megakuul/cloudjam/internal/oltp"
-	provider1 "codeberg.org/megakuul/cloudjam/internal/provider"
+	"codeberg.org/megakuul/cloudjam/internal/provider/cache"
+	"codeberg.org/megakuul/cloudjam/internal/scheduler"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/cloud"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/cloud/provider"
 	"connectrpc.com/connect"
@@ -17,22 +18,25 @@ import (
 )
 
 type Server struct {
-	logger *slog.Logger
-	bucket *dynamitedb.Bucket
-	boxer  provider1.Provider
+	logger    *slog.Logger
+	scheduler *scheduler.Scheduler
+	providers *cache.Cache
+	oltp      *dynamitedb.Bucket
 }
 
-func New(logger *slog.Logger, bucket *dynamitedb.Bucket) *Server {
+func New(logger *slog.Logger, scheduler *scheduler.Scheduler, providers *cache.Cache, oltp *dynamitedb.Bucket) *Server {
 	return &Server{
-		logger: logger,
-		bucket: bucket,
+		logger:    logger,
+		scheduler: scheduler,
+		providers: providers,
+		oltp:      oltp,
 	}
 }
 
 func (s *Server) Get(ctx context.Context, req *connect.Request[provider.GetRequest]) (*connect.Response[provider.GetResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
 
-	foundProvider, err := dynamitedb.Get(ctx, s.bucket, &oltp.Provider{
+	providerMeta, err := dynamitedb.Get(ctx, s.oltp, &oltp.Provider{
 		ProviderID: dynamitedb.Key(req.Msg.Id),
 		Scope:      dynamitedb.In(auth.Scopes(ctx)...),
 	})
@@ -45,13 +49,14 @@ func (s *Server) Get(ctx context.Context, req *connect.Request[provider.GetReque
 	}
 
 	return &connect.Response[provider.GetResponse]{Msg: &provider.GetResponse{Provider: &cloud.Provider{
-		Id:              foundProvider.ProviderID.Value(),
-		Type:            cloud.ProviderType(foundProvider.Type.Value()),
-		Name:            foundProvider.Name.Value(),
-		Description:     foundProvider.Description.Value(),
-		Credentials:     "",
-		DesiredAccounts: int64(foundProvider.DesiredAccounts.Value()),
-		Scope:           foundProvider.Scope.Value(),
+		Id:          providerMeta.ProviderID.Value(),
+		Type:        cloud.ProviderType(providerMeta.Type.Value()),
+		Name:        providerMeta.Name.Value(),
+		Description: providerMeta.Description.Value(),
+		Email:       providerMeta.Email.Value(),
+		Regions:     providerMeta.Regions.Value(),
+		Credentials: "",
+		Scope:       providerMeta.Scope.Value(),
 	}}}, nil
 }
 
@@ -64,7 +69,7 @@ func (s *Server) List(ctx context.Context, req *connect.Request[provider.ListReq
 			ProviderID: dynamitedb.Key(req.Msg.StartAfter),
 		}))
 	}
-	providers, err := dynamitedb.Query(ctx, s.bucket, &oltp.Provider{
+	providers, err := dynamitedb.Query(ctx, s.oltp, &oltp.Provider{
 		ProviderID: dynamitedb.KeyPrefix(""),
 		Scope:      dynamitedb.In(auth.Scopes(ctx)...),
 	}, opts...)
@@ -76,13 +81,14 @@ func (s *Server) List(ctx context.Context, req *connect.Request[provider.ListReq
 	providersOutput := []*cloud.Provider{}
 	for _, provider := range providers {
 		providersOutput = append(providersOutput, &cloud.Provider{
-			Id:              provider.ProviderID.Value(),
-			Type:            cloud.ProviderType(provider.Type.Value()),
-			Name:            provider.Name.Value(),
-			Description:     provider.Description.Value(),
-			Credentials:     "",
-			DesiredAccounts: int64(provider.DesiredAccounts.Value()),
-			Scope:           provider.Scope.Value(),
+			Id:          provider.ProviderID.Value(),
+			Type:        cloud.ProviderType(provider.Type.Value()),
+			Name:        provider.Name.Value(),
+			Description: provider.Description.Value(),
+			Regions:     provider.Regions.Value(),
+			Email:       provider.Email.Value(),
+			Credentials: "",
+			Scope:       provider.Scope.Value(),
 		})
 	}
 
@@ -98,17 +104,15 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[provider.Creat
 		return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("can't attach a scope you don't possess"))
 	}
 
-	// TODO first test provider credentials
-	l.Warn("TODO: test provider credentials")
-
-	err := dynamitedb.Create(ctx, s.bucket, &oltp.Provider{
-		ProviderID:      dynamitedb.Key(req.Msg.Init.Id),
-		Name:            dynamitedb.Set(req.Msg.Init.Name),
-		Type:            dynamitedb.Set(int(req.Msg.Init.Type)),
-		Description:     dynamitedb.Set(req.Msg.Init.Description),
-		Credentials:     dynamitedb.Set(req.Msg.Init.Credentials),
-		DesiredAccounts: dynamitedb.Set(int(req.Msg.Init.DesiredAccounts)),
-		Scope:           dynamitedb.Set(req.Msg.Init.Scope),
+	err := dynamitedb.Create(ctx, s.oltp, &oltp.Provider{
+		ProviderID:  dynamitedb.Key(req.Msg.Init.Id),
+		Name:        dynamitedb.Set(req.Msg.Init.Name),
+		Type:        dynamitedb.Set(req.Msg.Init.Type),
+		Description: dynamitedb.Set(req.Msg.Init.Description),
+		Credentials: dynamitedb.Set(req.Msg.Init.Credentials),
+		Email:       dynamitedb.Set(req.Msg.Init.Email),
+		Regions:     dynamitedb.Set(req.Msg.Init.Regions),
+		Scope:       dynamitedb.Set(req.Msg.Init.Scope),
 	})
 	if err != nil {
 		if errors.Is(err, dynamitedb.ErrAlreadyExists) {
@@ -117,13 +121,27 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[provider.Creat
 		l.Error(fmt.Sprintf("failed to create provider: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create provider"))
 	}
+	providerMeta, err := dynamitedb.Get(ctx, s.oltp, &oltp.Provider{
+		ProviderID: dynamitedb.Key(req.Msg.Init.Id),
+		Scope:      dynamitedb.In(auth.Scopes(ctx)...),
+	})
+	if err != nil {
+		l.Error(fmt.Sprintf("failed to load provider: %v", err))
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to load provider"))
+	}
+
+	_, err = s.providers.Load(ctx, providerMeta)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to initialize provider: %v", err))
+	}
+
 	return &connect.Response[provider.CreateResponse]{Msg: &provider.CreateResponse{}}, nil
 }
 
 func (s *Server) Update(ctx context.Context, req *connect.Request[provider.UpdateRequest]) (*connect.Response[provider.UpdateResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
 
-	targetProvider, err := dynamitedb.Get(ctx, s.bucket, &oltp.Provider{
+	providerMeta, err := dynamitedb.Get(ctx, s.oltp, &oltp.Provider{
 		ProviderID: dynamitedb.Key(req.Msg.Mod.Id),
 		Scope:      dynamitedb.In(auth.Scopes(ctx)...),
 	})
@@ -135,40 +153,51 @@ func (s *Server) Update(ctx context.Context, req *connect.Request[provider.Updat
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch provider"))
 	}
 
-	// TODO first test provider credentials
-	l.Warn("TODO: test provider credentials")
-
-	err = dynamitedb.Update(ctx, s.bucket, &oltp.Provider{
-		ProviderID:      targetProvider.ProviderID,
-		Type:            dynamitedb.Set(int(req.Msg.Mod.Type)),
-		Name:            dynamitedb.Set(req.Msg.Mod.Name),
-		Description:     dynamitedb.Set(req.Msg.Mod.Description),
-		Credentials:     dynamitedb.Set(req.Msg.Mod.Credentials),
-		DesiredAccounts: dynamitedb.Set(int(req.Msg.Mod.DesiredAccounts)),
+	err = dynamitedb.Update(ctx, s.oltp, &oltp.Provider{
+		ProviderID:  dynamitedb.Key(providerMeta.ProviderID.Value()),
+		ETag:        providerMeta.ETag,
+		Name:        dynamitedb.Set(req.Msg.Mod.Name),
+		Description: dynamitedb.Set(req.Msg.Mod.Description),
+		Credentials: dynamitedb.Set(req.Msg.Mod.Credentials),
+		Regions:     dynamitedb.Set(req.Msg.Mod.Regions),
 	})
 	if err != nil {
 		l.Error(fmt.Sprintf("failed to update provider: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update provider"))
 	}
+
+	s.providers.Bust(providerMeta)
+	_, err = s.providers.Load(ctx, providerMeta)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to initialize provider: %v", err))
+	}
+
 	return &connect.Response[provider.UpdateResponse]{Msg: &provider.UpdateResponse{}}, nil
 }
 
 func (s *Server) Delete(ctx context.Context, req *connect.Request[provider.DeleteRequest]) (*connect.Response[provider.DeleteResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
 
-	// TODO first teardown infrastructure
-	l.Warn("TODO: implement infrastructure teardown")
-
-	err := dynamitedb.Delete(ctx, s.bucket, &oltp.Provider{
+	accounts, err := dynamitedb.Query(ctx, s.oltp, &oltp.Account{
+		ProviderID: dynamitedb.Key(req.Msg.Id),
+	}, dynamitedb.WithLimit(1))
+	if err != nil {
+		l.Error(fmt.Sprintf("failed to fetch provider accounts: %v", err))
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch provider accounts"))
+	}
+	if len(accounts) > 0 {
+		return nil, connect.NewError(connect.CodeFailedPrecondition, fmt.Errorf("cannot delete provider with associated accounts; delete all accounts first"))
+	}
+	err = dynamitedb.Delete(ctx, s.oltp, &oltp.Provider{
 		ProviderID: dynamitedb.Key(req.Msg.Id),
 		Scope:      dynamitedb.In(auth.Scopes(ctx)...),
 	})
 	if err != nil {
 		if errors.Is(err, dynamitedb.ErrFilterMismatch) {
-			return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("builtin or out of scope providers cannot be deleted"))
+			return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("provider cannot be deleted"))
 		}
-		l.Error(fmt.Sprintf("failed to fetch provider: %v", err))
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch provider"))
+		l.Error(fmt.Sprintf("failed to delete provider: %v", err))
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to delete provider"))
 	}
 	return &connect.Response[provider.DeleteResponse]{Msg: &provider.DeleteResponse{}}, nil
 }

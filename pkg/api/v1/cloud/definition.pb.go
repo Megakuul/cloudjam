@@ -73,8 +73,7 @@ type Definition struct {
 	Name          string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
 	Description   string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
 	Version       string                 `protobuf:"bytes,6,opt,name=version,proto3" json:"version,omitempty"`
-	Checksum      string                 `protobuf:"bytes,7,opt,name=checksum,proto3" json:"checksum,omitempty"`
-	Compression   CompressionMode        `protobuf:"varint,8,opt,name=compression,proto3,enum=v1.cloud.CompressionMode" json:"compression,omitempty"`
+	Hash          string                 `protobuf:"bytes,7,opt,name=hash,proto3" json:"hash,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -151,25 +150,18 @@ func (x *Definition) GetVersion() string {
 	return ""
 }
 
-func (x *Definition) GetChecksum() string {
+func (x *Definition) GetHash() string {
 	if x != nil {
-		return x.Checksum
+		return x.Hash
 	}
 	return ""
-}
-
-func (x *Definition) GetCompression() CompressionMode {
-	if x != nil {
-		return x.Compression
-	}
-	return CompressionMode_Zstd
 }
 
 var File_v1_cloud_definition_proto protoreflect.FileDescriptor
 
 const file_v1_cloud_definition_proto_rawDesc = "" +
 	"\n" +
-	"\x19v1/cloud/definition.proto\x12\bv1.cloud\x1a\x1bbuf/validate/validate.proto\"\x9c\x02\n" +
+	"\x19v1/cloud/definition.proto\x12\bv1.cloud\x1a\x1bbuf/validate/validate.proto\"\xd7\x01\n" +
 	"\n" +
 	"Definition\x12\x14\n" +
 	"\x05scope\x18\x01 \x01(\tR\x05scope\x12)\n" +
@@ -178,9 +170,8 @@ const file_v1_cloud_definition_proto_rawDesc = "" +
 	"\x02id\x18\x03 \x01(\tR\x02id\x12\x1d\n" +
 	"\x04name\x18\x04 \x01(\tB\t\xbaH\x06r\x04\x10\x04\x18\x14R\x04name\x12+\n" +
 	"\vdescription\x18\x05 \x01(\tB\t\xbaH\x06r\x04\x10\x00\x182R\vdescription\x12\x18\n" +
-	"\aversion\x18\x06 \x01(\tR\aversion\x12\x1a\n" +
-	"\bchecksum\x18\a \x01(\tR\bchecksum\x12;\n" +
-	"\vcompression\x18\b \x01(\x0e2\x19.v1.cloud.CompressionModeR\vcompression*\x1b\n" +
+	"\aversion\x18\x06 \x01(\tR\aversion\x12\x12\n" +
+	"\x04hash\x18\a \x01(\tR\x04hash*\x1b\n" +
 	"\x0fCompressionMode\x12\b\n" +
 	"\x04Zstd\x10\x00B1Z/codeberg.org/megakuul/cloudjam/pkg/api/v1/cloudb\x06proto3"
 
@@ -203,12 +194,11 @@ var file_v1_cloud_definition_proto_goTypes = []any{
 	(*Definition)(nil),   // 1: v1.cloud.Definition
 }
 var file_v1_cloud_definition_proto_depIdxs = []int32{
-	0, // 0: v1.cloud.Definition.compression:type_name -> v1.cloud.CompressionMode
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	0, // [0:0] is the sub-list for method output_type
+	0, // [0:0] is the sub-list for method input_type
+	0, // [0:0] is the sub-list for extension type_name
+	0, // [0:0] is the sub-list for extension extendee
+	0, // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_v1_cloud_definition_proto_init() }

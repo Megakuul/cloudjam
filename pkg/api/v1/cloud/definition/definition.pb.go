@@ -124,6 +124,7 @@ type ListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ProviderId    string                 `protobuf:"bytes,1,opt,name=provider_id,json=providerId,proto3" json:"provider_id,omitempty"`
 	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	StartAfter    string                 `protobuf:"bytes,3,opt,name=start_after,json=startAfter,proto3" json:"start_after,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -170,6 +171,13 @@ func (x *ListRequest) GetLimit() int32 {
 		return x.Limit
 	}
 	return 0
+}
+
+func (x *ListRequest) GetStartAfter() string {
+	if x != nil {
+		return x.StartAfter
+	}
+	return ""
 }
 
 type ListResponse struct {
@@ -410,7 +418,8 @@ func (*UpdateResponse) Descriptor() ([]byte, []int) {
 
 type DeleteRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	ProviderId    string                 `protobuf:"bytes,1,opt,name=provider_id,json=providerId,proto3" json:"provider_id,omitempty"`
+	Id            string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -443,6 +452,13 @@ func (x *DeleteRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use DeleteRequest.ProtoReflect.Descriptor instead.
 func (*DeleteRequest) Descriptor() ([]byte, []int) {
 	return file_v1_cloud_definition_definition_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *DeleteRequest) GetProviderId() string {
+	if x != nil {
+		return x.ProviderId
+	}
+	return ""
 }
 
 func (x *DeleteRequest) GetId() string {
@@ -501,11 +517,13 @@ const file_v1_cloud_definition_definition_proto_rawDesc = "" +
 	"\vGetResponse\x124\n" +
 	"\n" +
 	"definition\x18\x01 \x01(\v2\x14.v1.cloud.DefinitionR\n" +
-	"definition\"Y\n" +
+	"definition\"z\n" +
 	"\vListRequest\x12)\n" +
 	"\vprovider_id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\n" +
 	"providerId\x12\x1f\n" +
-	"\x05limit\x18\x02 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d \x00R\x05limit\"F\n" +
+	"\x05limit\x18\x02 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d \x00R\x05limit\x12\x1f\n" +
+	"\vstart_after\x18\x03 \x01(\tR\n" +
+	"startAfter\"F\n" +
 	"\fListResponse\x126\n" +
 	"\vdefinitions\x18\x01 \x03(\v2\x14.v1.cloud.DefinitionR\vdefinitions\"\x9a\x01\n" +
 	"\rCreateRequest\x12(\n" +
@@ -519,9 +537,11 @@ const file_v1_cloud_definition_definition_proto_rawDesc = "" +
 	"\vcompression\x18\x02 \x01(\x0e2\x19.v1.cloud.CompressionModeR\vcompression\x12\"\n" +
 	"\x06binary\x18\x03 \x01(\fB\n" +
 	"\xbaH\az\x05\x18\x80\xe1\xeb\x17R\x06binary\"\x10\n" +
-	"\x0eUpdateResponse\")\n" +
-	"\rDeleteRequest\x12\x18\n" +
-	"\x02id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\"\x10\n" +
+	"\x0eUpdateResponse\"T\n" +
+	"\rDeleteRequest\x12)\n" +
+	"\vprovider_id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\n" +
+	"providerId\x12\x18\n" +
+	"\x02id\x18\x02 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\"\x10\n" +
 	"\x0eDeleteResponse2\xa3\x03\n" +
 	"\x11DefinitionService\x12H\n" +
 	"\x03Get\x12\x1f.v1.cloud.definition.GetRequest\x1a .v1.cloud.definition.GetResponse\x12K\n" +

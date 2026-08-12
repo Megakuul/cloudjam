@@ -26,14 +26,29 @@ const (
 type AccountState int32
 
 const (
-	AccountState_NotCreated   AccountState = 0
+	// NotCreated means the account metadata is there but the provisioning process did not start.
+	// In this state it is forbidden to perform ANY action on the provider.
+	AccountState_NotCreated AccountState = 0
+	// Provisioning means the account is currently being created by an asynchron provider action.
+	// In this state it is forbidden to perform ANY action on the provider.
 	AccountState_Provisioning AccountState = 1
-	AccountState_Ready        AccountState = 2
-	AccountState_Running      AccountState = 3
-	AccountState_Evicting     AccountState = 4
-	AccountState_Corrupted    AccountState = 5
-	AccountState_Disabled     AccountState = 6
-	AccountState_Deleting     AccountState = 7
+	// Preparing means the account is currently being prepared (installing security guardrails, configuring metadata, etc.).
+	// In this state it is forbidden to perform ANY action on the provider.
+	AccountState_Preparing AccountState = 2
+	// Ready means the account is currently ready in the pool and can be used for a challenge.
+	AccountState_Ready AccountState = 3
+	// Running means the account is currently running (bzw. bound to a challenge).
+	// In this state it is forbidden to perform ANY action on the provider as long as the providers bound_until property is not expired.
+	AccountState_Running AccountState = 4
+	// Evicting means the account is currently cleaned by an asynchron provider action.
+	// In this state it is forbidden to perform ANY action on the provider.
+	AccountState_Evicting AccountState = 5
+	// Corrupted means an asynchron provider action on the account failed. Manual intervention is required!
+	// In this state it is forbidden to perform ANY action on the provider.
+	AccountState_Corrupted AccountState = 6
+	// Deleting means the providers async deletion mechanism is working.
+	// In this state it is forbidden to perform ANY action on the provider.
+	AccountState_Deleting AccountState = 7
 )
 
 // Enum value maps for AccountState.
@@ -41,21 +56,21 @@ var (
 	AccountState_name = map[int32]string{
 		0: "NotCreated",
 		1: "Provisioning",
-		2: "Ready",
-		3: "Running",
-		4: "Evicting",
-		5: "Corrupted",
-		6: "Disabled",
+		2: "Preparing",
+		3: "Ready",
+		4: "Running",
+		5: "Evicting",
+		6: "Corrupted",
 		7: "Deleting",
 	}
 	AccountState_value = map[string]int32{
 		"NotCreated":   0,
 		"Provisioning": 1,
-		"Ready":        2,
-		"Running":      3,
-		"Evicting":     4,
-		"Corrupted":    5,
-		"Disabled":     6,
+		"Preparing":    2,
+		"Ready":        3,
+		"Running":      4,
+		"Evicting":     5,
+		"Corrupted":    6,
 		"Deleting":     7,
 	}
 )
@@ -211,16 +226,16 @@ const file_v1_cloud_account_proto_rawDesc = "" +
 	"\x05state\x18\a \x01(\x0e2\x16.v1.cloud.AccountStateR\x05state\x12;\n" +
 	"\vbound_until\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\n" +
 	"boundUntil\x12\x14\n" +
-	"\x05error\x18\t \x01(\tR\x05error*\x81\x01\n" +
+	"\x05error\x18\t \x01(\tR\x05error*\x82\x01\n" +
 	"\fAccountState\x12\x0e\n" +
 	"\n" +
 	"NotCreated\x10\x00\x12\x10\n" +
-	"\fProvisioning\x10\x01\x12\t\n" +
-	"\x05Ready\x10\x02\x12\v\n" +
-	"\aRunning\x10\x03\x12\f\n" +
-	"\bEvicting\x10\x04\x12\r\n" +
-	"\tCorrupted\x10\x05\x12\f\n" +
-	"\bDisabled\x10\x06\x12\f\n" +
+	"\fProvisioning\x10\x01\x12\r\n" +
+	"\tPreparing\x10\x02\x12\t\n" +
+	"\x05Ready\x10\x03\x12\v\n" +
+	"\aRunning\x10\x04\x12\f\n" +
+	"\bEvicting\x10\x05\x12\r\n" +
+	"\tCorrupted\x10\x06\x12\f\n" +
 	"\bDeleting\x10\aB1Z/codeberg.org/megakuul/cloudjam/pkg/api/v1/cloudb\x06proto3"
 
 var (

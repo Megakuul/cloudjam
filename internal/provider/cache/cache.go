@@ -9,6 +9,7 @@ import (
 	"codeberg.org/megakuul/cloudjam/internal/oltp"
 	"codeberg.org/megakuul/cloudjam/internal/provider"
 	"codeberg.org/megakuul/cloudjam/internal/provider/aws"
+	"codeberg.org/megakuul/cloudjam/pkg/api/v1/cloud"
 	"github.com/megakuul/dynamitedb"
 )
 
@@ -25,27 +26,34 @@ func New(oltp *dynamitedb.Bucket) *Cache {
 	}
 }
 
-func (c *Cache) Load(ctx context.Context, providerID string) (provider.Provider, error) {
+// Bust removes the specified provider from the cache.
+func (c *Cache) Bust(providerMeta *oltp.Provider) {
 	c.providersLock.Lock()
 	defer c.providersLock.Unlock()
 
-	provider, ok := c.providers[providerID]
+	delete(c.providers, providerMeta.ProviderID.Value())
+}
+
+// Load loads teh specified provider from cache. If not there, it initializes and caches the provider.
+func (c *Cache) Load(ctx context.Context, providerMeta *oltp.Provider) (provider.Provider, error) {
+	var err error
+	c.providersLock.Lock()
+	defer c.providersLock.Unlock()
+
+	provider, ok := c.providers[providerMeta.ProviderID.Value()]
 	if !ok {
-		providerData, err := dynamitedb.Get(ctx, c.oltp, &oltp.Provider{
-			ProviderID: dynamitedb.Key(providerID),
-		})
-		if err != nil {
-			return nil, err
+		switch providerMeta.Type.Value() {
+		case cloud.ProviderType_AWS:
+			provider, err = aws.New(ctx, providerMeta.Credentials.Value(),
+				aws.WithEmailSuffix(fmt.Sprintf("+%s", providerMeta.Email)),
+				aws.WithRegions(providerMeta.Regions.Value()...),
+				aws.WithLogger(slog.With("system", fmt.Sprintf("provider-%s", providerMeta.Name.Value()))),
+			)
+			if err != nil {
+				return nil, fmt.Errorf("failed to initialize provider-%s: %w", providerMeta.Name.Value(), err)
+			}
 		}
-		provider, err = aws.New(ctx, providerData.Credentials.Value(),
-			aws.WithEmailSuffix(fmt.Sprintf("+%s", providerData.Email)),
-			aws.WithRegions(providerData.Regions.Value()...),
-			aws.WithLogger(slog.With("system", fmt.Sprintf("provider-%s", providerData.Name.Value()))),
-		)
-		if err != nil {
-			return nil, fmt.Errorf("failed to initialize provider-%s: %w", providerData.Name.Value(), err)
-		}
-		c.providers[providerID] = provider
+		c.providers[providerMeta.ProviderID.Value()] = provider
 	}
 	return provider, nil
 }

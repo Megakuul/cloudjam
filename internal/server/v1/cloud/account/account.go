@@ -5,10 +5,10 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
-	"time"
 
 	"codeberg.org/megakuul/cloudjam/internal/auth"
 	"codeberg.org/megakuul/cloudjam/internal/oltp"
+	"codeberg.org/megakuul/cloudjam/internal/provider/cache"
 	"codeberg.org/megakuul/cloudjam/internal/scheduler"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/cloud"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/cloud/account"
@@ -20,13 +20,15 @@ import (
 type Server struct {
 	logger    *slog.Logger
 	scheduler *scheduler.Scheduler
+	providers *cache.Cache
 	oltp      *dynamitedb.Bucket
 }
 
-func New(logger *slog.Logger, scheduler *scheduler.Scheduler, oltp *dynamitedb.Bucket) *Server {
+func New(logger *slog.Logger, scheduler *scheduler.Scheduler, providers *cache.Cache, oltp *dynamitedb.Bucket) *Server {
 	return &Server{
 		logger:    logger,
 		scheduler: scheduler,
+		providers: providers,
 		oltp:      oltp,
 	}
 }
@@ -102,7 +104,7 @@ func (s *Server) List(ctx context.Context, req *connect.Request[account.ListRequ
 func (s *Server) Create(ctx context.Context, req *connect.Request[account.CreateRequest]) (*connect.Response[account.CreateResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
 
-	provider, err := dynamitedb.Get(ctx, s.oltp, &oltp.Provider{
+	providerMeta, err := dynamitedb.Get(ctx, s.oltp, &oltp.Provider{
 		ProviderID: dynamitedb.Key(req.Msg.Init.ProviderId),
 		Scope:      dynamitedb.In(auth.Scopes(ctx)...),
 	})
@@ -120,13 +122,73 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[account.Create
 		Name:        dynamitedb.Set(req.Msg.Init.Name),
 		Description: dynamitedb.Set(req.Msg.Init.Description),
 		State:       dynamitedb.Set(cloud.AccountState_Provisioning),
-		Scope:       dynamitedb.Set(provider.Scope.Value()),
+		Scope:       dynamitedb.Set(providerMeta.Scope.Value()),
 	})
 	if err != nil {
 		l.Error(fmt.Sprintf("failed to create account: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create account"))
 	}
-	s.scheduler.ProvisionAccount(req.Msg.Init.ProviderId, req.Msg.Init.Id)
+
+	accountMeta, err := dynamitedb.Get(ctx, s.oltp, &oltp.Account{
+		ProviderID: dynamitedb.Key(req.Msg.Init.ProviderId),
+		AccountID:  dynamitedb.Key(req.Msg.Init.Id),
+		State:      dynamitedb.Eq(cloud.AccountState_NotCreated),
+		Scope:      dynamitedb.In(auth.Scopes(ctx)...),
+	})
+	if err != nil {
+		l.Error(fmt.Sprintf("failed to load new account: %v", err))
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to load new account"))
+	}
+
+	provider, err := s.providers.Load(ctx, accountMeta.ProviderID.Value())
+	if err != nil {
+		l.Error(fmt.Sprintf("failed to load provider: %v", err))
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to load provider"))
+	}
+
+	s.scheduler.Schedule(func(ctx context.Context) error {
+		err = dynamitedb.Update(ctx, s.oltp, &oltp.Account{
+			ProviderID: dynamitedb.Key(accountMeta.ProviderID.Value()),
+			AccountID:  dynamitedb.Key(accountMeta.AccountID.Value()),
+			ETag:       accountMeta.ETag,
+			State:      dynamitedb.Set(cloud.AccountState_Provisioning),
+		})
+		if err != nil {
+			return fmt.Errorf("locking account state: %w", err)
+		}
+		id, err := provider.Provision(ctx, accountMeta.Name.Value())
+		if err != nil {
+			return fmt.Errorf("provision account: %w", err)
+		}
+		if err = dynamitedb.Update(ctx, s.oltp, &oltp.Account{
+			ProviderID: dynamitedb.Key(accountMeta.ProviderID.Value()),
+			AccountID:  dynamitedb.Key(accountMeta.AccountID.Value()),
+			TargetID:   dynamitedb.Set(id),
+			State:      dynamitedb.Set(cloud.AccountState_Preparing),
+		}); err != nil {
+			return err
+		}
+		err = provider.Prepare(ctx, id)
+		if err != nil {
+			return fmt.Errorf("prepare account: %w", err)
+		}
+		if err = dynamitedb.Update(ctx, s.oltp, &oltp.Account{
+			ProviderID: dynamitedb.Key(accountMeta.ProviderID.Value()),
+			AccountID:  dynamitedb.Key(accountMeta.AccountID.Value()),
+			State:      dynamitedb.Set(cloud.AccountState_Ready),
+		}); err != nil {
+			return err
+		}
+		return nil
+	}, func(ctx context.Context, err error) error {
+		s.logger.Warn(fmt.Sprintf("failed to create account: %v", err))
+		return dynamitedb.Update(ctx, s.oltp, &oltp.Account{
+			ProviderID: dynamitedb.Key(accountMeta.ProviderID.Value()),
+			AccountID:  dynamitedb.Key(accountMeta.AccountID.Value()),
+			State:      dynamitedb.Set(cloud.AccountState_Corrupted),
+			Error:      dynamitedb.Set(err.Error()),
+		})
+	})
 	return &connect.Response[account.CreateResponse]{Msg: &account.CreateResponse{}}, nil
 }
 
@@ -145,11 +207,13 @@ func (s *Server) Update(ctx context.Context, req *connect.Request[account.Update
 		l.Error(fmt.Sprintf("failed to fetch account: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch account"))
 	}
+	if targetAccount.State.Value() != cloud.AccountState_Ready {
+		return nil, connect.NewError(connect.CodeFailedPrecondition, fmt.Errorf("account must be in ready state to accept updates"))
+	}
 	err = dynamitedb.Update(ctx, s.oltp, &oltp.Account{
 		ProviderID:  targetAccount.ProviderID,
 		AccountID:   targetAccount.AccountID,
 		ETag:        targetAccount.ETag,
-		Name:        dynamitedb.Set(req.Msg.Mod.Name),
 		Description: dynamitedb.Set(req.Msg.Mod.Description),
 	})
 	if err != nil {
@@ -190,7 +254,7 @@ func (s *Server) Fix(ctx context.Context, req *connect.Request[account.FixReques
 func (s *Server) Delete(ctx context.Context, req *connect.Request[account.DeleteRequest]) (*connect.Response[account.DeleteResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
 
-	targetAccount, err := dynamitedb.Get(ctx, s.oltp, &oltp.Account{
+	accountMeta, err := dynamitedb.Get(ctx, s.oltp, &oltp.Account{
 		ProviderID: dynamitedb.Key(req.Msg.ProviderId),
 		AccountID:  dynamitedb.Key(req.Msg.Id),
 
@@ -203,33 +267,57 @@ func (s *Server) Delete(ctx context.Context, req *connect.Request[account.Delete
 		l.Error(fmt.Sprintf("failed to fetch account: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch account"))
 	}
-	if time.Now().Before(targetAccount.BoundUntil.Value()) {
-		return nil, connect.NewError(connect.CodeFailedPrecondition, fmt.Errorf("account is currently used by a challenge"))
+	if accountMeta.State.Value() != cloud.AccountState_Ready {
+		return nil, connect.NewError(connect.CodeFailedPrecondition, fmt.Errorf("account must be in ready state to accept updates"))
 	}
 
 	// with force remove the account just from here (this will leak the account on the provider however).
 	if req.Msg.Force {
 		err = dynamitedb.Delete(ctx, s.oltp, &oltp.Account{
-			ProviderID: dynamitedb.Key(targetAccount.ProviderID.Value()),
-			AccountID:  dynamitedb.Key(targetAccount.AccountID.Value()),
-			ETag:       targetAccount.ETag,
+			ProviderID: dynamitedb.Key(accountMeta.ProviderID.Value()),
+			AccountID:  dynamitedb.Key(accountMeta.AccountID.Value()),
+			ETag:       accountMeta.ETag,
 		})
 		if err != nil {
 			l.Error(fmt.Sprintf("failed to force delete account: %v", err))
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to force delete account"))
 		}
 	} else {
-		err = dynamitedb.Update(ctx, s.oltp, &oltp.Account{
-			ProviderID: dynamitedb.Key(targetAccount.ProviderID.Value()),
-			AccountID:  dynamitedb.Key(targetAccount.AccountID.Value()),
-			ETag:       targetAccount.ETag,
-			State:      dynamitedb.Set(cloud.AccountState_Disabled),
-		})
+		provider, err := s.providers.Load(ctx, accountMeta.ProviderID.Value())
 		if err != nil {
-			l.Error(fmt.Sprintf("failed to disable account: %v", err))
-			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to disable account"))
+			l.Error(fmt.Sprintf("failed to load provider: %v", err))
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to load provider"))
 		}
-		s.scheduler.DeleteAccount(targetAccount.ProviderID.Value(), targetAccount.AccountID.Value())
+		s.scheduler.Schedule(func(ctx context.Context) error {
+			err = dynamitedb.Update(ctx, s.oltp, &oltp.Account{
+				ProviderID: dynamitedb.Key(accountMeta.ProviderID.Value()),
+				AccountID:  dynamitedb.Key(accountMeta.AccountID.Value()),
+				ETag:       accountMeta.ETag,
+				State:      dynamitedb.Set(cloud.AccountState_Deleting),
+			})
+			if err != nil {
+				return fmt.Errorf("locking account state: %w", err)
+			}
+			err = provider.Delete(ctx, accountMeta.TargetID.Value())
+			if err != nil {
+				return fmt.Errorf("deleting account (%q): %w", accountMeta.AccountID.Value(), err)
+			}
+			if err = dynamitedb.Delete(ctx, s.oltp, &oltp.Account{
+				ProviderID: dynamitedb.Key(accountMeta.ProviderID.Value()),
+				AccountID:  dynamitedb.Key(accountMeta.AccountID.Value()),
+			}); err != nil {
+				return err
+			}
+			return nil
+		}, func(ctx context.Context, err error) error {
+			s.logger.Warn(fmt.Sprintf("failed to delete account (%q): %v", accountMeta.AccountID.Value(), err))
+			return dynamitedb.Update(ctx, s.oltp, &oltp.Account{
+				ProviderID: dynamitedb.Key(accountMeta.ProviderID.Value()),
+				AccountID:  dynamitedb.Key(accountMeta.AccountID.Value()),
+				State:      dynamitedb.Set(cloud.AccountState_Corrupted),
+				Error:      dynamitedb.Set(err.Error()),
+			})
+		})
 	}
 	return &connect.Response[account.DeleteResponse]{Msg: &account.DeleteResponse{}}, nil
 }

@@ -66,16 +66,17 @@ func (ProviderType) EnumDescriptor() ([]byte, []int) {
 }
 
 type Provider struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	Scope           string                 `protobuf:"bytes,1,opt,name=scope,proto3" json:"scope,omitempty"`
-	Id              string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
-	Type            ProviderType           `protobuf:"varint,3,opt,name=type,proto3,enum=v1.cloud.ProviderType" json:"type,omitempty"`
-	Name            string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
-	Description     string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
-	Credentials     string                 `protobuf:"bytes,6,opt,name=credentials,proto3" json:"credentials,omitempty"`
-	DesiredAccounts int64                  `protobuf:"varint,7,opt,name=desired_accounts,json=desiredAccounts,proto3" json:"desired_accounts,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Scope         string                 `protobuf:"bytes,1,opt,name=scope,proto3" json:"scope,omitempty"`
+	Id            string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
+	Type          ProviderType           `protobuf:"varint,3,opt,name=type,proto3,enum=v1.cloud.ProviderType" json:"type,omitempty"`
+	Name          string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
+	Description   string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
+	Email         string                 `protobuf:"bytes,6,opt,name=email,proto3" json:"email,omitempty"`
+	Regions       []string               `protobuf:"bytes,7,rep,name=regions,proto3" json:"regions,omitempty"`
+	Credentials   string                 `protobuf:"bytes,8,opt,name=credentials,proto3" json:"credentials,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Provider) Reset() {
@@ -143,6 +144,20 @@ func (x *Provider) GetDescription() string {
 	return ""
 }
 
+func (x *Provider) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *Provider) GetRegions() []string {
+	if x != nil {
+		return x.Regions
+	}
+	return nil
+}
+
 func (x *Provider) GetCredentials() string {
 	if x != nil {
 		return x.Credentials
@@ -150,27 +165,21 @@ func (x *Provider) GetCredentials() string {
 	return ""
 }
 
-func (x *Provider) GetDesiredAccounts() int64 {
-	if x != nil {
-		return x.DesiredAccounts
-	}
-	return 0
-}
-
 var File_v1_cloud_provider_proto protoreflect.FileDescriptor
 
 const file_v1_cloud_provider_proto_rawDesc = "" +
 	"\n" +
-	"\x17v1/cloud/provider.proto\x12\bv1.cloud\x1a\x1bbuf/validate/validate.proto\"\x8b\x02\n" +
+	"\x17v1/cloud/provider.proto\x12\bv1.cloud\x1a\x1bbuf/validate/validate.proto\"\x99\x02\n" +
 	"\bProvider\x12\x14\n" +
 	"\x05scope\x18\x01 \x01(\tR\x05scope\x12\x18\n" +
 	"\x02id\x18\x02 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\x12*\n" +
 	"\x04type\x18\x03 \x01(\x0e2\x16.v1.cloud.ProviderTypeR\x04type\x12\x1d\n" +
 	"\x04name\x18\x04 \x01(\tB\t\xbaH\x06r\x04\x10\x04\x18\x14R\x04name\x12+\n" +
-	"\vdescription\x18\x05 \x01(\tB\t\xbaH\x06r\x04\x10\x00\x182R\vdescription\x12,\n" +
-	"\vcredentials\x18\x06 \x01(\tB\n" +
-	"\xbaH\ar\x05\x10\x00\x18\xe8\aR\vcredentials\x12)\n" +
-	"\x10desired_accounts\x18\a \x01(\x03R\x0fdesiredAccounts*\x17\n" +
+	"\vdescription\x18\x05 \x01(\tB\t\xbaH\x06r\x04\x10\x00\x182R\vdescription\x12\x1d\n" +
+	"\x05email\x18\x06 \x01(\tB\a\xbaH\x04r\x02`\x01R\x05email\x12\x18\n" +
+	"\aregions\x18\a \x03(\tR\aregions\x12,\n" +
+	"\vcredentials\x18\b \x01(\tB\n" +
+	"\xbaH\ar\x05\x10\x00\x18\xe8\aR\vcredentials*\x17\n" +
 	"\fProviderType\x12\a\n" +
 	"\x03AWS\x10\x00B1Z/codeberg.org/megakuul/cloudjam/pkg/api/v1/cloudb\x06proto3"
 

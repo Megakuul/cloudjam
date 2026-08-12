@@ -47,6 +47,8 @@ func isAllowedInstance(instanceType string) bool {
 	return false
 }
 
+var _ provider.Provider = &Provider{}
+
 // Provider implements sandbox.Provider for aws organization accounts.
 type Provider struct {
 	logger *slog.Logger

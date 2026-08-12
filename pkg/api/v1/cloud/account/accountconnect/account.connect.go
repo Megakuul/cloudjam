@@ -49,11 +49,20 @@ const (
 
 // AccountServiceClient is a client for the v1.cloud.account.AccountService service.
 type AccountServiceClient interface {
+	// Get returns the accounts current state.
 	Get(context.Context, *connect.Request[account.GetRequest]) (*connect.Response[account.GetResponse], error)
+	// List returns a list of account states.
 	List(context.Context, *connect.Request[account.ListRequest]) (*connect.Response[account.ListResponse], error)
+	// Create creates a new cloudjam account and triggers the asynchron provisioning process on the provider.
 	Create(context.Context, *connect.Request[account.CreateRequest]) (*connect.Response[account.CreateResponse], error)
+	// Update updates teh cloudjam account metadata.
 	Update(context.Context, *connect.Request[account.UpdateRequest]) (*connect.Response[account.UpdateResponse], error)
+	// Fix sets the account state forcefully to READY. This is very dangerous use with caution only if you actually fixed the account corruption.
+	// Unfortunately this is required because *some* retarded providers (*AWS*) use account quotas
+	// so we cannot just delete and create new accounts but must manually fix them when issues occur.
 	Fix(context.Context, *connect.Request[account.FixRequest]) (*connect.Response[account.FixResponse], error)
+	// Delete triggers the asynchron deletion process on the provider.
+	// If called with *force* it will immediately remove cloudjam metadata (account will leak then!!!).
 	Delete(context.Context, *connect.Request[account.DeleteRequest]) (*connect.Response[account.DeleteResponse], error)
 }
 
@@ -149,11 +158,20 @@ func (c *accountServiceClient) Delete(ctx context.Context, req *connect.Request[
 
 // AccountServiceHandler is an implementation of the v1.cloud.account.AccountService service.
 type AccountServiceHandler interface {
+	// Get returns the accounts current state.
 	Get(context.Context, *connect.Request[account.GetRequest]) (*connect.Response[account.GetResponse], error)
+	// List returns a list of account states.
 	List(context.Context, *connect.Request[account.ListRequest]) (*connect.Response[account.ListResponse], error)
+	// Create creates a new cloudjam account and triggers the asynchron provisioning process on the provider.
 	Create(context.Context, *connect.Request[account.CreateRequest]) (*connect.Response[account.CreateResponse], error)
+	// Update updates teh cloudjam account metadata.
 	Update(context.Context, *connect.Request[account.UpdateRequest]) (*connect.Response[account.UpdateResponse], error)
+	// Fix sets the account state forcefully to READY. This is very dangerous use with caution only if you actually fixed the account corruption.
+	// Unfortunately this is required because *some* retarded providers (*AWS*) use account quotas
+	// so we cannot just delete and create new accounts but must manually fix them when issues occur.
 	Fix(context.Context, *connect.Request[account.FixRequest]) (*connect.Response[account.FixResponse], error)
+	// Delete triggers the asynchron deletion process on the provider.
+	// If called with *force* it will immediately remove cloudjam metadata (account will leak then!!!).
 	Delete(context.Context, *connect.Request[account.DeleteRequest]) (*connect.Response[account.DeleteResponse], error)
 }
 

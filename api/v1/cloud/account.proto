@@ -14,20 +14,20 @@ enum AccountState {
   // Provisioning means the account is currently being created by an asynchron provider action.
   // In this state it is forbidden to perform ANY action on the provider.
   Provisioning = 1;
+  // Preparing means the account is currently being prepared (installing security guardrails, configuring metadata, etc.).
+  // In this state it is forbidden to perform ANY action on the provider.
+  Preparing = 2;
   // Ready means the account is currently ready in the pool and can be used for a challenge.
-  Ready = 2;
+  Ready = 3;
   // Running means the account is currently running (bzw. bound to a challenge).
   // In this state it is forbidden to perform ANY action on the provider as long as the providers bound_until property is not expired.
-  Running = 3;
+  Running = 4;
   // Evicting means the account is currently cleaned by an asynchron provider action.
   // In this state it is forbidden to perform ANY action on the provider.
-  Evicting = 4;
+  Evicting = 5;
   // Corrupted means an asynchron provider action on the account failed. Manual intervention is required!
   // In this state it is forbidden to perform ANY action on the provider.
-  Corrupted = 5;
-  // Disabled means the account is locked and will transition into deleting state as soon as the provider is ready.
-  // In this state it is forbidden to perform ANY action on the provider.
-  Disabled = 6;
+  Corrupted = 6;
   // Deleting means the providers async deletion mechanism is working.
   // In this state it is forbidden to perform ANY action on the provider.
   Deleting = 7;
