@@ -78,7 +78,7 @@ func (x *GetRequest) GetId() string {
 
 type GetResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Account       *play.Team             `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
+	Team          *play.Team             `protobuf:"bytes,1,opt,name=team,proto3" json:"team,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -113,9 +113,9 @@ func (*GetResponse) Descriptor() ([]byte, []int) {
 	return file_v1_play_team_team_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *GetResponse) GetAccount() *play.Team {
+func (x *GetResponse) GetTeam() *play.Team {
 	if x != nil {
-		return x.Account
+		return x.Team
 	}
 	return nil
 }
@@ -124,6 +124,7 @@ type ListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	GameId        string                 `protobuf:"bytes,1,opt,name=game_id,json=gameId,proto3" json:"game_id,omitempty"`
 	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	StartAfter    string                 `protobuf:"bytes,3,opt,name=start_after,json=startAfter,proto3" json:"start_after,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -172,9 +173,16 @@ func (x *ListRequest) GetLimit() int32 {
 	return 0
 }
 
+func (x *ListRequest) GetStartAfter() string {
+	if x != nil {
+		return x.StartAfter
+	}
+	return ""
+}
+
 type ListResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Accounts      []*play.Team           `protobuf:"bytes,1,rep,name=accounts,proto3" json:"accounts,omitempty"`
+	Teams         []*play.Team           `protobuf:"bytes,1,rep,name=teams,proto3" json:"teams,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -209,9 +217,9 @@ func (*ListResponse) Descriptor() ([]byte, []int) {
 	return file_v1_play_team_team_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *ListResponse) GetAccounts() []*play.Team {
+func (x *ListResponse) GetTeams() []*play.Team {
 	if x != nil {
-		return x.Accounts
+		return x.Teams
 	}
 	return nil
 }
@@ -378,7 +386,8 @@ func (*UpdateResponse) Descriptor() ([]byte, []int) {
 
 type DeleteRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	GameId        string                 `protobuf:"bytes,1,opt,name=game_id,json=gameId,proto3" json:"game_id,omitempty"`
+	Id            string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -411,6 +420,13 @@ func (x *DeleteRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use DeleteRequest.ProtoReflect.Descriptor instead.
 func (*DeleteRequest) Descriptor() ([]byte, []int) {
 	return file_v1_play_team_team_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *DeleteRequest) GetGameId() string {
+	if x != nil {
+		return x.GameId
+	}
+	return ""
 }
 
 func (x *DeleteRequest) GetId() string {
@@ -464,22 +480,25 @@ const file_v1_play_team_team_proto_rawDesc = "" +
 	"\n" +
 	"GetRequest\x12!\n" +
 	"\agame_id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x06gameId\x12\x18\n" +
-	"\x02id\x18\x02 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\"6\n" +
-	"\vGetResponse\x12'\n" +
-	"\aaccount\x18\x01 \x01(\v2\r.v1.play.TeamR\aaccount\"Q\n" +
+	"\x02id\x18\x02 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\"0\n" +
+	"\vGetResponse\x12!\n" +
+	"\x04team\x18\x01 \x01(\v2\r.v1.play.TeamR\x04team\"r\n" +
 	"\vListRequest\x12!\n" +
 	"\agame_id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x06gameId\x12\x1f\n" +
-	"\x05limit\x18\x02 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d \x00R\x05limit\"9\n" +
-	"\fListResponse\x12)\n" +
-	"\baccounts\x18\x01 \x03(\v2\r.v1.play.TeamR\baccounts\"2\n" +
+	"\x05limit\x18\x02 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d \x00R\x05limit\x12\x1f\n" +
+	"\vstart_after\x18\x03 \x01(\tR\n" +
+	"startAfter\"3\n" +
+	"\fListResponse\x12#\n" +
+	"\x05teams\x18\x01 \x03(\v2\r.v1.play.TeamR\x05teams\"2\n" +
 	"\rCreateRequest\x12!\n" +
 	"\x04init\x18\x01 \x01(\v2\r.v1.play.TeamR\x04init\"\x10\n" +
 	"\x0eCreateResponse\"0\n" +
 	"\rUpdateRequest\x12\x1f\n" +
 	"\x03mod\x18\x01 \x01(\v2\r.v1.play.TeamR\x03mod\"\x10\n" +
-	"\x0eUpdateResponse\")\n" +
-	"\rDeleteRequest\x12\x18\n" +
-	"\x02id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\"\x10\n" +
+	"\x0eUpdateResponse\"L\n" +
+	"\rDeleteRequest\x12!\n" +
+	"\agame_id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x06gameId\x12\x18\n" +
+	"\x02id\x18\x02 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\"\x10\n" +
 	"\x0eDeleteResponse2\xd7\x02\n" +
 	"\vTeamService\x12:\n" +
 	"\x03Get\x12\x18.v1.play.team.GetRequest\x1a\x19.v1.play.team.GetResponse\x12=\n" +
@@ -515,8 +534,8 @@ var file_v1_play_team_team_proto_goTypes = []any{
 	(*play.Team)(nil),      // 10: v1.play.Team
 }
 var file_v1_play_team_team_proto_depIdxs = []int32{
-	10, // 0: v1.play.team.GetResponse.account:type_name -> v1.play.Team
-	10, // 1: v1.play.team.ListResponse.accounts:type_name -> v1.play.Team
+	10, // 0: v1.play.team.GetResponse.team:type_name -> v1.play.Team
+	10, // 1: v1.play.team.ListResponse.teams:type_name -> v1.play.Team
 	10, // 2: v1.play.team.CreateRequest.init:type_name -> v1.play.Team
 	10, // 3: v1.play.team.UpdateRequest.mod:type_name -> v1.play.Team
 	0,  // 4: v1.play.team.TeamService.Get:input_type -> v1.play.team.GetRequest

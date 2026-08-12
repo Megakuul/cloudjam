@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/play/challenge/challenge.proto.
  */
 export const file_v1_play_challenge_challenge: GenFile = /*@__PURE__*/
-  fileDesc("CiF2MS9wbGF5L2NoYWxsZW5nZS9jaGFsbGVuZ2UucHJvdG8SEXYxLnBsYXkuY2hhbGxlbmdlIj0KCkdldFJlcXVlc3QSGQoHZ2FtZV9pZBgBIAEoCUIIukgFcgOwAQESFAoCaWQYAiABKAlCCLpIBXIDsAEBIjIKC0dldFJlc3BvbnNlEiMKB2FjY291bnQYASABKAsyEi52MS5wbGF5LkNoYWxsZW5nZSJCCgtMaXN0UmVxdWVzdBIZCgdnYW1lX2lkGAEgASgJQgi6SAVyA7ABARIYCgVsaW1pdBgCIAEoBUIJukgGGgQYZCAAIjQKDExpc3RSZXNwb25zZRIkCghhY2NvdW50cxgBIAMoCzISLnYxLnBsYXkuQ2hhbGxlbmdlIjEKDUNyZWF0ZVJlcXVlc3QSIAoEaW5pdBgBIAEoCzISLnYxLnBsYXkuQ2hhbGxlbmdlIhAKDkNyZWF0ZVJlc3BvbnNlIjAKDVVwZGF0ZVJlcXVlc3QSHwoDbW9kGAEgASgLMhIudjEucGxheS5DaGFsbGVuZ2UiEAoOVXBkYXRlUmVzcG9uc2UiJQoNRGVsZXRlUmVxdWVzdBIUCgJpZBgBIAEoCUIIukgFcgOwAQEiEAoORGVsZXRlUmVzcG9uc2UiPwoMU3RhcnRSZXF1ZXN0EhkKB2dhbWVfaWQYASABKAlCCLpIBXIDsAEBEhQKAmlkGAIgASgJQgi6SAVyA7ABASIPCg1TdGFydFJlc3BvbnNlIkUKEkNyZWRlbnRpYWxzUmVxdWVzdBIZCgdnYW1lX2lkGAEgASgJQgi6SAVyA7ABARIUCgJpZBgCIAEoCUIIukgFcgOwAQEiKgoTQ3JlZGVudGlhbHNSZXNwb25zZRITCgtjcmVkZW50aWFscxgBIAEoCSJeChJVbmNvdmVyQ2x1ZVJlcXVlc3QSGQoHZ2FtZV9pZBgBIAEoCUIIukgFcgOwAQESFAoCaWQYAiABKAlCCLpIBXIDsAEBEhcKBGNsdWUYAyABKAlCCbpIBnIEEAEYZCIVChNVbmNvdmVyQ2x1ZVJlc3BvbnNlMpYFChBDaGFsbGVuZ2VTZXJ2aWNlEkQKA0dldBIdLnYxLnBsYXkuY2hhbGxlbmdlLkdldFJlcXVlc3QaHi52MS5wbGF5LmNoYWxsZW5nZS5HZXRSZXNwb25zZRJHCgRMaXN0Eh4udjEucGxheS5jaGFsbGVuZ2UuTGlzdFJlcXVlc3QaHy52MS5wbGF5LmNoYWxsZW5nZS5MaXN0UmVzcG9uc2USTQoGQ3JlYXRlEiAudjEucGxheS5jaGFsbGVuZ2UuQ3JlYXRlUmVxdWVzdBohLnYxLnBsYXkuY2hhbGxlbmdlLkNyZWF0ZVJlc3BvbnNlEk0KBlVwZGF0ZRIgLnYxLnBsYXkuY2hhbGxlbmdlLlVwZGF0ZVJlcXVlc3QaIS52MS5wbGF5LmNoYWxsZW5nZS5VcGRhdGVSZXNwb25zZRJNCgZEZWxldGUSIC52MS5wbGF5LmNoYWxsZW5nZS5EZWxldGVSZXF1ZXN0GiEudjEucGxheS5jaGFsbGVuZ2UuRGVsZXRlUmVzcG9uc2USSgoFU3RhcnQSHy52MS5wbGF5LmNoYWxsZW5nZS5TdGFydFJlcXVlc3QaIC52MS5wbGF5LmNoYWxsZW5nZS5TdGFydFJlc3BvbnNlElwKC0NyZWRlbnRpYWxzEiUudjEucGxheS5jaGFsbGVuZ2UuQ3JlZGVudGlhbHNSZXF1ZXN0GiYudjEucGxheS5jaGFsbGVuZ2UuQ3JlZGVudGlhbHNSZXNwb25zZRJcCgtVbmNvdmVyQ2x1ZRIlLnYxLnBsYXkuY2hhbGxlbmdlLlVuY292ZXJDbHVlUmVxdWVzdBomLnYxLnBsYXkuY2hhbGxlbmdlLlVuY292ZXJDbHVlUmVzcG9uc2VCOlo4Y29kZWJlcmcub3JnL21lZ2FrdXVsL2Nsb3VkamFtL3BrZy9hcGkvdjEvcGxheS9jaGFsbGVuZ2ViBnByb3RvMw", [file_buf_validate_validate, file_google_protobuf_timestamp, file_v1_play_challenge]);
+  fileDesc("CiF2MS9wbGF5L2NoYWxsZW5nZS9jaGFsbGVuZ2UucHJvdG8SEXYxLnBsYXkuY2hhbGxlbmdlIj0KCkdldFJlcXVlc3QSGQoHZ2FtZV9pZBgBIAEoCUIIukgFcgOwAQESFAoCaWQYAiABKAlCCLpIBXIDsAEBIjQKC0dldFJlc3BvbnNlEiUKCWNoYWxsZW5nZRgBIAEoCzISLnYxLnBsYXkuQ2hhbGxlbmdlIlcKC0xpc3RSZXF1ZXN0EhkKB2dhbWVfaWQYASABKAlCCLpIBXIDsAEBEhgKBWxpbWl0GAIgASgFQgm6SAYaBBhkIAASEwoLc3RhcnRfYWZ0ZXIYAyABKAkiNgoMTGlzdFJlc3BvbnNlEiYKCmNoYWxsZW5nZXMYASADKAsyEi52MS5wbGF5LkNoYWxsZW5nZSIxCg1DcmVhdGVSZXF1ZXN0EiAKBGluaXQYASABKAsyEi52MS5wbGF5LkNoYWxsZW5nZSIQCg5DcmVhdGVSZXNwb25zZSIwCg1VcGRhdGVSZXF1ZXN0Eh8KA21vZBgBIAEoCzISLnYxLnBsYXkuQ2hhbGxlbmdlIhAKDlVwZGF0ZVJlc3BvbnNlIkAKDURlbGV0ZVJlcXVlc3QSGQoHZ2FtZV9pZBgBIAEoCUIIukgFcgOwAQESFAoCaWQYAiABKAlCCLpIBXIDsAEBIhAKDkRlbGV0ZVJlc3BvbnNlIj8KDFN0YXJ0UmVxdWVzdBIZCgdnYW1lX2lkGAEgASgJQgi6SAVyA7ABARIUCgJpZBgCIAEoCUIIukgFcgOwAQEiDwoNU3RhcnRSZXNwb25zZSJFChJDcmVkZW50aWFsc1JlcXVlc3QSGQoHZ2FtZV9pZBgBIAEoCUIIukgFcgOwAQESFAoCaWQYAiABKAlCCLpIBXIDsAEBIioKE0NyZWRlbnRpYWxzUmVzcG9uc2USEwoLY3JlZGVudGlhbHMYASABKAkiXgoSVW5jb3ZlckNsdWVSZXF1ZXN0EhkKB2dhbWVfaWQYASABKAlCCLpIBXIDsAEBEhQKAmlkGAIgASgJQgi6SAVyA7ABARIXCgRjbHVlGAMgASgJQgm6SAZyBBABGGQiFQoTVW5jb3ZlckNsdWVSZXNwb25zZTKWBQoQQ2hhbGxlbmdlU2VydmljZRJECgNHZXQSHS52MS5wbGF5LmNoYWxsZW5nZS5HZXRSZXF1ZXN0Gh4udjEucGxheS5jaGFsbGVuZ2UuR2V0UmVzcG9uc2USRwoETGlzdBIeLnYxLnBsYXkuY2hhbGxlbmdlLkxpc3RSZXF1ZXN0Gh8udjEucGxheS5jaGFsbGVuZ2UuTGlzdFJlc3BvbnNlEk0KBkNyZWF0ZRIgLnYxLnBsYXkuY2hhbGxlbmdlLkNyZWF0ZVJlcXVlc3QaIS52MS5wbGF5LmNoYWxsZW5nZS5DcmVhdGVSZXNwb25zZRJNCgZVcGRhdGUSIC52MS5wbGF5LmNoYWxsZW5nZS5VcGRhdGVSZXF1ZXN0GiEudjEucGxheS5jaGFsbGVuZ2UuVXBkYXRlUmVzcG9uc2USTQoGRGVsZXRlEiAudjEucGxheS5jaGFsbGVuZ2UuRGVsZXRlUmVxdWVzdBohLnYxLnBsYXkuY2hhbGxlbmdlLkRlbGV0ZVJlc3BvbnNlEkoKBVN0YXJ0Eh8udjEucGxheS5jaGFsbGVuZ2UuU3RhcnRSZXF1ZXN0GiAudjEucGxheS5jaGFsbGVuZ2UuU3RhcnRSZXNwb25zZRJcCgtDcmVkZW50aWFscxIlLnYxLnBsYXkuY2hhbGxlbmdlLkNyZWRlbnRpYWxzUmVxdWVzdBomLnYxLnBsYXkuY2hhbGxlbmdlLkNyZWRlbnRpYWxzUmVzcG9uc2USXAoLVW5jb3ZlckNsdWUSJS52MS5wbGF5LmNoYWxsZW5nZS5VbmNvdmVyQ2x1ZVJlcXVlc3QaJi52MS5wbGF5LmNoYWxsZW5nZS5VbmNvdmVyQ2x1ZVJlc3BvbnNlQjpaOGNvZGViZXJnLm9yZy9tZWdha3V1bC9jbG91ZGphbS9wa2cvYXBpL3YxL3BsYXkvY2hhbGxlbmdlYgZwcm90bzM", [file_buf_validate_validate, file_google_protobuf_timestamp, file_v1_play_challenge]);
 
 /**
  * @generated from message v1.play.challenge.GetRequest
@@ -43,9 +43,9 @@ export const GetRequestSchema: GenMessage<GetRequest> = /*@__PURE__*/
  */
 export type GetResponse = Message<"v1.play.challenge.GetResponse"> & {
   /**
-   * @generated from field: v1.play.Challenge account = 1;
+   * @generated from field: v1.play.Challenge challenge = 1;
    */
-  account?: Challenge;
+  challenge?: Challenge;
 };
 
 /**
@@ -68,6 +68,11 @@ export type ListRequest = Message<"v1.play.challenge.ListRequest"> & {
    * @generated from field: int32 limit = 2;
    */
   limit: number;
+
+  /**
+   * @generated from field: string start_after = 3;
+   */
+  startAfter: string;
 };
 
 /**
@@ -82,9 +87,9 @@ export const ListRequestSchema: GenMessage<ListRequest> = /*@__PURE__*/
  */
 export type ListResponse = Message<"v1.play.challenge.ListResponse"> & {
   /**
-   * @generated from field: repeated v1.play.Challenge accounts = 1;
+   * @generated from field: repeated v1.play.Challenge challenges = 1;
    */
-  accounts: Challenge[];
+  challenges: Challenge[];
 };
 
 /**
@@ -159,7 +164,12 @@ export const UpdateResponseSchema: GenMessage<UpdateResponse> = /*@__PURE__*/
  */
 export type DeleteRequest = Message<"v1.play.challenge.DeleteRequest"> & {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: string game_id = 1;
+   */
+  gameId: string;
+
+  /**
+   * @generated from field: string id = 2;
    */
   id: string;
 };

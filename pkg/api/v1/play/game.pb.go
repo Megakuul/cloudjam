@@ -31,7 +31,6 @@ type Game struct {
 	Description   string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
 	From          *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=from,proto3" json:"from,omitempty"`
 	To            *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=to,proto3" json:"to,omitempty"`
-	Version       string                 `protobuf:"bytes,7,opt,name=version,proto3" json:"version,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -108,26 +107,19 @@ func (x *Game) GetTo() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *Game) GetVersion() string {
-	if x != nil {
-		return x.Version
-	}
-	return ""
-}
-
 var File_v1_play_game_proto protoreflect.FileDescriptor
 
 const file_v1_play_game_proto_rawDesc = "" +
 	"\n" +
-	"\x12v1/play/game.proto\x12\av1.play\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xf8\x01\n" +
+	"\x12v1/play/game.proto\x12\av1.play\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xc2\x02\n" +
 	"\x04Game\x12\x14\n" +
 	"\x05scope\x18\x01 \x01(\tR\x05scope\x12\x18\n" +
 	"\x02id\x18\x02 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\x12\x1d\n" +
 	"\x04name\x18\x03 \x01(\tB\t\xbaH\x06r\x04\x10\x04\x18\x14R\x04name\x12+\n" +
-	"\vdescription\x18\x04 \x01(\tB\t\xbaH\x06r\x04\x10\x00\x182R\vdescription\x12.\n" +
-	"\x04from\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x04from\x12*\n" +
-	"\x02to\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x02to\x12\x18\n" +
-	"\aversion\x18\a \x01(\tR\aversionB0Z.codeberg.org/megakuul/cloudjam/pkg/api/v1/playb\x06proto3"
+	"\vdescription\x18\x04 \x01(\tB\t\xbaH\x06r\x04\x10\x00\x182R\vdescription\x128\n" +
+	"\x04from\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\b\xbaH\x05\xb2\x01\x028\x01R\x04from\x124\n" +
+	"\x02to\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampB\b\xbaH\x05\xb2\x01\x02@\x01R\x02to:N\xbaHK\x1aI\n" +
+	"\x11timestamp_overlap\x12\x1fgame timeframe must not overlap\x1a\x13this.from < this.toB0Z.codeberg.org/megakuul/cloudjam/pkg/api/v1/playb\x06proto3"
 
 var (
 	file_v1_play_game_proto_rawDescOnce sync.Once

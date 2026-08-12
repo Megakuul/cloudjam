@@ -115,6 +115,7 @@ func (x *GetResponse) GetGame() *play.Game {
 type ListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Limit         int32                  `protobuf:"varint,1,opt,name=limit,proto3" json:"limit,omitempty"`
+	StartAfter    string                 `protobuf:"bytes,2,opt,name=start_after,json=startAfter,proto3" json:"start_after,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -154,6 +155,13 @@ func (x *ListRequest) GetLimit() int32 {
 		return x.Limit
 	}
 	return 0
+}
+
+func (x *ListRequest) GetStartAfter() string {
+	if x != nil {
+		return x.StartAfter
+	}
+	return ""
 }
 
 type ListResponse struct {
@@ -449,9 +457,11 @@ const file_v1_play_game_game_proto_rawDesc = "" +
 	"GetRequest\x12\x18\n" +
 	"\x02id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\"0\n" +
 	"\vGetResponse\x12!\n" +
-	"\x04game\x18\x01 \x01(\v2\r.v1.play.GameR\x04game\".\n" +
+	"\x04game\x18\x01 \x01(\v2\r.v1.play.GameR\x04game\"O\n" +
 	"\vListRequest\x12\x1f\n" +
-	"\x05limit\x18\x01 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d \x00R\x05limit\"3\n" +
+	"\x05limit\x18\x01 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d \x00R\x05limit\x12\x1f\n" +
+	"\vstart_after\x18\x02 \x01(\tR\n" +
+	"startAfter\"3\n" +
 	"\fListResponse\x12#\n" +
 	"\x05games\x18\x01 \x03(\v2\r.v1.play.GameR\x05games\"2\n" +
 	"\rCreateRequest\x12!\n" +

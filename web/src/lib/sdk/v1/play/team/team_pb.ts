@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/play/team/team.proto.
  */
 export const file_v1_play_team_team: GenFile = /*@__PURE__*/
-  fileDesc("Chd2MS9wbGF5L3RlYW0vdGVhbS5wcm90bxIMdjEucGxheS50ZWFtIj0KCkdldFJlcXVlc3QSGQoHZ2FtZV9pZBgBIAEoCUIIukgFcgOwAQESFAoCaWQYAiABKAlCCLpIBXIDsAEBIi0KC0dldFJlc3BvbnNlEh4KB2FjY291bnQYASABKAsyDS52MS5wbGF5LlRlYW0iQgoLTGlzdFJlcXVlc3QSGQoHZ2FtZV9pZBgBIAEoCUIIukgFcgOwAQESGAoFbGltaXQYAiABKAVCCbpIBhoEGGQgACIvCgxMaXN0UmVzcG9uc2USHwoIYWNjb3VudHMYASADKAsyDS52MS5wbGF5LlRlYW0iLAoNQ3JlYXRlUmVxdWVzdBIbCgRpbml0GAEgASgLMg0udjEucGxheS5UZWFtIhAKDkNyZWF0ZVJlc3BvbnNlIisKDVVwZGF0ZVJlcXVlc3QSGgoDbW9kGAEgASgLMg0udjEucGxheS5UZWFtIhAKDlVwZGF0ZVJlc3BvbnNlIiUKDURlbGV0ZVJlcXVlc3QSFAoCaWQYASABKAlCCLpIBXIDsAEBIhAKDkRlbGV0ZVJlc3BvbnNlMtcCCgtUZWFtU2VydmljZRI6CgNHZXQSGC52MS5wbGF5LnRlYW0uR2V0UmVxdWVzdBoZLnYxLnBsYXkudGVhbS5HZXRSZXNwb25zZRI9CgRMaXN0EhkudjEucGxheS50ZWFtLkxpc3RSZXF1ZXN0GhoudjEucGxheS50ZWFtLkxpc3RSZXNwb25zZRJDCgZDcmVhdGUSGy52MS5wbGF5LnRlYW0uQ3JlYXRlUmVxdWVzdBocLnYxLnBsYXkudGVhbS5DcmVhdGVSZXNwb25zZRJDCgZVcGRhdGUSGy52MS5wbGF5LnRlYW0uVXBkYXRlUmVxdWVzdBocLnYxLnBsYXkudGVhbS5VcGRhdGVSZXNwb25zZRJDCgZEZWxldGUSGy52MS5wbGF5LnRlYW0uRGVsZXRlUmVxdWVzdBocLnYxLnBsYXkudGVhbS5EZWxldGVSZXNwb25zZUI1WjNjb2RlYmVyZy5vcmcvbWVnYWt1dWwvY2xvdWRqYW0vcGtnL2FwaS92MS9wbGF5L3RlYW1iBnByb3RvMw", [file_buf_validate_validate, file_google_protobuf_timestamp, file_v1_play_team]);
+  fileDesc("Chd2MS9wbGF5L3RlYW0vdGVhbS5wcm90bxIMdjEucGxheS50ZWFtIj0KCkdldFJlcXVlc3QSGQoHZ2FtZV9pZBgBIAEoCUIIukgFcgOwAQESFAoCaWQYAiABKAlCCLpIBXIDsAEBIioKC0dldFJlc3BvbnNlEhsKBHRlYW0YASABKAsyDS52MS5wbGF5LlRlYW0iVwoLTGlzdFJlcXVlc3QSGQoHZ2FtZV9pZBgBIAEoCUIIukgFcgOwAQESGAoFbGltaXQYAiABKAVCCbpIBhoEGGQgABITCgtzdGFydF9hZnRlchgDIAEoCSIsCgxMaXN0UmVzcG9uc2USHAoFdGVhbXMYASADKAsyDS52MS5wbGF5LlRlYW0iLAoNQ3JlYXRlUmVxdWVzdBIbCgRpbml0GAEgASgLMg0udjEucGxheS5UZWFtIhAKDkNyZWF0ZVJlc3BvbnNlIisKDVVwZGF0ZVJlcXVlc3QSGgoDbW9kGAEgASgLMg0udjEucGxheS5UZWFtIhAKDlVwZGF0ZVJlc3BvbnNlIkAKDURlbGV0ZVJlcXVlc3QSGQoHZ2FtZV9pZBgBIAEoCUIIukgFcgOwAQESFAoCaWQYAiABKAlCCLpIBXIDsAEBIhAKDkRlbGV0ZVJlc3BvbnNlMtcCCgtUZWFtU2VydmljZRI6CgNHZXQSGC52MS5wbGF5LnRlYW0uR2V0UmVxdWVzdBoZLnYxLnBsYXkudGVhbS5HZXRSZXNwb25zZRI9CgRMaXN0EhkudjEucGxheS50ZWFtLkxpc3RSZXF1ZXN0GhoudjEucGxheS50ZWFtLkxpc3RSZXNwb25zZRJDCgZDcmVhdGUSGy52MS5wbGF5LnRlYW0uQ3JlYXRlUmVxdWVzdBocLnYxLnBsYXkudGVhbS5DcmVhdGVSZXNwb25zZRJDCgZVcGRhdGUSGy52MS5wbGF5LnRlYW0uVXBkYXRlUmVxdWVzdBocLnYxLnBsYXkudGVhbS5VcGRhdGVSZXNwb25zZRJDCgZEZWxldGUSGy52MS5wbGF5LnRlYW0uRGVsZXRlUmVxdWVzdBocLnYxLnBsYXkudGVhbS5EZWxldGVSZXNwb25zZUI1WjNjb2RlYmVyZy5vcmcvbWVnYWt1dWwvY2xvdWRqYW0vcGtnL2FwaS92MS9wbGF5L3RlYW1iBnByb3RvMw", [file_buf_validate_validate, file_google_protobuf_timestamp, file_v1_play_team]);
 
 /**
  * @generated from message v1.play.team.GetRequest
@@ -43,9 +43,9 @@ export const GetRequestSchema: GenMessage<GetRequest> = /*@__PURE__*/
  */
 export type GetResponse = Message<"v1.play.team.GetResponse"> & {
   /**
-   * @generated from field: v1.play.Team account = 1;
+   * @generated from field: v1.play.Team team = 1;
    */
-  account?: Team;
+  team?: Team;
 };
 
 /**
@@ -68,6 +68,11 @@ export type ListRequest = Message<"v1.play.team.ListRequest"> & {
    * @generated from field: int32 limit = 2;
    */
   limit: number;
+
+  /**
+   * @generated from field: string start_after = 3;
+   */
+  startAfter: string;
 };
 
 /**
@@ -82,9 +87,9 @@ export const ListRequestSchema: GenMessage<ListRequest> = /*@__PURE__*/
  */
 export type ListResponse = Message<"v1.play.team.ListResponse"> & {
   /**
-   * @generated from field: repeated v1.play.Team accounts = 1;
+   * @generated from field: repeated v1.play.Team teams = 1;
    */
-  accounts: Team[];
+  teams: Team[];
 };
 
 /**
@@ -159,7 +164,12 @@ export const UpdateResponseSchema: GenMessage<UpdateResponse> = /*@__PURE__*/
  */
 export type DeleteRequest = Message<"v1.play.team.DeleteRequest"> & {
   /**
-   * @generated from field: string id = 1;
+   * @generated from field: string game_id = 1;
+   */
+  gameId: string;
+
+  /**
+   * @generated from field: string id = 2;
    */
   id: string;
 };

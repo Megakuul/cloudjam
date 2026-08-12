@@ -78,7 +78,7 @@ func (x *GetRequest) GetId() string {
 
 type GetResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Account       *play.Challenge        `protobuf:"bytes,1,opt,name=account,proto3" json:"account,omitempty"`
+	Challenge     *play.Challenge        `protobuf:"bytes,1,opt,name=challenge,proto3" json:"challenge,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -113,9 +113,9 @@ func (*GetResponse) Descriptor() ([]byte, []int) {
 	return file_v1_play_challenge_challenge_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *GetResponse) GetAccount() *play.Challenge {
+func (x *GetResponse) GetChallenge() *play.Challenge {
 	if x != nil {
-		return x.Account
+		return x.Challenge
 	}
 	return nil
 }
@@ -124,6 +124,7 @@ type ListRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	GameId        string                 `protobuf:"bytes,1,opt,name=game_id,json=gameId,proto3" json:"game_id,omitempty"`
 	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	StartAfter    string                 `protobuf:"bytes,3,opt,name=start_after,json=startAfter,proto3" json:"start_after,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -172,9 +173,16 @@ func (x *ListRequest) GetLimit() int32 {
 	return 0
 }
 
+func (x *ListRequest) GetStartAfter() string {
+	if x != nil {
+		return x.StartAfter
+	}
+	return ""
+}
+
 type ListResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Accounts      []*play.Challenge      `protobuf:"bytes,1,rep,name=accounts,proto3" json:"accounts,omitempty"`
+	Challenges    []*play.Challenge      `protobuf:"bytes,1,rep,name=challenges,proto3" json:"challenges,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -209,9 +217,9 @@ func (*ListResponse) Descriptor() ([]byte, []int) {
 	return file_v1_play_challenge_challenge_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *ListResponse) GetAccounts() []*play.Challenge {
+func (x *ListResponse) GetChallenges() []*play.Challenge {
 	if x != nil {
-		return x.Accounts
+		return x.Challenges
 	}
 	return nil
 }
@@ -378,7 +386,8 @@ func (*UpdateResponse) Descriptor() ([]byte, []int) {
 
 type DeleteRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	GameId        string                 `protobuf:"bytes,1,opt,name=game_id,json=gameId,proto3" json:"game_id,omitempty"`
+	Id            string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -411,6 +420,13 @@ func (x *DeleteRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use DeleteRequest.ProtoReflect.Descriptor instead.
 func (*DeleteRequest) Descriptor() ([]byte, []int) {
 	return file_v1_play_challenge_challenge_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *DeleteRequest) GetGameId() string {
+	if x != nil {
+		return x.GameId
+	}
+	return ""
 }
 
 func (x *DeleteRequest) GetId() string {
@@ -744,22 +760,27 @@ const file_v1_play_challenge_challenge_proto_rawDesc = "" +
 	"\n" +
 	"GetRequest\x12!\n" +
 	"\agame_id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x06gameId\x12\x18\n" +
-	"\x02id\x18\x02 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\";\n" +
-	"\vGetResponse\x12,\n" +
-	"\aaccount\x18\x01 \x01(\v2\x12.v1.play.ChallengeR\aaccount\"Q\n" +
+	"\x02id\x18\x02 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\"?\n" +
+	"\vGetResponse\x120\n" +
+	"\tchallenge\x18\x01 \x01(\v2\x12.v1.play.ChallengeR\tchallenge\"r\n" +
 	"\vListRequest\x12!\n" +
 	"\agame_id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x06gameId\x12\x1f\n" +
-	"\x05limit\x18\x02 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d \x00R\x05limit\">\n" +
-	"\fListResponse\x12.\n" +
-	"\baccounts\x18\x01 \x03(\v2\x12.v1.play.ChallengeR\baccounts\"7\n" +
+	"\x05limit\x18\x02 \x01(\x05B\t\xbaH\x06\x1a\x04\x18d \x00R\x05limit\x12\x1f\n" +
+	"\vstart_after\x18\x03 \x01(\tR\n" +
+	"startAfter\"B\n" +
+	"\fListResponse\x122\n" +
+	"\n" +
+	"challenges\x18\x01 \x03(\v2\x12.v1.play.ChallengeR\n" +
+	"challenges\"7\n" +
 	"\rCreateRequest\x12&\n" +
 	"\x04init\x18\x01 \x01(\v2\x12.v1.play.ChallengeR\x04init\"\x10\n" +
 	"\x0eCreateResponse\"5\n" +
 	"\rUpdateRequest\x12$\n" +
 	"\x03mod\x18\x01 \x01(\v2\x12.v1.play.ChallengeR\x03mod\"\x10\n" +
-	"\x0eUpdateResponse\")\n" +
-	"\rDeleteRequest\x12\x18\n" +
-	"\x02id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\"\x10\n" +
+	"\x0eUpdateResponse\"L\n" +
+	"\rDeleteRequest\x12!\n" +
+	"\agame_id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x06gameId\x12\x18\n" +
+	"\x02id\x18\x02 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\"\x10\n" +
 	"\x0eDeleteResponse\"K\n" +
 	"\fStartRequest\x12!\n" +
 	"\agame_id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x06gameId\x12\x18\n" +
@@ -818,8 +839,8 @@ var file_v1_play_challenge_challenge_proto_goTypes = []any{
 	(*play.Challenge)(nil),      // 16: v1.play.Challenge
 }
 var file_v1_play_challenge_challenge_proto_depIdxs = []int32{
-	16, // 0: v1.play.challenge.GetResponse.account:type_name -> v1.play.Challenge
-	16, // 1: v1.play.challenge.ListResponse.accounts:type_name -> v1.play.Challenge
+	16, // 0: v1.play.challenge.GetResponse.challenge:type_name -> v1.play.Challenge
+	16, // 1: v1.play.challenge.ListResponse.challenges:type_name -> v1.play.Challenge
 	16, // 2: v1.play.challenge.CreateRequest.init:type_name -> v1.play.Challenge
 	16, // 3: v1.play.challenge.UpdateRequest.mod:type_name -> v1.play.Challenge
 	0,  // 4: v1.play.challenge.ChallengeService.Get:input_type -> v1.play.challenge.GetRequest

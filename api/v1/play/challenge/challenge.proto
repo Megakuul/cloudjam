@@ -14,7 +14,7 @@ message GetRequest {
 }
 
 message GetResponse {
-  Challenge account = 1;
+  Challenge challenge = 1;
 }
 
 message ListRequest {
@@ -23,10 +23,11 @@ message ListRequest {
     gt: 0
     lte: 100
   }];
+  string start_after = 3;
 }
 
 message ListResponse {
-  repeated Challenge accounts = 1;
+  repeated Challenge challenges = 1;
 }
 
 message CreateRequest {
@@ -42,7 +43,8 @@ message UpdateRequest {
 message UpdateResponse {}
 
 message DeleteRequest {
-  string id = 1 [(buf.validate.field).string = {uuid: true}];
+  string game_id = 1 [(buf.validate.field).string = {uuid: true}];
+  string id = 2 [(buf.validate.field).string = {uuid: true}];
 }
 
 message DeleteResponse {}

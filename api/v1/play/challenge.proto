@@ -19,14 +19,14 @@ message Challenge {
   string game_id = 2 [(buf.validate.field).string = {uuid: true}];
   string id = 3 [(buf.validate.field).string = {uuid: true}];
   string team_id = 4 [(buf.validate.field).string = {uuid: true}];
-  string definition_id = 5 [(buf.validate.field).string = {uuid: true}];
-  string definition_name = 6;
+  string definition_provider_id = 5 [(buf.validate.field).string = {uuid: true}];
+  string definition_id = 6 [(buf.validate.field).string = {uuid: true}];
 
   string title = 7;
-  string description = 8;
+  repeated string description = 8;
   map<string, string> assets = 9;
-  repeated string errors = 10;
-  repeated ScoreEvent score_events = 11;
-  google.protobuf.Timestamp starts = 12;
-  google.protobuf.Timestamp ends = 13;
+  map<string, string> clues = 10;
+  repeated string errors = 11;
+  repeated ScoreEvent score_events = 12;
+  google.protobuf.Duration duration = 13;
 }

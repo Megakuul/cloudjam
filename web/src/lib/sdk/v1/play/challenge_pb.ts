@@ -5,7 +5,7 @@
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
 import { file_buf_validate_validate } from "../../buf/validate/validate_pb";
-import type { Timestamp } from "@bufbuild/protobuf/wkt";
+import type { Duration, Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_duration, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import type { Message } from "@bufbuild/protobuf";
 
@@ -13,7 +13,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/play/challenge.proto.
  */
 export const file_v1_play_challenge: GenFile = /*@__PURE__*/
-  fileDesc("Chd2MS9wbGF5L2NoYWxsZW5nZS5wcm90bxIHdjEucGxheSJZCgpTY29yZUV2ZW50Ei0KCXRpbWVzdGFtcBgBIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASDAoEdGV4dBgCIAEoCRIOCgZjaGFuZ2UYAyABKAEitAMKCUNoYWxsZW5nZRINCgVzY29wZRgBIAEoCRIZCgdnYW1lX2lkGAIgASgJQgi6SAVyA7ABARIUCgJpZBgDIAEoCUIIukgFcgOwAQESGQoHdGVhbV9pZBgEIAEoCUIIukgFcgOwAQESHwoNZGVmaW5pdGlvbl9pZBgFIAEoCUIIukgFcgOwAQESFwoPZGVmaW5pdGlvbl9uYW1lGAYgASgJEg0KBXRpdGxlGAcgASgJEhMKC2Rlc2NyaXB0aW9uGAggASgJEi4KBmFzc2V0cxgJIAMoCzIeLnYxLnBsYXkuQ2hhbGxlbmdlLkFzc2V0c0VudHJ5Eg4KBmVycm9ycxgKIAMoCRIpCgxzY29yZV9ldmVudHMYCyADKAsyEy52MS5wbGF5LlNjb3JlRXZlbnQSKgoGc3RhcnRzGAwgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIoCgRlbmRzGA0gASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBotCgtBc3NldHNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBQjBaLmNvZGViZXJnLm9yZy9tZWdha3V1bC9jbG91ZGphbS9wa2cvYXBpL3YxL3BsYXliBnByb3RvMw", [file_buf_validate_validate, file_google_protobuf_duration, file_google_protobuf_timestamp]);
+  fileDesc("Chd2MS9wbGF5L2NoYWxsZW5nZS5wcm90bxIHdjEucGxheSJZCgpTY29yZUV2ZW50Ei0KCXRpbWVzdGFtcBgBIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASDAoEdGV4dBgCIAEoCRIOCgZjaGFuZ2UYAyABKAEi+AMKCUNoYWxsZW5nZRINCgVzY29wZRgBIAEoCRIZCgdnYW1lX2lkGAIgASgJQgi6SAVyA7ABARIUCgJpZBgDIAEoCUIIukgFcgOwAQESGQoHdGVhbV9pZBgEIAEoCUIIukgFcgOwAQESKAoWZGVmaW5pdGlvbl9wcm92aWRlcl9pZBgFIAEoCUIIukgFcgOwAQESHwoNZGVmaW5pdGlvbl9pZBgGIAEoCUIIukgFcgOwAQESDQoFdGl0bGUYByABKAkSEwoLZGVzY3JpcHRpb24YCCADKAkSLgoGYXNzZXRzGAkgAygLMh4udjEucGxheS5DaGFsbGVuZ2UuQXNzZXRzRW50cnkSLAoFY2x1ZXMYCiADKAsyHS52MS5wbGF5LkNoYWxsZW5nZS5DbHVlc0VudHJ5Eg4KBmVycm9ycxgLIAMoCRIpCgxzY29yZV9ldmVudHMYDCADKAsyEy52MS5wbGF5LlNjb3JlRXZlbnQSKwoIZHVyYXRpb24YDSABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24aLQoLQXNzZXRzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ARosCgpDbHVlc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAFCMFouY29kZWJlcmcub3JnL21lZ2FrdXVsL2Nsb3VkamFtL3BrZy9hcGkvdjEvcGxheWIGcHJvdG8z", [file_buf_validate_validate, file_google_protobuf_duration, file_google_protobuf_timestamp]);
 
 /**
  * @generated from message v1.play.ScoreEvent
@@ -67,14 +67,14 @@ export type Challenge = Message<"v1.play.Challenge"> & {
   teamId: string;
 
   /**
-   * @generated from field: string definition_id = 5;
+   * @generated from field: string definition_provider_id = 5;
    */
-  definitionId: string;
+  definitionProviderId: string;
 
   /**
-   * @generated from field: string definition_name = 6;
+   * @generated from field: string definition_id = 6;
    */
-  definitionName: string;
+  definitionId: string;
 
   /**
    * @generated from field: string title = 7;
@@ -82,9 +82,9 @@ export type Challenge = Message<"v1.play.Challenge"> & {
   title: string;
 
   /**
-   * @generated from field: string description = 8;
+   * @generated from field: repeated string description = 8;
    */
-  description: string;
+  description: string[];
 
   /**
    * @generated from field: map<string, string> assets = 9;
@@ -92,24 +92,24 @@ export type Challenge = Message<"v1.play.Challenge"> & {
   assets: { [key: string]: string };
 
   /**
-   * @generated from field: repeated string errors = 10;
+   * @generated from field: map<string, string> clues = 10;
+   */
+  clues: { [key: string]: string };
+
+  /**
+   * @generated from field: repeated string errors = 11;
    */
   errors: string[];
 
   /**
-   * @generated from field: repeated v1.play.ScoreEvent score_events = 11;
+   * @generated from field: repeated v1.play.ScoreEvent score_events = 12;
    */
   scoreEvents: ScoreEvent[];
 
   /**
-   * @generated from field: google.protobuf.Timestamp starts = 12;
+   * @generated from field: google.protobuf.Duration duration = 13;
    */
-  starts?: Timestamp;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp ends = 13;
-   */
-  ends?: Timestamp;
+  duration?: Duration;
 };
 
 /**

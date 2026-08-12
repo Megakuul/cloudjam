@@ -89,7 +89,7 @@ type Team struct {
 	GameId        string                 `protobuf:"bytes,2,opt,name=game_id,json=gameId,proto3" json:"game_id,omitempty"`
 	Id            string                 `protobuf:"bytes,3,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
-	Players       []*Player              `protobuf:"bytes,5,rep,name=players,proto3" json:"players,omitempty"`
+	Players       map[string]*Player     `protobuf:"bytes,5,rep,name=players,proto3" json:"players,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	Score         float64                `protobuf:"fixed64,6,opt,name=score,proto3" json:"score,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -153,7 +153,7 @@ func (x *Team) GetName() string {
 	return ""
 }
 
-func (x *Team) GetPlayers() []*Player {
+func (x *Team) GetPlayers() map[string]*Player {
 	if x != nil {
 		return x.Players
 	}
@@ -175,14 +175,17 @@ const file_v1_play_team_proto_rawDesc = "" +
 	"\x06Player\x12\x18\n" +
 	"\x02id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\x12\x15\n" +
 	"\x06pub_id\x18\x02 \x01(\tR\x05pubId\x12%\n" +
-	"\busername\x18\x03 \x01(\tB\t\xbaH\x06r\x04\x10\x04\x18\x14R\busername\"\xb8\x01\n" +
+	"\busername\x18\x03 \x01(\tB\t\xbaH\x06r\x04\x10\x04\x18\x14R\busername\"\x90\x02\n" +
 	"\x04Team\x12\x14\n" +
 	"\x05scope\x18\x01 \x01(\tR\x05scope\x12!\n" +
 	"\agame_id\x18\x02 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x06gameId\x12\x18\n" +
 	"\x02id\x18\x03 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\x12\x1c\n" +
-	"\x04name\x18\x04 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x04name\x12)\n" +
-	"\aplayers\x18\x05 \x03(\v2\x0f.v1.play.PlayerR\aplayers\x12\x14\n" +
-	"\x05score\x18\x06 \x01(\x01R\x05scoreB0Z.codeberg.org/megakuul/cloudjam/pkg/api/v1/playb\x06proto3"
+	"\x04name\x18\x04 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x04name\x124\n" +
+	"\aplayers\x18\x05 \x03(\v2\x1a.v1.play.Team.PlayersEntryR\aplayers\x12\x14\n" +
+	"\x05score\x18\x06 \x01(\x01R\x05score\x1aK\n" +
+	"\fPlayersEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12%\n" +
+	"\x05value\x18\x02 \x01(\v2\x0f.v1.play.PlayerR\x05value:\x028\x01B0Z.codeberg.org/megakuul/cloudjam/pkg/api/v1/playb\x06proto3"
 
 var (
 	file_v1_play_team_proto_rawDescOnce sync.Once
@@ -196,18 +199,20 @@ func file_v1_play_team_proto_rawDescGZIP() []byte {
 	return file_v1_play_team_proto_rawDescData
 }
 
-var file_v1_play_team_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_v1_play_team_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
 var file_v1_play_team_proto_goTypes = []any{
 	(*Player)(nil), // 0: v1.play.Player
 	(*Team)(nil),   // 1: v1.play.Team
+	nil,            // 2: v1.play.Team.PlayersEntry
 }
 var file_v1_play_team_proto_depIdxs = []int32{
-	0, // 0: v1.play.Team.players:type_name -> v1.play.Player
-	1, // [1:1] is the sub-list for method output_type
-	1, // [1:1] is the sub-list for method input_type
-	1, // [1:1] is the sub-list for extension type_name
-	1, // [1:1] is the sub-list for extension extendee
-	0, // [0:1] is the sub-list for field type_name
+	2, // 0: v1.play.Team.players:type_name -> v1.play.Team.PlayersEntry
+	0, // 1: v1.play.Team.PlayersEntry.value:type_name -> v1.play.Player
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_v1_play_team_proto_init() }
@@ -221,7 +226,7 @@ func file_v1_play_team_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_v1_play_team_proto_rawDesc), len(file_v1_play_team_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

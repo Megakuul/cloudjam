@@ -12,7 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/play/team.proto.
  */
 export const file_v1_play_team: GenFile = /*@__PURE__*/
-  fileDesc("ChJ2MS9wbGF5L3RlYW0ucHJvdG8SB3YxLnBsYXkiSwoGUGxheWVyEhQKAmlkGAEgASgJQgi6SAVyA7ABARIOCgZwdWJfaWQYAiABKAkSGwoIdXNlcm5hbWUYAyABKAlCCbpIBnIEEAQYFCKPAQoEVGVhbRINCgVzY29wZRgBIAEoCRIZCgdnYW1lX2lkGAIgASgJQgi6SAVyA7ABARIUCgJpZBgDIAEoCUIIukgFcgOwAQESFgoEbmFtZRgEIAEoCUIIukgFcgOwAQESIAoHcGxheWVycxgFIAMoCzIPLnYxLnBsYXkuUGxheWVyEg0KBXNjb3JlGAYgASgBQjBaLmNvZGViZXJnLm9yZy9tZWdha3V1bC9jbG91ZGphbS9wa2cvYXBpL3YxL3BsYXliBnByb3RvMw", [file_buf_validate_validate, file_google_protobuf_timestamp]);
+  fileDesc("ChJ2MS9wbGF5L3RlYW0ucHJvdG8SB3YxLnBsYXkiSwoGUGxheWVyEhQKAmlkGAEgASgJQgi6SAVyA7ABARIOCgZwdWJfaWQYAiABKAkSGwoIdXNlcm5hbWUYAyABKAlCCbpIBnIEEAQYFCLbAQoEVGVhbRINCgVzY29wZRgBIAEoCRIZCgdnYW1lX2lkGAIgASgJQgi6SAVyA7ABARIUCgJpZBgDIAEoCUIIukgFcgOwAQESFgoEbmFtZRgEIAEoCUIIukgFcgOwAQESKwoHcGxheWVycxgFIAMoCzIaLnYxLnBsYXkuVGVhbS5QbGF5ZXJzRW50cnkSDQoFc2NvcmUYBiABKAEaPwoMUGxheWVyc0VudHJ5EgsKA2tleRgBIAEoCRIeCgV2YWx1ZRgCIAEoCzIPLnYxLnBsYXkuUGxheWVyOgI4AUIwWi5jb2RlYmVyZy5vcmcvbWVnYWt1dWwvY2xvdWRqYW0vcGtnL2FwaS92MS9wbGF5YgZwcm90bzM", [file_buf_validate_validate, file_google_protobuf_timestamp]);
 
 /**
  * @generated from message v1.play.Player
@@ -66,9 +66,9 @@ export type Team = Message<"v1.play.Team"> & {
   name: string;
 
   /**
-   * @generated from field: repeated v1.play.Player players = 5;
+   * @generated from field: map<string, v1.play.Player> players = 5;
    */
-  players: Player[];
+  players: { [key: string]: Player };
 
   /**
    * @generated from field: double score = 6;
