@@ -5,7 +5,7 @@
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
 import { file_buf_validate_validate } from "../../buf/validate/validate_pb";
-import type { Duration, Timestamp } from "@bufbuild/protobuf/wkt";
+import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_duration, file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import type { Message } from "@bufbuild/protobuf";
 
@@ -13,7 +13,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/play/challenge.proto.
  */
 export const file_v1_play_challenge: GenFile = /*@__PURE__*/
-  fileDesc("Chd2MS9wbGF5L2NoYWxsZW5nZS5wcm90bxIHdjEucGxheSJZCgpTY29yZUV2ZW50Ei0KCXRpbWVzdGFtcBgBIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASDAoEdGV4dBgCIAEoCRIOCgZjaGFuZ2UYAyABKAEi+AMKCUNoYWxsZW5nZRINCgVzY29wZRgBIAEoCRIZCgdnYW1lX2lkGAIgASgJQgi6SAVyA7ABARIUCgJpZBgDIAEoCUIIukgFcgOwAQESGQoHdGVhbV9pZBgEIAEoCUIIukgFcgOwAQESKAoWZGVmaW5pdGlvbl9wcm92aWRlcl9pZBgFIAEoCUIIukgFcgOwAQESHwoNZGVmaW5pdGlvbl9pZBgGIAEoCUIIukgFcgOwAQESDQoFdGl0bGUYByABKAkSEwoLZGVzY3JpcHRpb24YCCADKAkSLgoGYXNzZXRzGAkgAygLMh4udjEucGxheS5DaGFsbGVuZ2UuQXNzZXRzRW50cnkSLAoFY2x1ZXMYCiADKAsyHS52MS5wbGF5LkNoYWxsZW5nZS5DbHVlc0VudHJ5Eg4KBmVycm9ycxgLIAMoCRIpCgxzY29yZV9ldmVudHMYDCADKAsyEy52MS5wbGF5LlNjb3JlRXZlbnQSKwoIZHVyYXRpb24YDSABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24aLQoLQXNzZXRzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ARosCgpDbHVlc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAFCMFouY29kZWJlcmcub3JnL21lZ2FrdXVsL2Nsb3VkamFtL3BrZy9hcGkvdjEvcGxheWIGcHJvdG8z", [file_buf_validate_validate, file_google_protobuf_duration, file_google_protobuf_timestamp]);
+  fileDesc("Chd2MS9wbGF5L2NoYWxsZW5nZS5wcm90bxIHdjEucGxheSJZCgpTY29yZUV2ZW50Ei0KCXRpbWVzdGFtcBgBIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASDAoEdGV4dBgCIAEoCRIOCgZjaGFuZ2UYAyABKAEiywMKCUNoYWxsZW5nZRINCgVzY29wZRgBIAEoCRIZCgdnYW1lX2lkGAIgASgJQgi6SAVyA7ABARIUCgJpZBgDIAEoCUIIukgFcgOwAQESGQoHdGVhbV9pZBgEIAEoCUIIukgFcgOwAQESKAoWZGVmaW5pdGlvbl9wcm92aWRlcl9pZBgFIAEoCUIIukgFcgOwAQESHwoNZGVmaW5pdGlvbl9pZBgGIAEoCUIIukgFcgOwAQESDQoFdGl0bGUYByABKAkSEwoLZGVzY3JpcHRpb24YCCADKAkSLgoGYXNzZXRzGAkgAygLMh4udjEucGxheS5DaGFsbGVuZ2UuQXNzZXRzRW50cnkSLAoFY2x1ZXMYCiADKAsyHS52MS5wbGF5LkNoYWxsZW5nZS5DbHVlc0VudHJ5Eg4KBmVycm9ycxgLIAMoCRIpCgxzY29yZV9ldmVudHMYDCADKAsyEy52MS5wbGF5LlNjb3JlRXZlbnQaLQoLQXNzZXRzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ARosCgpDbHVlc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAFCMFouY29kZWJlcmcub3JnL21lZ2FrdXVsL2Nsb3VkamFtL3BrZy9hcGkvdjEvcGxheWIGcHJvdG8z", [file_buf_validate_validate, file_google_protobuf_duration, file_google_protobuf_timestamp]);
 
 /**
  * @generated from message v1.play.ScoreEvent
@@ -105,11 +105,6 @@ export type Challenge = Message<"v1.play.Challenge"> & {
    * @generated from field: repeated v1.play.ScoreEvent score_events = 12;
    */
   scoreEvents: ScoreEvent[];
-
-  /**
-   * @generated from field: google.protobuf.Duration duration = 13;
-   */
-  duration?: Duration;
 };
 
 /**

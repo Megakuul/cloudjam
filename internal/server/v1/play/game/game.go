@@ -128,8 +128,8 @@ func (s *Server) Update(ctx context.Context, req *connect.Request[game.UpdateReq
 		l.Error(fmt.Sprintf("failed to fetch game: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch game"))
 	}
-	if time.Now().After(gameMeta.To.Value()) {
-		return nil, connect.NewError(connect.CodeFailedPrecondition, fmt.Errorf("cannot update game in the past"))
+	if time.Now().After(gameMeta.From.Value()) {
+		return nil, connect.NewError(connect.CodeFailedPrecondition, fmt.Errorf("cannot update running or past games"))
 	}
 
 	err = dynamitedb.Update(ctx, s.oltp, &oltp.Game{

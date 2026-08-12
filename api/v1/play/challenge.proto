@@ -28,5 +28,4 @@ message Challenge {
   map<string, string> clues = 10;
   repeated string errors = 11;
   repeated ScoreEvent score_events = 12;
-  google.protobuf.Duration duration = 13;
 }

@@ -110,14 +110,14 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[account.Create
 	})
 	if err != nil {
 		if errors.Is(err, dynamitedb.ErrNotFound) {
-			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("provideprovider does not exist"))
+			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("provider does not exist"))
 		}
 		l.Error(fmt.Sprintf("failed to fetch provider: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch provider"))
 	}
 
 	err = dynamitedb.Create(ctx, s.oltp, &oltp.Account{
-		ProviderID:  dynamitedb.Key(req.Msg.Init.ProviderId),
+		ProviderID:  dynamitedb.Key(providerMeta.ProviderID.Value()),
 		AccountID:   dynamitedb.Key(req.Msg.Init.Id),
 		Name:        dynamitedb.Set(req.Msg.Init.Name),
 		Description: dynamitedb.Set(req.Msg.Init.Description),
@@ -130,7 +130,7 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[account.Create
 	}
 
 	accountMeta, err := dynamitedb.Get(ctx, s.oltp, &oltp.Account{
-		ProviderID: dynamitedb.Key(req.Msg.Init.ProviderId),
+		ProviderID: dynamitedb.Key(providerMeta.ProviderID.Value()),
 		AccountID:  dynamitedb.Key(req.Msg.Init.Id),
 		State:      dynamitedb.Eq(cloud.AccountState_NotCreated),
 		Scope:      dynamitedb.In(auth.Scopes(ctx)...),
@@ -140,7 +140,7 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[account.Create
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to load new account"))
 	}
 
-	provider, err := s.providers.Load(ctx, accountMeta.ProviderID.Value())
+	provider, err := s.providers.Load(ctx, providerMeta)
 	if err != nil {
 		l.Error(fmt.Sprintf("failed to load provider: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to load provider"))
@@ -181,7 +181,7 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[account.Create
 		}
 		return nil
 	}, func(ctx context.Context, err error) error {
-		s.logger.Warn(fmt.Sprintf("failed to create account: %v", err))
+		l.Warn(fmt.Sprintf("failed to create account: %v", err))
 		return dynamitedb.Update(ctx, s.oltp, &oltp.Account{
 			ProviderID: dynamitedb.Key(accountMeta.ProviderID.Value()),
 			AccountID:  dynamitedb.Key(accountMeta.AccountID.Value()),
@@ -254,8 +254,19 @@ func (s *Server) Fix(ctx context.Context, req *connect.Request[account.FixReques
 func (s *Server) Delete(ctx context.Context, req *connect.Request[account.DeleteRequest]) (*connect.Response[account.DeleteResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
 
-	accountMeta, err := dynamitedb.Get(ctx, s.oltp, &oltp.Account{
+	providerMeta, err := dynamitedb.Get(ctx, s.oltp, &oltp.Provider{
 		ProviderID: dynamitedb.Key(req.Msg.ProviderId),
+		Scope:      dynamitedb.In(auth.Scopes(ctx)...),
+	})
+	if err != nil {
+		if errors.Is(err, dynamitedb.ErrNotFound) {
+			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("provider does not exist"))
+		}
+		l.Error(fmt.Sprintf("failed to fetch provider: %v", err))
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch provider"))
+	}
+	accountMeta, err := dynamitedb.Get(ctx, s.oltp, &oltp.Account{
+		ProviderID: dynamitedb.Key(providerMeta.ProviderID.Value()),
 		AccountID:  dynamitedb.Key(req.Msg.Id),
 
 		Scope: dynamitedb.In(auth.Scopes(ctx)...),
@@ -283,7 +294,7 @@ func (s *Server) Delete(ctx context.Context, req *connect.Request[account.Delete
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to force delete account"))
 		}
 	} else {
-		provider, err := s.providers.Load(ctx, accountMeta.ProviderID.Value())
+		provider, err := s.providers.Load(ctx, providerMeta)
 		if err != nil {
 			l.Error(fmt.Sprintf("failed to load provider: %v", err))
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to load provider"))
@@ -310,7 +321,7 @@ func (s *Server) Delete(ctx context.Context, req *connect.Request[account.Delete
 			}
 			return nil
 		}, func(ctx context.Context, err error) error {
-			s.logger.Warn(fmt.Sprintf("failed to delete account (%q): %v", accountMeta.AccountID.Value(), err))
+			l.Warn(fmt.Sprintf("failed to delete account (%q): %v", accountMeta.AccountID.Value(), err))
 			return dynamitedb.Update(ctx, s.oltp, &oltp.Account{
 				ProviderID: dynamitedb.Key(accountMeta.ProviderID.Value()),
 				AccountID:  dynamitedb.Key(accountMeta.AccountID.Value()),

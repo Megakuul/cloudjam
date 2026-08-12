@@ -10,7 +10,7 @@ import (
 	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	durationpb "google.golang.org/protobuf/types/known/durationpb"
+	_ "google.golang.org/protobuf/types/known/durationpb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
@@ -98,7 +98,6 @@ type Challenge struct {
 	Clues                map[string]string      `protobuf:"bytes,10,rep,name=clues,proto3" json:"clues,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	Errors               []string               `protobuf:"bytes,11,rep,name=errors,proto3" json:"errors,omitempty"`
 	ScoreEvents          []*ScoreEvent          `protobuf:"bytes,12,rep,name=score_events,json=scoreEvents,proto3" json:"score_events,omitempty"`
-	Duration             *durationpb.Duration   `protobuf:"bytes,13,opt,name=duration,proto3" json:"duration,omitempty"`
 	unknownFields        protoimpl.UnknownFields
 	sizeCache            protoimpl.SizeCache
 }
@@ -217,13 +216,6 @@ func (x *Challenge) GetScoreEvents() []*ScoreEvent {
 	return nil
 }
 
-func (x *Challenge) GetDuration() *durationpb.Duration {
-	if x != nil {
-		return x.Duration
-	}
-	return nil
-}
-
 var File_v1_play_challenge_proto protoreflect.FileDescriptor
 
 const file_v1_play_challenge_proto_rawDesc = "" +
@@ -233,7 +225,7 @@ const file_v1_play_challenge_proto_rawDesc = "" +
 	"ScoreEvent\x128\n" +
 	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12\x12\n" +
 	"\x04text\x18\x02 \x01(\tR\x04text\x12\x16\n" +
-	"\x06change\x18\x03 \x01(\x01R\x06change\"\x91\x05\n" +
+	"\x06change\x18\x03 \x01(\x01R\x06change\"\xda\x04\n" +
 	"\tChallenge\x12\x14\n" +
 	"\x05scope\x18\x01 \x01(\tR\x05scope\x12!\n" +
 	"\agame_id\x18\x02 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x06gameId\x12\x18\n" +
@@ -247,8 +239,7 @@ const file_v1_play_challenge_proto_rawDesc = "" +
 	"\x05clues\x18\n" +
 	" \x03(\v2\x1d.v1.play.Challenge.CluesEntryR\x05clues\x12\x16\n" +
 	"\x06errors\x18\v \x03(\tR\x06errors\x126\n" +
-	"\fscore_events\x18\f \x03(\v2\x13.v1.play.ScoreEventR\vscoreEvents\x125\n" +
-	"\bduration\x18\r \x01(\v2\x19.google.protobuf.DurationR\bduration\x1a9\n" +
+	"\fscore_events\x18\f \x03(\v2\x13.v1.play.ScoreEventR\vscoreEvents\x1a9\n" +
 	"\vAssetsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a8\n" +
@@ -276,19 +267,17 @@ var file_v1_play_challenge_proto_goTypes = []any{
 	nil,                           // 2: v1.play.Challenge.AssetsEntry
 	nil,                           // 3: v1.play.Challenge.CluesEntry
 	(*timestamppb.Timestamp)(nil), // 4: google.protobuf.Timestamp
-	(*durationpb.Duration)(nil),   // 5: google.protobuf.Duration
 }
 var file_v1_play_challenge_proto_depIdxs = []int32{
 	4, // 0: v1.play.ScoreEvent.timestamp:type_name -> google.protobuf.Timestamp
 	2, // 1: v1.play.Challenge.assets:type_name -> v1.play.Challenge.AssetsEntry
 	3, // 2: v1.play.Challenge.clues:type_name -> v1.play.Challenge.CluesEntry
 	0, // 3: v1.play.Challenge.score_events:type_name -> v1.play.ScoreEvent
-	5, // 4: v1.play.Challenge.duration:type_name -> google.protobuf.Duration
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	4, // [4:4] is the sub-list for method output_type
+	4, // [4:4] is the sub-list for method input_type
+	4, // [4:4] is the sub-list for extension type_name
+	4, // [4:4] is the sub-list for extension extendee
+	0, // [0:4] is the sub-list for field type_name
 }
 
 func init() { file_v1_play_challenge_proto_init() }
