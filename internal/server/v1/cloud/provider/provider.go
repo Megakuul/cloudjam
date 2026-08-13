@@ -180,6 +180,7 @@ func (s *Server) Delete(ctx context.Context, req *connect.Request[provider.Delet
 
 	accounts, err := dynamitedb.Query(ctx, s.oltp, &oltp.Account{
 		ProviderID: dynamitedb.Key(req.Msg.Id),
+		AccountID:  dynamitedb.KeyPrefix(""),
 	}, dynamitedb.WithLimit(1))
 	if err != nil {
 		l.Error(fmt.Sprintf("failed to fetch provider accounts: %v", err))

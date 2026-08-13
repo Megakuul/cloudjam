@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Glue, Submit, toDigest } from '$lib';
+	import { Glue, Submit } from '$lib';
+	import { toDigest } from '$lib/digest';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Button } from '$lib/components/shad/button';
 	import * as Table from '$lib/components/shad/table';

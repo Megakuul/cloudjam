@@ -409,6 +409,8 @@ github.com/megakuul/dynamitedb v0.5.0 h1:V3zWoKJQ9fCJT4vPAu6FNfzD/hYWeuAIV/siBhC
 github.com/megakuul/dynamitedb v0.5.0/go.mod h1:YkKVUzJ7vc9I3egxzXyZcc0ffj7xA/+t1sdYBWHJ+Wk=
 github.com/megakuul/dynamitedb v0.6.0 h1:9rPgPbJGsbuxNbNnvrK9GocIxV7/v2nsIjTuTF6OXBE=
 github.com/megakuul/dynamitedb v0.6.0/go.mod h1:YkKVUzJ7vc9I3egxzXyZcc0ffj7xA/+t1sdYBWHJ+Wk=
+github.com/megakuul/dynamitedb v0.6.1 h1:TzSVrogq5CYsQwPYs57VtJJgVcyNzVQKSGAHl7IMjkI=
+github.com/megakuul/dynamitedb v0.6.1/go.mod h1:YkKVUzJ7vc9I3egxzXyZcc0ffj7xA/+t1sdYBWHJ+Wk=
 github.com/megakuul/lake v0.4.1 h1:31c9tV7Ozy6VGXxJ0m8dPDpy9l3E3vd/WTIEFCPAS7s=
 github.com/megakuul/lake v0.4.1/go.mod h1:r6noDrdL7kdvwBMiTMtY+KGyBQDsbmMZTf7qwZbEaZM=
 github.com/megakuul/lake v0.4.2 h1:7hq7UhUcKn2x1PSMx11gdc1l3pbavJLH8Oi/pqomA08=
@@ -417,8 +419,12 @@ github.com/parquet-go/bitpack v1.0.0 h1:AUqzlKzPPXf2bCdjfj4sTeacrUwsT7NlcYDMUQxP
 github.com/parquet-go/bitpack v1.0.0/go.mod h1:XnVk9TH+O40eOOmvpAVZ7K2ocQFrQwysLMnc6M/8lgs=
 github.com/parquet-go/bitpack v1.0.1 h1:nU1hqX5qEbn5oGJHgG1BpoCB8M/y132DX4bG6Exc1ww=
 github.com/parquet-go/bitpack v1.0.1/go.mod h1:XnVk9TH+O40eOOmvpAVZ7K2ocQFrQwysLMnc6M/8lgs=
+github.com/parquet-go/bitpack v1.0.3 h1:ZbzJ4Mjzrjp+ZNvY99XsJIxAKL+b04uxIb02+l4HbkE=
+github.com/parquet-go/bitpack v1.0.3/go.mod h1:XnVk9TH+O40eOOmvpAVZ7K2ocQFrQwysLMnc6M/8lgs=
 github.com/parquet-go/jsonlite v1.5.2 h1:8TZzYknFOHUpgjTLf80qbzc+8GdeT/3a3fdXSzhMylE=
 github.com/parquet-go/jsonlite v1.5.2/go.mod h1:nDjpkpL4EOtqs6NQugUsi0Rleq9sW/OtC1NnZEnxzF0=
+github.com/parquet-go/jsonlite v1.5.3 h1:SvEfCL2eOSA/IOLwnwxKMuezGZDVRfeqOLciKeMLhs4=
+github.com/parquet-go/jsonlite v1.5.3/go.mod h1:hN57TVzxtr04kaax5XwNgCCsh1KE7BT6dvY6X/zNH90=
 github.com/parquet-go/parquet-go v0.30.2-0.20260721183652-ef5d53accfc9 h1:CKgr8bq5A0qba+lmVPYLc3V5x9ymOpD0HJNJRxscv1g=
 github.com/parquet-go/parquet-go v0.30.2-0.20260721183652-ef5d53accfc9/go.mod h1:navtkAYr2LGoJVp141oXPlO/sxLvaOe3la2JEoD8+rg=
 github.com/parquet-go/parquet-go v0.32.0 h1:NWDqTUHfrCS4cJP/Fj2HlxvqsrVedWG3sayMkf+znzM=

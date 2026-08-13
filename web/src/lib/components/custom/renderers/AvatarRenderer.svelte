@@ -1,6 +1,5 @@
 <script lang="ts">
 	import * as Avatar from '$lib/components/shad/avatar/index';
-	import { toShortInitials } from '$lib';
 	import WrappedTooltip from '$lib/components/custom/WrappedTooltip.svelte';
 	import { toSvg } from 'jdenticon';
 
@@ -16,6 +15,24 @@
 		width?: string;
 		useDiceBear?: boolean;
 	} = $props();
+
+	/**
+	 * Convert a longer string into initials of a set length
+	 * @param value The string to initialise
+	 * @param length Optional, a length to cap the initials ot
+	 * @returns A string that has been initialised
+	 */
+	function toShortInitials(value: string, length: number = 2) {
+		if (value.length <= length) {
+			return value.toUpperCase();
+		}
+
+		return value
+			.split(' ')
+			.join('')
+			.substring(0, length - 1)
+			.toUpperCase();
+	}
 </script>
 
 <WrappedTooltip caption={name}>

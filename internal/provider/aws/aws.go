@@ -205,9 +205,10 @@ func (p *Provider) bootstrap(ctx context.Context) error {
 	}
 	if guardPolicyID == "" {
 		_, err = p.organizations.CreatePolicy(ctx, &organizations.CreatePolicyInput{
-			Name:    new("cloudjam-guard"), // hardcoded unchangable API
-			Type:    orgtypes.PolicyTypeServiceControlPolicy,
-			Content: new(string(guardPolicyContent)),
+			Name:        new("cloudjam-guard"), // hardcoded unchangable API
+			Description: new("read the fucking cloudjam manual"),
+			Type:        orgtypes.PolicyTypeServiceControlPolicy,
+			Content:     new(string(guardPolicyContent)),
 		})
 		if err != nil {
 			return fmt.Errorf("creating cloudjam guard policy: %w", err)
@@ -228,7 +229,7 @@ func (p *Provider) bootstrap(ctx context.Context) error {
 	})
 	if err != nil {
 		if _, ok := errors.AsType[*orgtypes.DuplicatePolicyAttachmentException](err); !ok {
-			return fmt.Errorf("attaching guard policy to cloudjam ou: %w", err)
+			return fmt.Errorf("attaching guard policy (%q) to cloudjam ou (%q): %w", guardPolicyID, p.cloudjamOU, err)
 		}
 	}
 

@@ -47,10 +47,10 @@ func (c *Cache) Load(ctx context.Context, providerMeta *oltp.Provider) (provider
 			provider, err = aws.New(ctx, providerMeta.Credentials.Value(),
 				aws.WithEmailSuffix(fmt.Sprintf("+%s", providerMeta.Email)),
 				aws.WithRegions(providerMeta.Regions.Value()...),
-				aws.WithLogger(slog.With("system", fmt.Sprintf("provider-%s", providerMeta.Name.Value()))),
+				aws.WithLogger(slog.With("system", fmt.Sprintf("provider.%s", providerMeta.Name.Value()))),
 			)
 			if err != nil {
-				return nil, fmt.Errorf("failed to initialize provider-%s: %w", providerMeta.Name.Value(), err)
+				return nil, fmt.Errorf("init %q: %w", providerMeta.Name.Value(), err)
 			}
 		}
 		c.providers[providerMeta.ProviderID.Value()] = provider

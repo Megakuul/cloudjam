@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { fromLocalInput, Glue, Submit, toLocalInput } from '$lib';
+	import { Glue, Submit } from '$lib';
 	import ScopeInput from '$lib/components/custom/ScopeInput.svelte';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Button } from '$lib/components/shad/button';
@@ -20,11 +20,17 @@
 	// the id is generated client side, the server stores whatever it is given.
 	let init = $state(create(GameSchema, { id: crypto.randomUUID() }));
 	// the api demands a start in the past and an end in the future.
-	let from = $state(toLocalInput(timestampFromDate(new Date(Date.now() - 60 * 1000))));
-	let to = $state(toLocalInput(timestampFromDate(new Date(Date.now() + 24 * 60 * 60 * 1000))));
+	// datetime-local inputs work on the local wall clock, protobuf timestamps on utc instants.
+	const localInput = (date: Date) =>
+		new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+
+	let from = $state(localInput(new Date(Date.now() - 60 * 1000)));
+	let to = $state(localInput(new Date(Date.now() + 24 * 60 * 60 * 1000)));
 
 	let request = $derived(
-		create(CreateRequestSchema, { init: { ...init, from: fromLocalInput(from), to: fromLocalInput(to) } })
+		create(CreateRequestSchema, {
+			init: { ...init, from: timestampFromDate(new Date(from)), to: timestampFromDate(new Date(to)) }
+		})
 	);
 </script>
 

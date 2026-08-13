@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { fromLocalInput, Glue, Submit, toLocalInput } from '$lib';
+	import { Glue, Submit } from '$lib';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Badge } from '$lib/components/shad/badge';
 	import { Button } from '$lib/components/shad/button';
@@ -9,6 +9,7 @@
 	import { DeleteRequestSchema, UpdateRequestSchema } from '$lib/sdk/v1/play/game/game_pb';
 	import type { Game } from '$lib/sdk/v1/play/game_pb';
 	import { create } from '@bufbuild/protobuf';
+	import { timestampDate, timestampFromDate } from '@bufbuild/protobuf/wkt';
 	import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
 
 	let { game, refresh, deleted }: { game: Game; refresh: () => void; deleted: () => void } = $props();
@@ -24,9 +25,14 @@
 	// svelte-ignore state_referenced_locally
 	let mod = $state({ ...game });
 	// svelte-ignore state_referenced_locally
-	let from = $state(toLocalInput(game.from));
+	// datetime-local inputs work on the local wall clock, protobuf timestamps on utc instants.
+	const localInput = (date: Date) =>
+		new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+
 	// svelte-ignore state_referenced_locally
-	let to = $state(toLocalInput(game.to));
+	let from = $state(localInput(game.from ? timestampDate(game.from) : new Date()));
+	// svelte-ignore state_referenced_locally
+	let to = $state(localInput(game.to ? timestampDate(game.to) : new Date()));
 	let confirmDelete = $state(false);
 
 	let update: section = $state({ error: '', loading: false, forbidden: false });
@@ -55,7 +61,7 @@
 						Submit(async () => {
 							await Glue.game.update(
 								create(UpdateRequestSchema, {
-									mod: { ...mod, from: fromLocalInput(from), to: fromLocalInput(to) }
+									mod: { ...mod, from: timestampFromDate(new Date(from)), to: timestampFromDate(new Date(to)) }
 								})
 							);
 							refresh();

@@ -33,7 +33,7 @@ func (p *Provider) Provision(ctx context.Context, name string) (string, error) {
 		}
 		switch descResp.CreateAccountStatus.State {
 		case orgtypes.CreateAccountStateInProgress:
-			break
+			continue
 		case orgtypes.CreateAccountStateFailed:
 			return "", fmt.Errorf("account creation failed for '%s'; please inspect the account manually", *descResp.CreateAccountStatus.AccountId)
 		}

@@ -72,8 +72,9 @@ func (s *Server) List(ctx context.Context, req *connect.Request[account.ListRequ
 		}))
 	}
 	accounts, err := dynamitedb.Query(ctx, s.oltp, &oltp.Account{
-		AccountID: dynamitedb.KeyPrefix(""),
-		Scope:     dynamitedb.In(auth.Scopes(ctx)...),
+		ProviderID: dynamitedb.Key(req.Msg.ProviderId),
+		AccountID:  dynamitedb.KeyPrefix(""),
+		Scope:      dynamitedb.In(auth.Scopes(ctx)...),
 	}, opts...)
 	if err != nil {
 		l.Error(fmt.Sprintf("failed to iterate accounts: %v", err))

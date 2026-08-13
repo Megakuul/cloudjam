@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Glue, pluginBinary, Submit } from '$lib';
+	import { Glue, Submit } from '$lib';
+	import { compress } from 'zstdify';
 	import ProviderSelect from '$lib/components/custom/ProviderSelect.svelte';
 	import ScopeInput from '$lib/components/custom/ScopeInput.svelte';
 	import * as Alert from '$lib/components/shad/alert';
@@ -51,7 +52,9 @@
 			onsubmit={() =>
 				Submit(
 					async () => {
-						const binary = files?.[0] ? await pluginBinary(files[0]) : new Uint8Array();
+						const binary = files?.[0]
+							? compress(new Uint8Array(await files[0].arrayBuffer()), { level: 3 })
+							: new Uint8Array();
 						await Glue.definition.create({ ...request, binary: binary });
 						init = create(DefinitionSchema, { id: crypto.randomUUID(), scope: scope });
 						files = undefined;
@@ -93,10 +96,8 @@
 				</div>
 				<div class="flex flex-col gap-1 md:col-span-2">
 					<label for="create-binary" class="text-sm">Plugin</label>
-					<Input id="create-binary" type="file" accept=".wasm,.zst,.zstd" bind:files />
-					<p class="text-xs text-muted-foreground">
-						The compiled challenge.wasm, at most 50 MB. Already compressed .zst files are passed through.
-					</p>
+					<Input id="create-binary" type="file" accept=".wasm" bind:files />
+					<p class="text-xs text-muted-foreground">The compiled challenge.wasm, at most 50 MB.</p>
 				</div>
 			</div>
 			<Button

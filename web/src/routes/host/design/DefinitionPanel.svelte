@@ -1,5 +1,7 @@
 <script lang="ts">
-	import { Glue, pluginBinary, Submit, toDigest } from '$lib';
+	import { Glue, Submit } from '$lib';
+	import { toDigest } from '$lib/digest';
+	import { compress } from 'zstdify';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Badge } from '$lib/components/shad/badge';
 	import { Button } from '$lib/components/shad/button';
@@ -53,7 +55,9 @@
 					class="flex flex-col gap-4"
 					onsubmit={() =>
 						Submit(async () => {
-							const binary = files?.[0] ? await pluginBinary(files[0]) : new Uint8Array();
+							const binary = files?.[0]
+								? compress(new Uint8Array(await files[0].arrayBuffer()), { level: 3 })
+								: new Uint8Array();
 							await Glue.definition.update({
 								...create(UpdateRequestSchema, { mod: mod, compression: CompressionMode.Zstd }),
 								binary: binary
@@ -77,7 +81,7 @@
 						</div>
 						<div class="flex flex-col gap-1">
 							<label for="update-binary" class="text-sm">Plugin</label>
-							<Input id="update-binary" type="file" accept=".wasm,.zst,.zstd" bind:files />
+							<Input id="update-binary" type="file" accept=".wasm" bind:files />
 							<p class="text-xs text-muted-foreground">Optional; the stored plugin is kept if no file is selected.</p>
 						</div>
 					</div>
