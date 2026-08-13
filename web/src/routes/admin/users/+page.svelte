@@ -15,7 +15,6 @@
 	import { toSvg } from 'jdenticon';
 	import { onMount } from 'svelte';
 	import { Icon } from 'svelte-ux';
-	import CreateUser from './CreateUser.svelte';
 	import UserPanel from './UserPanel.svelte';
 
 	const limit = 100;
@@ -31,7 +30,6 @@
 	let rolesForbidden = $state(false);
 
 	let selected: User | undefined = $state();
-	let creating = $state(false);
 
 	// scopes already known from the existing roles, used as suggestions for scope inputs.
 	let scopes = $derived(
@@ -80,14 +78,10 @@
 			<ChevronLeftIcon />
 		</Button>
 		<h1 class="text-3xl opacity-80">Users</h1>
-		<Button variant="outline" class="ml-auto cursor-pointer" onclick={() => (creating = !creating)}>
+		<Button variant="outline" class="ml-auto cursor-pointer" href="/admin/users/new/">
 			<PlusIcon /> Invite User
 		</Button>
 	</div>
-
-	{#if creating}
-		<CreateUser {scopes} oncreated={() => load()} />
-	{/if}
 
 	{#if forbidden}
 		<Alert.Root>

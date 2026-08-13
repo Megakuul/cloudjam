@@ -1,11 +1,11 @@
 <script lang="ts">
-	import * as Chart from '$lib/components/ui/chart/index.js';
-	import * as Card from '$lib/components/ui/card/index.js';
+	import * as Chart from '$lib/components/shad/chart/index.js';
+	import * as Card from '$lib/components/shad/card/index.js';
 	import { scaleUtc } from 'd3-scale';
 	import { Area, AreaChart, ChartClipPath } from 'layerchart';
 	import { curveNatural } from 'd3-shape';
 	import { cubicInOut } from 'svelte/easing';
-	import ChartContainer from '$lib/components/ui/chart/chart-container.svelte';
+	import ChartContainer from '$lib/components/shad/chart/chart-container.svelte';
 
 	let {
 		title,

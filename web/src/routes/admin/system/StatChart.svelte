@@ -1,14 +1,14 @@
 <script lang="ts">
-	import * as Chart from '$lib/components/ui/chart/index.js';
-	import * as Card from '$lib/components/ui/card/index.js';
+	import * as Chart from '$lib/components/shad/chart/index.js';
+	import * as Card from '$lib/components/shad/card/index.js';
 	import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
 	import { scaleUtc } from 'd3-scale';
 	import { Area, AreaChart, ChartClipPath } from 'layerchart';
 	import { curveNatural } from 'd3-shape';
 	import { cubicInOut } from 'svelte/easing';
-	import ChartContainer from '$lib/components/ui/chart/chart-container.svelte';
+	import ChartContainer from '$lib/components/shad/chart/chart-container.svelte';
 	import { Submit } from '$lib';
-	import * as Alert from '$lib/components/ui/alert';
+	import * as Alert from '$lib/components/shad/alert';
 
 	let {
 		title,

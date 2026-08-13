@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { Glue, Submit } from '$lib';
 	import ScopeInput from '$lib/components/custom/ScopeInput.svelte';
-	import * as Alert from '$lib/components/ui/alert';
-	import { Button } from '$lib/components/ui/button';
-	import * as Card from '$lib/components/ui/card';
-	import { Input } from '$lib/components/ui/input';
-	import * as Select from '$lib/components/ui/select';
+	import * as Alert from '$lib/components/shad/alert';
+	import { Button } from '$lib/components/shad/button';
+	import * as Card from '$lib/components/shad/card';
+	import { Input } from '$lib/components/shad/input';
+	import * as Select from '$lib/components/shad/select';
 	import { CreateRequestSchema } from '$lib/sdk/v1/admin/user/user_pb';
 	import { UserSchema } from '$lib/sdk/v1/admin/user_pb';
 	import { create } from '@bufbuild/protobuf';
@@ -13,7 +13,7 @@
 	import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
 	import CopyIcon from '@lucide/svelte/icons/copy';
 
-	let { scopes, oncreated }: { scopes: string[]; oncreated: () => void } = $props();
+	let { scopes = [], oncreated }: { scopes?: string[]; oncreated: () => void } = $props();
 
 	const expiries = [
 		{ value: '1', label: '1 hour' },
@@ -46,9 +46,7 @@
 		</Card.Description>
 	</Card.Header>
 	<Card.Content>
-		{#if forbidden}
-			<p class="text-sm text-muted-foreground italic">You are not allowed to invite users in your scope.</p>
-		{:else if code}
+		{#if code}
 			<Alert.Root>
 				<Alert.Title>Invitation created</Alert.Title>
 				<Alert.Description class="flex flex-col gap-2">
@@ -117,7 +115,6 @@
 					<div class="flex flex-col gap-1">
 						<label for="create-scope" class="text-sm">Scope</label>
 						<ScopeInput id="create-scope" bind:value={init.scope} {scopes} placeholder="Scope the user is placed in" />
-						<p class="text-xs text-muted-foreground">You can only attach a scope you possess yourself.</p>
 					</div>
 					<div class="flex flex-col gap-1">
 						<label for="create-expiry" class="text-sm">Invitation expires in</label>
@@ -143,7 +140,7 @@
 				{#if error}
 					<Alert.Root variant="destructive">
 						<AlertCircleIcon />
-						<Alert.Title>Failed to invite user</Alert.Title>
+						<Alert.Title>{forbidden ? 'Permission denied' : 'Failed to invite user'}</Alert.Title>
 						<Alert.Description>{error}</Alert.Description>
 					</Alert.Root>
 				{/if}

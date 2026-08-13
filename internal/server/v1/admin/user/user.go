@@ -21,13 +21,13 @@ import (
 
 type Server struct {
 	logger *slog.Logger
-	bucket *dynamitedb.Bucket
+	oltp   *dynamitedb.Bucket
 }
 
 func New(logger *slog.Logger, bucket *dynamitedb.Bucket) *Server {
 	return &Server{
 		logger: logger,
-		bucket: bucket,
+		oltp:   bucket,
 	}
 }
 
@@ -46,7 +46,7 @@ func (s *Server) Get(ctx context.Context, req *connect.Request[user.GetRequest])
 		userFilter.Scope = dynamitedb.In(auth.Scopes(ctx)...)
 	}
 
-	foundUser, err := dynamitedb.Get(ctx, s.bucket, userFilter)
+	foundUser, err := dynamitedb.Get(ctx, s.oltp, userFilter)
 	if err != nil {
 		if errors.Is(err, dynamitedb.ErrNotFound) {
 			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("user does not exist"))
@@ -82,7 +82,7 @@ func (s *Server) List(ctx context.Context, req *connect.Request[user.ListRequest
 			UserID: dynamitedb.Key(req.Msg.StartAfter),
 		}))
 	}
-	users, err := dynamitedb.Query(ctx, s.bucket, &oltp.User{
+	users, err := dynamitedb.Query(ctx, s.oltp, &oltp.User{
 		UserID: dynamitedb.KeyPrefix(""), // scan and yes this is expensive...
 		Scope:  dynamitedb.In(auth.Scopes(ctx)...),
 	}, opts...)
@@ -130,7 +130,7 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[user.CreateReq
 	}
 	userId := uuid.NewString()
 
-	err = dynamitedb.Create(ctx, s.bucket, &oltp.Creds{
+	err = dynamitedb.Create(ctx, s.oltp, &oltp.Creds{
 		Email:          dynamitedb.Key(req.Msg.Init.Email),
 		Active:         dynamitedb.Set(false),
 		UserId:         dynamitedb.Set(userId),
@@ -146,7 +146,7 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[user.CreateReq
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create user invitation"))
 	}
 
-	err = dynamitedb.Create(ctx, s.bucket, &oltp.User{
+	err = dynamitedb.Create(ctx, s.oltp, &oltp.User{
 		UserID:       dynamitedb.Key(userId),
 		PubID:        dynamitedb.Set(uuid.NewString()),
 		Email:        dynamitedb.Set(req.Msg.Init.Email),
@@ -177,7 +177,7 @@ func (s *Server) Update(ctx context.Context, req *connect.Request[user.UpdateReq
 
 	// if the requested user is not the requesting user perform scope check and ensure the user is not privileged.
 	if req.Msg.Mod.Id != auth.Claims(ctx).Subject {
-		targetUser, err := dynamitedb.Get(ctx, s.bucket, &oltp.User{
+		targetUser, err := dynamitedb.Get(ctx, s.oltp, &oltp.User{
 			UserID: dynamitedb.Key(req.Msg.Mod.Id),
 			Scope:  dynamitedb.In(auth.Scopes(ctx)...),
 		})
@@ -191,7 +191,7 @@ func (s *Server) Update(ctx context.Context, req *connect.Request[user.UpdateReq
 		if targetUser.Privileged.Value() {
 			return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("privileged users cannot be modified"))
 		}
-		err = dynamitedb.Update(ctx, s.bucket, &oltp.User{
+		err = dynamitedb.Update(ctx, s.oltp, &oltp.User{
 			UserID:       dynamitedb.Key(req.Msg.Mod.Id),
 			Organization: dynamitedb.Set(req.Msg.Mod.Organization),
 		})
@@ -203,7 +203,7 @@ func (s *Server) Update(ctx context.Context, req *connect.Request[user.UpdateReq
 		if !slices.Contains(auth.Scopes(ctx), oltp.ScopeSelf) {
 			return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("no self management access"))
 		}
-		err := dynamitedb.Update(ctx, s.bucket, &oltp.User{
+		err := dynamitedb.Update(ctx, s.oltp, &oltp.User{
 			UserID:      dynamitedb.Key(auth.Claims(ctx).Subject),
 			Username:    dynamitedb.Set(req.Msg.Mod.Username),
 			Description: dynamitedb.Set(req.Msg.Mod.Description),
@@ -241,7 +241,7 @@ func (s *Server) ResetPassword(ctx context.Context, req *connect.Request[user.Re
 		credsFilter.Scope = dynamitedb.In(auth.Scopes(ctx)...)
 	}
 
-	creds, err := dynamitedb.Get(ctx, s.bucket, credsFilter)
+	creds, err := dynamitedb.Get(ctx, s.oltp, credsFilter)
 	if err != nil {
 		if errors.Is(err, dynamitedb.ErrNotFound) {
 			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("user does not exist"))
@@ -250,7 +250,7 @@ func (s *Server) ResetPassword(ctx context.Context, req *connect.Request[user.Re
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch user credentials"))
 	}
 
-	err = dynamitedb.Update(ctx, s.bucket, &oltp.Creds{
+	err = dynamitedb.Update(ctx, s.oltp, &oltp.Creds{
 		Email:          creds.Email,
 		Code:           dynamitedb.Set(codeHash),
 		CodeExpiration: dynamitedb.Set(req.Msg.Expires.AsTime()),
@@ -269,7 +269,7 @@ func (s *Server) ResetPassword(ctx context.Context, req *connect.Request[user.Re
 func (s *Server) Delete(ctx context.Context, req *connect.Request[user.DeleteRequest]) (*connect.Response[user.DeleteResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
 
-	err := dynamitedb.Delete(ctx, s.bucket, &oltp.User{
+	err := dynamitedb.Delete(ctx, s.oltp, &oltp.User{
 		UserID:     dynamitedb.Key(req.Msg.Id),
 		Scope:      dynamitedb.In(auth.Scopes(ctx)...),
 		Privileged: dynamitedb.Eq(false),

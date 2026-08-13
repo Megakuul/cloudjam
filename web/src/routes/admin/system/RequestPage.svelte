@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { Glue, Submit } from '$lib';
-	import * as Alert from '$lib/components/ui/alert';
-	import * as Card from '$lib/components/ui/card';
-	import { Button } from '$lib/components/ui/button';
+	import * as Alert from '$lib/components/shad/alert';
+	import * as Card from '$lib/components/shad/card';
+	import { Button } from '$lib/components/shad/button';
 	import ZoomOutIcon from '@lucide/svelte/icons/zoom-out';
 	import ResetIcon from '@lucide/svelte/icons/rotate-ccw';
 	import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
@@ -14,7 +14,7 @@
 	} from '$lib/sdk/v1/admin/system/system_pb';
 	import { create, enumToJson } from '@bufbuild/protobuf';
 	import { timestampFromDate } from '@bufbuild/protobuf/wkt';
-	import * as Chart from '$lib/components/ui/chart/index.js';
+	import * as Chart from '$lib/components/shad/chart/index.js';
 	import ZoomChart from './ZoomChart.svelte';
 
 	// safe generates "layerchart" safe identifiers / keys.

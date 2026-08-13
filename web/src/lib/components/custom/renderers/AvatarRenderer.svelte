@@ -2,15 +2,15 @@
 	import * as Avatar from '$lib/components/shad/avatar/index';
 	import { toShortInitials } from '$lib';
 	import WrappedTooltip from '$lib/components/custom/WrappedTooltip.svelte';
+	import { toSvg } from 'jdenticon';
 
 	let {
-		image,
+		pubId,
 		name,
 		height,
-		width,
-		useDiceBear = false
+		width
 	}: {
-		image: string | null;
+		pubId: string;
 		name: string;
 		height?: string;
 		width?: string;
@@ -20,13 +20,9 @@
 
 <WrappedTooltip caption={name}>
 	<Avatar.Root class="{height ?? 'h-12'} {width ?? 'w-12'}">
-		<Avatar.Image alt={name} src={image} />
+		<Avatar.Image alt={name} src={`data:image/svg+xml;base64,${btoa(toSvg(pubId, 140))}`} />
 		<Avatar.Fallback>
-			{#if useDiceBear}
-				<img alt={name} id="fallback" src={`https://api.dicebear.com/9.x/notionists/svg?seed=${name}`} />
-			{:else}
-				{toShortInitials(name)}
-			{/if}
+			{toShortInitials(name)}
 		</Avatar.Fallback>
 	</Avatar.Root>
 </WrappedTooltip>

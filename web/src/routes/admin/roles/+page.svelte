@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { Glue, Submit } from '$lib';
-	import * as Alert from '$lib/components/ui/alert';
-	import { Badge } from '$lib/components/ui/badge';
-	import { Button } from '$lib/components/ui/button';
-	import * as Table from '$lib/components/ui/table';
+	import * as Alert from '$lib/components/shad/alert';
+	import { Badge } from '$lib/components/shad/badge';
+	import { Button } from '$lib/components/shad/button';
+	import * as Table from '$lib/components/shad/table';
 	import { ListRequestSchema } from '$lib/sdk/v1/admin/role/role_pb';
 	import type { Role } from '$lib/sdk/v1/admin/role_pb';
 	import { create } from '@bufbuild/protobuf';
@@ -11,7 +11,6 @@
 	import ChevronLeftIcon from '@lucide/svelte/icons/chevron-left';
 	import PlusIcon from '@lucide/svelte/icons/plus';
 	import { onMount } from 'svelte';
-	import CreateRole from './CreateRole.svelte';
 	import RolePanel from './RolePanel.svelte';
 
 	const limit = 100;
@@ -24,7 +23,6 @@
 	let exhausted = $state(true);
 
 	let selected: Role | undefined = $state();
-	let creating = $state(false);
 
 	// scopes already known from the existing roles, used as suggestions for scope inputs.
 	let scopes = $derived(
@@ -59,14 +57,10 @@
 			<ChevronLeftIcon />
 		</Button>
 		<h1 class="text-3xl opacity-80">Roles</h1>
-		<Button variant="outline" class="ml-auto cursor-pointer" onclick={() => (creating = !creating)}>
+		<Button variant="outline" class="ml-auto cursor-pointer" href="/admin/roles/new/">
 			<PlusIcon /> Create Role
 		</Button>
 	</div>
-
-	{#if creating}
-		<CreateRole {scopes} oncreated={() => load()} />
-	{/if}
 
 	{#if forbidden}
 		<Alert.Root>

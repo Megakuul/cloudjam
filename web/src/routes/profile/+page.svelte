@@ -9,11 +9,11 @@
 	import Gauge from './Gauge.svelte';
 	import { goto } from '$app/navigation';
 	import WordSwapper from './WordSwapper.svelte';
-	import Button from '$lib/components/ui/button/button.svelte';
+	import Button from '$lib/components/shad/button/button.svelte';
 	import { CircleCheck, CircleX, Loader, LogOut, Pencil, ShieldCheck } from '@lucide/svelte';
-	import Input from '$lib/components/ui/input/input.svelte';
-	import Badge from '$lib/components/ui/badge/badge.svelte';
-	import * as Dialog from '$lib/components/ui/dialog';
+	import Input from '$lib/components/shad/input/input.svelte';
+	import Badge from '$lib/components/shad/badge/badge.svelte';
+	import * as Dialog from '$lib/components/shad/dialog';
 
 	let user: User | undefined = $state();
 
@@ -41,7 +41,7 @@
 <div class="flex w-full flex-col items-center justify-center gap-4">
 	{#if user}
 		<div
-			class="my-[5%] flex w-full flex-col items-center gap-4 overflow-hidden rounded-2xl border-[0.05rem] border-neutral/40 p-7 shadow-sm shadow-primary/20 lg:flex-row"
+			class="border-neutral/40 shadow-primary/20 my-[5%] flex w-full flex-col items-center gap-4 overflow-hidden rounded-2xl border-[0.05rem] p-7 shadow-sm lg:flex-row"
 		>
 			{#if edit}
 				<form
@@ -56,20 +56,16 @@
 				>
 					<div class="mt-2 flex h-full w-full flex-col items-start gap-4">
 						<h1 class="text-4xl opacity-80">Edit User</h1>
-						<Input
-							bind:value={user.username}
-							class="w-full"
-							placeholder="Change your username"
-							type="text"
-							error={Glue.Validate(UserSchema, user).violation.username}
-						/>
-						<Input
-							bind:value={user.description}
-							class="w-full"
-							placeholder="Invent a creative Slogan"
-							type="text"
-							error={Glue.Validate(UserSchema, user).violation.description}
-						/>
+						<div class="flex flex-col gap-1">
+							<label for="change-username" class="text-sm">Description</label>
+							<Input id="change-username" bind:value={user.username} placeholder="Change your username" />
+							<p class="text-destructive text-xs">{Glue.Validate(UserSchema, user).violation.username}</p>
+						</div>
+						<div class="flex flex-col gap-1">
+							<label for="change-slogan" class="text-sm">Description</label>
+							<Input id="change-slogan" bind:value={user.description} placeholder="Invent a creative Slogan" />
+							<p class="text-destructive text-xs">{Glue.Validate(UserSchema, user).violation.description}</p>
+						</div>
 						<div class="mt-auto flex flex-row items-center gap-2">
 							<Button onclick={() => (edit = false)}>
 								<CircleX />
@@ -90,7 +86,7 @@
 						</div>
 					</div>
 				</form>
-				<div class="h-1 w-full rounded-2xl bg-neutral/80 lg:h-64 lg:w-1"></div>
+				<div class="bg-neutral/80 h-1 w-full rounded-2xl lg:h-64 lg:w-1"></div>
 				<div class="flex w-full flex-col items-start justify-center gap-8 lg:flex-row">
 					<Dialog.Root>
 						<Dialog.Trigger>
@@ -133,10 +129,10 @@
 						alt="user profile"
 						src={`data:image/svg+xml;base64,${btoa(toSvg(user.pubId, 140))}`}
 						height="8rem"
-						class="rounded-lg bg-primary/5"
+						class="bg-primary/5 rounded-lg"
 					/>
 					<h1 class="text-4xl opacity-80">{user.username}</h1>
-					<p class="mt-auto text-neutral/80">
+					<p class="text-neutral/80 mt-auto">
 						Proud CloudJamer since {new Date(Number(user.createdAt) * 1000).toLocaleDateString()}
 					</p>
 					<Badge variant="default">{user.organization}</Badge>
@@ -161,7 +157,7 @@
 						</Button>
 					</div>
 				</div>
-				<div class="h-1 w-full rounded-2xl bg-neutral/80 lg:h-64 lg:w-1"></div>
+				<div class="bg-neutral/80 h-1 w-full rounded-2xl lg:h-64 lg:w-1"></div>
 				<div class="flex w-full flex-col items-center justify-end gap-8 lg:flex-row">
 					<!-- TODO add chart -->
 					<Gauge title="Score" scale={30} center={user.score} outer={user.maxScore} inner={user.score} />

@@ -1,6 +1,5 @@
 <script lang="ts">
-	import Button from '$lib/components/ui/button/button.svelte';
-	import * as Card from '$lib/components/ui/card';
+	import LogPage from './LogPage.svelte';
 	import RequestPage from './RequestPage.svelte';
 
 	let page: 'logging' | 'metrics' = $state('logging');
@@ -30,7 +29,9 @@
 			Metrics
 		</button>
 	</div>
-	{#if page === 'logging'}{:else if page === 'metrics'}
+	{#if page === 'logging'}
+		<LogPage />
+	{:else if page === 'metrics'}
 		<RequestPage />
 	{/if}
 </div>

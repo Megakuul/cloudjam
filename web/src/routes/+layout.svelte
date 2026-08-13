@@ -9,19 +9,6 @@
 	import AppSidebar from '$lib/components/custom/sidebar/AppSidebar.svelte';
 
 	let { children } = $props();
-
-	let pubId = $state('');
-	let email = $state('');
-
-	onMount(() => {
-		pubId = getPubId();
-		email = getEmail();
-	});
-
-	afterNavigate(() => {
-		pubId = getPubId();
-		email = getEmail();
-	});
 </script>
 
 <svelte:head><link rel="icon" href={favicon} /></svelte:head>

@@ -5,9 +5,9 @@
 	import { Glue, setToken, Submit } from '$lib';
 	import { goto } from '$app/navigation';
 	import { Loader, OctagonAlert } from '@lucide/svelte';
-	import Input from '$lib/components/ui/input/input.svelte';
-	import Button from '$lib/components/ui/button/button.svelte';
-	import * as Alert from '$lib/components/ui/alert';
+	import Input from '$lib/components/shad/input/input.svelte';
+	import Button from '$lib/components/shad/button/button.svelte';
+	import * as Alert from '$lib/components/shad/alert';
 	import { fade } from 'svelte/transition';
 
 	let request = $state(create(LoginRequestSchema, {}));

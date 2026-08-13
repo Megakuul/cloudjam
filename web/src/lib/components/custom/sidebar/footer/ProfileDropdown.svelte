@@ -2,43 +2,21 @@
 	import * as Sidebar from '$lib/components/shad/sidebar';
 	import * as Popover from '$lib/components/shad/popover';
 	import * as Field from '$lib/components/shad/field';
-	import { page } from '$app/state';
 	import { useSidebar } from '$lib/components/shad/sidebar';
 	import AvatarRenderer from '$lib/components/custom/renderers/AvatarRenderer.svelte';
 	import { Skeleton } from '$lib/components/shad/skeleton';
-	import {
-		ChevronsUpDownIcon,
-		ShieldPlusIcon,
-		ShieldIcon,
-		UserIcon,
-		BadgeQuestionMarkIcon,
-		CogIcon,
-		SunIcon,
-		MoonIcon,
-		LoaderCircleIcon,
-		LogOutIcon
-	} from '@lucide/svelte';
-	import WrappedTooltip from '$lib/components/custom/WrappedTooltip.svelte';
+	import { ChevronsUpDownIcon, CogIcon, SunIcon, MoonIcon, LoaderCircleIcon, LogOutIcon } from '@lucide/svelte';
 	import { mode, resetMode, setMode } from 'mode-watcher';
 	import { Button, buttonVariants } from '$lib/components/shad/button';
 	import { toast } from 'svelte-sonner';
+	import { setToken } from '$lib';
+	import { goto } from '$app/navigation';
 
 	const sidebar = useSidebar();
-	let { loading = $bindable(true) }: { loading: boolean } = $props();
+	let { pubId, email, loading = $bindable(true) }: { pubId: string; email: string; loading: boolean } = $props();
 
 	let open = $state(false);
 	let themeChanging = $state(false);
-
-	let user = $derived(
-		page.data.session && page.data.session.user
-			? page.data.session.user
-			: {
-					name: 'NA',
-					image: null,
-					permission: 'STANDARD',
-					email: 'na@notfound.com'
-				}
-	);
 
 	// Theme Stuff
 	type ThemeMode = 'light' | 'dark' | 'system';
@@ -82,7 +60,7 @@
 				>
 					{#if loading}
 						<div
-							class="flex aspect-square size-8 items-center justify-center rounded-lg text-sidebar-primary-foreground"
+							class="text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg"
 						>
 							<Skeleton class="h-8 w-8 rounded-full" />
 						</div>
@@ -93,12 +71,12 @@
 						</div>
 					{:else}
 						<div
-							class="flex aspect-square size-8 items-center justify-center rounded-lg text-sidebar-primary-foreground"
+							class="text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg"
 						>
-							<AvatarRenderer image={user.image ?? ''} name={user.name ?? 'Unknown'} width="6" height="6" />
+							<AvatarRenderer {pubId} name={email} width="6" height="6" />
 						</div>
 						<div class="grid flex-1 text-start text-sm leading-tight">
-							<span>{user.name ?? 'Unknown'}</span>
+							<span>{email}</span>
 						</div>
 					{/if}
 
@@ -114,30 +92,11 @@
 			sideOffset={15}
 		>
 			<Popover.Header class="flex flex-col items-center">
-				<AvatarRenderer image={user.image ?? ''} name={user.name ?? 'Unknown'} width="w-20" height="h-20" />
+				<AvatarRenderer {pubId} name={email} width="w-20" height="h-20" />
 				<Popover.Title class="inline-flex items-center text-2xl font-bold">
-					{user.name}
-					<span class="ml-2">
-						{#if user.permission === 'SUPERADMIN'}
-							<WrappedTooltip caption="Super Admin">
-								<ShieldPlusIcon class="h-6 w-6 fill-yellow-500 stroke-yellow-700" />
-							</WrappedTooltip>
-						{:else if user.permission === 'ADMIN'}
-							<WrappedTooltip caption="Admin">
-								<ShieldIcon class="h-6 w-6 fill-primary stroke-secondary-foreground" />
-							</WrappedTooltip>
-						{:else if user.permission === 'STANDARD'}
-							<WrappedTooltip caption="Standard">
-								<UserIcon class="h-6 w-6" />
-							</WrappedTooltip>
-						{:else}
-							<WrappedTooltip caption="Unknown - Please Report this!">
-								<BadgeQuestionMarkIcon class="h-6 w-6" />
-							</WrappedTooltip>
-						{/if}
-					</span>
+					{email}
 				</Popover.Title>
-				<Popover.Description>{user.email}</Popover.Description>
+				<!-- <Popover.Description>{email}</Popover.Description> -->
 			</Popover.Header>
 
 			<Field.Group>
@@ -171,10 +130,16 @@
 			</Field.Group>
 
 			<!--				<SignOut class="mx-auto">-->
-			<span class={buttonVariants({ variant: 'destructive' }) + ' mt-4'} slot="submitButton">
+			<button
+				onclick={() => {
+					setToken('');
+					goto('/login');
+				}}
+				class={buttonVariants({ variant: 'destructive' }) + ' mt-4'}
+			>
 				<LogOutIcon class="mr-2" />
 				Logout
-			</span>
+			</button>
 			<!--				</SignOut>-->
 		</Popover.Content>
 	</Popover.Root>

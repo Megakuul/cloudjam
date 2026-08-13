@@ -1,10 +1,16 @@
 import {
+	ActivityIcon,
 	ChartNoAxesCombinedIcon,
+	CloudIcon,
 	FlagIcon,
+	GamepadIcon,
+	KeyRoundIcon,
 	PlayIcon,
 	PodiumIcon,
 	ScreenShareIcon,
+	ShieldCheckIcon,
 	TrophyIcon,
+	UsersIcon,
 	WandSparklesIcon,
 	ZapIcon
 } from '@lucide/svelte';
@@ -42,19 +48,67 @@ export const jamOptions: sidebarSection = {
 		{
 			icon: PlayIcon,
 			title: 'Play',
-			link: '/play',
+			link: '/play/',
 			enabled: true
-		},
+		}
+	]
+};
+
+export const hostOptions: sidebarSection = {
+	enabled: true,
+	icon: ScreenShareIcon,
+	title: 'Host',
+	items: [
 		{
-			icon: ScreenShareIcon,
-			title: 'Host',
-			link: '/host',
+			icon: GamepadIcon,
+			title: 'Games',
+			link: '/host/games/',
 			enabled: true
 		},
 		{
 			icon: WandSparklesIcon,
 			title: 'Design',
-			link: '/design',
+			link: '/host/design/',
+			enabled: true
+		}
+	]
+};
+
+export const providerOptions: sidebarSection = {
+	enabled: true,
+	icon: CloudIcon,
+	title: 'Provider',
+	items: [
+		{
+			icon: KeyRoundIcon,
+			title: 'Providers',
+			link: '/provider/',
+			enabled: true
+		}
+	]
+};
+
+export const adminOptions: sidebarSection = {
+	enabled: true,
+	icon: ShieldCheckIcon,
+	title: 'Administration',
+	items: [
+		{
+			icon: UsersIcon,
+			title: 'Users',
+			link: '/admin/users/',
+			enabled: true
+		},
+		{
+			icon: ShieldCheckIcon,
+			title: 'Roles',
+			link: '/admin/roles/',
+			enabled: true
+		},
+		{
+			icon: ActivityIcon,
+			title: 'System',
+			link: '/admin/system/',
 			enabled: true
 		}
 	]

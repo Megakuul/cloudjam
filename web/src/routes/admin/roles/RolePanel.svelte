@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { Glue, Submit } from '$lib';
 	import ScopeInput from '$lib/components/custom/ScopeInput.svelte';
-	import * as Alert from '$lib/components/ui/alert';
-	import { Badge } from '$lib/components/ui/badge';
-	import { Button } from '$lib/components/ui/button';
-	import * as Card from '$lib/components/ui/card';
-	import { Input } from '$lib/components/ui/input';
-	import { Separator } from '$lib/components/ui/separator';
+	import * as Alert from '$lib/components/shad/alert';
+	import { Badge } from '$lib/components/shad/badge';
+	import { Button } from '$lib/components/shad/button';
+	import * as Card from '$lib/components/shad/card';
+	import { Input } from '$lib/components/shad/input';
+	import { Separator } from '$lib/components/shad/separator';
 	import { AttachScopeRequestSchema, ConfigureRoleRequestSchema, Resource } from '$lib/sdk/v1/admin/rbac/rbac_pb';
 	import { DeleteRequestSchema, GetRequestSchema, UpdateRequestSchema } from '$lib/sdk/v1/admin/role/role_pb';
 	import { RoleSchema, type Role } from '$lib/sdk/v1/admin/role_pb';

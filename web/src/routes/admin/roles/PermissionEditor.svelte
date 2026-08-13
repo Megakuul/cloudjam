@@ -1,9 +1,9 @@
 <script lang="ts">
 	import ScopeInput from '$lib/components/custom/ScopeInput.svelte';
-	import { Badge } from '$lib/components/ui/badge';
-	import { Button } from '$lib/components/ui/button';
-	import { Input } from '$lib/components/ui/input';
-	import * as Select from '$lib/components/ui/select';
+	import { Badge } from '$lib/components/shad/badge';
+	import { Button } from '$lib/components/shad/button';
+	import { Input } from '$lib/components/shad/input';
+	import * as Select from '$lib/components/shad/select';
 	import { RBACService } from '$lib/sdk/v1/admin/rbac/rbac_pb';
 	import { RoleService } from '$lib/sdk/v1/admin/role/role_pb';
 	import { SystemService } from '$lib/sdk/v1/admin/system/system_pb';
