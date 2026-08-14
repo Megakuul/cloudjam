@@ -29,8 +29,6 @@
 		limit: number;
 	} = $props();
 
-	// severities carry their own color so a scan can be read without decoding labels. the row
-	// gets a matching tint, the level itself the saturated variant.
 	const severities: Record<string, { short: string; level: string; row: string }> = {
 		DEBUG: { short: 'DBG', level: 'text-sky-500', row: 'bg-sky-500/5 hover:bg-sky-500/10' },
 		INFO: { short: 'INF', level: 'text-emerald-500', row: 'bg-emerald-500/5 hover:bg-emerald-500/10' },
@@ -46,7 +44,6 @@
 	let expanded = $state('');
 	let nonce = $state(0);
 
-	// a log line has no id, the timestamp and message identify it well enough to expand it.
 	const key = (log: Log, index: number) => `${index}-${log.timestamp?.seconds ?? 0}`;
 
 	$effect(() => {
@@ -104,7 +101,7 @@
 	</Card.Header>
 	<Card.Content>
 		{#if forbidden}
-			<p class="text-sm text-muted-foreground italic">You are not allowed to read the system logs.</p>
+			<p class="text-muted-foreground text-sm italic">You are not allowed to read the system logs.</p>
 		{:else}
 			<Table.Root class="w-full table-fixed">
 				<Table.Header>
@@ -176,7 +173,7 @@
 										<pre class="font-mono text-xs whitespace-pre-wrap">{log.message}</pre>
 										<span class="text-sm font-medium">Trace</span>
 										<pre
-											class="overflow-x-auto font-mono text-xs whitespace-pre-wrap text-muted-foreground">{log.trace ||
+											class="text-muted-foreground overflow-x-auto font-mono text-xs whitespace-pre-wrap">{log.trace ||
 												'no trace attached'}</pre>
 									</div>
 								</Table.Cell>
@@ -185,7 +182,7 @@
 					{:else}
 						<Table.Row>
 							<Table.Cell colspan={6}>
-								<p class="p-4 text-sm text-muted-foreground italic">
+								<p class="text-muted-foreground p-4 text-sm italic">
 									{loading ? 'Loading logs…' : 'No logs matched the selected range and filters.'}
 								</p>
 							</Table.Cell>

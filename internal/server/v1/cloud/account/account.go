@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log/slog"
+	"time"
 
 	"codeberg.org/megakuul/cloudjam/internal/auth"
 	"codeberg.org/megakuul/cloudjam/internal/oltp"
@@ -157,7 +158,7 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[account.Create
 		if err != nil {
 			return fmt.Errorf("locking account state: %w", err)
 		}
-		id, err := provider.Provision(ctx, accountMeta.Name.Value())
+		id, err := provider.Provision(ctx, accountMeta.AccountID.Value())
 		if err != nil {
 			return fmt.Errorf("provision account: %w", err)
 		}
@@ -243,6 +244,7 @@ func (s *Server) Fix(ctx context.Context, req *connect.Request[account.FixReques
 		ProviderID: targetAccount.ProviderID,
 		AccountID:  targetAccount.AccountID,
 		ETag:       targetAccount.ETag,
+		BoundUntil: dynamitedb.Set(time.Time{}),
 		State:      dynamitedb.Set(cloud.AccountState_Ready),
 	})
 	if err != nil {

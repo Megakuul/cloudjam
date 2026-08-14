@@ -30,13 +30,13 @@ type Team struct {
 }
 
 type Challenge struct {
-	GameID               dynamitedb.KeyField          `pk:"game_id" cbor:"-"`
-	ChallengeID          dynamitedb.KeyField          `sk:"challenge_id" cbor:"-"`
-	ETag                 dynamitedb.ETagField         `etag:"true" cbor:"-"`
-	TeamID               dynamitedb.DataField[string] `cbor:"team_id,omitempty"`
-	DefinitionProviderID dynamitedb.DataField[string] `cbor:"definition_provider_id,omitempty"`
-	DefinitionID         dynamitedb.DataField[string] `cbor:"definition_id,omitempty"`
-	AccountID            dynamitedb.DataField[string] `cbor:"account_id,omitempty"`
+	GameID       dynamitedb.KeyField          `pk:"game_id" cbor:"-"`
+	ChallengeID  dynamitedb.KeyField          `sk:"challenge_id" cbor:"-"`
+	ETag         dynamitedb.ETagField         `etag:"true" cbor:"-"`
+	TeamID       dynamitedb.DataField[string] `cbor:"team_id,omitempty"`
+	ProviderID   dynamitedb.DataField[string] `cbor:"provider_id,omitempty"`
+	DefinitionID dynamitedb.DataField[string] `cbor:"definition_id,omitempty"`
+	AccountID    dynamitedb.DataField[string] `cbor:"account_id,omitempty"`
 
 	Title          dynamitedb.DataField[string]             `cbor:"title,omitempty"`
 	Description    dynamitedb.DataField[[]string]           `cbor:"description,omitempty"`

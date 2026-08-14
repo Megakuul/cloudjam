@@ -22,7 +22,10 @@ message Provider {
     (buf.validate.field).string.min_len = 0,
     (buf.validate.field).string.max_len = 50
   ];
-  string email = 6 [(buf.validate.field).string.email = true];
+  string email = 6 [
+    (buf.validate.field).string.email = true,
+    (buf.validate.field).string.max_len = 27
+  ];
   repeated string regions = 7;
   string credentials = 8 [
     (buf.validate.field).string.min_len = 0,

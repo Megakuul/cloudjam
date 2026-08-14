@@ -11,6 +11,8 @@
 	import { CompressionMode, DefinitionSchema } from '$lib/sdk/v1/cloud/definition_pb';
 	import { create } from '@bufbuild/protobuf';
 	import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
+	import Badge from '$lib/components/shad/badge/badge.svelte';
+	import Spinner from '$lib/components/shad/spinner/spinner.svelte';
 
 	let {
 		providerId = $bindable(),
@@ -66,14 +68,14 @@
 			<div class="flex flex-col gap-1">
 				<label for="create-provider" class="text-sm">Provider</label>
 				<ProviderSelect bind:value={providerId} onselect={() => onprovider()} />
-				<p class="text-xs text-muted-foreground">The provider the plugin is stored on and later run by.</p>
+				<p class="text-muted-foreground text-xs">The provider the plugin is stored on and later run by.</p>
 			</div>
 
 			<div class="grid gap-4 md:grid-cols-2">
 				<div class="flex flex-col gap-1">
 					<label for="create-name" class="text-sm">Name</label>
 					<Input id="create-name" bind:value={init.name} placeholder="Name of the definition" />
-					<p class="text-xs text-destructive">{Glue.Validate(DefinitionSchema, init).violation.name ?? ''}</p>
+					<p class="text-destructive text-xs">{Glue.Validate(DefinitionSchema, init).violation.name ?? ''}</p>
 				</div>
 				<div class="flex flex-col gap-1">
 					<label for="create-version" class="text-sm">Version</label>
@@ -82,7 +84,7 @@
 				<div class="flex flex-col gap-1">
 					<label for="create-description" class="text-sm">Description</label>
 					<Input id="create-description" bind:value={init.description} placeholder="What the challenge is about" />
-					<p class="text-xs text-destructive">{Glue.Validate(DefinitionSchema, init).violation.description ?? ''}</p>
+					<p class="text-destructive text-xs">{Glue.Validate(DefinitionSchema, init).violation.description ?? ''}</p>
 				</div>
 				<div class="flex flex-col gap-1">
 					<label for="create-scope" class="text-sm">Scope</label>
@@ -92,24 +94,33 @@
 						scopes={[scope]}
 						placeholder="Scope the definition is placed in"
 					/>
-					<p class="text-xs text-muted-foreground">Defaults to the scope of the provider.</p>
+					<p class="text-muted-foreground text-xs">Defaults to the scope of the provider.</p>
 				</div>
 				<div class="flex flex-col gap-1 md:col-span-2">
 					<label for="create-binary" class="text-sm">Plugin</label>
 					<Input id="create-binary" type="file" accept=".wasm" bind:files />
-					<p class="text-xs text-muted-foreground">The compiled challenge.wasm, at most 50 MB.</p>
+					<p class="text-muted-foreground text-xs">The compiled challenge.wasm, at most 50 MB.</p>
 				</div>
 			</div>
-			<Button
-				type="submit"
-				class="cursor-pointer self-start"
-				disabled={loading ||
-					!providerId ||
-					!files?.length ||
-					Boolean(Glue.Validate(CreateRequestSchema, request).error)}
-			>
-				Upload
-			</Button>
+			<div class="flex flex-row items-center justify-start gap-2">
+				<Button
+					type="submit"
+					class="cursor-pointer self-start"
+					disabled={loading ||
+						!providerId ||
+						!files?.length ||
+						Boolean(Glue.Validate(CreateRequestSchema, request).error)}
+				>
+					Upload
+				</Button>
+				{#if loading}
+					<Badge>
+						<Spinner />
+						Compressing and Uploading
+					</Badge>
+				{/if}
+			</div>
+
 			{#if error}
 				<Alert.Root variant="destructive">
 					<AlertCircleIcon />

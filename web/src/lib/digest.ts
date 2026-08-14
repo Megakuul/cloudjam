@@ -1,5 +1,5 @@
-// the definition hash is carried as a raw byte string, base64 makes the digest readable.
-export function toDigest(hash: string): string {
+// converts the provided raw sha256 hash into a human readable format.
+export function toDigest(hash: Uint8Array): string {
 	if (!hash) return '';
-	return btoa(String.fromCharCode(...Uint8Array.from(hash, (char) => char.charCodeAt(0) & 0xff)));
+	return `sha256:${Array.from(hash, (b) => b.toString(16).padStart(2, '0')).join('')}`;
 }

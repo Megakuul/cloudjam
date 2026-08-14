@@ -17,15 +17,12 @@
 	let loading = $state(false);
 	let forbidden = $state(false);
 
-	// the id is generated client side, the server stores whatever it is given.
 	let init = $state(create(GameSchema, { id: crypto.randomUUID() }));
-	// the api demands a start in the past and an end in the future.
-	// datetime-local inputs work on the local wall clock, protobuf timestamps on utc instants.
 	const localInput = (date: Date) =>
 		new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
 
-	let from = $state(localInput(new Date(Date.now() - 60 * 1000)));
-	let to = $state(localInput(new Date(Date.now() + 24 * 60 * 60 * 1000)));
+	let from = $state(localInput(new Date(Date.now() + 1 * 60 * 60 * 1000)));
+	let to = $state(localInput(new Date(Date.now() + 3 * 60 * 60 * 1000)));
 
 	let request = $derived(
 		create(CreateRequestSchema, {
@@ -59,12 +56,12 @@
 				<div class="flex flex-col gap-1">
 					<label for="create-name" class="text-sm">Name</label>
 					<Input id="create-name" bind:value={init.name} placeholder="Name of the game" />
-					<p class="text-xs text-destructive">{Glue.Validate(GameSchema, init).violation.name ?? ''}</p>
+					<p class="text-destructive text-xs">{Glue.Validate(GameSchema, init).violation.name ?? ''}</p>
 				</div>
 				<div class="flex flex-col gap-1">
 					<label for="create-description" class="text-sm">Description</label>
 					<Input id="create-description" bind:value={init.description} placeholder="What the game is about" />
-					<p class="text-xs text-destructive">{Glue.Validate(GameSchema, init).violation.description ?? ''}</p>
+					<p class="text-destructive text-xs">{Glue.Validate(GameSchema, init).violation.description ?? ''}</p>
 				</div>
 				<div class="flex flex-col gap-1">
 					<label for="create-from" class="text-sm">From</label>
@@ -77,11 +74,11 @@
 				<div class="flex flex-col gap-1">
 					<label for="create-scope" class="text-sm">Scope</label>
 					<ScopeInput id="create-scope" bind:value={init.scope} {scopes} placeholder="Scope the game is placed in" />
-					<p class="text-xs text-muted-foreground">You can only attach a scope you possess yourself.</p>
+					<p class="text-muted-foreground text-xs">You can only attach a scope you possess yourself.</p>
 				</div>
 			</div>
 			<Button type="submit" class="cursor-pointer self-start" disabled={loading}>Schedule</Button>
-			<p class="text-xs text-destructive">{Glue.Validate(CreateRequestSchema, request).error}</p>
+			<p class="text-destructive text-xs">{Glue.Validate(CreateRequestSchema, request).error}</p>
 			{#if error}
 				<Alert.Root variant="destructive">
 					<AlertCircleIcon />

@@ -10,14 +10,15 @@ import (
 )
 
 func (p *Provider) Provision(ctx context.Context, name string) (string, error) {
+	accountMail := name + p.emailSuffix
 	createResp, err := p.organizations.CreateAccount(ctx, &organizations.CreateAccountInput{
 		AccountName:            &name,
-		Email:                  new(name + p.emailSuffix),
+		Email:                  &accountMail,
 		IamUserAccessToBilling: orgtypes.IAMUserAccessToBillingDeny,
 		RoleName:               &p.adminRole,
 	})
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("create %q (mail: %q role: %q)", name, accountMail, p.adminRole)
 	}
 	for {
 		select {

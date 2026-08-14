@@ -243,7 +243,7 @@ func (p *Provider) assume(ctx context.Context, id string, role string, sessionDu
 	session, err := p.sts.AssumeRole(ctx, &sts.AssumeRoleInput{
 		RoleArn:         new(fmt.Sprintf("arn:aws:iam::%s:role/%s", id, role)),
 		RoleSessionName: new("cloudjam"),
-		DurationSeconds: new(int32(sessionDuration.Seconds())),
+		DurationSeconds: new(min(max(int32(sessionDuration.Seconds()), 900), 43200)),
 	})
 	if err != nil {
 		return awssdk.Config{}, fmt.Errorf("failed to assume role %q in account %q: %w", role, id, err)

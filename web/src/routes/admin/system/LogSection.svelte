@@ -16,7 +16,7 @@
 	import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
 	import ResetIcon from '@lucide/svelte/icons/rotate-ccw';
 	import ZoomOutIcon from '@lucide/svelte/icons/zoom-out';
-	import LogTable from './LogTable.svelte';
+	import LogPanel from './LogPanel.svelte';
 	import ZoomChart from './ZoomChart.svelte';
 
 	// levels are ordered by severity, the table filters on an exact level.
@@ -146,7 +146,7 @@
 			{/each}
 
 			<div class="ml-auto flex items-center gap-2">
-				<span class="text-xs text-muted-foreground">
+				<span class="text-muted-foreground text-xs">
 					{from.toLocaleDateString(undefined, { hour: '2-digit', minute: '2-digit' })}
 					–
 					{to.toLocaleDateString(undefined, { hour: '2-digit', minute: '2-digit' })}
@@ -246,7 +246,7 @@
 		</Card.Content>
 	</Card.Root>
 
-	<LogTable {from} {to} {level} bind:system bind:procedure limit={Number(limit)} />
+	<LogPanel {from} {to} {level} bind:system bind:procedure limit={Number(limit)} />
 
 	{#if error}
 		<Alert.Root variant="destructive">

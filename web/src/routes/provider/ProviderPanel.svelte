@@ -85,12 +85,12 @@
 							<Input id="update-description" bind:value={mod.description} placeholder="Purpose of the provider" />
 						</div>
 						<div class="flex flex-col gap-1">
-							<label for="update-email" class="text-sm">Email Suffix</label>
+							<label for="update-email" class="text-sm">Email</label>
 							<Input
 								id="update-email"
 								type="email"
 								bind:value={mod.email}
-								placeholder="Email suffix used to provision new accounts"
+								placeholder="Email used to provision new accounts"
 							/>
 						</div>
 						<div class="flex flex-col gap-1">

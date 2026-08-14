@@ -11,7 +11,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/cloud/definition.proto.
  */
 export const file_v1_cloud_definition: GenFile = /*@__PURE__*/
-  fileDesc("Chl2MS9jbG91ZC9kZWZpbml0aW9uLnByb3RvEgh2MS5jbG91ZCKeAQoKRGVmaW5pdGlvbhINCgVzY29wZRgBIAEoCRIdCgtwcm92aWRlcl9pZBgCIAEoCUIIukgFcgOwAQESCgoCaWQYAyABKAkSFwoEbmFtZRgEIAEoCUIJukgGcgQQBBgUEh4KC2Rlc2NyaXB0aW9uGAUgASgJQgm6SAZyBBAAGDISDwoHdmVyc2lvbhgGIAEoCRIMCgRoYXNoGAcgASgJKhsKD0NvbXByZXNzaW9uTW9kZRIICgRac3RkEABCMVovY29kZWJlcmcub3JnL21lZ2FrdXVsL2Nsb3VkamFtL3BrZy9hcGkvdjEvY2xvdWRiBnByb3RvMw", [file_buf_validate_validate]);
+  fileDesc("Chl2MS9jbG91ZC9kZWZpbml0aW9uLnByb3RvEgh2MS5jbG91ZCKfAQoKRGVmaW5pdGlvbhINCgVzY29wZRgBIAEoCRIdCgtwcm92aWRlcl9pZBgCIAEoCUIIukgFcgOwAQESCgoCaWQYAyABKAkSFwoEbmFtZRgEIAEoCUIJukgGcgQQBBhkEh8KC2Rlc2NyaXB0aW9uGAUgASgJQgq6SAdyBRAAGMgBEg8KB3ZlcnNpb24YBiABKAkSDAoEaGFzaBgHIAEoDCobCg9Db21wcmVzc2lvbk1vZGUSCAoEWnN0ZBAAQjFaL2NvZGViZXJnLm9yZy9tZWdha3V1bC9jbG91ZGphbS9wa2cvYXBpL3YxL2Nsb3VkYgZwcm90bzM", [file_buf_validate_validate]);
 
 /**
  * @generated from message v1.cloud.Definition
@@ -48,9 +48,9 @@ export type Definition = Message<"v1.cloud.Definition"> & {
   version: string;
 
   /**
-   * @generated from field: string hash = 7;
+   * @generated from field: bytes hash = 7;
    */
-  hash: string;
+  hash: Uint8Array;
 };
 
 /**

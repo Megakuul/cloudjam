@@ -111,13 +111,14 @@ var File_v1_play_game_proto protoreflect.FileDescriptor
 
 const file_v1_play_game_proto_rawDesc = "" +
 	"\n" +
-	"\x12v1/play/game.proto\x12\av1.play\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xc2\x02\n" +
+	"\x12v1/play/game.proto\x12\av1.play\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xc3\x02\n" +
 	"\x04Game\x12\x14\n" +
 	"\x05scope\x18\x01 \x01(\tR\x05scope\x12\x18\n" +
 	"\x02id\x18\x02 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\x12\x1d\n" +
-	"\x04name\x18\x03 \x01(\tB\t\xbaH\x06r\x04\x10\x04\x18\x14R\x04name\x12+\n" +
-	"\vdescription\x18\x04 \x01(\tB\t\xbaH\x06r\x04\x10\x00\x182R\vdescription\x128\n" +
-	"\x04from\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\b\xbaH\x05\xb2\x01\x028\x01R\x04from\x124\n" +
+	"\x04name\x18\x03 \x01(\tB\t\xbaH\x06r\x04\x10\x03\x18dR\x04name\x12,\n" +
+	"\vdescription\x18\x04 \x01(\tB\n" +
+	"\xbaH\ar\x05\x10\x00\x18\xc8\x01R\vdescription\x128\n" +
+	"\x04from\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\b\xbaH\x05\xb2\x01\x02@\x01R\x04from\x124\n" +
 	"\x02to\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampB\b\xbaH\x05\xb2\x01\x02@\x01R\x02to:N\xbaHK\x1aI\n" +
 	"\x11timestamp_overlap\x12\x1fgame timeframe must not overlap\x1a\x13this.from < this.toB0Z.codeberg.org/megakuul/cloudjam/pkg/api/v1/playb\x06proto3"
 

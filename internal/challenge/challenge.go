@@ -76,7 +76,7 @@ func (c *Challenge) Start(ctx context.Context) error {
 		}
 	}
 
-	plugin, err := c.pluginCache.Load(ctx, c.definition.Hash.Value(), func(ctx context.Context) (extism.Wasm, error) {
+	plugin, err := c.pluginCache.Load(ctx, string(c.definition.Hash.Value()), func(ctx context.Context) (extism.Wasm, error) {
 		definitionBinary, err := dynamitedb.Get(ctx, c.oltp, &oltp.DefinitionBinary{
 			ProviderID:   dynamitedb.Key(c.definition.ProviderID.Value()),
 			DefinitionID: dynamitedb.Key(c.definition.DefinitionID.Value()),

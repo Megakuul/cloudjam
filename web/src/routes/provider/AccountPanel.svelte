@@ -93,16 +93,16 @@
 					provider, otherwise it is handed out broken.
 				</p>
 				<Button
-					variant="outline"
+					variant="destructive"
 					class="cursor-pointer self-start"
-					disabled={fix.loading || account.state !== AccountState.Corrupted}
+					disabled={fix.loading}
 					onclick={() =>
 						Submit(async () => {
 							await Glue.account.fix(create(FixRequestSchema, { providerId: account.providerId, id: account.id }));
 							refresh();
 						}, setter(fix))}
 				>
-					Mark as Fixed
+					Reset Account
 				</Button>
 				{#if fix.error}
 					<p class="text-destructive text-xs">{fix.error}</p>
@@ -119,7 +119,7 @@
 			{:else}
 				<label class="text-muted-foreground flex flex-row items-center gap-2 text-sm">
 					<input type="checkbox" bind:checked={force} class="cursor-pointer" />
-					Force: drop the CloudJam metadata immediately without waiting for the provider (the account leaks).
+					Force: drop the metadata immediately without waiting for the provider (the account leaks).
 				</label>
 				<div class="flex flex-row items-center gap-2">
 					{#if confirmDelete}

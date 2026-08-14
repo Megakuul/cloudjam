@@ -113,6 +113,8 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[definition.Cre
 		DefinitionID: dynamitedb.Key(req.Msg.Init.Id),
 		Compression:  dynamitedb.Set(req.Msg.Compression),
 		WASM:         dynamitedb.Set(req.Msg.Binary),
+
+		Scope: dynamitedb.Set(req.Msg.Init.Scope),
 	})
 	if err != nil {
 		if errors.Is(err, dynamitedb.ErrAlreadyExists) {
@@ -128,7 +130,7 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[definition.Cre
 		Name:         dynamitedb.Set(req.Msg.Init.Name),
 		Description:  dynamitedb.Set(req.Msg.Init.Description),
 		Version:      dynamitedb.Set(req.Msg.Init.Version),
-		Hash:         dynamitedb.Set(string(h.Sum(nil))),
+		Hash:         dynamitedb.Set(h.Sum(nil)),
 
 		Scope: dynamitedb.Set(req.Msg.Init.Scope),
 	})
@@ -200,9 +202,9 @@ func (s *Server) Update(ctx context.Context, req *connect.Request[definition.Upd
 		ETag:         definitionMeta.ETag,
 		Name:         dynamitedb.Set(req.Msg.Mod.Name),
 		Description:  dynamitedb.Set(req.Msg.Mod.Description),
-		Hash: dynamitedb.CustomUpdate(func(original string) string {
+		Hash: dynamitedb.CustomUpdate(func(original []byte) []byte {
 			if len(newHash) > 0 {
-				return string(newHash)
+				return newHash
 			}
 			return original
 		}),

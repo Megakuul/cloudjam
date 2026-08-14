@@ -73,7 +73,7 @@ type Definition struct {
 	Name          string                 `protobuf:"bytes,4,opt,name=name,proto3" json:"name,omitempty"`
 	Description   string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
 	Version       string                 `protobuf:"bytes,6,opt,name=version,proto3" json:"version,omitempty"`
-	Hash          string                 `protobuf:"bytes,7,opt,name=hash,proto3" json:"hash,omitempty"`
+	Hash          []byte                 `protobuf:"bytes,7,opt,name=hash,proto3" json:"hash,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -150,28 +150,29 @@ func (x *Definition) GetVersion() string {
 	return ""
 }
 
-func (x *Definition) GetHash() string {
+func (x *Definition) GetHash() []byte {
 	if x != nil {
 		return x.Hash
 	}
-	return ""
+	return nil
 }
 
 var File_v1_cloud_definition_proto protoreflect.FileDescriptor
 
 const file_v1_cloud_definition_proto_rawDesc = "" +
 	"\n" +
-	"\x19v1/cloud/definition.proto\x12\bv1.cloud\x1a\x1bbuf/validate/validate.proto\"\xd7\x01\n" +
+	"\x19v1/cloud/definition.proto\x12\bv1.cloud\x1a\x1bbuf/validate/validate.proto\"\xd8\x01\n" +
 	"\n" +
 	"Definition\x12\x14\n" +
 	"\x05scope\x18\x01 \x01(\tR\x05scope\x12)\n" +
 	"\vprovider_id\x18\x02 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\n" +
 	"providerId\x12\x0e\n" +
 	"\x02id\x18\x03 \x01(\tR\x02id\x12\x1d\n" +
-	"\x04name\x18\x04 \x01(\tB\t\xbaH\x06r\x04\x10\x04\x18\x14R\x04name\x12+\n" +
-	"\vdescription\x18\x05 \x01(\tB\t\xbaH\x06r\x04\x10\x00\x182R\vdescription\x12\x18\n" +
+	"\x04name\x18\x04 \x01(\tB\t\xbaH\x06r\x04\x10\x04\x18dR\x04name\x12,\n" +
+	"\vdescription\x18\x05 \x01(\tB\n" +
+	"\xbaH\ar\x05\x10\x00\x18\xc8\x01R\vdescription\x12\x18\n" +
 	"\aversion\x18\x06 \x01(\tR\aversion\x12\x12\n" +
-	"\x04hash\x18\a \x01(\tR\x04hash*\x1b\n" +
+	"\x04hash\x18\a \x01(\fR\x04hash*\x1b\n" +
 	"\x0fCompressionMode\x12\b\n" +
 	"\x04Zstd\x10\x00B1Z/codeberg.org/megakuul/cloudjam/pkg/api/v1/cloudb\x06proto3"
 

@@ -71,7 +71,7 @@ func (v *Authorizer) Check(ctx context.Context, subject, procedure string) (time
 		permissions: map[string][]glob.Glob{},
 	}
 	for scope, exprs := range role.Permissions.Value() {
-		for _, expr := range strings.Split(exprs, ",") {
+		for expr := range strings.SplitSeq(exprs, ",") {
 			compiledExpr, err := glob.Compile(string(expr), '/')
 			if err != nil {
 				return time.Time{}, nil, connect.NewError(connect.CodeInternal, fmt.Errorf("role policy contains invalid matcher: %v", err))

@@ -13,6 +13,7 @@
 	import { onMount } from 'svelte';
 	import AccountPanel from './AccountPanel.svelte';
 	import CreateAccount from './CreateAccount.svelte';
+	import { RefreshCw } from '@lucide/svelte';
 
 	let { providerId }: { providerId: string } = $props();
 
@@ -51,7 +52,10 @@
 <div class="flex w-full flex-col gap-4">
 	<div class="flex flex-row items-center gap-2">
 		<h2 class="text-xl opacity-80">Accounts</h2>
-		<Button variant="outline" class="ml-auto cursor-pointer" onclick={() => (creating = !creating)}>
+		<Button variant="outline" class="ml-auto cursor-pointer" onclick={() => load()}>
+			<RefreshCw />
+		</Button>
+		<Button variant="outline" class="cursor-pointer" onclick={() => (creating = !creating)}>
 			<PlusIcon /> Provision Account
 		</Button>
 	</div>
@@ -98,7 +102,7 @@
 				{:else}
 					<Table.Row>
 						<Table.Cell colspan={5}>
-							<p class="p-4 text-sm text-muted-foreground italic">
+							<p class="text-muted-foreground p-4 text-sm italic">
 								{loading ? 'Loading accounts…' : 'No accounts provisioned on this provider yet.'}
 							</p>
 						</Table.Cell>

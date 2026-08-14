@@ -87,7 +87,7 @@ func (s *Server) Get(ctx context.Context, req *connect.Request[challenge.GetRequ
 		Id:                   challengeMeta.ChallengeID.Value(),
 		TeamId:               challengeMeta.TeamID.Value(),
 		DefinitionId:         challengeMeta.DefinitionID.Value(),
-		DefinitionProviderId: challengeMeta.DefinitionProviderID.Value(),
+		DefinitionProviderId: challengeMeta.ProviderID.Value(),
 		Title:                challengeMeta.Title.Value(),
 		Description:          challengeMeta.Description.Value(),
 		Assets:               challengeMeta.Assets.Value(),
@@ -130,7 +130,7 @@ func (s *Server) List(ctx context.Context, req *connect.Request[challenge.ListRe
 			Id:                   challenge.ChallengeID.Value(),
 			TeamId:               challenge.TeamID.Value(),
 			DefinitionId:         challenge.DefinitionID.Value(),
-			DefinitionProviderId: challenge.DefinitionProviderID.Value(),
+			DefinitionProviderId: challenge.ProviderID.Value(),
 			Title:                challenge.Title.Value(),
 			Description:          challenge.Description.Value(),
 			Assets:               challenge.Assets.Value(),
@@ -169,11 +169,11 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[challenge.Crea
 	}
 
 	err = dynamitedb.Create(ctx, s.oltp, &oltp.Challenge{
-		GameID:               dynamitedb.Key(req.Msg.Init.GameId),
-		ChallengeID:          dynamitedb.Key(req.Msg.Init.Id),
-		TeamID:               dynamitedb.Set(req.Msg.Init.TeamId),
-		DefinitionProviderID: dynamitedb.Set(req.Msg.Init.DefinitionProviderId),
-		DefinitionID:         dynamitedb.Set(req.Msg.Init.DefinitionId),
+		GameID:       dynamitedb.Key(req.Msg.Init.GameId),
+		ChallengeID:  dynamitedb.Key(req.Msg.Init.Id),
+		TeamID:       dynamitedb.Set(req.Msg.Init.TeamId),
+		ProviderID:   dynamitedb.Set(req.Msg.Init.DefinitionProviderId),
+		DefinitionID: dynamitedb.Set(req.Msg.Init.DefinitionId),
 
 		Scope: dynamitedb.Set(req.Msg.Init.Scope),
 	})
@@ -304,7 +304,7 @@ func (s *Server) Start(ctx context.Context, req *connect.Request[challenge.Start
 	}
 
 	definitionMeta, err := dynamitedb.Get(ctx, s.oltp, &oltp.Definition{
-		ProviderID:   dynamitedb.Key(challengeMeta.DefinitionProviderID.Value()),
+		ProviderID:   dynamitedb.Key(challengeMeta.ProviderID.Value()),
 		DefinitionID: dynamitedb.Key(challengeMeta.DefinitionID.Value()),
 		Scope:        dynamitedb.Eq(challengeMeta.Scope.Value()),
 	})
@@ -341,7 +341,7 @@ func (s *Server) Start(ctx context.Context, req *connect.Request[challenge.Start
 	}
 
 	providerMeta, err := dynamitedb.Get(ctx, s.oltp, &oltp.Provider{
-		ProviderID: dynamitedb.Key(challengeMeta.DefinitionProviderID.Value()),
+		ProviderID: dynamitedb.Key(challengeMeta.ProviderID.Value()),
 		Scope:      dynamitedb.Eq(gameMeta.Scope.Value()),
 	})
 	if err != nil {
@@ -355,17 +355,17 @@ func (s *Server) Start(ctx context.Context, req *connect.Request[challenge.Start
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to load challenge provider"))
 	}
 
-	access, err := provider.Access(ctx, account.AccountID.Value(), time.Until(gameMeta.To.Value()))
+	access, err := provider.Access(ctx, account.TargetID.Value(), time.Until(gameMeta.To.Value()))
 	if err != nil {
 		l.Error(fmt.Sprintf("failed to create access controller: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create access controller"))
 	}
-	assets, err := provider.Assets(ctx, account.AccountID.Value(), time.Until(gameMeta.To.Value()))
+	assets, err := provider.Assets(ctx, account.TargetID.Value(), time.Until(gameMeta.To.Value()))
 	if err != nil {
 		l.Error(fmt.Sprintf("failed to create asset controller: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create asset controller"))
 	}
-	resources, err := provider.Resources(ctx, account.AccountID.Value(), time.Until(gameMeta.To.Value()))
+	resources, err := provider.Resources(ctx, account.TargetID.Value(), time.Until(gameMeta.To.Value()))
 	if err != nil {
 		l.Error(fmt.Sprintf("failed to create resource controller: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create resource controller"))
@@ -434,7 +434,7 @@ func (s *Server) Credentials(ctx context.Context, req *connect.Request[challenge
 	}
 
 	providerMeta, err := dynamitedb.Get(ctx, s.oltp, &oltp.Provider{
-		ProviderID: dynamitedb.Key(challengeMeta.DefinitionProviderID.Value()),
+		ProviderID: dynamitedb.Key(challengeMeta.ProviderID.Value()),
 		Scope:      dynamitedb.Eq(gameMeta.Scope.Value()),
 	})
 	if err != nil {
@@ -448,7 +448,16 @@ func (s *Server) Credentials(ctx context.Context, req *connect.Request[challenge
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to load challenge provider"))
 	}
 
-	credentials, err := provider.Credentials(ctx, challengeMeta.AccountID.Value(), time.Until(gameMeta.To.Value()))
+	accountMeta, err := dynamitedb.Get(ctx, s.oltp, &oltp.Account{
+		ProviderID: dynamitedb.Key(providerMeta.ProviderID.Value()),
+		AccountID:  dynamitedb.Key(challengeMeta.AccountID.Value()),
+	})
+	if err != nil {
+		l.Error(fmt.Sprintf("failed to fetch challenge account: %v", err))
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch challenge account"))
+	}
+
+	credentials, err := provider.Credentials(ctx, accountMeta.TargetID.Value(), time.Until(gameMeta.To.Value()))
 	if err != nil {
 		l.Error(fmt.Sprintf("failed to generate challenge credentials: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate challenge credentials"))

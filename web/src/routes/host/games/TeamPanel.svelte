@@ -71,14 +71,14 @@
 		<div class="flex flex-col gap-2">
 			<Card.Title>Name</Card.Title>
 			{#if update.forbidden}
-				<p class="text-sm text-muted-foreground italic">You are not allowed to update this team.</p>
+				<p class="text-muted-foreground text-sm italic">You are not allowed to update this team.</p>
 			{:else}
 				<form class="flex flex-row items-center gap-2" onsubmit={() => save()}>
 					<Input class="max-w-96" bind:value={name} placeholder="Name of the team" />
 					<Button type="submit" variant="outline" class="cursor-pointer" disabled={update.loading}>Save</Button>
 				</form>
 				{#if update.error}
-					<p class="text-xs text-destructive">{update.error}</p>
+					<p class="text-destructive text-xs">{update.error}</p>
 				{/if}
 			{/if}
 		</div>
@@ -104,11 +104,11 @@
 						</button>
 					</Badge>
 				{:else}
-					<p class="text-sm text-muted-foreground italic">No players attached yet.</p>
+					<p class="text-muted-foreground text-sm italic">No players attached yet.</p>
 				{/each}
 			</div>
 			{#if usersForbidden}
-				<p class="text-sm text-muted-foreground italic">You are not allowed to list users, players cannot be added.</p>
+				<p class="text-muted-foreground text-sm italic">You are not allowed to list users (TBD: add users by ID)</p>
 			{:else}
 				<div class="flex flex-row items-center gap-2">
 					<Select.Root type="single" bind:value={player}>
@@ -143,7 +143,7 @@
 		<div class="flex flex-col gap-2">
 			<Card.Title>Danger Zone</Card.Title>
 			{#if remove.forbidden}
-				<p class="text-sm text-muted-foreground italic">You are not allowed to delete this team.</p>
+				<p class="text-muted-foreground text-sm italic">You are not allowed to delete this team.</p>
 			{:else}
 				<div class="flex flex-row items-center gap-2">
 					{#if confirmDelete}

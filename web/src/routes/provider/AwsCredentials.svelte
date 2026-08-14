@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Button } from '$lib/components/shad/button';
 	import { Input } from '$lib/components/shad/input';
+	import { Info } from '@lucide/svelte';
 	import EyeIcon from '@lucide/svelte/icons/eye';
 	import EyeOffIcon from '@lucide/svelte/icons/eye-off';
 
@@ -86,7 +87,12 @@
 		</div>
 	</div>
 </div>
-<p class="text-muted-foreground text-xs">
-	The credentials of the organization management account. CloudJam calls the organizations api with them and assumes its
-	roles into the sandbox accounts, so they need organization and role assumption permissions.
+<p class="text-muted-foreground flex flex-row items-center gap-1 text-xs">
+	<Info size={14} />
+	The specified credentials must have unrestricted AWS Organization access. Please only use this on fully blank AWS root accounts
+	with ZERO workloads in it!
+</p>
+<p class="text-muted-foreground flex flex-row items-center gap-1 text-xs">
+	<Info size={14} />
+	You must create a dedicated user with "AdministratorAccess" for this. The AWS root account cannot assume other roles!
 </p>

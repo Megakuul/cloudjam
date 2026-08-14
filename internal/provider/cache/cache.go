@@ -45,7 +45,7 @@ func (c *Cache) Load(ctx context.Context, providerMeta *oltp.Provider) (provider
 		switch providerMeta.Type.Value() {
 		case cloud.ProviderType_AWS:
 			provider, err = aws.New(ctx, providerMeta.Credentials.Value(),
-				aws.WithEmailSuffix(fmt.Sprintf("+%s", providerMeta.Email)),
+				aws.WithEmailSuffix(fmt.Sprintf("+%s", providerMeta.Email.Value())),
 				aws.WithRegions(providerMeta.Regions.Value()...),
 				aws.WithLogger(slog.With("system", fmt.Sprintf("provider.%s", providerMeta.Name.Value()))),
 			)

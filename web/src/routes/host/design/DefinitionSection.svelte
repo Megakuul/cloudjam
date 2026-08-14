@@ -77,7 +77,7 @@
 				{:else}
 					<Table.Row>
 						<Table.Cell colspan={4}>
-							<p class="p-4 text-sm text-muted-foreground italic">
+							<p class="text-muted-foreground p-4 text-sm italic">
 								{loading ? 'Loading definitions…' : 'No definitions uploaded to this provider yet.'}
 							</p>
 						</Table.Cell>

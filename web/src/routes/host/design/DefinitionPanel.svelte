@@ -12,6 +12,7 @@
 	import { CompressionMode, type Definition } from '$lib/sdk/v1/cloud/definition_pb';
 	import { create } from '@bufbuild/protobuf';
 	import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
+	import Spinner from '$lib/components/shad/spinner/spinner.svelte';
 
 	let { definition, refresh }: { definition: Definition; refresh: () => void } = $props();
 
@@ -41,7 +42,7 @@
 			<Badge variant="outline">scope: {definition.scope}</Badge>
 			<Badge variant="outline" class="font-mono">{definition.id}</Badge>
 			{#if definition.hash}
-				<Badge variant="outline" class="font-mono">sha256: {toDigest(definition.hash)}</Badge>
+				<Badge variant="outline" class="font-mono">{toDigest(definition.hash)}</Badge>
 			{/if}
 		</div>
 	</Card.Header>
@@ -49,7 +50,7 @@
 		<div class="flex flex-col gap-2">
 			<Card.Title>Definition</Card.Title>
 			{#if update.forbidden}
-				<p class="text-sm text-muted-foreground italic">You are not allowed to update this definition.</p>
+				<p class="text-muted-foreground text-sm italic">You are not allowed to update this definition.</p>
 			{:else}
 				<form
 					class="flex flex-col gap-4"
@@ -82,15 +83,24 @@
 						<div class="flex flex-col gap-1">
 							<label for="update-binary" class="text-sm">Plugin</label>
 							<Input id="update-binary" type="file" accept=".wasm" bind:files />
-							<p class="text-xs text-muted-foreground">Optional; the stored plugin is kept if no file is selected.</p>
+							<p class="text-muted-foreground text-xs">Optional; the stored plugin is kept if no file is selected.</p>
 						</div>
 					</div>
-					<Button type="submit" variant="outline" class="cursor-pointer self-start" disabled={update.loading}>
-						Save
-					</Button>
+
+					<div class="flex flex-row items-center justify-start gap-2">
+						<Button type="submit" variant="outline" class="cursor-pointer self-start" disabled={update.loading}>
+							Save and Upload
+						</Button>
+						{#if update.loading && files}
+							<Badge>
+								<Spinner />
+								Compressing and Uploading
+							</Badge>
+						{/if}
+					</div>
 				</form>
 				{#if update.error}
-					<p class="text-xs text-destructive">{update.error}</p>
+					<p class="text-destructive text-xs">{update.error}</p>
 				{/if}
 			{/if}
 		</div>
@@ -100,7 +110,7 @@
 		<div class="flex flex-col gap-2">
 			<Card.Title>Danger Zone</Card.Title>
 			{#if remove.forbidden}
-				<p class="text-sm text-muted-foreground italic">You are not allowed to delete this definition.</p>
+				<p class="text-muted-foreground text-sm italic">You are not allowed to delete this definition.</p>
 			{:else}
 				<div class="flex flex-row items-center gap-2">
 					{#if confirmDelete}

@@ -11,14 +11,14 @@ message Game {
   string scope = 1;
   string id = 2 [(buf.validate.field).string = {uuid: true}];
   string name = 3 [
-    (buf.validate.field).string.min_len = 4,
-    (buf.validate.field).string.max_len = 20
+    (buf.validate.field).string.min_len = 3,
+    (buf.validate.field).string.max_len = 100
   ];
   string description = 4 [
     (buf.validate.field).string.min_len = 0,
-    (buf.validate.field).string.max_len = 50
+    (buf.validate.field).string.max_len = 200
   ];
-  google.protobuf.Timestamp from = 5 [(buf.validate.field).timestamp.lt_now = true];
+  google.protobuf.Timestamp from = 5 [(buf.validate.field).timestamp.gt_now = true];
   google.protobuf.Timestamp to = 6 [(buf.validate.field).timestamp.gt_now = true];
 
   option (buf.validate.message).cel = {

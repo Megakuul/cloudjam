@@ -42,7 +42,7 @@ type Definition struct {
 	Name         dynamitedb.DataField[string] `cbor:"name,omitempty"`
 	Description  dynamitedb.DataField[string] `cbor:"description,omitempty"`
 	Version      dynamitedb.DataField[string] `cbor:"version,omitempty"`
-	Hash         dynamitedb.DataField[string] `cbor:"hash,omitempty"` // sha256
+	Hash         dynamitedb.DataField[[]byte] `cbor:"hash,omitempty"` // sha256
 
 	Scope dynamitedb.DataField[string] `cbor:"scope,omitempty"`
 }
