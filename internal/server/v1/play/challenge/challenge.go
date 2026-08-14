@@ -58,6 +58,23 @@ func (s *Server) Get(ctx context.Context, req *connect.Request[challenge.GetRequ
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch challenge"))
 	}
 
+	// check if the user either has access to the challenge scope OR has a self scope and is inside the challenge team.
+	if !slices.Contains(auth.Scopes(ctx), challengeMeta.Scope.Value()) {
+		teamMeta, err := dynamitedb.Get(ctx, s.oltp, &oltp.Team{
+			GameID: dynamitedb.Key(challengeMeta.GameID.Value()),
+			TeamID: dynamitedb.Key(challengeMeta.TeamID.Value()),
+			Scope:  dynamitedb.In(auth.Scopes(ctx)...),
+		})
+		if err != nil {
+			l.Error(fmt.Sprintf("failed to fetch challenge team: %v", err))
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch challenge team"))
+		}
+		userId := auth.Claims(ctx).Subject
+		if _, ok := teamMeta.Players.Value()[userId]; !ok || !slices.Contains(auth.Scopes(ctx), oltp.ScopeSelf) {
+			return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("permission denied"))
+		}
+	}
+
 	coveredClues := challengeMeta.Clues.Value()
 	for clue := range coveredClues {
 		if !challengeMeta.UncoveredClues.Value()[clue] {

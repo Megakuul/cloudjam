@@ -43,7 +43,7 @@ importers:
         version: 1.1.0(svelte@5.56.8(@typescript-eslint/types@8.65.0))
       svelte-ux:
         specifier: next
-        version: 2.0.0-next.25(postcss-load-config@3.1.4(postcss@8.5.25))(postcss@8.5.25)(svelte@5.56.8(@typescript-eslint/types@8.65.0))
+        version: 2.0.0-next.26(postcss-load-config@3.1.4(postcss@8.5.25))(postcss@8.5.25)(svelte@5.56.8(@typescript-eslint/types@8.65.0))
       zstdify:
         specifier: ^1.4.0
         version: 1.4.0
@@ -61,8 +61,8 @@ importers:
         specifier: ^3.12.2
         version: 3.12.3
       '@lucide/svelte':
-        specifier: ^1.28.0
-        version: 1.28.0(svelte@5.56.8(@typescript-eslint/types@8.65.0))
+        specifier: ^1.31.0
+        version: 1.31.0(svelte@5.56.8(@typescript-eslint/types@8.65.0))
       '@mdi/js':
         specifier: latest
         version: 7.4.47
@@ -347,8 +347,8 @@ packages:
     peerDependencies:
       svelte: ^5
 
-  '@lucide/svelte@1.28.0':
-    resolution: {integrity: sha512-C1Ge84KW2z4q44/WDIEo/2KC2jby5u6mSlta7q+p6g7u0ld8sC/w1fMBiSswF+4bxAl9jlzzaVTpp79qqkiy5g==}
+  '@lucide/svelte@1.31.0':
+    resolution: {integrity: sha512-pgPuLEJdF0UpsajG9eSw0YvqXVuDxB+/x58BRiC4xE/KEHiopOqT1id3KCUvRN/PUmQkN1F26sslcs/1jutlBQ==}
     peerDependencies:
       svelte: ^5
 
@@ -1978,8 +1978,8 @@ packages:
     peerDependencies:
       svelte: ^5.0.0
 
-  svelte-ux@2.0.0-next.25:
-    resolution: {integrity: sha512-dx086mdap1dBT/+wxbR4byLprqrmZ7UEuLSqLFjbfQGlYnV+5dCUr6To+o8JNb6hAqklCFTt/d66te4c2G6DYA==}
+  svelte-ux@2.0.0-next.26:
+    resolution: {integrity: sha512-lEjDHQBHBgXWGIOxKkCIZHWQ6TFtbzrGlcmH3zTpGUj+Bk2Fkfx39z5SX3edmB+uwAygXl7qfxlvDcXkGyyjeA==}
     peerDependencies:
       svelte: ^3.56.0 || ^4.0.0 || ^5.0.0
 
@@ -2374,7 +2374,7 @@ snapshots:
 
   '@layerstack/tailwind@2.0.0-next.22':
     dependencies:
-      '@layerstack/utils': 2.0.0-next.18
+      '@layerstack/utils': 2.0.0-next.19
       clsx: 2.1.1
       d3-array: 3.2.4
       tailwind-merge: 3.6.0
@@ -2402,7 +2402,7 @@ snapshots:
     dependencies:
       svelte: 5.56.8(@typescript-eslint/types@8.65.0)
 
-  '@lucide/svelte@1.28.0(svelte@5.56.8(@typescript-eslint/types@8.65.0))':
+  '@lucide/svelte@1.31.0(svelte@5.56.8(@typescript-eslint/types@8.65.0))':
     dependencies:
       svelte: 5.56.8(@typescript-eslint/types@8.65.0)
 
@@ -3890,14 +3890,14 @@ snapshots:
       style-to-object: 1.0.14
       svelte: 5.56.8(@typescript-eslint/types@8.65.0)
 
-  svelte-ux@2.0.0-next.25(postcss-load-config@3.1.4(postcss@8.5.25))(postcss@8.5.25)(svelte@5.56.8(@typescript-eslint/types@8.65.0)):
+  svelte-ux@2.0.0-next.26(postcss-load-config@3.1.4(postcss@8.5.25))(postcss@8.5.25)(svelte@5.56.8(@typescript-eslint/types@8.65.0)):
     dependencies:
       '@floating-ui/dom': 1.8.0
       '@layerstack/svelte-actions': 1.0.1-next.18
       '@layerstack/svelte-stores': 1.0.2-next.18
       '@layerstack/svelte-table': 1.0.1-next.18
       '@layerstack/tailwind': 2.0.0-next.22
-      '@layerstack/utils': 2.0.0-next.18
+      '@layerstack/utils': 2.0.0-next.19
       '@lucide/svelte': 0.577.0(svelte@5.56.8(@typescript-eslint/types@8.65.0))
       '@shikijs/transformers': 4.4.1
       d3-array: 3.2.4

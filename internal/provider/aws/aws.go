@@ -21,10 +21,10 @@ import (
 
 // Credentials provides the serializable format in which this provider accepts credentials.
 type Credentials struct {
-	Endpoint  *string `json:"endpoint"`
-	Region    string  `json:"region"`
-	AccessKey string  `json:"access_key"`
-	SecretKey string  `json:"secret_key"`
+	Endpoint  string `json:"endpoint"`
+	Region    string `json:"region"`
+	AccessKey string `json:"access_key"`
+	SecretKey string `json:"secret_key"`
 }
 
 const sandboxInlinePolicy = "cloudjam"
@@ -83,9 +83,11 @@ func New(ctx context.Context, rawCreds string, opts ...ProviderOption) (*Provide
 		return nil, fmt.Errorf("invalid provider credentials: %w", err)
 	}
 	config := awssdk.Config{
-		Region:       creds.Region,
-		Credentials:  credentials.NewStaticCredentialsProvider(creds.AccessKey, creds.SecretKey, ""),
-		BaseEndpoint: creds.Endpoint,
+		Region:      creds.Region,
+		Credentials: credentials.NewStaticCredentialsProvider(creds.AccessKey, creds.SecretKey, ""),
+	}
+	if creds.Endpoint != "" {
+		config.BaseEndpoint = &creds.Endpoint
 	}
 	provider := &Provider{
 		logger:         slog.Default(),
@@ -184,9 +186,8 @@ func (p *Provider) bootstrap(ctx context.Context) error {
 		p.cloudjamOU = *ouResp.OrganizationalUnit.Id
 	}
 
-	policiesResp, err := p.organizations.ListPoliciesForTarget(ctx, &organizations.ListPoliciesForTargetInput{
-		TargetId: &p.cloudjamOU,
-		Filter:   orgtypes.PolicyTypeServiceControlPolicy,
+	policiesResp, err := p.organizations.ListPolicies(ctx, &organizations.ListPoliciesInput{
+		Filter: orgtypes.PolicyTypeServiceControlPolicy,
 	})
 	if err != nil {
 		return fmt.Errorf("list account policies: %w", err)

@@ -22,7 +22,6 @@
 	let forbidden = $state(false);
 
 	let provider: Provider | undefined = $state();
-	// the child sections query inside the provider partition, so only the open tab loads anything.
 	let tab: (typeof tabs)[number] = $state('overview');
 
 	function load() {

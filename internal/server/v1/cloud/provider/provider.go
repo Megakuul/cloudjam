@@ -158,12 +158,25 @@ func (s *Server) Update(ctx context.Context, req *connect.Request[provider.Updat
 		ETag:        providerMeta.ETag,
 		Name:        dynamitedb.Set(req.Msg.Mod.Name),
 		Description: dynamitedb.Set(req.Msg.Mod.Description),
-		Credentials: dynamitedb.Set(req.Msg.Mod.Credentials),
-		Regions:     dynamitedb.Set(req.Msg.Mod.Regions),
+		Credentials: dynamitedb.CustomUpdate(func(original string) string {
+			if req.Msg.Mod.Credentials != "" {
+				return req.Msg.Mod.Credentials
+			}
+			return original
+		}),
+		Regions: dynamitedb.Set(req.Msg.Mod.Regions),
 	})
 	if err != nil {
 		l.Error(fmt.Sprintf("failed to update provider: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update provider"))
+	}
+
+	providerMeta, err = dynamitedb.Get(ctx, s.oltp, &oltp.Provider{
+		ProviderID: dynamitedb.Key(providerMeta.ProviderID.Value()),
+	})
+	if err != nil {
+		l.Error(fmt.Sprintf("failed to refetch provider: %v", err))
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to refetch provider"))
 	}
 
 	s.providers.Bust(providerMeta)

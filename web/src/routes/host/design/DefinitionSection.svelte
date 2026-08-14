@@ -16,7 +16,9 @@
 	const limit = 100;
 
 	let error = $state('');
-	let loading = $state(false);
+	// the shell is prerendered, so this starts loading: the list is only known after the
+	// request that onMount fires once hydration completed.
+	let loading = $state(true);
 	let forbidden = $state(false);
 
 	let definitions: Definition[] = $state([]);
@@ -75,7 +77,9 @@
 				{:else}
 					<Table.Row>
 						<Table.Cell colspan={4}>
-							<p class="p-4 text-sm text-muted-foreground italic">No definitions uploaded to this provider yet.</p>
+							<p class="p-4 text-sm text-muted-foreground italic">
+								{loading ? 'Loading definitions…' : 'No definitions uploaded to this provider yet.'}
+							</p>
 						</Table.Cell>
 					</Table.Row>
 				{/each}

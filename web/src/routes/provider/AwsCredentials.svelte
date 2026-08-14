@@ -33,13 +33,16 @@
 	let reveal = $state(false);
 
 	$effect(() => {
-		// endpoint is a *string on the provider, an empty one would override the aws endpoint.
-		value = JSON.stringify({
-			...(creds.endpoint ? { endpoint: creds.endpoint } : {}),
-			region: creds.region,
-			access_key: creds.access_key,
-			secret_key: creds.secret_key
-		});
+		if (!creds.endpoint && !creds.region && !creds.access_key && !creds.secret_key) {
+			value = '';
+		} else {
+			value = JSON.stringify({
+				endpoint: creds.endpoint,
+				region: creds.region,
+				access_key: creds.access_key,
+				secret_key: creds.secret_key
+			});
+		}
 	});
 </script>
 
@@ -47,12 +50,12 @@
 	<div class="flex flex-col gap-1">
 		<label for="{uid}-region" class="text-sm">Region</label>
 		<Input id="{uid}-region" bind:value={creds.region} placeholder="us-east-1" />
-		<p class="text-xs text-muted-foreground">Region the organization api is called in.</p>
+		<p class="text-muted-foreground text-xs">Region the organization api is called in.</p>
 	</div>
 	<div class="flex flex-col gap-1">
 		<label for="{uid}-endpoint" class="text-sm">Endpoint</label>
 		<Input id="{uid}-endpoint" bind:value={creds.endpoint} placeholder="https://localhost:4566 (optional)" />
-		<p class="text-xs text-muted-foreground">Only for emulators like fakecloud, leave empty for real AWS.</p>
+		<p class="text-muted-foreground text-xs">Only for emulators like fakecloud, leave empty for real AWS.</p>
 	</div>
 	<div class="flex flex-col gap-1">
 		<label for="{uid}-access-key" class="text-sm">Access Key ID</label>
@@ -83,7 +86,7 @@
 		</div>
 	</div>
 </div>
-<p class="text-xs text-muted-foreground">
+<p class="text-muted-foreground text-xs">
 	The credentials of the organization management account. CloudJam calls the organizations api with them and assumes its
 	roles into the sandbox accounts, so they need organization and role assumption permissions.
 </p>

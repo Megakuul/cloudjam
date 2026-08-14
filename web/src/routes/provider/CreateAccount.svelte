@@ -46,12 +46,12 @@
 				<div class="flex flex-col gap-1">
 					<label for="create-name" class="text-sm">Name</label>
 					<Input id="create-name" bind:value={init.name} placeholder="Name of the account" />
-					<p class="text-xs text-destructive">{Glue.Validate(AccountSchema, init).violation.name ?? ''}</p>
+					<p class="text-destructive text-xs">{Glue.Validate(AccountSchema, init).violation.name ?? ''}</p>
 				</div>
 				<div class="flex flex-col gap-1">
 					<label for="create-description" class="text-sm">Description</label>
 					<Input id="create-description" bind:value={init.description} placeholder="Purpose of the account" />
-					<p class="text-xs text-destructive">{Glue.Validate(AccountSchema, init).violation.description ?? ''}</p>
+					<p class="text-destructive text-xs">{Glue.Validate(AccountSchema, init).violation.description ?? ''}</p>
 				</div>
 			</div>
 			<Button

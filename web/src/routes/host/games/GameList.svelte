@@ -21,7 +21,9 @@
 	const limit = 20;
 
 	let error = $state('');
-	let loading = $state(false);
+	// the shell is prerendered, so this starts loading: the list is only known after the
+	// request that onMount fires once hydration completed.
+	let loading = $state(true);
 	let forbidden = $state(false);
 
 	let games: Game[] = $state([]);

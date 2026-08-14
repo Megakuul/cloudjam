@@ -61,9 +61,9 @@
 		<div class="flex flex-col gap-2">
 			<Card.Title>Description</Card.Title>
 			{#if update.forbidden}
-				<p class="text-sm text-muted-foreground italic">You are not allowed to update this account.</p>
+				<p class="text-muted-foreground text-sm italic">You are not allowed to update this account.</p>
 			{:else}
-				<p class="text-sm text-muted-foreground">Only accounts in the ready state accept metadata updates.</p>
+				<p class="text-muted-foreground text-sm">Only accounts in the ready state accept metadata updates.</p>
 				<form
 					class="flex flex-row items-center gap-2"
 					onsubmit={() =>
@@ -76,7 +76,7 @@
 					<Button type="submit" variant="outline" class="cursor-pointer" disabled={update.loading}>Save</Button>
 				</form>
 				{#if update.error}
-					<p class="text-xs text-destructive">{update.error}</p>
+					<p class="text-destructive text-xs">{update.error}</p>
 				{/if}
 			{/if}
 		</div>
@@ -86,9 +86,9 @@
 		<div class="flex flex-col gap-2">
 			<Card.Title>Recovery</Card.Title>
 			{#if fix.forbidden}
-				<p class="text-sm text-muted-foreground italic">You are not allowed to fix this account.</p>
+				<p class="text-muted-foreground text-sm italic">You are not allowed to fix this account.</p>
 			{:else}
-				<p class="text-sm text-muted-foreground">
+				<p class="text-muted-foreground text-sm">
 					Forces the account back into the ready state. Only do this after you actually repaired the account on the
 					provider, otherwise it is handed out broken.
 				</p>
@@ -105,7 +105,7 @@
 					Mark as Fixed
 				</Button>
 				{#if fix.error}
-					<p class="text-xs text-destructive">{fix.error}</p>
+					<p class="text-destructive text-xs">{fix.error}</p>
 				{/if}
 			{/if}
 		</div>
@@ -115,9 +115,9 @@
 		<div class="flex flex-col gap-2">
 			<Card.Title>Danger Zone</Card.Title>
 			{#if remove.forbidden}
-				<p class="text-sm text-muted-foreground italic">You are not allowed to delete this account.</p>
+				<p class="text-muted-foreground text-sm italic">You are not allowed to delete this account.</p>
 			{:else}
-				<label class="flex flex-row items-center gap-2 text-sm text-muted-foreground">
+				<label class="text-muted-foreground flex flex-row items-center gap-2 text-sm">
 					<input type="checkbox" bind:checked={force} class="cursor-pointer" />
 					Force: drop the CloudJam metadata immediately without waiting for the provider (the account leaks).
 				</label>

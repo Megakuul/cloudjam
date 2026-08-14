@@ -11,6 +11,7 @@
 	import { create } from '@bufbuild/protobuf';
 	import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
 	import AwsCredentials from './AwsCredentials.svelte';
+	import Spinner from '$lib/components/shad/spinner/spinner.svelte';
 
 	let { provider, refresh, deleted }: { provider: Provider; refresh: () => void; deleted: () => void } = $props();
 
@@ -34,7 +35,15 @@
 
 <Card.Root class="w-full">
 	<Card.Header>
-		<Card.Title class="text-2xl">{provider.name}</Card.Title>
+		<Card.Title class="text-2xl">
+			{provider.name}
+			{#if update.loading}
+				<Badge>
+					<Spinner />
+					Reprovisioning
+				</Badge>
+			{/if}
+		</Card.Title>
 		<Card.Description>{provider.description}</Card.Description>
 		<div class="flex flex-row flex-wrap gap-1">
 			<Badge variant="secondary">{ProviderType[provider.type]}</Badge>
@@ -46,7 +55,7 @@
 		<div class="flex flex-col gap-2">
 			<Card.Title>Configuration</Card.Title>
 			{#if update.forbidden}
-				<p class="text-sm text-muted-foreground italic">You are not allowed to update this provider.</p>
+				<p class="text-muted-foreground text-sm italic">You are not allowed to update this provider.</p>
 			{:else}
 				<form
 					class="flex flex-col gap-4"
@@ -76,8 +85,13 @@
 							<Input id="update-description" bind:value={mod.description} placeholder="Purpose of the provider" />
 						</div>
 						<div class="flex flex-col gap-1">
-							<label for="update-email" class="text-sm">Email</label>
-							<Input id="update-email" type="email" bind:value={mod.email} placeholder="Root email of the provider" />
+							<label for="update-email" class="text-sm">Email Suffix</label>
+							<Input
+								id="update-email"
+								type="email"
+								bind:value={mod.email}
+								placeholder="Email suffix used to provision new accounts"
+							/>
 						</div>
 						<div class="flex flex-col gap-1">
 							<label for="update-regions" class="text-sm">Regions</label>
@@ -94,11 +108,11 @@
 						{/if}
 					</div>
 					<Button type="submit" variant="outline" class="cursor-pointer self-start" disabled={update.loading}>
-						Save
+						Update and Reprovision
 					</Button>
 				</form>
 				{#if update.error}
-					<p class="text-xs text-destructive">{update.error}</p>
+					<p class="text-destructive text-xs">{update.error}</p>
 				{/if}
 			{/if}
 		</div>
@@ -108,10 +122,10 @@
 		<div class="flex flex-col gap-2">
 			<Card.Title>Danger Zone</Card.Title>
 			{#if remove.forbidden}
-				<p class="text-sm text-muted-foreground italic">You are not allowed to delete this provider.</p>
+				<p class="text-muted-foreground text-sm italic">You are not allowed to delete this provider.</p>
 			{:else}
-				<p class="text-sm text-muted-foreground">
-					Deleting a provider only removes it from CloudJam; accounts provisioned inside it are not touched.
+				<p class="text-muted-foreground text-sm">
+					Before deleting a provider please remove all accounts and challenge definitions.
 				</p>
 				<div class="flex flex-row items-center gap-2">
 					{#if confirmDelete}

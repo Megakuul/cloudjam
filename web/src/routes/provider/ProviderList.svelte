@@ -18,7 +18,9 @@
 	const limit = 100;
 
 	let error = $state('');
-	let loading = $state(false);
+	// the shell is prerendered, so this starts loading: the list is only known after the
+	// request that onMount fires once hydration completed.
+	let loading = $state(true);
 	let forbidden = $state(false);
 
 	let providers: Provider[] = $state([]);
@@ -81,11 +83,11 @@
 					</Card.Root>
 				</button>
 			{:else}
-				{#if !loading}
-					<p class="text-sm text-muted-foreground italic">
-						No providers yet. Add one to provision sandbox accounts and store challenge plugins.
-					</p>
-				{/if}
+				<p class="text-muted-foreground text-sm italic">
+					{loading
+						? 'Loading providers…'
+						: 'No providers yet. Add one to provision sandbox accounts and store challenge plugins.'}
+				</p>
 			{/each}
 		</div>
 		{#if !exhausted}

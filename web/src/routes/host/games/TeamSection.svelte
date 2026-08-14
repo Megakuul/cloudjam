@@ -17,7 +17,9 @@
 	const limit = 100;
 
 	let error = $state('');
-	let loading = $state(false);
+	// the shell is prerendered, so this starts loading: the list is only known after the
+	// request that onMount fires once hydration completed.
+	let loading = $state(true);
 	let forbidden = $state(false);
 
 	let teams: Team[] = $state([]);
@@ -85,7 +87,9 @@
 				{:else}
 					<Table.Row>
 						<Table.Cell colspan={3}>
-							<p class="p-4 text-sm text-muted-foreground italic">No teams in this game yet.</p>
+							<p class="p-4 text-sm text-muted-foreground italic">
+								{loading ? 'Loading teams…' : 'No teams in this game yet.'}
+							</p>
 						</Table.Cell>
 					</Table.Row>
 				{/each}

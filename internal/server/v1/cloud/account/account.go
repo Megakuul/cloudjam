@@ -122,7 +122,7 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[account.Create
 		AccountID:   dynamitedb.Key(req.Msg.Init.Id),
 		Name:        dynamitedb.Set(req.Msg.Init.Name),
 		Description: dynamitedb.Set(req.Msg.Init.Description),
-		State:       dynamitedb.Set(cloud.AccountState_Provisioning),
+		State:       dynamitedb.Set(cloud.AccountState_NotCreated),
 		Scope:       dynamitedb.Set(providerMeta.Scope.Value()),
 	})
 	if err != nil {

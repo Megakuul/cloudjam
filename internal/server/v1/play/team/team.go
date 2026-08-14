@@ -44,6 +44,14 @@ func (s *Server) Get(ctx context.Context, req *connect.Request[team.GetRequest])
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch team"))
 	}
 
+	// check if the user either has access to the team scope OR has a self scope and is inside the team.
+	if !slices.Contains(auth.Scopes(ctx), teamMeta.Scope.Value()) {
+		userId := auth.Claims(ctx).Subject
+		if _, ok := teamMeta.Players.Value()[userId]; !ok || !slices.Contains(auth.Scopes(ctx), oltp.ScopeSelf) {
+			return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("permission denied"))
+		}
+	}
+
 	return &connect.Response[team.GetResponse]{Msg: &team.GetResponse{Team: &play.Team{
 		GameId:  teamMeta.GameID.Value(),
 		Id:      teamMeta.TeamID.Value(),
