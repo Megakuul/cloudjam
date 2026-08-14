@@ -54,6 +54,7 @@
 		"vite": "^8.0.3"
 	},
 	"dependencies": {
+		"@bokuweb/zstd-wasm": "^0.0.27",
 		"@bufbuild/protobuf": "^2.11.0",
 		"@bufbuild/protovalidate": "^1.1.1",
 		"@connectrpc/connect": "^2.1.1",
@@ -65,7 +66,6 @@
 		"d3-shape": "^3.2.0",
 		"jwt-decode": "^4.0.0",
 		"mode-watcher": "^1.1.0",
-		"svelte-ux": "next",
-		"zstdify": "^1.4.0"
+		"svelte-ux": "next"
 	}
 }

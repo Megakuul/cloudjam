@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Glue, Submit } from '$lib';
-	import { compress } from 'zstdify';
+	import { compress } from '$lib/compress';
 	import ProviderSelect from '$lib/components/custom/ProviderSelect.svelte';
 	import ScopeInput from '$lib/components/custom/ScopeInput.svelte';
 	import * as Alert from '$lib/components/shad/alert';
@@ -54,9 +54,7 @@
 			onsubmit={() =>
 				Submit(
 					async () => {
-						const binary = files?.[0]
-							? compress(new Uint8Array(await files[0].arrayBuffer()), { level: 3 })
-							: new Uint8Array();
+						const binary = files?.[0] ? await compress(new Uint8Array(await files[0].arrayBuffer())) : new Uint8Array();
 						await Glue.definition.create({ ...request, binary: binary });
 						init = create(DefinitionSchema, { id: crypto.randomUUID(), scope: scope });
 						files = undefined;

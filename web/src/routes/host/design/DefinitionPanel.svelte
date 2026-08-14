@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Glue, Submit } from '$lib';
+	import { compress } from '$lib/compress';
 	import { toDigest } from '$lib/digest';
-	import { compress } from 'zstdify';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Badge } from '$lib/components/shad/badge';
 	import { Button } from '$lib/components/shad/button';
@@ -57,7 +57,7 @@
 					onsubmit={() =>
 						Submit(async () => {
 							const binary = files?.[0]
-								? compress(new Uint8Array(await files[0].arrayBuffer()), { level: 3 })
+								? await compress(new Uint8Array(await files[0].arrayBuffer()))
 								: new Uint8Array();
 							await Glue.definition.update({
 								...create(UpdateRequestSchema, { mod: mod, compression: CompressionMode.Zstd }),

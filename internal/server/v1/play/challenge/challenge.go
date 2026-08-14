@@ -339,6 +339,15 @@ func (s *Server) Start(ctx context.Context, req *connect.Request[challenge.Start
 		l.Error(fmt.Sprintf("failed to claim account: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to claim account"))
 	}
+	err = dynamitedb.Update(ctx, s.oltp, &oltp.Challenge{
+		GameID:      dynamitedb.Key(challengeMeta.GameID.Value()),
+		ChallengeID: dynamitedb.Key(challengeMeta.ChallengeID.Value()),
+		AccountID:   dynamitedb.Set(account.AccountID.Value()),
+	})
+	if err != nil {
+		l.Error(fmt.Sprintf("failed to configure account for challenge: %v", err))
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to configure account for challenge"))
+	}
 
 	providerMeta, err := dynamitedb.Get(ctx, s.oltp, &oltp.Provider{
 		ProviderID: dynamitedb.Key(challengeMeta.ProviderID.Value()),
@@ -353,6 +362,11 @@ func (s *Server) Start(ctx context.Context, req *connect.Request[challenge.Start
 	if err != nil {
 		l.Error(fmt.Sprintf("failed to load challenge provider: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to load challenge provider"))
+	}
+
+	err = provider.Prepare(ctx, account.TargetID.Value())
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("prepare account: %w", err))
 	}
 
 	access, err := provider.Access(ctx, account.TargetID.Value(), time.Until(gameMeta.To.Value()))

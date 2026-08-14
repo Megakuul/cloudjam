@@ -116,7 +116,6 @@ func (r *Options) Run(ctx context.Context, args []string) error {
 		if err != nil {
 			return fmt.Errorf("failed to create sandbox role: %w", err)
 		}
-		println(*sandboxRole.Role.Arn)
 		credentials, err := stsClient.AssumeRole(ctx, &sts.AssumeRoleInput{
 			RoleArn:         sandboxRole.Role.Arn,
 			RoleSessionName: new("jamctl"),

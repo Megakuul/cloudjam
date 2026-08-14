@@ -40,6 +40,7 @@ func (p *Provider) Prepare(ctx context.Context, id string) error {
 	_, err = iamClient.CreateRole(ctx, &iam.CreateRoleInput{
 		RoleName:                 &p.sandboxRole,
 		AssumeRolePolicyDocument: new(string(sandboxTrust)),
+		MaxSessionDuration:       new(int32(43200)),
 	})
 	if err != nil {
 		if _, ok := errors.AsType[*iamtypes.EntityAlreadyExistsException](err); !ok {
@@ -55,6 +56,14 @@ func (p *Provider) Prepare(ctx context.Context, id string) error {
 		if _, ok := errors.AsType[*iamtypes.NoSuchEntityException](err); !ok {
 			return fmt.Errorf("failed to remove old role policy from sandbox role: %w", err)
 		}
+	}
+
+	_, err = iamClient.UpdateRole(ctx, &iam.UpdateRoleInput{
+		RoleName:           &p.adminRole,
+		MaxSessionDuration: new(int32(43200)),
+	})
+	if err != nil {
+		return fmt.Errorf("updating admin role: %v", err)
 	}
 
 	p.assetBucket = fmt.Sprintf("asset-bucket-%s", uuid.NewString())
