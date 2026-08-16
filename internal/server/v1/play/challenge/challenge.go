@@ -13,6 +13,7 @@ import (
 	"codeberg.org/megakuul/cloudjam/internal/oltp"
 	"codeberg.org/megakuul/cloudjam/internal/provider/cache"
 	"codeberg.org/megakuul/cloudjam/internal/scheduler"
+	"codeberg.org/megakuul/cloudjam/internal/sortid"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/cloud"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/play"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/play/challenge"
@@ -168,9 +169,10 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[challenge.Crea
 		return nil, connect.NewError(connect.CodeFailedPrecondition, fmt.Errorf("cannot create challenges on a game in the past"))
 	}
 
+	challengeID := sortid.New().String()
 	err = dynamitedb.Create(ctx, s.oltp, &oltp.Challenge{
 		GameID:       dynamitedb.Key(req.Msg.Init.GameId),
-		ChallengeID:  dynamitedb.Key(req.Msg.Init.Id),
+		ChallengeID:  dynamitedb.Key(challengeID),
 		TeamID:       dynamitedb.Set(req.Msg.Init.TeamId),
 		ProviderID:   dynamitedb.Set(req.Msg.Init.DefinitionProviderId),
 		DefinitionID: dynamitedb.Set(req.Msg.Init.DefinitionId),
@@ -184,7 +186,9 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[challenge.Crea
 		l.Error(fmt.Sprintf("failed to create challenge: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create challenge"))
 	}
-	return &connect.Response[challenge.CreateResponse]{Msg: &challenge.CreateResponse{}}, nil
+	return &connect.Response[challenge.CreateResponse]{Msg: &challenge.CreateResponse{
+		Id: challengeID,
+	}}, nil
 }
 
 func (s *Server) Update(ctx context.Context, req *connect.Request[challenge.UpdateRequest]) (*connect.Response[challenge.UpdateResponse], error) {

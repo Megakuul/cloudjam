@@ -10,6 +10,7 @@ import (
 
 	"codeberg.org/megakuul/cloudjam/internal/auth"
 	"codeberg.org/megakuul/cloudjam/internal/oltp"
+	"codeberg.org/megakuul/cloudjam/internal/sortid"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/play"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/play/team"
 	"connectrpc.com/connect"
@@ -120,9 +121,10 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[team.CreateReq
 		return nil, connect.NewError(connect.CodeFailedPrecondition, fmt.Errorf("cannot create teams on a game in the past"))
 	}
 
+	teamID := sortid.New().String()
 	err = dynamitedb.Create(ctx, s.oltp, &oltp.Team{
 		GameID:  dynamitedb.Key(req.Msg.Init.GameId),
-		TeamID:  dynamitedb.Key(req.Msg.Init.Id),
+		TeamID:  dynamitedb.Key(teamID),
 		Name:    dynamitedb.Set(req.Msg.Init.Name),
 		Players: dynamitedb.Set(req.Msg.Init.Players),
 		Score:   dynamitedb.Set(0.0),
@@ -135,7 +137,9 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[team.CreateReq
 		l.Error(fmt.Sprintf("failed to create team: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create team"))
 	}
-	return &connect.Response[team.CreateResponse]{Msg: &team.CreateResponse{}}, nil
+	return &connect.Response[team.CreateResponse]{Msg: &team.CreateResponse{
+		Id: teamID,
+	}}, nil
 }
 
 func (s *Server) Update(ctx context.Context, req *connect.Request[team.UpdateRequest]) (*connect.Response[team.UpdateResponse], error) {

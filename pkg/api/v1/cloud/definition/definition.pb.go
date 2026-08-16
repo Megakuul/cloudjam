@@ -286,6 +286,7 @@ func (x *CreateRequest) GetBinary() []byte {
 
 type CreateResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -318,6 +319,13 @@ func (x *CreateResponse) ProtoReflect() protoreflect.Message {
 // Deprecated: Use CreateResponse.ProtoReflect.Descriptor instead.
 func (*CreateResponse) Descriptor() ([]byte, []int) {
 	return file_v1_cloud_definition_definition_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *CreateResponse) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
 }
 
 type UpdateRequest struct {
@@ -530,8 +538,9 @@ const file_v1_cloud_definition_definition_proto_rawDesc = "" +
 	"\x04init\x18\x01 \x01(\v2\x14.v1.cloud.DefinitionR\x04init\x12;\n" +
 	"\vcompression\x18\x02 \x01(\x0e2\x19.v1.cloud.CompressionModeR\vcompression\x12\"\n" +
 	"\x06binary\x18\x03 \x01(\fB\n" +
-	"\xbaH\az\x05\x18\x80\xe1\xeb\x17R\x06binary\"\x10\n" +
-	"\x0eCreateResponse\"\x98\x01\n" +
+	"\xbaH\az\x05\x18\x80\xe1\xeb\x17R\x06binary\"*\n" +
+	"\x0eCreateResponse\x12\x18\n" +
+	"\x02id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\"\x98\x01\n" +
 	"\rUpdateRequest\x12&\n" +
 	"\x03mod\x18\x01 \x01(\v2\x14.v1.cloud.DefinitionR\x03mod\x12;\n" +
 	"\vcompression\x18\x02 \x01(\x0e2\x19.v1.cloud.CompressionModeR\vcompression\x12\"\n" +

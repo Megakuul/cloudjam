@@ -10,6 +10,7 @@ import (
 
 	"codeberg.org/megakuul/cloudjam/internal/auth"
 	"codeberg.org/megakuul/cloudjam/internal/oltp"
+	"codeberg.org/megakuul/cloudjam/internal/sortid"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/cloud"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/cloud/definition"
 	"connectrpc.com/connect"
@@ -108,9 +109,10 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[definition.Cre
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create definition binary hash"))
 	}
 
+	definitionID := sortid.New().String()
 	err = dynamitedb.Create(ctx, s.oltp, &oltp.DefinitionBinary{
 		ProviderID:   dynamitedb.Key(req.Msg.Init.ProviderId),
-		DefinitionID: dynamitedb.Key(req.Msg.Init.Id),
+		DefinitionID: dynamitedb.Key(definitionID),
 		Compression:  dynamitedb.Set(req.Msg.Compression),
 		WASM:         dynamitedb.Set(req.Msg.Binary),
 
@@ -126,7 +128,7 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[definition.Cre
 
 	err = dynamitedb.Create(ctx, s.oltp, &oltp.Definition{
 		ProviderID:   dynamitedb.Key(req.Msg.Init.ProviderId),
-		DefinitionID: dynamitedb.Key(req.Msg.Init.Id),
+		DefinitionID: dynamitedb.Key(definitionID),
 		Name:         dynamitedb.Set(req.Msg.Init.Name),
 		Description:  dynamitedb.Set(req.Msg.Init.Description),
 		Version:      dynamitedb.Set(req.Msg.Init.Version),
@@ -142,7 +144,9 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[definition.Cre
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create definition"))
 	}
 
-	return &connect.Response[definition.CreateResponse]{Msg: &definition.CreateResponse{}}, nil
+	return &connect.Response[definition.CreateResponse]{Msg: &definition.CreateResponse{
+		Id: definitionID,
+	}}, nil
 }
 
 func (s *Server) Update(ctx context.Context, req *connect.Request[definition.UpdateRequest]) (*connect.Response[definition.UpdateResponse], error) {

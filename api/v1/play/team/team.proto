@@ -34,7 +34,9 @@ message CreateRequest {
   Team init = 1;
 }
 
-message CreateResponse {}
+message CreateResponse {
+  string id = 1 [(buf.validate.field).string = {uuid: true}];
+}
 
 message UpdateRequest {
   Team mod = 1;

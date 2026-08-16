@@ -36,7 +36,9 @@ message CreateRequest {
   bytes binary = 3 [(buf.validate.field).bytes.max_len = 50000000]; // 50 MB
 }
 
-message CreateResponse {}
+message CreateResponse {
+  string id = 1 [(buf.validate.field).string = {uuid: true}];
+}
 
 message UpdateRequest {
   Definition mod = 1;

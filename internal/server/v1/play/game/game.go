@@ -10,6 +10,7 @@ import (
 
 	"codeberg.org/megakuul/cloudjam/internal/auth"
 	"codeberg.org/megakuul/cloudjam/internal/oltp"
+	"codeberg.org/megakuul/cloudjam/internal/sortid"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/play"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/play/game"
 	"connectrpc.com/connect"
@@ -96,8 +97,9 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[game.CreateReq
 		return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("can't attach a scope you don't possess"))
 	}
 
+	gameID := sortid.New().String()
 	err := dynamitedb.Create(ctx, s.oltp, &oltp.Game{
-		GameID:      dynamitedb.Key(req.Msg.Init.Id),
+		GameID:      dynamitedb.Key(gameID),
 		Name:        dynamitedb.Set(req.Msg.Init.Name),
 		Description: dynamitedb.Set(req.Msg.Init.Description),
 		From:        dynamitedb.Set(req.Msg.Init.From.AsTime()),
@@ -111,7 +113,9 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[game.CreateReq
 		l.Error(fmt.Sprintf("failed to create game: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create game"))
 	}
-	return &connect.Response[game.CreateResponse]{Msg: &game.CreateResponse{}}, nil
+	return &connect.Response[game.CreateResponse]{Msg: &game.CreateResponse{
+		Id: gameID,
+	}}, nil
 }
 
 func (s *Server) Update(ctx context.Context, req *connect.Request[game.UpdateRequest]) (*connect.Response[game.UpdateResponse], error) {

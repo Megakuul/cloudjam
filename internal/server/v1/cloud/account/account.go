@@ -11,6 +11,7 @@ import (
 	"codeberg.org/megakuul/cloudjam/internal/oltp"
 	"codeberg.org/megakuul/cloudjam/internal/provider/cache"
 	"codeberg.org/megakuul/cloudjam/internal/scheduler"
+	"codeberg.org/megakuul/cloudjam/internal/sortid"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/cloud"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/cloud/account"
 	"connectrpc.com/connect"
@@ -118,9 +119,10 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[account.Create
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to fetch provider"))
 	}
 
+	accountID := sortid.New().String()
 	err = dynamitedb.Create(ctx, s.oltp, &oltp.Account{
 		ProviderID:  dynamitedb.Key(providerMeta.ProviderID.Value()),
-		AccountID:   dynamitedb.Key(req.Msg.Init.Id),
+		AccountID:   dynamitedb.Key(accountID),
 		Name:        dynamitedb.Set(req.Msg.Init.Name),
 		Description: dynamitedb.Set(req.Msg.Init.Description),
 		State:       dynamitedb.Set(cloud.AccountState_NotCreated),
@@ -133,7 +135,7 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[account.Create
 
 	accountMeta, err := dynamitedb.Get(ctx, s.oltp, &oltp.Account{
 		ProviderID: dynamitedb.Key(providerMeta.ProviderID.Value()),
-		AccountID:  dynamitedb.Key(req.Msg.Init.Id),
+		AccountID:  dynamitedb.Key(accountID),
 		State:      dynamitedb.Eq(cloud.AccountState_NotCreated),
 		Scope:      dynamitedb.In(auth.Scopes(ctx)...),
 	})
@@ -191,7 +193,9 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[account.Create
 			Error:      dynamitedb.Set(err.Error()),
 		})
 	})
-	return &connect.Response[account.CreateResponse]{Msg: &account.CreateResponse{}}, nil
+	return &connect.Response[account.CreateResponse]{Msg: &account.CreateResponse{
+		Id: accountID,
+	}}, nil
 }
 
 func (s *Server) Update(ctx context.Context, req *connect.Request[account.UpdateRequest]) (*connect.Response[account.UpdateResponse], error) {

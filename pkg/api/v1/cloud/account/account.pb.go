@@ -270,6 +270,7 @@ func (x *CreateRequest) GetInit() *cloud.Account {
 
 type CreateResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -302,6 +303,13 @@ func (x *CreateResponse) ProtoReflect() protoreflect.Message {
 // Deprecated: Use CreateResponse.ProtoReflect.Descriptor instead.
 func (*CreateResponse) Descriptor() ([]byte, []int) {
 	return file_v1_cloud_account_account_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *CreateResponse) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
 }
 
 type UpdateRequest struct {
@@ -589,8 +597,9 @@ const file_v1_cloud_account_account_proto_rawDesc = "" +
 	"\fListResponse\x12-\n" +
 	"\baccounts\x18\x01 \x03(\v2\x11.v1.cloud.AccountR\baccounts\"6\n" +
 	"\rCreateRequest\x12%\n" +
-	"\x04init\x18\x01 \x01(\v2\x11.v1.cloud.AccountR\x04init\"\x10\n" +
-	"\x0eCreateResponse\"4\n" +
+	"\x04init\x18\x01 \x01(\v2\x11.v1.cloud.AccountR\x04init\"*\n" +
+	"\x0eCreateResponse\x12\x18\n" +
+	"\x02id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\"4\n" +
 	"\rUpdateRequest\x12#\n" +
 	"\x03mod\x18\x01 \x01(\v2\x11.v1.cloud.AccountR\x03mod\"\x10\n" +
 	"\x0eUpdateResponse\"Q\n" +

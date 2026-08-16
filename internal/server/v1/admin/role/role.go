@@ -9,6 +9,7 @@ import (
 
 	"codeberg.org/megakuul/cloudjam/internal/auth"
 	"codeberg.org/megakuul/cloudjam/internal/oltp"
+	"codeberg.org/megakuul/cloudjam/internal/sortid"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/admin"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/admin/role"
 	"connectrpc.com/connect"
@@ -97,8 +98,9 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[role.CreateReq
 		return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("can't attach a scope you don't possess"))
 	}
 
+	roleID := sortid.New().String()
 	err := dynamitedb.Create(ctx, s.bucket, &oltp.Role{
-		RoleID:      dynamitedb.Key(req.Msg.Init.Id),
+		RoleID:      dynamitedb.Key(roleID),
 		Name:        dynamitedb.Set(req.Msg.Init.Name),
 		Description: dynamitedb.Set(req.Msg.Init.Description),
 		Builtin:     dynamitedb.Set(req.Msg.Init.Builtin),
@@ -111,7 +113,9 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[role.CreateReq
 		l.Error(fmt.Sprintf("failed to create role: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create role"))
 	}
-	return &connect.Response[role.CreateResponse]{Msg: &role.CreateResponse{}}, nil
+	return &connect.Response[role.CreateResponse]{Msg: &role.CreateResponse{
+		Id: roleID,
+	}}, nil
 }
 
 func (s *Server) Update(ctx context.Context, req *connect.Request[role.UpdateRequest]) (*connect.Response[role.UpdateResponse], error) {

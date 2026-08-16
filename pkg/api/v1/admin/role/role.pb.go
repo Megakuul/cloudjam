@@ -254,6 +254,7 @@ func (x *CreateRequest) GetInit() *admin.Role {
 
 type CreateResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -286,6 +287,13 @@ func (x *CreateResponse) ProtoReflect() protoreflect.Message {
 // Deprecated: Use CreateResponse.ProtoReflect.Descriptor instead.
 func (*CreateResponse) Descriptor() ([]byte, []int) {
 	return file_v1_admin_role_role_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *CreateResponse) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
 }
 
 type UpdateRequest struct {
@@ -465,8 +473,9 @@ const file_v1_admin_role_role_proto_rawDesc = "" +
 	"\fListResponse\x12$\n" +
 	"\x05roles\x18\x01 \x03(\v2\x0e.v1.admin.RoleR\x05roles\"3\n" +
 	"\rCreateRequest\x12\"\n" +
-	"\x04init\x18\x01 \x01(\v2\x0e.v1.admin.RoleR\x04init\"\x10\n" +
-	"\x0eCreateResponse\"1\n" +
+	"\x04init\x18\x01 \x01(\v2\x0e.v1.admin.RoleR\x04init\"*\n" +
+	"\x0eCreateResponse\x12\x18\n" +
+	"\x02id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\"1\n" +
 	"\rUpdateRequest\x12 \n" +
 	"\x03mod\x18\x01 \x01(\v2\x0e.v1.admin.RoleR\x03mod\"\x10\n" +
 	"\x0eUpdateResponse\")\n" +

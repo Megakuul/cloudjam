@@ -11,6 +11,7 @@ import (
 
 	"codeberg.org/megakuul/cloudjam/internal/auth"
 	"codeberg.org/megakuul/cloudjam/internal/oltp"
+	"codeberg.org/megakuul/cloudjam/internal/sortid"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/admin"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/admin/user"
 	"connectrpc.com/connect"
@@ -128,7 +129,7 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[user.CreateReq
 		l.Error(fmt.Sprintf("failed to construct argon2id hash for code: %v", err))
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to construct invitation code"))
 	}
-	userId := uuid.NewString()
+	userId := sortid.New().String()
 
 	err = dynamitedb.Create(ctx, s.oltp, &oltp.Creds{
 		Email:          dynamitedb.Key(req.Msg.Init.Email),

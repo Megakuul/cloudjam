@@ -11,6 +11,7 @@ import (
 	"codeberg.org/megakuul/cloudjam/internal/oltp"
 	"codeberg.org/megakuul/cloudjam/internal/provider/cache"
 	"codeberg.org/megakuul/cloudjam/internal/scheduler"
+	"codeberg.org/megakuul/cloudjam/internal/sortid"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/cloud"
 	"codeberg.org/megakuul/cloudjam/pkg/api/v1/cloud/provider"
 	"connectrpc.com/connect"
@@ -104,8 +105,9 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[provider.Creat
 		return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("can't attach a scope you don't possess"))
 	}
 
+	providerID := sortid.New().String()
 	err := dynamitedb.Create(ctx, s.oltp, &oltp.Provider{
-		ProviderID:  dynamitedb.Key(req.Msg.Init.Id),
+		ProviderID:  dynamitedb.Key(providerID),
 		Name:        dynamitedb.Set(req.Msg.Init.Name),
 		Type:        dynamitedb.Set(req.Msg.Init.Type),
 		Description: dynamitedb.Set(req.Msg.Init.Description),
@@ -122,7 +124,7 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[provider.Creat
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create provider"))
 	}
 	providerMeta, err := dynamitedb.Get(ctx, s.oltp, &oltp.Provider{
-		ProviderID: dynamitedb.Key(req.Msg.Init.Id),
+		ProviderID: dynamitedb.Key(providerID),
 		Scope:      dynamitedb.In(auth.Scopes(ctx)...),
 	})
 	if err != nil {
@@ -135,7 +137,9 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[provider.Creat
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to initialize provider: %v", err))
 	}
 
-	return &connect.Response[provider.CreateResponse]{Msg: &provider.CreateResponse{}}, nil
+	return &connect.Response[provider.CreateResponse]{Msg: &provider.CreateResponse{
+		Id: providerID,
+	}}, nil
 }
 
 func (s *Server) Update(ctx context.Context, req *connect.Request[provider.UpdateRequest]) (*connect.Response[provider.UpdateResponse], error) {
