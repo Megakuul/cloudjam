@@ -5,9 +5,6 @@
 	import EyeIcon from '@lucide/svelte/icons/eye';
 	import EyeOffIcon from '@lucide/svelte/icons/eye-off';
 
-	// Provider credentials travel as an opaque json blob. The aws provider deserializes it into
-	// the shape below (see internal/provider/aws/aws.go Credentials), so the form edits those
-	// fields directly instead of asking for raw json.
 	type credentials = { endpoint: string; region: string; access_key: string; secret_key: string };
 
 	let { value = $bindable() }: { value: string } = $props();
@@ -28,8 +25,6 @@
 		}
 	}
 
-	// the form owns the parsed shape, the raw json is only regenerated from it.
-	// svelte-ignore state_referenced_locally
 	let creds = $state(parse(value));
 	let reveal = $state(false);
 

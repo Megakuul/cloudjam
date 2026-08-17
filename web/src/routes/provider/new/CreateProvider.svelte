@@ -10,7 +10,7 @@
 	import { ProviderSchema, ProviderType } from '$lib/sdk/v1/cloud/provider_pb';
 	import { create } from '@bufbuild/protobuf';
 	import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
-	import AwsCredentials from './AwsCredentials.svelte';
+	import AwsCredentials from '../AwsCredentials.svelte';
 
 	let { scopes = [], oncreated }: { scopes?: string[]; oncreated: (id: string) => void } = $props();
 
@@ -65,7 +65,7 @@
 				<div class="flex flex-col gap-1">
 					<label for="create-name" class="text-sm">Name</label>
 					<Input id="create-name" bind:value={init.name} placeholder="Name of the provider" />
-					<p class="text-xs text-destructive">{Glue.Validate(ProviderSchema, init).violation.name ?? ''}</p>
+					<p class="text-destructive text-xs">{Glue.Validate(ProviderSchema, init).violation.name ?? ''}</p>
 				</div>
 				<div class="flex flex-col gap-1">
 					<label for="create-type" class="text-sm">Type</label>
@@ -83,17 +83,17 @@
 				<div class="flex flex-col gap-1">
 					<label for="create-description" class="text-sm">Description</label>
 					<Input id="create-description" bind:value={init.description} placeholder="Purpose of the provider" />
-					<p class="text-xs text-destructive">{Glue.Validate(ProviderSchema, init).violation.description ?? ''}</p>
+					<p class="text-destructive text-xs">{Glue.Validate(ProviderSchema, init).violation.description ?? ''}</p>
 				</div>
 				<div class="flex flex-col gap-1">
 					<label for="create-email" class="text-sm">Email</label>
 					<Input id="create-email" type="email" bind:value={init.email} placeholder="Root email of the provider" />
-					<p class="text-xs text-destructive">{Glue.Validate(ProviderSchema, init).violation.email ?? ''}</p>
+					<p class="text-destructive text-xs">{Glue.Validate(ProviderSchema, init).violation.email ?? ''}</p>
 				</div>
 				<div class="flex flex-col gap-1">
 					<label for="create-regions" class="text-sm">Regions</label>
 					<Input id="create-regions" bind:value={regions} placeholder="eu-central-1, us-east-1" />
-					<p class="text-xs text-muted-foreground">Comma separated list of regions accounts are placed in.</p>
+					<p class="text-muted-foreground text-xs">Comma separated list of regions accounts are placed in.</p>
 				</div>
 				<div class="flex flex-col gap-1">
 					<label for="create-scope" class="text-sm">Scope</label>
@@ -103,7 +103,7 @@
 						{scopes}
 						placeholder="Scope the provider is placed in"
 					/>
-					<p class="text-xs text-muted-foreground">You can only attach a scope you possess yourself.</p>
+					<p class="text-muted-foreground text-xs">You can only attach a scope you possess yourself.</p>
 				</div>
 			</div>
 
@@ -114,7 +114,7 @@
 				{:else}
 					<Input bind:value={init.credentials} placeholder="Provider specific credentials" />
 				{/if}
-				<p class="text-xs text-destructive">{Glue.Validate(ProviderSchema, init).violation.credentials ?? ''}</p>
+				<p class="text-destructive text-xs">{Glue.Validate(ProviderSchema, init).violation.credentials ?? ''}</p>
 			</div>
 			<Button
 				type="submit"

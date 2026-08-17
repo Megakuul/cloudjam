@@ -60,15 +60,12 @@ func (p *Provider) Nuke(ctx context.Context, id string) (err error) {
 	filters := filter.Filters{
 		"IAMRole": {
 			{Type: filter.Exact, Property: "Name", Value: p.adminRole},
-			{Type: filter.Exact, Property: "Name", Value: p.sandboxRole},
 		},
 		"IAMRolePolicy": {
 			{Type: filter.Exact, Property: "role:RoleName", Value: p.adminRole},
-			{Type: filter.Exact, Property: "role:RoleName", Value: p.sandboxRole},
 		},
 		"IAMRolePolicyAttachment": {
 			{Type: filter.Exact, Property: "RoleName", Value: p.adminRole},
-			{Type: filter.Exact, Property: "RoleName", Value: p.sandboxRole},
 		},
 	}
 

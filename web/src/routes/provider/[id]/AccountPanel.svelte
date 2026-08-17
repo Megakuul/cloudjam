@@ -6,7 +6,13 @@
 	import * as Card from '$lib/components/shad/card';
 	import { Input } from '$lib/components/shad/input';
 	import { Separator } from '$lib/components/shad/separator';
-	import { DeleteRequestSchema, FixRequestSchema, UpdateRequestSchema } from '$lib/sdk/v1/cloud/account/account_pb';
+	import Spinner from '$lib/components/shad/spinner/spinner.svelte';
+	import {
+		DeleteRequestSchema,
+		FixRequestSchema,
+		ResetRequestSchema,
+		UpdateRequestSchema
+	} from '$lib/sdk/v1/cloud/account/account_pb';
 	import { AccountState, type Account } from '$lib/sdk/v1/cloud/account_pb';
 	import { create } from '@bufbuild/protobuf';
 	import { timestampDate } from '@bufbuild/protobuf/wkt';
@@ -28,6 +34,7 @@
 	let force = $state(false);
 
 	let update: section = $state({ error: '', loading: false, forbidden: false });
+	let reset: section = $state({ error: '', loading: false, forbidden: false });
 	let fix: section = $state({ error: '', loading: false, forbidden: false });
 	let remove: section = $state({ error: '', loading: false, forbidden: false });
 </script>
@@ -89,21 +96,53 @@
 				<p class="text-muted-foreground text-sm italic">You are not allowed to fix this account.</p>
 			{:else}
 				<p class="text-muted-foreground text-sm">
+					Nukes all resources and prepares the account so that it can be used for challenges again.
+				</p>
+				<div class="flex flex-row items-center gap-2">
+					<Button
+						class="cursor-pointer self-start"
+						disabled={reset.loading}
+						onclick={() =>
+							Submit(async () => {
+								await Glue.account.reset(
+									create(ResetRequestSchema, { providerId: account.providerId, id: account.id })
+								);
+								refresh();
+							}, setter(reset))}
+					>
+						Reset Account
+					</Button>
+					{#if reset.loading}
+						<Badge>
+							<Spinner />
+							Initializing Eviction
+						</Badge>
+					{/if}
+				</div>
+				<p class="text-muted-foreground text-sm">
 					Forces the account back into the ready state. Only do this after you actually repaired the account on the
 					provider, otherwise it is handed out broken.
 				</p>
-				<Button
-					variant="destructive"
-					class="cursor-pointer self-start"
-					disabled={fix.loading}
-					onclick={() =>
-						Submit(async () => {
-							await Glue.account.fix(create(FixRequestSchema, { providerId: account.providerId, id: account.id }));
-							refresh();
-						}, setter(fix))}
-				>
-					Reset Account
-				</Button>
+				<div class="flex flex-row items-center gap-2">
+					<Button
+						variant="destructive"
+						class="cursor-pointer self-start"
+						disabled={fix.loading}
+						onclick={() =>
+							Submit(async () => {
+								await Glue.account.fix(create(FixRequestSchema, { providerId: account.providerId, id: account.id }));
+								refresh();
+							}, setter(fix))}
+					>
+						Force Metafix
+					</Button>
+					{#if fix.loading}
+						<Badge>
+							<Spinner />
+							Force Reseting
+						</Badge>
+					{/if}
+				</div>
 				{#if fix.error}
 					<p class="text-destructive text-xs">{fix.error}</p>
 				{/if}

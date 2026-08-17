@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { Button } from '$lib/components/shad/button';
 	import ChevronLeftIcon from '@lucide/svelte/icons/chevron-left';
-	import CreateProvider from '../CreateProvider.svelte';
+	import CreateProvider from './CreateProvider.svelte';
 </script>
 
 <svelte:head>
@@ -20,6 +20,5 @@
 		<h1 class="text-3xl opacity-80">Add Provider</h1>
 	</div>
 
-	<!-- the new provider is opened right away, nobody has to look it up afterwards. -->
-	<CreateProvider oncreated={(id) => goto(`/provider/?id=${encodeURIComponent(id)}`)} />
+	<CreateProvider oncreated={(id) => goto(`/provider/${id}`)} />
 </div>

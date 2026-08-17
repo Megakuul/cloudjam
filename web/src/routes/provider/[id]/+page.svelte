@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { page } from '$app/state';
+
 	import { Glue, Submit } from '$lib';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Badge } from '$lib/components/shad/badge';
@@ -13,8 +15,9 @@
 	import AccountSection from './AccountSection.svelte';
 	import DefinitionSection from './DefinitionSection.svelte';
 	import ProviderPanel from './ProviderPanel.svelte';
+	import { goto } from '$app/navigation';
 
-	let { providerId, close }: { providerId: string; close: () => void } = $props();
+	let providerId = $derived(page.params.id ?? '');
 
 	const tabs = ['overview', 'accounts', 'definitions'] as const;
 
@@ -36,9 +39,16 @@
 	onMount(() => load());
 </script>
 
+<svelte:head>
+	<title>Provider | CloudJam</title>
+	<meta property="og:title" content="Provider | CloudJam" />
+	<meta property="og:type" content="website" />
+	<meta property="og:image" content="/favicon.png" />
+</svelte:head>
+
 <div class="flex w-full flex-col gap-4">
 	<div class="flex flex-row items-center gap-2">
-		<Button variant="ghost" size="icon" class="cursor-pointer" onclick={() => close()}>
+		<Button variant="ghost" size="icon" class="cursor-pointer" onclick={() => goto('/provider')}>
 			<ChevronLeftIcon />
 		</Button>
 		<h1 class="text-3xl opacity-80">{provider?.name ?? 'Provider'}</h1>
@@ -79,7 +89,7 @@
 		</Alert.Root>
 	{:else if tab === 'overview'}
 		{#if provider}
-			<ProviderPanel {provider} refresh={() => load()} deleted={() => close()} />
+			<ProviderPanel {provider} refresh={() => load()} deleted={() => goto('/provider')} />
 		{/if}
 	{:else if tab === 'accounts'}
 		<AccountSection {providerId} />

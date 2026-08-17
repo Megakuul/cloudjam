@@ -41,6 +41,8 @@ const (
 	AccountServiceCreateProcedure = "/v1.cloud.account.AccountService/Create"
 	// AccountServiceUpdateProcedure is the fully-qualified name of the AccountService's Update RPC.
 	AccountServiceUpdateProcedure = "/v1.cloud.account.AccountService/Update"
+	// AccountServiceResetProcedure is the fully-qualified name of the AccountService's Reset RPC.
+	AccountServiceResetProcedure = "/v1.cloud.account.AccountService/Reset"
 	// AccountServiceFixProcedure is the fully-qualified name of the AccountService's Fix RPC.
 	AccountServiceFixProcedure = "/v1.cloud.account.AccountService/Fix"
 	// AccountServiceDeleteProcedure is the fully-qualified name of the AccountService's Delete RPC.
@@ -57,7 +59,10 @@ type AccountServiceClient interface {
 	Create(context.Context, *connect.Request[account.CreateRequest]) (*connect.Response[account.CreateResponse], error)
 	// Update updates teh cloudjam account metadata.
 	Update(context.Context, *connect.Request[account.UpdateRequest]) (*connect.Response[account.UpdateResponse], error)
-	// Fix sets the account state forcefully to READY. This is very dangerous use with caution only if you actually fixed the account corruption.
+	// Reset applies the nuke scripts to the account to clean it up and bring it back to ready state.
+	Reset(context.Context, *connect.Request[account.ResetRequest]) (*connect.Response[account.ResetResponse], error)
+	// Fix sets the account state forcefully to READY unbinds it from running Games.
+	// This is very dangerous use with caution only if you actually fixed the account corruption.
 	// Unfortunately this is required because *some* retarded providers (*AWS*) use account quotas
 	// so we cannot just delete and create new accounts but must manually fix them when issues occur.
 	Fix(context.Context, *connect.Request[account.FixRequest]) (*connect.Response[account.FixResponse], error)
@@ -101,6 +106,12 @@ func NewAccountServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 			connect.WithSchema(accountServiceMethods.ByName("Update")),
 			connect.WithClientOptions(opts...),
 		),
+		reset: connect.NewClient[account.ResetRequest, account.ResetResponse](
+			httpClient,
+			baseURL+AccountServiceResetProcedure,
+			connect.WithSchema(accountServiceMethods.ByName("Reset")),
+			connect.WithClientOptions(opts...),
+		),
 		fix: connect.NewClient[account.FixRequest, account.FixResponse](
 			httpClient,
 			baseURL+AccountServiceFixProcedure,
@@ -122,6 +133,7 @@ type accountServiceClient struct {
 	list   *connect.Client[account.ListRequest, account.ListResponse]
 	create *connect.Client[account.CreateRequest, account.CreateResponse]
 	update *connect.Client[account.UpdateRequest, account.UpdateResponse]
+	reset  *connect.Client[account.ResetRequest, account.ResetResponse]
 	fix    *connect.Client[account.FixRequest, account.FixResponse]
 	delete *connect.Client[account.DeleteRequest, account.DeleteResponse]
 }
@@ -146,6 +158,11 @@ func (c *accountServiceClient) Update(ctx context.Context, req *connect.Request[
 	return c.update.CallUnary(ctx, req)
 }
 
+// Reset calls v1.cloud.account.AccountService.Reset.
+func (c *accountServiceClient) Reset(ctx context.Context, req *connect.Request[account.ResetRequest]) (*connect.Response[account.ResetResponse], error) {
+	return c.reset.CallUnary(ctx, req)
+}
+
 // Fix calls v1.cloud.account.AccountService.Fix.
 func (c *accountServiceClient) Fix(ctx context.Context, req *connect.Request[account.FixRequest]) (*connect.Response[account.FixResponse], error) {
 	return c.fix.CallUnary(ctx, req)
@@ -166,7 +183,10 @@ type AccountServiceHandler interface {
 	Create(context.Context, *connect.Request[account.CreateRequest]) (*connect.Response[account.CreateResponse], error)
 	// Update updates teh cloudjam account metadata.
 	Update(context.Context, *connect.Request[account.UpdateRequest]) (*connect.Response[account.UpdateResponse], error)
-	// Fix sets the account state forcefully to READY. This is very dangerous use with caution only if you actually fixed the account corruption.
+	// Reset applies the nuke scripts to the account to clean it up and bring it back to ready state.
+	Reset(context.Context, *connect.Request[account.ResetRequest]) (*connect.Response[account.ResetResponse], error)
+	// Fix sets the account state forcefully to READY unbinds it from running Games.
+	// This is very dangerous use with caution only if you actually fixed the account corruption.
 	// Unfortunately this is required because *some* retarded providers (*AWS*) use account quotas
 	// so we cannot just delete and create new accounts but must manually fix them when issues occur.
 	Fix(context.Context, *connect.Request[account.FixRequest]) (*connect.Response[account.FixResponse], error)
@@ -206,6 +226,12 @@ func NewAccountServiceHandler(svc AccountServiceHandler, opts ...connect.Handler
 		connect.WithSchema(accountServiceMethods.ByName("Update")),
 		connect.WithHandlerOptions(opts...),
 	)
+	accountServiceResetHandler := connect.NewUnaryHandler(
+		AccountServiceResetProcedure,
+		svc.Reset,
+		connect.WithSchema(accountServiceMethods.ByName("Reset")),
+		connect.WithHandlerOptions(opts...),
+	)
 	accountServiceFixHandler := connect.NewUnaryHandler(
 		AccountServiceFixProcedure,
 		svc.Fix,
@@ -228,6 +254,8 @@ func NewAccountServiceHandler(svc AccountServiceHandler, opts ...connect.Handler
 			accountServiceCreateHandler.ServeHTTP(w, r)
 		case AccountServiceUpdateProcedure:
 			accountServiceUpdateHandler.ServeHTTP(w, r)
+		case AccountServiceResetProcedure:
+			accountServiceResetHandler.ServeHTTP(w, r)
 		case AccountServiceFixProcedure:
 			accountServiceFixHandler.ServeHTTP(w, r)
 		case AccountServiceDeleteProcedure:
@@ -255,6 +283,10 @@ func (UnimplementedAccountServiceHandler) Create(context.Context, *connect.Reque
 
 func (UnimplementedAccountServiceHandler) Update(context.Context, *connect.Request[account.UpdateRequest]) (*connect.Response[account.UpdateResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.cloud.account.AccountService.Update is not implemented"))
+}
+
+func (UnimplementedAccountServiceHandler) Reset(context.Context, *connect.Request[account.ResetRequest]) (*connect.Response[account.ResetResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("v1.cloud.account.AccountService.Reset is not implemented"))
 }
 
 func (UnimplementedAccountServiceHandler) Fix(context.Context, *connect.Request[account.FixRequest]) (*connect.Response[account.FixResponse], error) {

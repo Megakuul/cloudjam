@@ -10,7 +10,7 @@
 	import { ProviderType, type Provider } from '$lib/sdk/v1/cloud/provider_pb';
 	import { create } from '@bufbuild/protobuf';
 	import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
-	import AwsCredentials from './AwsCredentials.svelte';
+	import AwsCredentials from '../AwsCredentials.svelte';
 	import Spinner from '$lib/components/shad/spinner/spinner.svelte';
 
 	let { provider, refresh, deleted }: { provider: Provider; refresh: () => void; deleted: () => void } = $props();

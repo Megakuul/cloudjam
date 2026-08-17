@@ -44,6 +44,13 @@ message UpdateRequest {
 
 message UpdateResponse {}
 
+message ResetRequest {
+  string provider_id = 1 [(buf.validate.field).string = {uuid: true}];
+  string id = 2 [(buf.validate.field).string = {uuid: true}];
+}
+
+message ResetResponse {}
+
 message FixRequest {
   string provider_id = 1 [(buf.validate.field).string = {uuid: true}];
   string id = 2 [(buf.validate.field).string = {uuid: true}];
@@ -68,7 +75,10 @@ service AccountService {
   rpc Create(CreateRequest) returns (CreateResponse);
   // Update updates teh cloudjam account metadata.
   rpc Update(UpdateRequest) returns (UpdateResponse);
-  // Fix sets the account state forcefully to READY. This is very dangerous use with caution only if you actually fixed the account corruption.
+  // Reset applies the nuke scripts to the account to clean it up and bring it back to ready state.
+  rpc Reset(ResetRequest) returns (ResetResponse);
+  // Fix sets the account state forcefully to READY unbinds it from running Games.
+  // This is very dangerous use with caution only if you actually fixed the account corruption.
   // Unfortunately this is required because *some* retarded providers (*AWS*) use account quotas
   // so we cannot just delete and create new accounts but must manually fix them when issues occur.
   rpc Fix(FixRequest) returns (FixResponse);

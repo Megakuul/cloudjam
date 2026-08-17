@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/cloud/account/account.proto.
  */
 export const file_v1_cloud_account_account: GenFile = /*@__PURE__*/
-  fileDesc("Ch52MS9jbG91ZC9hY2NvdW50L2FjY291bnQucHJvdG8SEHYxLmNsb3VkLmFjY291bnQiQQoKR2V0UmVxdWVzdBIdCgtwcm92aWRlcl9pZBgBIAEoCUIIukgFcgOwAQESFAoCaWQYAiABKAlCCLpIBXIDsAEBIjEKC0dldFJlc3BvbnNlEiIKB2FjY291bnQYASABKAsyES52MS5jbG91ZC5BY2NvdW50IlsKC0xpc3RSZXF1ZXN0Eh0KC3Byb3ZpZGVyX2lkGAEgASgJQgi6SAVyA7ABARIYCgVsaW1pdBgCIAEoBUIJukgGGgQYZCAAEhMKC3N0YXJ0X2FmdGVyGAMgASgJIjMKDExpc3RSZXNwb25zZRIjCghhY2NvdW50cxgBIAMoCzIRLnYxLmNsb3VkLkFjY291bnQiMAoNQ3JlYXRlUmVxdWVzdBIfCgRpbml0GAEgASgLMhEudjEuY2xvdWQuQWNjb3VudCImCg5DcmVhdGVSZXNwb25zZRIUCgJpZBgBIAEoCUIIukgFcgOwAQEiLwoNVXBkYXRlUmVxdWVzdBIeCgNtb2QYASABKAsyES52MS5jbG91ZC5BY2NvdW50IhAKDlVwZGF0ZVJlc3BvbnNlIkEKCkZpeFJlcXVlc3QSHQoLcHJvdmlkZXJfaWQYASABKAlCCLpIBXIDsAEBEhQKAmlkGAIgASgJQgi6SAVyA7ABASINCgtGaXhSZXNwb25zZSJTCg1EZWxldGVSZXF1ZXN0Eh0KC3Byb3ZpZGVyX2lkGAEgASgJQgi6SAVyA7ABARIUCgJpZBgCIAEoCUIIukgFcgOwAQESDQoFZm9yY2UYAyABKAgiEAoORGVsZXRlUmVzcG9uc2UyxgMKDkFjY291bnRTZXJ2aWNlEkIKA0dldBIcLnYxLmNsb3VkLmFjY291bnQuR2V0UmVxdWVzdBodLnYxLmNsb3VkLmFjY291bnQuR2V0UmVzcG9uc2USRQoETGlzdBIdLnYxLmNsb3VkLmFjY291bnQuTGlzdFJlcXVlc3QaHi52MS5jbG91ZC5hY2NvdW50Lkxpc3RSZXNwb25zZRJLCgZDcmVhdGUSHy52MS5jbG91ZC5hY2NvdW50LkNyZWF0ZVJlcXVlc3QaIC52MS5jbG91ZC5hY2NvdW50LkNyZWF0ZVJlc3BvbnNlEksKBlVwZGF0ZRIfLnYxLmNsb3VkLmFjY291bnQuVXBkYXRlUmVxdWVzdBogLnYxLmNsb3VkLmFjY291bnQuVXBkYXRlUmVzcG9uc2USQgoDRml4EhwudjEuY2xvdWQuYWNjb3VudC5GaXhSZXF1ZXN0Gh0udjEuY2xvdWQuYWNjb3VudC5GaXhSZXNwb25zZRJLCgZEZWxldGUSHy52MS5jbG91ZC5hY2NvdW50LkRlbGV0ZVJlcXVlc3QaIC52MS5jbG91ZC5hY2NvdW50LkRlbGV0ZVJlc3BvbnNlQjlaN2NvZGViZXJnLm9yZy9tZWdha3V1bC9jbG91ZGphbS9wa2cvYXBpL3YxL2Nsb3VkL2FjY291bnRiBnByb3RvMw", [file_buf_validate_validate, file_google_protobuf_timestamp, file_v1_cloud_account]);
+  fileDesc("Ch52MS9jbG91ZC9hY2NvdW50L2FjY291bnQucHJvdG8SEHYxLmNsb3VkLmFjY291bnQiQQoKR2V0UmVxdWVzdBIdCgtwcm92aWRlcl9pZBgBIAEoCUIIukgFcgOwAQESFAoCaWQYAiABKAlCCLpIBXIDsAEBIjEKC0dldFJlc3BvbnNlEiIKB2FjY291bnQYASABKAsyES52MS5jbG91ZC5BY2NvdW50IlsKC0xpc3RSZXF1ZXN0Eh0KC3Byb3ZpZGVyX2lkGAEgASgJQgi6SAVyA7ABARIYCgVsaW1pdBgCIAEoBUIJukgGGgQYZCAAEhMKC3N0YXJ0X2FmdGVyGAMgASgJIjMKDExpc3RSZXNwb25zZRIjCghhY2NvdW50cxgBIAMoCzIRLnYxLmNsb3VkLkFjY291bnQiMAoNQ3JlYXRlUmVxdWVzdBIfCgRpbml0GAEgASgLMhEudjEuY2xvdWQuQWNjb3VudCImCg5DcmVhdGVSZXNwb25zZRIUCgJpZBgBIAEoCUIIukgFcgOwAQEiLwoNVXBkYXRlUmVxdWVzdBIeCgNtb2QYASABKAsyES52MS5jbG91ZC5BY2NvdW50IhAKDlVwZGF0ZVJlc3BvbnNlIkMKDFJlc2V0UmVxdWVzdBIdCgtwcm92aWRlcl9pZBgBIAEoCUIIukgFcgOwAQESFAoCaWQYAiABKAlCCLpIBXIDsAEBIg8KDVJlc2V0UmVzcG9uc2UiQQoKRml4UmVxdWVzdBIdCgtwcm92aWRlcl9pZBgBIAEoCUIIukgFcgOwAQESFAoCaWQYAiABKAlCCLpIBXIDsAEBIg0KC0ZpeFJlc3BvbnNlIlMKDURlbGV0ZVJlcXVlc3QSHQoLcHJvdmlkZXJfaWQYASABKAlCCLpIBXIDsAEBEhQKAmlkGAIgASgJQgi6SAVyA7ABARINCgVmb3JjZRgDIAEoCCIQCg5EZWxldGVSZXNwb25zZTKQBAoOQWNjb3VudFNlcnZpY2USQgoDR2V0EhwudjEuY2xvdWQuYWNjb3VudC5HZXRSZXF1ZXN0Gh0udjEuY2xvdWQuYWNjb3VudC5HZXRSZXNwb25zZRJFCgRMaXN0Eh0udjEuY2xvdWQuYWNjb3VudC5MaXN0UmVxdWVzdBoeLnYxLmNsb3VkLmFjY291bnQuTGlzdFJlc3BvbnNlEksKBkNyZWF0ZRIfLnYxLmNsb3VkLmFjY291bnQuQ3JlYXRlUmVxdWVzdBogLnYxLmNsb3VkLmFjY291bnQuQ3JlYXRlUmVzcG9uc2USSwoGVXBkYXRlEh8udjEuY2xvdWQuYWNjb3VudC5VcGRhdGVSZXF1ZXN0GiAudjEuY2xvdWQuYWNjb3VudC5VcGRhdGVSZXNwb25zZRJICgVSZXNldBIeLnYxLmNsb3VkLmFjY291bnQuUmVzZXRSZXF1ZXN0Gh8udjEuY2xvdWQuYWNjb3VudC5SZXNldFJlc3BvbnNlEkIKA0ZpeBIcLnYxLmNsb3VkLmFjY291bnQuRml4UmVxdWVzdBodLnYxLmNsb3VkLmFjY291bnQuRml4UmVzcG9uc2USSwoGRGVsZXRlEh8udjEuY2xvdWQuYWNjb3VudC5EZWxldGVSZXF1ZXN0GiAudjEuY2xvdWQuYWNjb3VudC5EZWxldGVSZXNwb25zZUI5Wjdjb2RlYmVyZy5vcmcvbWVnYWt1dWwvY2xvdWRqYW0vcGtnL2FwaS92MS9jbG91ZC9hY2NvdW50YgZwcm90bzM", [file_buf_validate_validate, file_google_protobuf_timestamp, file_v1_cloud_account]);
 
 /**
  * @generated from message v1.cloud.account.GetRequest
@@ -164,6 +164,41 @@ export const UpdateResponseSchema: GenMessage<UpdateResponse> = /*@__PURE__*/
   messageDesc(file_v1_cloud_account_account, 7);
 
 /**
+ * @generated from message v1.cloud.account.ResetRequest
+ */
+export type ResetRequest = Message<"v1.cloud.account.ResetRequest"> & {
+  /**
+   * @generated from field: string provider_id = 1;
+   */
+  providerId: string;
+
+  /**
+   * @generated from field: string id = 2;
+   */
+  id: string;
+};
+
+/**
+ * Describes the message v1.cloud.account.ResetRequest.
+ * Use `create(ResetRequestSchema)` to create a new message.
+ */
+export const ResetRequestSchema: GenMessage<ResetRequest> = /*@__PURE__*/
+  messageDesc(file_v1_cloud_account_account, 8);
+
+/**
+ * @generated from message v1.cloud.account.ResetResponse
+ */
+export type ResetResponse = Message<"v1.cloud.account.ResetResponse"> & {
+};
+
+/**
+ * Describes the message v1.cloud.account.ResetResponse.
+ * Use `create(ResetResponseSchema)` to create a new message.
+ */
+export const ResetResponseSchema: GenMessage<ResetResponse> = /*@__PURE__*/
+  messageDesc(file_v1_cloud_account_account, 9);
+
+/**
  * @generated from message v1.cloud.account.FixRequest
  */
 export type FixRequest = Message<"v1.cloud.account.FixRequest"> & {
@@ -183,7 +218,7 @@ export type FixRequest = Message<"v1.cloud.account.FixRequest"> & {
  * Use `create(FixRequestSchema)` to create a new message.
  */
 export const FixRequestSchema: GenMessage<FixRequest> = /*@__PURE__*/
-  messageDesc(file_v1_cloud_account_account, 8);
+  messageDesc(file_v1_cloud_account_account, 10);
 
 /**
  * @generated from message v1.cloud.account.FixResponse
@@ -196,7 +231,7 @@ export type FixResponse = Message<"v1.cloud.account.FixResponse"> & {
  * Use `create(FixResponseSchema)` to create a new message.
  */
 export const FixResponseSchema: GenMessage<FixResponse> = /*@__PURE__*/
-  messageDesc(file_v1_cloud_account_account, 9);
+  messageDesc(file_v1_cloud_account_account, 11);
 
 /**
  * @generated from message v1.cloud.account.DeleteRequest
@@ -223,7 +258,7 @@ export type DeleteRequest = Message<"v1.cloud.account.DeleteRequest"> & {
  * Use `create(DeleteRequestSchema)` to create a new message.
  */
 export const DeleteRequestSchema: GenMessage<DeleteRequest> = /*@__PURE__*/
-  messageDesc(file_v1_cloud_account_account, 10);
+  messageDesc(file_v1_cloud_account_account, 12);
 
 /**
  * @generated from message v1.cloud.account.DeleteResponse
@@ -236,7 +271,7 @@ export type DeleteResponse = Message<"v1.cloud.account.DeleteResponse"> & {
  * Use `create(DeleteResponseSchema)` to create a new message.
  */
 export const DeleteResponseSchema: GenMessage<DeleteResponse> = /*@__PURE__*/
-  messageDesc(file_v1_cloud_account_account, 11);
+  messageDesc(file_v1_cloud_account_account, 13);
 
 /**
  * @generated from service v1.cloud.account.AccountService
@@ -283,7 +318,18 @@ export const AccountService: GenService<{
     output: typeof UpdateResponseSchema;
   },
   /**
-   * Fix sets the account state forcefully to READY. This is very dangerous use with caution only if you actually fixed the account corruption.
+   * Reset applies the nuke scripts to the account to clean it up and bring it back to ready state.
+   *
+   * @generated from rpc v1.cloud.account.AccountService.Reset
+   */
+  reset: {
+    methodKind: "unary";
+    input: typeof ResetRequestSchema;
+    output: typeof ResetResponseSchema;
+  },
+  /**
+   * Fix sets the account state forcefully to READY unbinds it from running Games.
+   * This is very dangerous use with caution only if you actually fixed the account corruption.
    * Unfortunately this is required because *some* retarded providers (*AWS*) use account quotas
    * so we cannot just delete and create new accounts but must manually fix them when issues occur.
    *
