@@ -3,6 +3,7 @@ package aws
 import (
 	"context"
 	"fmt"
+	"io"
 	"log/slog"
 	"strings"
 	"time"
@@ -69,7 +70,11 @@ func (p *Provider) Nuke(ctx context.Context, id string) (err error) {
 		},
 	}
 
+	// disable the leaking logrus global logs
+	logrus.SetOutput(io.Discard)
+
 	logger := logrus.New()
+	logger.SetLevel(logrus.WarnLevel)
 	logger.SetOutput(logWriter{logger: p.logger})
 	logger.SetFormatter(&logrus.TextFormatter{DisableTimestamp: true, DisableColors: true})
 
@@ -127,6 +132,6 @@ type logWriter struct {
 }
 
 func (w logWriter) Write(line []byte) (int, error) {
-	w.logger.Info(strings.TrimRight(string(line), "\n"))
+	w.logger.Warn(strings.TrimRight(string(line), "\n"))
 	return len(line), nil
 }
