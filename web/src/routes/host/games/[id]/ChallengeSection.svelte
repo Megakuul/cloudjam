@@ -6,7 +6,8 @@
 	import * as Table from '$lib/components/shad/table';
 	import { ListRequestSchema } from '$lib/sdk/v1/play/challenge/challenge_pb';
 	import type { Challenge } from '$lib/sdk/v1/play/challenge_pb';
-	import { ListRequestSchema as ListTeamsRequestSchema } from '$lib/sdk/v1/play/team/team_pb';
+	import { ListRequestSchema as ListTeamRequestSchema } from '$lib/sdk/v1/play/team/team_pb';
+	import { ListRequestSchema as ListDefinitionRequestSchema } from '$lib/sdk/v1/cloud/definition/definition_pb';
 	import type { Team } from '$lib/sdk/v1/play/team_pb';
 	import { create } from '@bufbuild/protobuf';
 	import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
@@ -14,6 +15,7 @@
 	import { onMount } from 'svelte';
 	import ChallengePanel from './ChallengePanel.svelte';
 	import CreateChallenge from './CreateChallenge.svelte';
+	import type { Definition } from '$lib/sdk/v1/cloud/definition_pb';
 
 	let { gameId, scope }: { gameId: string; scope: string } = $props();
 
@@ -59,7 +61,7 @@
 		// teams of the same game resolve the challenge owner; raw ids are shown without access.
 		Submit(
 			async () => {
-				teams = (await Glue.team.list(create(ListTeamsRequestSchema, { gameId: gameId, limit: limit }))).teams;
+				teams = (await Glue.team.list(create(ListTeamRequestSchema, { gameId: gameId, limit: limit }))).teams;
 			},
 			() => {}
 		);
@@ -70,7 +72,7 @@
 	<div class="flex flex-row items-center gap-2">
 		<h2 class="text-xl opacity-80">Challenges</h2>
 		<Button variant="outline" class="ml-auto cursor-pointer" onclick={() => (creating = !creating)}>
-			<PlusIcon /> Hand Out Challenge
+			<PlusIcon /> Provision Challenges
 		</Button>
 	</div>
 
@@ -112,7 +114,7 @@
 				{:else}
 					<Table.Row>
 						<Table.Cell colspan={4}>
-							<p class="p-4 text-sm text-muted-foreground italic">
+							<p class="text-muted-foreground p-4 text-sm italic">
 								{loading ? 'Loading challenges…' : 'No challenges handed out in this game yet.'}
 							</p>
 						</Table.Cell>

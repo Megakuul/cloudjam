@@ -14,8 +14,10 @@
 	import ChallengeSection from './ChallengeSection.svelte';
 	import GamePanel from './GamePanel.svelte';
 	import TeamSection from './TeamSection.svelte';
+	import { page } from '$app/state';
+	import { goto } from '$app/navigation';
 
-	let { gameId, close }: { gameId: string; close: () => void } = $props();
+	let gameId = $derived(page.params.id ?? '');
 
 	const tabs = ['overview', 'teams', 'challenges'] as const;
 
@@ -23,7 +25,6 @@
 	let forbidden = $state(false);
 
 	let game: Game | undefined = $state();
-	// the child sections query inside the game partition, so only the open tab loads anything.
 	let tab: (typeof tabs)[number] = $state('overview');
 
 	function status(game: Game): string {
@@ -45,9 +46,16 @@
 	onMount(() => load());
 </script>
 
+<svelte:head>
+	<title>{game?.name ?? 'Game'} | CloudJam</title>
+	<meta property="og:title" content="Games | CloudJam" />
+	<meta property="og:type" content="website" />
+	<meta property="og:image" content="/favicon.png" />
+</svelte:head>
+
 <div class="flex w-full flex-col gap-4">
 	<div class="flex flex-row items-center gap-2">
-		<Button variant="ghost" size="icon" class="cursor-pointer" onclick={() => close()}>
+		<Button variant="ghost" size="icon" class="cursor-pointer" onclick={() => goto('/host/games')}>
 			<ChevronLeftIcon />
 		</Button>
 		<h1 class="text-3xl opacity-80">{game?.name ?? 'Game'}</h1>
@@ -88,7 +96,7 @@
 		</Alert.Root>
 	{:else if tab === 'overview'}
 		{#if game}
-			<GamePanel {game} refresh={() => load()} deleted={() => close()} />
+			<GamePanel {game} refresh={() => load()} deleted={() => goto('/host/games')} />
 		{/if}
 	{:else if tab === 'teams'}
 		<TeamSection {gameId} scope={game?.scope ?? ''} />

@@ -2,12 +2,12 @@
 	import { goto } from '$app/navigation';
 	import { Button } from '$lib/components/shad/button';
 	import ChevronLeftIcon from '@lucide/svelte/icons/chevron-left';
-	import CreateGame from '../CreateGame.svelte';
+	import CreateGame from './CreateGame.svelte';
 </script>
 
 <svelte:head>
-	<title>Schedule Game | CloudJam</title>
-	<meta property="og:title" content="Schedule Game | CloudJam" />
+	<title>Host Game | CloudJam</title>
+	<meta property="og:title" content="Host Game | CloudJam" />
 	<meta property="og:type" content="website" />
 	<meta property="og:image" content="/favicon.png" />
 </svelte:head>
@@ -17,9 +17,8 @@
 		<Button variant="ghost" size="icon" class="cursor-pointer" href="/host/games/">
 			<ChevronLeftIcon />
 		</Button>
-		<h1 class="text-3xl opacity-80">Schedule Game</h1>
+		<h1 class="text-3xl opacity-80">Host Game</h1>
 	</div>
 
-	<!-- the new game is opened right away, nobody has to look it up afterwards. -->
-	<CreateGame oncreated={(id) => goto(`/host/games/?id=${encodeURIComponent(id)}`)} />
+	<CreateGame oncreated={(id) => goto(`/host/games/${id}`)} />
 </div>

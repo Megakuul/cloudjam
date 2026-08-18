@@ -5,6 +5,7 @@
 	import { Button } from '$lib/components/shad/button';
 	import * as Card from '$lib/components/shad/card';
 	import { Input } from '$lib/components/shad/input';
+	import LabelInput from '$lib/components/shad/label-input/label-input.svelte';
 	import { CreateRequestSchema } from '$lib/sdk/v1/play/game/game_pb';
 	import { GameSchema } from '$lib/sdk/v1/play/game_pb';
 	import { create } from '@bufbuild/protobuf';
@@ -33,7 +34,7 @@
 
 <Card.Root class="w-full">
 	<Card.Header>
-		<Card.Title>Schedule Game</Card.Title>
+		<Card.Title>Host Game</Card.Title>
 		<Card.Description>
 			Creates a gameday. Teams and challenges can only be managed while the game has not ended yet.
 		</Card.Description>
@@ -44,41 +45,39 @@
 			onsubmit={() =>
 				Submit(
 					async () => {
-						await Glue.game.create(request);
-						// the new game is opened right away, nobody has to scan for it.
-						oncreated(init.id);
-						init = create(GameSchema, { id: crypto.randomUUID() });
+						const resp = await Glue.game.create(request);
+						oncreated(resp.id);
 					},
 					(e, l, f) => ((error = e), (loading = l), (forbidden = f))
 				)}
 		>
 			<div class="grid gap-4 md:grid-cols-2">
-				<div class="flex flex-col gap-1">
-					<label for="create-name" class="text-sm">Name</label>
-					<Input id="create-name" bind:value={init.name} placeholder="Name of the game" />
-					<p class="text-destructive text-xs">{Glue.Validate(GameSchema, init).violation.name ?? ''}</p>
-				</div>
-				<div class="flex flex-col gap-1">
-					<label for="create-description" class="text-sm">Description</label>
-					<Input id="create-description" bind:value={init.description} placeholder="What the game is about" />
-					<p class="text-destructive text-xs">{Glue.Validate(GameSchema, init).violation.description ?? ''}</p>
-				</div>
-				<div class="flex flex-col gap-1">
-					<label for="create-from" class="text-sm">From</label>
-					<Input id="create-from" type="datetime-local" bind:value={from} />
-				</div>
-				<div class="flex flex-col gap-1">
-					<label for="create-to" class="text-sm">To</label>
-					<Input id="create-to" type="datetime-local" bind:value={to} />
-				</div>
-				<div class="flex flex-col gap-1">
-					<label for="create-scope" class="text-sm">Scope</label>
+				<LabelInput
+					bind:value={init.name}
+					label={'Name'}
+					placeholder={'Name of the game'}
+					validation={Glue.Validate(GameSchema, init).violation.name}
+				/>
+				<LabelInput
+					bind:value={init.description}
+					label={'Description'}
+					placeholder={'What the game is about'}
+					validation={Glue.Validate(GameSchema, init).violation.description}
+				/>
+				<label class="text-sm">
+					From
+					<Input type="datetime-local" bind:value={from} />
+				</label>
+				<label class="text-sm">
+					To
+					<Input type="datetime-local" bind:value={to} />
+				</label>
+				<label class="text-sm">
+					Scope
 					<ScopeInput id="create-scope" bind:value={init.scope} {scopes} placeholder="Scope the game is placed in" />
-					<p class="text-muted-foreground text-xs">You can only attach a scope you possess yourself.</p>
-				</div>
+				</label>
 			</div>
 			<Button type="submit" class="cursor-pointer self-start" disabled={loading}>Schedule</Button>
-			<p class="text-destructive text-xs">{Glue.Validate(CreateRequestSchema, request).error}</p>
 			{#if error}
 				<Alert.Root variant="destructive">
 					<AlertCircleIcon />
