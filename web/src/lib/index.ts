@@ -37,32 +37,43 @@ export const Glue = createGlue(
 	}
 );
 
+// SubmitState is the object that holds the state of the Submit.
+// It is recommended to create a state per operation to avoid a full page loading spinner if a small action failed.
+// Usually you want to instantiate this as a $state to make the properties reactive proxies.
+export type SubmitState = { error: string; loading: boolean; forbidden: boolean };
+
 // Submit is a helper for the common "unerror->spin->call->unspin->error" flow
 // in most basic submit functions. Returns a usable user error and writes the full error
 // to a error bus (currently console.error() TBD).
-export async function Submit(
-	call: () => Promise<void>,
-	setState: (err: string, load: boolean, forbidden: boolean) => void
-) {
-	setState('', true, false);
+export async function Submit(call: () => Promise<void>, state: SubmitState) {
+	((state.loading = true), (state.error = ''), (state.forbidden = false));
 	try {
 		const res = await call();
-		setState('', false, false);
+		((state.loading = false), (state.error = ''), (state.forbidden = false));
 		return res;
 	} catch (e: any) {
 		const error = ConnectError.from(e);
 		if (error.code === Code.PermissionDenied) {
-			setState(error.rawMessage, false, true);
+			((state.loading = false), (state.error = error.rawMessage), (state.forbidden = true));
 		} else {
 			// TODO: implement more sophisticated error notification system.
 			console.error(error.message);
-			setState(error.rawMessage, false, false);
+			((state.loading = false), (state.error = error.rawMessage), (state.forbidden = false));
 		}
 	}
 }
 
 export function setToken(token: string) {
 	localStorage.setItem('auth_token', token);
+}
+
+export function getSubject(): string {
+	const token = localStorage.getItem('auth_token');
+	if (token) {
+		const decoded = jwtDecode(token, {});
+		if ((decoded.exp ?? 0) * 1000 > Date.now()) return (decoded as any).sub;
+	}
+	return '';
 }
 
 export function getEmail(): string {

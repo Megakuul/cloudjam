@@ -17,8 +17,6 @@
 	const limit = 100;
 
 	let error = $state('');
-	// the shell is prerendered, so this starts loading: the list is only known after the
-	// request that onMount fires once hydration completed.
 	let loading = $state(true);
 	let forbidden = $state(false);
 
@@ -28,9 +26,7 @@
 	let selected: Team | undefined = $state();
 	let creating = $state(false);
 
-	// teams live in the game partition, so listing them is a query and not a scan.
 	function load(startAfter?: string) {
-		selected = undefined;
 		Submit(
 			async () => {
 				const resp = await Glue.team.list(
@@ -87,7 +83,7 @@
 				{:else}
 					<Table.Row>
 						<Table.Cell colspan={3}>
-							<p class="p-4 text-sm text-muted-foreground italic">
+							<p class="text-muted-foreground p-4 text-sm italic">
 								{loading ? 'Loading teams…' : 'No teams in this game yet.'}
 							</p>
 						</Table.Cell>
