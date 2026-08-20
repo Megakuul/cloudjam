@@ -27,15 +27,20 @@
 
 	let listState: SubmitState = $state({ error: '', forbidden: false, loading: false });
 
+	let timeoutId: ReturnType<typeof setTimeout>;
 	function load(startAfter?: string) {
-		selected = undefined;
-		Submit(async () => {
-			const resp = await Glue.account.list(
-				create(ListRequestSchema, { providerId: providerId, limit: limit, startAfter: startAfter })
-			);
-			accounts = startAfter ? [...accounts, ...resp.accounts] : resp.accounts;
-			exhausted = resp.accounts.length < limit;
-		}, listState);
+		clearTimeout(timeoutId);
+		async function poll() {
+			Submit(async () => {
+				const resp = await Glue.account.list(
+					create(ListRequestSchema, { providerId: providerId, limit: limit, startAfter: startAfter })
+				);
+				accounts = startAfter ? [...accounts, ...resp.accounts] : resp.accounts;
+				exhausted = resp.accounts.length < limit;
+			}, listState);
+			timeoutId = setTimeout(poll, 5000);
+		}
+		poll();
 	}
 
 	onMount(() => load());

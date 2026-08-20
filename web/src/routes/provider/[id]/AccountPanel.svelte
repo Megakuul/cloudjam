@@ -112,6 +112,14 @@
 						</Badge>
 					{/if}
 				</div>
+				{#if resetState.error}
+					<Alert.Root variant="destructive">
+						<AlertCircleIcon />
+						<Alert.Title>Failed to reset account</Alert.Title>
+						<Alert.Description>{resetState.error}</Alert.Description>
+					</Alert.Root>
+				{/if}
+
 				<p class="text-muted-foreground text-sm">
 					Forces the account back into the ready state. Only do this after you actually repaired the account on the
 					provider, otherwise it is handed out broken.

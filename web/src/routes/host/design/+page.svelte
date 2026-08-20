@@ -156,7 +156,11 @@
 
 			{#if selectedDefinition}
 				{#key selectedDefinition.id}
-					<DefinitionPanel definition={selectedDefinition} refresh={() => loadDefinitions()} />
+					<DefinitionPanel
+						definition={selectedDefinition}
+						refresh={() => loadDefinitions()}
+						close={() => (selectedDefinition = undefined)}
+					/>
 				{/key}
 			{/if}
 

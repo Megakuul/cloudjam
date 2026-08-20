@@ -15,7 +15,7 @@
 	import Spinner from '$lib/components/shad/spinner/spinner.svelte';
 	import LabelInput from '$lib/components/shad/label-input/label-input.svelte';
 
-	let { definition, refresh }: { definition: Definition; refresh: () => void } = $props();
+	let { definition, refresh, close }: { definition: Definition; refresh: () => void; close: () => void } = $props();
 
 	let mod = $derived({ ...definition });
 	let files: FileList | undefined = $state();
@@ -122,6 +122,7 @@
 										create(DeleteRequestSchema, { providerId: definition.providerId, id: definition.id })
 									);
 									refresh();
+									close();
 								}, removeState)}
 						>
 							Yes, delete {definition.name}

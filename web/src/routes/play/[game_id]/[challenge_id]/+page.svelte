@@ -49,7 +49,7 @@
 					)
 				).challenge;
 			}, challengeState);
-			timeoutId = setTimeout(poll, 5000);
+			timeoutId = setTimeout(poll, 3000);
 		}
 		poll();
 
