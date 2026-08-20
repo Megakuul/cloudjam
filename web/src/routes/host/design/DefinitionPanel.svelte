@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Glue, Submit } from '$lib';
+	import { Glue, Submit, type SubmitState } from '$lib';
 	import { compress } from '$lib/compress';
 	import { toDigest } from '$lib/digest';
 	import * as Alert from '$lib/components/shad/alert';
@@ -9,28 +9,20 @@
 	import { Input } from '$lib/components/shad/input';
 	import { Separator } from '$lib/components/shad/separator';
 	import { DeleteRequestSchema, UpdateRequestSchema } from '$lib/sdk/v1/cloud/definition/definition_pb';
-	import { CompressionMode, type Definition } from '$lib/sdk/v1/cloud/definition_pb';
+	import { CompressionMode, DefinitionSchema, type Definition } from '$lib/sdk/v1/cloud/definition_pb';
 	import { create } from '@bufbuild/protobuf';
 	import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
 	import Spinner from '$lib/components/shad/spinner/spinner.svelte';
+	import LabelInput from '$lib/components/shad/label-input/label-input.svelte';
 
 	let { definition, refresh }: { definition: Definition; refresh: () => void } = $props();
 
-	type section = { error: string; loading: boolean; forbidden: boolean };
-	const setter = (s: section) => (e: string, l: boolean, f: boolean) => (
-		(s.error = e),
-		(s.loading = l),
-		(s.forbidden = f)
-	);
-
-	// the panel is remounted (keyed) per definition, capturing the initial values is intended.
-	// svelte-ignore state_referenced_locally
-	let mod = $state({ ...definition });
+	let mod = $derived({ ...definition });
 	let files: FileList | undefined = $state();
 	let confirmDelete = $state(false);
 
-	let update: section = $state({ error: '', loading: false, forbidden: false });
-	let remove: section = $state({ error: '', loading: false, forbidden: false });
+	let updateState: SubmitState = $state({ error: '', loading: false, forbidden: false });
+	let removeState: SubmitState = $state({ error: '', loading: false, forbidden: false });
 </script>
 
 <Card.Root class="w-full">
@@ -49,7 +41,7 @@
 	<Card.Content class="flex flex-col gap-6">
 		<div class="flex flex-col gap-2">
 			<Card.Title>Definition</Card.Title>
-			{#if update.forbidden}
+			{#if updateState.forbidden}
 				<p class="text-muted-foreground text-sm italic">You are not allowed to update this definition.</p>
 			{:else}
 				<form
@@ -65,21 +57,27 @@
 							});
 							files = undefined;
 							refresh();
-						}, setter(update))}
+						}, updateState)}
 				>
 					<div class="grid gap-4 md:grid-cols-2">
-						<div class="flex flex-col gap-1">
-							<label for="update-name" class="text-sm">Name</label>
-							<Input id="update-name" bind:value={mod.name} placeholder="Name of the definition" />
-						</div>
-						<div class="flex flex-col gap-1">
-							<label for="update-version" class="text-sm">Version</label>
-							<Input id="update-version" bind:value={mod.version} placeholder="1.0.0" />
-						</div>
-						<div class="flex flex-col gap-1">
-							<label for="update-description" class="text-sm">Description</label>
-							<Input id="update-description" bind:value={mod.description} placeholder="What the challenge is about" />
-						</div>
+						<LabelInput
+							bind:value={mod.name}
+							label="Name"
+							placeholder="Name of the challenge definition"
+							validation={Glue.Validate(DefinitionSchema, mod).violation.name}
+						/>
+						<LabelInput
+							bind:value={mod.description}
+							label="Description"
+							placeholder="Description of the challenge definition"
+							validation={Glue.Validate(DefinitionSchema, mod).violation.description}
+						/>
+						<LabelInput
+							bind:value={mod.version}
+							label="Version"
+							placeholder="Plugin Version (currently irrelevant)"
+							validation={Glue.Validate(DefinitionSchema, mod).violation.version}
+						/>
 						<div class="flex flex-col gap-1">
 							<label for="update-binary" class="text-sm">Plugin</label>
 							<Input id="update-binary" type="file" accept=".wasm" bind:files />
@@ -88,10 +86,10 @@
 					</div>
 
 					<div class="flex flex-row items-center justify-start gap-2">
-						<Button type="submit" variant="outline" class="cursor-pointer self-start" disabled={update.loading}>
+						<Button type="submit" variant="outline" class="cursor-pointer self-start" disabled={updateState.loading}>
 							Save and Upload
 						</Button>
-						{#if update.loading && files}
+						{#if updateState.loading && files}
 							<Badge>
 								<Spinner />
 								Compressing and Uploading
@@ -99,8 +97,8 @@
 						{/if}
 					</div>
 				</form>
-				{#if update.error}
-					<p class="text-destructive text-xs">{update.error}</p>
+				{#if updateState.error}
+					<p class="text-destructive text-xs">{updateState.error}</p>
 				{/if}
 			{/if}
 		</div>
@@ -109,7 +107,7 @@
 
 		<div class="flex flex-col gap-2">
 			<Card.Title>Danger Zone</Card.Title>
-			{#if remove.forbidden}
+			{#if removeState.forbidden}
 				<p class="text-muted-foreground text-sm italic">You are not allowed to delete this definition.</p>
 			{:else}
 				<div class="flex flex-row items-center gap-2">
@@ -117,14 +115,14 @@
 						<Button
 							variant="destructive"
 							class="cursor-pointer"
-							disabled={remove.loading}
+							disabled={removeState.loading}
 							onclick={() =>
 								Submit(async () => {
 									await Glue.definition.delete(
 										create(DeleteRequestSchema, { providerId: definition.providerId, id: definition.id })
 									);
 									refresh();
-								}, setter(remove))}
+								}, removeState)}
 						>
 							Yes, delete {definition.name}
 						</Button>
@@ -135,11 +133,11 @@
 						</Button>
 					{/if}
 				</div>
-				{#if remove.error}
+				{#if removeState.error}
 					<Alert.Root variant="destructive">
 						<AlertCircleIcon />
 						<Alert.Title>Failed to delete definition</Alert.Title>
-						<Alert.Description>{remove.error}</Alert.Description>
+						<Alert.Description>{removeState.error}</Alert.Description>
 					</Alert.Root>
 				{/if}
 			{/if}

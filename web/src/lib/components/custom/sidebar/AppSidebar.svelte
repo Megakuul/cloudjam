@@ -38,7 +38,7 @@
 		<SectionRenderer section={hostOptions} />
 		<SectionRenderer section={providerOptions} />
 		<SectionRenderer section={adminOptions} />
-		<SectionRenderer section={hallOfFameOptions} />
+		<!-- <SectionRenderer section={hallOfFameOptions} /> -->
 	</Sidebar.Content>
 
 	<Sidebar.Footer>

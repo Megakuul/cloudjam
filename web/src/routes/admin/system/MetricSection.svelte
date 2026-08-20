@@ -253,8 +253,6 @@
 				</Card.Description>
 			</div>
 			<ZoomChart
-				title="Requests"
-				description="Request count per rpc endpoint"
 				timeFormat={zoomTimeformat(from, to)}
 				labels={hitLabels}
 				data={hitData}
@@ -268,8 +266,6 @@
 				<Card.Description>Average endpoint latency in milliseconds</Card.Description>
 			</div>
 			<ZoomChart
-				title="Latency"
-				description="Average request latency per rpc endpoint"
 				timeFormat={zoomTimeformat(from, to)}
 				labels={latencyLabels}
 				data={latencyData}
