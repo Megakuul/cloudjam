@@ -33,6 +33,94 @@ them appear.
 `Start()` publishes the metadata and enters the loop. It never returns, and it panics if
 called twice.
 
+## Permission and guardrail
+
+Both are mandatory — `Start` panics if either is unset — and they are not the same thing:
+
+| | What the player gets | What it becomes in AWS | Hard size limit |
+| --- | --- | --- | --- |
+| `SetPermission` | what they can do *now*; bootstrap and events widen it as the story moves | an **inline policy** on the sandbox role | **10 240 characters** |
+| `SetGuardrail` | the ceiling they can never exceed, even by writing themselves a new policy | a **managed policy** attached as the role's **permissions boundary** | **6 144 characters** |
+
+The size limits are IAM quotas, they are not negotiable, and going over is a hard failure:
+
+```
+create_guardrail: failed to create permission boundary: operation error IAM: CreatePolicy,
+https response error StatusCode: 409, LimitExceeded: Cannot exceed quota for PolicySize: 6144
+```
+
+**A local `jamctl` run will not catch this.** fakecloud accepts an oversized policy happily
+(verified: a 10 kB managed policy is created without complaint), so the challenge only
+breaks once it is handed to a real account. And nothing stops when it does: host calls
+cannot return errors to the plugin (see below), so the failure lands in the *host* log
+prefixed with the host function name — `create_guardrail: …` — while the plugin sails on
+and provisions a scenario the player has no boundary, and often no permissions, for.
+Grep the run log for the host function names; do not assume silence means success.
+
+### What blows the budget
+
+Expanding a service's generated action groups. `policy.ActionsFrom` writes every action out
+as a literal string, and the big services have hundreds:
+
+| `ActionsFrom(…)` | Actions | Bytes of policy |
+| --- | --- | --- |
+| `ec2.ActionsRead, ec2.ActionsList, ec2.ActionsWrite` | 768 | **25 908** |
+| `ssm.ActionsRead, ssm.ActionsList, ssm.ActionsWrite` | 157 | 4 632 |
+| `s3.ActionsRead, s3.ActionsList, s3.ActionsWrite` | 141 | 4 206 |
+| `logs.ActionsRead, logs.ActionsList, logs.ActionsWrite` | 126 | 3 485 |
+| `dynamodb.ActionsRead, ActionsList, ActionsWrite` | 74 | 2 297 |
+
+One service with `ActionsWrite` can already be four times the boundary quota. Two or three
+of them together is the mistake that produced the error above.
+
+### Write the guardrail with wildcards
+
+The guardrail is a *ceiling*, not a grant — it decides which services the player can touch
+at all, not which calls. It has no business being precise, and precision is what costs
+bytes. Use service or prefix wildcards:
+
+```go
+SetGuardrail(policy.Document{
+	Version: policy.Version20121017,
+	Statement: []policy.Statement{
+		// the player never needs iam; everything else the challenge lives in is open,
+		// and SetPermission decides what they actually hold at any moment.
+		{
+			Effect:   policy.Allow,
+			Action:   policy.Actions{"ec2:*", "logs:*", "kms:*", "ssm:*"},
+			Resource: policy.ARNAll,
+		},
+	},
+})
+```
+
+That is 116 bytes; those same four services expanded through `ActionsFrom` are 34 991. Keep
+the fine-grained, per-ARN, generated-constant work in `SetPermission`, where the budget is
+10 240 and the document is usually scoped to the handful of resources bootstrap just
+created — `examples/challenges/audit-day` does both, and names its actions rather than
+pulling in whole action groups.
+
+If a challenge genuinely needs a narrow boundary, narrow it with `Deny` on the few dangerous
+actions rather than enumerating everything you allow — a deny list of names is short, an
+allow list of a whole service is not. `NotAction` is the other short form.
+
+### Check the size before you ship
+
+The `policy` package builds for the host, so the document is measurable without wasm:
+
+```go
+doc := policy.Document{ /* the same value the plugin passes to SetGuardrail */ }
+fmt.Println(len(doc.String())) // must be < 6144 for a guardrail, < 10240 for a permission
+```
+
+Do that for every document the plugin can produce — including the widened ones bootstrap and
+events install later, which fail exactly the same way and even more quietly.
+
+Two more limits on the same call, for the same reason: a managed policy keeps only **5
+versions**, and `SetGuardrail` after `Start` writes a new version each time without pruning
+the old ones, so a plugin that rewrites its guardrail on every event dies with the same
+`LimitExceeded` on the sixth. Set the guardrail once and let `SetPermission` do the moving.
+
 ## Check
 
 A check is points, a throttle, a repeat flag and a `Trigger func() (bool, error)`.

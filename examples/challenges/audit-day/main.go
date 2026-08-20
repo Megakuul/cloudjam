@@ -75,14 +75,13 @@ func main() {
 			Statement: []policy.Statement{
 				// the player never needs iam, and the guardrail is what stops them
 				// granting themselves more than the challenge intends.
+				//
+				// wildcards, not ActionsFrom: the boundary is a managed policy and IAM
+				// caps those at 6144 characters. Expanding the four services' action
+				// groups here would be 34991 and the boundary would never be created.
 				{
-					Effect: policy.Allow,
-					Action: policy.ActionsFrom(
-						ec2.ActionsRead, ec2.ActionsList, ec2.ActionsWrite,
-						logs.ActionsRead, logs.ActionsList, logs.ActionsWrite,
-						kms.ActionsRead, kms.ActionsList, kms.ActionsWrite,
-						ssm.ActionsRead, ssm.ActionsList, ssm.ActionsWrite,
-					),
+					Effect:   policy.Allow,
+					Action:   policy.Actions{"ec2:*", "logs:*", "kms:*", "ssm:*"},
 					Resource: policy.ARNAll,
 				},
 			},
@@ -162,18 +161,32 @@ func bootstrap(s *challenge.Scenario) error {
 	}
 	logGroupRef = logGroup
 
+	// only the calls the three findings need. Naming them beats ActionsFrom on four
+	// services: an inline policy is capped at 10240 characters and those action groups
+	// expand to 34991 between them.
 	s.SetPermission(policy.Document{
 		Version: policy.Version20121017,
 		Statement: []policy.Statement{
 			{
 				Sid:    "Remediation",
 				Effect: policy.Allow,
-				Action: policy.ActionsFrom(
-					ec2.ActionsRead, ec2.ActionsList, ec2.ActionsWrite,
-					logs.ActionsRead, logs.ActionsList, logs.ActionsWrite,
-					kms.ActionsRead, kms.ActionsList, kms.ActionsWrite,
-					ssm.ActionsRead, ssm.ActionsList, ssm.ActionsWrite,
-				),
+				Action: policy.Actions{
+					// finding 1: read the group, then take the internet off it.
+					"ec2:Describe*",
+					ec2.ActionAuthorizeSecurityGroupIngress,
+					ec2.ActionRevokeSecurityGroupIngress,
+					// finding 2: retention on the log group.
+					"logs:Describe*",
+					logs.ActionPutRetentionPolicy,
+					// finding 3: a key of their own, and the log group encrypted with it.
+					"kms:Describe*", "kms:List*", "kms:Get*",
+					kms.ActionCreateKey, kms.ActionCreateAlias, kms.ActionPutKeyPolicy,
+					kms.ActionEnableKeyRotation,
+					logs.ActionAssociateKmsKey, logs.ActionDisassociateKmsKey,
+					// act two: the remediation note.
+					"ssm:DescribeParameters", "ssm:GetParameter*",
+					ssm.ActionPutParameter, ssm.ActionAddTagsToResource,
+				},
 				// the key, and the note, do not exist yet, so they cannot be named here.
 				Resource: policy.ARNAll,
 			},

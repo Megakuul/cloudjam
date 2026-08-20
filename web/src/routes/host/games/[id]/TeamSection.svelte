@@ -11,8 +11,9 @@
 	import { onMount } from 'svelte';
 	import CreateTeam from './CreateTeam.svelte';
 	import TeamPanel from './TeamPanel.svelte';
+	import type { Game } from '$lib/sdk/v1/play/game_pb';
 
-	let { gameId }: { gameId: string } = $props();
+	let { game }: { game: Game } = $props();
 
 	const limit = 100;
 
@@ -27,7 +28,7 @@
 	function load(startAfter?: string) {
 		Submit(async () => {
 			const resp = await Glue.team.list(
-				create(ListRequestSchema, { gameId: gameId, limit: limit, startAfter: startAfter })
+				create(ListRequestSchema, { gameId: game.id, limit: limit, startAfter: startAfter })
 			);
 			teams = startAfter ? [...teams, ...resp.teams] : resp.teams;
 			exhausted = resp.teams.length < limit;
@@ -46,7 +47,7 @@
 	</div>
 
 	{#if creating}
-		<CreateTeam {gameId} oncreated={() => load()} />
+		<CreateTeam {game} oncreated={() => load()} />
 	{/if}
 
 	{#if teamsState.forbidden}

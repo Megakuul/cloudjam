@@ -95,9 +95,13 @@
 			<GamePanel {game} refresh={() => load()} deleted={() => goto('/host/games')} />
 		{/if}
 	{:else if tab === 'teams'}
-		<TeamSection {gameId} />
+		{#if game}
+			<TeamSection {game} />
+		{/if}
 	{:else if tab === 'challenges'}
-		<ChallengeSection {gameId} />
+		{#if game}
+			<ChallengeSection {gameId} />
+		{/if}
 	{/if}
 
 	{#if gameState.error}

@@ -28,6 +28,11 @@ func NewRequestTracer(logger *slog.Logger, inserter *lake.Ingestor[olap.Request]
 
 // emitMetric inserts an entry to the olap system that contains anonymized information about the request.
 func (v *RequestTracer) emitMetric(ctx context.Context, typ olap.RequestType, latency time.Duration, peer, procedure string) error {
+	defer func() {
+		if recovered := recover(); recovered != nil {
+			v.logger.Warn(fmt.Sprintf("panicked while emitting request metric: %v", recovered))
+		}
+	}()
 	// trim off port number
 	segments := strings.Split(peer, ":")
 	if len(segments) < 1 {

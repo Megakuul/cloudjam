@@ -31,6 +31,10 @@ Do not hand over a challenge you have not run.
   to rebuild it — or the check must retire, not keep punishing.
 - **The account is a real account.** Every resource costs money and must be nukeable. No
   NAT gateways, no RDS clusters, no `p4d` instances unless the user asked for the bill.
+- **Guardrail and permission documents must fit IAM's quotas** — 6144 characters for the
+  guardrail, 10240 for the permission. A local run does not enforce them; the real account
+  does, and the challenge then runs with no boundary at all. Write guardrails with service
+  wildcards and see [`sdk.md`](sdk.md#permission-and-guardrail).
 
 ## Anatomy
 
@@ -92,6 +96,8 @@ traffic generation and how to score requests that were served versus dropped.
 - [ ] Compiles for `wasip1`.
 - [ ] Runs under `jamctl` and provisions without errors in the log.
 - [ ] Every check observed going false → true, or explicitly flagged as unverified.
+- [ ] Every guardrail document under 6144 characters and every permission document under
+      10240, measured with `len(doc.String())` — including the ones bootstrap and events set.
 - [ ] Maximum score stated, and it adds up.
 - [ ] Every resource is nukeable and cheap.
 - [ ] Clues are useful without giving the answer away.

@@ -14,7 +14,7 @@
 	import type { Provider } from '$lib/sdk/v1/cloud/provider_pb';
 	import LabelInput from '$lib/components/shad/label-input/label-input.svelte';
 
-	let { provider }: { provider: Provider } = $props();
+	let { provider, refresh }: { provider: Provider; refresh: () => void } = $props();
 
 	let init = $derived(create(DefinitionSchema, { id: crypto.randomUUID(), scope: provider.scope }));
 	let files: FileList | undefined = $state();
@@ -42,6 +42,7 @@
 					await Glue.definition.create({ ...createRequest, binary: binary });
 					init = create(DefinitionSchema, { id: crypto.randomUUID(), scope: provider.scope });
 					files = undefined;
+					refresh();
 				}, createState)}
 		>
 			<div class="grid gap-4 md:grid-cols-2">

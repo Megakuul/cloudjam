@@ -2,30 +2,20 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import { Glue, Submit, type SubmitState } from '$lib';
-	import * as Alert from '$lib/components/shad/alert';
 	import { Badge } from '$lib/components/shad/badge';
 	import { Button } from '$lib/components/shad/button';
-	import * as Card from '$lib/components/shad/card';
-	import * as Table from '$lib/components/shad/table';
-	import {
-		GetRequestSchema as GetChallengeRequestSchema,
-		ListRequestSchema
-	} from '$lib/sdk/v1/play/challenge/challenge_pb';
+	import { GetRequestSchema as GetChallengeRequestSchema } from '$lib/sdk/v1/play/challenge/challenge_pb';
 	import type { Challenge } from '$lib/sdk/v1/play/challenge_pb';
 	import { GetRequestSchema as GetGameRequestSchema } from '$lib/sdk/v1/play/game/game_pb';
 	import type { Game } from '$lib/sdk/v1/play/game_pb';
-	import {
-		GetRequestSchema as GetTeamRequestSchema,
-		ListRequestSchema as ListTeamsRequestSchema
-	} from '$lib/sdk/v1/play/team/team_pb';
+	import { GetRequestSchema as GetTeamRequestSchema } from '$lib/sdk/v1/play/team/team_pb';
 	import { create } from '@bufbuild/protobuf';
 	import { timestampDate } from '@bufbuild/protobuf/wkt';
-	import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
-	import { onMount } from 'svelte';
 	import { ChevronLeftIcon } from '@lucide/svelte';
 	import type { Team } from '$lib/sdk/v1/play/team_pb';
 	import { GetRequestSchema as GetDefinitionRequestSchema } from '$lib/sdk/v1/cloud/definition/definition_pb';
 	import type { Definition } from '$lib/sdk/v1/cloud/definition_pb';
+	import PlayChallenge from './PlayChallenge.svelte';
 
 	let gameState: SubmitState = $state({ error: '', loading: false, forbidden: false });
 	let game: Game | undefined = $state();
@@ -45,16 +35,25 @@
 	let challenge: Challenge | undefined = $state();
 	$effect(() => {
 		if (!game) return undefined;
-		Submit(async () => {
-			challenge = (
-				await Glue.challenge.get(
-					create(GetChallengeRequestSchema, {
-						gameId: game?.id,
-						id: page.params.challenge_id
-					})
-				)
-			).challenge;
-		}, challengeState);
+
+		let timeoutId: ReturnType<typeof setTimeout>;
+
+		async function poll() {
+			await Submit(async () => {
+				challenge = (
+					await Glue.challenge.get(
+						create(GetChallengeRequestSchema, {
+							gameId: game?.id,
+							id: page.params.challenge_id
+						})
+					)
+				).challenge;
+			}, challengeState);
+			timeoutId = setTimeout(poll, 5000);
+		}
+		poll();
+
+		return () => clearTimeout(timeoutId);
 	});
 
 	let teamState: SubmitState = $state({ error: '', loading: false, forbidden: false });
@@ -122,4 +121,8 @@
 		{/if}
 		<Badge variant="outline">score: {score}</Badge>
 	</div>
+
+	{#if challenge}
+		<PlayChallenge {challenge} refresh={() => {}} />
+	{/if}
 </div>

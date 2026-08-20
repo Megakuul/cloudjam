@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Glue, Submit } from '$lib';
+	import { Glue, Submit, type SubmitState } from '$lib';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Badge } from '$lib/components/shad/badge';
 	import { Button } from '$lib/components/shad/button';
@@ -14,19 +14,13 @@
 	import type { Challenge } from '$lib/sdk/v1/play/challenge_pb';
 	import { create } from '@bufbuild/protobuf';
 	import { timestampDate } from '@bufbuild/protobuf/wkt';
+	import { SquareArrowOutUpRightIcon } from '@lucide/svelte';
 	import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
 	import CopyIcon from '@lucide/svelte/icons/copy';
 	import LightbulbIcon from '@lucide/svelte/icons/lightbulb';
 	import PlayIcon from '@lucide/svelte/icons/play';
 
 	let { challenge, refresh }: { challenge: Challenge; refresh: () => void } = $props();
-
-	type section = { error: string; loading: boolean; forbidden: boolean };
-	const setter = (s: section) => (e: string, l: boolean, f: boolean) => (
-		(s.error = e),
-		(s.loading = l),
-		(s.forbidden = f)
-	);
 
 	let credentials = $state('');
 
@@ -43,9 +37,34 @@
 		}
 	});
 
-	let start: section = $state({ error: '', loading: false, forbidden: false });
-	let creds: section = $state({ error: '', loading: false, forbidden: false });
-	let clue: section = $state({ error: '', loading: false, forbidden: false });
+	let startState: SubmitState = $state({ error: '', loading: false, forbidden: false });
+	let credsState: SubmitState = $state({ error: '', loading: false, forbidden: false });
+	let clueState: SubmitState = $state({ error: '', loading: false, forbidden: false });
+
+	let consoleLoginUrl = $state('');
+	$effect(() => {
+		(async function () {
+			const parsedCredentials = JSON.parse(credentials);
+			const sessionJson = JSON.stringify({
+				sessionId: parsedCredentials.accessKeyId,
+				sessionKey: parsedCredentials.secretAccessKey,
+				sessionToken: parsedCredentials.sessionToken
+			});
+
+			const federationBase = 'https://signin.aws.amazon.com/federation';
+			const tokenUrl = `${federationBase}?Action=getSigninToken&Session=${encodeURIComponent(sessionJson)}`;
+
+			const res = await fetch(tokenUrl);
+			if (!res.ok) throw new Error(`Federation request failed: ${res.statusText}`);
+
+			const { SigninToken } = await res.json();
+
+			const destination = encodeURIComponent('https://console.aws.amazon.com/');
+			const issuer = encodeURIComponent('https://example.com');
+
+			consoleLoginUrl = `${federationBase}?Action=login&Issuer=${issuer}&Destination=${destination}&SigninToken=${SigninToken}`;
+		})();
+	});
 </script>
 
 <Card.Root class="w-full">
@@ -55,24 +74,27 @@
 			<Badge variant="secondary">
 				score: {challenge.scoreEvents.reduce((sum, event) => sum + event.change, 0)}
 			</Badge>
+			{#if !challenge.title}
+				<Badge variant="default">not started yet</Badge>
+			{/if}
 		</Card.Description>
 		<Card.Action class="flex flex-row gap-2">
 			<Button
 				variant="outline"
 				class="cursor-pointer"
-				disabled={start.loading}
+				disabled={startState.loading}
 				onclick={() =>
 					Submit(async () => {
 						await Glue.challenge.start(create(StartRequestSchema, { gameId: challenge.gameId, id: challenge.id }));
 						refresh();
-					}, setter(start))}
+					}, startState)}
 			>
 				<PlayIcon /> Start
 			</Button>
 			<Button
 				variant="outline"
 				class="cursor-pointer"
-				disabled={creds.loading}
+				disabled={credsState.loading || !challenge.title}
 				onclick={() =>
 					Submit(async () => {
 						credentials = (
@@ -80,18 +102,18 @@
 								create(CredentialsRequestSchema, { gameId: challenge.gameId, id: challenge.id })
 							)
 						).credentials;
-					}, setter(creds))}
+					}, credsState)}
 			>
 				Credentials
 			</Button>
 		</Card.Action>
 	</Card.Header>
 	<Card.Content class="flex flex-col gap-6">
-		{#if start.error || creds.error}
+		{#if startState.error || credsState.error}
 			<Alert.Root variant="destructive">
 				<AlertCircleIcon />
 				<Alert.Title>Action failed</Alert.Title>
-				<Alert.Description>{start.error || creds.error}</Alert.Description>
+				<Alert.Description>{startState.error || credsState.error}</Alert.Description>
 			</Alert.Root>
 		{/if}
 
@@ -111,6 +133,9 @@
 							)}
 					>
 						<CopyIcon /> Copy as environment
+					</Button>
+					<Button variant="outline" size="sm" class="cursor-pointer" href={consoleLoginUrl}>
+						<SquareArrowOutUpRightIcon /> Open AWS Console
 					</Button>
 				</Alert.Title>
 				<Alert.Description class="flex flex-col gap-1">
@@ -147,7 +172,7 @@
 			<div class="flex flex-col gap-2">
 				<Card.Title>Briefing</Card.Title>
 				{#each challenge.description as paragraph, index (index)}
-					<p class="text-sm text-muted-foreground">{paragraph}</p>
+					<p class="text-muted-foreground text-sm">{paragraph}</p>
 				{/each}
 			</div>
 		{/if}
@@ -160,7 +185,7 @@
 				{#each Object.entries(challenge.assets) as [name, asset] (name)}
 					<div class="flex flex-row items-center gap-2 text-sm">
 						<span class="font-medium">{name}</span>
-						<span class="font-mono text-xs break-all text-muted-foreground">{asset}</span>
+						<span class="text-muted-foreground font-mono text-xs break-all">{asset}</span>
 					</div>
 				{/each}
 			</div>
@@ -171,7 +196,7 @@
 
 			<div class="flex flex-col gap-2">
 				<Card.Title>Clues</Card.Title>
-				<p class="text-sm text-muted-foreground">Uncovering a clue usually costs points.</p>
+				<p class="text-muted-foreground text-sm">Uncovering a clue usually costs points.</p>
 				{#each Object.entries(challenge.clues) as [name, text] (name)}
 					<div class="flex flex-row items-center gap-2 text-sm">
 						<span class="font-medium">{name}</span>
@@ -182,7 +207,7 @@
 								variant="outline"
 								size="sm"
 								class="cursor-pointer"
-								disabled={clue.loading}
+								disabled={clueState.loading}
 								onclick={() =>
 									Submit(async () => {
 										await Glue.challenge.uncoverClue(
@@ -193,15 +218,15 @@
 											})
 										);
 										refresh();
-									}, setter(clue))}
+									}, clueState)}
 							>
 								<LightbulbIcon /> Uncover
 							</Button>
 						{/if}
 					</div>
 				{/each}
-				{#if clue.error}
-					<p class="text-xs text-destructive">{clue.error}</p>
+				{#if clueState.error}
+					<p class="text-destructive text-xs">{clueState.error}</p>
 				{/if}
 			</div>
 		{/if}

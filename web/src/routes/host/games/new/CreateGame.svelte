@@ -15,9 +15,6 @@
 	import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
 
 	let createState: SubmitState = $state({ loading: false, error: '', forbidden: false });
-	let error = $state('');
-	let loading = $state(false);
-	let forbidden = $state(false);
 
 	let init = $state(create(GameSchema, { id: crypto.randomUUID() }));
 	const localInput = (date: Date) =>
@@ -78,12 +75,12 @@
 					/>
 				</label>
 			</div>
-			<Button type="submit" class="cursor-pointer self-start" disabled={loading}>Schedule</Button>
-			{#if error}
+			<Button type="submit" class="cursor-pointer self-start" disabled={createState.loading}>Schedule</Button>
+			{#if createState.error}
 				<Alert.Root variant="destructive">
 					<AlertCircleIcon />
-					<Alert.Title>{forbidden ? 'Permission denied' : 'Failed to schedule game'}</Alert.Title>
-					<Alert.Description>{error}</Alert.Description>
+					<Alert.Title>{createState.forbidden ? 'Permission denied' : 'Failed to schedule game'}</Alert.Title>
+					<Alert.Description>{createState.error}</Alert.Description>
 				</Alert.Root>
 			{/if}
 		</form>

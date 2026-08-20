@@ -92,7 +92,7 @@
 			return;
 		}
 		const interval = setInterval(() => {
-			active = timestampDate(game!.from!).getTime() > Date.now() && timestampDate(game!.to!).getTime() < Date.now();
+			active = timestampDate(game!.from!).getTime() < Date.now() && timestampDate(game!.to!).getTime() > Date.now();
 		}, 1000);
 		return () => clearInterval(interval);
 	});
@@ -121,34 +121,42 @@
 	<p class="text-muted-foreground text-sm">
 		{game?.description}
 	</p>
+
+	{#if userTeam}
+		<div class="flex flex-row flex-wrap gap-4">
+			{#each challenges.filter((challenge) => challenge.teamId === userTeam!.id) as challenge (challenge.id)}
+				<button
+					type="button"
+					class="w-full cursor-pointer text-left sm:w-80"
+					onclick={() => goto(`/play/${game?.id}/${challenge.id}`)}
+				>
+					<Card.Root class="h-full hover:bg-slate-50/5">
+						<Card.Header>
+							<LayersIcon class="size-8" />
+							<Card.Title class="text-xl">{challenge.title}</Card.Title>
+							<Card.Description>
+								{challenge.description.join('\n').slice(0, 20)}
+								{challenge.description.length < 1 ? '' : '...'}
+							</Card.Description>
+							<div class="flex flex-row flex-wrap gap-1">
+								{#if !challenge.title}
+									<Badge variant="secondary">not discovered</Badge>
+								{/if}
+								{#if challenge.errors.length > 0}
+									<Badge variant="destructive">provision failure</Badge>
+								{/if}
+							</div>
+						</Card.Header>
+					</Card.Root>
+				</button>
+			{/each}
+		</div>
+	{/if}
 </div>
 
-{#if userTeam}
-	<div class="flex flex-row flex-wrap gap-4">
-		{#each challenges.filter((challenge) => challenge.teamId === userTeam!.id) as challenge (challenge.id)}
-			<button
-				type="button"
-				class="w-full cursor-pointer text-left sm:w-80"
-				onclick={() => goto(`/play/${game?.id}/${challenge.id}`)}
-			>
-				<Card.Root class="h-full transition-all duration-200 hover:bg-slate-50/5">
-					<Card.Header>
-						<LayersIcon class="size-8" />
-						<Card.Title class="text-xl">{challenge.title}</Card.Title>
-						<Card.Description>{challenge.description}</Card.Description>
-						<div class="flex flex-row flex-wrap gap-1">
-							<Badge variant="secondary">Ananas</Badge>
-						</div>
-					</Card.Header>
-				</Card.Root>
-			</button>
-		{/each}
-	</div>
-{/if}
-
-<h1>TODO: here would be an epic leaderboard</h1>
-<div class="flex flex-col">
-	{#each teams as team (team.id)}
-		<div>{team.name}: {team.scope}</div>
-	{/each}
-</div>
+<!-- <h1>TODO: here will be an epic leaderboard</h1> -->
+<!-- <div class="flex flex-col"> -->
+<!-- 	{#each teams as team (team.id)} -->
+<!-- 		<div>{team.name}: {team.scope}</div> -->
+<!-- 	{/each} -->
+<!-- </div> -->

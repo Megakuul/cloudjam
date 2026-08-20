@@ -48,6 +48,14 @@ documented there and nowhere else.
 - **Cloud Control reads are not guaranteed complete**, and fakecloud and real AWS disagree in
   both directions. Never assume a property comes back — verify it. See
   [`docs/challenges/aws/validate.md`](docs/challenges/aws/validate.md).
+- **IAM policy documents have a hard size limit: 6144 characters for a `SetGuardrail`
+  (it becomes a managed policy used as permissions boundary), 10240 for a `SetPermission`
+  (an inline role policy).** Expanding a service's generated action groups blows straight
+  through it — `policy.ActionsFrom(ec2.ActionsRead, ec2.ActionsList, ec2.ActionsWrite)`
+  alone is 25 908 characters. Write guardrails with service wildcards (`"ec2:*"`), keep the
+  precise per-ARN lists for `SetPermission`, and measure with `len(doc.String())` before
+  shipping. fakecloud does not enforce the quota, so a local run passes and the real account
+  fails with `LimitExceeded: Cannot exceed quota for PolicySize`.
 
 ## Commands
 

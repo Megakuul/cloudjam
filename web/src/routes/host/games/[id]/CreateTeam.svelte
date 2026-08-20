@@ -4,19 +4,20 @@
 	import { Button } from '$lib/components/shad/button';
 	import * as Card from '$lib/components/shad/card';
 	import LabelInput from '$lib/components/shad/label-input/label-input.svelte';
+	import type { Game } from '$lib/sdk/v1/play/game_pb';
 	import { CreateRequestSchema } from '$lib/sdk/v1/play/team/team_pb';
 	import { TeamSchema } from '$lib/sdk/v1/play/team_pb';
 	import { create } from '@bufbuild/protobuf';
 	import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
 
-	let { gameId, oncreated }: { gameId: string; oncreated: () => void } = $props();
+	let { game, oncreated }: { game: Game; oncreated: () => void } = $props();
 
 	let init = $state(create(TeamSchema, { id: crypto.randomUUID() }));
 
 	let createState: SubmitState = $state({ error: '', loading: false, forbidden: false });
 	function createTeam() {
 		Submit(async () => {
-			await Glue.team.create(create(CreateRequestSchema, { init: { ...init, gameId: gameId } }));
+			await Glue.team.create(create(CreateRequestSchema, { init: { ...init, gameId: game.id, scope: game.scope } }));
 			init.name = '';
 			oncreated();
 		}, createState);

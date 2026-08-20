@@ -20,7 +20,6 @@
 	import DefinitionPanel from './DefinitionPanel.svelte';
 	import Badge from '$lib/components/shad/badge/badge.svelte';
 	import { CircleQuestionMarkIcon, WandSparklesIcon } from '@lucide/svelte';
-	import SidebarMenuButton from '$lib/components/shad/sidebar/sidebar-menu-button.svelte';
 
 	let providerId: string = $state('');
 	let provider: Provider | undefined = $state();
@@ -99,7 +98,7 @@
 	</div>
 
 	{#if provider}
-		<CreateDefinition {provider} />
+		<CreateDefinition {provider} refresh={() => loadDefinitions()} />
 
 		<div class="flex w-full flex-col gap-4">
 			<h2 class="text-xl opacity-80">Challenge Definitions on the Provider</h2>
