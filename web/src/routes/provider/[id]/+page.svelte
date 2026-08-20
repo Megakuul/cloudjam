@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { page } from '$app/state';
 
-	import { Glue, Submit } from '$lib';
+	import { Glue, Submit, type SubmitState } from '$lib';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Badge } from '$lib/components/shad/badge';
 	import { Button } from '$lib/components/shad/button';
@@ -21,26 +21,21 @@
 
 	const tabs = ['overview', 'accounts', 'definitions'] as const;
 
-	let error = $state('');
-	let forbidden = $state(false);
-
 	let provider: Provider | undefined = $state();
 	let tab: (typeof tabs)[number] = $state('overview');
 
+	let providerState: SubmitState = $state({ error: '', loading: false, forbidden: false });
 	function load() {
-		Submit(
-			async () => {
-				provider = (await Glue.provider.get(create(GetRequestSchema, { id: providerId }))).provider;
-			},
-			(e, _, f) => ((error = e), (forbidden = f))
-		);
+		Submit(async () => {
+			provider = (await Glue.provider.get(create(GetRequestSchema, { id: providerId }))).provider;
+		}, providerState);
 	}
 
 	onMount(() => load());
 </script>
 
 <svelte:head>
-	<title>Provider | CloudJam</title>
+	<title>{provider?.name ?? 'Provider'} | CloudJam</title>
 	<meta property="og:title" content="Provider | CloudJam" />
 	<meta property="og:type" content="website" />
 	<meta property="og:image" content="/favicon.png" />
@@ -81,7 +76,7 @@
 		{/each}
 	</div>
 
-	{#if forbidden}
+	{#if providerState.forbidden}
 		<Alert.Root>
 			<AlertCircleIcon />
 			<Alert.Title>Permission Denied</Alert.Title>
@@ -97,11 +92,11 @@
 		<DefinitionSection {providerId} />
 	{/if}
 
-	{#if error}
+	{#if providerState.error}
 		<Alert.Root variant="destructive">
 			<AlertCircleIcon />
 			<Alert.Title>Failed to load the provider</Alert.Title>
-			<Alert.Description>{error}</Alert.Description>
+			<Alert.Description>{providerState.error}</Alert.Description>
 		</Alert.Root>
 	{/if}
 </div>

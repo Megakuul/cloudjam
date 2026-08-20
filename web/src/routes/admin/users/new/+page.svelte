@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Button } from '$lib/components/shad/button';
 	import ChevronLeftIcon from '@lucide/svelte/icons/chevron-left';
-	import CreateUser from '../CreateUser.svelte';
+	import CreateUser from './CreateUser.svelte';
 </script>
 
 <svelte:head>

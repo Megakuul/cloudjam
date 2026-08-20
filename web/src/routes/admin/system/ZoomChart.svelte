@@ -1,6 +1,5 @@
 <script lang="ts">
 	import * as Chart from '$lib/components/shad/chart/index.js';
-	import * as Card from '$lib/components/shad/card/index.js';
 	import { scaleUtc } from 'd3-scale';
 	import { Area, AreaChart, ChartClipPath } from 'layerchart';
 	import { curveNatural } from 'd3-shape';
@@ -8,8 +7,6 @@
 	import ChartContainer from '$lib/components/shad/chart/chart-container.svelte';
 
 	let {
-		title,
-		description,
 		timeFormat,
 		labels,
 		data,
@@ -17,8 +14,6 @@
 		from = $bindable(),
 		to = $bindable()
 	}: {
-		title: string;
-		description: string;
 		timeFormat: any;
 		labels: Chart.ChartConfig;
 		data: any[];
@@ -28,7 +23,7 @@
 	} = $props();
 </script>
 
-<ChartContainer config={labels} class="-ml-3 aspect-auto h-[250px] w-full">
+<ChartContainer config={labels} class="-ml-3 aspect-auto h-62.5 w-full">
 	<AreaChart
 		{data}
 		x="date"
@@ -95,11 +90,11 @@
 				{#snippet formatter({ value, name, item })}
 					<div
 						style="--color-bg: {item.config?.color ?? item.color}"
-						class="w-1 shrink-0 self-stretch rounded-[2px] bg-(--color-bg)"
+						class="w-1 shrink-0 self-stretch rounded-xs bg-(--color-bg)"
 					></div>
 					<div class="flex flex-1 items-center justify-between gap-6 leading-none">
-						<span class="whitespace-nowrap text-muted-foreground">{name}</span>
-						<span class="font-mono font-medium whitespace-nowrap text-foreground tabular-nums">
+						<span class="text-muted-foreground whitespace-nowrap">{name}</span>
+						<span class="text-foreground font-mono font-medium whitespace-nowrap tabular-nums">
 							{typeof value === 'number' ? value.toLocaleString() : value}{unit ? ` ${unit}` : ''}
 						</span>
 					</div>

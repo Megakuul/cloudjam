@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Glue, Submit } from '$lib';
+	import { Glue, Submit, type SubmitState } from '$lib';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Badge } from '$lib/components/shad/badge';
 	import { Button } from '$lib/components/shad/button';
@@ -15,13 +15,6 @@
 
 	let { provider, refresh, deleted }: { provider: Provider; refresh: () => void; deleted: () => void } = $props();
 
-	type section = { error: string; loading: boolean; forbidden: boolean };
-	const setter = (s: section) => (e: string, l: boolean, f: boolean) => (
-		(s.error = e),
-		(s.loading = l),
-		(s.forbidden = f)
-	);
-
 	// the panel is remounted (keyed) per provider, capturing the initial values is intended.
 	// svelte-ignore state_referenced_locally
 	let mod = $state({ ...provider });
@@ -29,15 +22,15 @@
 	let regions = $state(provider.regions.join(', '));
 	let confirmDelete = $state(false);
 
-	let update: section = $state({ error: '', loading: false, forbidden: false });
-	let remove: section = $state({ error: '', loading: false, forbidden: false });
+	let updateState: SubmitState = $state({ error: '', loading: false, forbidden: false });
+	let removeState: SubmitState = $state({ error: '', loading: false, forbidden: false });
 </script>
 
 <Card.Root class="w-full">
 	<Card.Header>
 		<Card.Title class="text-2xl">
 			{provider.name}
-			{#if update.loading}
+			{#if updateState.loading}
 				<Badge>
 					<Spinner />
 					Reprovisioning
@@ -54,7 +47,7 @@
 	<Card.Content class="flex flex-col gap-6">
 		<div class="flex flex-col gap-2">
 			<Card.Title>Configuration</Card.Title>
-			{#if update.forbidden}
+			{#if updateState.forbidden}
 				<p class="text-muted-foreground text-sm italic">You are not allowed to update this provider.</p>
 			{:else}
 				<form
@@ -73,7 +66,7 @@
 								})
 							);
 							refresh();
-						}, setter(update))}
+						}, updateState)}
 				>
 					<div class="grid gap-4 md:grid-cols-2">
 						<div class="flex flex-col gap-1">
@@ -107,12 +100,12 @@
 							<Input bind:value={mod.credentials} placeholder="Provider specific credentials" />
 						{/if}
 					</div>
-					<Button type="submit" variant="outline" class="cursor-pointer self-start" disabled={update.loading}>
+					<Button type="submit" variant="outline" class="cursor-pointer self-start" disabled={updateState.loading}>
 						Update and Reprovision
 					</Button>
 				</form>
-				{#if update.error}
-					<p class="text-destructive text-xs">{update.error}</p>
+				{#if updateState.error}
+					<p class="text-destructive text-xs">{updateState.error}</p>
 				{/if}
 			{/if}
 		</div>
@@ -121,7 +114,7 @@
 
 		<div class="flex flex-col gap-2">
 			<Card.Title>Danger Zone</Card.Title>
-			{#if remove.forbidden}
+			{#if removeState.forbidden}
 				<p class="text-muted-foreground text-sm italic">You are not allowed to delete this provider.</p>
 			{:else}
 				<p class="text-muted-foreground text-sm">
@@ -132,12 +125,12 @@
 						<Button
 							variant="destructive"
 							class="cursor-pointer"
-							disabled={remove.loading}
+							disabled={removeState.loading}
 							onclick={() =>
 								Submit(async () => {
 									await Glue.provider.delete(create(DeleteRequestSchema, { id: provider.id }));
 									deleted();
-								}, setter(remove))}
+								}, removeState)}
 						>
 							Yes, delete {provider.name}
 						</Button>
@@ -148,11 +141,11 @@
 						</Button>
 					{/if}
 				</div>
-				{#if remove.error}
+				{#if removeState.error}
 					<Alert.Root variant="destructive">
 						<AlertCircleIcon />
 						<Alert.Title>Failed to delete provider</Alert.Title>
-						<Alert.Description>{remove.error}</Alert.Description>
+						<Alert.Description>{removeState.error}</Alert.Description>
 					</Alert.Root>
 				{/if}
 			{/if}

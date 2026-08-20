@@ -28,7 +28,7 @@
 </script>
 
 <Gooey blur={4} alphaPixel={255} alphaShift={-144}>
-	<div class="mt-48 grid w-full place-items-center text-center text-7xl font-bold grid-stack">
+	<div class="grid-stack mt-48 grid w-full place-items-center text-center text-7xl font-bold">
 		{#key currentWord}
 			<span
 				in:blur={{ amount: '10px', duration: 1000, easing: circOut }}

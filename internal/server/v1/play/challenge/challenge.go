@@ -150,10 +150,6 @@ func (s *Server) List(ctx context.Context, req *connect.Request[challenge.ListRe
 func (s *Server) Create(ctx context.Context, req *connect.Request[challenge.CreateRequest]) (*connect.Response[challenge.CreateResponse], error) {
 	l := s.logger.With("proc", req.Spec().Procedure)
 
-	if !slices.Contains(auth.Scopes(ctx), req.Msg.Init.Scope) {
-		return nil, connect.NewError(connect.CodePermissionDenied, fmt.Errorf("can't attach a scope you don't possess"))
-	}
-
 	gameMeta, err := dynamitedb.Get(ctx, s.oltp, &oltp.Game{
 		GameID: dynamitedb.Key(req.Msg.Init.GameId),
 		Scope:  dynamitedb.In(auth.Scopes(ctx)...),
@@ -177,7 +173,7 @@ func (s *Server) Create(ctx context.Context, req *connect.Request[challenge.Crea
 		ProviderID:   dynamitedb.Set(req.Msg.Init.DefinitionProviderId),
 		DefinitionID: dynamitedb.Set(req.Msg.Init.DefinitionId),
 
-		Scope: dynamitedb.Set(req.Msg.Init.Scope),
+		Scope: dynamitedb.Set(gameMeta.Scope.Value()),
 	})
 	if err != nil {
 		if errors.Is(err, dynamitedb.ErrAlreadyExists) {

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Glue, Submit } from '$lib';
+	import { Glue, Submit, type SubmitState } from '$lib';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Badge } from '$lib/components/shad/badge';
 	import { Button } from '$lib/components/shad/button';
@@ -16,20 +16,13 @@
 
 	let { challenge, teams, refresh }: { challenge: Challenge; teams: Team[]; refresh: () => void } = $props();
 
-	type section = { error: string; loading: boolean; forbidden: boolean };
-	const setter = (s: section) => (e: string, l: boolean, f: boolean) => (
-		(s.error = e),
-		(s.loading = l),
-		(s.forbidden = f)
-	);
-
 	// the panel is remounted (keyed) per challenge, capturing the initial value is intended.
 	// svelte-ignore state_referenced_locally
 	let teamId = $state(challenge.teamId);
 	let confirmDelete = $state(false);
 
-	let update: section = $state({ error: '', loading: false, forbidden: false });
-	let remove: section = $state({ error: '', loading: false, forbidden: false });
+	let updateState: SubmitState = $state({ error: '', loading: false, forbidden: false });
+	let removeState: SubmitState = $state({ error: '', loading: false, forbidden: false });
 </script>
 
 <Card.Root class="w-full">
@@ -55,8 +48,8 @@
 
 		<div class="flex flex-col gap-2">
 			<Card.Title>Team</Card.Title>
-			{#if update.forbidden}
-				<p class="text-sm text-muted-foreground italic">You are not allowed to update this challenge.</p>
+			{#if updateState.forbidden}
+				<p class="text-muted-foreground text-sm italic">You are not allowed to update this challenge.</p>
 			{:else}
 				<div class="flex flex-row items-center gap-2">
 					<Select.Root type="single" bind:value={teamId}>
@@ -72,18 +65,18 @@
 					<Button
 						variant="outline"
 						class="cursor-pointer"
-						disabled={update.loading || !teamId || teamId === challenge.teamId}
+						disabled={updateState.loading || !teamId || teamId === challenge.teamId}
 						onclick={() =>
 							Submit(async () => {
 								await Glue.challenge.update(create(UpdateRequestSchema, { mod: { ...challenge, teamId: teamId } }));
 								refresh();
-							}, setter(update))}
+							}, updateState)}
 					>
 						Reassign
 					</Button>
 				</div>
-				{#if update.error}
-					<p class="text-xs text-destructive">{update.error}</p>
+				{#if updateState.error}
+					<p class="text-destructive text-xs">{updateState.error}</p>
 				{/if}
 			{/if}
 		</div>
@@ -118,22 +111,22 @@
 
 		<div class="flex flex-col gap-2">
 			<Card.Title>Danger Zone</Card.Title>
-			{#if remove.forbidden}
-				<p class="text-sm text-muted-foreground italic">You are not allowed to delete this challenge.</p>
+			{#if removeState.forbidden}
+				<p class="text-muted-foreground text-sm italic">You are not allowed to delete this challenge.</p>
 			{:else}
 				<div class="flex flex-row items-center gap-2">
 					{#if confirmDelete}
 						<Button
 							variant="destructive"
 							class="cursor-pointer"
-							disabled={remove.loading}
+							disabled={removeState.loading}
 							onclick={() =>
 								Submit(async () => {
 									await Glue.challenge.delete(
 										create(DeleteRequestSchema, { gameId: challenge.gameId, id: challenge.id })
 									);
 									refresh();
-								}, setter(remove))}
+								}, removeState)}
 						>
 							Yes, delete this challenge
 						</Button>
@@ -144,11 +137,11 @@
 						</Button>
 					{/if}
 				</div>
-				{#if remove.error}
+				{#if removeState.error}
 					<Alert.Root variant="destructive">
 						<AlertCircleIcon />
 						<Alert.Title>Failed to delete challenge</Alert.Title>
-						<Alert.Description>{remove.error}</Alert.Description>
+						<Alert.Description>{removeState.error}</Alert.Description>
 					</Alert.Root>
 				{/if}
 			{/if}

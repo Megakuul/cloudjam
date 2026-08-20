@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Glue, Submit } from '$lib';
+	import { Glue, Submit, type SubmitState } from '$lib';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Badge } from '$lib/components/shad/badge';
 	import { Button } from '$lib/components/shad/button';
@@ -17,26 +17,19 @@
 
 	const limit = 100;
 
-	let error = $state('');
-	// the shell is prerendered, so this starts loading: the list is only known after the
-	// request that onMount fires once hydration completed.
-	let loading = $state(true);
-	let forbidden = $state(false);
-
 	let providers: Provider[] = $state([]);
 	let exhausted = $state(true);
 
 	let id = $state('');
 
+	const listState: SubmitState = $state({ error: '', loading: true, forbidden: false });
+
 	function load(startAfter?: string) {
-		Submit(
-			async () => {
-				const resp = await Glue.provider.list(create(ListRequestSchema, { limit: limit, startAfter: startAfter }));
-				providers = startAfter ? [...providers, ...resp.providers] : resp.providers;
-				exhausted = resp.providers.length < limit;
-			},
-			(e, l, f) => ((error = e), (loading = l), (forbidden = f))
-		);
+		Submit(async () => {
+			const resp = await Glue.provider.list(create(ListRequestSchema, { limit: limit, startAfter: startAfter }));
+			providers = startAfter ? [...providers, ...resp.providers] : resp.providers;
+			exhausted = resp.providers.length < limit;
+		}, listState);
 	}
 
 	onMount(() => load());
@@ -50,7 +43,7 @@
 		</Button>
 	</div>
 
-	{#if forbidden}
+	{#if listState.forbidden}
 		<Card.Root class="w-full">
 			<Card.Header>
 				<Card.Title>Open a Provider</Card.Title>
@@ -84,7 +77,7 @@
 				</button>
 			{:else}
 				<p class="text-muted-foreground text-sm italic">
-					{loading
+					{listState.loading
 						? 'Loading providers…'
 						: 'No providers yet. Add one to provision sandbox accounts and store challenge plugins.'}
 				</p>
@@ -94,7 +87,7 @@
 			<Button
 				variant="outline"
 				class="cursor-pointer self-center"
-				disabled={loading}
+				disabled={listState.loading}
 				onclick={() => load(providers.at(-1)?.id)}
 			>
 				Load More
@@ -102,11 +95,11 @@
 		{/if}
 	{/if}
 
-	{#if error}
+	{#if listState.error}
 		<Alert.Root variant="destructive">
 			<AlertCircleIcon />
 			<Alert.Title>Failed to load providers</Alert.Title>
-			<Alert.Description>{error}</Alert.Description>
+			<Alert.Description>{listState.error}</Alert.Description>
 		</Alert.Root>
 	{/if}
 </div>

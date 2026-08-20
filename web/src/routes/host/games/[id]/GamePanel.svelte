@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Glue, Submit } from '$lib';
+	import { Glue, Submit, type SubmitState } from '$lib';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Badge } from '$lib/components/shad/badge';
 	import { Button } from '$lib/components/shad/button';
@@ -14,29 +14,19 @@
 
 	let { game, refresh, deleted }: { game: Game; refresh: () => void; deleted: () => void } = $props();
 
-	type section = { error: string; loading: boolean; forbidden: boolean };
-	const setter = (s: section) => (e: string, l: boolean, f: boolean) => (
-		(s.error = e),
-		(s.loading = l),
-		(s.forbidden = f)
-	);
+	let mod = $derived({ ...game });
 
-	// the panel is remounted (keyed) per game, capturing the initial values is intended.
-	// svelte-ignore state_referenced_locally
-	let mod = $state({ ...game });
-	// svelte-ignore state_referenced_locally
 	// datetime-local inputs work on the local wall clock, protobuf timestamps on utc instants.
 	const localInput = (date: Date) =>
 		new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
 
-	// svelte-ignore state_referenced_locally
-	let from = $state(localInput(game.from ? timestampDate(game.from) : new Date()));
-	// svelte-ignore state_referenced_locally
-	let to = $state(localInput(game.to ? timestampDate(game.to) : new Date()));
+	let from = $derived(localInput(game.from ? timestampDate(game.from) : new Date()));
+	let to = $derived(localInput(game.to ? timestampDate(game.to) : new Date()));
+
 	let confirmDelete = $state(false);
 
-	let update: section = $state({ error: '', loading: false, forbidden: false });
-	let remove: section = $state({ error: '', loading: false, forbidden: false });
+	let updateState: SubmitState = $state({ error: '', loading: false, forbidden: false });
+	let removeState: SubmitState = $state({ error: '', loading: false, forbidden: false });
 </script>
 
 <Card.Root class="w-full">
@@ -51,10 +41,10 @@
 	<Card.Content class="flex flex-col gap-6">
 		<div class="flex flex-col gap-2">
 			<Card.Title>Schedule</Card.Title>
-			{#if update.forbidden}
-				<p class="text-sm text-muted-foreground italic">You are not allowed to update this game.</p>
+			{#if updateState.forbidden}
+				<p class="text-muted-foreground text-sm italic">You are not allowed to update this game.</p>
 			{:else}
-				<p class="text-sm text-muted-foreground">Games that already started cannot be changed anymore.</p>
+				<p class="text-muted-foreground text-sm">Games that already started cannot be changed anymore.</p>
 				<form
 					class="flex flex-col gap-4"
 					onsubmit={() =>
@@ -65,7 +55,7 @@
 								})
 							);
 							refresh();
-						}, setter(update))}
+						}, updateState)}
 				>
 					<div class="grid gap-4 md:grid-cols-2">
 						<div class="flex flex-col gap-1">
@@ -85,12 +75,12 @@
 							<Input id="update-to" type="datetime-local" bind:value={to} />
 						</div>
 					</div>
-					<Button type="submit" variant="outline" class="cursor-pointer self-start" disabled={update.loading}>
+					<Button type="submit" variant="outline" class="cursor-pointer self-start" disabled={updateState.loading}>
 						Save
 					</Button>
 				</form>
-				{#if update.error}
-					<p class="text-xs text-destructive">{update.error}</p>
+				{#if updateState.error}
+					<p class="text-destructive text-xs">{updateState.error}</p>
 				{/if}
 			{/if}
 		</div>
@@ -99,20 +89,20 @@
 
 		<div class="flex flex-col gap-2">
 			<Card.Title>Danger Zone</Card.Title>
-			{#if remove.forbidden}
-				<p class="text-sm text-muted-foreground italic">You are not allowed to delete this game.</p>
+			{#if removeState.forbidden}
+				<p class="text-muted-foreground text-sm italic">You are not allowed to delete this game.</p>
 			{:else}
 				<div class="flex flex-row items-center gap-2">
 					{#if confirmDelete}
 						<Button
 							variant="destructive"
 							class="cursor-pointer"
-							disabled={remove.loading}
+							disabled={removeState.loading}
 							onclick={() =>
 								Submit(async () => {
 									await Glue.game.delete(create(DeleteRequestSchema, { id: game.id }));
 									deleted();
-								}, setter(remove))}
+								}, removeState)}
 						>
 							Yes, delete {game.name}
 						</Button>
@@ -123,11 +113,11 @@
 						</Button>
 					{/if}
 				</div>
-				{#if remove.error}
+				{#if removeState.error}
 					<Alert.Root variant="destructive">
 						<AlertCircleIcon />
 						<Alert.Title>Failed to delete game</Alert.Title>
-						<Alert.Description>{remove.error}</Alert.Description>
+						<Alert.Description>{removeState.error}</Alert.Description>
 					</Alert.Root>
 				{/if}
 			{/if}

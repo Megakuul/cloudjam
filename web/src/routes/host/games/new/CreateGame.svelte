@@ -1,19 +1,20 @@
 <script lang="ts">
-	import { Glue, Submit } from '$lib';
-	import ScopeInput from '$lib/components/custom/ScopeInput.svelte';
+	import { goto } from '$app/navigation';
+	import { Glue, Submit, type SubmitState } from '$lib';
+	import OptionalSelect, { type Suggestion } from '$lib/components/custom/OptionalSelect.svelte';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Button } from '$lib/components/shad/button';
 	import * as Card from '$lib/components/shad/card';
 	import { Input } from '$lib/components/shad/input';
 	import LabelInput from '$lib/components/shad/label-input/label-input.svelte';
+	import { scopes } from '$lib/scopes.svelte';
 	import { CreateRequestSchema } from '$lib/sdk/v1/play/game/game_pb';
 	import { GameSchema } from '$lib/sdk/v1/play/game_pb';
 	import { create } from '@bufbuild/protobuf';
 	import { timestampFromDate } from '@bufbuild/protobuf/wkt';
 	import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
 
-	let { scopes = [], oncreated }: { scopes?: string[]; oncreated: (id: string) => void } = $props();
-
+	let createState: SubmitState = $state({ loading: false, error: '', forbidden: false });
 	let error = $state('');
 	let loading = $state(false);
 	let forbidden = $state(false);
@@ -35,21 +36,16 @@
 <Card.Root class="w-full">
 	<Card.Header>
 		<Card.Title>Host Game</Card.Title>
-		<Card.Description>
-			Creates a gameday. Teams and challenges can only be managed while the game has not ended yet.
-		</Card.Description>
+		<Card.Description>Teams and challenges can only be managed while the game has not ended yet.</Card.Description>
 	</Card.Header>
 	<Card.Content>
 		<form
 			class="flex flex-col gap-4"
 			onsubmit={() =>
-				Submit(
-					async () => {
-						const resp = await Glue.game.create(request);
-						oncreated(resp.id);
-					},
-					(e, l, f) => ((error = e), (loading = l), (forbidden = f))
-				)}
+				Submit(async () => {
+					const resp = await Glue.game.create(request);
+					goto(`/host/games/${resp.id}`);
+				}, createState)}
 		>
 			<div class="grid gap-4 md:grid-cols-2">
 				<LabelInput
@@ -74,7 +70,12 @@
 				</label>
 				<label class="text-sm">
 					Scope
-					<ScopeInput id="create-scope" bind:value={init.scope} {scopes} placeholder="Scope the game is placed in" />
+					<OptionalSelect
+						bind:value={init.scope}
+						placeholder="Scope the game is placed in"
+						suggestions={scopes.map((scope) => ({ id: scope, title: scope })) satisfies Suggestion[]}
+						class="w-full"
+					/>
 				</label>
 			</div>
 			<Button type="submit" class="cursor-pointer self-start" disabled={loading}>Schedule</Button>

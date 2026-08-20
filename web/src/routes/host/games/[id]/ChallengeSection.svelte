@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Glue, Submit } from '$lib';
+	import { Glue, Submit, type SubmitState } from '$lib';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Badge } from '$lib/components/shad/badge';
 	import { Button } from '$lib/components/shad/button';
@@ -7,7 +7,6 @@
 	import { ListRequestSchema } from '$lib/sdk/v1/play/challenge/challenge_pb';
 	import type { Challenge } from '$lib/sdk/v1/play/challenge_pb';
 	import { ListRequestSchema as ListTeamRequestSchema } from '$lib/sdk/v1/play/team/team_pb';
-	import { ListRequestSchema as ListDefinitionRequestSchema } from '$lib/sdk/v1/cloud/definition/definition_pb';
 	import type { Team } from '$lib/sdk/v1/play/team_pb';
 	import { create } from '@bufbuild/protobuf';
 	import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
@@ -15,17 +14,10 @@
 	import { onMount } from 'svelte';
 	import ChallengePanel from './ChallengePanel.svelte';
 	import CreateChallenge from './CreateChallenge.svelte';
-	import type { Definition } from '$lib/sdk/v1/cloud/definition_pb';
 
-	let { gameId, scope }: { gameId: string; scope: string } = $props();
+	let { gameId }: { gameId: string } = $props();
 
 	const limit = 100;
-
-	let error = $state('');
-	// the shell is prerendered, so this starts loading: the list is only known after the
-	// request that onMount fires once hydration completed.
-	let loading = $state(true);
-	let forbidden = $state(false);
 
 	let challenges: Challenge[] = $state([]);
 	let exhausted = $state(true);
@@ -41,30 +33,26 @@
 		return teams.find((team) => team.id === id)?.name ?? id;
 	}
 
-	// challenges live in the game partition, so listing them is a query and not a scan.
+	let challengesState: SubmitState = $state({ error: '', loading: false, forbidden: false });
+
 	function load(startAfter?: string) {
 		selected = undefined;
-		Submit(
-			async () => {
-				const resp = await Glue.challenge.list(
-					create(ListRequestSchema, { gameId: gameId, limit: limit, startAfter: startAfter })
-				);
-				challenges = startAfter ? [...challenges, ...resp.challenges] : resp.challenges;
-				exhausted = resp.challenges.length < limit;
-			},
-			(e, l, f) => ((error = e), (loading = l), (forbidden = f))
-		);
+		Submit(async () => {
+			const resp = await Glue.challenge.list(
+				create(ListRequestSchema, { gameId: gameId, limit: limit, startAfter: startAfter })
+			);
+			challenges = startAfter ? [...challenges, ...resp.challenges] : resp.challenges;
+			exhausted = resp.challenges.length < limit;
+		}, challengesState);
 	}
+
+	let teamsState: SubmitState = $state({ error: '', loading: false, forbidden: false });
 
 	onMount(() => {
 		load();
-		// teams of the same game resolve the challenge owner; raw ids are shown without access.
-		Submit(
-			async () => {
-				teams = (await Glue.team.list(create(ListTeamRequestSchema, { gameId: gameId, limit: limit }))).teams;
-			},
-			() => {}
-		);
+		Submit(async () => {
+			teams = (await Glue.team.list(create(ListTeamRequestSchema, { gameId: gameId, limit: limit }))).teams;
+		}, teamsState);
 	});
 </script>
 
@@ -77,10 +65,10 @@
 	</div>
 
 	{#if creating}
-		<CreateChallenge {gameId} {teams} {scope} oncreated={() => load()} />
+		<CreateChallenge {gameId} {teams} oncreated={() => load()} />
 	{/if}
 
-	{#if forbidden}
+	{#if challengesState.forbidden}
 		<Alert.Root>
 			<AlertCircleIcon />
 			<Alert.Title>Permission Denied</Alert.Title>
@@ -115,7 +103,7 @@
 					<Table.Row>
 						<Table.Cell colspan={4}>
 							<p class="text-muted-foreground p-4 text-sm italic">
-								{loading ? 'Loading challenges…' : 'No challenges handed out in this game yet.'}
+								{challengesState.loading ? 'Loading challenges…' : 'No challenges handed out in this game yet.'}
 							</p>
 						</Table.Cell>
 					</Table.Row>
@@ -126,7 +114,7 @@
 			<Button
 				variant="outline"
 				class="cursor-pointer self-center"
-				disabled={loading}
+				disabled={challengesState.loading}
 				onclick={() => load(challenges.at(-1)?.id)}
 			>
 				Load More
@@ -140,11 +128,11 @@
 		{/key}
 	{/if}
 
-	{#if error}
+	{#if challengesState.error}
 		<Alert.Root variant="destructive">
 			<AlertCircleIcon />
 			<Alert.Title>Failed to load challenges</Alert.Title>
-			<Alert.Description>{error}</Alert.Description>
+			<Alert.Description>{challengesState.error}</Alert.Description>
 		</Alert.Root>
 	{/if}
 </div>

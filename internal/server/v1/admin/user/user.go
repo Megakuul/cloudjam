@@ -108,6 +108,7 @@ func (s *Server) List(ctx context.Context, req *connect.Request[user.ListRequest
 			Privileged:   user.Privileged.Value(),
 			Role:         user.Role.Value(),
 			CreatedAt:    user.CreatedAt.Value().Unix(),
+			Scope:        user.Scope.Value(),
 		})
 	}
 

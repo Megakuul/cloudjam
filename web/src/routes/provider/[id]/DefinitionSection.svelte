@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Glue, Submit } from '$lib';
+	import { Glue, Submit, type SubmitState } from '$lib';
 	import { toDigest } from '$lib/digest';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Button } from '$lib/components/shad/button';
@@ -14,33 +14,25 @@
 
 	const limit = 100;
 
-	let error = $state('');
-	// the shell is prerendered, so this starts loading: the list is only known after the
-	// request that onMount fires once hydration completed.
-	let loading = $state(true);
-	let forbidden = $state(false);
+	let listState: SubmitState = $state({ error: '', forbidden: false, loading: false });
 
 	let definitions: Definition[] = $state([]);
 	let exhausted = $state(true);
 
-	// definitions live in the provider partition, so listing them is a query and not a scan.
 	function load(startAfter?: string) {
-		Submit(
-			async () => {
-				const resp = await Glue.definition.list(
-					create(ListRequestSchema, { providerId: providerId, limit: limit, startAfter: startAfter })
-				);
-				definitions = startAfter ? [...definitions, ...resp.definitions] : resp.definitions;
-				exhausted = resp.definitions.length < limit;
-			},
-			(e, l, f) => ((error = e), (loading = l), (forbidden = f))
-		);
+		Submit(async () => {
+			const resp = await Glue.definition.list(
+				create(ListRequestSchema, { providerId: providerId, limit: limit, startAfter: startAfter })
+			);
+			definitions = startAfter ? [...definitions, ...resp.definitions] : resp.definitions;
+			exhausted = resp.definitions.length < limit;
+		}, listState);
 	}
 
 	onMount(() => load());
 </script>
 
-{#if forbidden}
+{#if listState.forbidden}
 	<Alert.Root>
 		<AlertCircleIcon />
 		<Alert.Title>Permission Denied</Alert.Title>
@@ -69,8 +61,8 @@
 			{:else}
 				<Table.Row>
 					<Table.Cell colspan={5}>
-						<p class="p-4 text-sm text-muted-foreground italic">
-							{loading ? 'Loading definitions…' : 'No definitions uploaded to this provider yet.'}
+						<p class="text-muted-foreground p-4 text-sm italic">
+							{listState.loading ? 'Loading definitions…' : 'No definitions uploaded to this provider yet.'}
 						</p>
 					</Table.Cell>
 				</Table.Row>
@@ -81,7 +73,7 @@
 		<Button
 			variant="outline"
 			class="cursor-pointer self-center"
-			disabled={loading}
+			disabled={listState.loading}
 			onclick={() => load(definitions.at(-1)?.id)}
 		>
 			Load More
@@ -89,10 +81,10 @@
 	{/if}
 {/if}
 
-{#if error}
+{#if listState.error}
 	<Alert.Root variant="destructive">
 		<AlertCircleIcon />
 		<Alert.Title>Failed to load definitions</Alert.Title>
-		<Alert.Description>{error}</Alert.Description>
+		<Alert.Description>{listState.error}</Alert.Description>
 	</Alert.Root>
 {/if}

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Glue, Submit } from '$lib';
+	import { Glue, Submit, type SubmitState } from '$lib';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Badge } from '$lib/components/shad/badge';
 	import { Button } from '$lib/components/shad/button';
@@ -19,31 +19,23 @@
 
 	const limit = 100;
 
-	let error = $state('');
-	// the shell is prerendered, so this starts loading: the list is only known after the
-	// request that onMount fires once hydration completed.
-	let loading = $state(true);
-	let forbidden = $state(false);
-
 	let accounts: Account[] = $state([]);
 	let exhausted = $state(true);
 
 	let selected: Account | undefined = $state();
 	let creating = $state(false);
 
-	// accounts live in the provider partition, so listing them is a query and not a scan.
+	let listState: SubmitState = $state({ error: '', forbidden: false, loading: false });
+
 	function load(startAfter?: string) {
 		selected = undefined;
-		Submit(
-			async () => {
-				const resp = await Glue.account.list(
-					create(ListRequestSchema, { providerId: providerId, limit: limit, startAfter: startAfter })
-				);
-				accounts = startAfter ? [...accounts, ...resp.accounts] : resp.accounts;
-				exhausted = resp.accounts.length < limit;
-			},
-			(e, l, f) => ((error = e), (loading = l), (forbidden = f))
-		);
+		Submit(async () => {
+			const resp = await Glue.account.list(
+				create(ListRequestSchema, { providerId: providerId, limit: limit, startAfter: startAfter })
+			);
+			accounts = startAfter ? [...accounts, ...resp.accounts] : resp.accounts;
+			exhausted = resp.accounts.length < limit;
+		}, listState);
 	}
 
 	onMount(() => load());
@@ -64,7 +56,7 @@
 		<CreateAccount {providerId} oncreated={() => load()} />
 	{/if}
 
-	{#if forbidden}
+	{#if listState.forbidden}
 		<Alert.Root>
 			<AlertCircleIcon />
 			<Alert.Title>Permission Denied</Alert.Title>
@@ -103,7 +95,7 @@
 					<Table.Row>
 						<Table.Cell colspan={5}>
 							<p class="text-muted-foreground p-4 text-sm italic">
-								{loading ? 'Loading accounts…' : 'No accounts provisioned on this provider yet.'}
+								{listState.loading ? 'Loading accounts…' : 'No accounts provisioned on this provider yet.'}
 							</p>
 						</Table.Cell>
 					</Table.Row>
@@ -114,7 +106,7 @@
 			<Button
 				variant="outline"
 				class="cursor-pointer self-center"
-				disabled={loading}
+				disabled={listState.loading}
 				onclick={() => load(accounts.at(-1)?.id)}
 			>
 				Load More
@@ -128,11 +120,11 @@
 		{/key}
 	{/if}
 
-	{#if error}
+	{#if listState.error}
 		<Alert.Root variant="destructive">
 			<AlertCircleIcon />
 			<Alert.Title>Failed to load accounts</Alert.Title>
-			<Alert.Description>{error}</Alert.Description>
+			<Alert.Description>{listState.error}</Alert.Description>
 		</Alert.Root>
 	{/if}
 </div>

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { Glue, Submit } from '$lib';
-	import ScopeInput from '$lib/components/custom/ScopeInput.svelte';
+	import { Glue, Submit, type SubmitState } from '$lib';
+	import OptionalSelect from '$lib/components/custom/OptionalSelect.svelte';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Badge } from '$lib/components/shad/badge';
 	import { Button } from '$lib/components/shad/button';
@@ -8,40 +8,25 @@
 	import { Input } from '$lib/components/shad/input';
 	import * as Select from '$lib/components/shad/select';
 	import { Separator } from '$lib/components/shad/separator';
+	import { scopes } from '$lib/scopes.svelte';
 	import { AttachRoleRequestSchema, AttachScopeRequestSchema, Resource } from '$lib/sdk/v1/admin/rbac/rbac_pb';
 	import type { Role } from '$lib/sdk/v1/admin/role_pb';
-	import {
-		DeleteRequestSchema,
-		GetRequestSchema,
-		ResetPasswordRequestSchema,
-		UpdateRequestSchema
-	} from '$lib/sdk/v1/admin/user/user_pb';
+	import { DeleteRequestSchema, ResetPasswordRequestSchema, UpdateRequestSchema } from '$lib/sdk/v1/admin/user/user_pb';
 	import type { User } from '$lib/sdk/v1/admin/user_pb';
 	import { create } from '@bufbuild/protobuf';
 	import { timestampFromDate } from '@bufbuild/protobuf/wkt';
 	import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
 	import CopyIcon from '@lucide/svelte/icons/copy';
 	import { toSvg } from 'jdenticon';
-	import { onMount } from 'svelte';
 	import { Icon } from 'svelte-ux';
 
 	let {
 		user,
 		roles,
 		rolesForbidden,
-		scopes,
 		refresh
-	}: { user: User; roles: Role[]; rolesForbidden: boolean; scopes: string[]; refresh: () => void } = $props();
+	}: { user: User; roles: Role[]; rolesForbidden: boolean; refresh: () => void } = $props();
 
-	type section = { error: string; loading: boolean; forbidden: boolean };
-	const setter = (s: section) => (e: string, l: boolean, f: boolean) => (
-		(s.error = e),
-		(s.loading = l),
-		(s.forbidden = f)
-	);
-
-	let scope = $state(''); // scope is not part of the list output, it is enriched by a get request.
-	// the panel is remounted (keyed) per user, capturing the initial value is intended.
 	// svelte-ignore state_referenced_locally
 	let organization = $state(user.organization);
 	// svelte-ignore state_referenced_locally
@@ -51,30 +36,21 @@
 	let resetCode = $state('');
 	let confirmDelete = $state(false);
 
-	let update: section = $state({ error: '', loading: false, forbidden: false });
-	let attachRole: section = $state({ error: '', loading: false, forbidden: false });
-	let attach: section = $state({ error: '', loading: false, forbidden: false });
-	let reset: section = $state({ error: '', loading: false, forbidden: false });
-	let remove: section = $state({ error: '', loading: false, forbidden: false });
+	let updateState: SubmitState = $state({ error: '', loading: false, forbidden: false });
+	let attachRoleState: SubmitState = $state({ error: '', loading: false, forbidden: false });
+	let attachState: SubmitState = $state({ error: '', loading: false, forbidden: false });
+	let resetState: SubmitState = $state({ error: '', loading: false, forbidden: false });
+	let removeState: SubmitState = $state({ error: '', loading: false, forbidden: false });
 
 	const resources = [
 		{ value: 'user', label: 'User data' },
 		{ value: 'creds', label: 'Login credentials' }
 	];
-
-	onMount(() => {
-		Submit(
-			async () => {
-				scope = (await Glue.user.get(create(GetRequestSchema, { id: user.id }))).user?.scope ?? '';
-			},
-			() => {}
-		);
-	});
 </script>
 
 <Card.Root class="w-full">
 	<Card.Header class="flex flex-row items-center gap-4">
-		<Icon svg={toSvg(user.pubId, 20)} width="4rem" height="4rem" class="rounded-lg bg-primary/5" />
+		<Icon svg={toSvg(user.pubId, 20)} width="4rem" height="4rem" class="bg-primary/5 rounded-lg" />
 		<div class="flex flex-col gap-1">
 			<Card.Title class="text-2xl">{user.username}</Card.Title>
 			<Card.Description>{user.email}</Card.Description>
@@ -82,8 +58,8 @@
 				{#if user.privileged}
 					<Badge variant="secondary">privileged</Badge>
 				{/if}
-				{#if scope}
-					<Badge variant="outline">scope: {scope}</Badge>
+				{#if user.scope}
+					<Badge variant="outline">scope: {user.scope}</Badge>
 				{/if}
 				{#if user.role}
 					<Badge variant="outline">role: {roles.find((r) => r.id === user.role)?.name ?? user.role}</Badge>
@@ -93,14 +69,14 @@
 	</Card.Header>
 	<Card.Content class="flex flex-col gap-6">
 		{#if user.privileged}
-			<p class="text-sm text-muted-foreground italic">
+			<p class="text-muted-foreground text-sm italic">
 				This user is privileged; role, scope and profile cannot be modified.
 			</p>
 		{:else}
 			<div class="flex flex-col gap-2">
 				<Card.Title>Organization</Card.Title>
-				{#if update.forbidden}
-					<p class="text-sm text-muted-foreground italic">You are not allowed to update this user.</p>
+				{#if updateState.forbidden}
+					<p class="text-muted-foreground text-sm italic">You are not allowed to update this user.</p>
 				{:else}
 					<form
 						class="flex flex-row items-center gap-2"
@@ -108,13 +84,13 @@
 							Submit(async () => {
 								await Glue.user.update(create(UpdateRequestSchema, { mod: { ...user, organization: organization } }));
 								refresh();
-							}, setter(update))}
+							}, updateState)}
 					>
 						<Input class="max-w-96" bind:value={organization} placeholder="Organization of the user" />
-						<Button type="submit" variant="outline" class="cursor-pointer" disabled={update.loading}>Save</Button>
+						<Button type="submit" variant="outline" class="cursor-pointer" disabled={updateState.loading}>Save</Button>
 					</form>
-					{#if update.error}
-						<p class="text-xs text-destructive">{update.error}</p>
+					{#if updateState.error}
+						<p class="text-destructive text-xs">{updateState.error}</p>
 					{/if}
 				{/if}
 			</div>
@@ -123,8 +99,8 @@
 
 			<div class="flex flex-col gap-2">
 				<Card.Title>Role</Card.Title>
-				{#if rolesForbidden || attachRole.forbidden}
-					<p class="text-sm text-muted-foreground italic">You are not allowed to attach roles.</p>
+				{#if rolesForbidden || attachRoleState.forbidden}
+					<p class="text-muted-foreground text-sm italic">You are not allowed to attach roles.</p>
 				{:else}
 					<div class="flex flex-row items-center gap-2">
 						<Select.Root type="single" bind:value={role}>
@@ -140,18 +116,18 @@
 						<Button
 							variant="outline"
 							class="cursor-pointer"
-							disabled={attachRole.loading || !role || role === user.role}
+							disabled={attachRoleState.loading || !role || role === user.role}
 							onclick={() =>
 								Submit(async () => {
 									await Glue.rbac.attachRole(create(AttachRoleRequestSchema, { id: user.id, role: role }));
 									refresh();
-								}, setter(attachRole))}
+								}, attachRoleState)}
 						>
 							Attach
 						</Button>
 					</div>
-					{#if attachRole.error}
-						<p class="text-xs text-destructive">{attachRole.error}</p>
+					{#if attachRoleState.error}
+						<p class="text-destructive text-xs">{attachRoleState.error}</p>
 					{/if}
 				{/if}
 			</div>
@@ -160,10 +136,10 @@
 
 			<div class="flex flex-col gap-2">
 				<Card.Title>Scope</Card.Title>
-				{#if attach.forbidden}
-					<p class="text-sm text-muted-foreground italic">You are not allowed to attach scopes.</p>
+				{#if attachState.forbidden}
+					<p class="text-muted-foreground text-sm italic">You are not allowed to attach scopes.</p>
 				{:else}
-					<p class="text-sm text-muted-foreground">
+					<p class="text-muted-foreground text-sm">
 						Moves the selected resource of this user into another scope you possess. User data is keyed by the user id,
 						login credentials by the email.
 					</p>
@@ -178,11 +154,15 @@
 								{/each}
 							</Select.Content>
 						</Select.Root>
-						<ScopeInput class="max-w-48" bind:value={attachScope} {scopes} placeholder="New scope" />
+						<OptionalSelect
+							bind:value={attachScope}
+							placeholder="Scope the role is placed in"
+							suggestions={scopes.map((scope) => ({ id: scope, title: scope }))}
+						/>
 						<Button
 							variant="outline"
 							class="cursor-pointer"
-							disabled={attach.loading || !attachScope}
+							disabled={attachState.loading || !attachScope}
 							onclick={() =>
 								Submit(async () => {
 									await Glue.rbac.attachScope(
@@ -193,13 +173,13 @@
 										})
 									);
 									refresh();
-								}, setter(attach))}
+								}, attachState)}
 						>
 							Attach
 						</Button>
 					</div>
-					{#if attach.error}
-						<p class="text-xs text-destructive">{attach.error}</p>
+					{#if attachState.error}
+						<p class="text-destructive text-xs">{attachState.error}</p>
 					{/if}
 				{/if}
 			</div>
@@ -209,8 +189,8 @@
 
 		<div class="flex flex-col gap-2">
 			<Card.Title>Reset Password</Card.Title>
-			{#if reset.forbidden}
-				<p class="text-sm text-muted-foreground italic">You are not allowed to reset passwords.</p>
+			{#if resetState.forbidden}
+				<p class="text-muted-foreground text-sm italic">You are not allowed to reset passwords.</p>
 			{:else if resetCode}
 				<Alert.Root>
 					<Alert.Title>Reset code created</Alert.Title>
@@ -232,7 +212,7 @@
 					<Button
 						variant="outline"
 						class="cursor-pointer"
-						disabled={reset.loading}
+						disabled={resetState.loading}
 						onclick={() =>
 							Submit(async () => {
 								const resp = await Glue.user.resetPassword(
@@ -242,16 +222,16 @@
 									})
 								);
 								resetCode = resp.code;
-							}, setter(reset))}
+							}, resetState)}
 					>
 						Create Reset Code
 					</Button>
-					<p class="text-sm text-muted-foreground">
+					<p class="text-muted-foreground text-sm">
 						Creates a one time code (valid 24 hours) to redo the registration.
 					</p>
 				</div>
-				{#if reset.error}
-					<p class="text-xs text-destructive">{reset.error}</p>
+				{#if resetState.error}
+					<p class="text-destructive text-xs">{resetState.error}</p>
 				{/if}
 			{/if}
 		</div>
@@ -261,20 +241,20 @@
 
 			<div class="flex flex-col gap-2">
 				<Card.Title>Danger Zone</Card.Title>
-				{#if remove.forbidden}
-					<p class="text-sm text-muted-foreground italic">You are not allowed to delete this user.</p>
+				{#if removeState.forbidden}
+					<p class="text-muted-foreground text-sm italic">You are not allowed to delete this user.</p>
 				{:else}
 					<div class="flex flex-row items-center gap-2">
 						{#if confirmDelete}
 							<Button
 								variant="destructive"
 								class="cursor-pointer"
-								disabled={remove.loading}
+								disabled={removeState.loading}
 								onclick={() =>
 									Submit(async () => {
 										await Glue.user.delete(create(DeleteRequestSchema, { id: user.id }));
 										refresh();
-									}, setter(remove))}
+									}, removeState)}
 							>
 								Yes, delete {user.username}
 							</Button>
@@ -285,11 +265,11 @@
 							</Button>
 						{/if}
 					</div>
-					{#if remove.error}
+					{#if removeState.error}
 						<Alert.Root variant="destructive">
 							<AlertCircleIcon />
 							<Alert.Title>Failed to delete user</Alert.Title>
-							<Alert.Description>{remove.error}</Alert.Description>
+							<Alert.Description>{removeState.error}</Alert.Description>
 						</Alert.Root>
 					{/if}
 				{/if}

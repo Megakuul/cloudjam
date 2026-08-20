@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Glue, Submit } from '$lib';
+	import { Glue, Submit, type SubmitState } from '$lib';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Badge } from '$lib/components/shad/badge';
 	import { Button } from '$lib/components/shad/button';
@@ -21,9 +21,6 @@
 
 	const tabs = ['overview', 'teams', 'challenges'] as const;
 
-	let error = $state('');
-	let forbidden = $state(false);
-
 	let game: Game | undefined = $state();
 	let tab: (typeof tabs)[number] = $state('overview');
 
@@ -34,13 +31,12 @@
 		return 'running';
 	}
 
+	let gameState: SubmitState = $state({ error: '', loading: false, forbidden: false });
+
 	function load() {
-		Submit(
-			async () => {
-				game = (await Glue.game.get(create(GetRequestSchema, { id: gameId }))).game;
-			},
-			(e, _, f) => ((error = e), (forbidden = f))
-		);
+		Submit(async () => {
+			game = (await Glue.game.get(create(GetRequestSchema, { id: gameId }))).game;
+		}, gameState);
 	}
 
 	onMount(() => load());
@@ -88,7 +84,7 @@
 		{/each}
 	</div>
 
-	{#if forbidden}
+	{#if gameState.forbidden}
 		<Alert.Root>
 			<AlertCircleIcon />
 			<Alert.Title>Permission Denied</Alert.Title>
@@ -99,16 +95,16 @@
 			<GamePanel {game} refresh={() => load()} deleted={() => goto('/host/games')} />
 		{/if}
 	{:else if tab === 'teams'}
-		<TeamSection {gameId} scope={game?.scope ?? ''} />
+		<TeamSection {gameId} />
 	{:else if tab === 'challenges'}
-		<ChallengeSection {gameId} scope={game?.scope ?? ''} />
+		<ChallengeSection {gameId} />
 	{/if}
 
-	{#if error}
+	{#if gameState.error}
 		<Alert.Root variant="destructive">
 			<AlertCircleIcon />
 			<Alert.Title>Failed to load the game</Alert.Title>
-			<Alert.Description>{error}</Alert.Description>
+			<Alert.Description>{gameState.error}</Alert.Description>
 		</Alert.Root>
 	{/if}
 </div>

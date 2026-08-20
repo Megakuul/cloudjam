@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Glue, Submit } from '$lib';
+	import { Glue, Submit, type SubmitState } from '$lib';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Button } from '$lib/components/shad/button';
 	import * as Card from '$lib/components/shad/card';
@@ -11,11 +11,8 @@
 
 	let { providerId, oncreated }: { providerId: string; oncreated: () => void } = $props();
 
-	let error = $state('');
-	let loading = $state(false);
-	let forbidden = $state(false);
+	let createState: SubmitState = $state({ error: '', loading: false, forbidden: false });
 
-	// the id is generated client side, the scope is inherited from the provider.
 	let init = $state(create(AccountSchema, { id: crypto.randomUUID() }));
 
 	let request = $derived(create(CreateRequestSchema, { init: { ...init, providerId: providerId } }));
@@ -33,14 +30,11 @@
 		<form
 			class="flex flex-col gap-4"
 			onsubmit={() =>
-				Submit(
-					async () => {
-						await Glue.account.create(request);
-						init = create(AccountSchema, { id: crypto.randomUUID() });
-						oncreated();
-					},
-					(e, l, f) => ((error = e), (loading = l), (forbidden = f))
-				)}
+				Submit(async () => {
+					await Glue.account.create(request);
+					init = create(AccountSchema, { id: crypto.randomUUID() });
+					oncreated();
+				}, createState)}
 		>
 			<div class="grid gap-4 md:grid-cols-2">
 				<div class="flex flex-col gap-1">
@@ -59,15 +53,15 @@
 			<Button
 				type="submit"
 				class="cursor-pointer self-start"
-				disabled={loading || Boolean(Glue.Validate(CreateRequestSchema, request).error)}
+				disabled={createState.loading || Boolean(Glue.Validate(CreateRequestSchema, request).error)}
 			>
 				Provision
 			</Button>
-			{#if error}
+			{#if createState.error}
 				<Alert.Root variant="destructive">
 					<AlertCircleIcon />
-					<Alert.Title>{forbidden ? 'Permission denied' : 'Failed to provision account'}</Alert.Title>
-					<Alert.Description>{error}</Alert.Description>
+					<Alert.Title>{createState.forbidden ? 'Permission denied' : 'Failed to provision account'}</Alert.Title>
+					<Alert.Description>{createState.error}</Alert.Description>
 				</Alert.Root>
 			{/if}
 		</form>

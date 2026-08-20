@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Glue, Submit } from '$lib';
+	import { Glue, Submit, type SubmitState } from '$lib';
 	import * as Alert from '$lib/components/shad/alert';
 	import * as Card from '$lib/components/shad/card';
 	import { Button } from '$lib/components/shad/button';
@@ -80,9 +80,6 @@
 	let latencyLabels: Chart.ChartConfig = $state({});
 	let latencyData: any[] = $state([]);
 	let overallLatency: number = $state(0);
-
-	let error = $state('');
-	let forbidden = $state(false);
 
 	async function loadHits(
 		window: AggregateWindow,
@@ -176,24 +173,23 @@
 		];
 	}
 
+	let scanState: SubmitState = $state({ error: '', forbidden: false, loading: false });
+
 	$effect(() => {
-		Submit(
-			async () => {
-				[totalHits, hitLabels, hitData] = await loadHits(window, bucket, from, to);
-				[overallLatency, latencyLabels, latencyData] = await loadLatency(window, bucket, from, to);
-			},
-			(e, _, f) => ((error = e), (forbidden = f))
-		);
+		Submit(async () => {
+			[totalHits, hitLabels, hitData] = await loadHits(window, bucket, from, to);
+			[overallLatency, latencyLabels, latencyData] = await loadLatency(window, bucket, from, to);
+		}, scanState);
 	});
 </script>
 
-{#if error}
+{#if scanState.error}
 	<Alert.Root>
 		<AlertCircleIcon />
 		<Alert.Title>Failed to load chart data</Alert.Title>
-		<Alert.Description>{error}</Alert.Description>
+		<Alert.Description>{scanState.error}</Alert.Description>
 	</Alert.Root>
-{:else if forbidden}
+{:else if scanState.forbidden}
 	<Alert.Root>
 		<AlertCircleIcon />
 		<Alert.Title>Permission Denied</Alert.Title>
@@ -217,7 +213,7 @@
 			</div>
 
 			<div class="ml-auto flex items-center gap-2">
-				<span class="text-xs text-muted-foreground">
+				<span class="text-muted-foreground text-xs">
 					{from.toLocaleDateString(undefined, { hour: '2-digit', minute: '2-digit' })}
 					–
 					{to.toLocaleDateString(undefined, { hour: '2-digit', minute: '2-digit' })}

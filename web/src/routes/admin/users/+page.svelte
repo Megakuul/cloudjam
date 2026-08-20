@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Glue, Submit } from '$lib';
+	import { Glue, Submit, type SubmitState } from '$lib';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Badge } from '$lib/components/shad/badge';
 	import { Button } from '$lib/components/shad/button';
@@ -19,10 +19,6 @@
 
 	const limit = 100;
 
-	let error = $state('');
-	let loading = $state(false);
-	let forbidden = $state(false);
-
 	let users: User[] = $state([]);
 	let exhausted = $state(true);
 
@@ -31,37 +27,28 @@
 
 	let selected: User | undefined = $state();
 
-	// scopes already known from the existing roles, used as suggestions for scope inputs.
-	let scopes = $derived(
-		[...new Set(roles.flatMap((role) => [role.scope, ...Object.keys(role.permissions)]))].filter((s) => s).sort()
-	);
-
 	function roleName(id: string): string {
 		return roles.find((role) => role.id === id)?.name ?? id;
 	}
 
+	let userState: SubmitState = $state({ error: '', forbidden: false, loading: false });
+
 	function load() {
-		selected = undefined;
-		Submit(
-			async () => {
-				const resp = await Glue.user.list(create(ListRequestSchema, { limit: limit }));
-				users = resp.users;
-				exhausted = resp.users.length < limit;
-			},
-			(e, l, f) => ((error = e), (loading = l), (forbidden = f))
-		);
+		Submit(async () => {
+			const resp = await Glue.user.list(create(ListRequestSchema, { limit: limit }));
+			users = resp.users;
+			exhausted = resp.users.length < limit;
+		}, userState);
 	}
+
+	let roleState: SubmitState = $state({ error: '', forbidden: false, loading: false });
 
 	onMount(() => {
 		load();
 		// roles are only used to resolve names and attach them to users; if the requestor
-		// has no role access the section is simply hidden and raw role ids are shown.
-		Submit(
-			async () => {
-				roles = (await Glue.role.list(create(ListRolesRequestSchema, { limit: limit }))).roles;
-			},
-			(_, __, f) => (rolesForbidden = f)
-		);
+		Submit(async () => {
+			roles = (await Glue.role.list(create(ListRolesRequestSchema, { limit: limit }))).roles;
+		}, roleState);
 	});
 </script>
 
@@ -83,7 +70,7 @@
 		</Button>
 	</div>
 
-	{#if forbidden}
+	{#if userState.forbidden}
 		<Alert.Root>
 			<AlertCircleIcon />
 			<Alert.Title>Permission Denied</Alert.Title>
@@ -106,7 +93,7 @@
 				{#each users as user (user.id)}
 					<Table.Row class="cursor-pointer" onclick={() => (selected = selected?.id === user.id ? undefined : user)}>
 						<Table.Cell>
-							<Icon svg={toSvg(user.pubId, 20)} width="2rem" height="2rem" class="rounded-md bg-primary/5" />
+							<Icon svg={toSvg(user.pubId, 20)} width="2rem" height="2rem" class="bg-primary/5 rounded-md" />
 						</Table.Cell>
 						<Table.Cell class="font-medium">{user.username}</Table.Cell>
 						<Table.Cell>{user.email}</Table.Cell>
@@ -126,18 +113,15 @@
 			<Button
 				variant="outline"
 				class="cursor-pointer self-center"
-				disabled={loading}
+				disabled={userState.loading}
 				onclick={() =>
-					Submit(
-						async () => {
-							const resp = await Glue.user.list(
-								create(ListRequestSchema, { limit: limit, startAfter: users.at(-1)?.id })
-							);
-							users = [...users, ...resp.users];
-							exhausted = resp.users.length < limit;
-						},
-						(e, l, f) => ((error = e), (loading = l), (forbidden = f))
-					)}
+					Submit(async () => {
+						const resp = await Glue.user.list(
+							create(ListRequestSchema, { limit: limit, startAfter: users.at(-1)?.id })
+						);
+						users = [...users, ...resp.users];
+						exhausted = resp.users.length < limit;
+					}, userState)}
 			>
 				Load More
 			</Button>
@@ -146,15 +130,15 @@
 
 	{#if selected}
 		{#key selected.id}
-			<UserPanel user={selected} {roles} {rolesForbidden} {scopes} refresh={() => load()} />
+			<UserPanel user={selected} {roles} {rolesForbidden} refresh={() => load()} />
 		{/key}
 	{/if}
 
-	{#if error}
+	{#if userState.error}
 		<Alert.Root variant="destructive">
 			<AlertCircleIcon />
 			<Alert.Title>Failed to load users</Alert.Title>
-			<Alert.Description>{error}</Alert.Description>
+			<Alert.Description>{userState.error}</Alert.Description>
 		</Alert.Root>
 	{/if}
 </div>

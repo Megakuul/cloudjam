@@ -1,25 +1,40 @@
 <script lang="ts">
-	import ScopeInput from '$lib/components/custom/ScopeInput.svelte';
+	import OptionalSelect from '$lib/components/custom/OptionalSelect.svelte';
 	import { Badge } from '$lib/components/shad/badge';
 	import { Button } from '$lib/components/shad/button';
 	import { Input } from '$lib/components/shad/input';
 	import * as Select from '$lib/components/shad/select';
+	import { scopes } from '$lib/scopes.svelte';
 	import { RBACService } from '$lib/sdk/v1/admin/rbac/rbac_pb';
 	import { RoleService } from '$lib/sdk/v1/admin/role/role_pb';
 	import { SystemService } from '$lib/sdk/v1/admin/system/system_pb';
 	import { UserService } from '$lib/sdk/v1/admin/user/user_pb';
+	import globToRegex from 'glob-to-regexp';
 	import PlusIcon from '@lucide/svelte/icons/plus';
 	import Trash2Icon from '@lucide/svelte/icons/trash-2';
+	import { ProviderService } from '$lib/sdk/v1/cloud/provider/provider_pb';
+	import { AuthService } from '$lib/sdk/v1/auth/auth_pb';
+	import { AccountService } from '$lib/sdk/v1/cloud/account/account_pb';
+	import { DefinitionService } from '$lib/sdk/v1/cloud/definition/definition_pb';
+	import { GameService } from '$lib/sdk/v1/play/game/game_pb';
+	import { ChallengeService } from '$lib/sdk/v1/play/challenge/challenge_pb';
+	import { TeamService } from '$lib/sdk/v1/play/team/team_pb';
 
-	// entries hold the role permission map as editable list;
-	// every entry grants the patterns (comma separated globs matched
-	// against the rpc procedure name) to subjects within the scope.
-	let { entries = $bindable(), scopes }: { entries: { scope: string; patterns: string }[]; scopes: string[] } =
-		$props();
+	let { entries = $bindable() }: { entries: { scope: string; patterns: string }[] } = $props();
 
-	// functions of all rbac protected services (from the generated sdk), used for
-	// suggestions; a picked function is granted by its exact procedure name.
-	const services = [UserService, RoleService, RBACService, SystemService].map((svc) => ({
+	const services = [
+		AuthService,
+		UserService,
+		RoleService,
+		RBACService,
+		SystemService,
+		ProviderService,
+		AccountService,
+		DefinitionService,
+		GameService,
+		ChallengeService,
+		TeamService
+	].map((svc) => ({
 		name: svc.name,
 		functions: svc.methods.map((method) => ({
 			label: `${svc.name}/${method.name}`,
@@ -28,32 +43,21 @@
 	}));
 	const functions = services.flatMap((svc) => svc.functions);
 
-	// granted resolves the functions a pattern list grants by compiling the globs
-	// like the backend does ('/' separated, '*' stops at separators, '**' does not).
+	// granted returns a human readable list of functions that are granted according to the specified patterns.
 	function granted(patterns: string): string[] {
-		const regexes = patterns
-			.split(',')
-			.filter((pattern) => pattern)
-			.map(
-				(pattern) =>
-					new RegExp(
-						`^${pattern
-							.replace(/[.+?^${}()|[\]\\]/g, '\\$&')
-							.replaceAll('**', '\u0000')
-							.replaceAll('*', '[^/]*')
-							.replaceAll('\u0000', '.*')}$`
-					)
-			);
-		return functions.filter((fn) => regexes.some((regex) => regex.test(fn.procedure))).map((fn) => fn.label);
+		const matched = [];
+		for (const pattern of patterns.split(',')) {
+			const patternRe = globToRegex(pattern);
+			matched.push(...functions.filter((fn) => patternRe.test(fn.procedure)).map((fn) => fn.label));
+		}
+		return matched;
 	}
 
-	// selected extracts the patterns that map directly to a suggested function.
 	function selected(patterns: string): string[] {
 		const parts = patterns.split(',');
 		return functions.filter((fn) => parts.includes(fn.procedure)).map((fn) => fn.procedure);
 	}
 
-	// apply writes the picked function procedures back, keeping manually written globs.
 	function apply(entry: { scope: string; patterns: string }, picked: string[]) {
 		const custom = entry.patterns
 			.split(',')
@@ -66,7 +70,11 @@
 	{#each entries as entry, i (i)}
 		<div class="flex flex-col gap-1">
 			<div class="flex flex-row items-center gap-2">
-				<ScopeInput class="max-w-48" bind:value={entry.scope} {scopes} placeholder="Scope" />
+				<OptionalSelect
+					bind:value={entry.scope}
+					placeholder="Scope"
+					suggestions={scopes.map((scope) => ({ id: scope, title: scope }))}
+				/>
 				<Select.Root type="multiple" value={selected(entry.patterns)} onValueChange={(picked) => apply(entry, picked)}>
 					<Select.Trigger class="w-48 cursor-pointer">
 						{selected(entry.patterns).length} function(s) picked
@@ -98,14 +106,14 @@
 				</Button>
 			</div>
 			<div class="flex flex-row flex-wrap items-center gap-1">
-				<span class="text-xs text-muted-foreground">grants:</span>
+				<span class="text-muted-foreground text-xs">grants:</span>
 				{#if granted(entry.patterns).length === functions.length}
 					<Badge variant="secondary">every function</Badge>
 				{:else}
 					{#each granted(entry.patterns) as label (label)}
 						<Badge variant="outline">{label}</Badge>
 					{:else}
-						<span class="text-xs text-muted-foreground italic">no known function</span>
+						<span class="text-muted-foreground text-xs italic">no known function</span>
 					{/each}
 				{/if}
 			</div>

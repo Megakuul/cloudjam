@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Glue, Submit } from '$lib';
+	import { Glue, Submit, type SubmitState } from '$lib';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Badge } from '$lib/components/shad/badge';
 	import { Button } from '$lib/components/shad/button';
@@ -20,23 +20,16 @@
 
 	let { account, refresh }: { account: Account; refresh: () => void } = $props();
 
-	type section = { error: string; loading: boolean; forbidden: boolean };
-	const setter = (s: section) => (e: string, l: boolean, f: boolean) => (
-		(s.error = e),
-		(s.loading = l),
-		(s.forbidden = f)
-	);
-
 	// the panel is remounted (keyed) per account, capturing the initial value is intended.
 	// svelte-ignore state_referenced_locally
 	let description = $state(account.description);
 	let confirmDelete = $state(false);
 	let force = $state(false);
 
-	let update: section = $state({ error: '', loading: false, forbidden: false });
-	let reset: section = $state({ error: '', loading: false, forbidden: false });
-	let fix: section = $state({ error: '', loading: false, forbidden: false });
-	let remove: section = $state({ error: '', loading: false, forbidden: false });
+	let updateState: SubmitState = $state({ error: '', loading: false, forbidden: false });
+	let resetState: SubmitState = $state({ error: '', loading: false, forbidden: false });
+	let fixState: SubmitState = $state({ error: '', loading: false, forbidden: false });
+	let removeState: SubmitState = $state({ error: '', loading: false, forbidden: false });
 </script>
 
 <Card.Root class="w-full">
@@ -67,7 +60,7 @@
 
 		<div class="flex flex-col gap-2">
 			<Card.Title>Description</Card.Title>
-			{#if update.forbidden}
+			{#if updateState.forbidden}
 				<p class="text-muted-foreground text-sm italic">You are not allowed to update this account.</p>
 			{:else}
 				<p class="text-muted-foreground text-sm">Only accounts in the ready state accept metadata updates.</p>
@@ -77,13 +70,13 @@
 						Submit(async () => {
 							await Glue.account.update(create(UpdateRequestSchema, { mod: { ...account, description: description } }));
 							refresh();
-						}, setter(update))}
+						}, updateState)}
 				>
 					<Input class="max-w-96" bind:value={description} placeholder="Purpose of the account" />
-					<Button type="submit" variant="outline" class="cursor-pointer" disabled={update.loading}>Save</Button>
+					<Button type="submit" variant="outline" class="cursor-pointer" disabled={updateState.loading}>Save</Button>
 				</form>
-				{#if update.error}
-					<p class="text-destructive text-xs">{update.error}</p>
+				{#if updateState.error}
+					<p class="text-destructive text-xs">{updateState.error}</p>
 				{/if}
 			{/if}
 		</div>
@@ -92,7 +85,7 @@
 
 		<div class="flex flex-col gap-2">
 			<Card.Title>Recovery</Card.Title>
-			{#if fix.forbidden}
+			{#if fixState.forbidden}
 				<p class="text-muted-foreground text-sm italic">You are not allowed to fix this account.</p>
 			{:else}
 				<p class="text-muted-foreground text-sm">
@@ -101,18 +94,18 @@
 				<div class="flex flex-row items-center gap-2">
 					<Button
 						class="cursor-pointer self-start"
-						disabled={reset.loading}
+						disabled={resetState.loading}
 						onclick={() =>
 							Submit(async () => {
 								await Glue.account.reset(
 									create(ResetRequestSchema, { providerId: account.providerId, id: account.id })
 								);
 								refresh();
-							}, setter(reset))}
+							}, resetState)}
 					>
 						Reset Account
 					</Button>
-					{#if reset.loading}
+					{#if resetState.loading}
 						<Badge>
 							<Spinner />
 							Initializing Eviction
@@ -127,24 +120,24 @@
 					<Button
 						variant="destructive"
 						class="cursor-pointer self-start"
-						disabled={fix.loading}
+						disabled={fixState.loading}
 						onclick={() =>
 							Submit(async () => {
 								await Glue.account.fix(create(FixRequestSchema, { providerId: account.providerId, id: account.id }));
 								refresh();
-							}, setter(fix))}
+							}, fixState)}
 					>
 						Force Metafix
 					</Button>
-					{#if fix.loading}
+					{#if fixState.loading}
 						<Badge>
 							<Spinner />
 							Force Reseting
 						</Badge>
 					{/if}
 				</div>
-				{#if fix.error}
-					<p class="text-destructive text-xs">{fix.error}</p>
+				{#if fixState.error}
+					<p class="text-destructive text-xs">{fixState.error}</p>
 				{/if}
 			{/if}
 		</div>
@@ -153,7 +146,7 @@
 
 		<div class="flex flex-col gap-2">
 			<Card.Title>Danger Zone</Card.Title>
-			{#if remove.forbidden}
+			{#if removeState.forbidden}
 				<p class="text-muted-foreground text-sm italic">You are not allowed to delete this account.</p>
 			{:else}
 				<label class="text-muted-foreground flex flex-row items-center gap-2 text-sm">
@@ -165,7 +158,7 @@
 						<Button
 							variant="destructive"
 							class="cursor-pointer"
-							disabled={remove.loading}
+							disabled={removeState.loading}
 							onclick={() =>
 								Submit(async () => {
 									await Glue.account.delete(
@@ -176,7 +169,7 @@
 										})
 									);
 									refresh();
-								}, setter(remove))}
+								}, removeState)}
 						>
 							Yes, delete {account.name}
 						</Button>
@@ -187,11 +180,11 @@
 						</Button>
 					{/if}
 				</div>
-				{#if remove.error}
+				{#if removeState.error}
 					<Alert.Root variant="destructive">
 						<AlertCircleIcon />
 						<Alert.Title>Failed to delete account</Alert.Title>
-						<Alert.Description>{remove.error}</Alert.Description>
+						<Alert.Description>{removeState.error}</Alert.Description>
 					</Alert.Root>
 				{/if}
 			{/if}

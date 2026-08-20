@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Glue, Submit } from '$lib';
+	import { Glue, Submit, type SubmitState } from '$lib';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Button } from '$lib/components/shad/button';
 	import * as Card from '$lib/components/shad/card';
@@ -19,21 +19,17 @@
 	let {
 		gameId,
 		teams,
-		scope,
 		oncreated
 	}: {
 		gameId: string;
 		teams: Team[];
-		scope: string;
 		oncreated: () => void;
 	} = $props();
 
-	let error = $state('');
-	let loading = $state(false);
-	let forbidden = $state(false);
-
 	let assignedTeams: string[] = $state([]);
 	let blueprint: Challenge = $state(create(ChallengeSchema, { id: crypto.randomUUID() }));
+
+	let createState: SubmitState = $state({ error: '', loading: false, forbidden: false });
 
 	let providers: Provider[] = $state([]);
 	async function loadProviders() {
@@ -71,19 +67,16 @@
 	}
 
 	function createChallenges() {
-		Submit(
-			async () => {
-				for (const team of assignedTeams) {
-					await Glue.challenge.create(
-						create(CreateRequestSchema, {
-							init: { ...blueprint, teamId: team, gameId: gameId, scope: scope }
-						})
-					);
-				}
-				oncreated();
-			},
-			(e, l, f) => ((error = e), (loading = l), (forbidden = f))
-		);
+		Submit(async () => {
+			for (const team of assignedTeams) {
+				await Glue.challenge.create(
+					create(CreateRequestSchema, {
+						init: { ...blueprint, teamId: team, gameId: gameId }
+					})
+				);
+			}
+			oncreated();
+		}, createState);
 	}
 
 	onMount(() => loadProviders());
@@ -160,11 +153,11 @@
 				</div>
 			</div>
 			<Button type="submit" class="cursor-pointer self-start">Rollout</Button>
-			{#if error}
+			{#if createState.error}
 				<Alert.Root variant="destructive">
 					<AlertCircleIcon />
-					<Alert.Title>{forbidden ? 'Permission denied' : 'Failed to hand out challenge'}</Alert.Title>
-					<Alert.Description>{error}</Alert.Description>
+					<Alert.Title>{createState.forbidden ? 'Permission denied' : 'Failed to hand out challenge'}</Alert.Title>
+					<Alert.Description>{createState.error}</Alert.Description>
 				</Alert.Root>
 			{/if}
 		</form>

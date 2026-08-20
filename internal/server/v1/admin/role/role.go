@@ -80,6 +80,7 @@ func (s *Server) List(ctx context.Context, req *connect.Request[role.ListRequest
 		rolesOutput = append(rolesOutput, &admin.Role{
 			Id:          role.RoleID.Value(),
 			Name:        role.Name.Value(),
+			Description: role.Description.Value(),
 			Builtin:     role.Builtin.Value(),
 			Permissions: role.Permissions.Value(),
 			Scope:       role.Scope.Value(),

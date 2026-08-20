@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Glue, Submit } from '$lib';
+	import { Glue, Submit, type SubmitState } from '$lib';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Badge } from '$lib/components/shad/badge';
 	import { Button } from '$lib/components/shad/button';
@@ -15,30 +15,20 @@
 
 	const limit = 100;
 
-	let error = $state('');
-	let loading = $state(false);
-	let forbidden = $state(false);
+	let listState: SubmitState = $state({ loading: false, error: '', forbidden: false });
 
 	let roles: Role[] = $state([]);
 	let exhausted = $state(true);
 
 	let selected: Role | undefined = $state();
 
-	// scopes already known from the existing roles, used as suggestions for scope inputs.
-	let scopes = $derived(
-		[...new Set(roles.flatMap((role) => [role.scope, ...Object.keys(role.permissions)]))].filter((s) => s).sort()
-	);
-
 	function load() {
 		selected = undefined;
-		Submit(
-			async () => {
-				const resp = await Glue.role.list(create(ListRequestSchema, { limit: limit }));
-				roles = resp.roles;
-				exhausted = resp.roles.length < limit;
-			},
-			(e, l, f) => ((error = e), (loading = l), (forbidden = f))
-		);
+		Submit(async () => {
+			const resp = await Glue.role.list(create(ListRequestSchema, { limit: limit }));
+			roles = resp.roles;
+			exhausted = resp.roles.length < limit;
+		}, listState);
 	}
 
 	onMount(() => load());
@@ -62,7 +52,7 @@
 		</Button>
 	</div>
 
-	{#if forbidden}
+	{#if listState.forbidden}
 		<Alert.Root>
 			<AlertCircleIcon />
 			<Alert.Title>Permission Denied</Alert.Title>
@@ -99,18 +89,15 @@
 			<Button
 				variant="outline"
 				class="cursor-pointer self-center"
-				disabled={loading}
+				disabled={listState.loading}
 				onclick={() =>
-					Submit(
-						async () => {
-							const resp = await Glue.role.list(
-								create(ListRequestSchema, { limit: limit, startAfter: roles.at(-1)?.id })
-							);
-							roles = [...roles, ...resp.roles];
-							exhausted = resp.roles.length < limit;
-						},
-						(e, l, f) => ((error = e), (loading = l), (forbidden = f))
-					)}
+					Submit(async () => {
+						const resp = await Glue.role.list(
+							create(ListRequestSchema, { limit: limit, startAfter: roles.at(-1)?.id })
+						);
+						roles = [...roles, ...resp.roles];
+						exhausted = resp.roles.length < limit;
+					}, listState)}
 			>
 				Load More
 			</Button>
@@ -119,15 +106,15 @@
 
 	{#if selected}
 		{#key selected.id}
-			<RolePanel role={selected} {scopes} refresh={() => load()} />
+			<RolePanel role={selected} refresh={() => load()} />
 		{/key}
 	{/if}
 
-	{#if error}
+	{#if listState.error}
 		<Alert.Root variant="destructive">
 			<AlertCircleIcon />
 			<Alert.Title>Failed to load roles</Alert.Title>
-			<Alert.Description>{error}</Alert.Description>
+			<Alert.Description>{listState.error}</Alert.Description>
 		</Alert.Root>
 	{/if}
 </div>

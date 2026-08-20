@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Glue, Submit } from '$lib';
+	import { Glue, Submit, type SubmitState } from '$lib';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Button } from '$lib/components/shad/button';
 	import * as Table from '$lib/components/shad/table';
@@ -12,13 +12,9 @@
 	import CreateTeam from './CreateTeam.svelte';
 	import TeamPanel from './TeamPanel.svelte';
 
-	let { gameId, scope }: { gameId: string; scope: string } = $props();
+	let { gameId }: { gameId: string } = $props();
 
 	const limit = 100;
-
-	let error = $state('');
-	let loading = $state(true);
-	let forbidden = $state(false);
 
 	let teams: Team[] = $state([]);
 	let exhausted = $state(true);
@@ -26,17 +22,16 @@
 	let selected: Team | undefined = $state();
 	let creating = $state(false);
 
+	let teamsState: SubmitState = $state({ error: '', forbidden: false, loading: false });
+
 	function load(startAfter?: string) {
-		Submit(
-			async () => {
-				const resp = await Glue.team.list(
-					create(ListRequestSchema, { gameId: gameId, limit: limit, startAfter: startAfter })
-				);
-				teams = startAfter ? [...teams, ...resp.teams] : resp.teams;
-				exhausted = resp.teams.length < limit;
-			},
-			(e, l, f) => ((error = e), (loading = l), (forbidden = f))
-		);
+		Submit(async () => {
+			const resp = await Glue.team.list(
+				create(ListRequestSchema, { gameId: gameId, limit: limit, startAfter: startAfter })
+			);
+			teams = startAfter ? [...teams, ...resp.teams] : resp.teams;
+			exhausted = resp.teams.length < limit;
+		}, teamsState);
 	}
 
 	onMount(() => load());
@@ -51,10 +46,10 @@
 	</div>
 
 	{#if creating}
-		<CreateTeam {gameId} {scope} oncreated={() => load()} />
+		<CreateTeam {gameId} oncreated={() => load()} />
 	{/if}
 
-	{#if forbidden}
+	{#if teamsState.forbidden}
 		<Alert.Root>
 			<AlertCircleIcon />
 			<Alert.Title>Permission Denied</Alert.Title>
@@ -84,7 +79,7 @@
 					<Table.Row>
 						<Table.Cell colspan={3}>
 							<p class="text-muted-foreground p-4 text-sm italic">
-								{loading ? 'Loading teams…' : 'No teams in this game yet.'}
+								{teamsState.loading ? 'Loading teams…' : 'No teams in this game yet.'}
 							</p>
 						</Table.Cell>
 					</Table.Row>
@@ -95,7 +90,7 @@
 			<Button
 				variant="outline"
 				class="cursor-pointer self-center"
-				disabled={loading}
+				disabled={teamsState.loading}
 				onclick={() => load(teams.at(-1)?.id)}
 			>
 				Load More
@@ -109,11 +104,11 @@
 		{/key}
 	{/if}
 
-	{#if error}
+	{#if teamsState.error}
 		<Alert.Root variant="destructive">
 			<AlertCircleIcon />
 			<Alert.Title>Failed to load teams</Alert.Title>
-			<Alert.Description>{error}</Alert.Description>
+			<Alert.Description>{teamsState.error}</Alert.Description>
 		</Alert.Root>
 	{/if}
 </div>

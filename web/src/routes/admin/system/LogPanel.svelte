@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Glue, Submit } from '$lib';
+	import { Glue, Submit, type SubmitState } from '$lib';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Badge } from '$lib/components/shad/badge';
 	import { Button } from '$lib/components/shad/button';
@@ -36,9 +36,7 @@
 		ERROR: { short: 'ERR', level: 'text-red-500', row: 'bg-red-500/10 hover:bg-red-500/20' }
 	};
 
-	let error = $state('');
-	let loading = $state(false);
-	let forbidden = $state(false);
+	let scanState: SubmitState = $state({ error: '', loading: false, forbidden: false });
 
 	let logs: Log[] = $state([]);
 	let expanded = $state('');
@@ -48,22 +46,19 @@
 
 	$effect(() => {
 		nonce;
-		Submit(
-			async () => {
-				const resp = await Glue.system.scanLogs(
-					create(ScanLogsRequestSchema, {
-						from: timestampFromDate(from),
-						to: timestampFromDate(to),
-						system: system,
-						procedure: procedure,
-						level: level,
-						limit: limit
-					})
-				);
-				logs = resp.logs;
-			},
-			(e, l, f) => ((error = e), (loading = l), (forbidden = f))
-		);
+		Submit(async () => {
+			const resp = await Glue.system.scanLogs(
+				create(ScanLogsRequestSchema, {
+					from: timestampFromDate(from),
+					to: timestampFromDate(to),
+					system: system,
+					procedure: procedure,
+					level: level,
+					limit: limit
+				})
+			);
+			logs = resp.logs;
+		}, scanState);
 	});
 </script>
 
@@ -92,7 +87,7 @@
 				size="icon"
 				title="Refresh"
 				class="cursor-pointer"
-				disabled={loading}
+				disabled={scanState.loading}
 				onclick={() => nonce++}
 			>
 				<RefreshIcon />
@@ -100,17 +95,17 @@
 		</div>
 	</Card.Header>
 	<Card.Content>
-		{#if forbidden}
+		{#if scanState.forbidden}
 			<p class="text-muted-foreground text-sm italic">You are not allowed to read the system logs.</p>
 		{:else}
 			<Table.Root class="w-full table-fixed">
 				<Table.Header>
 					<Table.Row>
-						<Table.Head class="w-[32px]"></Table.Head>
-						<Table.Head class="w-[150px]">Time</Table.Head>
-						<Table.Head class="w-[60px]">Level</Table.Head>
-						<Table.Head class="w-[130px]">System</Table.Head>
-						<Table.Head class="w-[240px]">Procedure</Table.Head>
+						<Table.Head class="w-8"></Table.Head>
+						<Table.Head class="w-37.5">Time</Table.Head>
+						<Table.Head class="w-15">Level</Table.Head>
+						<Table.Head class="w-32.5">System</Table.Head>
+						<Table.Head class="w-60">Procedure</Table.Head>
 						<Table.Head>Message</Table.Head>
 					</Table.Row>
 				</Table.Header>
@@ -183,7 +178,7 @@
 						<Table.Row>
 							<Table.Cell colspan={6}>
 								<p class="text-muted-foreground p-4 text-sm italic">
-									{loading ? 'Loading logs…' : 'No logs matched the selected range and filters.'}
+									{scanState.loading ? 'Loading logs…' : 'No logs matched the selected range and filters.'}
 								</p>
 							</Table.Cell>
 						</Table.Row>
@@ -194,10 +189,10 @@
 	</Card.Content>
 </Card.Root>
 
-{#if error}
+{#if scanState.error}
 	<Alert.Root variant="destructive">
 		<AlertCircleIcon />
 		<Alert.Title>Failed to load log data</Alert.Title>
-		<Alert.Description>{error}</Alert.Description>
+		<Alert.Description>{scanState.error}</Alert.Description>
 	</Alert.Root>
 {/if}

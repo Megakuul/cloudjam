@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { Button } from '$lib/components/shad/button';
 	import ChevronLeftIcon from '@lucide/svelte/icons/chevron-left';
 	import CreateGame from './CreateGame.svelte';
@@ -20,5 +19,5 @@
 		<h1 class="text-3xl opacity-80">Host Game</h1>
 	</div>
 
-	<CreateGame oncreated={(id) => goto(`/host/games/${id}`)} />
+	<CreateGame />
 </div>

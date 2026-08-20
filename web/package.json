@@ -26,6 +26,7 @@
 		"@tailwindcss/vite": "^4.1.18",
 		"@types/d3-scale": "^4.0.9",
 		"@types/d3-shape": "^3.1.8",
+		"@types/glob-to-regexp": "^0.4.4",
 		"@types/node": "^24",
 		"bits-ui": "^2.18.1",
 		"clsx": "^2.1.1",
@@ -64,6 +65,7 @@
 		"@tailwindcss/typography": "^0.5.19",
 		"d3-scale": "^4.0.2",
 		"d3-shape": "^3.2.0",
+		"glob-to-regexp": "^0.4.1",
 		"jwt-decode": "^4.0.0",
 		"mode-watcher": "^1.1.0",
 		"svelte-ux": "next"

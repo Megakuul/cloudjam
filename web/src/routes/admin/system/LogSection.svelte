@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Glue, Submit } from '$lib';
+	import { Glue, Submit, type SubmitState } from '$lib';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Button } from '$lib/components/shad/button';
 	import * as Card from '$lib/components/shad/card';
@@ -56,9 +56,6 @@
 	let labels: Chart.ChartConfig = $state({});
 	let data: any[] = $state([]);
 	let counts: Record<string, number> = $state({});
-
-	let error = $state('');
-	let forbidden = $state(false);
 
 	// window picks the aggregation window (and its bucket size in ms) from the zoomed
 	// range, so zooming in yields higher resolution data.
@@ -119,17 +116,16 @@
 		return [totals, config, Object.values(records).sort((a, b) => a.date - b.date)] as const;
 	}
 
+	let levelState: SubmitState = $state({ error: '', loading: false, forbidden: false });
+
 	$effect(() => {
-		Submit(
-			async () => {
-				[counts, labels, data] = await loadLevels(window, bucket, from, to);
-			},
-			(e, _, f) => ((error = e), (forbidden = f))
-		);
+		Submit(async () => {
+			[counts, labels, data] = await loadLevels(window, bucket, from, to);
+		}, levelState);
 	});
 </script>
 
-{#if forbidden}
+{#if levelState.forbidden}
 	<Alert.Root>
 		<AlertCircleIcon />
 		<Alert.Title>Permission Denied</Alert.Title>
@@ -248,11 +244,11 @@
 
 	<LogPanel {from} {to} {level} bind:system bind:procedure limit={Number(limit)} />
 
-	{#if error}
+	{#if levelState.error}
 		<Alert.Root variant="destructive">
 			<AlertCircleIcon />
 			<Alert.Title>Failed to load log data</Alert.Title>
-			<Alert.Description>{error}</Alert.Description>
+			<Alert.Description>{levelState.error}</Alert.Description>
 		</Alert.Root>
 	{/if}
 {/if}

@@ -17,9 +17,8 @@
 	let {
 		providerId = $bindable(),
 		scope,
-		onprovider,
-		oncreated
-	}: { providerId: string; scope: string; onprovider: () => void; oncreated: () => void } = $props();
+		onprovider
+	}: { providerId: string; scope: string; onprovider: () => void } = $props();
 
 	let error = $state('');
 	let loading = $state(false);

@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { Glue, Submit } from '$lib';
-	import ScopeInput from '$lib/components/custom/ScopeInput.svelte';
+	import { Glue, Submit, type SubmitState } from '$lib';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Badge } from '$lib/components/shad/badge';
 	import { Button } from '$lib/components/shad/button';
@@ -8,21 +7,15 @@
 	import { Input } from '$lib/components/shad/input';
 	import { Separator } from '$lib/components/shad/separator';
 	import { AttachScopeRequestSchema, ConfigureRoleRequestSchema, Resource } from '$lib/sdk/v1/admin/rbac/rbac_pb';
-	import { DeleteRequestSchema, GetRequestSchema, UpdateRequestSchema } from '$lib/sdk/v1/admin/role/role_pb';
+	import { DeleteRequestSchema, UpdateRequestSchema } from '$lib/sdk/v1/admin/role/role_pb';
 	import { RoleSchema, type Role } from '$lib/sdk/v1/admin/role_pb';
 	import { create } from '@bufbuild/protobuf';
 	import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
-	import { onMount } from 'svelte';
 	import PermissionEditor from './PermissionEditor.svelte';
+	import OptionalSelect from '$lib/components/custom/OptionalSelect.svelte';
+	import { scopes } from '$lib/scopes.svelte';
 
-	let { role, scopes, refresh }: { role: Role; scopes: string[]; refresh: () => void } = $props();
-
-	type section = { error: string; loading: boolean; forbidden: boolean };
-	const setter = (s: section) => (e: string, l: boolean, f: boolean) => (
-		(s.error = e),
-		(s.loading = l),
-		(s.forbidden = f)
-	);
+	let { role, refresh }: { role: Role; refresh: () => void } = $props();
 
 	// the panel is remounted (keyed) per role, capturing the initial value is intended.
 	// svelte-ignore state_referenced_locally
@@ -36,10 +29,10 @@
 		Object.entries(role.permissions).map(([scope, patterns]) => ({ scope, patterns }))
 	);
 
-	let update: section = $state({ error: '', loading: false, forbidden: false });
-	let configure: section = $state({ error: '', loading: false, forbidden: false });
-	let attach: section = $state({ error: '', loading: false, forbidden: false });
-	let remove: section = $state({ error: '', loading: false, forbidden: false });
+	let updateState: SubmitState = $state({ error: '', loading: false, forbidden: false });
+	let configureState: SubmitState = $state({ error: '', loading: false, forbidden: false });
+	let attachState: SubmitState = $state({ error: '', loading: false, forbidden: false });
+	let removeState: SubmitState = $state({ error: '', loading: false, forbidden: false });
 
 	let mod = $derived(
 		create(RoleSchema, {
@@ -49,16 +42,6 @@
 			permissions: Object.fromEntries(entries.filter((e) => e.scope).map((e) => [e.scope, e.patterns]))
 		})
 	);
-
-	onMount(() => {
-		// the list output does not carry the description, it is enriched by a get request.
-		Submit(
-			async () => {
-				description = (await Glue.role.get(create(GetRequestSchema, { id: role.id }))).role?.description ?? '';
-			},
-			() => {}
-		);
-	});
 </script>
 
 <Card.Root class="w-full">
@@ -76,14 +59,14 @@
 	</Card.Header>
 	<Card.Content class="flex flex-col gap-6">
 		{#if role.builtin}
-			<p class="text-sm text-muted-foreground italic">
+			<p class="text-muted-foreground text-sm italic">
 				This role is builtin; its metadata and permissions cannot be modified.
 			</p>
 		{:else}
 			<div class="flex flex-col gap-2">
 				<Card.Title>Metadata</Card.Title>
-				{#if update.forbidden}
-					<p class="text-sm text-muted-foreground italic">You are not allowed to update this role.</p>
+				{#if updateState.forbidden}
+					<p class="text-muted-foreground text-sm italic">You are not allowed to update this role.</p>
 				{:else}
 					<form
 						class="flex flex-col gap-2"
@@ -91,7 +74,7 @@
 							Submit(async () => {
 								await Glue.role.update(create(UpdateRequestSchema, { mod: mod }));
 								refresh();
-							}, setter(update))}
+							}, updateState)}
 					>
 						<div class="flex flex-row items-center gap-2">
 							<Input class="max-w-48" bind:value={name} placeholder="Name of the role" />
@@ -100,14 +83,14 @@
 								type="submit"
 								variant="outline"
 								class="cursor-pointer"
-								disabled={update.loading || Boolean(Glue.Validate(RoleSchema, mod).violation.name)}
+								disabled={updateState.loading || Boolean(Glue.Validate(RoleSchema, mod).violation.name)}
 							>
 								Save
 							</Button>
 						</div>
-						<p class="text-xs text-destructive">{Glue.Validate(RoleSchema, mod).violation.name ?? ''}</p>
-						{#if update.error}
-							<p class="text-xs text-destructive">{update.error}</p>
+						<p class="text-destructive text-xs">{Glue.Validate(RoleSchema, mod).violation.name ?? ''}</p>
+						{#if updateState.error}
+							<p class="text-destructive text-xs">{updateState.error}</p>
 						{/if}
 					</form>
 				{/if}
@@ -117,28 +100,28 @@
 
 			<div class="flex flex-col gap-2">
 				<Card.Title>Permissions</Card.Title>
-				{#if configure.forbidden}
-					<p class="text-sm text-muted-foreground italic">You are not allowed to configure this role.</p>
+				{#if configureState.forbidden}
+					<p class="text-muted-foreground text-sm italic">You are not allowed to configure this role.</p>
 				{:else}
-					<p class="text-sm text-muted-foreground">
+					<p class="text-muted-foreground text-sm">
 						Comma separated glob patterns matched against the rpc procedure names, granted to subjects of the entries
 						scope. You can only grant scopes you possess yourself.
 					</p>
-					<PermissionEditor bind:entries {scopes} />
+					<PermissionEditor bind:entries />
 					<Button
 						variant="outline"
 						class="cursor-pointer self-start"
-						disabled={configure.loading || Boolean(Glue.Validate(RoleSchema, mod).violation.permissions)}
+						disabled={configureState.loading || Boolean(Glue.Validate(RoleSchema, mod).violation.permissions)}
 						onclick={() =>
 							Submit(async () => {
 								await Glue.rbac.configureRole(create(ConfigureRoleRequestSchema, { mod: mod }));
 								refresh();
-							}, setter(configure))}
+							}, configureState)}
 					>
 						Save Permissions
 					</Button>
-					{#if configure.error}
-						<p class="text-xs text-destructive">{configure.error}</p>
+					{#if configureState.error}
+						<p class="text-destructive text-xs">{configureState.error}</p>
 					{/if}
 				{/if}
 			</div>
@@ -148,16 +131,20 @@
 
 		<div class="flex flex-col gap-2">
 			<Card.Title>Scope</Card.Title>
-			{#if attach.forbidden}
-				<p class="text-sm text-muted-foreground italic">You are not allowed to attach scopes.</p>
+			{#if attachState.forbidden}
+				<p class="text-muted-foreground text-sm italic">You are not allowed to attach scopes.</p>
 			{:else}
-				<p class="text-sm text-muted-foreground">Moves this role into another scope you possess.</p>
+				<p class="text-muted-foreground text-sm">Moves this role into another scope you possess.</p>
 				<div class="flex flex-row items-center gap-2">
-					<ScopeInput class="max-w-48" bind:value={attachScope} {scopes} placeholder="New scope" />
+					<OptionalSelect
+						bind:value={attachScope}
+						placeholder="New scope"
+						suggestions={scopes.map((scope) => ({ id: scope, title: scope }))}
+					/>
 					<Button
 						variant="outline"
 						class="cursor-pointer"
-						disabled={attach.loading || !attachScope}
+						disabled={attachState.loading || !attachScope}
 						onclick={() =>
 							Submit(async () => {
 								await Glue.rbac.attachScope(
@@ -168,13 +155,13 @@
 									})
 								);
 								refresh();
-							}, setter(attach))}
+							}, attachState)}
 					>
 						Attach
 					</Button>
 				</div>
-				{#if attach.error}
-					<p class="text-xs text-destructive">{attach.error}</p>
+				{#if attachState.error}
+					<p class="text-destructive text-xs">{attachState.error}</p>
 				{/if}
 			{/if}
 		</div>
@@ -184,20 +171,20 @@
 
 			<div class="flex flex-col gap-2">
 				<Card.Title>Danger Zone</Card.Title>
-				{#if remove.forbidden}
-					<p class="text-sm text-muted-foreground italic">You are not allowed to delete this role.</p>
+				{#if removeState.forbidden}
+					<p class="text-muted-foreground text-sm italic">You are not allowed to delete this role.</p>
 				{:else}
 					<div class="flex flex-row items-center gap-2">
 						{#if confirmDelete}
 							<Button
 								variant="destructive"
 								class="cursor-pointer"
-								disabled={remove.loading}
+								disabled={removeState.loading}
 								onclick={() =>
 									Submit(async () => {
 										await Glue.role.delete(create(DeleteRequestSchema, { id: role.id }));
 										refresh();
-									}, setter(remove))}
+									}, removeState)}
 							>
 								Yes, delete {role.name}
 							</Button>
@@ -208,11 +195,11 @@
 							</Button>
 						{/if}
 					</div>
-					{#if remove.error}
+					{#if removeState.error}
 						<Alert.Root variant="destructive">
 							<AlertCircleIcon />
 							<Alert.Title>Failed to delete role</Alert.Title>
-							<Alert.Description>{remove.error}</Alert.Description>
+							<Alert.Description>{removeState.error}</Alert.Description>
 						</Alert.Root>
 					{/if}
 				{/if}
