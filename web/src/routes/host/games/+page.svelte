@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { Glue, Submit } from '$lib';
+	import { Glue, Submit, type SubmitState } from '$lib';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Badge } from '$lib/components/shad/badge';
 	import { Button } from '$lib/components/shad/button';
@@ -18,10 +18,6 @@
 
 	const limit = 20;
 
-	let error = $state('');
-	let loading = $state(true);
-	let forbidden = $state(false);
-
 	let games: Game[] = $state([]);
 	let exhausted = $state(true);
 
@@ -34,22 +30,21 @@
 		return 'running';
 	}
 
+	let gamesState: SubmitState = $state({ error: '', loading: false, forbidden: false });
+
 	function load(startAfter?: string) {
-		Submit(
-			async () => {
-				const resp = await Glue.game.list(create(ListRequestSchema, { limit: limit, startAfter: startAfter }));
-				games = startAfter ? [...games, ...resp.games] : resp.games;
-				exhausted = resp.games.length < limit;
-			},
-			(e, l, f) => ((error = e), (loading = l), (forbidden = f))
-		);
+		Submit(async () => {
+			const resp = await Glue.game.list(create(ListRequestSchema, { limit: limit, startAfter: startAfter }));
+			games = startAfter ? [...games, ...resp.games] : resp.games;
+			exhausted = resp.games.length < limit;
+		}, gamesState);
 	}
 
 	onMount(() => load());
 </script>
 
-<div class="flex w-full flex-col gap-4">
-	<div class="flex flex-row items-center gap-2">
+<div class="flex flex-col gap-4 w-full">
+	<div class="flex flex-row gap-2 items-center">
 		<Button variant="ghost" size="icon" class="cursor-pointer" href="/host/">
 			<ChevronLeftIcon />
 		</Button>
@@ -59,14 +54,14 @@
 		</Button>
 	</div>
 
-	{#if forbidden}
+	{#if gamesState.forbidden}
 		<Card.Root class="w-full">
 			<Card.Header>
 				<Card.Title>Open a Game</Card.Title>
 				<Card.Description>You are not allowed to list games, open the one you host by its id.</Card.Description>
 			</Card.Header>
 			<Card.Content>
-				<form class="flex flex-row items-center gap-2" onsubmit={() => goto(`/host/games/${id}`)}>
+				<form class="flex flex-row gap-2 items-center" onsubmit={() => goto(`/host/games/${id}`)}>
 					<Input class="max-w-96" bind:value={id} placeholder="Game id" />
 					<Button type="submit" class="cursor-pointer" disabled={!id.trim()}>Open</Button>
 				</form>
@@ -97,8 +92,8 @@
 				{:else}
 					<Table.Row>
 						<Table.Cell colspan={6}>
-							<p class="text-muted-foreground p-4 text-sm italic">
-								{loading ? 'Loading games…' : 'No games yet. Schedule one to hand challenges out to teams.'}
+							<p class="p-4 text-sm italic text-muted-foreground">
+								{gamesState.loading ? 'Loading games…' : 'No games yet (or management did not give you access, loser)'}
 							</p>
 						</Table.Cell>
 					</Table.Row>
@@ -108,8 +103,8 @@
 		{#if !exhausted}
 			<Button
 				variant="outline"
-				class="cursor-pointer self-center"
-				disabled={loading}
+				class="self-center cursor-pointer"
+				disabled={gamesState.loading}
 				onclick={() => load(games.at(-1)?.id)}
 			>
 				Load More
@@ -117,11 +112,11 @@
 		{/if}
 	{/if}
 
-	{#if error}
+	{#if gamesState.error}
 		<Alert.Root variant="destructive">
 			<AlertCircleIcon />
 			<Alert.Title>Failed to load games</Alert.Title>
-			<Alert.Description>{error}</Alert.Description>
+			<Alert.Description>{gamesState.error}</Alert.Description>
 		</Alert.Root>
 	{/if}
 </div>

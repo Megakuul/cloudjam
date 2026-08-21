@@ -32,12 +32,8 @@ func (p *Provider) Resources(ctx context.Context, id string, lifetime time.Durat
 	}, nil
 }
 
-// await blocks until a cloud control request settles and returns its final progress event.
-//
-// The sdk waiter collapses every terminal non-success state into "waiter state
-// transitioned to Failure" and throws away the response that carries the handler
-// error code and status message. The event is therefore refetched on failure to
-// build an error that actually names the problem.
+// await does what the sdk requestSuccessWaiter SHOULD do:
+// (wait for the resource request to complete AND return proper errors if an error occured).
 func (r *ResourceController) await(
 	ctx context.Context, resourceType string, token *string, timeout time.Duration,
 ) (*types.ProgressEvent, error) {
@@ -50,19 +46,14 @@ func (r *ResourceController) await(
 
 	resp, err := r.client.GetResourceRequestStatus(ctx, input)
 	if err != nil || resp.ProgressEvent == nil {
-		// the request status is unreachable, usually because the context is gone;
-		// the waiter error is all there is to report.
 		return nil, fmt.Errorf("%s request %q: %w", resourceType, awssdk.ToString(token), waitErr)
 	}
 	event := resp.ProgressEvent
 	operation := strings.ToLower(string(event.Operation))
 
-	// the request can settle in the window between the waiter giving up and the
-	// refetch, in which case there is nothing to report.
 	if event.OperationStatus == types.OperationStatusSuccess {
 		return event, nil
 	}
-	// the waiter ran out its own deadline while cloud control is still reconciling.
 	if event.OperationStatus == types.OperationStatusPending ||
 		event.OperationStatus == types.OperationStatusInProgress {
 		return nil, fmt.Errorf("%s %s request %q: still %s after %s",

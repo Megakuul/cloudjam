@@ -24,6 +24,8 @@ func (p *Provider) Credentials(ctx context.Context, id string, lifetime time.Dur
 		"sessionToken": credentials.SessionToken,
 	})
 
+	// this weird endpoint generates an AWS console sign in token:
+	// https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_enable-console-custom-url.html
 	client := http.Client{Timeout: time.Second * 10}
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet,
 		"https://signin.aws.amazon.com/federation?Action=getSigninToken&Session="+url.QueryEscape(string(session)), nil,

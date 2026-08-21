@@ -67,17 +67,17 @@
 	<meta property="og:image" content="/favicon.png" />
 </svelte:head>
 
-<div class="flex w-full flex-col gap-4">
-	<div class="flex flex-row items-center gap-2">
+<div class="flex flex-col gap-4 w-full">
+	<div class="flex flex-row gap-2 items-center">
 		<Button variant="ghost" size="icon" class="cursor-pointer" href="/host/">
 			<ChevronLeftIcon />
 		</Button>
 		<h1 class="text-3xl opacity-80">Design</h1>
 	</div>
 
-	<p class="text-muted-foreground text-sm">Create, update, manage all challenge definitions</p>
+	<p class="text-sm text-muted-foreground">Create, update and manage challenge definitions</p>
 
-	<div class="flex flex-row items-center gap-4">
+	<div class="flex flex-row gap-4 items-center">
 		<OptionalSelect
 			bind:value={providerId}
 			placeholder="Select Provider"
@@ -100,7 +100,7 @@
 	{#if provider}
 		<CreateDefinition {provider} refresh={() => loadDefinitions()} />
 
-		<div class="flex w-full flex-col gap-4">
+		<div class="flex flex-col gap-4 w-full">
 			<h2 class="text-xl opacity-80">Challenge Definitions on the Provider</h2>
 			{#if definitionsState.forbidden}
 				<Alert.Root>
@@ -132,7 +132,7 @@
 						{:else}
 							<Table.Row>
 								<Table.Cell colspan={4}>
-									<p class="text-muted-foreground p-4 text-sm italic">
+									<p class="p-4 text-sm italic text-muted-foreground">
 										{definitionsState.loading
 											? 'Loading definitions…'
 											: 'No definitions uploaded to this provider yet.'}
@@ -145,7 +145,7 @@
 				{#if !definitionsExhausted}
 					<Button
 						variant="outline"
-						class="cursor-pointer self-center"
+						class="self-center cursor-pointer"
 						disabled={definitionsState.loading}
 						onclick={() => loadDefinitions(definitions.at(-1)?.id)}
 					>
@@ -173,9 +173,9 @@
 			{/if}
 		</div>
 	{:else}
-		<div class="flex h-[60vh] w-full flex-col items-center justify-center gap-8">
-			<WandSparklesIcon class="text-muted h-48 w-48" />
-			<h1 class="text-muted text-4xl font-bold">The Canvas is yours</h1>
+		<div class="flex flex-col gap-8 justify-center items-center w-full h-[60vh]">
+			<WandSparklesIcon class="w-48 h-48 text-muted" />
+			<h1 class="text-4xl font-bold text-muted">The Canvas is yours</h1>
 		</div>
 	{/if}
 </div>
