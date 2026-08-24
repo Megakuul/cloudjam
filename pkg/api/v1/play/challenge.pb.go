@@ -96,8 +96,9 @@ type Challenge struct {
 	Description          []string               `protobuf:"bytes,8,rep,name=description,proto3" json:"description,omitempty"`
 	Assets               map[string]string      `protobuf:"bytes,9,rep,name=assets,proto3" json:"assets,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	Clues                map[string]string      `protobuf:"bytes,10,rep,name=clues,proto3" json:"clues,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	Errors               []string               `protobuf:"bytes,11,rep,name=errors,proto3" json:"errors,omitempty"`
+	Error                string                 `protobuf:"bytes,11,opt,name=error,proto3" json:"error,omitempty"`
 	ScoreEvents          []*ScoreEvent          `protobuf:"bytes,12,rep,name=score_events,json=scoreEvents,proto3" json:"score_events,omitempty"`
+	Ready                bool                   `protobuf:"varint,13,opt,name=ready,proto3" json:"ready,omitempty"`
 	unknownFields        protoimpl.UnknownFields
 	sizeCache            protoimpl.SizeCache
 }
@@ -202,11 +203,11 @@ func (x *Challenge) GetClues() map[string]string {
 	return nil
 }
 
-func (x *Challenge) GetErrors() []string {
+func (x *Challenge) GetError() string {
 	if x != nil {
-		return x.Errors
+		return x.Error
 	}
-	return nil
+	return ""
 }
 
 func (x *Challenge) GetScoreEvents() []*ScoreEvent {
@@ -214,6 +215,13 @@ func (x *Challenge) GetScoreEvents() []*ScoreEvent {
 		return x.ScoreEvents
 	}
 	return nil
+}
+
+func (x *Challenge) GetReady() bool {
+	if x != nil {
+		return x.Ready
+	}
+	return false
 }
 
 var File_v1_play_challenge_proto protoreflect.FileDescriptor
@@ -225,7 +233,7 @@ const file_v1_play_challenge_proto_rawDesc = "" +
 	"ScoreEvent\x128\n" +
 	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12\x12\n" +
 	"\x04text\x18\x02 \x01(\tR\x04text\x12\x16\n" +
-	"\x06change\x18\x03 \x01(\x01R\x06change\"\xda\x04\n" +
+	"\x06change\x18\x03 \x01(\x01R\x06change\"\xee\x04\n" +
 	"\tChallenge\x12\x14\n" +
 	"\x05scope\x18\x01 \x01(\tR\x05scope\x12!\n" +
 	"\agame_id\x18\x02 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x06gameId\x12\x18\n" +
@@ -237,9 +245,10 @@ const file_v1_play_challenge_proto_rawDesc = "" +
 	"\vdescription\x18\b \x03(\tR\vdescription\x126\n" +
 	"\x06assets\x18\t \x03(\v2\x1e.v1.play.Challenge.AssetsEntryR\x06assets\x123\n" +
 	"\x05clues\x18\n" +
-	" \x03(\v2\x1d.v1.play.Challenge.CluesEntryR\x05clues\x12\x16\n" +
-	"\x06errors\x18\v \x03(\tR\x06errors\x126\n" +
-	"\fscore_events\x18\f \x03(\v2\x13.v1.play.ScoreEventR\vscoreEvents\x1a9\n" +
+	" \x03(\v2\x1d.v1.play.Challenge.CluesEntryR\x05clues\x12\x14\n" +
+	"\x05error\x18\v \x01(\tR\x05error\x126\n" +
+	"\fscore_events\x18\f \x03(\v2\x13.v1.play.ScoreEventR\vscoreEvents\x12\x14\n" +
+	"\x05ready\x18\r \x01(\bR\x05ready\x1a9\n" +
 	"\vAssetsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a8\n" +

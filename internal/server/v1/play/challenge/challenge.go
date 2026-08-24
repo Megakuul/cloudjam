@@ -93,8 +93,9 @@ func (s *Server) Get(ctx context.Context, req *connect.Request[challenge.GetRequ
 		Description:          challengeMeta.Description.Value(),
 		Assets:               challengeMeta.Assets.Value(),
 		Clues:                coveredClues,
-		Errors:               challengeMeta.Errors.Value(),
+		Error:                challengeMeta.Error.Value(),
 		ScoreEvents:          challengeMeta.ScoreEvents.Value(),
+		Ready:                challengeMeta.Ready.Value(),
 		Scope:                challengeMeta.Scope.Value(),
 	}}}, nil
 }
@@ -136,8 +137,9 @@ func (s *Server) List(ctx context.Context, req *connect.Request[challenge.ListRe
 			Description:          challenge.Description.Value(),
 			Assets:               challenge.Assets.Value(),
 			Clues:                coveredClues,
-			Errors:               challenge.Errors.Value(),
+			Error:                challenge.Error.Value(),
 			ScoreEvents:          challenge.ScoreEvents.Value(),
+			Ready:                challenge.Ready.Value(),
 			Scope:                challenge.Scope.Value(),
 		})
 	}
@@ -385,7 +387,7 @@ func (s *Server) Start(ctx context.Context, req *connect.Request[challenge.Start
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create resource controller"))
 	}
 
-	challengeRunner := challengerunner.New(l,
+	challengeRunner := challengerunner.New(l.With("challenge", challengeMeta.ChallengeID.Value()),
 		definitionMeta, challengeMeta, teamMeta,
 		s.pluginCache, s.oltp, s.olap, access, assets, resources,
 	)
@@ -402,7 +404,7 @@ func (s *Server) Start(ctx context.Context, req *connect.Request[challenge.Start
 		return dynamitedb.Update(ctx, s.oltp, &oltp.Challenge{
 			GameID:      dynamitedb.Key(challengeMeta.GameID.Value()),
 			ChallengeID: dynamitedb.Key(challengeMeta.ChallengeID.Value()),
-			Errors:      dynamitedb.Append(err.Error()),
+			Error:       dynamitedb.Set("failure while starting challenge"),
 		})
 	})
 

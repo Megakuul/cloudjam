@@ -34,9 +34,10 @@ func main() {
 				"of it. We got lucky: the sessions rebuilt themselves from cache. The "+
 				"post-incident action is on you — make the sessions table recoverable, and "+
 				"make it obvious who to call next time.").
-		AddClue("recovery", "DynamoDB can restore a table to any second in the recent past, if you ask it to in advance.").
-		AddClue("accident", "The cleanup script was allowed to call DeleteTable. There is a table-level setting for that.").
-		AddClue("ownership", fmt.Sprintf("The platform team wants a %q tag on anything holding customer data.", ownerTag)).
+		// clue prices are added to the team score, so they are negative.
+		AddClue("recovery", "DynamoDB can restore a table to any second in the recent past, if you ask it to in advance.", -10).
+		AddClue("accident", "The cleanup script was allowed to call DeleteTable. There is a table-level setting for that.", -7).
+		AddClue("ownership", fmt.Sprintf("The platform team wants a %q tag on anything holding customer data.", ownerTag), -5).
 		SetPermission(policy.Document{
 			Version: policy.Version20121017,
 			Statement: []policy.Statement{

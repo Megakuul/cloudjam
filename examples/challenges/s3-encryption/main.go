@@ -32,9 +32,11 @@ var bucketRef string
 func main() {
 	challenge.New("Lock Down the Bucket", 10*time.Second, bootstrap).
 		AddDescription("A teammate spun up an S3 bucket with no encryption and no public-access guardrails. Secure it.").
-		AddClue("encryption", "Default encryption lives under BucketEncryption.").
-		AddClue("public", "Block public access with a PublicAccessBlockConfiguration.").
-		AddClue("inventory", "The bucket carries a tag the audit relies on. Leave it alone.").
+		// clue prices are added to the team score, so they are negative: a clue
+		// costs roughly a fifth of the check it unlocks.
+		AddClue("encryption", "Default encryption lives under BucketEncryption.", -10).
+		AddClue("public", "Block public access with a PublicAccessBlockConfiguration.", -12).
+		AddClue("inventory", "The bucket carries a tag the audit relies on. Leave it alone.", -3).
 		SetPermission(policy.Document{
 			Version: policy.Version20121017,
 			Statement: []policy.Statement{

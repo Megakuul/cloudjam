@@ -94,8 +94,8 @@
 						<Table.Cell>{teamName(challenge.teamId)}</Table.Cell>
 						<Table.Cell>{score(challenge)}</Table.Cell>
 						<Table.Cell>
-							{#if challenge.errors.length}
-								<Badge variant="destructive">{challenge.errors.length}</Badge>
+							{#if challenge.error}
+								<Badge variant="destructive">defect</Badge>
 							{/if}
 						</Table.Cell>
 					</Table.Row>

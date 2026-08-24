@@ -15,13 +15,18 @@
 	import type { Challenge } from '$lib/sdk/v1/play/challenge_pb';
 	import { create } from '@bufbuild/protobuf';
 	import { timestampDate } from '@bufbuild/protobuf/wkt';
-	import { SquareArrowOutUpRightIcon } from '@lucide/svelte';
+	import { BadgeCheckIcon, SquareArrowOutUpRightIcon } from '@lucide/svelte';
 	import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
 	import CopyIcon from '@lucide/svelte/icons/copy';
 	import LightbulbIcon from '@lucide/svelte/icons/lightbulb';
 	import PlayIcon from '@lucide/svelte/icons/play';
 
-	let { challenge, refresh }: { challenge: Challenge; refresh: () => void } = $props();
+	let {
+		challenge,
+		active,
+		nextInterval,
+		refresh
+	}: { challenge: Challenge; active: boolean; nextInterval: Date; refresh: () => void } = $props();
 
 	let credentials = $state('');
 
@@ -38,16 +43,25 @@
 	let startState: SubmitState = $state({ error: '', loading: false, forbidden: false });
 	let credsState: SubmitState = $state({ error: '', loading: false, forbidden: false });
 	let clueState: SubmitState = $state({ error: '', loading: false, forbidden: false });
+
+	let adhsTimeout: ReturnType<typeof setTimeout>;
+	let adhsSpinner: boolean = $state(false);
 </script>
 
 <Card.Root class="w-full">
 	<Card.Header>
 		<Card.Title class="text-2xl">
 			{challenge.title || 'Not started yet'}
-			{#if startState.loading}
+			{#if !challenge.ready && challenge.title}
 				<Badge variant="default">
 					<Spinner />
 					Provisioning Challenge
+				</Badge>
+			{/if}
+			{#if adhsSpinner}
+				<Badge variant="outline">
+					<Spinner />
+					Checking Progress
 				</Badge>
 			{/if}
 		</Card.Title>
@@ -63,19 +77,32 @@
 			<Button
 				variant="outline"
 				class="cursor-pointer"
-				disabled={startState.loading || Boolean(challenge.title)}
+				disabled={!active || startState.loading || Boolean(challenge.title)}
 				onclick={() =>
 					Submit(async () => {
 						await Glue.challenge.start(create(StartRequestSchema, { gameId: challenge.gameId, id: challenge.id }));
-						refresh();
 					}, startState)}
 			>
 				<PlayIcon /> Start
 			</Button>
+
 			<Button
 				variant="outline"
 				class="cursor-pointer"
-				disabled={credsState.loading || !challenge.title}
+				disabled={!active || !challenge.ready}
+				onclick={() => {
+					clearTimeout(adhsTimeout);
+					adhsSpinner = true;
+					adhsTimeout = setTimeout(() => (adhsSpinner = false), nextInterval.getTime() - Date.now());
+				}}
+			>
+				<BadgeCheckIcon /> Check
+			</Button>
+
+			<Button
+				variant="outline"
+				class="cursor-pointer"
+				disabled={!active || !challenge.ready || credsState.loading || !challenge.title}
 				onclick={() =>
 					Submit(async () => {
 						credentials = (
@@ -121,13 +148,13 @@
 			</Alert.Root>
 		{/if}
 
-		{#each challenge.errors as message, index (index)}
+		{#if challenge.error}
 			<Alert.Root variant="destructive">
 				<AlertCircleIcon />
-				<Alert.Title>Challenge reported an error</Alert.Title>
-				<Alert.Description class="font-mono text-xs break-all">{message}</Alert.Description>
+				<Alert.Title>Challenge is malfunctioning. Please contact an administrator!</Alert.Title>
+				<Alert.Description class="font-mono text-xs break-all">{challenge.error}</Alert.Description>
 			</Alert.Root>
-		{/each}
+		{/if}
 
 		{#if challenge.description.length}
 			<div class="flex flex-col gap-2">

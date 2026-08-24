@@ -19,9 +19,9 @@ type localProvider struct {
 	resources provider.ResourceController
 }
 
-func (p *localProvider) report(ctx context.Context, in *api.ReportInput) (*api.ReportOutput, error) {
-	slog.Warn(in.Error, "source", "plugin")
-	return &api.ReportOutput{}, nil
+func (p *localProvider) cancel(ctx context.Context, in *api.CancelInput) (*api.CancelOutput, error) {
+	slog.Error(fmt.Sprintf("plugin cancelled %q: %q", in.Error, in.DetailError), "source", "plugin")
+	return &api.CancelOutput{}, nil
 }
 
 func (p *localProvider) log(ctx context.Context, in *api.LogInput) (*api.LogOutput, error) {

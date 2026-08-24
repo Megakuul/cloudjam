@@ -46,9 +46,11 @@ func main() {
 				"same order, times out, and the order goes straight back on the queue — and " +
 				"three thousand orders behind it are waiting their turn. Give the failure " +
 				"somewhere to go.").
-		AddClue("stuck", "A message that cannot be processed needs somewhere to go after N attempts. SQS calls that a redrive policy.").
-		AddClue("timeout", "The consumer needs about 45 seconds. How long does SQS hide a message it has handed out?").
-		AddClue("evidence", "Once the queue drains, you still want the bad order to look at. How long does SQS keep a message?").
+		// clue prices are added to the team score, so they are negative. "stuck"
+		// carries most of the challenge, so it costs the most.
+		AddClue("stuck", "A message that cannot be processed needs somewhere to go after N attempts. SQS calls that a redrive policy.", -15).
+		AddClue("timeout", "The consumer needs about 45 seconds. How long does SQS hide a message it has handed out?", -5).
+		AddClue("evidence", "Once the queue drains, you still want the bad order to look at. How long does SQS keep a message?", -4).
 		SetPermission(policy.Document{
 			Version: policy.Version20121017,
 			Statement: []policy.Statement{

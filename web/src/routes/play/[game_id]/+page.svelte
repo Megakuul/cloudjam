@@ -1,30 +1,19 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
-	import { getPubId, getSubject, Glue, Submit, type SubmitState } from '$lib';
-	import * as Alert from '$lib/components/shad/alert';
+	import { getSubject, Glue, Submit, type SubmitState } from '$lib';
 	import { Badge } from '$lib/components/shad/badge';
 	import { Button } from '$lib/components/shad/button';
 	import * as Card from '$lib/components/shad/card';
-	import * as Table from '$lib/components/shad/table';
-	import {
-		GetRequestSchema as GetChallengeRequestSchema,
-		ListRequestSchema as ListChallengeRequestSchema
-	} from '$lib/sdk/v1/play/challenge/challenge_pb';
+	import { ListRequestSchema as ListChallengeRequestSchema } from '$lib/sdk/v1/play/challenge/challenge_pb';
 	import type { Challenge } from '$lib/sdk/v1/play/challenge_pb';
 	import { GetRequestSchema as GetGameRequestSchema } from '$lib/sdk/v1/play/game/game_pb';
 	import type { Game } from '$lib/sdk/v1/play/game_pb';
-	import {
-		GetRequestSchema as GetTeamRequestSchema,
-		ListRequestSchema as ListTeamsRequestSchema
-	} from '$lib/sdk/v1/play/team/team_pb';
+	import { ListRequestSchema as ListTeamsRequestSchema } from '$lib/sdk/v1/play/team/team_pb';
 	import { create } from '@bufbuild/protobuf';
 	import { timestampDate } from '@bufbuild/protobuf/wkt';
-	import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
-	import { onMount } from 'svelte';
 	import { ChevronLeftIcon, LayersIcon } from '@lucide/svelte';
 	import type { Team } from '$lib/sdk/v1/play/team_pb';
-	import { GetRequestSchema as GetDefinitionRequestSchema } from '$lib/sdk/v1/cloud/definition/definition_pb';
 
 	let gameState: SubmitState = $state({ error: '', loading: false, forbidden: false });
 	let game: Game | undefined = $state();
@@ -142,8 +131,8 @@
 								{#if !challenge.title}
 									<Badge variant="secondary">not discovered</Badge>
 								{/if}
-								{#if challenge.errors.length > 0}
-									<Badge variant="destructive">provision failure</Badge>
+								{#if challenge.error}
+									<Badge variant="destructive">challenge defect</Badge>
 								{/if}
 							</div>
 						</Card.Header>

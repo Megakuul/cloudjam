@@ -86,7 +86,13 @@ func New(title string, interval time.Duration, boostrap func(s *Scenario) error)
 func (c *Scenario) AddAsset(name string, asset []byte) *Scenario {
 	assetMeta, err := api.CreateAsset(asset)
 	if err != nil {
-		c.report(fmt.Errorf("failed to create asset '%s': %w", name, err))
+		_, err := api.Cancel(api.CancelInput{
+			Error:       "asset creation mechanism is defect",
+			DetailError: fmt.Sprintf("failed to create asset '%s': %v", name, err),
+		})
+		if err != nil {
+			slog.Error(fmt.Sprintf("failed to cancel: %v", err))
+		}
 		return c
 	}
 	newAssetMeta, err := api.UpdateAsset(api.UpdateAssetInput{
@@ -94,7 +100,13 @@ func (c *Scenario) AddAsset(name string, asset []byte) *Scenario {
 		NewName: name,
 	})
 	if err != nil {
-		c.report(fmt.Errorf("failed to create asset '%s': %w", name, err))
+		_, err := api.Cancel(api.CancelInput{
+			Error:       "asset update mechanism is defect",
+			DetailError: fmt.Sprintf("failed to update asset '%s': %v", name, err),
+		})
+		if err != nil {
+			slog.Error(fmt.Sprintf("failed to cancel: %v", err))
+		}
 		return c
 	}
 	if !c.init.Load() {
@@ -105,7 +117,13 @@ func (c *Scenario) AddAsset(name string, asset []byte) *Scenario {
 				newAssetMeta.NewURL: name,
 			},
 		}); err != nil {
-			c.report(err)
+			_, err := api.Cancel(api.CancelInput{
+				Error:       "metadata update mechanism is defect",
+				DetailError: fmt.Sprintf("failed to update asset metadata '%s': %v", name, err),
+			})
+			if err != nil {
+				slog.Error(fmt.Sprintf("failed to cancel: %v", err))
+			}
 		}
 	}
 	return c
@@ -119,14 +137,20 @@ func (c *Scenario) AddDescription(description string) *Scenario {
 		if _, err := api.UpdateMeta(api.UpdateMetaInput{
 			AdditionalDescriptions: []string{description},
 		}); err != nil {
-			c.report(err)
+			_, err := api.Cancel(api.CancelInput{
+				Error:       "description is defect",
+				DetailError: fmt.Sprintf("failed to update description metadata: %v", err),
+			})
+			if err != nil {
+				slog.Error(fmt.Sprintf("failed to cancel: %v", err))
+			}
 		}
 	}
 	return c
 }
 
 // AddClue adds a clue to the scenario (hint is what the user always sees, secret is what he gets when uncovering the hint).
-func (c *Scenario) AddClue(hint, secret string) *Scenario {
+func (c *Scenario) AddClue(hint, secret string, price float64) *Scenario {
 	if !c.init.Load() {
 		c.initClues[hint] = secret
 	} else {
@@ -134,8 +158,17 @@ func (c *Scenario) AddClue(hint, secret string) *Scenario {
 			AdditionalClues: map[string]string{
 				hint: secret,
 			},
+			AdditionalCluePrices: map[string]float64{
+				hint: price,
+			},
 		}); err != nil {
-			c.report(err)
+			_, err := api.Cancel(api.CancelInput{
+				Error:       "clue system is defect",
+				DetailError: fmt.Sprintf("failed to add clue '%s': %v", hint, err),
+			})
+			if err != nil {
+				slog.Error(fmt.Sprintf("failed to cancel: %v", err))
+			}
 		}
 	}
 	return c
@@ -150,7 +183,13 @@ func (c *Scenario) SetPermission(doc fmt.Stringer) *Scenario {
 		if _, err := api.UpdatePermission(api.UpdatePermissionInput{
 			Permission: doc.String(),
 		}); err != nil {
-			c.report(err)
+			_, err := api.Cancel(api.CancelInput{
+				Error:       "permission system is defect",
+				DetailError: fmt.Sprintf("failed to set permissions: %v", err),
+			})
+			if err != nil {
+				slog.Error(fmt.Sprintf("failed to cancel: %v", err))
+			}
 		}
 	}
 	return c
@@ -164,7 +203,13 @@ func (c *Scenario) SetGuardrail(doc fmt.Stringer) *Scenario {
 		if _, err := api.UpdateGuardrail(api.UpdateGuardrailInput{
 			Guardrail: doc.String(),
 		}); err != nil {
-			c.report(err)
+			_, err := api.Cancel(api.CancelInput{
+				Error:       "guardrail system is defect",
+				DetailError: fmt.Sprintf("failed to set guardrails: %v", err),
+			})
+			if err != nil {
+				slog.Error(fmt.Sprintf("failed to cancel: %v", err))
+			}
 		}
 	}
 	return c
@@ -217,8 +262,16 @@ func (c *Scenario) Start() {
 		Descriptions: c.initDescriptions,
 		Clues:        c.initClues,
 		Assets:       c.initAssets,
+		Ready:        false,
 	}); err != nil {
-		c.report(err)
+		_, err := api.Cancel(api.CancelInput{
+			Error:       "metadata is defect",
+			DetailError: fmt.Sprintf("failed to create metadata: %v", err),
+		})
+		if err != nil {
+			slog.Error(fmt.Sprintf("failed to cancel: %v", err))
+		}
+		return
 	}
 
 	if c.initPermission == "" || c.initGuardrail == "" {
@@ -227,16 +280,49 @@ func (c *Scenario) Start() {
 	if _, err := api.CreatePermission(api.CreatePermissionInput{
 		Permission: c.initPermission,
 	}); err != nil {
-		c.report(err)
+		_, err := api.Cancel(api.CancelInput{
+			Error:       "permissions are defect",
+			DetailError: fmt.Sprintf("failed to create permissions: %v", err),
+		})
+		if err != nil {
+			slog.Error(fmt.Sprintf("failed to cancel: %v", err))
+		}
+		return
 	}
 	if _, err := api.CreateGuardrail(api.CreateGuardrailInput{
 		Guardrail: c.initGuardrail,
 	}); err != nil {
-		c.report(err)
+		_, err := api.Cancel(api.CancelInput{
+			Error:       "guardrails are defect",
+			DetailError: fmt.Sprintf("failed to create guardrails: %v", err),
+		})
+		if err != nil {
+			slog.Error(fmt.Sprintf("failed to cancel: %v", err))
+		}
+		return
 	}
 
 	if err := c.bootstrap(c); err != nil {
-		c.report(err)
+		_, err := api.Cancel(api.CancelInput{
+			Error:       "challenge infrastructure is defect",
+			DetailError: fmt.Sprintf("failed to bootstrap: %v", err),
+		})
+		if err != nil {
+			slog.Error(fmt.Sprintf("failed to cancel: %v", err))
+		}
+		return
+	}
+	if _, err := api.UpdateMeta(api.UpdateMetaInput{
+		Ready: new(true),
+	}); err != nil {
+		_, err := api.Cancel(api.CancelInput{
+			Error:       "challenge metadata is defect",
+			DetailError: fmt.Sprintf("failed to set challenge to ready: %v", err),
+		})
+		if err != nil {
+			slog.Error(fmt.Sprintf("failed to cancel: %v", err))
+		}
+		return
 	}
 
 	for {
@@ -254,7 +340,7 @@ func (c *Scenario) orchestrateEvents() {
 	for name, event := range c.events {
 		active, err := event.Trigger()
 		if err != nil {
-			c.report(fmt.Errorf("event start trigger %q: %w", name, err))
+			slog.Error(fmt.Sprintf("event start trigger %q: %v", name, err))
 			continue
 		}
 		if cancel, ok := c.activeEvents[name]; ok {
@@ -267,7 +353,7 @@ func (c *Scenario) orchestrateEvents() {
 				c.activeEvents[name] = cancel
 				go func() {
 					if err := event.Event(ctx, c); err != nil {
-						c.report(err)
+						slog.Error(fmt.Sprintf("event %q: %v", name, err))
 					}
 				}()
 			}
@@ -291,7 +377,7 @@ func (c *Scenario) evaluateChecks() {
 
 		passed, err := check.Trigger()
 		if err != nil {
-			c.report(fmt.Errorf("check %q: %w", name, err))
+			slog.Error(fmt.Sprintf("check %q: %v", name, err))
 			continue
 		}
 		if !passed {
@@ -302,18 +388,11 @@ func (c *Scenario) evaluateChecks() {
 			Increment: check.Points,
 		}); err != nil {
 			// Leave it live so the award is attempted again next round.
-			c.report(fmt.Errorf("check %q: award: %w", name, err))
+			slog.Error(fmt.Sprintf("check %q: award: %v", name, err))
 			continue
 		}
 		if !check.Repeat {
 			check.retired = true
 		}
-	}
-}
-
-func (c *Scenario) report(err error) {
-	_, rErr := api.Report(api.ReportInput{Error: err.Error()})
-	if rErr != nil {
-		slog.Error(fmt.Sprintf("failed to report error (%v): %v", rErr, err))
 	}
 }

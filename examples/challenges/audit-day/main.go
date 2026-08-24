@@ -61,9 +61,11 @@ func main() {
 				"Finding 2: the bastion log group has no retention policy — it either grows " +
 				"forever or tells us nothing.\n" +
 				"Finding 3: those logs are not encrypted with a key we control.").
-		AddClue("finding 1", "The auditor's objection is the source range, not the port. Engineers still need to reach the bastion.").
-		AddClue("finding 2", "Somewhere between a month and a year of logs is defensible. Forever is not.").
-		AddClue("finding 3", "'A key we control' means a customer managed key, not the default service key.").
+		// clue prices are added to the team score, so they are negative: a clue
+		// costs roughly a fifth of the findings it closes.
+		AddClue("finding 1", "The auditor's objection is the source range, not the port. Engineers still need to reach the bastion.", -12).
+		AddClue("finding 2", "Somewhere between a month and a year of logs is defensible. Forever is not.", -7).
+		AddClue("finding 3", "'A key we control' means a customer managed key, not the default service key.", -14).
 		SetPermission(policy.Document{
 			Version: policy.Version20121017,
 			Statement: []policy.Statement{
@@ -202,8 +204,8 @@ func auditorArrives(ctx context.Context, s *challenge.Scenario) error {
 			"before they sign off: write a remediation note to the SSM parameter %q quoting "+
 			"the id of the security group you fixed, and prove the key you created is on a "+
 			"rotation schedule.", notePath))
-	s.AddClue("evidence", fmt.Sprintf("The note is an SSM parameter at %q. Its value has to contain the security group id.", notePath))
-	s.AddClue("rotation", "A customer managed key has a property that rotates its backing material on a schedule.")
+	s.AddClue("evidence", fmt.Sprintf("The note is an SSM parameter at %q. Its value has to contain the security group id.", notePath), -10)
+	s.AddClue("rotation", "A customer managed key has a property that rotates its backing material on a schedule.", -7)
 
 	s.AddCheck("Filed the remediation note", challenge.Check{
 		Points:  40,

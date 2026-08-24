@@ -35,6 +35,8 @@ type Challenge struct {
 	access    provider.AccessController
 	assets    provider.AssetController
 	resources provider.ResourceController
+
+	cancelFunc context.CancelFunc
 }
 
 func New(
@@ -66,15 +68,11 @@ func New(
 // Start launches the challenge plugin and runs until the context expires.
 func (c *Challenge) Start(ctx context.Context) error {
 	report := func(err error) {
-		c.logger.Error(err.Error())
-		if dErr := dynamitedb.Update(ctx, c.oltp, &oltp.Challenge{
-			GameID:      dynamitedb.Key(c.challenge.GameID.Value()),
-			ChallengeID: dynamitedb.Key(c.challenge.ChallengeID.Value()),
-			Errors:      dynamitedb.Append(err.Error()),
-		}); dErr != nil {
-			c.logger.Warn(dErr.Error())
-		}
+		c.logger.Warn(err.Error())
 	}
+	challengeCtx, cancel := context.WithCancel(ctx)
+	defer cancel()
+	c.cancelFunc = cancel
 
 	plugin, err := c.pluginCache.Load(ctx, string(c.definition.Hash.Value()), func(ctx context.Context) (extism.Wasm, error) {
 		definitionBinary, err := dynamitedb.Get(ctx, c.oltp, &oltp.DefinitionBinary{
@@ -97,7 +95,7 @@ func (c *Challenge) Start(ctx context.Context) error {
 		}
 		return wasmData, nil
 	},
-		RegisterInOutHost(api.ReportName, c.report, report),
+		RegisterInOutHost(api.CancelName, c.cancel, report),
 		RegisterInOutHost(api.LogName, c.log, report),
 		RegisterInOutHost(api.CreateMetaName, c.createMeta, report),
 		RegisterInOutHost(api.UpdateMetaName, c.updateMeta, report),
@@ -120,20 +118,22 @@ func (c *Challenge) Start(ctx context.Context) error {
 	}
 	defer plugin.Close(ctx)
 
-	_, _, err = plugin.CallWithContext(ctx, "_start", nil)
+	_, _, err = plugin.CallWithContext(challengeCtx, "_start", nil)
 	if err != nil && ctx.Err() == nil {
 		return fmt.Errorf("starting plugin: %v", err)
 	}
 	return nil
 }
 
-func (c *Challenge) report(ctx context.Context, input *api.ReportInput) (*api.ReportOutput, error) {
+func (c *Challenge) cancel(ctx context.Context, input *api.CancelInput) (*api.CancelOutput, error) {
+	c.cancelFunc()
 	err := dynamitedb.Update(ctx, c.oltp, &oltp.Challenge{
 		GameID:      dynamitedb.Key(c.challenge.GameID.Value()),
 		ChallengeID: dynamitedb.Key(c.challenge.ChallengeID.Value()),
-		Errors:      dynamitedb.Append(input.Error),
+		Error:       dynamitedb.Set(input.Error),
 	})
-	return &api.ReportOutput{}, err
+	c.logger.Log(ctx, slog.LevelError, fmt.Sprintf("challenge cancelled: %q", input.DetailError))
+	return &api.CancelOutput{}, err
 }
 
 func (c *Challenge) log(ctx context.Context, input *api.LogInput) (*api.LogOutput, error) {
@@ -148,18 +148,26 @@ func (c *Challenge) createMeta(ctx context.Context, input *api.CreateMetaInput) 
 		Title:       dynamitedb.Set(input.Title),
 		Description: dynamitedb.Set(input.Descriptions),
 		Clues:       dynamitedb.Set(input.Clues),
+		CluePrices:  dynamitedb.Emplace(input.CluePrices),
 		Assets:      dynamitedb.Set(input.Assets),
+		Ready:       dynamitedb.Set(input.Ready),
 	})
 	return &api.CreateMetaOutput{}, err
 }
 
 func (c *Challenge) updateMeta(ctx context.Context, input *api.UpdateMetaInput) (*api.UpdateMetaOutput, error) {
+	var ready dynamitedb.DataField[bool]
+	if input.Ready != nil {
+		ready = dynamitedb.Set(*input.Ready)
+	}
 	err := dynamitedb.Update(ctx, c.oltp, &oltp.Challenge{
 		GameID:      dynamitedb.Key(c.challenge.GameID.Value()),
 		ChallengeID: dynamitedb.Key(c.challenge.ChallengeID.Value()),
 		Description: dynamitedb.Append(input.AdditionalDescriptions...),
 		Clues:       dynamitedb.Emplace(input.AdditionalClues),
+		CluePrices:  dynamitedb.Emplace(input.AdditionalCluePrices),
 		Assets:      dynamitedb.Emplace(input.AdditionalAssets),
+		Ready:       ready,
 	})
 	return &api.UpdateMetaOutput{}, err
 }

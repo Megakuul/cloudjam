@@ -7,11 +7,11 @@ import (
 	"github.com/extism/go-pdk"
 )
 
-//go:wasmimport extism:host/user report
-func hostReport(uint64) uint64
+//go:wasmimport extism:host/user cancel
+func hostCancel(uint64) uint64
 
-func Report(in ReportInput) (ReportOutput, error) {
-	return callInOut[ReportInput, ReportOutput](func(i uint64) uint64 { return hostReport(i) }, in)
+func Cancel(in CancelInput) (CancelOutput, error) {
+	return callInOut[CancelInput, CancelOutput](func(i uint64) uint64 { return hostCancel(i) }, in)
 }
 
 //go:wasmimport extism:host/user log

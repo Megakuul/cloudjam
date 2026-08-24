@@ -40,11 +40,12 @@ type Challenge struct {
 
 	Title          dynamitedb.DataField[string]             `cbor:"title,omitempty"`
 	Description    dynamitedb.DataField[[]string]           `cbor:"description,omitempty"`
+	Ready          dynamitedb.DataField[bool]               `cbor:"ready"`
 	CluePrices     dynamitedb.DataField[map[string]float64] `cbor:"clue_prices,omitempty"`
 	Clues          dynamitedb.DataField[map[string]string]  `cbor:"clues,omitempty"`
 	UncoveredClues dynamitedb.DataField[map[string]bool]    `cbor:"uncovered_clues,omitempty"`
 	Assets         dynamitedb.DataField[map[string]string]  `cbor:"assets,omitempty"`
-	Errors         dynamitedb.DataField[[]string]           `cbor:"errors,omitempty"`
+	Error          dynamitedb.DataField[string]             `cbor:"error,omitempty"`
 	ScoreEvents    dynamitedb.DataField[[]*play.ScoreEvent] `cbor:"score_events,omitempty"`
 
 	Scope dynamitedb.DataField[string] `cbor:"scope,omitempty"`

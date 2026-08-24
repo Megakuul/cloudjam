@@ -30,7 +30,7 @@ func (p *Provider) Prepare(ctx context.Context, id string) error {
 			{
 				Effect: "Allow",
 				Principal: map[string]string{
-					"AWS": fmt.Sprintf("arn:aws:iam::%s:root", id),
+					"AWS": fmt.Sprintf("arn:aws:iam::%s:root", p.managementAccount),
 				},
 				Action: []string{"sts:AssumeRole"},
 			},

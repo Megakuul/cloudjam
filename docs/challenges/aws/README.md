@@ -7,17 +7,24 @@ through the Cloud Control API.
 
 Read [`sdk.md`](sdk.md) before writing code — the API is small but has sharp edges.
 
+> **Agents: the only path you may write to is `examples/challenges/`.** The SDK, the host,
+> `jamctl` and these docs are read only. When the challenge you were asked for cannot be
+> written without a platform change, report the change and ship the challenge with the
+> limitation stated — do not make the change, and do not work around it by copying platform
+> code into the challenge. See [AGENTS.md](../../../AGENTS.md).
+
 ## The loop you must follow
 
 Do not hand over a challenge you have not run.
 
 1. **Agree the shape** — tier, story, what the player actually does. See [`design.md`](design.md).
-2. **Write it** — one package under `examples/challenges/<name>/` (or where the user says).
+2. **Write it** — one package under `examples/challenges/<name>/`. Nothing outside that tree.
 3. **Compile** — `GOOS=wasip1 GOARCH=wasm go build ./path`. Fix until clean.
 4. **Run it** — `go run ./cmd/jamctl run aws ./path`. Watch it provision.
 5. **Prove every check fires** — a check that can never go true is a broken challenge, and
    this is the failure mode you will actually hit. [`validate.md`](validate.md) has the method.
-6. **Report honestly** — which checks you saw fire, which you could not verify and why.
+6. **Report honestly** — which checks you saw fire, which you could not verify and why, and
+   any platform bug you hit and did not fix.
 
 ## Non-negotiables
 
@@ -101,3 +108,4 @@ traffic generation and how to score requests that were served versus dropped.
 - [ ] Maximum score stated, and it adds up.
 - [ ] Every resource is nukeable and cheap.
 - [ ] Clues are useful without giving the answer away.
+- [ ] Nothing changed outside `examples/challenges/` — `git status` proves it.

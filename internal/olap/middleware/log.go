@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"time"
 
 	"codeberg.org/megakuul/cloudjam/internal/olap"
 	"github.com/megakuul/lake"
@@ -15,16 +16,19 @@ type LogSink struct {
 	min      slog.Level // minimum slog level reported
 	attrs    []slog.Attr
 	ingestor *lake.Ingestor[olap.Log]
+	timeout  time.Duration
 }
 
 type LogSinkOptions struct {
-	Level slog.Level
+	Level   slog.Level
+	Timeout time.Duration
 }
 
 func NewLogSink(inserter *lake.Ingestor[olap.Log], opts *LogSinkOptions) *LogSink {
 	return &LogSink{
 		min:      opts.Level,
 		ingestor: inserter,
+		timeout:  opts.Timeout,
 	}
 }
 
@@ -46,10 +50,14 @@ func (l *LogSink) Handle(ctx context.Context, r slog.Record) error {
 			log.System = lake.NewString(a.Value.String())
 		case "proc":
 			log.Procedure = lake.NewString(a.Value.String())
+		case "challenge":
+			log.Challenge = lake.NewString(a.Value.String())
 		}
 		return true
 	})
-	return l.ingestor.Insert(context.TODO(), log)
+	ctx, cancel := context.WithTimeout(ctx, l.timeout)
+	defer cancel()
+	return l.ingestor.Insert(ctx, log)
 }
 
 func (l *LogSink) WithAttrs(attrs []slog.Attr) slog.Handler {

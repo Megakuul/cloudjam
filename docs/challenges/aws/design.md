@@ -40,8 +40,67 @@ if the fix actually works end to end, not just if the configuration looks right.
 
 ### Gameday — half a day or more
 
-This is the format the platform exists for. Structure it in acts, each act gated on progress
-or elapsed time, each act adding descriptions, clues and checks:
+This is the format the platform exists for, and it is not simply a longer Standard. Two
+things make a challenge gameday tier, and a challenge that has the act structure without
+them is a long checklist:
+
+**The brief states obligations, not steps.** Warmup tells the player what to do. Gameday
+tells them what the business is on the hook for and lets them work out what that means.
+"Enable point-in-time recovery on the ledger" is a Warmup instruction; "the regulator can
+ask us to reproduce any result from the last 30 days, and right now we cannot" is a gameday
+one. Never enumerate the fix. Never number the tasks. If the briefing can be followed
+top-to-bottom without the player forming their own model of the estate, it is not gameday.
+
+**The player supplies the judgment a good technical manager would.** They should have to
+decide what matters first, what is safe to defer, and what is not worth doing at all — with
+more surface in front of them than they have time for, and no list telling them which parts
+are scored. Make some of the available work genuinely low value, and make at least one
+plausible shortcut cost points rather than earn them. The scoreboard is the only feedback
+they get on whether their priorities were right, and it should be able to tell them they
+were wrong.
+
+Concretely, that means the estate must be **discoverable but undocumented** (tags, a
+handover note, an asset — see below), the total scored work must exceed what fits in the
+window, and no check may be satisfiable by pattern-matching a sentence in the briefing.
+
+#### Pipelines: the shape that carries a gameday best
+
+The strongest gameday scenario is a **multi-stage pipeline the player has to complete or
+repair, scored on the data that comes out the far end**. It gives you everything the tier
+needs in one structure: the stages are the discovery, wiring them is the core work, and the
+output is a scoreboard that cannot be faked by configuration that merely looks right.
+
+Build it as three or more hops the data must survive — an intake queue, one or more
+transform stages, a durable sink — and have each stage stamp the record it passes on. Then
+score the **far end**, not the wiring:
+
+- **Throughput** — records that arrived. The baseline "is it working at all" signal.
+- **Integrity** — records that arrived carrying every stage's stamp, in order. This is the
+  check that separates a pipeline that works from one that merely moves bytes, and it is
+  the one worth the most points.
+- **Deviation** — records that arrived with a broken or partial chain. Score these
+  **negative**. A half-wired pipeline that delivers untraceable records is worse than one
+  that delivers nothing, and making the scoreboard say so is what forces the player to
+  think like a manager instead of racing to first delivery.
+
+The tally comes back through an SSM parameter written from inside the account — see
+[traffic generation](#traffic-generation-and-scoring-requests) below, which is the same
+machinery. Have the generator settle each window against the *previous* window's token so
+nothing is counted twice, and classify as it settles: the plugin should read counters, not
+re-derive them.
+
+Two worked examples, and they fail in different directions — read whichever matches the
+scenario you are writing:
+
+| Example | The pipeline | What the far end measures |
+| --- | --- | --- |
+| `kestrel-chain-of-custody` | intake → accession → assay → clinical ledger | **provenance.** Each stage stamps the record; the stage the player is handed *replaces* the chain instead of appending, so results arrive looking perfect and carrying no history. |
+| `ridgeline-settlement` | meter intake → validation → settlement → settled ledger | **idempotency.** The stage settles unconditionally, so an at-least-once queue pays twice. Act III is a substation flushing three days of backlog through it. |
+
+`examples/challenges/pueblo-night-shift` is the simpler two-hop version of the same shape.
+
+Structure it in acts, each act gated on progress or elapsed time, each act adding
+descriptions, clues and checks:
 
 1. **Act I — orientation (0–45 min).** The player inherits an undocumented system. Cheap
    checks for finding and describing things: tag the resources you own, get the app answering

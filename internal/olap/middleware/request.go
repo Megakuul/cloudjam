@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log/slog"
 	"net/netip"
+	"runtime/debug"
 	"strings"
 	"time"
 
@@ -30,7 +31,7 @@ func NewRequestTracer(logger *slog.Logger, inserter *lake.Ingestor[olap.Request]
 func (v *RequestTracer) emitMetric(ctx context.Context, typ olap.RequestType, latency time.Duration, peer, procedure string) error {
 	defer func() {
 		if recovered := recover(); recovered != nil {
-			v.logger.Warn(fmt.Sprintf("panicked while emitting request metric: %v", recovered))
+			v.logger.Warn(fmt.Sprintf("panicked while emitting request metric: %v\n%s", recovered, debug.Stack()))
 		}
 	}()
 	// trim off port number

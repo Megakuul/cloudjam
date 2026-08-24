@@ -26,6 +26,7 @@ message Challenge {
   repeated string description = 8;
   map<string, string> assets = 9;
   map<string, string> clues = 10;
-  repeated string errors = 11;
+  string error = 11;
   repeated ScoreEvent score_events = 12;
+  bool ready = 13;
 }

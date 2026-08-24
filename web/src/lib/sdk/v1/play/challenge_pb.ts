@@ -13,7 +13,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file v1/play/challenge.proto.
  */
 export const file_v1_play_challenge: GenFile = /*@__PURE__*/
-  fileDesc("Chd2MS9wbGF5L2NoYWxsZW5nZS5wcm90bxIHdjEucGxheSJZCgpTY29yZUV2ZW50Ei0KCXRpbWVzdGFtcBgBIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASDAoEdGV4dBgCIAEoCRIOCgZjaGFuZ2UYAyABKAEiywMKCUNoYWxsZW5nZRINCgVzY29wZRgBIAEoCRIZCgdnYW1lX2lkGAIgASgJQgi6SAVyA7ABARIUCgJpZBgDIAEoCUIIukgFcgOwAQESGQoHdGVhbV9pZBgEIAEoCUIIukgFcgOwAQESKAoWZGVmaW5pdGlvbl9wcm92aWRlcl9pZBgFIAEoCUIIukgFcgOwAQESHwoNZGVmaW5pdGlvbl9pZBgGIAEoCUIIukgFcgOwAQESDQoFdGl0bGUYByABKAkSEwoLZGVzY3JpcHRpb24YCCADKAkSLgoGYXNzZXRzGAkgAygLMh4udjEucGxheS5DaGFsbGVuZ2UuQXNzZXRzRW50cnkSLAoFY2x1ZXMYCiADKAsyHS52MS5wbGF5LkNoYWxsZW5nZS5DbHVlc0VudHJ5Eg4KBmVycm9ycxgLIAMoCRIpCgxzY29yZV9ldmVudHMYDCADKAsyEy52MS5wbGF5LlNjb3JlRXZlbnQaLQoLQXNzZXRzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ARosCgpDbHVlc0VudHJ5EgsKA2tleRgBIAEoCRINCgV2YWx1ZRgCIAEoCToCOAFCMFouY29kZWJlcmcub3JnL21lZ2FrdXVsL2Nsb3VkamFtL3BrZy9hcGkvdjEvcGxheWIGcHJvdG8z", [file_buf_validate_validate, file_google_protobuf_duration, file_google_protobuf_timestamp]);
+  fileDesc("Chd2MS9wbGF5L2NoYWxsZW5nZS5wcm90bxIHdjEucGxheSJZCgpTY29yZUV2ZW50Ei0KCXRpbWVzdGFtcBgBIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASDAoEdGV4dBgCIAEoCRIOCgZjaGFuZ2UYAyABKAEi2QMKCUNoYWxsZW5nZRINCgVzY29wZRgBIAEoCRIZCgdnYW1lX2lkGAIgASgJQgi6SAVyA7ABARIUCgJpZBgDIAEoCUIIukgFcgOwAQESGQoHdGVhbV9pZBgEIAEoCUIIukgFcgOwAQESKAoWZGVmaW5pdGlvbl9wcm92aWRlcl9pZBgFIAEoCUIIukgFcgOwAQESHwoNZGVmaW5pdGlvbl9pZBgGIAEoCUIIukgFcgOwAQESDQoFdGl0bGUYByABKAkSEwoLZGVzY3JpcHRpb24YCCADKAkSLgoGYXNzZXRzGAkgAygLMh4udjEucGxheS5DaGFsbGVuZ2UuQXNzZXRzRW50cnkSLAoFY2x1ZXMYCiADKAsyHS52MS5wbGF5LkNoYWxsZW5nZS5DbHVlc0VudHJ5Eg0KBWVycm9yGAsgASgJEikKDHNjb3JlX2V2ZW50cxgMIAMoCzITLnYxLnBsYXkuU2NvcmVFdmVudBINCgVyZWFkeRgNIAEoCBotCgtBc3NldHNFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBGiwKCkNsdWVzRW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4AUIwWi5jb2RlYmVyZy5vcmcvbWVnYWt1dWwvY2xvdWRqYW0vcGtnL2FwaS92MS9wbGF5YgZwcm90bzM", [file_buf_validate_validate, file_google_protobuf_duration, file_google_protobuf_timestamp]);
 
 /**
  * @generated from message v1.play.ScoreEvent
@@ -97,14 +97,19 @@ export type Challenge = Message<"v1.play.Challenge"> & {
   clues: { [key: string]: string };
 
   /**
-   * @generated from field: repeated string errors = 11;
+   * @generated from field: string error = 11;
    */
-  errors: string[];
+  error: string;
 
   /**
    * @generated from field: repeated v1.play.ScoreEvent score_events = 12;
    */
   scoreEvents: ScoreEvent[];
+
+  /**
+   * @generated from field: bool ready = 13;
+   */
+  ready: boolean;
 };
 
 /**

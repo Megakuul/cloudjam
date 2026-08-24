@@ -107,7 +107,10 @@ func Start(ctx context.Context, opts *Options) error {
 	slog.Debug("initializing logging backend...")
 	slog.SetDefault(slog.New(slog.NewMultiHandler(
 		slog.Default().Handler(),
-		middleware.NewLogSink(logIngestor, &middleware.LogSinkOptions{Level: slog.LevelDebug}),
+		middleware.NewLogSink(logIngestor, &middleware.LogSinkOptions{
+			Level:   slog.LevelDebug,
+			Timeout: time.Second * 30,
+		}),
 	)))
 
 	code, err := bootstrap.CreateAdministrator(ctx, opts.AdminEmail, oltpBucket)

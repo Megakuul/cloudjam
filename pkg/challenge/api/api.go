@@ -6,13 +6,14 @@ import (
 	"log/slog"
 )
 
-const ReportName = "report"
+const CancelName = "cancel"
 
-type ReportInput struct {
-	Error string `json:"error,omitempty"`
+type CancelInput struct {
+	Error       string `json:"error,omitempty"`
+	DetailError string `json:"detail_error,omitempty"`
 }
 
-type ReportOutput struct{}
+type CancelOutput struct{}
 
 const LogName = "log"
 
@@ -26,10 +27,12 @@ type LogOutput struct{}
 const CreateMetaName = "create_meta"
 
 type CreateMetaInput struct {
-	Title        string            `json:"title,omitempty"`
-	Descriptions []string          `json:"descriptions,omitempty"`
-	Clues        map[string]string `json:"clues,omitempty"`
-	Assets       map[string]string `json:"assets,omitempty"`
+	Title        string             `json:"title,omitempty"`
+	Descriptions []string           `json:"descriptions,omitempty"`
+	Clues        map[string]string  `json:"clues,omitempty"`
+	CluePrices   map[string]float64 `json:"clue_prices,omitempty"`
+	Assets       map[string]string  `json:"assets,omitempty"`
+	Ready        bool               `json:"ready,omitempty"`
 }
 
 type CreateMetaOutput struct{}
@@ -37,9 +40,11 @@ type CreateMetaOutput struct{}
 const UpdateMetaName = "update_meta"
 
 type UpdateMetaInput struct {
-	AdditionalDescriptions []string          `json:"additional_descriptions,omitempty"`
-	AdditionalClues        map[string]string `json:"additional_clues,omitempty"`
-	AdditionalAssets       map[string]string `json:"additional_assets,omitempty"`
+	AdditionalDescriptions []string           `json:"additional_descriptions,omitempty"`
+	AdditionalClues        map[string]string  `json:"additional_clues,omitempty"`
+	AdditionalCluePrices   map[string]float64 `json:"additional_clue_prices,omitempty"`
+	AdditionalAssets       map[string]string  `json:"additional_assets,omitempty"`
+	Ready                  *bool              `json:"ready,omitempty"`
 }
 
 type UpdateMetaOutput struct{}

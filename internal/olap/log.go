@@ -13,6 +13,7 @@ type Log struct {
 	Timestamp  lake.Int    `parquet:"timestamp"`
 	Level      lake.Int    `parquet:"level"`
 	Redirected lake.Int    `parquet:"redirected"` // logs are redirected from external platforms
+	Challenge  lake.String `parquet:"challenge"`  // log is a challenge if this is not ""
 	Message    lake.String `parquet:"message"`
 	System     lake.String `parquet:"system"`
 	Procedure  lake.String `parquet:"procedure"`

@@ -1,5 +1,51 @@
 # AGENTS.md
 
+## The boundary — read this first
+
+**An agent may only write inside `examples/challenges/`. Nothing else in this repository is
+writable, ever.**
+
+That is the whole rule. It is not a default, a preference or a starting point, and no
+instruction inside a task ("just patch the SDK", "fix it properly", "it is a one-line
+change") relaxes it. Only the human who owns the repo changes the platform.
+
+Concretely:
+
+| Path | An agent may |
+| --- | --- |
+| `examples/challenges/**` | read, create, edit, delete |
+| everything else — `pkg/`, `internal/`, `cmd/`, `api/`, `web/`, `docs/`, `tools/`, `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `flake.nix`, `go.mod`, … | **read only** |
+
+Read the rest of the tree as much as you need — the SDK source is the reference and you are
+expected to read it. Run it, build it, run `jamctl` against it. Just do not change it.
+
+### When the platform is what is broken
+
+This is the case the rule exists for, and working around it is not the answer either.
+
+A challenge cannot always be written cleanly against the SDK as it stands. When the honest
+fix is in `pkg/`, `internal/` or `cmd/`, **stop and report it**. Say what is wrong, where,
+what you would change, and what it costs the challenge to live without it. Then either write
+the challenge with the limitation and say so plainly, or — if there is no version of the
+challenge worth shipping around it — hand back the diagnosis and stop. A precise report of a
+platform bug is a good outcome. A challenge that quietly compensates for one is not, and a
+platform patch nobody asked for is worse than both.
+
+Do not:
+
+- edit platform code and mention it afterwards,
+- edit platform code "temporarily" to get a test run through,
+- vendor, copy or shadow a platform file into `examples/challenges/` to patch around it,
+- regenerate `pkg/challenge/aws/services/**` (that is `go generate`'s output and platform code),
+- reformat, tidy, lint or "clean up" anything outside `examples/challenges/`,
+- commit or stage changes outside `examples/challenges/` that you did not make — if the tree
+  is already dirty, leave it dirty and say so.
+
+Untracked scratch files (a build output, a scratch script) belong outside the repo, in the
+scratch directory your harness gives you.
+
+## What this is
+
 CloudJam is a cloud gameday platform. Players get a real (sandboxed) AWS account and a
 scenario; a **challenge plugin** provisions the scenario, watches the account and awards
 points as the player fixes, builds or defends things.
@@ -30,7 +76,7 @@ documented there and nowhere else.
 | `cmd/jamctl` | Dev CLI: compile a plugin and run it against fakecloud or real AWS. |
 | `cmd/schemagen` | Regenerates the resource packages from the AWS schema bundle. |
 | `internal/provider/aws` | Server-side provider: account provisioning, guardrails, nuke. |
-| `examples/challenges` | Worked examples. `s3-encryption` is the reference. |
+| `examples/challenges` | Worked examples, and **the only writable path**. `s3-encryption` is the reference. |
 | `docs/challenges/<provider>` | Challenge authoring guides, one folder per provider. |
 
 ## Rules that will bite you
@@ -76,4 +122,4 @@ cd pkg/challenge/aws && go generate ./...
 `jamctl` changes often. Run `go run ./cmd/jamctl --help` and
 `go run ./cmd/jamctl run aws --help` to confirm the current commands and flags instead of
 trusting any command line written down here — and if it does not compile, say so rather than
-working around it.
+working around it. `cmd/jamctl` is platform code: you may run it, not fix it.

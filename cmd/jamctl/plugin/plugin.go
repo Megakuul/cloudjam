@@ -49,7 +49,7 @@ func Run(ctx context.Context, source string, access provider.AccessController, a
 			RuntimeConfig: wazero.NewRuntimeConfig().WithCloseOnContextDone(true),
 		},
 		[]extism.HostFunction{
-			challenge.RegisterInOutHost(api.ReportName, provider.report, report),
+			challenge.RegisterInOutHost(api.CancelName, provider.cancel, report),
 			challenge.RegisterInOutHost(api.LogName, provider.log, report),
 			challenge.RegisterInOutHost(api.CreateMetaName, provider.createMeta, report),
 			challenge.RegisterInOutHost(api.UpdateMetaName, provider.updateMeta, report),
