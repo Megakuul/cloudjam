@@ -12,11 +12,13 @@
 	import ChevronRightIcon from '@lucide/svelte/icons/chevron-right';
 	import CopyIcon from '@lucide/svelte/icons/copy';
 	import RefreshIcon from '@lucide/svelte/icons/refresh-cw';
+	import ChallengePanel from '../../host/games/[id]/ChallengePanel.svelte';
 
 	let {
 		from,
 		to,
 		level,
+		challenge,
 		system = $bindable(),
 		procedure = $bindable(),
 		limit
@@ -24,6 +26,7 @@
 		from: Date;
 		to: Date;
 		level: string;
+		challenge: string;
 		system: string;
 		procedure: string;
 		limit: number;
@@ -54,7 +57,8 @@
 					system: system,
 					procedure: procedure,
 					level: level,
-					limit: limit
+					limit: limit,
+					challenge: challenge
 				})
 			);
 			logs = resp.logs;
@@ -65,10 +69,13 @@
 <Card.Root class="w-full">
 	<Card.Header class="flex flex-row items-center gap-2 space-y-0 border-b py-5">
 		<div class="grid flex-1 gap-1">
-			<Card.Title>System Logs</Card.Title>
-			<Card.Description>
-				{logs.length} lines · click a row to expand it, click a system or procedure to filter
-			</Card.Description>
+			<Card.Title>
+				{#if challenge}
+					Challenge Logs ({challenge})
+				{:else}
+					System Logs
+				{/if}
+			</Card.Title>
 		</div>
 		<div class="flex flex-row flex-wrap items-center gap-1">
 			{#if level}
@@ -112,8 +119,6 @@
 				<Table.Body>
 					{#each logs as log, index (key(log, index))}
 						{@const open = expanded === key(log, index)}
-						<!-- collapsed a log is exactly one line; opening it reveals the untruncated
-						     message and the trace underneath. -->
 						<Table.Row
 							class="h-9 cursor-pointer {severities[log.level]?.row ?? ''}"
 							onclick={() => (expanded = open ? '' : key(log, index))}

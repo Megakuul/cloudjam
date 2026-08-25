@@ -66,7 +66,7 @@ func New(
 }
 
 // Start launches the challenge plugin and runs until the context expires.
-func (c *Challenge) Start(ctx context.Context) error {
+func (c *Challenge) Start(ctx context.Context) (err error) {
 	report := func(err error) {
 		c.logger.Warn(err.Error())
 	}

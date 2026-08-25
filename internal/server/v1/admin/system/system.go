@@ -35,6 +35,7 @@ func (s *Server) ScanLogs(ctx context.Context, req *connect.Request[system.ScanL
 			System:    lake.FilterString(lake.When(req.Msg.System != "", lake.Eq(req.Msg.System))),
 			Procedure: lake.FilterString(lake.When(req.Msg.Procedure != "", lake.Eq(req.Msg.Procedure))),
 			Level:     lake.FilterInt(lake.When(req.Msg.Level != "", lake.Eq(int64(getLevel(req.Msg.Level))))),
+			Challenge: lake.FilterString(lake.Eq(req.Msg.Challenge)),
 		}).
 		Scan(ctx, s.olap)
 	if err != nil {
@@ -49,6 +50,7 @@ func (s *Server) ScanLogs(ctx context.Context, req *connect.Request[system.ScanL
 			System:    log.System.Data,
 			Procedure: log.Procedure.Data,
 			Trace:     log.Trace.Data,
+			Challenge: log.Challenge.Data,
 		}
 	}
 	return &connect.Response[system.ScanLogsResponse]{Msg: &system.ScanLogsResponse{
@@ -87,6 +89,7 @@ func (s *Server) AggregateLogs(ctx context.Context, req *connect.Request[system.
 			Timestamp:  lake.FilterInt(lake.After(req.Msg.From.AsTime()), lake.Before(req.Msg.To.AsTime())),
 			Level:      lake.FilterInt(lake.When(req.Msg.MinLevel != "", lake.Gte(int64(getLevel(req.Msg.MinLevel))))),
 			Redirected: lake.FilterInt(lake.Eq(int64(0))),
+			Challenge:  lake.FilterString(lake.Eq("")),
 		}).
 		GroupBy(olap.Log{
 			Timestamp: lake.GroupInt(lake.Date(getRange(req.Msg.Window))),

@@ -14,6 +14,8 @@ import (
 	"github.com/tetratelabs/wazero"
 )
 
+const maxPluginMemory uint32 = 70_000_000 // 70 MB (ensures transfering large assets does not immediately trigger OOM)
+
 // Cache provides a compilation cache for challenge plugins.
 // Challenge binaries can be up to 50 MB if just 20 people start a challenge we are on 1 GB memory usage for the whole challenge duration.
 // This cache uses teh challenge hash as key and ensures everyone on this server instance uses the same compiled instruction pages.
@@ -65,7 +67,12 @@ func (c *Cache) Load(ctx context.Context, hash string, binaryFactory func(ctx co
 			return nil, err
 		}
 		plugin, err = extism.NewCompiledPlugin(ctx,
-			extism.Manifest{Wasm: []extism.Wasm{pluginData}},
+			extism.Manifest{
+				Wasm: []extism.Wasm{pluginData},
+				Memory: &extism.ManifestMemory{
+					MaxPages: maxPluginMemory / 64,
+				},
+			},
 			extism.PluginConfig{
 				EnableWasi: true,
 				// Without this a cancelled context cannot interrupt the guest, and a

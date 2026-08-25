@@ -60,6 +60,9 @@ type AccessController interface {
 	CreateGuardrail(ctx context.Context, policy string) error
 	// UpdateGuardrail replaces the boundary for the user credential access.
 	UpdateGuardrail(ctx context.Context, policy string) error
+
+	// Lock removes all permissions from the user account as fast as possible.
+	Lock(ctx context.Context) error
 }
 
 // AssetController provides a CRUD abstraction over the providers asset storage (e.g. for AWS it is s3).

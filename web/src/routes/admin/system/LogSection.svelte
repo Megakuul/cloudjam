@@ -19,7 +19,6 @@
 	import LogPanel from './LogPanel.svelte';
 	import ZoomChart from './ZoomChart.svelte';
 
-	// levels are ordered by severity, the table filters on an exact level.
 	const levels = [
 		{ value: '', label: 'All levels' },
 		{ value: 'DEBUG', label: 'Debug' },
@@ -35,7 +34,6 @@
 		{ value: '200', label: '200 lines' }
 	];
 
-	// levelColors keeps the chart in sync with the severity colors used in the table.
 	const levelColors: Record<string, string> = {
 		DEBUG: 'var(--color-sky-500)',
 		INFO: 'var(--color-emerald-500)',
@@ -51,14 +49,13 @@
 	let level = $state('');
 	let system = $state('');
 	let procedure = $state('');
+	let challenge = $state('');
 	let limit = $state('50');
 
 	let labels: Chart.ChartConfig = $state({});
 	let data: any[] = $state([]);
 	let counts: Record<string, number> = $state({});
 
-	// window picks the aggregation window (and its bucket size in ms) from the zoomed
-	// range, so zooming in yields higher resolution data.
 	function zoomWindow(from: Date, to: Date): [AggregateWindow, number] {
 		const span = to.getTime() - from.getTime();
 		if (span <= 6 * 60 * 60 * 1000) return [AggregateWindow.Minute, 60 * 1000];
@@ -180,8 +177,6 @@
 				</Card.Description>
 			</div>
 			<ZoomChart
-				title="Logs"
-				description="Log lines per severity"
 				timeFormat={zoomTimeformat(from, to)}
 				{labels}
 				{data}
@@ -191,10 +186,10 @@
 			/>
 
 			<div class="flex flex-row flex-wrap items-end gap-2">
-				<div class="flex flex-col gap-1">
-					<label for="log-level" class="text-sm">Level</label>
+				<label class="flex flex-col gap-1 text-sm">
+					Level
 					<Select.Root type="single" bind:value={level}>
-						<Select.Trigger id="log-level" class="w-40 cursor-pointer">
+						<Select.Trigger class="w-40 cursor-pointer">
 							{levels.find((item) => item.value === level)?.label}
 						</Select.Trigger>
 						<Select.Content>
@@ -203,24 +198,23 @@
 							{/each}
 						</Select.Content>
 					</Select.Root>
-				</div>
-				<div class="flex flex-col gap-1">
-					<label for="log-system" class="text-sm">System</label>
-					<Input id="log-system" class="w-56" bind:value={system} placeholder="e.g. server" />
-				</div>
-				<div class="flex flex-col gap-1">
-					<label for="log-procedure" class="text-sm">Procedure</label>
-					<Input
-						id="log-procedure"
-						class="w-72"
-						bind:value={procedure}
-						placeholder="e.g. /v1.admin.user.UserService/List"
-					/>
-				</div>
-				<div class="flex flex-col gap-1">
-					<label for="log-limit" class="text-sm">Lines</label>
+				</label>
+				<label class="flex flex-col gap-1 text-sm">
+					System
+					<Input class="w-56" bind:value={system} placeholder="e.g. server" />
+				</label>
+				<label class="flex flex-col gap-1 text-sm">
+					Procedure
+					<Input class="w-72" bind:value={procedure} placeholder="e.g. /v1.admin.user.UserService/List" />
+				</label>
+				<label class="flex flex-col gap-1 text-sm">
+					Challenge
+					<Input class="w-72" bind:value={challenge} placeholder="00000000-00000000-00000000-00000000" />
+				</label>
+				<label class="flex flex-col gap-1 text-sm">
+					Lines
 					<Select.Root type="single" bind:value={limit}>
-						<Select.Trigger id="log-limit" class="w-32 cursor-pointer">
+						<Select.Trigger class="w-32 cursor-pointer">
 							{limits.find((item) => item.value === limit)?.label}
 						</Select.Trigger>
 						<Select.Content>
@@ -229,12 +223,12 @@
 							{/each}
 						</Select.Content>
 					</Select.Root>
-				</div>
+				</label>
 				<Button
 					variant="outline"
 					class="cursor-pointer"
-					disabled={!level && !system && !procedure}
-					onclick={() => ((level = ''), (system = ''), (procedure = ''))}
+					disabled={!level && !system && !procedure && !challenge}
+					onclick={() => ((level = ''), (system = ''), (procedure = ''), (challenge = ''))}
 				>
 					Clear
 				</Button>
@@ -242,7 +236,7 @@
 		</Card.Content>
 	</Card.Root>
 
-	<LogPanel {from} {to} {level} bind:system bind:procedure limit={Number(limit)} />
+	<LogPanel {from} {to} {level} {challenge} bind:system bind:procedure limit={Number(limit)} />
 
 	{#if levelState.error}
 		<Alert.Root variant="destructive">

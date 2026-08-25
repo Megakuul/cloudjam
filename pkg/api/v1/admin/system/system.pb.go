@@ -83,6 +83,7 @@ type Log struct {
 	System        string                 `protobuf:"bytes,4,opt,name=system,proto3" json:"system,omitempty"`
 	Procedure     string                 `protobuf:"bytes,5,opt,name=procedure,proto3" json:"procedure,omitempty"`
 	Trace         string                 `protobuf:"bytes,6,opt,name=trace,proto3" json:"trace,omitempty"`
+	Challenge     string                 `protobuf:"bytes,7,opt,name=challenge,proto3" json:"challenge,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -159,6 +160,13 @@ func (x *Log) GetTrace() string {
 	return ""
 }
 
+func (x *Log) GetChallenge() string {
+	if x != nil {
+		return x.Challenge
+	}
+	return ""
+}
+
 type ScanLogsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	From          *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=from,proto3" json:"from,omitempty"`
@@ -167,6 +175,7 @@ type ScanLogsRequest struct {
 	Procedure     string                 `protobuf:"bytes,4,opt,name=procedure,proto3" json:"procedure,omitempty"`
 	Level         string                 `protobuf:"bytes,5,opt,name=level,proto3" json:"level,omitempty"`
 	Limit         int32                  `protobuf:"varint,6,opt,name=limit,proto3" json:"limit,omitempty"`
+	Challenge     string                 `protobuf:"bytes,7,opt,name=challenge,proto3" json:"challenge,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -241,6 +250,13 @@ func (x *ScanLogsRequest) GetLimit() int32 {
 		return x.Limit
 	}
 	return 0
+}
+
+func (x *ScanLogsRequest) GetChallenge() string {
+	if x != nil {
+		return x.Challenge
+	}
+	return ""
 }
 
 type ScanLogsResponse struct {
@@ -971,14 +987,15 @@ var File_v1_admin_system_system_proto protoreflect.FileDescriptor
 
 const file_v1_admin_system_system_proto_rawDesc = "" +
 	"\n" +
-	"\x1cv1/admin/system/system.proto\x12\x0fv1.admin.system\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xbb\x01\n" +
+	"\x1cv1/admin/system/system.proto\x12\x0fv1.admin.system\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xd9\x01\n" +
 	"\x03Log\x128\n" +
 	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12\x14\n" +
 	"\x05level\x18\x02 \x01(\tR\x05level\x12\x18\n" +
 	"\amessage\x18\x03 \x01(\tR\amessage\x12\x16\n" +
 	"\x06system\x18\x04 \x01(\tR\x06system\x12\x1c\n" +
 	"\tprocedure\x18\x05 \x01(\tR\tprocedure\x12\x14\n" +
-	"\x05trace\x18\x06 \x01(\tR\x05trace\"\xdb\x01\n" +
+	"\x05trace\x18\x06 \x01(\tR\x05trace\x12\x1c\n" +
+	"\tchallenge\x18\a \x01(\tR\tchallenge\"\xf9\x01\n" +
 	"\x0fScanLogsRequest\x12.\n" +
 	"\x04from\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\x04from\x12*\n" +
 	"\x02to\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\x02to\x12\x16\n" +
@@ -986,7 +1003,8 @@ const file_v1_admin_system_system_proto_rawDesc = "" +
 	"\tprocedure\x18\x04 \x01(\tR\tprocedure\x12\x14\n" +
 	"\x05level\x18\x05 \x01(\tR\x05level\x12 \n" +
 	"\x05limit\x18\x06 \x01(\x05B\n" +
-	"\xbaH\a\x1a\x05\x18\xc8\x01 \x00R\x05limit\"<\n" +
+	"\xbaH\a\x1a\x05\x18\xc8\x01 \x00R\x05limit\x12\x1c\n" +
+	"\tchallenge\x18\a \x01(\tR\tchallenge\"<\n" +
 	"\x10ScanLogsResponse\x12(\n" +
 	"\x04logs\x18\x01 \x03(\v2\x14.v1.admin.system.LogR\x04logs\"\x91\x01\n" +
 	"\aRequest\x128\n" +

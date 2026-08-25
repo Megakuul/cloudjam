@@ -2,6 +2,7 @@ package aws
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"time"
 
@@ -85,6 +86,31 @@ func (a *AccessController) UpdateGuardrail(ctx context.Context, policy string) e
 	})
 	if err != nil {
 		return fmt.Errorf("failed to update permission boundary: %w", err)
+	}
+	return nil
+}
+
+func (a *AccessController) Lock(ctx context.Context) error {
+	lockPolicy, err := json.Marshal(policyDocument{
+		Version: "2012-10-17",
+		Statement: []policyStatement{
+			{
+				Effect:   "Deny",
+				Action:   []string{"*"},
+				Resource: []string{"*"},
+			},
+		},
+	})
+	if err != nil {
+		return err
+	}
+	_, err = a.client.PutRolePolicy(ctx, &iam.PutRolePolicyInput{
+		RoleName:       &a.permissionRole,
+		PolicyName:     new(sandboxInlinePolicy),
+		PolicyDocument: new(string(lockPolicy)),
+	})
+	if err != nil {
+		return fmt.Errorf("failed to update permission: %w", err)
 	}
 	return nil
 }

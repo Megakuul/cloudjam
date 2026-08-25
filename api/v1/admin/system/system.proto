@@ -14,6 +14,7 @@ message Log {
   string system = 4;
   string procedure = 5;
   string trace = 6;
+  string challenge = 7;
 }
 
 message ScanLogsRequest {
@@ -26,6 +27,7 @@ message ScanLogsRequest {
     gt: 0
     lte: 200
   }];
+  string challenge = 7;
 }
 
 message ScanLogsResponse {

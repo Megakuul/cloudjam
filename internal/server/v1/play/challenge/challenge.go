@@ -396,7 +396,22 @@ func (s *Server) Start(ctx context.Context, req *connect.Request[challenge.Start
 		ctx, cancel := context.WithDeadline(ctx, gameMeta.To.Value())
 		defer cancel()
 		if err := challengeRunner.Start(ctx); err != nil && !errors.Is(err, context.DeadlineExceeded) {
-			return err
+			return fmt.Errorf("challenge host failure: %w", err)
+		}
+
+		// after the challenge we try to lock and unbind accounts early so they can be reused in the same game.
+		// if it fails they are just used until end of game.
+		if err = access.Lock(ctx); err != nil {
+			return fmt.Errorf("locking account: %w", err)
+		}
+		// unbinding is ONLY allowed if locked first (otherwise user credentials are still valid)!
+		err = dynamitedb.Update(ctx, s.oltp, &oltp.Account{
+			ProviderID: dynamitedb.Key(account.ProviderID.Value()),
+			AccountID:  dynamitedb.Key(account.AccountID.Value()),
+			BoundUntil: dynamitedb.Set(time.Now().Add(time.Minute)), // some providers take a few seconds to globally lock access.
+		})
+		if err != nil {
+			return fmt.Errorf("unbinding account: %w", err)
 		}
 		return nil
 	}, func(ctx context.Context, err error) error {
