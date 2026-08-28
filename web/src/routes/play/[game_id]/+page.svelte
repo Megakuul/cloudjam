@@ -80,9 +80,10 @@
 			active = false;
 			return;
 		}
-		const interval = setInterval(() => {
-			active = timestampDate(game!.from!).getTime() < Date.now() && timestampDate(game!.to!).getTime() > Date.now();
-		}, 1000);
+		const updateActive = () =>
+			(active = timestampDate(game!.from!).getTime() < Date.now() && timestampDate(game!.to!).getTime() > Date.now());
+		const interval = setInterval(updateActive, 1000);
+		updateActive();
 		return () => clearInterval(interval);
 	});
 </script>

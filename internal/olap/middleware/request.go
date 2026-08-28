@@ -16,19 +16,21 @@ import (
 
 // RequestTracer implements a connectrpc middleware that sends a metric about every request to the olap inserter.
 type RequestTracer struct {
+	rootCtx  context.Context
 	logger   *slog.Logger
 	ingestor *lake.Ingestor[olap.Request]
 }
 
-func NewRequestTracer(logger *slog.Logger, inserter *lake.Ingestor[olap.Request]) *RequestTracer {
+func NewRequestTracer(rootCtx context.Context, logger *slog.Logger, inserter *lake.Ingestor[olap.Request]) *RequestTracer {
 	return &RequestTracer{
+		rootCtx:  rootCtx,
 		logger:   logger,
 		ingestor: inserter,
 	}
 }
 
 // emitMetric inserts an entry to the olap system that contains anonymized information about the request.
-func (v *RequestTracer) emitMetric(ctx context.Context, typ olap.RequestType, latency time.Duration, peer, procedure string) error {
+func (v *RequestTracer) emitMetric(typ olap.RequestType, latency time.Duration, peer, procedure string) error {
 	defer func() {
 		if recovered := recover(); recovered != nil {
 			v.logger.Warn(fmt.Sprintf("panicked while emitting request metric: %v\n%s", recovered, debug.Stack()))
@@ -61,7 +63,7 @@ func (v *RequestTracer) emitMetric(ctx context.Context, typ olap.RequestType, la
 		rawIp[3] = 0
 		anonymPeerIP = string(rawIp[:])
 	}
-	if err := v.ingestor.Insert(ctx, olap.Request{
+	if err := v.ingestor.Insert(v.rootCtx, olap.Request{
 		Timestamp: lake.NewInt(time.Now().UnixNano()),
 		Endpoint:  lake.NewString(procedure),
 		Latency:   lake.NewInt(int64(latency)),
@@ -77,7 +79,7 @@ func (v *RequestTracer) WrapUnary(next connect.UnaryFunc) connect.UnaryFunc {
 	return func(ctx context.Context, req connect.AnyRequest) (connect.AnyResponse, error) {
 		start := time.Now()
 		defer func() {
-			if err := v.emitMetric(ctx, olap.RequestUnary, time.Since(start),
+			if err := v.emitMetric(olap.RequestUnary, time.Since(start),
 				req.Peer().Addr,
 				req.Spec().Procedure,
 			); err != nil {
@@ -98,7 +100,7 @@ func (v *RequestTracer) WrapStreamingHandler(next connect.StreamingHandlerFunc) 
 	return func(ctx context.Context, conn connect.StreamingHandlerConn) error {
 		start := time.Now()
 		defer func() {
-			if err := v.emitMetric(ctx, olap.RequestStream, time.Since(start),
+			if err := v.emitMetric(olap.RequestStream, time.Since(start),
 				conn.Peer().Addr,
 				conn.Spec().Procedure,
 			); err != nil {

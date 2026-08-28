@@ -28,6 +28,18 @@ const (
 	rdpPort = 3389
 )
 
+// vpcCidr is the network the bastion sits in.
+//
+// The scenario provisions its own vpc rather than leaning on the account's
+// default one. AWS::EC2::SecurityGroup with no VpcId lands in the default vpc,
+// and a sandbox account is not guaranteed to have one: the nuke that recycles
+// an account deletes vpcs, the default included, and it never comes back. The
+// create then fails with "no default VPC for this user", bootstrap returns an
+// error, and every finding in the challenge is dead — nothing about the
+// scenario needs the default vpc, so nothing about it should touch the default
+// vpc.
+const vpcCidr = "10.0.0.0/16"
+
 // notePath is where the auditor wants the remediation note. The player is told
 // this only when the auditor arrives.
 const notePath = "/cloudjam/audit/remediation"
@@ -45,21 +57,31 @@ const (
 // has to quote. It is captured here rather than re-read, because read-only
 // attributes are not guaranteed to survive a player's update.
 var (
+	vpcRef      string
 	groupRef    string
 	logGroupRef string
 )
 
+// keyBaseline is what the account already held before bootstrap ran. The two
+// key checks score a key the *player* creates, and "is there a kms key" is only
+// that question against what was already there: a sandbox account is not
+// guaranteed to be empty, some environments carry service managed keys, and a
+// kms key cannot be hard deleted at all — the nuke can only schedule it, so a
+// recycled account still lists every key of the previous run for days
+// afterwards. Without this the player is handed 55 points for free.
+var keyBaseline = map[string]bool{}
+
 func main() {
 	challenge.New("Audit Day", 10*time.Second, bootstrap).
 		AddDescription(
-			"The external auditor finished their sweep this morning and filed three findings " +
-				"against the bastion. You have until their follow-up call to close them. " +
+			"The external auditor finished their sweep this morning and filed three findings "+
+				"against the bastion. You have until their follow-up call to close them. "+
 				"They were not impressed by the last team's answer of 'we'll get to it'.").
 		AddDescription(
-			"Finding 1: management ports on the bastion security group accept connections " +
-				"from the entire internet.\n" +
-				"Finding 2: the bastion log group has no retention policy — it either grows " +
-				"forever or tells us nothing.\n" +
+			"Finding 1: management ports on the bastion security group accept connections "+
+				"from the entire internet.\n"+
+				"Finding 2: the bastion log group has no retention policy — it either grows "+
+				"forever or tells us nothing.\n"+
 				"Finding 3: those logs are not encrypted with a key we control.").
 		// clue prices are added to the team score, so they are negative: a clue
 		// costs roughly a fifth of the findings it closes.
@@ -128,7 +150,22 @@ func main() {
 }
 
 func bootstrap(s *challenge.Scenario) error {
+	// before anything is created, so the baseline is what the account came with.
+	recordKeys()
+
+	vpc, err := aws.Create(&ec2.VPC{
+		CidrBlock: new(vpcCidr),
+		Tags:      []ec2.VPCTag{{Key: new("Name"), Value: new("cloudjam-bastion")}},
+	})
+	if err != nil {
+		return fmt.Errorf("bastion network: %w", err)
+	}
+	vpcRef = vpc
+
 	group, err := aws.Create(&ec2.SecurityGroup{
+		// named explicitly: without it the group is created in the account's
+		// default vpc, which a recycled sandbox does not have.
+		VpcId:            new(vpcRef),
 		GroupName:        new(fmt.Sprintf("cloudjam-bastion-%s", uuid.NewString())),
 		GroupDescription: new("bastion host - jump box for the platform team"),
 		// the scenario: both management ports open to everybody.
@@ -150,7 +187,7 @@ func bootstrap(s *challenge.Scenario) error {
 		},
 	})
 	if err != nil {
-		return err
+		return fmt.Errorf("bastion perimeter: %w", err)
 	}
 	groupRef = group
 
@@ -285,8 +322,10 @@ func retentionSet() (bool, error) {
 	return *group.RetentionInDays >= minRetentionDays && *group.RetentionInDays <= maxRetentionDays, nil
 }
 
+// customerKeyExists looks for a key the player made, which is any key that was
+// not already in the account when bootstrap ran.
 func customerKeyExists() (bool, error) {
-	keys, err := aws.List[*kms.Key]()
+	keys, err := playerKeys()
 	if err != nil {
 		return false, err
 	}
@@ -302,7 +341,7 @@ func logsEncrypted() (bool, error) {
 }
 
 func keyRotationEnabled() (bool, error) {
-	keys, err := aws.List[*kms.Key]()
+	keys, err := playerKeys()
 	if err != nil {
 		return false, err
 	}
@@ -312,6 +351,36 @@ func keyRotationEnabled() (bool, error) {
 		}
 	}
 	return false, nil
+}
+
+// playerKeys is every kms key in the account that bootstrap did not find there.
+func playerKeys() ([]*kms.Key, error) {
+	found, err := aws.List[*kms.Key]()
+	if err != nil {
+		return nil, err
+	}
+	keys := make([]*kms.Key, 0, len(found))
+	for identifier, key := range found {
+		if keyBaseline[identifier] || key == nil {
+			continue
+		}
+		keys = append(keys, key)
+	}
+	return keys, nil
+}
+
+// recordKeys captures the account's keys before the scenario adds to it. The
+// error is swallowed on purpose: a kms that will not list is one where there
+// was nothing to inherit, and failing bootstrap over it would take down three
+// findings that have nothing to do with kms.
+func recordKeys() {
+	found, err := aws.List[*kms.Key]()
+	if err != nil {
+		return
+	}
+	for identifier := range found {
+		keyBaseline[identifier] = true
+	}
 }
 
 // noteFiled wants the note to quote the security group id, so the player has to

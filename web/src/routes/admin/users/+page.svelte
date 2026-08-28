@@ -14,7 +14,6 @@
 	import PlusIcon from '@lucide/svelte/icons/plus';
 	import { toSvg } from 'jdenticon';
 	import { onMount } from 'svelte';
-	import { Icon } from 'svelte-ux';
 	import UserPanel from './UserPanel.svelte';
 
 	const limit = 100;
@@ -93,7 +92,12 @@
 				{#each users as user (user.id)}
 					<Table.Row class="cursor-pointer" onclick={() => (selected = selected?.id === user.id ? undefined : user)}>
 						<Table.Cell>
-							<Icon svg={toSvg(user.pubId, 20)} width="2rem" height="2rem" class="bg-primary/5 rounded-md" />
+							<img
+								alt="user profile"
+								src={`data:image/svg+xml;base64,${btoa(toSvg(user.pubId, 30))}`}
+								height="4rem"
+								class="bg-primary/5 rounded-md"
+							/>
 						</Table.Cell>
 						<Table.Cell class="font-medium">{user.username}</Table.Cell>
 						<Table.Cell>{user.email}</Table.Cell>

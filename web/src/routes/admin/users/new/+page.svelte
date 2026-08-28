@@ -19,6 +19,5 @@
 		<h1 class="text-3xl opacity-80">Invite User</h1>
 	</div>
 
-	<!-- the invitation code is shown by the form itself, so it stays on this page. -->
 	<CreateUser oncreated={() => {}} />
 </div>

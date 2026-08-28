@@ -18,7 +18,6 @@
 	import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
 	import CopyIcon from '@lucide/svelte/icons/copy';
 	import { toSvg } from 'jdenticon';
-	import { Icon } from 'svelte-ux';
 
 	let {
 		user,
@@ -50,7 +49,12 @@
 
 <Card.Root class="w-full">
 	<Card.Header class="flex flex-row items-center gap-4">
-		<Icon svg={toSvg(user.pubId, 20)} width="4rem" height="4rem" class="bg-primary/5 rounded-lg" />
+		<img
+			alt="user profile"
+			src={`data:image/svg+xml;base64,${btoa(toSvg(user.pubId, 20))}`}
+			height="4rem"
+			class="bg-primary/5 rounded-lg"
+		/>
 		<div class="flex flex-col gap-1">
 			<Card.Title class="text-2xl">{user.username}</Card.Title>
 			<Card.Description>{user.email}</Card.Description>

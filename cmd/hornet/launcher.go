@@ -136,69 +136,69 @@ func Start(ctx context.Context, opts *Options) error {
 	authorizer := rbac.New(oltpBucket, opts.PolicyCacheTimeout)
 	apiMux.Handle(authconnect.NewAuthServiceHandler(auth.New(slog.With("system", "svc.auth"), oltpBucket, issuer),
 		connect.WithInterceptors(
-			middleware.NewRequestTracer(slog.With("system", "olap.request"), requestIngestor),
+			middleware.NewRequestTracer(ctx, slog.With("system", "olap.request"), requestIngestor),
 			validate.NewInterceptor(),
 		),
 	))
 	apiMux.Handle(userconnect.NewUserServiceHandler(user.New(slog.With("system", "svc.admin.user"), oltpBucket),
 		connect.WithInterceptors(
-			middleware.NewRequestTracer(slog.With("system", "olap.request"), requestIngestor),
+			middleware.NewRequestTracer(ctx, slog.With("system", "olap.request"), requestIngestor),
 			authmiddleware.New(issuer, authorizer),
 			validate.NewInterceptor(),
 		),
 	))
 	apiMux.Handle(roleconnect.NewRoleServiceHandler(role.New(slog.With("system", "svc.admin.role"), oltpBucket),
 		connect.WithInterceptors(
-			middleware.NewRequestTracer(slog.With("system", "olap.request"), requestIngestor),
+			middleware.NewRequestTracer(ctx, slog.With("system", "olap.request"), requestIngestor),
 			authmiddleware.New(issuer, authorizer),
 			validate.NewInterceptor(),
 		),
 	))
 	apiMux.Handle(rbacconnect.NewRBACServiceHandler(rbacsvc.New(slog.With("system", "svc.admin.rbac"), oltpBucket),
 		connect.WithInterceptors(
-			middleware.NewRequestTracer(slog.With("system", "olap.request"), requestIngestor),
+			middleware.NewRequestTracer(ctx, slog.With("system", "olap.request"), requestIngestor),
 			authmiddleware.New(issuer, authorizer),
 			validate.NewInterceptor(),
 		),
 	))
 	apiMux.Handle(systemconnect.NewSystemServiceHandler(system.New(slog.With("system", "svc.admin.system"), oltpBucket, olapBucket),
 		connect.WithInterceptors(
-			middleware.NewRequestTracer(slog.With("system", "olap.request"), requestIngestor),
+			middleware.NewRequestTracer(ctx, slog.With("system", "olap.request"), requestIngestor),
 			authmiddleware.New(issuer, authorizer),
 			validate.NewInterceptor(),
 		),
 	))
 	apiMux.Handle(providerconnect.NewProviderServiceHandler(provider.New(slog.With("system", "svc.cloud.provider"), scheduler, providerCache, oltpBucket),
 		connect.WithInterceptors(
-			middleware.NewRequestTracer(slog.With("system", "olap.request"), requestIngestor),
+			middleware.NewRequestTracer(ctx, slog.With("system", "olap.request"), requestIngestor),
 			authmiddleware.New(issuer, authorizer),
 			validate.NewInterceptor(),
 		),
 	))
 	apiMux.Handle(accountconnect.NewAccountServiceHandler(account.New(slog.With("system", "svc.cloud.account"), scheduler, providerCache, oltpBucket),
 		connect.WithInterceptors(
-			middleware.NewRequestTracer(slog.With("system", "olap.request"), requestIngestor),
+			middleware.NewRequestTracer(ctx, slog.With("system", "olap.request"), requestIngestor),
 			authmiddleware.New(issuer, authorizer),
 			validate.NewInterceptor(),
 		),
 	))
 	apiMux.Handle(definitionconnect.NewDefinitionServiceHandler(definition.New(slog.With("system", "svc.cloud.definition"), oltpBucket),
 		connect.WithInterceptors(
-			middleware.NewRequestTracer(slog.With("system", "olap.request"), requestIngestor),
+			middleware.NewRequestTracer(ctx, slog.With("system", "olap.request"), requestIngestor),
 			authmiddleware.New(issuer, authorizer),
 			validate.NewInterceptor(),
 		),
 	))
 	apiMux.Handle(gameconnect.NewGameServiceHandler(game.New(slog.With("system", "svc.cloud.game"), oltpBucket),
 		connect.WithInterceptors(
-			middleware.NewRequestTracer(slog.With("system", "olap.request"), requestIngestor),
+			middleware.NewRequestTracer(ctx, slog.With("system", "olap.request"), requestIngestor),
 			authmiddleware.New(issuer, authorizer),
 			validate.NewInterceptor(),
 		),
 	))
 	apiMux.Handle(teamconnect.NewTeamServiceHandler(team.New(slog.With("system", "svc.cloud.team"), oltpBucket),
 		connect.WithInterceptors(
-			middleware.NewRequestTracer(slog.With("system", "olap.request"), requestIngestor),
+			middleware.NewRequestTracer(ctx, slog.With("system", "olap.request"), requestIngestor),
 			authmiddleware.New(issuer, authorizer),
 			validate.NewInterceptor(),
 		),
@@ -207,7 +207,7 @@ func Start(ctx context.Context, opts *Options) error {
 		scheduler, providerCache, pluginCache, oltpBucket, olapBucket,
 	),
 		connect.WithInterceptors(
-			middleware.NewRequestTracer(slog.With("system", "olap.request"), requestIngestor),
+			middleware.NewRequestTracer(ctx, slog.With("system", "olap.request"), requestIngestor),
 			authmiddleware.New(issuer, authorizer),
 			validate.NewInterceptor(),
 		),

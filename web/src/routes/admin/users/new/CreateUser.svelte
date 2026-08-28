@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { Glue, Submit } from '$lib';
-	import ScopeInput from '$lib/components/custom/ScopeInput.svelte';
+	import { Glue, Submit, type SubmitState } from '$lib';
+	import OptionalSelect from '$lib/components/custom/OptionalSelect.svelte';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Button } from '$lib/components/shad/button';
 	import * as Card from '$lib/components/shad/card';
-	import { Input } from '$lib/components/shad/input';
+	import LabelInput from '$lib/components/shad/label-input/label-input.svelte';
 	import * as Select from '$lib/components/shad/select';
 	import { CreateRequestSchema } from '$lib/sdk/v1/admin/user/user_pb';
 	import { UserSchema } from '$lib/sdk/v1/admin/user_pb';
@@ -21,9 +21,7 @@
 		{ value: '168', label: '7 days' }
 	];
 
-	let error = $state('');
-	let loading = $state(false);
-	let forbidden = $state(false);
+	let createState: SubmitState = $state({ error: '', forbidden: false, loading: false });
 
 	let init = $state(create(UserSchema, {}));
 	let expiry = $state('24');
@@ -81,41 +79,46 @@
 			<form
 				class="flex flex-col gap-4"
 				onsubmit={() =>
-					Submit(
-						async () => {
-							const resp = await Glue.user.create(request);
-							code = resp.code;
-							link = `${location.origin}/register?email=${encodeURIComponent(init.email)}&username=${encodeURIComponent(init.username)}&code=${encodeURIComponent(resp.code)}`;
-							oncreated();
-						},
-						(e, l, f) => ((error = e), (loading = l), (forbidden = f))
-					)}
+					Submit(async () => {
+						const resp = await Glue.user.create(request);
+						code = resp.code;
+						link = `${location.origin}/register?email=${encodeURIComponent(init.email)}&username=${encodeURIComponent(init.username)}&code=${encodeURIComponent(resp.code)}`;
+						oncreated();
+					}, createState)}
 			>
 				<div class="grid gap-4 md:grid-cols-2">
-					<div class="flex flex-col gap-1">
-						<label for="create-username" class="text-sm">Username</label>
-						<Input id="create-username" bind:value={init.username} placeholder="Username of the new user" />
-						<p class="text-xs text-destructive">{Glue.Validate(UserSchema, init).violation.username ?? ''}</p>
-					</div>
-					<div class="flex flex-col gap-1">
-						<label for="create-email" class="text-sm">Email</label>
-						<Input id="create-email" type="email" bind:value={init.email} placeholder="Email of the new user" />
-						<p class="text-xs text-destructive">{Glue.Validate(UserSchema, init).violation.email ?? ''}</p>
-					</div>
-					<div class="flex flex-col gap-1">
-						<label for="create-organization" class="text-sm">Organization</label>
-						<Input id="create-organization" bind:value={init.organization} placeholder="Organization of the new user" />
-						<p class="text-xs text-destructive">{Glue.Validate(UserSchema, init).violation.organization ?? ''}</p>
-					</div>
-					<div class="flex flex-col gap-1">
-						<label for="create-description" class="text-sm">Slogan</label>
-						<Input id="create-description" bind:value={init.description} placeholder="Slogan of the new user" />
-						<p class="text-xs text-destructive">{Glue.Validate(UserSchema, init).violation.description ?? ''}</p>
-					</div>
-					<div class="flex flex-col gap-1">
-						<label for="create-scope" class="text-sm">Scope</label>
-						<ScopeInput id="create-scope" bind:value={init.scope} {scopes} placeholder="Scope the user is placed in" />
-					</div>
+					<LabelInput
+						bind:value={init.username}
+						label="Username"
+						placeholder="Username of the new user"
+						validation={Glue.Validate(UserSchema, init).violation.username}
+					/>
+					<LabelInput
+						bind:value={init.email}
+						label="Email"
+						placeholder="Email of the new user"
+						validation={Glue.Validate(UserSchema, init).violation.email}
+					/>
+					<LabelInput
+						bind:value={init.organization}
+						label="Organization"
+						placeholder="Organization of the new user"
+						validation={Glue.Validate(UserSchema, init).violation.organization}
+					/>
+					<LabelInput
+						bind:value={init.description}
+						label="Slogan"
+						placeholder="Slogan for the new user"
+						validation={Glue.Validate(UserSchema, init).violation.description}
+					/>
+					<label class="flex flex-col gap-1 text-sm">
+						Scope
+						<OptionalSelect
+							bind:value={init.scope}
+							placeholder="Scope the user is placed in"
+							suggestions={scopes.map((scope) => ({ id: scope, title: scope }))}
+						/>
+					</label>
 					<div class="flex flex-col gap-1">
 						<label for="create-expiry" class="text-sm">Invitation expires in</label>
 						<Select.Root type="single" bind:value={expiry}>
@@ -133,15 +136,15 @@
 				<Button
 					type="submit"
 					class="cursor-pointer self-start"
-					disabled={loading || Boolean(Glue.Validate(CreateRequestSchema, request).error)}
+					disabled={createState.loading || Boolean(Glue.Validate(CreateRequestSchema, request).error)}
 				>
 					Invite
 				</Button>
-				{#if error}
+				{#if createState.error}
 					<Alert.Root variant="destructive">
 						<AlertCircleIcon />
-						<Alert.Title>{forbidden ? 'Permission denied' : 'Failed to invite user'}</Alert.Title>
-						<Alert.Description>{error}</Alert.Description>
+						<Alert.Title>{createState.forbidden ? 'Permission denied' : 'Failed to invite user'}</Alert.Title>
+						<Alert.Description>{createState.error}</Alert.Description>
 					</Alert.Root>
 				{/if}
 			</form>

@@ -73,33 +73,35 @@
 				{/each}
 			</ChartClipPath>
 		{/snippet}
-		{#snippet tooltip()}
-			<Chart.Tooltip
-				class="w-max"
-				labelFormatter={(v: Date) => {
-					return v.toLocaleDateString('en-US', {
-						month: '2-digit',
-						day: '2-digit',
-						hour: '2-digit',
-						minute: '2-digit',
-						hour12: false
-					});
-				}}
-				indicator="line"
-			>
-				{#snippet formatter({ value, name, item })}
-					<div
-						style="--color-bg: {item.config?.color ?? item.color}"
-						class="w-1 shrink-0 self-stretch rounded-xs bg-(--color-bg)"
-					></div>
-					<div class="flex flex-1 items-center justify-between gap-6 leading-none">
-						<span class="text-muted-foreground whitespace-nowrap">{name}</span>
-						<span class="text-foreground font-mono font-medium whitespace-nowrap tabular-nums">
-							{typeof value === 'number' ? value.toLocaleString() : value}{unit ? ` ${unit}` : ''}
-						</span>
-					</div>
-				{/snippet}
-			</Chart.Tooltip>
+		{#snippet tooltip({ context })}
+			{#if Number(context) === 0 || true}
+				<Chart.Tooltip
+					class="w-max"
+					labelFormatter={(v: Date) => {
+						return v.toLocaleDateString('en-US', {
+							month: '2-digit',
+							day: '2-digit',
+							hour: '2-digit',
+							minute: '2-digit',
+							hour12: false
+						});
+					}}
+					indicator="line"
+				>
+					{#snippet formatter({ value, name, item })}
+						<div
+							style="--color-bg: {item.config?.color ?? item.color}"
+							class="w-1 shrink-0 self-stretch rounded-xs bg-(--color-bg)"
+						></div>
+						<div class="flex flex-1 items-center justify-between gap-6 leading-none">
+							<span class="text-muted-foreground whitespace-nowrap">{name}</span>
+							<span class="text-foreground font-mono font-medium whitespace-nowrap tabular-nums">
+								{typeof value === 'number' ? value.toLocaleString() : value}{unit ? ` ${unit}` : ''}
+							</span>
+						</div>
+					{/snippet}
+				</Chart.Tooltip>
+			{/if}
 		{/snippet}
 	</AreaChart>
 </ChartContainer>

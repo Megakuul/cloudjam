@@ -70,7 +70,7 @@ func (c *Cache) Load(ctx context.Context, hash string, binaryFactory func(ctx co
 			extism.Manifest{
 				Wasm: []extism.Wasm{pluginData},
 				Memory: &extism.ManifestMemory{
-					MaxPages: maxPluginMemory / 64,
+					MaxPages: maxPluginMemory / 64_000,
 				},
 			},
 			extism.PluginConfig{

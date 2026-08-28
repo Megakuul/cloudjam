@@ -39,6 +39,13 @@ const (
 // before the check loop starts.
 var queueRef string
 
+// queueBaseline is what the account already held before bootstrap ran. The
+// dead-letter check scores a queue the *player* stood up, and "is there another
+// queue" only asks that against what was already there — a sandbox account is
+// not guaranteed to be empty, and a queue left by an earlier run would award
+// the points before the player has read the briefing.
+var queueBaseline = map[string]bool{}
+
 func main() {
 	challenge.New("The Order That Would Not Die", 10*time.Second, bootstrap).
 		AddDescription(
@@ -89,6 +96,9 @@ func main() {
 }
 
 func bootstrap(s *challenge.Scenario) error {
+	// before anything is created, so the baseline is what the account came with.
+	recordQueues()
+
 	ref, err := aws.Create(&sqs.Queue{
 		QueueName:              new(fmt.Sprintf("%s-%s", queuePrefix, uuid.NewString())),
 		VisibilityTimeout:      new(brokenVisibilityTimeout),
@@ -115,8 +125,9 @@ func bootstrap(s *challenge.Scenario) error {
 	return nil
 }
 
-// deadLetterQueueExists looks for a queue that is not the checkout queue. It
-// deliberately does not care what the player called it.
+// deadLetterQueueExists looks for a queue that is neither the checkout queue
+// nor one the account already had. It deliberately does not care what the
+// player called it.
 func deadLetterQueueExists() (bool, error) {
 	if queueRef == "" {
 		return false, fmt.Errorf("checkout queue was never provisioned")
@@ -126,11 +137,25 @@ func deadLetterQueueExists() (bool, error) {
 		return false, err
 	}
 	for identifier := range queues {
-		if identifier != queueRef {
+		if identifier != queueRef && !queueBaseline[identifier] {
 			return true, nil
 		}
 	}
 	return false, nil
+}
+
+// recordQueues captures the account's queues before the scenario adds to it.
+// The error is swallowed on purpose: an sqs that will not list is one where
+// there was nothing to inherit, and the check that reads this baseline reports
+// the failure on its own next cycle.
+func recordQueues() {
+	found, err := aws.List[*sqs.Queue]()
+	if err != nil {
+		return
+	}
+	for identifier := range found {
+		queueBaseline[identifier] = true
+	}
 }
 
 func redriveConfigured() (bool, error) {

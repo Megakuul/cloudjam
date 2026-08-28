@@ -14,7 +14,7 @@
 
 	let { game, refresh, deleted }: { game: Game; refresh: () => void; deleted: () => void } = $props();
 
-	let mod = $derived({ ...game });
+	let mod = $state({ ...game });
 
 	// datetime-local inputs work on the local wall clock, protobuf timestamps on utc instants.
 	const localInput = (date: Date) =>

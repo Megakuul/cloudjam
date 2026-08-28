@@ -15,7 +15,7 @@
 	import type { Challenge } from '$lib/sdk/v1/play/challenge_pb';
 	import { create } from '@bufbuild/protobuf';
 	import { timestampDate } from '@bufbuild/protobuf/wkt';
-	import { BadgeCheckIcon, SquareArrowOutUpRightIcon } from '@lucide/svelte';
+	import { BadgeCheckIcon, KeyRoundIcon, SquareArrowOutUpRightIcon } from '@lucide/svelte';
 	import AlertCircleIcon from '@lucide/svelte/icons/alert-circle';
 	import CopyIcon from '@lucide/svelte/icons/copy';
 	import LightbulbIcon from '@lucide/svelte/icons/lightbulb';
@@ -81,6 +81,7 @@
 				onclick={() =>
 					Submit(async () => {
 						await Glue.challenge.start(create(StartRequestSchema, { gameId: challenge.gameId, id: challenge.id }));
+						challenge.title = '...';
 					}, startState)}
 			>
 				<PlayIcon /> Start
@@ -112,6 +113,7 @@
 						).credentials;
 					}, credsState)}
 			>
+				<KeyRoundIcon />
 				Credentials
 			</Button>
 		</Card.Action>

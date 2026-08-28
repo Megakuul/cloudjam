@@ -395,8 +395,10 @@ func (s *Server) Start(ctx context.Context, req *connect.Request[challenge.Start
 	s.scheduler.Schedule(func(ctx context.Context) error {
 		ctx, cancel := context.WithDeadline(ctx, gameMeta.To.Value())
 		defer cancel()
-		if err := challengeRunner.Start(ctx); err != nil && !errors.Is(err, context.DeadlineExceeded) {
-			return fmt.Errorf("challenge host failure: %w", err)
+		if err := challengeRunner.Start(ctx); err != nil {
+			if !errors.Is(err, context.Canceled) && !errors.Is(err, context.DeadlineExceeded) {
+				return fmt.Errorf("challenge host failure: %w", err)
+			}
 		}
 
 		// after the challenge we try to lock and unbind accounts early so they can be reused in the same game.

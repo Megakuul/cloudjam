@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { Glue, Submit, type SubmitState } from '$lib';
+	import DelaySpinner from '$lib/components/custom/DelaySpinner.svelte';
 	import * as Alert from '$lib/components/shad/alert';
 	import { Badge } from '$lib/components/shad/badge';
 	import { Button } from '$lib/components/shad/button';
@@ -30,7 +31,7 @@
 		return 'running';
 	}
 
-	let gamesState: SubmitState = $state({ error: '', loading: false, forbidden: false });
+	let gamesState: SubmitState = $state({ error: '', loading: true, forbidden: false });
 
 	function load(startAfter?: string) {
 		Submit(async () => {
@@ -43,8 +44,15 @@
 	onMount(() => load());
 </script>
 
-<div class="flex flex-col gap-4 w-full">
-	<div class="flex flex-row gap-2 items-center">
+<svelte:head>
+	<title>Games | CloudJam</title>
+	<meta property="og:title" content="Games | CloudJam" />
+	<meta property="og:type" content="website" />
+	<meta property="og:image" content="/favicon.png" />
+</svelte:head>
+
+<div class="flex w-full flex-col gap-4">
+	<div class="flex flex-row items-center gap-2">
 		<Button variant="ghost" size="icon" class="cursor-pointer" href="/host/">
 			<ChevronLeftIcon />
 		</Button>
@@ -54,14 +62,16 @@
 		</Button>
 	</div>
 
-	{#if gamesState.forbidden}
+	{#if gamesState.loading}
+		<DelaySpinner class="mt-10 flex justify-center" delay={200} />
+	{:else if gamesState.forbidden}
 		<Card.Root class="w-full">
 			<Card.Header>
 				<Card.Title>Open a Game</Card.Title>
 				<Card.Description>You are not allowed to list games, open the one you host by its id.</Card.Description>
 			</Card.Header>
 			<Card.Content>
-				<form class="flex flex-row gap-2 items-center" onsubmit={() => goto(`/host/games/${id}`)}>
+				<form class="flex flex-row items-center gap-2" onsubmit={() => goto(`/host/games/${id}`)}>
 					<Input class="max-w-96" bind:value={id} placeholder="Game id" />
 					<Button type="submit" class="cursor-pointer" disabled={!id.trim()}>Open</Button>
 				</form>
@@ -92,7 +102,7 @@
 				{:else}
 					<Table.Row>
 						<Table.Cell colspan={6}>
-							<p class="p-4 text-sm italic text-muted-foreground">
+							<p class="text-muted-foreground p-4 text-sm italic">
 								{gamesState.loading ? 'Loading games…' : 'No games yet (or management did not give you access, loser)'}
 							</p>
 						</Table.Cell>
@@ -103,7 +113,7 @@
 		{#if !exhausted}
 			<Button
 				variant="outline"
-				class="self-center cursor-pointer"
+				class="cursor-pointer self-center"
 				disabled={gamesState.loading}
 				onclick={() => load(games.at(-1)?.id)}
 			>

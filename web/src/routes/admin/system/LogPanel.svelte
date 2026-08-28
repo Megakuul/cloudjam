@@ -12,7 +12,6 @@
 	import ChevronRightIcon from '@lucide/svelte/icons/chevron-right';
 	import CopyIcon from '@lucide/svelte/icons/copy';
 	import RefreshIcon from '@lucide/svelte/icons/refresh-cw';
-	import ChallengePanel from '../../host/games/[id]/ChallengePanel.svelte';
 
 	let {
 		from,

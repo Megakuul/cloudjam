@@ -2,6 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { page } from '$app/state';
 	import { Glue, Submit, type SubmitState } from '$lib';
+	import * as Card from '$lib/components/shad/card';
 	import { Badge } from '$lib/components/shad/badge';
 	import { Button } from '$lib/components/shad/button';
 	import { GetRequestSchema as GetChallengeRequestSchema } from '$lib/sdk/v1/play/challenge/challenge_pb';
@@ -16,6 +17,7 @@
 	import { GetRequestSchema as GetDefinitionRequestSchema } from '$lib/sdk/v1/cloud/definition/definition_pb';
 	import type { Definition } from '$lib/sdk/v1/cloud/definition_pb';
 	import PlayChallenge from './PlayChallenge.svelte';
+	import { toSvg } from 'jdenticon';
 
 	const reloadInterval = 5000;
 
@@ -148,6 +150,27 @@
 		<Badge variant="outline">score: {score}</Badge>
 	</div>
 
+	<Card.Root class="bg-accent-600/20 gap-2 p-4">
+		<Card.Title class="flex flex-row items-center gap-2 text-2xl">
+			{team?.name}
+			<Badge variant="default">
+				score: {team?.score}
+			</Badge>
+		</Card.Title>
+		<Card.Description>
+			{#each Object.values(team?.players ?? {}) as player (player.id)}
+				<Badge variant="outline">
+					<img
+						alt="user profile"
+						src={`data:image/svg+xml;base64,${btoa(toSvg(player.pubId, 16))}`}
+						height="3rem"
+						class="bg-primary/5 rounded-lg"
+					/>
+					{player.username}
+				</Badge>
+			{/each}
+		</Card.Description>
+	</Card.Root>
 	{#if challenge}
 		<PlayChallenge {challenge} {active} {nextInterval} refresh={() => reloadChallenge()} />
 	{/if}
