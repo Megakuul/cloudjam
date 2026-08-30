@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io/fs"
 	"log/slog"
 	"net/http"
 	"net/http/httputil"
@@ -62,7 +63,8 @@ func Start(ctx context.Context, opts *Options) error {
 		proxy.ErrorLog = slog.NewLogLogger(slog.With("system", "dev.proxy").Handler(), slog.LevelWarn)
 		mux.Handle("/", proxy)
 	} else {
-		mux.Handle("/", http.FileServerFS(web.Files))
+		sub, _ := fs.Sub(web.Files, "build")
+		mux.Handle("/", http.FileServer(http.FS(sub)))
 	}
 	issuer := token.New(opts.TokenIssuer, opts.TokenLifetime, jwt.SigningMethodHS256, []byte(opts.TokenSecret), func(ctx context.Context) any {
 		return []byte(opts.TokenSecret)

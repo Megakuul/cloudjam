@@ -4,7 +4,11 @@ import { mdsvex } from 'mdsvex';
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
 	kit: {
-		adapter: adapter()
+		adapter: adapter({
+			fallback: 'index.html',
+			precompress: false,
+			strict: true
+		})
 	},
 	preprocess: [mdsvex()],
 	extensions: ['.svelte', '.svx']

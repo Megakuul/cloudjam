@@ -44,9 +44,11 @@ import (
 	"github.com/google/uuid"
 )
 
-const ownerTag = "northbridge:owner"
-const systemTag = "northbridge:system"
-const systemName = "triage"
+const (
+	ownerTag   = "northbridge:owner"
+	systemTag  = "northbridge:system"
+	systemName = "triage"
+)
 
 const gatePrefix = "northbridge-desk-"
 
@@ -86,8 +88,10 @@ const (
 	codaPoints       = 10
 )
 
-const keepingUpPerMille = 500
-const filingGrace = 2
+const (
+	keepingUpPerMille = 500
+	filingGrace       = 2
+)
 
 var (
 	archiveRef      string
@@ -470,7 +474,7 @@ func bootstrap(s *challenge.Scenario) error {
 
 func makeArchive(run string) error {
 	bucket, err := aws.Create(&s3.Bucket{
-		BucketName: new(fmt.Sprintf("northbridge-claim-docs-%s", run)),
+		BucketName: new(fmt.Sprintf("claim-docs-%s", run)),
 		PublicAccessBlockConfiguration: &s3.BucketPublicAccessBlockConfiguration{
 			BlockPublicAcls:       new(false),
 			BlockPublicPolicy:     new(false),
@@ -488,7 +492,7 @@ func makeArchive(run string) error {
 
 func makeDecoyBucket(run string) error {
 	bucket, err := aws.Create(&s3.Bucket{
-		BucketName: new(fmt.Sprintf("northbridge-marketing-assets-%s", run)),
+		BucketName: new(fmt.Sprintf("marketing-assets-%s", run)),
 		Tags:       []s3.BucketTag{{Key: new(systemTag), Value: new(systemName)}},
 	})
 	if err != nil {

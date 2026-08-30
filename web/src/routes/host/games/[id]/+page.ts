@@ -5,7 +5,7 @@ import { create } from '@bufbuild/protobuf';
 import type { PageLoad } from './$types';
 import { gameState } from './state.svelte';
 
-export const prerender = true;
+export const prerender = 'auto';
 export const ssr = false;
 export const trailingSlash = 'always';
 
