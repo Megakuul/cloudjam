@@ -199,9 +199,15 @@ much as one good configuration check per act, or the scoreboard becomes a clock.
 
 - **The player can see and edit the tally parameter.** Treat scores from it as advisory
   unless the sandbox role is denied write on that path.
-- **Lambda only runs on fakecloud if fakecloud runs natively.** Started in a container the
-  way `jamctl --fake` does it, invokes fail and your generator silently produces no traffic —
-  the resource graph provisions and nothing happens. See `validate.md`.
+- **A Lambda that calls another AWS service needs help to do useful work on fakecloud.**
+  Inline `Code.ZipFile` never becomes a real zip (fakecloud's gap, no fix from plugin code).
+  A correctly-deployed real zip gets further but still needs an explicit region and, once past
+  that, an explicit endpoint pointed at fakecloud (`host.docker.internal`, the same mechanism
+  every local AWS emulator uses) — fakecloud does not inject a LocalStack-style hostname env
+  var, so this cannot be told apart from real AWS automatically. Get the region/endpoint/
+  credential handling wrong and your generator silently produces no traffic while the resource
+  graph provisions with no error. See `validate.md` for the exact pattern and its limits.
+  Verify the traffic path on a real account regardless — that is the only fully reliable check.
 - **Polling granularity is the scenario interval**, 10s at best.
 
 If that is too much machinery for the challenge you are writing, the honest fallback is to

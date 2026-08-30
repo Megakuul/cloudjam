@@ -46,7 +46,7 @@ func NewCmd(options *Options) *cobra.Command {
 type Options struct {
 	globalFlags *flags.GlobalFlags
 	fake        bool
-	fakeImage   string
+	fakeVersion string
 	fakePort    int
 	region      string
 }
@@ -58,8 +58,8 @@ func NewOptions(gFlags *flags.GlobalFlags) *Options {
 }
 
 func (r *Options) AttachFlags(flagSet *pflag.FlagSet) {
-	flagSet.BoolVarP(&r.fake, "fake", "F", true, "run against fakecloud on docker (might not support all APIs / retrieval opts)")
-	flagSet.StringVar(&r.fakeImage, "image", "ghcr.io/faiscadev/fakecloud:latest", "fakecloud docker image (only used if --fake is true)")
+	flagSet.BoolVarP(&r.fake, "fake", "F", true, "run against a native fakecloud emulator (downloaded and cached locally; might not support all APIs / retrieval opts)")
+	flagSet.StringVar(&r.fakeVersion, "fakecloud-version", "latest", "fakecloud release to download and run (only used if --fake is true)")
 	flagSet.IntVar(&r.fakePort, "port", 4566, "host port for the fakecloud endpoint (only used if --fake is true)")
 	flagSet.StringVar(&r.region, "region", "us-east-1", "region to deploy to")
 }
@@ -70,11 +70,11 @@ func (r *Options) Run(ctx context.Context, args []string) error {
 		providerEndpoint string
 	)
 	if r.fake {
-		container, err := startFakeCloud(ctx, r.fakeImage, r.fakePort)
+		fakeCloud, err := startFakeCloud(ctx, r.fakeVersion, r.fakePort)
 		if err != nil {
 			return err
 		}
-		defer removeFakeCloud(container)
+		defer stopFakeCloud(fakeCloud)
 
 		providerEndpoint = fmt.Sprintf("http://127.0.0.1:%d", r.fakePort)
 

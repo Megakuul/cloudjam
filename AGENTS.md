@@ -123,3 +123,12 @@ cd pkg/challenge/aws && go generate ./...
 `go run ./cmd/jamctl run aws --help` to confirm the current commands and flags instead of
 trusting any command line written down here — and if it does not compile, say so rather than
 working around it. `cmd/jamctl` is platform code: you may run it, not fix it.
+
+## Coding style
+
+Code should be written in a human readable way:
+
+- no comments unless absolutely necessary
+- no useless dry abstractions for small code
+
+For problems that require advanced helper please do not hesitate to recommend a functionality proposal (NOT CODE only the requirements) for the `pkg/challenge` sdk.
